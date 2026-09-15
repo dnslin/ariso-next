@@ -686,3 +686,47 @@ Node 的 Base64 解码会容忍部分非法字符和空白，因此通过重新�
 实现提交 `89fefaf` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34953919540) 全部通过（1 分 28 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整生产构建和 62 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34953919535) 在 AMD64 和 ARM64 原生 runner 上均通过（分别 1 分 10 秒、1 分 22 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及验证产物导出。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
 
 推送时系统 DNS 返回的 GitHub 地址连接超时，使用公共 DNS 返回地址进行单次 Git 连接后成功，没有修改系统 DNS 或仓库配置。先创建草稿 [PR #39](https://github.com/dnslin/ariso-next/pull/39)，补充本段记录后的最终状态以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/39/checks) 为准；全部检查通过后转为正式待评审。Issue 保持 OPEN，合并与分支清理由用户另行决定。
+
+## RUNTIME-14：持久化秘密的启动预检
+
+2026-09-15 在 codex/issue-14-secret-preflight 实施 [Issue #14](https://github.com/dnslin/ariso-next/issues/14)。工作区初始干净，从最新 origin/main（0b9fd36）创建分支。通过 gh 读取 Issue、评论和前置 #10、#13，两个前置任务均已关闭，代码和验证记录已存在；GitHub 插件也确认 #14 无评论。Issue 中的“未开始”属于计划时描述。
+
+### 实际实现
+
+runPreflight(env, prepare) 在真实迁移成功后、关闭短期连接之前调用普通同步组合函数。函数接收当前 Drizzle 实例和已校验配置，返回类型为 undefined，避免误接入未等待的异步函数。解密异常原样传播到 CLI，finally 关闭数据库；已提交迁移不会因后续预检失败而撤销。生产目前无业务秘密提供方，因此参数可省略，没有新增依赖、业务表、字段扫描或注册框架。
+
+测试专属 secret-preflight.ts 显式读取 secret_sample 并调用实际 AES-GCM 解密，跳过表示未配置的 null。集成测试仅替换隔离 Standalone 副本的 CLI，以 Node 24 自带类型擦除执行普通 Node 测试组合；仍使用真实入口脚本和标准 Next server.js。生产 CLI 编译产物通过空数据库用例验证，不把测试组合包装成生产功能。
+
+4 项新增测试覆盖空生产数据库使用不同有效密钥启动，以及错误密钥、无效密文、被篡改密文的启动阻断。失败时退出 1、健康端口不可访问、错误包含配置位置且不含秘密、连接已关闭、原密文及新增迁移保留。修复后连续启动两次，健康响应为 200，迁移不重放。生产产物无测试组合；空数据库只含 Drizzle 默认迁移表，没有业务表或密钥校验记录。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。沿用本页 Node 24 路径，通过临时 PATH 链接固定真实 pnpm 入口，已确认子进程 Node 路径。首次检查成功后，为排除系统 pnpm 包装器对嵌套构建的影响，重新执行生产构建和全量集成测试，均退出 0。
+
+| 实际命令或检查                                                                                 | 结果                                                                          |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| node --version / pnpm --version / pnpm exec node -p 'process.version + " " + process.execPath' | 退出 0，Node v24.18.1、pnpm 11.19.0                                           |
+| pnpm install --frozen-lockfile                                                                 | 退出 0，锁文件未变                                                            |
+| pnpm exec vitest run --project integration tests/integration/runtime/secret-preflight.test.ts  | 退出 0，4 项通过                                                              |
+| pnpm run lint                                                                                  | 退出 0，零警告                                                                |
+| pnpm run format:check                                                                          | 退出 0                                                                        |
+| pnpm run typecheck                                                                             | 退出 0，应用与 runtime 类型检查通过                                           |
+| pnpm run test:unit                                                                             | 退出 0，70 项通过                                                             |
+| pnpm run build                                                                                 | 退出 0，完整生产构建及 Standalone 打包成功                                    |
+| pnpm run test:integration                                                                      | 退出 0，10 个文件、66 项通过，包含独立目录无密钥构建                          |
+| git diff --check                                                                               | 退出 0                                                                        |
+| ego-browser nodejs                                                                             | 退出 0，TaskSpace 1：生产首页显示工程状态，健康 200 与精确 JSON、SVG 200 通过 |
+
+构建仍输出此前已记录的可选 SQLite Debug 候选路径追踪警告；真实发行驱动的查询、迁移和启动测试通过。Ego Lite TaskSpace、自建服务和临时数据已清理，没有下载浏览器。
+
+### 审计与剩余边界
+
+已使用 code-review-and-quality 完成独立只读审计，检查正确性、可读性、架构、安全和性能，无阻塞发现。审计覆盖三个代码文件及 CLI、入口脚本、迁移、加解密、打包和进程测试调用链；审计者未重复执行测试，实际验证由主任务完成。
+
+RT-08 本次仅验证 runtime 启动组合；S3、SMTP、OAuth 的真实字段接入仍由所属业务模块验收，结构化启动日志归 RUNTIME-15–17。本机不执行 Docker；AMD64、ARM64 的容器构建与运行验证由现有 GitHub Actions 完成，证据见下节。冻结 PRD 和 Spec 未修改，不合并 PR、关闭 Issue、发布镜像或部署。
+
+### 远端验证
+
+实现提交 5813866 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34962206938) 全部通过（1 分 56 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整构建和 66 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34962206956) 的 AMD64、ARM64 原生 runner 均通过（分别 1 分 20 秒、1 分 15 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及产物导出。两个 gh run watch --exit-status 均退出 0，无远端失败或修复重跑。
+
+草稿 [PR #40](https://github.com/dnslin/ariso-next/pull/40) 已关联 Issue #14；补充本段文档后的最终提交检查以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/40/checks) 为准，全部通过后转为正式待评审。Issue 保持开放，合并和分支清理由用户另行指示。
