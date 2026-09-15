@@ -538,3 +538,34 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 补充本记录后的最终提交结果见 [PR #36 检查页](https://github.com/dnslin/ariso-next/pull/36/checks)。最终推送前执行 `pnpm run format:check` 和 `git diff --check`；最终检查通过后转为正式待评审，合并与分支清理由用户决定。
 
 本次完成 RUNTIME-10 对 RT-03–06 的本地产物验收；容器故障与持久化矩阵仍由 RUNTIME-20 完成。健康接口的真实 HTTP 数据库故障注入归 RUNTIME-12，业务秘密预检、所有者初始化、上传和任务恢复仍由后续模块实现。冻结 PRD 未改写。不合并 PR、不关闭 Issue、不发布镜像或部署。
+
+## RUNTIME-11：构建无运行副作用回归
+
+在 `codex/issue-11-build-regression` 实施 [Issue #11](https://github.com/dnslin/ariso-next/issues/11)。前置 RUNTIME-09 已合入。新增 `tests/integration/runtime/build.test.ts`，复制当前 Git 文件与已安装依赖到系统临时目录，排除本地环境文件。完整 `pnpm run build` 在副本执行，CLI、Next 和 Standalone 打包均使用独立目录，不改写其他产物测试使用的 `.next`、`dist` 或类型生成文件。
+
+子进程显式删除 `BETTER_AUTH_SECRET`、`ARISO_ENCRYPTION_KEY`，关闭父环境自动合并，并指定初始不存在的 `DATA_DIR`。断言完整构建退出 0、最终产物存在、构建后数据目录仍不存在，且 stdout/stderr 不含中文初始化码或英文 setup/initialization code 标记。构建子进程设置 180 秒期限，使用 Execa 的 `killDescendants` 同时终止 pnpm 派生的构建进程；测试结束清理临时副本。复制依赖使用 Node 的写时复制提示，在支持的平台减少复制开销；不创建指向开发依赖目录的链接。
+
+现有 instrumentation 已避开生产构建阶段，没有发现需要修改的生产副作用。Vitest integration 项目已自动发现新增测试，CI 原有完整构建后执行集成测试的顺序无需改变。没有新增依赖或修改冻结 PRD。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1，pnpm 11.19.0。使用本页记录的 Node 24，并将 pnpm 的真实入口链接到临时 PATH 目录，确保测试子进程同样使用 Node 24，不修改全局环境。
+
+| 命令或检查                                                                           | 结果                                                                                            |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                     | 退出 0，锁文件无需修改                                                                          |
+| `pnpm exec vitest run --project integration tests/integration/runtime/build.test.ts` | 退出 0，1 项通过，约 19 秒                                                                      |
+| `pnpm run typecheck`                                                                 | 退出 0，应用与 runtime 类型检查通过                                                             |
+| `pnpm run lint`                                                                      | 退出 0，零警告                                                                                  |
+| `pnpm run test:unit`                                                                 | 退出 0，55 项通过                                                                               |
+| `pnpm run build`                                                                     | 退出 0，完整生产构建及打包成功                                                                  |
+| `pnpm run test:integration`                                                          | 退出 0，7 个文件、53 项通过；隔离构建与原有产物测试并发执行，约 21 秒                           |
+| `pnpm run format:check` / `git diff --check`                                         | 均退出 0                                                                                        |
+| Node + Execa 超时实验                                                                | 退出 0；200 ms 超时终止父子进程，等待后未出现子进程延迟写入文件                                 |
+| `ego-browser nodejs`                                                                 | 退出 0，Ego Lite TaskSpace 10 确认首页、健康 200 / no-store / JSON、SVG 和 7 个 Next 脚本均 200 |
+
+首轮类型检查发现环境变量对象需要显式类型；首轮测试发现 `pnpm exec` 未设置 `npm_execpath`。已改为标准 PATH 中的 pnpm 命令并重跑通过。构建继续输出此前记录的可选 SQLite Debug 文件追踪警告，实际发行驱动的迁移、查询及启动产物测试通过。
+
+### 审计与剩余边界
+
+已使用 `code-review-and-quality` 做独立只读审计。审计发现超时默认只终止 pnpm，可能遗留 Next 子进程；已复用 Execa 的 `killDescendants: true` 修复。修复后类型、lint、53 项集成测试与格式检查再次通过；独立超时实验确认后代进程未继续写文件。远端 CI、AMD64/ARM64 Docker 结果待补充。本机未运行 Docker。当前不具备初始化码生成逻辑，日志断言是提前建立的回归约束，不代表 identity 初始化功能已验收。RUNTIME-23 的浏览器自动化、RUNTIME-12 的 HTTP 数据库故障覆盖，以及后续图片工具与业务流程仍按原任务交付。
