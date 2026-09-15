@@ -107,7 +107,9 @@ it('测试 HTTP 应用关闭真实连接后返回 503，日志保留底层错误
         { timeout: 10000 },
       )
       .toBe(200);
-    const acknowledged = once(child, 'message');
+    const acknowledged = once(child, 'message', {
+      signal: AbortSignal.timeout(5000),
+    });
     child.send('close-database');
     expect(await acknowledged).toEqual(['database-closed', undefined]);
     for (let attempt = 0; attempt < 2; attempt++) {

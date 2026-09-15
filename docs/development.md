@@ -606,4 +606,8 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 
 ### 审计与远端验证
 
-独立 `code-review-and-quality` 审计及 GitHub CI、AMD64/ARM64 Docker 检查正在进行，结果待补充。本机不执行 Docker；不合并 PR、不关闭 Issue、不发布镜像或部署。
+已使用 `code-review-and-quality` 完成独立只读审计，无 Critical / Required 发现。采纳可选建议，为 IPC 确认消息增加 5 秒期限，异常时能进入进程清理；随后重跑构建、lint、类型、聚焦 9 项测试及格式检查均通过。调整后完整集成测试再次 55 项通过。
+
+实现提交 `3db07b8` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34950371188) 全部通过，覆盖冻结安装、lint、格式、类型、55 项单元、完整构建和 55 项集成。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34950371191) 在 AMD64 与 ARM64 原生 runner 上全部通过，完成构建、架构检查、实际生产入口启动、健康/首页/静态资源验证和产物导出。`gh run watch 34950371188 --exit-status --interval 10` 与 `gh run watch 34950371191 --exit-status --interval 10` 均退出 0。
+
+补充 IPC 等待期限及本记录后的最终提交结果见 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)。最终推送前格式与 diff 检查通过，最终检查全部通过后转为正式待评审。本机不执行 Docker；不合并 PR、不关闭 Issue、不发布镜像或部署。
