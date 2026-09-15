@@ -23,6 +23,7 @@ jobs:
       - run: pnpm run format:check
       - run: pnpm run typecheck
       - run: pnpm run test:unit
+      - run: pnpm run build:runtime
       - run: pnpm run test:integration
       - run: pnpm exec next build
       # RUNTIME-11: add the full build command.

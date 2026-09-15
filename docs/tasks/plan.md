@@ -1,7 +1,7 @@
 # 实现计划：runtime
 
 - 模块：`runtime`。
-- 状态：已进入实施。RUNTIME-01–05 已合入，RUNTIME-06 按“空 journal 与官方迁移器 → 升级/回滚/版本检查 → 本地检查与 Ego 回归 → 审计与 PR 检查”交付。实际证据见 [开发记录](../development.md)，后续阶段仍是计划。
+- 状态：已进入实施。RUNTIME-01–06 已合入；RUNTIME-07 已实现独立 prestart 与进程测试，本地检查和 Ego 回归通过，正在完成审计与 PR 检查。实际证据见 [开发记录](../development.md)，后续阶段仍是计划。
 - 依据：[已批准 runtime Spec](../SPEC-runtime.md)、[已批准能力地图](../CAPABILITY-MAP.md)。
 - 日期：2026-09-12。
 - 任务清单：[docs/tasks/todo.md](./todo.md)，已按下列阶段拆解，当前待评审。

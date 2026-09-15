@@ -166,11 +166,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] `build:runtime` 编译 CLI 和实际共享源码，产物使用可解析的 ESM 相对路径，不依赖 TS 运行器或 Next 路径别名。
-- [ ] prestart 成功或失败都关闭短期连接；无效配置及迁移故障非零退出，保留原因。
-- [ ] `dev` 先执行 prestart 再运行 Next；`typecheck` 同时检查两个 TS 配置，提供 `db:generate` 命令。
+- [x] `build:runtime` 编译 CLI 和实际共享源码，产物使用可解析的 ESM 相对路径，不依赖 TS 运行器或 Next 路径别名。
+- [x] prestart 成功或失败都关闭短期连接；无效配置及迁移故障非零退出，保留原因。
+- [x] `dev` 先执行 prestart 再运行 Next；`typecheck` 同时检查两个 TS 配置，提供 `db:generate` 命令。
 
 **验证：** `pnpm run build:runtime`；`pnpm exec vitest run --project integration tests/integration/runtime/prestart.test.ts`；`pnpm run typecheck`。进程测试运行编译后的 CLI，使用自己的临时环境。
+
+**实施记录：** CLI 与 7 项集成测试已完成，本地检查和 Ego 回归通过；审计及远端检查证据见 [开发记录](../development.md#runtime-07独立-prestart)。完成状态待最终检查后更新。
 
 ### RUNTIME-08：接通 Web 初始化与健康响应
 

@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { DrizzleError } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { readMigrationFiles } from 'drizzle-orm/migrator';
-import type { openRuntimeDatabase } from './db';
+import type { openRuntimeDatabase } from './db.ts';
 
 /** 调用方负责连接生命周期；只检查向前版本，迁移事务由 Drizzle 管理。 */
 export function migrateRuntimeDatabase(
