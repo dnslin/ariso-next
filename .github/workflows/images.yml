@@ -40,7 +40,13 @@ jobs:
         run: |
           docker run --rm --entrypoint node "$IMAGE" -e \
             'require("node:assert/strict").equal(process.arch, process.argv[1])' "$NODE_ARCH"
-          docker run --detach --name ariso --publish 127.0.0.1:3000:3000 "$IMAGE"
+          export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
+          export ARISO_ENCRYPTION_KEY="$(openssl rand -hex 32)"
+          # RUNTIME-08: supply an empty writable database directory for Web startup.
+          # The production prestart/entrypoint remains a later runtime task.
+          docker run --detach --name ariso --publish 127.0.0.1:3000:3000 \
+            --tmpfs /data:uid=1000,gid=1000 \
+            --env DATA_DIR=/data --env BETTER_AUTH_SECRET --env ARISO_ENCRYPTION_KEY "$IMAGE"
       - name: Verify page and static resources
         run: |
           curl --fail --silent --show-error --retry 15 --retry-delay 1 --retry-all-errors --max-time 5 \
@@ -48,6 +54,10 @@ jobs:
           docker exec -i ariso node --input-type=module <<'JS'
           import assert from 'node:assert/strict';
           const origin = 'http://127.0.0.1:3000';
+          const health = await fetch(`${origin}/api/health`);
+          assert.equal(health.status, 200);
+          assert.equal(health.headers.get('cache-control'), 'no-store');
+          assert.deepEqual(await health.json(), { status: 'ok' });
           const home = await fetch(origin);
           assert.equal(home.status, 200);
           const html = await home.text();
@@ -59,7 +69,7 @@ jobs:
             assert.equal(response.status, 200, path);
             assert.ok((await response.arrayBuffer()).byteLength > 0, path);
           }
-          console.log('Container page, SVG and Next.js scripts passed');
+          console.log('Container health, page, SVG and Next.js scripts passed');
           JS
       - name: Container logs
         if: always()
