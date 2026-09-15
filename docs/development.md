@@ -399,6 +399,10 @@ Ego Lite TaskSpace 5 访问实际 `dev` 服务，标题、zh-CN、工程状态�
 
 ### 审计、远端检查与限制
 
-已使用 `code-review-and-quality` 完成独立只读审计，未发现阻塞项。审计方使用 Node 24 独立重跑 prestart 测试，7/7 通过，退出 0；Next 开发服务自动修改的 `next-env.d.ts` 已恢复，未纳入提交。远端检查链接在取得证据后补充。Docker 与 AMD64/ARM64 检查由现有 GitHub Actions 执行，本机不运行 Docker，不发布镜像或部署。
+已使用 `code-review-and-quality` 完成独立只读审计，未发现阻塞项。审计方使用 Node 24 独立重跑 prestart 测试，7/7 通过，退出 0；Next 开发服务自动修改的 `next-env.d.ts` 已恢复，未纳入提交。远端检查结果如下。Docker 与 AMD64/ARM64 检查由现有 GitHub Actions 执行，本机不运行 Docker，不发布镜像或部署。
 
 本任务交付配置到迁移的 CLI 流程；业务秘密解密预检、持久化默认值、Web 数据库初始化、健康接口、完整 Standalone 与容器 prestart 仍未实现。当前 Docker 工作流只验证页面镜像，不代表最终容器迁移验收。Ego 视口模拟不代表手机实机或跨浏览器覆盖。冻结 PRD 不变。
+
+提交 `d1672c3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34940404861) 全部通过（39 秒），包含冻结安装、lint、格式、双配置类型检查、55 项单元测试、runtime 编译、27 项集成测试与 Next 构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34940404839) 的 AMD64（1 分 13 秒）和 ARM64（1 分 5 秒）原生 runner 均通过镜像构建、架构断言、容器启动、页面/SVG/Next 脚本验证及 artifact 导出。`gh run watch 34940404861 --exit-status --interval 10` 与 `gh run watch 34940404839 --exit-status --interval 10` 均退出 0。远端没有失败或重跑。
+
+补充本段文档后的最终检查以 [PR #33 检查页](https://github.com/dnslin/ariso-next/pull/33/checks) 为准。最终推送前 `pnpm run format:check`、`git diff --check` 均退出 0，冻结 PRD、锁文件及 `next-env.d.ts` 未变化。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户决定。

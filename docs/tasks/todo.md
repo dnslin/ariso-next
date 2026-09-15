@@ -156,7 +156,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-07：编译并执行 prestart
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 按配置、目录、连接、迁移的顺序组合短期启动程序，形成可独立执行的 CLI 产物。
 
@@ -172,7 +172,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验证：** `pnpm run build:runtime`；`pnpm exec vitest run --project integration tests/integration/runtime/prestart.test.ts`；`pnpm run typecheck`。进程测试运行编译后的 CLI，使用自己的临时环境。
 
-**实施记录：** CLI 与 7 项集成测试已完成，本地检查和 Ego 回归通过；审计及远端检查证据见 [开发记录](../development.md#runtime-07独立-prestart)。完成状态待最终检查后更新。
+**实施记录：** CLI 与 7 项集成测试已完成，本地检查和 Ego 回归通过；审计及远端检查证据见 [开发记录](../development.md#runtime-07独立-prestart)。独立审计无阻塞项，CI 与 Docker 双架构检查通过；[PR #33](https://github.com/dnslin/ariso-next/pull/33) 待评审。
 
 ### RUNTIME-08：接通 Web 初始化与健康响应
 
