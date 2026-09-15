@@ -29,20 +29,20 @@
 
 下表是 2026-09-12 查询官方包注册信息后的起始版本。实施时将直接依赖版本与实际解析结果写入 `package.json` 和 `pnpm-lock.yaml`，安装与构建通过后才算兼容性得到验证。正常补丁更新通过 PR 更新，不使用预发布版本。
 
-| 用途 | 版本选择 |
-| --- | --- |
-| Node.js | 24.x LTS；本次查询的最新 LTS 补丁为 24.21.0 |
-| pnpm | 11.19.0，写入 `packageManager` |
-| Next.js / eslint-config-next | 均为 16.3.5 |
-| React / React DOM | 均为 19.3.0 |
-| TypeScript | 6.0.3 |
-| Drizzle ORM / Drizzle Kit | 0.45.2 / 0.31.10 |
-| better-sqlite3 | 13.0.3 |
-| Pino / Zod | 10.3.1 / 4.6.2 |
-| execa | 10.0.1，供镜像工具验证及后续图片模块调用 |
-| ESLint / Prettier | 9.39.5 / 3.9.6 |
-| Vitest | 5.0.0 |
-| E2E | ego-browser 技能，复用 Ego Lite，不添加浏览器测试 npm 依赖 |
+| 用途                         | 版本选择                                                   |
+| ---------------------------- | ---------------------------------------------------------- |
+| Node.js                      | 24.x LTS；本次查询的最新 LTS 补丁为 24.21.0                |
+| pnpm                         | 11.19.0，写入 `packageManager`                             |
+| Next.js / eslint-config-next | 均为 16.3.5                                                |
+| React / React DOM            | 均为 19.3.0                                                |
+| TypeScript                   | 6.0.3                                                      |
+| Drizzle ORM / Drizzle Kit    | 0.45.2 / 0.31.10                                           |
+| better-sqlite3               | 13.0.3                                                     |
+| Pino / Zod                   | 10.3.1 / 4.6.2                                             |
+| execa                        | 10.0.1，供镜像工具验证及后续图片模块调用                   |
+| ESLint / Prettier            | 9.39.5 / 3.9.6                                             |
+| Vitest                       | 5.0.0                                                      |
+| E2E                          | ego-browser 技能，复用 Ego Lite，不添加浏览器测试 npm 依赖 |
 
 Node 官方将 24 标记为 LTS，26 当前仍为 Current，因此目标运行版本选 24。[Node 发布状态](https://nodejs.org/en/about/previous-releases)
 
@@ -133,28 +133,28 @@ docs/SPEC-runtime.md
 
 以下脚本由实施阶段提供。命令从项目根目录执行。开发前复制 `.env.example` 为 `.env.local`，填写两个独立密钥，并把 `DATA_DIR` 设置为开发专用目录的绝对路径。测试使用临时目录和临时密钥。
 
-| 用途 | 完整命令 | 对应行为 |
-| --- | --- | --- |
-| 首次建立依赖锁文件 | `pnpm install` | 首次实现时生成锁文件；评审后提交 |
-| 后续与 CI 安装 | `pnpm install --frozen-lockfile` | 使用已提交锁文件 |
-| 编译独立启动程序 | `pnpm run build:runtime` | `tsc --project tsconfig.runtime.json` |
-| 本地开发 | `pnpm run dev` | 顺序执行 `pnpm run build:runtime`、`node --env-file=.env.local dist/cli/prestart.js`、`next dev --hostname 127.0.0.1 --port 3000` |
-| 检查代码 | `pnpm run lint` | `eslint . --max-warnings=0` |
-| 检查格式 | `pnpm run format:check` | `prettier . --check` |
-| 应用格式 | `pnpm run format` | `prettier . --write` |
-| 类型检查 | `pnpm run typecheck` | 顺序执行 `next typegen`、`tsc --noEmit --project tsconfig.json`、`tsc --noEmit --project tsconfig.runtime.json` |
-| 单元测试 | `pnpm run test:unit` | `vitest run --project unit` |
-| 集成测试 | `pnpm run test:integration` | `vitest run --project integration`；运行产物测试前先执行 `pnpm run build` |
-| 生产构建 | `pnpm run build` | 顺序执行 `pnpm run build:runtime`、`next build`、`node scripts/package-standalone.mjs` |
-| 本地运行生产产物 | `pnpm run start` | `sh .next/standalone/entrypoint.sh`；启动变量从父进程传入 |
-| 生成 SQL 迁移 | `pnpm run db:generate` | `drizzle-kit generate --config=drizzle.config.ts` |
-| 本地执行启动前检查 | `node --env-file=.env.local dist/cli/prestart.js` | 使用与 Docker 相同的迁移和检查逻辑；不会启动 Web |
-| 浏览器冒烟 | 按 ego-browser 技能使用 `ego-browser nodejs` | 访问自建的真实生产服务，保留断言结果与必要截图；不下载配套浏览器 |
-| 在 Actions 构建当前 runner 架构镜像 | `docker build --tag ariso:runtime .` | 生成镜像，不发布 |
-| 验证镜像工具 | `docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs` | 检查工具、原生驱动和本模块样本 |
-| 启动本地容器 | `docker compose --env-file .env.local up --build --detach` | 从指定文件读取变量，再按 Compose 配置注入容器 |
-| 查看运行日志 | `docker compose --env-file .env.local logs --follow ariso` | 从 stdout/stderr 查看日志 |
-| 验证 HTTP 状态 | `curl --fail --silent --show-error http://127.0.0.1:3000/api/health` | 返回 `{"status":"ok"}` |
+| 用途                                | 完整命令                                                                   | 对应行为                                                                                                                          |
+| ----------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 首次建立依赖锁文件                  | `pnpm install`                                                             | 首次实现时生成锁文件；评审后提交                                                                                                  |
+| 后续与 CI 安装                      | `pnpm install --frozen-lockfile`                                           | 使用已提交锁文件                                                                                                                  |
+| 编译独立启动程序                    | `pnpm run build:runtime`                                                   | `tsc --project tsconfig.runtime.json`                                                                                             |
+| 本地开发                            | `pnpm run dev`                                                             | 顺序执行 `pnpm run build:runtime`、`node --env-file=.env.local dist/cli/prestart.js`、`next dev --hostname 127.0.0.1 --port 3000` |
+| 检查代码                            | `pnpm run lint`                                                            | `eslint . --max-warnings=0`                                                                                                       |
+| 检查格式                            | `pnpm run format:check`                                                    | `prettier . --check`                                                                                                              |
+| 应用格式                            | `pnpm run format`                                                          | `prettier . --write`                                                                                                              |
+| 类型检查                            | `pnpm run typecheck`                                                       | 顺序执行 `next typegen`、`tsc --noEmit --project tsconfig.json`、`tsc --noEmit --project tsconfig.runtime.json`                   |
+| 单元测试                            | `pnpm run test:unit`                                                       | `vitest run --project unit`                                                                                                       |
+| 集成测试                            | `pnpm run test:integration`                                                | `vitest run --project integration`；运行产物测试前先执行 `pnpm run build`                                                         |
+| 生产构建                            | `pnpm run build`                                                           | 顺序执行 `pnpm run build:runtime`、`next build`、`node scripts/package-standalone.mjs`                                            |
+| 本地运行生产产物                    | `pnpm run start`                                                           | `sh .next/standalone/entrypoint.sh`；启动变量从父进程传入                                                                         |
+| 生成 SQL 迁移                       | `pnpm run db:generate`                                                     | `drizzle-kit generate --config=drizzle.config.ts`                                                                                 |
+| 本地执行启动前检查                  | `node --env-file=.env.local dist/cli/prestart.js`                          | 使用与 Docker 相同的迁移和检查逻辑；不会启动 Web                                                                                  |
+| 浏览器冒烟                          | 按 ego-browser 技能使用 `ego-browser nodejs`                               | 访问自建的真实生产服务，保留断言结果与必要截图；不下载配套浏览器                                                                  |
+| 在 Actions 构建当前 runner 架构镜像 | `docker build --tag ariso:runtime .`                                       | 生成镜像，不发布                                                                                                                  |
+| 验证镜像工具                        | `docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs` | 检查工具、原生驱动和本模块样本                                                                                                    |
+| 启动本地容器                        | `docker compose --env-file .env.local up --build --detach`                 | 从指定文件读取变量，再按 Compose 配置注入容器                                                                                     |
+| 查看运行日志                        | `docker compose --env-file .env.local logs --follow ariso`                 | 从 stdout/stderr 查看日志                                                                                                         |
+| 验证 HTTP 状态                      | `curl --fail --silent --show-error http://127.0.0.1:3000/api/health`       | 返回 `{"status":"ok"}`                                                                                                            |
 
 `compose.yaml` 的服务名为 `ariso`，开发示例使用 `127.0.0.1:3000:3000` 端口映射，容器内显式设置 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`。Compose 从 `.env.local` 取两个密钥和日志级别，不把其中的本机 `DATA_DIR` 带入容器；示例挂载为 `./.data:/data`。生产部署者可改为自己的变量文件、挂载目录与反向代理入口。[Compose 变量文件规则](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/)
 
@@ -166,14 +166,14 @@ ESLint 作为独立检查执行，不使用已经移除的 `next lint`，也不�
 
 ### 5.1 环境变量
 
-| 变量 | 默认值 | 规则 |
-| --- | --- | --- |
-| `HOST` | `0.0.0.0` | 非空监听地址；进入标准 Standalone 入口前映射为 Next 使用的 `HOSTNAME` |
-| `PORT` | `3000` | 十进制整数，范围 1–65535；端口占用时启动失败，生产不自动换端口 |
-| `DATA_DIR` | `/data` | 非空绝对路径；所有持久化位置由此派生 |
-| `LOG_LEVEL` | `info` | Pino 标准级别 `trace/debug/info/warn/error/fatal` |
-| `BETTER_AUTH_SECRET` | 无 | 必填，至少 32 个字符；由部署者生成并保存 |
-| `ARISO_ENCRYPTION_KEY` | 无 | 必填，64 位十六进制字符串，解码为 32 字节 |
+| 变量                   | 默认值    | 规则                                                                  |
+| ---------------------- | --------- | --------------------------------------------------------------------- |
+| `HOST`                 | `0.0.0.0` | 非空监听地址；进入标准 Standalone 入口前映射为 Next 使用的 `HOSTNAME` |
+| `PORT`                 | `3000`    | 十进制整数，范围 1–65535；端口占用时启动失败，生产不自动换端口        |
+| `DATA_DIR`             | `/data`   | 非空绝对路径；所有持久化位置由此派生                                  |
+| `LOG_LEVEL`            | `info`    | Pino 标准级别 `trace/debug/info/warn/error/fatal`                     |
+| `BETTER_AUTH_SECRET`   | 无        | 必填，至少 32 个字符；由部署者生成并保存                              |
+| `ARISO_ENCRYPTION_KEY` | 无        | 必填，64 位十六进制字符串，解码为 32 字节                             |
 
 应用启动时一次性读取并校验配置。报错指出变量名和原因，不打印密钥值。`PORT` 等非敏感设置的无效原值可以记录。
 
@@ -382,22 +382,22 @@ E2E 使用 ego-browser 技能，在同一个 TaskSpace 中访问自建服务，�
 
 ### 12.2 runtime 验收表
 
-| ID | 可观察结果 | 验证方式 |
-| --- | --- | --- |
-| RT-01 | 干净环境没有两个启动密钥和现有数据库，仍能完成生产构建；未写入数据目录、未输出初始化码 | 隔离构建集成测试 |
-| RT-02 | 使用正确配置从空目录启动后，数据库和基础目录存在，健康接口返回 200 | 真实产物及容器启动测试 |
-| RT-03 | 缺失密钥、密钥格式错误、非法端口或不可写目录均以非零退出，并给出不含秘密的原因；未启动标准 Web 入口 | prestart 进程测试 |
-| RT-04 | 真实 SQLite 启用了 WAL、外键和 5000 ms busy timeout；写入记录在进程重启后仍存在 | 原生 SQLite 集成测试 |
-| RT-05 | 连续两次执行迁移不重复应用；故障 SQL 使本次迁移回滚并阻止 Web 启动；修复后可重新执行 | 测试迁移样本与进程测试 |
-| RT-06 | 新镜像可向前迁移；数据库迁移进度比镜像更新时，旧镜像以 SCHEMA_TOO_NEW 退出 | 旧/新迁移集合测试 |
-| RT-07 | 同一明文两次加密结果不同且都可解密；错误密钥和修改后的密文解密失败，不覆盖原记录 | 单元与数据库集成测试 |
-| RT-08 | 已保存敏感配置无法解密时启动失败，错误指出配置位置；未配置秘密的空站点正常启动 | 预检集成测试；业务配置接入后补集成覆盖 |
-| RT-09 | 生产启动、正常事件和错误日志为 JSON；包括框架请求 URL 错误在内，所有指定秘密均未出现，非敏感路径、参数与错误原因仍可定位 | 捕获真实进程输出及日志单元测试 |
-| RT-10 | 健康接口不缓存、不要求已完成站点初始化；数据库不可用时返回 503；不会访问外部存储 | HTTP 集成测试 |
-| RT-11 | 仅复制最终运行目录即可启动；静态资源可用、CLI 能加载迁移器、better-sqlite3 能执行查询 | 脱离开发 node_modules 的产物测试 |
-| RT-12 | 容器只有一个长期运行的 Node Web 进程；停止后可用原数据目录重新启动，数据库保持可读 | 容器进程与重启测试 |
-| RT-13 | amd64 与 arm64 均实际运行 IM7、ExifTool 和 SQLite；能把真实 JPEG/PNG 样本生成 WebP、JPEG、AVIF，并生成可见中文与拉丁文字图片 | 双架构镜像样本测试；检查生成文件内容 |
-| RT-14 | PR 的安装、格式、lint、类型、单元/集成、构建均运行成功，并提供 ego 浏览器冒烟通过记录 | CI 检查与 ego 验证记录 |
+| ID    | 可观察结果                                                                                                                   | 验证方式                               |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| RT-01 | 干净环境没有两个启动密钥和现有数据库，仍能完成生产构建；未写入数据目录、未输出初始化码                                       | 隔离构建集成测试                       |
+| RT-02 | 使用正确配置从空目录启动后，数据库和基础目录存在，健康接口返回 200                                                           | 真实产物及容器启动测试                 |
+| RT-03 | 缺失密钥、密钥格式错误、非法端口或不可写目录均以非零退出，并给出不含秘密的原因；未启动标准 Web 入口                          | prestart 进程测试                      |
+| RT-04 | 真实 SQLite 启用了 WAL、外键和 5000 ms busy timeout；写入记录在进程重启后仍存在                                              | 原生 SQLite 集成测试                   |
+| RT-05 | 连续两次执行迁移不重复应用；故障 SQL 使本次迁移回滚并阻止 Web 启动；修复后可重新执行                                         | 测试迁移样本与进程测试                 |
+| RT-06 | 新镜像可向前迁移；数据库迁移进度比镜像更新时，旧镜像以 SCHEMA_TOO_NEW 退出                                                   | 旧/新迁移集合测试                      |
+| RT-07 | 同一明文两次加密结果不同且都可解密；错误密钥和修改后的密文解密失败，不覆盖原记录                                             | 单元与数据库集成测试                   |
+| RT-08 | 已保存敏感配置无法解密时启动失败，错误指出配置位置；未配置秘密的空站点正常启动                                               | 预检集成测试；业务配置接入后补集成覆盖 |
+| RT-09 | 生产启动、正常事件和错误日志为 JSON；包括框架请求 URL 错误在内，所有指定秘密均未出现，非敏感路径、参数与错误原因仍可定位     | 捕获真实进程输出及日志单元测试         |
+| RT-10 | 健康接口不缓存、不要求已完成站点初始化；数据库不可用时返回 503；不会访问外部存储                                             | HTTP 集成测试                          |
+| RT-11 | 仅复制最终运行目录即可启动；静态资源可用、CLI 能加载迁移器、better-sqlite3 能执行查询                                        | 脱离开发 node_modules 的产物测试       |
+| RT-12 | 容器只有一个长期运行的 Node Web 进程；停止后可用原数据目录重新启动，数据库保持可读                                           | 容器进程与重启测试                     |
+| RT-13 | amd64 与 arm64 均实际运行 IM7、ExifTool 和 SQLite；能把真实 JPEG/PNG 样本生成 WebP、JPEG、AVIF，并生成可见中文与拉丁文字图片 | 双架构镜像样本测试；检查生成文件内容   |
+| RT-14 | PR 的安装、格式、lint、类型、单元/集成、构建均运行成功，并提供 ego 浏览器冒烟通过记录                                        | CI 检查与 ego 验证记录                 |
 
 RT-08 的运行时部分使用真实加密记录样本测试；S3/SMTP/OAuth 全量字段接入由对应模块补齐。RT-12 不代替业务任务恢复测试。RT-13 只验证运行依赖基线，不代表完整格式矩阵已通过；完整矩阵由 `media` 验收。
 

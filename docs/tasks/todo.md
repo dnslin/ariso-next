@@ -16,13 +16,13 @@
 
 Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验证及双架构检查统一由 GitHub Actions 执行，不要求本机安装或验证 Docker。Actions 尚未运行时记录具体未验证任务，继续不依赖它们的工作；不能把镜像和远端检查标为完成。技能引用的附加 `definition-of-done.md` 当前未找到，本清单采用已提供 AGENTS.md、PRD 第 25 节和 Spec 第 12 节中的质量要求。
 
-| 计划阶段 | 任务 | 完成后可观察的结果 |
-| --- | --- | --- |
-| R1 工程可以构建 | RUNTIME-01–03 | 目标 Node 上运行真实页面并完成基础检查 |
-| R2 本地持久化启动流程 | RUNTIME-04–12 | 空目录启动、迁移、健康响应、重启与隔离产物可用 |
-| R3 配置和错误可诊断 | RUNTIME-13–17 | 加密及预检失败语义成立，真实生产输出符合日志要求 |
-| R4 Docker 交付成立 | RUNTIME-18–21 | 最终容器与两个架构都实际运行验证 |
-| R5 自动化和交付说明齐备 | RUNTIME-22–26 | 浏览器、CI、镜像交付检查和操作说明形成完整证据 |
+| 计划阶段                | 任务          | 完成后可观察的结果                               |
+| ----------------------- | ------------- | ------------------------------------------------ |
+| R1 工程可以构建         | RUNTIME-01–03 | 目标 Node 上运行真实页面并完成基础检查           |
+| R2 本地持久化启动流程   | RUNTIME-04–12 | 空目录启动、迁移、健康响应、重启与隔离产物可用   |
+| R3 配置和错误可诊断     | RUNTIME-13–17 | 加密及预检失败语义成立，真实生产输出符合日志要求 |
+| R4 Docker 交付成立      | RUNTIME-18–21 | 最终容器与两个架构都实际运行验证                 |
+| R5 自动化和交付说明齐备 | RUNTIME-22–26 | 浏览器、CI、镜像交付检查和操作说明形成完整证据   |
 
 ## R1：工程可以构建
 
@@ -37,6 +37,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.gitignore`、`docs/development.md`。
 
 **验收：**
+
 - [ ] Node 24 和 pnpm 11.19.0 的实际路径、版本与使用方法有记录；已记录 Docker/buildx 及双架构构建与验证由 GitHub Actions 执行，本机不作要求。
 - [ ] 已批准且首批会使用的依赖完成安装；原生构建脚本按实际依赖图配置；冻结锁文件安装成功。
 - [ ] better-sqlite3 在目标 Node 中实际执行查询；密钥、本地数据和生成产物不进入 Git。
@@ -54,6 +55,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/app/layout.tsx`、`src/app/page.tsx`、`public/runtime.svg`、`next.config.ts`、`tsconfig.json`。
 
 **验收：**
+
 - [x] 页面通过本地资源渲染，可直接访问；内容只展示当前工程状态。
 - [x] Next 配置开启 Standalone；TypeScript strict 与源码别名成立。
 - [x] 移除两个运行密钥、使用不存在的数据目录时仍可构建，构建没有创建该目录。
@@ -73,6 +75,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `package.json`、`eslint.config.mjs`、`.prettierrc.json`、`.prettierignore`、`.github/workflows/ci.yml`。
 
 **验收：**
+
 - [ ] Spec 的 lint 与格式命令可执行，冻结 PRD 和生成目录被排除。
 - [ ] 应用类型检查与真实 Next 构建成功；工作流使用目标 Node 和冻结锁文件。
 - [ ] CI 仅执行当前可用检查，并说明后续接入点；远端未运行时保留未验证状态。
@@ -97,6 +100,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/runtime/env.ts`、`tests/unit/runtime/env.test.ts`、`vitest.config.ts`、`package.json`、`.env.example`。
 
 **验收：**
+
 - [ ] Spec 第 5.1 节的默认值、格式与范围均有正反例；错误标明变量名且不回显秘密。
 - [ ] 模块导入不读取部署配置、不生成密钥；配置由启动调用解析。
 - [ ] 示例只含说明和占位值；`test:unit` 执行真实配置测试。
@@ -114,6 +118,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/runtime/paths.ts`、`src/server/runtime/db.ts`、`tests/integration/runtime/database.test.ts`、`vitest.config.ts`、`package.json`。
 
 **验收：**
+
 - [ ] 重复创建基础目录成功，保留 tmp 原内容；不可写路径保留底层错误，未创建默认存储业务记录。
 - [ ] 磁盘 SQLite 启用 WAL、外键和 5000 ms busy timeout，连接提供 Drizzle 与关闭能力。
 - [ ] 一个进程写入测试记录后退出，另一个进程读到同一记录；连接与临时目录正确清理。
@@ -131,6 +136,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/runtime/migrations.ts`、`drizzle.config.ts`、`drizzle/meta/_journal.json`、`tests/integration/runtime/migrations.test.ts`、`tests/fixtures/runtime/migrations.ts`。
 
 **验收：**
+
 - [ ] 空生产 journal 可执行，生产没有占位业务表；测试辅助文件在临时目录生成正常、故障与旧/新 SQL 集合。
 - [ ] 重复迁移不重放；本次待执行 SQL 失败全部回滚，原有已提交记录保留，修复后可继续。
 - [ ] 新集合正常升级；已有数据库进度高于当前集合，包括当前空集合时，报 SCHEMA_TOO_NEW；诊断可定位阶段和数据库。
@@ -153,6 +159,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/startup/preflight.ts`、`src/cli/prestart.ts`、`tsconfig.runtime.json`、`tests/integration/runtime/prestart.test.ts`、`package.json`。
 
 **验收：**
+
 - [ ] `build:runtime` 编译 CLI 和实际共享源码，产物使用可解析的 ESM 相对路径，不依赖 TS 运行器或 Next 路径别名。
 - [ ] prestart 成功或失败都关闭短期连接；无效配置及迁移故障非零退出，保留原因。
 - [ ] `dev` 先执行 prestart 再运行 Next；`typecheck` 同时检查两个 TS 配置，提供 `db:generate` 命令。
@@ -170,6 +177,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/startup/server-start.ts`、`src/instrumentation.ts`、`src/app/api/health/route.ts`、`src/server/runtime/db.ts`、`tests/integration/runtime/server-start.test.ts`。
 
 **验收：**
+
 - [ ] 仅 Node 运行时执行有限初始化，重复初始化复用同一进程连接；构建期间不建立数据库。
 - [ ] 未初始化站点也可访问健康接口，真实 SELECT 1 成功返回 200 和 no-store。
 - [ ] 实际关闭测试连接后，调用真实健康处理器得到 503，响应不含秘密；本模块不探测外部存储或启动业务任务。
@@ -187,6 +195,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `scripts/package-standalone.mjs`、`docker/entrypoint.sh`、`package.json`、`next.config.ts`、`tests/integration/runtime/standalone.test.ts`。
 
 **验收：**
+
 - [ ] 最终目录包含完整 CLI 依赖、迁移、SQLite 原生文件、public 和 .next/static；不需要 TypeScript、Drizzle Kit 或开发目录。
 - [ ] 入口先等待 prestart 成功，映射 HOST 到 HOSTNAME，再 exec 未修改的标准 server.js；失败时不监听 Web 端口。
 - [ ] 将运行目录复制到项目外后可以启动，健康和两类静态资源均成功，证明未借用开发 node_modules。
@@ -209,6 +218,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `tests/integration/runtime/startup.test.ts`、`tests/integration/runtime/process-helpers.ts`、`tests/fixtures/runtime/migrations.ts`、`src/server/startup/preflight.ts`、`src/server/runtime/migrations.ts`。后两项仅在测试暴露本任务行为缺口时修改。
 
 **验收：**
+
 - [ ] 缺失/非法密钥、非法端口、不可写目录和故障迁移均非零退出，轮询确认未启动 Web；生产端口占用时不自动换端口。
 - [ ] 旧产物面对新数据库退出，未删除或降级已有数据；修复故障后启动同一目录成功。
 - [ ] 通过完整入口停止、重启后读到此前写入的测试记录；进程失败不留下测试服务或共享数据。
@@ -226,6 +236,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `tests/integration/runtime/build.test.ts`、`vitest.config.ts`、`.github/workflows/ci.yml`、`src/instrumentation.ts`。最后一项仅修复本测试揭示的构建副作用。
 
 **验收：**
+
 - [ ] 子进程删除两个秘密变量，使用不存在的 DATA_DIR，完整生产构建成功且未写数据、未输出初始化码。
 - [ ] 构建测试使用独立输出目录，测试并发不会改写其他产物测试正在运行的目录。
 - [ ] 当前真实单元、构建和集成检查已接入 CI；尚无浏览器测试的部分留给 RUNTIME-23。
@@ -243,6 +254,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `tests/integration/runtime/health.test.ts`、`tests/fixtures/runtime/health-failure.ts`、`tests/integration/runtime/process-helpers.ts`、`tests/integration/runtime/server-start.test.ts`。
 
 **验收：**
+
 - [ ] 正常生产产物经 HTTP 返回 200、no-store，未初始化站点也可用；没有外部存储请求。
 - [ ] 临时测试应用复用实际健康处理器和数据库连接，经测试专用组合关闭真实连接后，HTTP 返回 503 且保留可诊断日志；故障入口不进入生产产物。
 - [ ] 重复调用初始化及模拟模块重新加载不会重复创建连接；有限初始化可完成返回。
@@ -267,6 +279,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/runtime/crypto.ts`、`tests/unit/runtime/crypto.test.ts`、`tests/integration/runtime/crypto.test.ts`。
 
 **验收：**
+
 - [ ] AES-256-GCM、nonce 和 tag 长度及编码遵循 Spec；相同明文两次密文不同且都可解密。
 - [ ] 错误密钥、修改或无效密文明确失败，错误包含配置位置且不泄露秘密。
 - [ ] 数据库里的原密文在失败后保持原值，未生成额外密钥校验记录。
@@ -284,6 +297,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `tests/fixtures/runtime/secret-preflight.ts`、`tests/integration/runtime/secret-preflight.test.ts`、`src/server/startup/preflight.ts`。
 
 **验收：**
+
 - [ ] 普通 Node 测试组合复用实际迁移和加解密实现，读取真实测试密文；错误密钥阻止入口继续运行 Web，错误指明配置位置。
 - [ ] 迁移已成功后预检失败，已提交迁移保留；修复密钥后可继续启动，空生产数据库使用合法密钥正常启动。
 - [ ] 测试表和组合只在临时样本存在；生产不增加通用配置表、未知字段扫描或通用提供方注册框架。S3/SMTP/OAuth 字段接入仍待所属模块验收。
@@ -301,6 +315,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/server/runtime/logger.ts`、`src/server/runtime/log-redaction.ts`、`tests/unit/runtime/logger.test.ts`、`tests/unit/runtime/log-redaction.test.ts`。
 
 **验收：**
+
 - [ ] 每行日志包含时间、级别、模块和消息，错误保留阶段、路径与底层原因。
 - [ ] Spec 指定的认证头、Cookie、Token、凭据和启动密钥在结构化字段中隐藏；已知 URL 查询凭据在字符串和错误中隐藏。
 - [ ] 非敏感路径、查询参数和错误原因保留；处理显式规则，不引入通用秘密扫描服务。
@@ -323,6 +338,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/cli/logging.ts`、`src/cli/prestart.ts`、`docker/entrypoint.sh`、`tests/unit/runtime/console-bridge.test.ts`、`scripts/package-standalone.mjs`。
 
 **验收：**
+
 - [ ] 通过 Node --import 在标准 server.js 前加载桥接；Pino 直接输出，console 转发无递归。
 - [ ] 级别和错误信息保留；prestart 成功和失败有 JSON 输出，无效日志配置也不会回显秘密。
 - [ ] 独立目录包含日志 CLI 及所需依赖；日志接入不改变 exec、失败退出或 Next 信号处理。
@@ -340,6 +356,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `tests/integration/runtime/logging.test.ts`、`tests/fixtures/runtime/framework-error.ts`、`tests/integration/runtime/process-helpers.ts`、`next.config.ts`。最后一项只在真实追踪结果需要时补充依赖。
 
 **验收：**
+
 - [ ] 最终产物的启动、正常事件和错误输出逐行可解析为 JSON，诊断上下文完整。
 - [ ] 临时测试应用复用实际日志入口，带重置 Token 的请求触发 Next 自身的请求 URL 错误输出；全部指定秘密均不出现，非敏感信息仍可定位。
 - [ ] 失败用例确实触发框架错误，不能因没有产生日志而通过；测试故障路由未进入生产应用。
@@ -364,6 +381,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `Dockerfile`、`.dockerignore`、`scripts/package-standalone.mjs`、`tests/fixtures/runtime/images/sample.jpg`、`tests/fixtures/runtime/images/sample.png`。
 
 **验收：**
+
 - [ ] 构建与运行使用批准的 Node/Debian 基线；原生依赖在目标架构安装，所有指定图片包和字体进入最终镜像。
 - [ ] 数据、秘密和开发生成物不进入构建上下文；构建无需运行密钥，运行时不联网安装依赖。
 - [ ] 最终 /app 包含实际产物、迁移和小型真实图片样本；样本来自项目自建或授权来源，未作为 Web 静态资源公开。
@@ -381,6 +399,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `scripts/verify-image.mjs`、`scripts/package-standalone.mjs`。
 
 **验收：**
+
 - [ ] 脚本实际执行 SQLite 查询、IM7 和 ExifTool，JPEG/PNG 可生成可读取的 WebP、JPEG、AVIF。
 - [ ] 指定字体生成中文与拉丁文字，检查文字内容可见且非空白/缺字方框；不只检查格式名称或退出码。
 - [ ] 从镜像 verification/fixtures 读取输入，临时输出退出后清理；无需密钥、部署数据或 /app 写权限。
@@ -403,6 +422,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `compose.yaml`、`scripts/verify-container.mjs`、`docs/deployment.md`。
 
 **验收：**
+
 - [ ] Compose 显式读取变量文件；容器固定 DATA_DIR=/data、HOST=0.0.0.0、PORT=3000，默认环回映射和 30 秒停止等待符合 Spec；Node fetch 健康检查实际可用。验收脚本只使用自建临时配置、挂载与独立项目名。
 - [ ] 脚本检查一个长期 Node Web 进程、JSON 日志和静态资源；写入真实测试记录，停止并使用原挂载重启，记录仍可读且没有留下额外进程。
 - [ ] 最终镜像使用临时迁移样本验证失败不启动、重复执行及旧/新进度行为，未改写生产镜像；脚本退出清理自建容器和临时资源。
@@ -420,6 +440,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `scripts/verify-container.mjs`、`docs/runtime-verification.md`。
 
 **验收：**
+
 - [ ] 两个平台分别完成工具、可见文字、原生数据库、服务启动及重启验证，记录原生或模拟执行方式。
 - [ ] --platform 明确选择实际目标镜像；只构建 manifest 或只模拟数据库返回不能算通过。
 - [ ] 记录两份结果及产物标识；APNG、动态 AVIF 和完整格式矩阵仍由 media 验收。
@@ -453,6 +474,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **预计文件：** `e2e/runtime.md`、`docs/runtime-verification.md`、`docs/development.md`。
 
 **验收：**
+
 - [ ] ego 验收步骤可复现；生产服务使用临时目录和临时密钥，不复用用户已有服务，不下载配套浏览器。
 - [ ] 通过 ego 实际访问页面、健康接口和静态资源，断言可见内容与成功响应。
 - [ ] 应用尚无初始化、登录和上传，因此不创建跳过的业务假测试；浏览器失败保留报告并清理测试进程。
@@ -470,6 +492,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **预计文件：** `.github/workflows/ci.yml`、`docs/runtime-verification.md`。
 
 **验收：**
+
 - [ ] PR 执行 Spec 第 12.3 节的七条 CI 命令，任一失败则检查失败；另外附 ego E2E 验证记录。
 - [ ] CI 使用目标 Node；ego E2E 记录实际浏览器环境与覆盖范围，不假定 Actions 支持 Ego Lite；其余浏览器兼容性按 PRD 单独记录。
 - [ ] 有远端时记录实际 CI 结果；没有远端时只记录本地结果与工作流待运行，不标 RT-14 完成。
@@ -487,6 +510,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **规模：** S，2 个文件。**预计文件：** `.github/workflows/images.yml`、`docs/runtime-verification.md`。
 
 **验收：**
+
 - [ ] 涉及镜像、原生依赖或图片工具的 PR 均触发两架构运行，不能只在发布后检查；每个平台执行 RUNTIME-21 的工具和容器断言。
 - [ ] 版本发布流程面向 ghcr.io/dnslin/ariso-next，组合已经测试的架构产物并关联代码版本；不在发布步骤重新构建未经测试的替代产物。
 - [ ] 记录实际镜像验证工作流结果。创建远程仓库、配置凭据和实际推送镜像不在本任务执行范围；这些条件缺失时准确记录未执行部分。
@@ -509,6 +533,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **预计文件：** `README.md`、`docs/development.md`、`docs/deployment.md`、`docs/upgrading.md`。
 
 **验收：**
+
 - [ ] 从目标 Node、安装、独立密钥生成、开发到容器启动均有完整命令；区分本机 DATA_DIR 和容器 /data，说明正式 Docker 部署。
 - [ ] 升级前停止写入并备份整个数据目录；迁移后回滚必须恢复备份，没有自动降级或恢复空库的说明。
 - [ ] 使用临时部署实际演练安装、停止、备份、升级样本及备份恢复；文档只声称当前已实现能力，记录后续模块边界。
@@ -526,6 +551,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **预计文件：** `docs/runtime-verification.md`、`docs/tasks/todo.md`、`docs/tasks/plan.md`、`docs/SPEC-runtime.md`、`docs/CAPABILITY-MAP.md`。后三项只同步实际阶段与验收状态。
 
 **验收：**
+
 - [ ] 每条 RT 均有对应任务、实际命令、结果与证据；失败、未执行和下游负责部分单列。
 - [ ] 最终检查针对同一份待交付代码和产物；有效结果可复用，修改影响验证时只重跑相关检查。
 - [ ] RT-08 业务秘密、RT-12 业务任务恢复、RT-13 完整格式矩阵未冒充已实现；未通过条件仍未勾选。
@@ -553,22 +579,22 @@ pnpm run test:integration
 
 ## 验收追踪
 
-| Spec 验收 | 直接提供证据的任务 | 保留边界 |
-| --- | --- | --- |
-| RT-01 | RUNTIME-02、RUNTIME-11、RUNTIME-18 | Web 初始化接入后必须重复验证 |
-| RT-02 | RUNTIME-05、RUNTIME-07–09、RUNTIME-12、RUNTIME-20 | 不代表已有 setup 或所有者 |
-| RT-03 | RUNTIME-04、RUNTIME-07、RUNTIME-09–10、RUNTIME-16、RUNTIME-20 | 错误不能启动 Web 或泄露秘密 |
-| RT-04 | RUNTIME-05、RUNTIME-10、RUNTIME-20 | 用磁盘与重启证明持久化 |
-| RT-05 | RUNTIME-06–07、RUNTIME-10、RUNTIME-14、RUNTIME-20 | 迁移提交与后续预检失败分开处理 |
-| RT-06 | RUNTIME-06、RUNTIME-10、RUNTIME-20 | 不执行自动数据库降级 |
-| RT-07 | RUNTIME-13 | 解密失败不覆盖原密文 |
-| RT-08 | RUNTIME-14、RUNTIME-17 | S3/SMTP/OAuth 全量字段由后续模块接入 |
-| RT-09 | RUNTIME-15–17、RUNTIME-20 | 包含真实框架 URL 错误输出 |
-| RT-10 | RUNTIME-08、RUNTIME-12、RUNTIME-20、RUNTIME-22 | 不探测外部存储 |
-| RT-11 | RUNTIME-09、RUNTIME-17–22 | 本地隔离目录和 Linux 两架构分别验证 |
-| RT-12 | RUNTIME-20–21 | media/upload 负责业务任务恢复 |
-| RT-13 | RUNTIME-19、RUNTIME-21、RUNTIME-24 | media 负责完整格式矩阵 |
-| RT-14 | RUNTIME-03、RUNTIME-11、RUNTIME-22–24、RUNTIME-26 | 本地检查不能代替远端 CI 运行 |
+| Spec 验收 | 直接提供证据的任务                                            | 保留边界                             |
+| --------- | ------------------------------------------------------------- | ------------------------------------ |
+| RT-01     | RUNTIME-02、RUNTIME-11、RUNTIME-18                            | Web 初始化接入后必须重复验证         |
+| RT-02     | RUNTIME-05、RUNTIME-07–09、RUNTIME-12、RUNTIME-20             | 不代表已有 setup 或所有者            |
+| RT-03     | RUNTIME-04、RUNTIME-07、RUNTIME-09–10、RUNTIME-16、RUNTIME-20 | 错误不能启动 Web 或泄露秘密          |
+| RT-04     | RUNTIME-05、RUNTIME-10、RUNTIME-20                            | 用磁盘与重启证明持久化               |
+| RT-05     | RUNTIME-06–07、RUNTIME-10、RUNTIME-14、RUNTIME-20             | 迁移提交与后续预检失败分开处理       |
+| RT-06     | RUNTIME-06、RUNTIME-10、RUNTIME-20                            | 不执行自动数据库降级                 |
+| RT-07     | RUNTIME-13                                                    | 解密失败不覆盖原密文                 |
+| RT-08     | RUNTIME-14、RUNTIME-17                                        | S3/SMTP/OAuth 全量字段由后续模块接入 |
+| RT-09     | RUNTIME-15–17、RUNTIME-20                                     | 包含真实框架 URL 错误输出            |
+| RT-10     | RUNTIME-08、RUNTIME-12、RUNTIME-20、RUNTIME-22                | 不探测外部存储                       |
+| RT-11     | RUNTIME-09、RUNTIME-17–22                                     | 本地隔离目录和 Linux 两架构分别验证  |
+| RT-12     | RUNTIME-20–21                                                 | media/upload 负责业务任务恢复        |
+| RT-13     | RUNTIME-19、RUNTIME-21、RUNTIME-24                            | media 负责完整格式矩阵               |
+| RT-14     | RUNTIME-03、RUNTIME-11、RUNTIME-22–24、RUNTIME-26             | 本地检查不能代替远端 CI 运行         |
 
 ## 并行与整合
 

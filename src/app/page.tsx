@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
-    <main style={{ maxWidth: 640, margin: "12vh auto", padding: "0 24px" }}>
+    <main style={{ maxWidth: 640, margin: '12vh auto', padding: '0 24px' }}>
       <Image src="/runtime.svg" alt="" width={64} height={64} priority />
       <h1 style={{ fontSize: 40, marginBottom: 8 }}>Ariso</h1>
       <p>单用户，自托管图床。</p>
@@ -11,7 +11,7 @@ export default function HomePage() {
         style={{
           marginTop: 32,
           padding: 24,
-          background: "#e3f6f5",
+          background: '#e3f6f5',
           borderRadius: 16,
         }}
       >

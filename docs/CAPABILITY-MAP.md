@@ -17,19 +17,19 @@
 
 所有业务模块均依赖 `runtime` 的基础能力，表内不重复列出。
 
-| 模块 ID | 职责 | 直接业务依赖 | 主要 PRD 章节 | Spec 文件 |
-| --- | --- | --- | --- | --- |
-| `runtime` | 应用启动、数据目录、数据库连接与迁移、启动密钥与加密能力、日志基础设施、Docker 镜像和工程检查 | — | 5.1–5.2、20、23、24、25 | `SPEC-runtime.md` |
-| `site` | 站点公开地址、时区、名称、描述、Logo、Favicon、浏览器主题偏好；提供地址与时间配置 | — | 5.4–5.5、21.2–21.3 | `SPEC-site.md` |
-| `identity` | 初始化码与唯一所有者、本地登录与账号管理、会话、GitHub 绑定及配置、SMTP 与密码找回、CLI 重置、上传 Token | `site` | 3、5.3、6、21.4、24.2 | `SPEC-identity.md` |
-| `storage` | 默认本地存储、本地与 S3 配置、默认存储、读写删除与签名能力、连接测试、CORS 检测、启停及配置修改限制 | `site` | 8.1–8.3 的存储能力、9 | `SPEC-storage.md` |
-| `media` | 图片实体与版本、格式识别、原图保留、元数据、图片处理设置与预览、水印素材、持久化处理及清理任务、重新处理、回收站与永久删除 | `storage` | 10–13、14.1、14.4 的默认值约束、18 | `SPEC-media.md` |
-| `delivery` | 稳定图片地址、公开与私有访问、版本选择、默认版本解析、附件下载、缓存规则、SVG 响应、本地文件传输与 S3 跳转 | `site`、`identity`、`storage`、`media` | 14 | `SPEC-delivery.md` |
-| `collections` | 相册、标签、图片关联、手动顺序、封面选择、删除相册或标签；为上传和图库提供相册与标签能力 | `media` | 16、7.3 与 8.4 的相册标签规则 | `SPEC-collections.md` |
-| `upload` | Web 队列与批次、上传启动和传输取消、上传限制、S3 上传会话及临时对象清理、中转上传、通用上传 API、结果与外链、OpenAPI 和调用示例 | `identity`、`storage`、`media`、`collections`、`delivery` | 7、8、23.4 | `SPEC-upload.md` |
-| `library` | 所有者图库与详情页、搜索筛选排序、分页和加载更多、选择范围、大图查看、批量管理、批量复制、失败项与回收站操作界面 | `identity`、`storage`、`media`、`delivery`、`collections` | 13.4、15、18 的管理界面 | `SPEC-library.md` |
-| `sharing` | 相册分享配置、Token、密码授权及失效、有效期、匿名分享页和受限展示字段 | `site`、`identity`、`collections`、`delivery` | 17 | `SPEC-sharing.md` |
-| `analytics` | 公开访问计数、内存聚合与批量写入、每日统计及保留、空间用量、数量统计、趋势与排行界面 | `site`、`identity`、`storage`、`media`、`collections`、`delivery` | 19 | `SPEC-analytics.md` |
+| 模块 ID       | 职责                                                                                                                            | 直接业务依赖                                                      | 主要 PRD 章节                      | Spec 文件             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------- | --------------------- |
+| `runtime`     | 应用启动、数据目录、数据库连接与迁移、启动密钥与加密能力、日志基础设施、Docker 镜像和工程检查                                   | —                                                                 | 5.1–5.2、20、23、24、25            | `SPEC-runtime.md`     |
+| `site`        | 站点公开地址、时区、名称、描述、Logo、Favicon、浏览器主题偏好；提供地址与时间配置                                               | —                                                                 | 5.4–5.5、21.2–21.3                 | `SPEC-site.md`        |
+| `identity`    | 初始化码与唯一所有者、本地登录与账号管理、会话、GitHub 绑定及配置、SMTP 与密码找回、CLI 重置、上传 Token                        | `site`                                                            | 3、5.3、6、21.4、24.2              | `SPEC-identity.md`    |
+| `storage`     | 默认本地存储、本地与 S3 配置、默认存储、读写删除与签名能力、连接测试、CORS 检测、启停及配置修改限制                             | `site`                                                            | 8.1–8.3 的存储能力、9              | `SPEC-storage.md`     |
+| `media`       | 图片实体与版本、格式识别、原图保留、元数据、图片处理设置与预览、水印素材、持久化处理及清理任务、重新处理、回收站与永久删除      | `storage`                                                         | 10–13、14.1、14.4 的默认值约束、18 | `SPEC-media.md`       |
+| `delivery`    | 稳定图片地址、公开与私有访问、版本选择、默认版本解析、附件下载、缓存规则、SVG 响应、本地文件传输与 S3 跳转                      | `site`、`identity`、`storage`、`media`                            | 14                                 | `SPEC-delivery.md`    |
+| `collections` | 相册、标签、图片关联、手动顺序、封面选择、删除相册或标签；为上传和图库提供相册与标签能力                                        | `media`                                                           | 16、7.3 与 8.4 的相册标签规则      | `SPEC-collections.md` |
+| `upload`      | Web 队列与批次、上传启动和传输取消、上传限制、S3 上传会话及临时对象清理、中转上传、通用上传 API、结果与外链、OpenAPI 和调用示例 | `identity`、`storage`、`media`、`collections`、`delivery`         | 7、8、23.4                         | `SPEC-upload.md`      |
+| `library`     | 所有者图库与详情页、搜索筛选排序、分页和加载更多、选择范围、大图查看、批量管理、批量复制、失败项与回收站操作界面                | `identity`、`storage`、`media`、`delivery`、`collections`         | 13.4、15、18 的管理界面            | `SPEC-library.md`     |
+| `sharing`     | 相册分享配置、Token、密码授权及失效、有效期、匿名分享页和受限展示字段                                                           | `site`、`identity`、`collections`、`delivery`                     | 17                                 | `SPEC-sharing.md`     |
+| `analytics`   | 公开访问计数、内存聚合与批量写入、每日统计及保留、空间用量、数量统计、趋势与排行界面                                            | `site`、`identity`、`storage`、`media`、`collections`、`delivery` | 19                                 | `SPEC-analytics.md`   |
 
 接口由提供能力的模块定义，使用方在自己的 Spec 中引用。每个模块的管理入口都使用 `identity` 验证所有者身份；这个入口检查不要求底层文件读写或配置读取能力反向调用认证。
 
@@ -39,16 +39,16 @@
 
 以下流程需要多个模块共同完成。入口负责组合普通函数调用；此处不引入事件总线、通用工作流或额外服务。
 
-| 流程 | 责任分配 |
-| --- | --- |
-| 首次启动与 `/setup` | 启动入口先使用 `runtime` 准备数据库，再由 `storage` 创建默认本地存储、`identity` 生成初始化码。`/setup` 入口组合 `identity` 创建唯一所有者、`site` 保存地址与时区，以及业务模块的初始默认值。完成与中断语义归 `identity` Spec 主述，不能只完成账号创建就关闭初始化流程。 |
-| 站点设置 | 设置页面按所属能力调用模块：基础信息归 `site`；默认存储归 `storage`；上传限制归 `upload`；默认可见性、处理配置和默认外链版本归 `media`；SMTP、GitHub 与 Token 归 `identity`。`delivery` 使用 `media` 提供的默认版本规则。各模块负责其设置的校验，避免设置页面复制业务规则。 |
-| 修改公开地址 | 管理入口组合 `site` 更新地址、`storage` 使 CORS 检测结果失效，以及 `identity` 的 OAuth 回调更新提示。此流程由 `site` Spec 主述。 |
-| 修改或删除存储配置 | `storage` Spec 定义 PRD 9.4 的完整引用条件。管理入口汇总 `media` 的图片、版本及处理/清理引用，以及 `upload` 的上传会话和临时对象清理引用，再执行 `storage` 的修改或删除规则。引用完整性、写入期间的一致性及默认存储清空语义在 Spec 中确定；不能仅检查正常图库图片数量。 |
-| 上传与图片处理 | `upload` 验证批次与入口参数，通过 `collections` 处理相册标签，使用 `storage` 接收原文件，交给 `media` 维护资产及处理任务。`upload` 管传输和上传会话；`media` 管已接收图片的处理与恢复。原图接收的交接条件及中断处理在提供方 Spec 中定义。 |
-| 回收站与关联关系 | `media` 维护图片进入回收站、恢复及永久删除状态；`collections` 保有相册、标签和排序关系。移入回收站不删除这些关系，恢复时仅保留仍存在的关系。永久删除任务在对象清理全部成功后完成记录与关联清理，后台重试或启动恢复同样执行，不依赖原 HTTP 请求继续存在；图片删除后统计的保留方式由 `analytics` Spec 明确。 |
-| 删除相册与分享失效 | `collections` 删除相册及其关系；`sharing` 的每次访问都以相册仍存在为前提，并负责分享记录及授权失效。删除入口组合必要清理，`collections` 不反向调用分享页面。 |
-| 图片访问与计数 | `delivery` 提供状态、权限、版本检查及开始本地传输/成功签发 S3 地址的结果契约。图片入口按该契约调用 `analytics` 计数；拒绝访问、缩略图和所有者访问不计数。计数时点归 `delivery` 的契约定义，聚合与保留归 `analytics`，两者使用同一请求流程完成集成。 |
+| 流程                | 责任分配                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 首次启动与 `/setup` | 启动入口先使用 `runtime` 准备数据库，再由 `storage` 创建默认本地存储、`identity` 生成初始化码。`/setup` 入口组合 `identity` 创建唯一所有者、`site` 保存地址与时区，以及业务模块的初始默认值。完成与中断语义归 `identity` Spec 主述，不能只完成账号创建就关闭初始化流程。                                   |
+| 站点设置            | 设置页面按所属能力调用模块：基础信息归 `site`；默认存储归 `storage`；上传限制归 `upload`；默认可见性、处理配置和默认外链版本归 `media`；SMTP、GitHub 与 Token 归 `identity`。`delivery` 使用 `media` 提供的默认版本规则。各模块负责其设置的校验，避免设置页面复制业务规则。                                |
+| 修改公开地址        | 管理入口组合 `site` 更新地址、`storage` 使 CORS 检测结果失效，以及 `identity` 的 OAuth 回调更新提示。此流程由 `site` Spec 主述。                                                                                                                                                                           |
+| 修改或删除存储配置  | `storage` Spec 定义 PRD 9.4 的完整引用条件。管理入口汇总 `media` 的图片、版本及处理/清理引用，以及 `upload` 的上传会话和临时对象清理引用，再执行 `storage` 的修改或删除规则。引用完整性、写入期间的一致性及默认存储清空语义在 Spec 中确定；不能仅检查正常图库图片数量。                                    |
+| 上传与图片处理      | `upload` 验证批次与入口参数，通过 `collections` 处理相册标签，使用 `storage` 接收原文件，交给 `media` 维护资产及处理任务。`upload` 管传输和上传会话；`media` 管已接收图片的处理与恢复。原图接收的交接条件及中断处理在提供方 Spec 中定义。                                                                  |
+| 回收站与关联关系    | `media` 维护图片进入回收站、恢复及永久删除状态；`collections` 保有相册、标签和排序关系。移入回收站不删除这些关系，恢复时仅保留仍存在的关系。永久删除任务在对象清理全部成功后完成记录与关联清理，后台重试或启动恢复同样执行，不依赖原 HTTP 请求继续存在；图片删除后统计的保留方式由 `analytics` Spec 明确。 |
+| 删除相册与分享失效  | `collections` 删除相册及其关系；`sharing` 的每次访问都以相册仍存在为前提，并负责分享记录及授权失效。删除入口组合必要清理，`collections` 不反向调用分享页面。                                                                                                                                               |
+| 图片访问与计数      | `delivery` 提供状态、权限、版本检查及开始本地传输/成功签发 S3 地址的结果契约。图片入口按该契约调用 `analytics` 计数；拒绝访问、缩略图和所有者访问不计数。计数时点归 `delivery` 的契约定义，聚合与保留归 `analytics`，两者使用同一请求流程完成集成。                                                        |
 
 这些是需要在后续 Spec 中落实的接口边界，不是已经确定的函数签名、表结构或事务实现。
 
@@ -77,21 +77,21 @@ runtime → site → identity / storage → media → delivery / collections
 
 ## 5. PRD 验收覆盖
 
-| PRD 验收组 | 负责模块及组合流程 |
-| --- | --- |
-| 26.1 初始化、账号与站点设置 | `runtime`、`site`、`identity`、`storage`；初始化及地址修改入口 |
-| 26.2 默认本地上传 | `storage`、`media`、`upload`、`delivery` |
-| 26.3 通用上传 API | `identity`、`upload`、`collections`、`media`、`delivery` |
-| 26.4 S3 上传、私有性与访问 | `storage`、`upload`、`media`、`delivery`、`analytics` |
-| 26.5 存储停用与删除 | `storage`、`upload`、`media`、`delivery`、`library`；存储管理入口 |
-| 26.6 私有图片 | `identity`、`storage`、`media`、`delivery`、`sharing` |
-| 26.7 图片处理、失败与设置快照 | `media`、`upload`、`library`、`delivery` |
-| 26.8 特殊格式与版本回退 | `media`、`delivery` |
-| 26.9 图库与批量操作 | `library`、`media`、`collections` |
-| 26.10 相册分享 | `sharing`、`collections`、`site`、`delivery` |
-| 26.11 回收站 | `media`、`storage`、`collections`、`library`、`delivery` |
-| 26.12 升级与密钥 | `runtime`、`identity` |
-| 26.13 响应式界面与规模 | 所有含界面的模块；`library`、`collections`、`analytics` 负责 100,000 张图片规模下的主要查询验证 |
+| PRD 验收组                    | 负责模块及组合流程                                                                              |
+| ----------------------------- | ----------------------------------------------------------------------------------------------- |
+| 26.1 初始化、账号与站点设置   | `runtime`、`site`、`identity`、`storage`；初始化及地址修改入口                                  |
+| 26.2 默认本地上传             | `storage`、`media`、`upload`、`delivery`                                                        |
+| 26.3 通用上传 API             | `identity`、`upload`、`collections`、`media`、`delivery`                                        |
+| 26.4 S3 上传、私有性与访问    | `storage`、`upload`、`media`、`delivery`、`analytics`                                           |
+| 26.5 存储停用与删除           | `storage`、`upload`、`media`、`delivery`、`library`；存储管理入口                               |
+| 26.6 私有图片                 | `identity`、`storage`、`media`、`delivery`、`sharing`                                           |
+| 26.7 图片处理、失败与设置快照 | `media`、`upload`、`library`、`delivery`                                                        |
+| 26.8 特殊格式与版本回退       | `media`、`delivery`                                                                             |
+| 26.9 图库与批量操作           | `library`、`media`、`collections`                                                               |
+| 26.10 相册分享                | `sharing`、`collections`、`site`、`delivery`                                                    |
+| 26.11 回收站                  | `media`、`storage`、`collections`、`library`、`delivery`                                        |
+| 26.12 升级与密钥              | `runtime`、`identity`                                                                           |
+| 26.13 响应式界面与规模        | 所有含界面的模块；`library`、`collections`、`analytics` 负责 100,000 张图片规模下的主要查询验证 |
 
 PRD 第 22 节的移动端完整功能、浏览器兼容、简体中文、键盘操作和减少动态效果要求，进入各模块的验收条件。第 20 节的业务日志随对应流程实现；`runtime` 提供统一日志能力。第 25 节的检查从工程建立时落实。
 

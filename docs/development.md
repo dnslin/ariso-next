@@ -123,15 +123,15 @@ E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/S
 
 实际命令直接使用目标 Node 执行仓库内 CLI（与上述 `pnpm exec` 对应）：
 
-| 命令或检查 | 结果 |
-| --- | --- |
-| `node node_modules/next/dist/bin/next build`，通过 `env -u` 移除两个密钥并设置临时 DATA_DIR | 退出 0；首页静态生成；数据目录未创建；生成 `.next/standalone/server.js` |
-| `node node_modules/next/dist/bin/next typegen` | 退出 0 |
-| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` | 退出 0 |
-| TypeScript API 解析 `@/app/page`，并断言 strict | 退出 0；解析到 `src/app/page.tsx` |
-| `node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000` 和上述两条 curl | 页面与资源均为 HTTP 200；服务已停止 |
-| `node node_modules/@playwright/test/cli.js install chromium` | 下载多次超时，退出 1 |
-| `node node_modules/@playwright/test/cli.js test --config test-results/local.config.mjs --grep @smoke` | 使用本机 Chrome，1 项测试通过；桌面截图已人工检查 |
+| 命令或检查                                                                                            | 结果                                                                    |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `node node_modules/next/dist/bin/next build`，通过 `env -u` 移除两个密钥并设置临时 DATA_DIR           | 退出 0；首页静态生成；数据目录未创建；生成 `.next/standalone/server.js` |
+| `node node_modules/next/dist/bin/next typegen`                                                        | 退出 0                                                                  |
+| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json`                               | 退出 0                                                                  |
+| TypeScript API 解析 `@/app/page`，并断言 strict                                                       | 退出 0；解析到 `src/app/page.tsx`                                       |
+| `node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000` 和上述两条 curl           | 页面与资源均为 HTTP 200；服务已停止                                     |
+| `node node_modules/@playwright/test/cli.js install chromium`                                          | 下载多次超时，退出 1                                                    |
+| `node node_modules/@playwright/test/cli.js test --config test-results/local.config.mjs --grep @smoke` | 使用本机 Chrome，1 项测试通过；桌面截图已人工检查                       |
 
 以上 Playwright 命令仅保留为历史执行证据，不再作为操作步骤；历史临时配置也不再使用。
 
@@ -140,3 +140,38 @@ E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/S
 补充检查：通过 ESLint Node API 加载现有 `eslint-config-next/core-web-vitals` 与 `eslint-config-next/typescript`，检查本次 TS/TSX 文件，零错误、零警告。`node node_modules/prettier/bin/prettier.cjs --check src/app/layout.tsx src/app/page.tsx next.config.ts tsconfig.json e2e/runtime.spec.ts` 和 `git diff --check` 均退出 0。
 
 验证中新增测试曾因 `naturalWidth` 的元素类型推断报错，导致构建退出 1。补充 `HTMLImageElement` 类型后，重新执行无密钥构建、typegen、tsc、浏览器回归和 lint，全部通过。
+
+## RUNTIME-03：工程检查
+
+2026-09-15 在 `codex/runtime-03-engineering-checks` 实施 [Issue #3](https://github.com/dnslin/ariso-next/issues/3)。验证环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0，执行方式沿用本页的目标 Node 设置。
+
+### 实现与检查范围
+
+- `pnpm run lint` 使用 Next Core Web Vitals 与 TypeScript 的现有配置，零警告才能通过；采用 [Next 官方 ESLint 配置方式](https://nextjs.org/docs/app/api-reference/config/eslint)。
+- `pnpm run format:check` 检查全仓支持的文件；`pnpm run format` 应用两个空格、单引号、分号和尾逗号。首次统一既有源码、测试和文档的格式；冻结 PRD 未改写，锁文件与生成文件不参与格式化。
+- `pnpm run typecheck` 顺序运行 `next typegen` 与应用 `tsc --noEmit --project tsconfig.json`。独立 runtime 编译项目尚未建立，待实际提供 `tsconfig.runtime.json` 后加入其检查。
+- CI 在 PR 和 main 推送时执行冻结安装、lint、格式、应用类型与 `next build`。使用 Node 24；pnpm 版本读取 `package.json` 的 `packageManager`。工作流复用 [setup-node](https://github.com/actions/setup-node) 和 [pnpm/action-setup](https://github.com/pnpm/action-setup)，没有新增 npm 依赖。
+
+### 本地验证记录
+
+| 实际命令或检查                                                                      | 结果                                                                                                                       |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                    | 退出 0，锁文件未变化                                                                                                       |
+| `pnpm run format:check`（首次）                                                     | 退出 1，检测出 13 个既有文件不符合新格式                                                                                   |
+| `pnpm run format`                                                                   | 退出 0，统一受检查文件的格式                                                                                               |
+| `pnpm run lint`                                                                     | 退出 0，零错误、零警告                                                                                                     |
+| `pnpm run typecheck`                                                                | 退出 0，路由类型生成与应用类型检查通过                                                                                     |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY pnpm exec next build`            | 退出 0，首页静态生成，真实生产构建成功                                                                                     |
+| Node 断言调用 ESLint `isPathIgnored`、`lintText` 和 Prettier `getFileInfo`、`check` | 退出 0；构建与测试输出、冻结 PRD 被忽略，应用源码仍受检查；显式 any 报错、未使用变量产生警告；错误格式被拒绝，正确格式通过 |
+| Node 启动 `next start --hostname 127.0.0.1 --port 3103` 并通过 `fetch` 断言         | 退出 0；首页与 `/runtime.svg` 均返回 200，页面包含简体中文标记与工程状态文案；验证后服务已停止                             |
+| `git diff --exit-code -- docs/Ariso-PRD-v1.1.md pnpm-lock.yaml`                     | 退出 0，冻结输入未改变                                                                                                     |
+
+最终 `pnpm run format:check`、`pnpm run lint` 与 `git diff --check` 均退出 0。另以 Node 逐文件断言确认：除新增配置、实施计划和本节记录外，既有文件的修改与 Prettier 对原文件的输出完全一致，没有混入语义修改。
+
+上述 HTTP 检查不替代浏览器交互验收。没有运行旧 Playwright 测试，也没有下载浏览器。
+
+### 后续接入点与未验证项
+
+RUNTIME-04 提供真实单元测试，RUNTIME-11 接入真实集成测试与完整构建；RUNTIME-22、23 接入 ego-browser 验证并记录实际环境，RUNTIME-24 在 Actions 中验证镜像。不添加空测试脚本或预先跳过的测试步骤。
+
+本次仅本地实现与验证，尚未推送分支或运行远端 CI，因此 RT-14、Issue #3 的远端验收及 K1 完整证据仍未完成。Docker、Linux 原生依赖和双架构未在本次本地验证。
