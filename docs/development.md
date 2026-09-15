@@ -485,6 +485,10 @@ Ego 验证使用已有 Ego Lite，没有下载浏览器或使用 Playwright。�
 
 ### 审计、远端验证与范围限制
 
-独立只读审计使用 `code-review-and-quality` 技能；审计结果与远端 CI、Docker AMD64/ARM64 链接将在检查完成后补充。本机未执行 Docker，不将待运行检查记为通过。
+独立只读审计使用 `code-review-and-quality` 技能，审阅测试、打包、入口、Docker/CI 与既有调用链，未发现 Critical 或 Required 问题。审计方执行 `git diff --check` 通过；没有重复执行主代理的全量检查。最终入口只注入配置失败，SQL 迁移失败由既有 CLI 测试覆盖，完整入口故障矩阵仍留给 RUNTIME-10。本机未执行 Docker。
+
+实现提交 `c136c00` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34945182572) 全部通过（1 分 2 秒），包含冻结安装、lint、格式、双配置类型检查、单元测试、完整构建和集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34945182714) 在 AMD64（1 分 24 秒）和 ARM64（1 分 15 秒）原生 runner 上全部通过，实际完成镜像构建、架构断言、生产入口启动、健康与静态资源验证及 artifact 导出。`gh run watch 34945182572 --exit-status --interval 10` 与 `gh run watch 34945182714 --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+补充本记录后的最终提交检查见 [PR #35 检查页](https://github.com/dnslin/ariso-next/pull/35/checks)。最终检查通过后转正式待评审，合并和分支清理由用户决定。
 
 RUNTIME-10 的完整失败与恢复矩阵、RUNTIME-12 的真实 HTTP 数据库故障、后续日志桥接与图片工具仍未交付。本次不实现业务初始化或上传，不代表完整 RT-03/RT-11 的所有后续验收完成。冻结 PRD、锁文件和依赖版本未改变。不合并 PR、不关闭 Issue、不发布镜像或部署。
