@@ -813,3 +813,9 @@ URL 规则替换 token、resetToken、reset_token、uploadToken、access_token�
 ### 代码审计
 
 使用 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计确认 stdout 断言变更合理、原诊断及数据完整性测试保留，标准入口及默认停止行为未改变。审计者未重复执行测试，以上命令由主任务实际执行。
+
+### 远端验证
+
+实现提交 `9213141` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34991396476) 已成功，覆盖冻结安装、lint、格式、类型、单元、完整构建和集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34991396292) 已成功，AMD64（ubuntu-24.04）和 ARM64（ubuntu-24.04-arm）均使用原生 runner，完成镜像构建、实际架构断言、生产入口启动、健康/首页/静态资源检查、容器清理与产物导出。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+[PR #42](https://github.com/dnslin/ariso-next/pull/42) 已关联 Issue #16。本次补充仅修改验证文档，最新提交状态见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/42/checks)，全部通过后转为正式待评审。Issue 保持开放，合并及分支清理由用户另行指示。
