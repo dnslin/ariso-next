@@ -359,3 +359,50 @@ K2 的配置、磁盘及迁移测试已取得实际结果，页面仍可构建�
 提交 `ab7d939` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34938419364) 全部通过（39 秒），包含冻结安装、lint、格式、类型、单元/集成测试与构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34938419445) 的 AMD64（1 分 11 秒）和 ARM64（1 分 12 秒）原生 runner 均通过构建、架构断言、容器启动、页面/SVG/Next 脚本验证、清理与 artifact 导出。`gh run watch 34938419364 --exit-status --interval 10` 和 `gh run watch 34938419445 --exit-status --interval 10` 均退出 0。没有本机 Docker 验证、镜像发布或部署。
 
 以上链接记录实现提交的检查。补充文档后的最终提交状态见 [PR #32 检查页](https://github.com/dnslin/ariso-next/pull/32/checks)。PR 待用户评审与合并，未操作 Issue 关闭或分支清理。
+
+## RUNTIME-07：独立 prestart
+
+2026-09-15 实施 [Issue #7](https://github.com/dnslin/ariso-next/issues/7)。开始时工作区干净，从最新 main `080d758` 创建 `codex/runtime-07-prestart`。通过 `gh` 读取 Issue、评论（无评论）和前置 Issue #6；前置交付已合入 PR #32，Issue #6 已关闭。GitHub 插件也确认 Issue #7 没有评论。
+
+### 实现与边界
+
+`src/cli/prestart.ts` 显式调用 `startup/preflight.runPreflight`，后者依次复用环境校验、目录准备、SQLite 连接和官方迁移封装。命令按 Spec 从项目根目录执行，迁移目录为该目录下的 `drizzle/`。连接打开后由 `finally` 关闭，CLI 边界把完整错误及原因写到 stderr，再设置非零退出码；不强制提前终止进程。
+
+`tsconfig.runtime.json` 使用 NodeNext、`src` 根目录与 `dist` 输出，仅从 CLI 入口跟随实际依赖编译共享源码。源码使用 `.ts` 相对引用，由 TypeScript 的 [rewriteRelativeImportExtensions](https://www.typescriptlang.org/tsconfig/rewriteRelativeImportExtensions.html) 输出 `.js` 引用。应用类型配置也允许相同源码写法；没有引入 TS 执行器或路径别名加载器。已核对本地 TypeScript 6.0.3 类型定义及官方配置说明。
+
+新增 `build:runtime`、`dev`、`db:generate`，`typecheck` 同时检查应用与 runtime 两个配置。CI 在集成测试前编译 CLI。没有业务 Schema，因此本次只接入生成命令，不执行 `db:generate` 或增加占位 Schema。完整 `build`/Standalone 打包仍由 RUNTIME-11 实施，Docker 入口串联仍由后续任务交付。
+
+### 实际本地验证
+
+平台：macOS arm64，Node 24.18.1、pnpm 11.19.0；采用本页开头的目标 Node 与 pnpm 设置。
+
+| 实际命令或检查                                                                                                          | 结果                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                                        | 退出 0，锁文件不变                                                                         |
+| `pnpm run build:runtime`                                                                                                | 退出 0，生成 CLI 和四个 runtime 模块及 preflight                                           |
+| `pnpm exec vitest run --project integration tests/integration/runtime/prestart.test.ts`                                 | 7 项通过，退出 0                                                                           |
+| `pnpm run lint`                                                                                                         | 退出 0，零错误、零警告                                                                     |
+| `pnpm run format:check`                                                                                                 | 退出 0                                                                                     |
+| `pnpm run typecheck`                                                                                                    | 修复测试环境缺少 `NODE_ENV` 后退出 0，两个配置均通过                                       |
+| `pnpm run test:unit`                                                                                                    | 55 项通过，退出 0                                                                          |
+| `pnpm run test:integration`                                                                                             | 27 项通过，退出 0                                                                          |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY DATA_DIR=<临时目录>/data node node_modules/next/dist/bin/next build` | 修复上述测试类型错误后退出 0；断言指定数据目录未创建                                       |
+| `pnpm run dev`                                                                                                          | 使用临时 `.env.local`、随机密钥及仓库外临时 DATA_DIR，预检成功后 Next Ready，首页 HTTP 200 |
+| Node `spawnSync('pnpm', ['run', 'dev'])`，父环境 `PORT=0`                                                               | 退出 1，包含 PORT 原因，无 Next Ready/监听；fetch 3000 端口失败                            |
+| `ego-browser nodejs`                                                                                                    | 退出 0，见下文浏览器结果                                                                   |
+
+编译产物测试使用 `node --no-experimental-strip-types dist/cli/prestart.js`，关闭 Node 的 TS 直接执行功能，环境不继承部署密钥。测试在临时目录生成独立 SQL/journal，覆盖空集合重复启动、无效配置在目录操作前失败、目录故障、迁移回滚与修复重试、拒绝过新数据库。额外在同一进程调用 preflight，观察真实连接在返回和抛错前均已关闭，避免仅凭进程退出推断关闭成功。进程测试还检查 WAL/SHM 已释放。
+
+Ego Lite TaskSpace 5 访问实际 `dev` 服务，标题、zh-CN、工程状态文案、SVG HTTP 200 与图片宽度 64 均通过；390/1440 × 900 视口无横向溢出。原始断言记录为 `test-results/ego-issue7.json`（忽略，不提交）。TaskSpace 已关闭，自建服务已停止，临时 `.env.local` 已删除。没有下载浏览器或执行 Playwright。
+
+验证过程中尝试用临时项目复用依赖，pnpm 要求重装共享依赖时选择取消，未删除依赖；随后改在原项目使用临时配置运行真实 dev 命令并成功。最初全量类型检查和生产构建因测试缺少 `NODE_ENV` 失败，修复后相关命令全部重跑通过。
+
+### 审计、远端检查与限制
+
+已使用 `code-review-and-quality` 完成独立只读审计，未发现阻塞项。审计方使用 Node 24 独立重跑 prestart 测试，7/7 通过，退出 0；Next 开发服务自动修改的 `next-env.d.ts` 已恢复，未纳入提交。远端检查结果如下。Docker 与 AMD64/ARM64 检查由现有 GitHub Actions 执行，本机不运行 Docker，不发布镜像或部署。
+
+本任务交付配置到迁移的 CLI 流程；业务秘密解密预检、持久化默认值、Web 数据库初始化、健康接口、完整 Standalone 与容器 prestart 仍未实现。当前 Docker 工作流只验证页面镜像，不代表最终容器迁移验收。Ego 视口模拟不代表手机实机或跨浏览器覆盖。冻结 PRD 不变。
+
+提交 `d1672c3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34940404861) 全部通过（39 秒），包含冻结安装、lint、格式、双配置类型检查、55 项单元测试、runtime 编译、27 项集成测试与 Next 构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34940404839) 的 AMD64（1 分 13 秒）和 ARM64（1 分 5 秒）原生 runner 均通过镜像构建、架构断言、容器启动、页面/SVG/Next 脚本验证及 artifact 导出。`gh run watch 34940404861 --exit-status --interval 10` 与 `gh run watch 34940404839 --exit-status --interval 10` 均退出 0。远端没有失败或重跑。
+
+补充本段文档后的最终检查以 [PR #33 检查页](https://github.com/dnslin/ariso-next/pull/33/checks) 为准。最终推送前 `pnpm run format:check`、`git diff --check` 均退出 0，冻结 PRD、锁文件及 `next-env.d.ts` 未变化。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户决定。
