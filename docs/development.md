@@ -79,10 +79,10 @@ node --input-type=module -e 'import assert from "node:assert/strict"; import Dat
 
 安装提示 ESLint 9.39.5 已停止支持，以及 Drizzle Kit 引入的两个 `@esbuild-kit` 包已弃用。本次保留已批准版本，不调整既定技术基线；依赖安装成功不等于后续 lint、类型和构建兼容性已验证。
 
-## 尚缺的执行条件
+## Docker 构建与验证位置
 
-本机没有可用 Docker CLI，未验证 Docker daemon、buildx 或架构模拟能力。目前没有已确认可执行本任务的远端 runner。
+用户于 2026-09-15 确认：Docker 镜像构建、容器运行验证及 Linux 双架构检查统一交给 GitHub Actions，不要求在开发者本机安装或验证 Docker。本机缺少 Docker 不作为开发阻塞项；上表的 Docker 命令结果仅保留为历史记录。
 
-后续 RUNTIME-21 在具备 Docker/buildx 的机器或 CI runner 内，以 `node:24-trixie-slim` 分别安装并运行 `linux/amd64`、`linux/arm64` 产物；可以采用原生 runner 或模拟执行，须记录实际方式。安装 Docker/buildx、提供对应架构执行能力，是这些验证的前置条件。
+后续 RUNTIME-18–21、24 在 GitHub Actions 中配置 Docker/buildx，以 `node:24-trixie-slim` 分别安装并运行 `linux/amd64`、`linux/arm64` 产物。可以采用原生 runner 或模拟执行，须记录实际方式及工作流结果链接。相关验收以 Actions 的实际运行结果为准，工作流尚未运行时保持未验证。
 
 本次未运行 Linux 镜像、双架构检查、磁盘持久化、Next 构建、类型检查、ESLint、Vitest 或浏览器测试。相关源码、配置和测试分别由后续任务提供，不增加返回成功的空脚本。内存查询只证明驱动可以加载并执行 SQL，磁盘持久化由 RUNTIME-05 验证。

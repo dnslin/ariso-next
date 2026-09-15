@@ -14,7 +14,7 @@
 
 集成测试使用临时目录、临时密钥和自己启动的进程。生产数据库不加入测试表或故障入口。迁移、秘密预检及框架故障样本只存在于测试目录；需要改装产物时，在测试临时副本中进行。
 
-Node 24 是本地目标验证的前提。Docker、架构模拟能力或远端 CI 不可用时，记录具体未验证任务，继续不依赖它们的工作；不能把镜像和远端检查标为完成。技能引用的附加 `definition-of-done.md` 当前未找到，本清单采用已提供 AGENTS.md、PRD 第 25 节和 Spec 第 12 节中的质量要求。
+Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验证及双架构检查统一由 GitHub Actions 执行，不要求本机安装或验证 Docker。Actions 尚未运行时记录具体未验证任务，继续不依赖它们的工作；不能把镜像和远端检查标为完成。技能引用的附加 `definition-of-done.md` 当前未找到，本清单采用已提供 AGENTS.md、PRD 第 25 节和 Spec 第 12 节中的质量要求。
 
 | 计划阶段 | 任务 | 完成后可观察的结果 |
 | --- | --- | --- |
@@ -37,11 +37,11 @@ Node 24 是本地目标验证的前提。Docker、架构模拟能力或远端 CI
 **预计文件：** `package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.gitignore`、`docs/development.md`。
 
 **验收：**
-- [ ] Node 24 和 pnpm 11.19.0 的实际路径、版本与使用方法有记录；Docker/buildx 的可用性及尚缺的执行条件有明确结果。
+- [ ] Node 24 和 pnpm 11.19.0 的实际路径、版本与使用方法有记录；已记录 Docker/buildx 及双架构构建与验证由 GitHub Actions 执行，本机不作要求。
 - [ ] 已批准且首批会使用的依赖完成安装；原生构建脚本按实际依赖图配置；冻结锁文件安装成功。
 - [ ] better-sqlite3 在目标 Node 中实际执行查询；密钥、本地数据和生成产物不进入 Git。
 
-**验证：** `node --version`；`pnpm --version`；`docker version`；`docker buildx version`；`pnpm install`；`pnpm install --frozen-lockfile`；`node --input-type=module -e 'import Database from "better-sqlite3"; const db = new Database(":memory:"); console.log(db.prepare("SELECT 1 AS ok").get()); db.close();'`。此处内存查询只证明驱动可加载，磁盘持久化由 RUNTIME-05 验证。
+**验证：** `node --version`；`pnpm --version`；`pnpm install`；`pnpm install --frozen-lockfile`；`node --input-type=module -e 'import Database from "better-sqlite3"; const db = new Database(":memory:"); console.log(db.prepare("SELECT 1 AS ok").get()); db.close();'`。此处内存查询只证明驱动可加载，磁盘持久化由 RUNTIME-05 验证。Docker/buildx 版本及镜像验证在后续 GitHub Actions 工作流中执行。
 
 ### RUNTIME-02：运行最小 Next.js 页面
 
@@ -422,7 +422,7 @@ Node 24 是本地目标验证的前提。Docker、架构模拟能力或远端 CI
 - [ ] --platform 明确选择实际目标镜像；只构建 manifest 或只模拟数据库返回不能算通过。
 - [ ] 记录两份结果及产物标识；APNG、动态 AVIF 和完整格式矩阵仍由 media 验收。
 
-**验证：** 在已具备相应架构执行能力的 Docker 环境中分别运行：
+**验证：** 在 GitHub Actions 中具备相应架构执行能力的 Docker 环境内分别运行：
 
 ```sh
 docker buildx build --platform linux/amd64 --load --tag ariso:runtime-amd64 .
@@ -486,7 +486,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 
 **验收：**
 - [ ] 涉及镜像、原生依赖或图片工具的 PR 均触发两架构运行，不能只在发布后检查；每个平台执行 RUNTIME-21 的工具和容器断言。
-- [ ] 版本发布流程面向 ghcr.io/dnslin/ariso，组合已经测试的架构产物并关联代码版本；不在发布步骤重新构建未经测试的替代产物。
+- [ ] 版本发布流程面向 ghcr.io/dnslin/ariso-next，组合已经测试的架构产物并关联代码版本；不在发布步骤重新构建未经测试的替代产物。
 - [ ] 记录实际镜像验证工作流结果。创建远程仓库、配置凭据和实际推送镜像不在本任务执行范围；这些条件缺失时准确记录未执行部分。
 
 **验证：** 复用 RUNTIME-21 的构建和运行命令，对照实际 CI 每个架构的报告；检查发布任务消费的产物与前置测试产物一致。没有实际发布记录时，不宣称镜像已发布。
@@ -521,7 +521,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 
 **依赖：** RUNTIME-24、RUNTIME-25，及全部此前任务。**覆盖：** RT-01–RT-14。**规模：** M，5 个文件。
 
-**预计文件：** `docs/runtime-verification.md`、`tasks/todo.md`、`tasks/plan.md`、`SPEC-runtime.md`、`CAPABILITY-MAP.md`。后三项只同步实际阶段与验收状态。
+**预计文件：** `docs/runtime-verification.md`、`docs/tasks/todo.md`、`docs/tasks/plan.md`、`docs/SPEC-runtime.md`、`docs/CAPABILITY-MAP.md`。后三项只同步实际阶段与验收状态。
 
 **验收：**
 - [ ] 每条 RT 均有对应任务、实际命令、结果与证据；失败、未执行和下游负责部分单列。

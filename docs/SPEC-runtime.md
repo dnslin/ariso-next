@@ -119,11 +119,11 @@ eslint.config.mjs
 vitest.config.ts
 playwright.config.ts
 .env.example
-CAPABILITY-MAP.md
-SPEC-runtime.md
+docs/CAPABILITY-MAP.md
+docs/SPEC-runtime.md
 ```
 
-按需创建目录，不预先建立其余十个模块的空文件。模块 Spec 留在根目录，后续计划与任务按技能约定保存到 `tasks/plan.md`、`tasks/todo.md`。
+按需创建目录，不预先建立其余十个模块的空文件。模块 Spec 保存在 `docs/` 目录，后续计划与任务按技能约定保存到 `docs/tasks/plan.md`、`docs/tasks/todo.md`。
 
 工程使用 ESM，即 `package.json` 设置 `type: module`。Next 源码使用 `@/*` 指向 `src/*`。需要独立运行的 CLI 及其引用代码使用相对路径；TypeScript 通过 `rewriteRelativeImportExtensions` 把源码中的 `.ts` 相对引用改为产物中的 `.js`，避免给生产 CLI 增加路径别名加载器。[TypeScript 配置](https://www.typescriptlang.org/tsconfig/rewriteRelativeImportExtensions.html)
 
@@ -151,7 +151,7 @@ SPEC-runtime.md
 | 本地执行启动前检查 | `node --env-file=.env.local dist/cli/prestart.js` | 使用与 Docker 相同的迁移和检查逻辑；不会启动 Web |
 | 安装 Chromium 测试依赖 | `pnpm exec playwright install --with-deps chromium` | CI 安装浏览器与 Linux 依赖 |
 | Chromium 冒烟 | `pnpm exec playwright test --project=chromium --grep @smoke` | Playwright 配置启动真实生产产物 |
-| 构建本机架构镜像 | `docker build --tag ariso:runtime .` | 生成镜像，不发布 |
+| 在 Actions 构建当前 runner 架构镜像 | `docker build --tag ariso:runtime .` | 生成镜像，不发布 |
 | 验证镜像工具 | `docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs` | 检查工具、原生驱动和本模块样本 |
 | 启动本地容器 | `docker compose --env-file .env.local up --build --detach` | 从指定文件读取变量，再按 Compose 配置注入容器 |
 | 查看运行日志 | `docker compose --env-file .env.local logs --follow ariso` | 从 stdout/stderr 查看日志 |
@@ -159,7 +159,7 @@ SPEC-runtime.md
 
 `compose.yaml` 的服务名为 `ariso`，开发示例使用 `127.0.0.1:3000:3000` 端口映射，容器内显式设置 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`。Compose 从 `.env.local` 取两个密钥和日志级别，不把其中的本机 `DATA_DIR` 带入容器；示例挂载为 `./.data:/data`。生产部署者可改为自己的变量文件、挂载目录与反向代理入口。[Compose 变量文件规则](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/)
 
-`.prettierignore` 排除构建产物、测试输出及作为冻结输入的 `Ariso-PRD-v1.1.md`。格式化应用代码与新建工程文档时不改写原始 PRD。
+`.prettierignore` 排除构建产物、测试输出及作为冻结输入的 `docs/Ariso-PRD-v1.1.md`。格式化应用代码与新建工程文档时不改写原始 PRD。
 
 ESLint 作为独立检查执行，不使用已经移除的 `next lint`，也不把 `next build` 成功等同于代码检查通过。[Next ESLint 用法](https://nextjs.org/docs/app/api-reference/config/eslint)
 
@@ -332,9 +332,11 @@ CLI 使用现有 TypeScript 编译器产出 JavaScript，不引入另一套打�
 
 ### 10.2 双架构与发布规则
 
+用户于 2026-09-15 确认：Docker 镜像构建、容器运行验证及双架构检查统一由 GitHub Actions 执行，不要求在开发者本机安装或验证 Docker。下述验收以实际工作流结果为证据。
+
 每次涉及 Dockerfile、原生依赖或图片工具的修改，都验证 amd64 和 arm64 的最终镜像实际运行。可使用原生 runner 或模拟运行，但报告中要标明方式；只生成双架构 manifest 不等于两个架构都通过验证。
 
-版本沿用 PRD：`0.x` 开发版本，`1.0.0` 首个稳定版本；发布目标为 `ghcr.io/dnslin/ariso`。发布流程组合已经测试的两个架构镜像，并记录对应代码版本。
+版本沿用 PRD：`0.x` 开发版本，`1.0.0` 首个稳定版本；发布目标为 `ghcr.io/dnslin/ariso-next`。发布流程组合已经测试的两个架构镜像，并记录对应代码版本。
 
 升级说明要求先停止写入并备份整个数据目录。迁移后的回滚需要恢复备份；应用不自动备份、降级数据库或切换旧镜像。当前 Spec 工作不创建远程仓库、不推送镜像、不配置外部发布凭据。
 
@@ -431,6 +433,6 @@ pnpm exec playwright test --project=chromium --grep @smoke
 3. `media` 的 APNG、动态 AVIF 和其余完整格式矩阵，以及相应的资源上限和任务恢复。
 4. `identity` 接入后验证初始化码所在进程、全部秘密的预检，以及更换 BETTER_AUTH_SECRET 后会话失效。
 
-本轮只编写与检查规格文档。没有安装应用依赖，没有执行本文件中的应用测试、构建或 Docker 验证。当前环境未找到 Docker 命令；实施阶段需要在具备 Docker 的本机或 CI runner 完成相关验收。
+本轮只编写与检查规格文档。没有安装应用依赖，没有执行本文件中的应用测试、构建或 Docker 验证。当前环境未找到 Docker 命令；实施阶段由 GitHub Actions 完成相关构建和验收，本机不要求 Docker。
 
 评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](./tasks/plan.md) 推进，当前评审 [任务清单](./tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。

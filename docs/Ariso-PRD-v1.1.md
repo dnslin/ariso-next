@@ -1771,7 +1771,7 @@ busy_timeout
 发布到：
 
 ```text
-ghcr.io/dnslin/ariso
+ghcr.io/dnslin/ariso-next
 ```
 
 多架构：
@@ -1843,7 +1843,7 @@ S3、SMTP 和 GitHub OAuth 密钥由 Web 后台管理，并使用 `ARISO_ENCRYPT
 
 ### 24.5 仓库与旧版关系
 
-- 新版合并为一个 `dnslin/ariso` 仓库；
+- 新版合并为一个 `dnslin/ariso-next` 仓库；
 - `ariso-front` 归档，不继续分别维护；
 - 旧代码保留分支或 Tag，仅作为参考；
 - 新版从新的工程结构开始，不在旧代码中逐层删除重写；
