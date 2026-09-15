@@ -628,3 +628,61 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 首轮正文超时错误名称断言预期为 `AbortError`，实际 Node 24 返回 `TimeoutError`，修正后通过。另一次聚焦测试与构建重叠，复制正在重建的 `.next/standalone` 时失败；等待构建完成后顺序重跑聚焦与全量集成均通过，没有跳过失败用例。后续应保持完整构建先于产物测试。
 
 `code-review-and-quality` 独立复核确认原 P2 已解决，无新增问题。本次只修改测试，浏览器页面及生产行为未改变；沿用此前 Ego 验证。修复提交的 CI 和双架构 Docker 结果以 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)为准，推送后继续跟进；本机未运行 Docker。
+
+## RUNTIME-13：敏感配置加解密
+
+2026-09-15 在 `codex/issue-13-runtime-crypto` 实施 [Issue #13](https://github.com/dnslin/ariso-next/issues/13)。开始时工作区干净，从最新 `origin/main`（`90b69de`）创建分支。通过 `gh` 读取 Issue、评论和前置 Issue #5，并通过 GitHub 插件确认 Issue #13 无评论。RUNTIME-05 已合入 PR #31，相关验证已记录；Issue 正文的“未开始”及 Spec 的初始状态属于计划时描述。
+
+### 实际实现与调用方式
+
+`src/server/runtime/crypto.ts` 导出 `createSecretCrypto(encryptionKey)`，接收 `parseRuntimeEnv` 已校验的 32 字节密钥，返回 Spec 的 `encryptSecret(plaintext)` 和 `decryptSecret(ciphertext, context)`。调用方绑定已有配置即可复用两个方法；模块不读取环境变量、不依赖 Web 初始化、不访问数据库，也不创建全局密钥状态。没有新增依赖。
+
+```ts
+const { encryptSecret, decryptSecret } = createSecretCrypto(
+  config.encryptionKey,
+);
+const ciphertext = encryptSecret(plaintext);
+const secret = decryptSecret(ciphertext, 'storage/<id>/secretKey');
+```
+
+使用 Node 标准 AES-256-GCM：每次生成 12 字节随机 nonce，固定 16 字节认证标签，保存为 `base64(nonce || tag || ciphertext)`。解密在 `final()` 完成认证后才返回明文。格式错误保留配置位置，认证失败保留 Node 底层原因并提示恢复原部署密钥或数据备份，不附加明文、密文或密钥。依据为已安装 Node 24 类型定义及 [Node crypto 文档](https://nodejs.org/docs/latest-v24.x/api/crypto.html)。
+
+Node 的 Base64 解码会容忍部分非法字符和空白，因此通过重新编码比较拒绝非规范文本，避免被修改的字段被静默接受。参见 [Node Buffer 编码说明](https://nodejs.org/docs/latest-v24.x/api/buffer.html#buffers-and-character-encodings)。加密方法按 UTF-8 保留输入，不承担业务字段有效性校验；未配置秘密由业务方保留 `null`，不能用空字符串当作有效业务密钥。`context` 仅为配置位置，不作为认证附加数据，也不能传入秘密。
+
+### 测试证据
+
+- 15 项单元测试覆盖随机 nonce、中文/空字串/空白/NUL 往返、规定长度与编码、直接 Node 实现的双向互通、不同配置位置可读取同一密文、认证密钥变更不影响配置解密、错误加密密钥，以及 nonce/tag/密文内容篡改和非法编码。错误对象的检查包含 `cause`，验证不泄露测试秘密。
+- 5 项集成测试使用临时磁盘 SQLite、随机部署密钥及独立 Node 进程。写入进程退出后，读取进程解密真实保存的字段。错误密钥、修改密文和无效密文均非零退出，重新打开数据库后全部表结构和原记录保持不变；恢复原密钥可以再次读取。空库使用不同有效密钥后仍无表，测试表中的 `null` 保持未配置，不生成密钥校验记录。测试表和故障流程仅存在于测试代码中。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。使用本页既有 Node 24，临时 PATH 中的 `pnpm` 链接指向真实入口，保证独立构建子进程也使用 Node 24；没有修改全局环境。
+
+| 实际命令或检查                                                                                       | 结果                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `node --version` / `pnpm --version` / `pnpm exec node -p 'process.version + " " + process.execPath'` | 退出 0，Node v24.18.1、pnpm 11.19.0，子进程 Node 路径已确认                                                             |
+| `pnpm install --frozen-lockfile`                                                                     | 退出 0，锁文件不变                                                                                                      |
+| `pnpm exec vitest run --project unit tests/unit/runtime/crypto.test.ts`                              | 退出 0，15 项通过                                                                                                       |
+| `pnpm exec vitest run --project integration tests/integration/runtime/crypto.test.ts`                | 退出 0，5 项通过                                                                                                        |
+| `pnpm run lint`                                                                                      | 退出 0，零警告                                                                                                          |
+| `pnpm run format:check`                                                                              | 退出 0                                                                                                                  |
+| `pnpm run typecheck`                                                                                 | 退出 0，应用与 runtime 类型检查通过                                                                                     |
+| `pnpm run test:unit`                                                                                 | 退出 0，2 个文件、70 项通过                                                                                             |
+| `pnpm run build`                                                                                     | 退出 0，完整生产构建与 Standalone 打包成功                                                                              |
+| `pnpm run test:integration`                                                                          | 退出 0，9 个文件、62 项通过，约 22 秒，含隔离无密钥构建                                                                 |
+| `git diff --check`                                                                                   | 退出 0                                                                                                                  |
+| `ego-browser nodejs`                                                                                 | 退出 0，TaskSpace 12 验证生产首页、简体中文和标题、健康 200 / no-store / 精确 JSON、SVG 实际加载及 7 个 Next 脚本均 200 |
+
+首轮完整检查通过后，发现构建测试的子进程 PATH 仍可能调用系统 pnpm 包装器。改用临时 pnpm 链接后重新执行完整构建与 62 项集成测试，均通过。构建继续输出此前记录的可选 SQLite Debug 文件追踪诊断，实际发行驱动的查询、迁移和生产启动测试通过。Ego 冒烟使用现有 Ego Lite；TaskSpace、自建生产服务和临时数据已清理，没有下载浏览器。
+
+### 审计与剩余边界
+
+使用 `code-review-and-quality` 完成独立只读审计，按正确性、可读性、架构、安全和性能检查全部实现与测试，无 Critical / Required 发现。审计确认先完成认证再返回明文，密钥绑定不依赖 Web 状态，真实磁盘与跨进程证据成立。
+
+本次交付 RT-07 的加密和持久化失败语义。RUNTIME-14 尚未实现，当前生产启动入口没有业务秘密提供方；本次不能证明生产启动预检闭环。S3、SMTP、OAuth 的实际秘密字段及认证密钥变更后的会话失效验证仍由对应业务模块完成。冻结 PRD 和 Spec 未改写。本机未运行 Docker，未合并 PR、关闭 Issue、发布镜像或部署。
+
+### 远端验证
+
+实现提交 `89fefaf` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34953919540) 全部通过（1 分 28 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整生产构建和 62 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34953919535) 在 AMD64 和 ARM64 原生 runner 上均通过（分别 1 分 10 秒、1 分 22 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及验证产物导出。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+推送时系统 DNS 返回的 GitHub 地址连接超时，使用公共 DNS 返回地址进行单次 Git 连接后成功，没有修改系统 DNS 或仓库配置。先创建草稿 [PR #39](https://github.com/dnslin/ariso-next/pull/39)，补充本段记录后的最终状态以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/39/checks) 为准；全部检查通过后转为正式待评审。Issue 保持 OPEN，合并与分支清理由用户另行决定。

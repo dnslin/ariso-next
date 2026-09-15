@@ -288,7 +288,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-13：实现敏感配置加解密
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 使用 Node crypto 实现批准的密文格式，通过真实保存的密文验证错误不覆盖原值。
 
@@ -298,11 +298,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] AES-256-GCM、nonce 和 tag 长度及编码遵循 Spec；相同明文两次密文不同且都可解密。
-- [ ] 错误密钥、修改或无效密文明确失败，错误包含配置位置且不泄露秘密。
-- [ ] 数据库里的原密文在失败后保持原值，未生成额外密钥校验记录。
+- [x] AES-256-GCM、nonce 和 tag 长度及编码遵循 Spec；相同明文两次密文不同且都可解密。
+- [x] 错误密钥、修改或无效密文明确失败，错误包含配置位置且不泄露秘密。
+- [x] 数据库里的原密文在失败后保持原值，未生成额外密钥校验记录。
 
 **验证：** `pnpm exec vitest run --project unit tests/unit/runtime/crypto.test.ts`；`pnpm exec vitest run --project integration tests/integration/runtime/crypto.test.ts`；`pnpm run typecheck`。
+
+**实施记录（2026-09-15）：** 15 项加密单元、5 项真实磁盘与独立进程测试通过；完整 70 项单元、62 项集成、lint、格式、类型和生产构建通过。独立审计无阻塞发现，Ego Lite 生产冒烟通过。密钥由已有配置显式绑定，不新增依赖或业务表。实际证据和远端状态见 [开发记录](../development.md#runtime-13敏感配置加解密)；启动预检仍由 RUNTIME-14 验收。
 
 ### RUNTIME-14：验证持久化秘密的启动预检
 
