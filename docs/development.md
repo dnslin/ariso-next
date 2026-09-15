@@ -269,4 +269,6 @@ Ego 回归：复用 Ego Lite，`ego-browser nodejs` 在 TaskSpace 2 访问 `http
 
 此任务只完成 RT-03 的配置解析部分。prestart 调用、HOST 到 HOSTNAME 的映射、目录可写性、端口占用导致进程退出及 Web 启动阻断由后续任务验证。尚未创建 integration 项目或空测试。Ego 视口模拟不代表手机实机或跨浏览器验收。
 
-CI 与 AMD64/ARM64 Docker 工作流沿用现有配置，远端结果待本次 PR 检查后补充；Docker 不在本机执行，不发布镜像或部署。
+提交 `62acd29` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34934123550) 全部通过（40 秒），包含冻结安装、lint、格式、类型、55 项单元测试与生产构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34934123519) 的 AMD64（1 分 13 秒）和 ARM64（1 分 8 秒）原生 runner 均通过构建、架构断言、容器启动、首页/SVG/Next 脚本验证和镜像 artifact 导出。Docker 不在本机执行，没有发布到镜像仓库或部署。
+
+本节证据对应上述实现提交；补充文档后的最终提交检查由 [PR #30 检查页](https://github.com/dnslin/ariso-next/pull/30/checks) 记录。
