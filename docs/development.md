@@ -117,7 +117,7 @@ curl --fail --silent --show-error http://127.0.0.1:3000/runtime.svg
 
 E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)，复用 Ego Lite，不下载配套 Chrome/Chromium。使用 `ego-browser nodejs` 在一个 TaskSpace 中访问自建的 3000 端口服务，验证中文页面、标题、SVG 实际加载、手机与桌面布局，并记录实际结果及必要截图。完成后结束 TaskSpace 并停止自建服务。后续 RUNTIME-22 再接入生产服务与健康接口。
 
-本次仅修改文档约定，尚未执行 ego 验证。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
+切换约定时尚未执行 ego 验证；现已补充，见本页末尾的 Ego 浏览器验证记录。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
 
 ### 历史验证记录（切换 ego 前）
 
@@ -174,4 +174,25 @@ E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/S
 
 RUNTIME-04 提供真实单元测试，RUNTIME-11 接入真实集成测试与完整构建；RUNTIME-22、23 接入 ego-browser 验证并记录实际环境，RUNTIME-24 在 Actions 中验证镜像。不添加空测试脚本或预先跳过的测试步骤。
 
-本次仅本地实现与验证，尚未推送分支或运行远端 CI，因此 RT-14、Issue #3 的远端验收及 K1 完整证据仍未完成。Docker、Linux 原生依赖和双架构未在本次本地验证。
+用户于 2026-09-15 确认：当前阶段无需 CI 和 Docker 验证。远端 CI、Docker、Linux 原生依赖和双架构留待后续阶段，不作为本阶段完成条件，也不因此标记 RT-14 已通过。现有 CI 配置保留，尚未推送或运行。
+
+### Ego 浏览器验证（2026-09-15）
+
+使用 `ego-browser` 技能和现有 Ego Lite，在同一个 TaskSpace（ID 1）中验证本分支的生产构建。浏览器报告 Chrome 152；本机为 macOS arm64。通过 `ego-browser nodejs` 执行真实浏览器操作和 Node 断言，没有下载浏览器或运行 Playwright。
+
+测试服务命令：`/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3103`。Next 对 Standalone 配置提示正式入口应使用 `.next/standalone/server.js`；本次只验证构建页面，不代表 Standalone 独立打包验收。
+
+| 检查                                                  | 实际结果                                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `page.goto`、`page.snapshot` 与页面断言               | 标题为“Ariso · 工程状态”，`html lang` 为 `zh-CN`，工程状态与功能未开放文案正确 |
+| 等待图片加载并检查 `naturalWidth`                     | `/runtime.svg` 实际加载，原始宽度为 64                                         |
+| 浏览器 `page.fetch('/runtime.svg')`                   | HTTP 200，响应含 SVG 内容                                                      |
+| CDP 调整视口，逐一检查 360、390、430、768、1440 × 900 | 页面宽度与视口一致；无横向溢出，主内容位于视口内，状态标题可见                 |
+| 重载前注册 `error`、`unhandledrejection` 监听         | 全部视口检查均未捕获异常                                                       |
+| 390 和 1440 宽度截图人工检查                          | 文字清晰，图片正常，卡片与文案没有截断                                         |
+
+全部浏览器断言退出 0。本地原始结果为 `test-results/ego-runtime-verification.json`，截图为 `test-results/ego-runtime-390.png` 和 `test-results/ego-runtime-1440.png`；这些输出按既有规则忽略，不提交到 Git。
+
+本次为真实浏览器中的视口宽度模拟，不代表手机实机或跨浏览器兼容性验收。当前页面没有可操作表单或业务按钮，因此没有虚构登录、上传等交互测试。
+
+验证完成后，`task.finish({ keep: [] })` 成功关闭 TaskSpace，测试服务以 SIGTERM 停止。文档格式检查与 `git diff --check` 均退出 0。
