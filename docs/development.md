@@ -679,4 +679,10 @@ Node 的 Base64 解码会容忍部分非法字符和空白，因此通过重新�
 
 使用 `code-review-and-quality` 完成独立只读审计，按正确性、可读性、架构、安全和性能检查全部实现与测试，无 Critical / Required 发现。审计确认先完成认证再返回明文，密钥绑定不依赖 Web 状态，真实磁盘与跨进程证据成立。
 
-本次交付 RT-07 的加密和持久化失败语义。RUNTIME-14 尚未实现，当前生产启动入口没有业务秘密提供方；本次不能证明生产启动预检闭环。S3、SMTP、OAuth 的实际秘密字段及认证密钥变更后的会话失效验证仍由对应业务模块完成。冻结 PRD 和 Spec 未改写。本机未运行 Docker，远端 CI 及 AMD64/ARM64 镜像结果待记录；未合并 PR、关闭 Issue、发布镜像或部署。
+本次交付 RT-07 的加密和持久化失败语义。RUNTIME-14 尚未实现，当前生产启动入口没有业务秘密提供方；本次不能证明生产启动预检闭环。S3、SMTP、OAuth 的实际秘密字段及认证密钥变更后的会话失效验证仍由对应业务模块完成。冻结 PRD 和 Spec 未改写。本机未运行 Docker，未合并 PR、关闭 Issue、发布镜像或部署。
+
+### 远端验证
+
+实现提交 `89fefaf` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34953919540) 全部通过（1 分 28 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整生产构建和 62 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34953919535) 在 AMD64 和 ARM64 原生 runner 上均通过（分别 1 分 10 秒、1 分 22 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及验证产物导出。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+推送时系统 DNS 返回的 GitHub 地址连接超时，使用公共 DNS 返回地址进行单次 Git 连接后成功，没有修改系统 DNS 或仓库配置。先创建草稿 [PR #39](https://github.com/dnslin/ariso-next/pull/39)，补充本段记录后的最终状态以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/39/checks) 为准；全部检查通过后转为正式待评审。Issue 保持 OPEN，合并与分支清理由用户另行决定。
