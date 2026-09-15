@@ -310,4 +310,8 @@ Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器�
 
 ### 审计与远端检查
 
-按 `code-review-and-quality` 完成独立审计，发现一项 P2：已有目录权限 0666 时虽然可写，但不能进入并创建文件。已将权限检查改为 `W_OK | X_OK`，并将测试扩展为 0555 与 0666 两个真实故障样本。修复后 `pnpm run test:integration`（9 项）、lint、typecheck 与 `pnpm exec next build` 全部退出 0。审计复核与最终远端结果见本节后续记录。
+按 `code-review-and-quality` 完成独立审计，发现一项 P2：已有目录权限 0666 时虽然可写，但不能进入并创建文件。已将权限检查改为 `W_OK | X_OK`，并将测试扩展为 0555 与 0666 两个真实故障样本。修复后 `pnpm run test:integration`（9 项）、lint、typecheck 与 `pnpm exec next build` 全部退出 0。独立审计复核确认 P2 已解决，无剩余阻塞发现；审计方独立重跑 9 项集成测试，退出 0（5.86 秒）。
+
+提交 `4a09cd3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34936986008) 全部通过（46 秒），包含冻结安装、lint、格式、类型、55 项单元测试、9 项真实集成测试及生产构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34936985935) 在 AMD64（1 分 12 秒）和 ARM64（1 分 5 秒）原生 runner 上完成镜像构建、架构断言、容器启动、页面及资源验证、清理和 artifact 导出。`gh run watch 34936986008 --exit-status` 与 `gh run watch 34936985935 --exit-status` 均退出 0。没有发布镜像或部署。
+
+上述远端记录对应最终实现提交；补充本段文档后的检查以 [PR #31 检查页](https://github.com/dnslin/ariso-next/pull/31/checks) 为准。Issue 保持 OPEN，PR 由用户评审和合并。
