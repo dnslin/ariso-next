@@ -442,6 +442,10 @@ Ego Lite TaskSpace 5 访问实际 `dev` 服务，标题、zh-CN、工程状态�
 
 ### 审计、远端检查与限制
 
-已使用 `code-review-and-quality` 完成独立只读审计，未发现 Critical 或 Required 问题；审计方另用 Node 24 执行聚焦进程测试，7/7 通过。本次 PR 的 CI、Docker AMD64/ARM64 检查待推送后执行，取得结果后补充；当前不标记远端通过。本机不执行 Docker，不发布镜像或部署。
+已使用 `code-review-and-quality` 完成独立只读审计，未发现 Critical 或 Required 问题；审计方另用 Node 24 执行聚焦进程测试，7/7 通过。本机不执行 Docker，不发布镜像或部署。
+
+提交 `e301558` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34941956827) 全部通过（54 秒），包含冻结安装、lint、格式、双配置类型检查、55 项单元测试、runtime 编译、34 项集成测试与 Next 构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34941956858) 的 AMD64（1 分 14 秒）和 ARM64（1 分 11 秒）原生 runner 均完成构建、架构断言、容器启动、真实健康响应、页面/SVG/Next 脚本验证与 artifact 导出。`gh run watch 34941956827 --exit-status --interval 10` 和 `gh run watch 34941956858 --exit-status --interval 10` 均退出 0，没有远端失败或重跑。
+
+补充本段记录后的最终检查见 [PR #34 检查页](https://github.com/dnslin/ariso-next/pull/34/checks)。最终推送前 `pnpm run format:check`、`git diff --check` 均通过。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户另行决定。
 
 本次验收覆盖真实健康处理器的数据库故障；真实 HTTP 故障注入仍由 RUNTIME-12 验证。完整 build/start 打包、生产入口、容器迁移与持久化重启仍属后续 Issue，不能由当前临时 `/data` 的容器健康检查推断通过。日志共享入口和全量脱敏规则仍由日志任务实现，本次只记录固定健康 SQL 的错误。没有实现所有者初始化、外部存储探测或业务任务消费，冻结 PRD 未改写。
