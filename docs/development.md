@@ -406,3 +406,46 @@ Ego Lite TaskSpace 5 访问实际 `dev` 服务，标题、zh-CN、工程状态�
 提交 `d1672c3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34940404861) 全部通过（39 秒），包含冻结安装、lint、格式、双配置类型检查、55 项单元测试、runtime 编译、27 项集成测试与 Next 构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34940404839) 的 AMD64（1 分 13 秒）和 ARM64（1 分 5 秒）原生 runner 均通过镜像构建、架构断言、容器启动、页面/SVG/Next 脚本验证及 artifact 导出。`gh run watch 34940404861 --exit-status --interval 10` 与 `gh run watch 34940404839 --exit-status --interval 10` 均退出 0。远端没有失败或重跑。
 
 补充本段文档后的最终检查以 [PR #33 检查页](https://github.com/dnslin/ariso-next/pull/33/checks) 为准。最终推送前 `pnpm run format:check`、`git diff --check` 均退出 0，冻结 PRD、锁文件及 `next-env.d.ts` 未变化。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户决定。
+
+## RUNTIME-08：Web 初始化与健康响应
+
+2026-09-15 在 `codex/runtime-08-web-health` 实施 [Issue #8](https://github.com/dnslin/ariso-next/issues/8)。基于最新 main `e1051cd`，前置 [PR #33](https://github.com/dnslin/ariso-next/pull/33) 已合并，最终 CI 和 Docker 双架构检查通过。开始时工作区干净。
+
+### 实际交付
+
+- `src/instrumentation.ts` 按 [Next 官方 instrumentation 约定](https://nextjs.org/docs/app/guides/instrumentation)，仅在 Node 运行时且非生产构建阶段动态加载启动模块。另核对已安装 Next 16.3.5 的 instrumentation 注册源码、构建阶段变量和常量定义。
+- `startup/server-start.ts` 复用已有配置解析及 SQLite API，同步完成有限初始化后保存到 `globalThis`。重复调用和模块重载复用同一配置与连接；失败向上传播，不保存失败状态。目录与迁移仍由 prestart 准备。健康请求只读取已初始化的实例，不重新打开连接。
+- `GET /api/health` 按请求执行真实 `SELECT 1`。无业务表也可返回 200 与 `{"status":"ok"}`；运行实例缺失或实际连接关闭时返回 503 与 `{"status":"unavailable"}`。两者均设置 `Cache-Control: no-store`。错误由现有 Pino 依赖记录 `err`、模块名和阶段，响应不返回配置、密钥或路径。
+- 原有 `db.ts` 无需修改，没有新增依赖。Docker 工作流为现有页面镜像提供随机临时密钥和可写 `/data`，增加健康状态、响应体和缓存头断言。继续使用标准 `server.js`，未提前接入完整容器 prestart。
+
+### 本地验证
+
+平台为 macOS arm64，Node `v24.18.1`、pnpm `11.19.0`，使用本页开头记录的绝对路径。开发脚本的嵌套 pnpm 通过临时 PATH 入口固定同一 Node；`pnpm exec node -p 'process.version + " " + process.execPath'` 实际输出 Node 24 路径。
+
+| 实际命令                                                                                                                | 结果                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project integration tests/integration/runtime/server-start.test.ts`                             | 退出 0，7 项通过                                                                          |
+| `pnpm run lint`                                                                                                         | 退出 0，零警告                                                                            |
+| `pnpm run format:check`                                                                                                 | 退出 0                                                                                    |
+| `pnpm run typecheck`                                                                                                    | 修正测试辅助参数类型后退出 0，应用与 runtime 配置均通过                                   |
+| `pnpm run test:unit`                                                                                                    | 退出 0，55 项通过                                                                         |
+| `pnpm run build:runtime`                                                                                                | 退出 0                                                                                    |
+| `pnpm run test:integration`                                                                                             | 退出 0，34 项通过                                                                         |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY DATA_DIR=<临时目录>/data node node_modules/next/dist/bin/next build` | 修正上述测试类型后退出 0；随后 `test ! -e <临时目录>/data` 退出 0；健康接口标记为动态路由 |
+| `pnpm run dev`                                                                                                          | 使用临时 `.env.local`、随机密钥和仓库外数据目录，prestart 成功后 Next Ready               |
+| `curl --fail --silent --show-error --include http://127.0.0.1:3000/api/health`                                          | 退出 0，HTTP 200、`{"status":"ok"}`、`cache-control: no-store`                            |
+| `ego-browser nodejs`                                                                                                    | 退出 0，TaskSpace 6 访问真实首页并通过浏览器 fetch 断言健康响应与缓存头                   |
+
+7 项测试均运行独立 Node 子进程，使用临时磁盘目录和随机密钥。覆盖模块导入无数据库副作用、Edge/无 runtime/生产构建不初始化、缺失初始化时 503、Node 注册并查询真实空库、重复注册及模块重载复用、真实关闭连接后的 503 和错误日志、初始化失败传播及修复后重试。没有数据库 mock、占位业务表或生产故障入口。
+
+首次类型检查及生产构建失败原因为测试的环境覆盖参数误用完整 `ProcessEnv`；改为 `Partial<ProcessEnv>` 后相关检查重跑通过。Ego 验证没有下载浏览器或使用 Playwright。TaskSpace 已结束，自建服务已停止，临时配置与数据目录已删除，Next 自动修改的 `next-env.d.ts` 已恢复。
+
+### 审计、远端检查与限制
+
+已使用 `code-review-and-quality` 完成独立只读审计，未发现 Critical 或 Required 问题；审计方另用 Node 24 执行聚焦进程测试，7/7 通过。本机不执行 Docker，不发布镜像或部署。
+
+提交 `e301558` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34941956827) 全部通过（54 秒），包含冻结安装、lint、格式、双配置类型检查、55 项单元测试、runtime 编译、34 项集成测试与 Next 构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34941956858) 的 AMD64（1 分 14 秒）和 ARM64（1 分 11 秒）原生 runner 均完成构建、架构断言、容器启动、真实健康响应、页面/SVG/Next 脚本验证与 artifact 导出。`gh run watch 34941956827 --exit-status --interval 10` 和 `gh run watch 34941956858 --exit-status --interval 10` 均退出 0，没有远端失败或重跑。
+
+补充本段记录后的最终检查见 [PR #34 检查页](https://github.com/dnslin/ariso-next/pull/34/checks)。最终推送前 `pnpm run format:check`、`git diff --check` 均通过。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户另行决定。
+
+本次验收覆盖真实健康处理器的数据库故障；真实 HTTP 故障注入仍由 RUNTIME-12 验证。完整 build/start 打包、生产入口、容器迁移与持久化重启仍属后续 Issue，不能由当前临时 `/data` 的容器健康检查推断通过。日志共享入口和全量脱敏规则仍由日志任务实现，本次只记录固定健康 SQL 的错误。没有实现所有者初始化、外部存储探测或业务任务消费，冻结 PRD 未改写。

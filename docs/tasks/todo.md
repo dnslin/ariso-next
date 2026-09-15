@@ -1,7 +1,7 @@
 # 任务清单：runtime
 
 - 模块：`runtime`。
-- 状态：已进入实施；RUNTIME-01–04 的已合入结果见 [开发记录](../development.md)，RUNTIME-05 已实现并验证，待 PR 评审。完成情况以开发记录为准，后续能力仍是计划。
+- 状态：已进入实施；RUNTIME-01–07 已合入，RUNTIME-08 已实现并通过本地验证，审计与远端检查见 [开发记录](../development.md#runtime-08web-初始化与健康响应)。完成情况以开发记录为准，后续能力仍是计划。
 - 日期：2026-09-12。
 - 依据：[runtime Spec](../SPEC-runtime.md)、[实现计划](./plan.md)、[能力地图](../CAPABILITY-MAP.md)。
 - 用户已要求从实现计划推进到任务拆解。本清单通过后进入 Implement。
@@ -172,11 +172,11 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验证：** `pnpm run build:runtime`；`pnpm exec vitest run --project integration tests/integration/runtime/prestart.test.ts`；`pnpm run typecheck`。进程测试运行编译后的 CLI，使用自己的临时环境。
 
-**实施记录：** CLI 与 7 项集成测试已完成，本地检查和 Ego 回归通过；审计及远端检查证据见 [开发记录](../development.md#runtime-07独立-prestart)。独立审计无阻塞项，CI 与 Docker 双架构检查通过；[PR #33](https://github.com/dnslin/ariso-next/pull/33) 待评审。
+**实施记录：** CLI 与 7 项集成测试已完成，本地检查和 Ego 回归通过；审计及远端检查证据见 [开发记录](../development.md#runtime-07独立-prestart)。独立审计无阻塞项，CI 与 Docker 双架构检查通过；[PR #33](https://github.com/dnslin/ariso-next/pull/33) 已合入。
 
 ### RUNTIME-08：接通 Web 初始化与健康响应
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 通过官方 instrumentation 初始化 Web 连接，让健康接口反映真实数据库状态。
 
@@ -186,11 +186,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] 仅 Node 运行时执行有限初始化，重复初始化复用同一进程连接；构建期间不建立数据库。
-- [ ] 未初始化站点也可访问健康接口，真实 SELECT 1 成功返回 200 和 no-store。
-- [ ] 实际关闭测试连接后，调用真实健康处理器得到 503，响应不含秘密；本模块不探测外部存储或启动业务任务。
+- [x] 仅 Node 运行时执行有限初始化，重复初始化复用同一进程连接；构建期间不建立数据库。
+- [x] 未初始化站点也可访问健康接口，真实 SELECT 1 成功返回 200 和 no-store。
+- [x] 实际关闭测试连接后，调用真实健康处理器得到 503，响应不含秘密；本模块不探测外部存储或启动业务任务。
 
 **验证：** `pnpm run build:runtime`；`pnpm exec vitest run --project integration tests/integration/runtime/server-start.test.ts`；`pnpm run dev`，另一终端执行 `curl --fail --silent --show-error http://127.0.0.1:3000/api/health` 后停止自建服务。真实 HTTP 故障覆盖在 RUNTIME-12 完成。
+
+**实施记录（2026-09-15）：** 复用原有数据库 API，新增 3 个生产文件与 1 个集成测试文件；现有 Docker 工作流增加临时运行配置和真实健康断言。7 项聚焦进程测试、55 项单元测试、34 项集成测试、lint、格式、双配置类型检查、无密钥构建和 Ego Lite 验证通过。审计及远端结果见 [开发记录](../development.md#runtime-08web-初始化与健康响应)。完整生产入口和容器 prestart 仍由后续任务交付。
 
 ### RUNTIME-09：组装可独立启动的生产目录
 
