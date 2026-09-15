@@ -723,4 +723,10 @@ runPreflight(env, prepare) 在真实迁移成功后、关闭短期连接之前�
 
 已使用 code-review-and-quality 完成独立只读审计，检查正确性、可读性、架构、安全和性能，无阻塞发现。审计覆盖三个代码文件及 CLI、入口脚本、迁移、加解密、打包和进程测试调用链；审计者未重复执行测试，实际验证由主任务完成。
 
-RT-08 本次仅验证 runtime 启动组合；S3、SMTP、OAuth 的真实字段接入仍由所属业务模块验收，结构化启动日志归 RUNTIME-15–17。本机不执行 Docker；AMD64、ARM64 的容器构建与运行验证交给现有 GitHub Actions，远端结果待补充。冻结 PRD 和 Spec 未修改，不合并 PR、关闭 Issue、发布镜像或部署。
+RT-08 本次仅验证 runtime 启动组合；S3、SMTP、OAuth 的真实字段接入仍由所属业务模块验收，结构化启动日志归 RUNTIME-15–17。本机不执行 Docker；AMD64、ARM64 的容器构建与运行验证由现有 GitHub Actions 完成，证据见下节。冻结 PRD 和 Spec 未修改，不合并 PR、关闭 Issue、发布镜像或部署。
+
+### 远端验证
+
+实现提交 5813866 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34962206938) 全部通过（1 分 56 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整构建和 66 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34962206956) 的 AMD64、ARM64 原生 runner 均通过（分别 1 分 20 秒、1 分 15 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及产物导出。两个 gh run watch --exit-status 均退出 0，无远端失败或修复重跑。
+
+草稿 [PR #40](https://github.com/dnslin/ariso-next/pull/40) 已关联 Issue #14；补充本段文档后的最终提交检查以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/40/checks) 为准，全部通过后转为正式待评审。Issue 保持开放，合并和分支清理由用户另行指示。
