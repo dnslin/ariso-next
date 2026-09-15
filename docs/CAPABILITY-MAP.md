@@ -11,7 +11,7 @@
 
 每个模块负责自己的业务规则、数据和对外提供的接口。跨模块流程由启动入口、Route Handler 或页面组合。表中的依赖表示模块内部使用的能力；入口同时调用多个模块的情况单独列在第 3 节，不要求被调用模块互相调用。
 
-模块 ID 保持稳定。对应 Spec 放在项目根目录，以本表作为索引。[SPEC-runtime.md](./SPEC-runtime.md) 已通过评审，[runtime 实现计划](./tasks/plan.md) 已确认推进，[任务清单](./tasks/todo.md) 待评审；其余 `SPEC-*.md` 为计划文件，尚未创建。
+模块 ID 保持稳定。对应 Spec 放在 `docs/` 目录，以本表作为索引。[SPEC-runtime.md](./SPEC-runtime.md) 已通过评审，[runtime 实现计划](./tasks/plan.md) 已确认推进，[任务清单](./tasks/todo.md) 待评审；其余 `SPEC-*.md` 为计划文件，尚未创建。
 
 ## 2. 模块与直接依赖
 

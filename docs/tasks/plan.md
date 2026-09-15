@@ -4,7 +4,7 @@
 - 状态：用户于 2026-09-12 确认继续推进任务拆解；当前进入 Phase 3（Tasks），尚未开始实施。
 - 依据：[已批准 runtime Spec](../SPEC-runtime.md)、[已批准能力地图](../CAPABILITY-MAP.md)。
 - 日期：2026-09-12。
-- 任务清单：[tasks/todo.md](./todo.md)，已按下列阶段拆解，当前待评审。
+- 任务清单：[docs/tasks/todo.md](./todo.md)，已按下列阶段拆解，当前待评审。
 
 ## 1. 本次交付目标
 
@@ -14,7 +14,7 @@
 
 ## 2. 当前起点与实施前提
 
-制定本计划时，仓库只有 PRD、能力地图和 runtime Spec，没有 `package.json`、应用源码或现存任务清单。检查确认 `tasks/plan.md` 与 `tasks/todo.md` 原先不存在，没有覆盖其他工作。当前已新增计划与任务清单，应用工程仍未创建。
+制定本计划时，仓库只有 PRD、能力地图和 runtime Spec，没有 `package.json`、应用源码或现存任务清单。检查确认 `docs/tasks/plan.md` 与 `docs/tasks/todo.md` 原先不存在，没有覆盖其他工作。当前已新增计划与任务清单，应用工程仍未创建。
 
 本次环境检查结果：
 
@@ -22,11 +22,11 @@
 | --- | --- | --- |
 | Node.js | 26.8.2 | 在 Node 24 环境执行目标版本验证；保留用户现有环境 |
 | pnpm | 11.19.0 | 与 Spec 一致，建立项目后记录到 packageManager |
-| Docker | 未找到命令 | 在有 Docker 的本机或可用 runner 上完成镜像验收 |
+| Docker | 未找到命令 | 由 GitHub Actions 完成镜像构建和验证，不要求本机 Docker |
 | Git | 仓库已初始化，文档尚未提交 | 代码实施时沿用 PRD 的分支与 PR 工作流 |
 | 应用检查 | 暂无可执行脚本 | 脚本随着实际能力加入，不能用空测试返回成功 |
 
-实施开始时复查 `node --version`、`pnpm --version`、`docker version` 和 `docker buildx version`。Node 24 和 Docker/双架构执行环境的具体位置需要在首批任务中确定。Docker 暂不可用不妨碍本地代码与测试推进，但 RT-12、RT-13 及 Linux 产物验证必须保持未完成，直到实际执行。
+实施开始时在本机复查 `node --version`、`pnpm --version`。用户于 2026-09-15 确认 Docker 镜像构建、容器运行验证和双架构检查统一由 GitHub Actions 执行，不要求本机安装或验证 Docker。`docker version` 和 `docker buildx version` 在 Actions 中检查；RT-12、RT-13 及 Linux 产物验收以实际工作流结果为准。
 
 ## 3. 沿用的架构决策
 
@@ -41,7 +41,7 @@
 
 ## 4. 实施阶段与依赖
 
-下表是已确认推进的实施顺序。逐项任务记录在 `tasks/todo.md`，每项都有可运行或可独立验证的结果。
+下表是已确认推进的实施顺序。逐项任务记录在 `docs/tasks/todo.md`，每项都有可运行或可独立验证的结果。
 
 | 阶段 | 可观察的交付结果 | 依赖 | 主要涉及位置 |
 | --- | --- | --- | --- |
@@ -150,7 +150,7 @@ pnpm exec playwright test --project=chromium --grep @smoke
 
 | 风险 | 影响 | 处理与验证时点 |
 | --- | --- | --- |
-| 当前 Node 为 26，Docker 尚不可用 | 目标版本和容器结果无法在现状下完成验收 | 首批任务明确 Node 24 和 Docker 执行位置；对应结果未执行就保持未完成 |
+| 当前 Node 为 26，Docker 尚不可用 | 目标版本和容器结果无法在现状下完成验收 | 本地使用 Node 24；Docker 构建与验证由 GitHub Actions 执行，对应结果未执行就保持未完成 |
 | CLI 与 Next 的产物追踪遗漏不同 | 本机能启动，部署目录缺迁移器或原生文件 | R2 提前执行脱离开发目录的启动测试；R4 在 Linux 双架构复验 |
 | 构建时意外执行运行初始化 | 构建索要秘密、写入数据库或启动任务 | R1 建立隔离构建方式，R2 接入启动代码后重复验证 |
 | 迁移失败后误启动或改写已有进度 | 数据与应用版本不匹配 | R2 用故障和旧/新迁移集合验证整个进程入口 |
