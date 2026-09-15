@@ -131,7 +131,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-06：实现向前迁移
 
-- [x] 完成迁移实现与本地验证；审计及远端检查结果见开发记录。
+- [x] 完成实现、验证和独立审计；待 PR 评审与合并。
 
 **说明：** 使用 Drizzle 现成迁移器和进度表，先以独立 SQL 样本证明正常、失败和版本过新行为。
 
@@ -147,7 +147,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验证：** `pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts`；`pnpm run typecheck`。
 
-**实施记录（2026-09-15）：** 官方迁移器、空生产 journal 和真实磁盘迁移测试已实现。本地检查及 Ego 页面回归通过。prestart 与 Web 启动阻断仍由后续任务验收；证据见 [开发记录](../development.md#runtime-06向前迁移)。
+**实施记录（2026-09-15）：** 官方迁移器、空生产 journal 和真实磁盘迁移测试已实现。本地检查、Ego 页面回归、独立审计、CI 与双架构 Docker 页面检查通过。prestart 与 Web 启动阻断仍由后续任务验收；证据见 [开发记录](../development.md#runtime-06向前迁移)。
 
 ### 检查点 K2
 

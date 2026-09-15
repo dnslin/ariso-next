@@ -354,4 +354,8 @@ Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器�
 
 K2 的配置、磁盘及迁移测试已取得实际结果，页面仍可构建。迁移尚未接入 prestart 或 Web；进程非零退出、阻止监听、完整运行产物及容器数据库迁移仍由后续任务验收。当前 Docker 工作流只证明页面镜像和资源可运行，不代表 RT-05/RT-06 的最终镜像验收。Ego 视口模拟不代表手机实机或跨浏览器覆盖。冻结 PRD 不变。
 
-已使用 `code-review-and-quality` 完成独立审计，当前无阻塞发现；审计建议的敏感 SQL 诊断回归已补充并通过。远端 CI/Docker 检查待 PR 创建后执行，尚未标为通过。
+已使用 `code-review-and-quality` 完成独立审计，无阻塞发现；审计建议的敏感 SQL 诊断回归已补充并通过。审计方使用 Node 24 独立重跑迁移测试，11/11 通过、退出 0。
+
+提交 `ab7d939` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34938419364) 全部通过（39 秒），包含冻结安装、lint、格式、类型、单元/集成测试与构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34938419445) 的 AMD64（1 分 11 秒）和 ARM64（1 分 12 秒）原生 runner 均通过构建、架构断言、容器启动、页面/SVG/Next 脚本验证、清理与 artifact 导出。`gh run watch 34938419364 --exit-status --interval 10` 和 `gh run watch 34938419445 --exit-status --interval 10` 均退出 0。没有本机 Docker 验证、镜像发布或部署。
+
+以上链接记录实现提交的检查。补充文档后的最终提交状态见 [PR #32 检查页](https://github.com/dnslin/ariso-next/pull/32/checks)。PR 待用户评审与合并，未操作 Issue 关闭或分支清理。
