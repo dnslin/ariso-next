@@ -1,7 +1,7 @@
 # 实现计划：runtime
 
 - 模块：`runtime`。
-- 状态：已进入实施。RUNTIME-01–07 已合入；RUNTIME-08 已实现 Web 连接初始化与真实健康接口，本地检查和 Ego 验证通过，审计与远端检查结果见 [开发记录](../development.md#runtime-08web-初始化与健康响应)。后续阶段仍是计划。
+- 状态：已进入实施。RUNTIME-01–08 已合入；RUNTIME-09 已接通完整 build/start 和隔离生产目录，本地验证通过，独立审计及远端结果见 [开发记录](../development.md#runtime-09可独立启动的生产目录)。后续阶段仍是计划。
 - 依据：[已批准 runtime Spec](../SPEC-runtime.md)、[已批准能力地图](../CAPABILITY-MAP.md)。
 - 日期：2026-09-12。
 - 任务清单：[docs/tasks/todo.md](./todo.md)，已按下列阶段拆解，当前待评审。

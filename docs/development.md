@@ -449,3 +449,42 @@ Ego Lite TaskSpace 5 访问实际 `dev` 服务，标题、zh-CN、工程状态�
 补充本段记录后的最终检查见 [PR #34 检查页](https://github.com/dnslin/ariso-next/pull/34/checks)。最终推送前 `pnpm run format:check`、`git diff --check` 均通过。PR 在最终检查通过后转为正式待评审；合并、Issue 关闭和分支清理由用户另行决定。
 
 本次验收覆盖真实健康处理器的数据库故障；真实 HTTP 故障注入仍由 RUNTIME-12 验证。完整 build/start 打包、生产入口、容器迁移与持久化重启仍属后续 Issue，不能由当前临时 `/data` 的容器健康检查推断通过。日志共享入口和全量脱敏规则仍由日志任务实现，本次只记录固定健康 SQL 的错误。没有实现所有者初始化、外部存储探测或业务任务消费，冻结 PRD 未改写。
+
+## RUNTIME-09：可独立启动的生产目录
+
+2026-09-15 在 `codex/runtime-09-standalone` 实施 [Issue #9](https://github.com/dnslin/ariso-next/issues/9)。从最新 `origin/main` 建分支，前置 Issue #8 已关闭且实现已合入，Issue #9 无评论。开始时工作区干净。平台为 macOS arm64、Node 24.18.1、pnpm 11.19.0；临时 PATH 入口固定嵌套 pnpm 与子进程使用同一 Node 24。
+
+### 实际交付与选择
+
+- `pnpm run build` 依次编译 CLI、执行 Next 构建和组装 Standalone；`pnpm run start` 执行产物内的入口脚本。
+- 按 [Next Standalone 文档](https://nextjs.org/docs/app/api-reference/config/next-config-js/output) 和已安装框架实现，复用 Next 随包的 `@vercel/nft` 文件追踪器补齐 CLI 实际依赖图。保留包间相对符号链接，复制迁移、public 与 `.next/static`，不增加依赖或手工维护传递依赖名单。标准 `server.js` 和 Next 写出的 `package.json` 不修改；既有 `next.config.ts` 无需增加重复配置。
+- 入口切换到自身目录，等待 prestart 成功后将 HOST 映射到 HOSTNAME，最后 `exec node server.js`。默认 HOST 为 `0.0.0.0`；空 HOST 仍由现有配置检查拒绝。容器自动提供的 HOSTNAME 不影响监听地址。
+- 现有 Dockerfile 使用完整构建并复制单一运行目录，采用同一入口。现有 CI 将构建放到产物测试之前。此处只接通已有流程，不提前实现后续镜像工具或发布功能。
+
+### 实际本地验证
+
+| 命令或检查                                                                                              | 结果                                                                                    |
+| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `pnpm exec node -p 'process.version'`                                                                   | 退出 0，v24.18.1                                                                        |
+| `pnpm run lint`                                                                                         | 退出 0，零错误和警告                                                                    |
+| `pnpm run format:check`                                                                                 | 退出 0                                                                                  |
+| `pnpm run typecheck`                                                                                    | 退出 0，应用与 runtime 类型检查通过                                                     |
+| `pnpm run test:unit`                                                                                    | 退出 0，55 项通过                                                                       |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY DATA_DIR=/tmp/ariso-09-build-no-data pnpm run build` | 退出 0，完整生产产物生成                                                                |
+| `test ! -e /tmp/ariso-09-build-no-data`                                                                 | 退出 0，构建未创建数据目录                                                              |
+| `pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts`               | 退出 0，6 项通过                                                                        |
+| `pnpm run test:integration`                                                                             | 退出 0，5 个文件、40 项通过                                                             |
+| `pnpm run start` 与 `ego-browser nodejs`                                                                | TaskSpace 7，首页正常、图片实际加载、健康 200 与 no-store、8 个静态资源返回 200；退出 0 |
+| `git diff --check`                                                                                      | 退出 0                                                                                  |
+
+隔离测试把产物复制到系统临时目录，保留原始符号链接，从产物外的工作目录启动。环境不继承 NODE_PATH 或开发配置，显式禁止 Node 自动执行 TypeScript。测试覆盖默认 HOST、显式 HOST、外部容器 HOSTNAME 及两者同时存在；验证健康响应、首页、public 与 Next 脚本、原生文件、CLI 和迁移文件，以及不存在 TypeScript、Drizzle Kit、Vitest 和开发源码。无效 HOST 时入口非零退出，没有 Next 启动日志，端口无法连接。
+
+首次构建因 CommonJS 追踪器使用命名导入失败，改为默认导入后通过。首次测试在未完成打包的目录执行，同时测试 PATH 缺少系统 shell，暴露入口缺失及进程启动错误；修正导入与测试 PATH 后，聚焦测试和完整构建后的全量测试均通过。追踪器仍报告 SQLite 可选 `build/Debug/better_sqlite3.node` 不存在，保留该诊断；实际发行原生驱动在隔离目录中可加载并查询，故此警告不代表运行失败。
+
+Ego 验证使用已有 Ego Lite，没有下载浏览器或使用 Playwright。验证完成后 TaskSpace、3109 端口自建服务及临时数据均已清理。
+
+### 审计、远端验证与范围限制
+
+独立只读审计使用 `code-review-and-quality` 技能；审计结果与远端 CI、Docker AMD64/ARM64 链接将在检查完成后补充。本机未执行 Docker，不将待运行检查记为通过。
+
+RUNTIME-10 的完整失败与恢复矩阵、RUNTIME-12 的真实 HTTP 数据库故障、后续日志桥接与图片工具仍未交付。本次不实现业务初始化或上传，不代表完整 RT-03/RT-11 的所有后续验收完成。冻结 PRD、锁文件和依赖版本未改变。不合并 PR、不关闭 Issue、不发布镜像或部署。
