@@ -730,3 +730,46 @@ RT-08 本次仅验证 runtime 启动组合；S3、SMTP、OAuth 的真实字段�
 实现提交 5813866 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34962206938) 全部通过（1 分 56 秒），覆盖冻结安装、lint、格式、类型、70 项单元、完整构建和 66 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34962206956) 的 AMD64、ARM64 原生 runner 均通过（分别 1 分 20 秒、1 分 15 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查、容器清理及产物导出。两个 gh run watch --exit-status 均退出 0，无远端失败或修复重跑。
 
 草稿 [PR #40](https://github.com/dnslin/ariso-next/pull/40) 已关联 Issue #14；补充本段文档后的最终提交检查以 [PR 检查页](https://github.com/dnslin/ariso-next/pull/40/checks) 为准，全部通过后转为正式待评审。Issue 保持开放，合并和分支清理由用户另行指示。
+
+## RUNTIME-15：结构化日志与已知 URL 脱敏
+
+2026-09-15 实施 [Issue #15](https://github.com/dnslin/ariso-next/issues/15)。前置 Issue #4 已关闭、无评论；Issue #15 无评论。从最新 `origin/main`（`686d420`）创建 `codex/runtime-15-structured-logging`，开始时工作区干净。
+
+### 实现与使用边界
+
+`createRuntimeLogger(module, level, destination?)` 复用 Pino 10.3.1，默认直接写 stdout，输出 ISO 时间、文本级别、模块及消息。级别使用 `RuntimeConfig` 的现有类型，不读取环境或部署密钥。调用方使用 Pino 的 `logger.info({ phase, path }, 'message')` 等接口，显式提供消息；错误放在 `err`，保留类型、堆栈、cause、路径和底层错误码。没有新增依赖或修改冻结 PRD。
+
+结构化脱敏采用 [Pino 固定路径机制](https://github.com/pinojs/pino/blob/main/docs/redaction.md)。`log-redaction.ts` 列出字段契约：认证头、Cookie、API Key、上传/访问/刷新/重置 Token、S3 accessKey/accessKeyId/secretKey/secretAccessKey/sessionToken、SMTP password、OAuth clientSecret/oauthSecret、sharePassword，以及两种启动密钥的配置名和环境变量名。位置包括根字段、一层上下文（例如 s3、smtp、config、headers、err）、req.headers、request.headers、err.cause。不是任意深度配置扫描器；业务模块增加字段或位置时须显式补充规则，不能记录整份配置或完整请求。
+
+URL 规则替换 token、resetToken、reset_token、uploadToken、access_token、refresh_token、code、X-Amz-Signature/Credential/Security-Token、AWSAccessKeyId 和 Signature 的查询值，识别大小写及 ASCII 百分号编码参数名。规则用于最终插值消息、字符串字段、数组、错误及 cause，保留原始路径、普通参数顺序和编码。复制诊断数据，避免修改调用方对象。Pino 子日志默认重置绑定格式处理，本实现显式传入同一规则。原始预签名 URL 仍不应传入日志，调用模块应记录对象位置。
+
+当前没有已定义的业务凭据路径段，不添加假设路由规则。不扫描任意自由文本中的秘密；identity 的受控初始化码输出仍由所属模块实现。日志桥接及健康模块共享日志接入属于 RUNTIME-16，真实 Next 框架错误输出属于 RUNTIME-17，本次不提前验收完整 RT-09。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。沿用本页 Node 24，临时 PATH 的 pnpm 链接指向真实入口，没有修改全局环境。
+
+| 命令                                                                                                             | 实际结果                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project unit tests/unit/runtime/logger.test.ts tests/unit/runtime/log-redaction.test.ts` | 退出 0，28 项通过；含真实 Node 子进程 stdout 输出                                                                                  |
+| `pnpm run test:unit`                                                                                             | 退出 0，98 项通过                                                                                                                  |
+| `pnpm run typecheck`                                                                                             | 退出 0，应用和 CLI 类型检查通过                                                                                                    |
+| `pnpm run lint`                                                                                                  | 退出 0                                                                                                                             |
+| `pnpm run format:check`                                                                                          | 退出 0                                                                                                                             |
+| `pnpm run build`                                                                                                 | 退出 0，Next 生产构建与 Standalone 打包完成；打印可选 SQLite Debug 二进制追踪提示                                                  |
+| `pnpm run test:integration`                                                                                      | 退出 0，66 项通过，使用上述生产产物                                                                                                |
+| `ego-browser nodejs`                                                                                             | 页面、zh-CN、SVG 200、健康接口 200/no-store/精确 JSON 断言通过；首次清理误用 keep:false，命令退出 1；随后 keep:[] 正确清理，退出 0 |
+
+测试首先发现 Pino child 绑定未继承格式处理，修复后通过；随后修复泛型类型错误，类型检查通过。循环对象继续由 Pino 输出可诊断 JSON，测试保留这项回归约束。浏览器使用现有 Ego Lite TaskSpace 2 和本次 Standalone（127.0.0.1:3115、临时数据目录与随机密钥），未下载浏览器，验证不代表日志已接入 Web 入口。
+
+### 审计与远端验证
+
+已使用 `code-review-and-quality` 完成独立只读审计。初审发现非字符串 msg 抛错、非 Error cause 丢失，均已修复并补充 7 项回归测试。审计方复核 28 项聚焦测试通过，两项 Required 已消除，未发现新增问题。[PR #41](https://github.com/dnslin/ariso-next/pull/41) 的实现提交 `eddfe4f` 已通过以下远端检查：
+
+| 工作流                                                                                         | 实际结果                                                                |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [CI](https://github.com/dnslin/ariso-next/actions/runs/34986695323)                            | success，Node 24 安装、lint、格式、类型、单元、构建与集成检查通过       |
+| [Docker AMD64](https://github.com/dnslin/ariso-next/actions/runs/34986695343/job/104440502545) | success，镜像构建、实际架构、容器启动、健康接口、首页及静态资源验证通过 |
+| [Docker ARM64](https://github.com/dnslin/ariso-next/actions/runs/34986695343/job/104440502952) | success，同上                                                           |
+
+本记录后的提交仅补充文档；PR 最新检查以关联页面为准。本机未运行 Docker，不发布镜像、不部署、不合并 PR、不关闭 Issue。
