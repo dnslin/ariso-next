@@ -575,3 +575,56 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 补充证据后的最终提交状态见 [PR #37 检查页](https://github.com/dnslin/ariso-next/pull/37/checks)。最终推送前再次执行格式与 diff 检查，全部远端检查通过后转为正式待评审。推送曾因系统 DNS 返回的 GitHub 地址无法连接而停滞，使用公共 DNS 返回地址进行单次 Git 连接后成功，没有修改系统配置。
 
 本机未运行 Docker。当前不具备初始化码生成逻辑，日志断言是提前建立的回归约束，不代表 identity 初始化功能已验收。RUNTIME-23 的浏览器自动化、RUNTIME-12 的 HTTP 数据库故障覆盖，以及后续图片工具与业务流程仍按原任务交付。
+
+## RUNTIME-12：HTTP 故障与初始化复用
+
+在 `codex/issue-12-runtime-health` 实施 [Issue #12](https://github.com/dnslin/ariso-next/issues/12)。前置 RUNTIME-10、11 已合入。新增两个 HTTP 集成用例，复用现有进程启动、进程组停止和隔离产物复制方式，无需修改生产代码或依赖。
+
+- 正常用例复制 Standalone 到系统临时目录，从空数据目录启动，确认库中没有业务表，连续请求健康接口得到 200、`no-store` 和精确 JSON。测试预加载 [Node 诊断通道](https://nodejs.org/docs/latest-v24.x/api/diagnostics_channel.html#event-netclientsocket)观察服务进程的客户端 TCP 连接，整个运行期间没有外部连接。独立正向实验确认本机 Node 24 的真实 HTTP 请求会触发该观察器。
+- 故障用例在独立 Node 进程中组合实际 `GET` 与实际 SQLite 连接，用 Node HTTP 适配器传递状态、响应头和正文。先得到 200，再经 IPC 关闭连接，连续两次得到 503。错误日志包含 `phase: health` 和数据库未打开的底层原因，响应只含 `status`，日志没有临时启动密钥。故障控制没有 HTTP 路由，也不进入生产产物；测试断言运行目录不含测试目录或故障文件。
+- 初始化用例保留并发 `register`、重复调用和带查询参数的模块重载，增加 SQLite TEMP 表及内容检查，证明连接内状态没有丢失。自建进程在 10 秒期限内完成初始化和查询并正常退出，覆盖有限初始化返回。
+
+这里的未初始化指数据库尚无业务表，不表示 identity `/setup` 已实现。故障 HTTP 应用仅用于测试，生产仍使用标准 Next Standalone 服务。R3 密钥预检及完整 JSON 日志、R4 容器故障/持久化矩阵、图片处理和业务任务恢复仍由后续任务验收。冻结 PRD 未修改。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。使用本页既有 Node 24，临时 PATH 中的 pnpm 链接指向真实入口，子进程使用同一 Node。
+
+| 命令或检查                                                                                                                           | 结果                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project integration tests/integration/runtime/health.test.ts tests/integration/runtime/server-start.test.ts` | 退出 0，9 项通过                                                                                           |
+| `pnpm run build`                                                                                                                     | 修正测试输出流类型后退出 0，完整生产构建及打包成功                                                         |
+| `pnpm run lint`                                                                                                                      | 退出 0，零警告                                                                                             |
+| `pnpm run typecheck`                                                                                                                 | 修正测试输出流类型后退出 0                                                                                 |
+| `pnpm run test:unit`                                                                                                                 | 退出 0，55 项通过                                                                                          |
+| `pnpm run test:integration`                                                                                                          | 退出 0，8 个文件、55 项通过，含隔离无密钥完整构建                                                          |
+| `pnpm run format:check`                                                                                                              | 退出 0                                                                                                     |
+| Node 24 诊断通道正向实验                                                                                                             | 退出 0，一次真实本地 HTTP 请求捕获一个客户端连接                                                           |
+| `ego-browser nodejs`                                                                                                                 | 退出 0，Ego Lite TaskSpace 11 验证生产首页与健康 200，以及关闭真实数据库后的 HTTP 503；两者均为 `no-store` |
+
+首轮构建与类型检查报告 IPC 子进程的 stdout/stderr 可能为空；添加显式断言后重跑通过。生产构建仍有此前记录的可选 SQLite Debug 追踪警告，实际发行驱动查询与迁移测试通过。浏览器使用现有 Ego Lite，没有下载浏览器；TaskSpace、3112/3113 自建服务及临时数据已清理。
+
+### 审计与远端验证
+
+已使用 `code-review-and-quality` 完成独立只读审计，无 Critical / Required 发现。采纳可选建议，为 IPC 确认消息增加 5 秒期限，异常时能进入进程清理；随后重跑构建、lint、类型、聚焦 9 项测试及格式检查均通过。调整后完整集成测试再次 55 项通过。
+
+实现提交 `3db07b8` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34950371188) 全部通过，覆盖冻结安装、lint、格式、类型、55 项单元、完整构建和 55 项集成。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34950371191) 在 AMD64 与 ARM64 原生 runner 上全部通过，完成构建、架构检查、实际生产入口启动、健康/首页/静态资源验证和产物导出。`gh run watch 34950371188 --exit-status --interval 10` 与 `gh run watch 34950371191 --exit-status --interval 10` 均退出 0。
+
+补充 IPC 等待期限及本记录后的最终提交结果见 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)。最终推送前格式与 diff 检查通过，最终检查全部通过后转为正式待评审。本机不执行 Docker；不合并 PR、不关闭 Issue、不发布镜像或部署。
+
+### PR #38 审查修复：健康请求超时与进程清理
+
+后续审查发现 P2：健康 HTTP 请求没有取消期限。若服务不返回响应头或一直不结束正文，Vitest 外层用例超时不会中断挂起的请求，`finally` 中的进程清理可能无法执行。隔离复现实验证明用例超时后仍未进入该 `finally`。
+
+所有健康请求改用同一文件内的 `requestHealth`，2 秒取消期限同时覆盖响应头和完整正文，启动轮询也复用该函数。用例总期限调整为 30 秒，为 10 秒就绪等待、5 秒 IPC 确认、请求失败及最多 5 秒进程停止留出余量。测试专用 IPC 增加“不发送响应头”和“正文不结束”两种场景，使用不同临时数据库目录；断言请求抛出 `TimeoutError`，并在清理后断言子进程因 SIGTERM 退出。
+
+同一 Node 24.18.1 / pnpm 11.19.0 环境实际执行结果：
+
+- `pnpm run lint`、`pnpm run typecheck`、`pnpm run build`、`pnpm run format:check`、`git diff --check`：均退出 0。
+- `pnpm exec vitest run --project integration tests/integration/runtime/health.test.ts tests/integration/runtime/server-start.test.ts`：退出 0，11 项通过。
+- `pnpm run test:unit`：退出 0，55 项通过。
+- `pnpm run test:integration`：退出 0，8 个文件、57 项通过。
+
+首轮正文超时错误名称断言预期为 `AbortError`，实际 Node 24 返回 `TimeoutError`，修正后通过。另一次聚焦测试与构建重叠，复制正在重建的 `.next/standalone` 时失败；等待构建完成后顺序重跑聚焦与全量集成均通过，没有跳过失败用例。后续应保持完整构建先于产物测试。
+
+`code-review-and-quality` 独立复核确认原 P2 已解决，无新增问题。本次只修改测试，浏览器页面及生产行为未改变；沿用此前 Ego 验证。修复提交的 CI 和双架构 Docker 结果以 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)为准，推送后继续跟进；本机未运行 Docker。

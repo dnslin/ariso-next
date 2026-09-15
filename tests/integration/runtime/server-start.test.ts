@@ -101,9 +101,14 @@ describe('Web startup and real health handler', () => {
         assert.equal(state.connection.db.$client.memory, false);
         assert.equal(state.connection.db.$client.name, databasePath);
         assert.deepEqual(state.connection.db.$client.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all(), []);
+        state.connection.db.$client.exec('CREATE TEMP TABLE connection_marker (value TEXT)');
+        state.connection.db.$client.prepare('INSERT INTO connection_marker VALUES (?)').run('preserved');
         assert.strictEqual(startServer(), state);
         const reloaded = await import(startupUrl + '?reload');
         assert.strictEqual(reloaded.startServer(), state);
+        assert.deepEqual(reloaded.getServerRuntime().connection.db.$client.prepare('SELECT value FROM connection_marker').all(), [{ value: 'preserved' }]);
+        await register();
+        process.stdout.write('finite initialization completed\\n');
         const response = GET();
         assert.equal(response.status, 200);
         assert.equal(response.headers.get('cache-control'), 'no-store');
