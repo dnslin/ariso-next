@@ -7,6 +7,12 @@
   "engines": {
     "node": "24.x"
   },
+  "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "format:check": "prettier . --check",
+    "format": "prettier . --write",
+    "typecheck": "next typegen && tsc --noEmit --project tsconfig.json"
+  },
   "dependencies": {
     "better-sqlite3": "13.0.3",
     "drizzle-orm": "0.45.2",

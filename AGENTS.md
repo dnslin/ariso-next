@@ -18,7 +18,6 @@
 
 - Before designing a solution, study how mature products solve the same problem. Prefer proven patterns and conventions over inventing new ones from scratch.
 
-
 ## Working Method
 
 - Before modifying code, read the relevant implementation, tests, type definitions, configuration, and call paths. Do not start implementing based only on filenames, isolated code fragments, or assumptions.
@@ -30,7 +29,6 @@
 - If you discover issues outside the current task, explain the problem and its impact, but do not modify them without approval.
 
 - When requirements are ambiguous, first determine whether the ambiguity affects external behavior, data structures, public interfaces, or architectural boundaries. If it has significant impact, ask the user before proceeding. Otherwise, make the smallest reasonable assumption and state it explicitly.
-
 
 ## Verification
 
@@ -47,7 +45,6 @@
 - Do not swallow errors or hide failures through silent fallbacks. Errors should retain enough context to make diagnosis possible.
 
 - Do not make checks pass by hardcoding test data, skipping validation, weakening assertions, or removing failing tests.
-
 
 ## Communication Style
 
@@ -83,26 +80,24 @@ When explaining work to the user:
 
 - Unless explicitly requested, avoid overly academic language, marketing language, or translation-style wording.
 
-
-
 ## Engineering Safety Boundaries
 
-* Prefer the simplest design that correctly solves the real problem.
+- Prefer the simplest design that correctly solves the real problem.
 
-* Do not introduce additional security, safety, validation, locking, privilege separation, signing, pinning, or defensive abstractions unless there is a concrete threat model or a real system boundary that requires them.
+- Do not introduce additional security, safety, validation, locking, privilege separation, signing, pinning, or defensive abstractions unless there is a concrete threat model or a real system boundary that requires them.
 
-* Do not treat normal operational states as unsafe. A missing file may simply mean the system has not been initialized. A stale file does not imply that a process is still running. `unknown` is not automatically an error. A symlink containing `..` is not automatically a path traversal.
+- Do not treat normal operational states as unsafe. A missing file may simply mean the system has not been initialized. A stale file does not imply that a process is still running. `unknown` is not automatically an error. A symlink containing `..` is not automatically a path traversal.
 
-* Trust controlled internal components according to their actual trust boundary. Do not repeatedly re-validate successful internal operations or discard useful internal output as untrusted without a concrete reason.
+- Trust controlled internal components according to their actual trust boundary. Do not repeatedly re-validate successful internal operations or discard useful internal output as untrusted without a concrete reason.
 
-* Preserve observability. Do not hide paths, URLs, logs, or diagnostic information unless they contain actual sensitive information.
+- Preserve observability. Do not hide paths, URLs, logs, or diagnostic information unless they contain actual sensitive information.
 
-* For installation, deployment, migration, and similar workflows, prefer idempotent operations, short recoverable steps, and correct handling of interruption or cancellation. Do not default to large transactions or fail-closed state machines.
+- For installation, deployment, migration, and similar workflows, prefer idempotent operations, short recoverable steps, and correct handling of interruption or cancellation. Do not default to large transactions or fail-closed state machines.
 
-* Do not make artifact identity depend on incidental build paths or temporary execution state. Avoid redundant seals, pins, hashes, copies, or provenance mechanisms that do not defend against a concrete attacker.
+- Do not make artifact identity depend on incidental build paths or temporary execution state. Avoid redundant seals, pins, hashes, copies, or provenance mechanisms that do not defend against a concrete attacker.
 
-* Use subagents where useful, but coordinate them according to actual modification boundaries instead of locking the entire repository.
+- Use subagents where useful, but coordinate them according to actual modification boundaries instead of locking the entire repository.
 
-* When reviewing an existing design, actively remove complexity that exists only because the previous implementation attempted to be “extra safe.”
+- When reviewing an existing design, actively remove complexity that exists only because the previous implementation attempted to be “extra safe.”
 
-* Before adding any defensive mechanism, ask: **What concrete failure does this prevent, or which attacker does it defend against?** If there is no concrete answer, do not add it.
+- Before adding any defensive mechanism, ask: **What concrete failure does this prevent, or which attacker does it defend against?** If there is no concrete answer, do not add it.

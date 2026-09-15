@@ -117,21 +117,21 @@ curl --fail --silent --show-error http://127.0.0.1:3000/runtime.svg
 
 E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)，复用 Ego Lite，不下载配套 Chrome/Chromium。使用 `ego-browser nodejs` 在一个 TaskSpace 中访问自建的 3000 端口服务，验证中文页面、标题、SVG 实际加载、手机与桌面布局，并记录实际结果及必要截图。完成后结束 TaskSpace 并停止自建服务。后续 RUNTIME-22 再接入生产服务与健康接口。
 
-本次仅修改文档约定，尚未执行 ego 验证。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
+切换约定时尚未执行 ego 验证；现已补充，见本页末尾的 Ego 浏览器验证记录。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
 
 ### 历史验证记录（切换 ego 前）
 
 实际命令直接使用目标 Node 执行仓库内 CLI（与上述 `pnpm exec` 对应）：
 
-| 命令或检查 | 结果 |
-| --- | --- |
-| `node node_modules/next/dist/bin/next build`，通过 `env -u` 移除两个密钥并设置临时 DATA_DIR | 退出 0；首页静态生成；数据目录未创建；生成 `.next/standalone/server.js` |
-| `node node_modules/next/dist/bin/next typegen` | 退出 0 |
-| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` | 退出 0 |
-| TypeScript API 解析 `@/app/page`，并断言 strict | 退出 0；解析到 `src/app/page.tsx` |
-| `node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000` 和上述两条 curl | 页面与资源均为 HTTP 200；服务已停止 |
-| `node node_modules/@playwright/test/cli.js install chromium` | 下载多次超时，退出 1 |
-| `node node_modules/@playwright/test/cli.js test --config test-results/local.config.mjs --grep @smoke` | 使用本机 Chrome，1 项测试通过；桌面截图已人工检查 |
+| 命令或检查                                                                                            | 结果                                                                    |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `node node_modules/next/dist/bin/next build`，通过 `env -u` 移除两个密钥并设置临时 DATA_DIR           | 退出 0；首页静态生成；数据目录未创建；生成 `.next/standalone/server.js` |
+| `node node_modules/next/dist/bin/next typegen`                                                        | 退出 0                                                                  |
+| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json`                               | 退出 0                                                                  |
+| TypeScript API 解析 `@/app/page`，并断言 strict                                                       | 退出 0；解析到 `src/app/page.tsx`                                       |
+| `node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000` 和上述两条 curl           | 页面与资源均为 HTTP 200；服务已停止                                     |
+| `node node_modules/@playwright/test/cli.js install chromium`                                          | 下载多次超时，退出 1                                                    |
+| `node node_modules/@playwright/test/cli.js test --config test-results/local.config.mjs --grep @smoke` | 使用本机 Chrome，1 项测试通过；桌面截图已人工检查                       |
 
 以上 Playwright 命令仅保留为历史执行证据，不再作为操作步骤；历史临时配置也不再使用。
 
@@ -140,3 +140,97 @@ E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/S
 补充检查：通过 ESLint Node API 加载现有 `eslint-config-next/core-web-vitals` 与 `eslint-config-next/typescript`，检查本次 TS/TSX 文件，零错误、零警告。`node node_modules/prettier/bin/prettier.cjs --check src/app/layout.tsx src/app/page.tsx next.config.ts tsconfig.json e2e/runtime.spec.ts` 和 `git diff --check` 均退出 0。
 
 验证中新增测试曾因 `naturalWidth` 的元素类型推断报错，导致构建退出 1。补充 `HTMLImageElement` 类型后，重新执行无密钥构建、typegen、tsc、浏览器回归和 lint，全部通过。
+
+## RUNTIME-03：工程检查
+
+2026-09-15 在 `codex/runtime-03-engineering-checks` 实施 [Issue #3](https://github.com/dnslin/ariso-next/issues/3)。验证环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0，执行方式沿用本页的目标 Node 设置。
+
+### 实现与检查范围
+
+- `pnpm run lint` 使用 Next Core Web Vitals 与 TypeScript 的现有配置，零警告才能通过；采用 [Next 官方 ESLint 配置方式](https://nextjs.org/docs/app/api-reference/config/eslint)。
+- `pnpm run format:check` 检查全仓支持的文件；`pnpm run format` 应用两个空格、单引号、分号和尾逗号。首次统一既有源码、测试和文档的格式；冻结 PRD 未改写，锁文件与生成文件不参与格式化。
+- `pnpm run typecheck` 顺序运行 `next typegen` 与应用 `tsc --noEmit --project tsconfig.json`。独立 runtime 编译项目尚未建立，待实际提供 `tsconfig.runtime.json` 后加入其检查。
+- CI 在 PR 和 main 推送时执行冻结安装、lint、格式、应用类型与 `next build`。使用 Node 24；pnpm 版本读取 `package.json` 的 `packageManager`。工作流复用 [setup-node](https://github.com/actions/setup-node) 和 [pnpm/action-setup](https://github.com/pnpm/action-setup)，没有新增 npm 依赖。
+
+### 本地验证记录
+
+| 实际命令或检查                                                                      | 结果                                                                                                                       |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                    | 退出 0，锁文件未变化                                                                                                       |
+| `pnpm run format:check`（首次）                                                     | 退出 1，检测出 13 个既有文件不符合新格式                                                                                   |
+| `pnpm run format`                                                                   | 退出 0，统一受检查文件的格式                                                                                               |
+| `pnpm run lint`                                                                     | 退出 0，零错误、零警告                                                                                                     |
+| `pnpm run typecheck`                                                                | 退出 0，路由类型生成与应用类型检查通过                                                                                     |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY pnpm exec next build`            | 退出 0，首页静态生成，真实生产构建成功                                                                                     |
+| Node 断言调用 ESLint `isPathIgnored`、`lintText` 和 Prettier `getFileInfo`、`check` | 退出 0；构建与测试输出、冻结 PRD 被忽略，应用源码仍受检查；显式 any 报错、未使用变量产生警告；错误格式被拒绝，正确格式通过 |
+| Node 启动 `next start --hostname 127.0.0.1 --port 3103` 并通过 `fetch` 断言         | 退出 0；首页与 `/runtime.svg` 均返回 200，页面包含简体中文标记与工程状态文案；验证后服务已停止                             |
+| `git diff --exit-code -- docs/Ariso-PRD-v1.1.md pnpm-lock.yaml`                     | 退出 0，冻结输入未改变                                                                                                     |
+
+最终 `pnpm run format:check`、`pnpm run lint` 与 `git diff --check` 均退出 0。另以 Node 逐文件断言确认：除新增配置、实施计划和本节记录外，既有文件的修改与 Prettier 对原文件的输出完全一致，没有混入语义修改。
+
+上述 HTTP 检查不替代浏览器交互验收。没有运行旧 Playwright 测试，也没有下载浏览器。
+
+### 后续接入点与未验证项
+
+RUNTIME-04 提供真实单元测试，RUNTIME-11 接入真实集成测试与完整构建；RUNTIME-22、23 接入 ego-browser 验证并记录实际环境，RUNTIME-24 在 Actions 中验证镜像。不添加空测试脚本或预先跳过的测试步骤。
+
+用户于 2026-09-15 确认：当前阶段无需 CI 和 Docker 验证。远端 CI、Docker、Linux 原生依赖和双架构留待后续阶段，不作为本阶段完成条件，也不因此标记 RT-14 已通过。现有 CI 配置保留，尚未推送或运行。
+
+### Ego 浏览器验证（2026-09-15）
+
+使用 `ego-browser` 技能和现有 Ego Lite，在同一个 TaskSpace（ID 1）中验证本分支的生产构建。浏览器报告 Chrome 152；本机为 macOS arm64。通过 `ego-browser nodejs` 执行真实浏览器操作和 Node 断言，没有下载浏览器或运行 Playwright。
+
+测试服务命令：`/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3103`。Next 对 Standalone 配置提示正式入口应使用 `.next/standalone/server.js`；本次只验证构建页面，不代表 Standalone 独立打包验收。
+
+| 检查                                                  | 实际结果                                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `page.goto`、`page.snapshot` 与页面断言               | 标题为“Ariso · 工程状态”，`html lang` 为 `zh-CN`，工程状态与功能未开放文案正确 |
+| 等待图片加载并检查 `naturalWidth`                     | `/runtime.svg` 实际加载，原始宽度为 64                                         |
+| 浏览器 `page.fetch('/runtime.svg')`                   | HTTP 200，响应含 SVG 内容                                                      |
+| CDP 调整视口，逐一检查 360、390、430、768、1440 × 900 | 页面宽度与视口一致；无横向溢出，主内容位于视口内，状态标题可见                 |
+| 重载前注册 `error`、`unhandledrejection` 监听         | 全部视口检查均未捕获异常                                                       |
+| 390 和 1440 宽度截图人工检查                          | 文字清晰，图片正常，卡片与文案没有截断                                         |
+
+全部浏览器断言退出 0。本地原始结果为 `test-results/ego-runtime-verification.json`，截图为 `test-results/ego-runtime-390.png` 和 `test-results/ego-runtime-1440.png`；这些输出按既有规则忽略，不提交到 Git。
+
+本次为真实浏览器中的视口宽度模拟，不代表手机实机或跨浏览器兼容性验收。当前页面没有可操作表单或业务按钮，因此没有虚构登录、上传等交互测试。
+
+验证完成后，`task.finish({ keep: [] })` 成功关闭 TaskSpace，测试服务以 SIGTERM 停止。文档格式检查与 `git diff --check` 均退出 0。
+
+## GitHub Actions：工程检查与双架构构建
+
+2026-09-15 用户追加要求创建 CI 和 ARM/AMD Docker 构建工作流。本次补齐工作流和当前页面所需的最小 Dockerfile；实际 Docker 验证仍交给 Actions，不要求本机安装 Docker。
+
+两个工作流均在 PR、main 推送和手动触发时执行。工作流合入默认分支后，可在 GitHub 仓库的 Actions 页面选择对应工作流并点击 Run workflow。
+
+| 工作流                                         | 执行内容                                                                                                              |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `.github/workflows/ci.yml`（CI）               | Node 24，按 packageManager 安装 pnpm，冻结安装、lint、格式、应用类型检查及 Next 构建                                  |
+| `.github/workflows/images.yml`（Docker build） | 在 `ubuntu-24.04` 构建 `linux/amd64`，在 `ubuntu-24.04-arm` 构建 `linux/arm64`；两个原生 runner 独立执行，不使用 QEMU |
+
+Docker 使用两阶段 `node:24-trixie-slim` 镜像。构建阶段安装 Linux 原生依赖所需的 Python、make 和 g++，使用冻结锁文件安装并构建；运行阶段仅复制 Standalone、`.next/static` 和 `public`，由标准 `node server.js` 启动。pnpm 版本读取 `package.json`，本机依赖、环境文件与数据不进入构建上下文。
+
+镜像工作流检查 Node 实际架构，启动容器并验证首页、SVG 和首页引用的 Next.js 脚本；失败时作业失败。容器日志保留在步骤输出中，测试后删除容器。只有通过验证的镜像才导出为 `ariso-linux-amd64`、`ariso-linux-arm64` 两份 Actions artifact，保留 7 天。采用 [Docker 官方 Buildx 工作流](https://docs.docker.com/build/ci/github-actions/multi-platform/)和 [Next 官方 Standalone 镜像模式](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile)。
+
+下载对应架构的 artifact 并解压后，可以在支持该架构的 Docker 主机运行：
+
+```sh
+docker load --input ariso.tar
+docker run --rm --publish 127.0.0.1:3000:3000 ariso:ci-amd64
+# ARM64 主机使用 ariso:ci-arm64。
+```
+
+本次构建不发布 GHCR/Docker Hub，也不生成已发布的多架构标签。镜像只包含当前工程状态页；数据库迁移、启动配置、健康接口和图片处理工具随后续 runtime 任务加入，不能据此标记完整 runtime 镜像验收完成。
+
+### 本次验证
+
+- `actionlint` 1.7.12 检查两个工作流，退出 0。
+- Node 读取工作流断言三种触发方式和两种架构映射，并使用 `bash -n` 检查全部 shell 步骤，退出 0。
+- 将已有生产构建的 Standalone、静态资源与 public 复制到仓库外临时目录，以标准 `server.js` 启动；执行镜像工作流中的同一段 HTTP 断言（仅替换测试端口），首页、SVG 和 Next.js 脚本均通过，退出 0。服务和临时目录已清理。
+- 本地验证不代替 Linux 镜像构建。分支现已推送，最新远端结果见 [PR #29 的检查记录](https://github.com/dnslin/ariso-next/pull/29/checks)。
+
+### 首次远端运行与启动等待修正
+
+`gh run watch 34927804447 --exit-status` 确认 [CI 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804447)通过。[Docker 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804541)的两个架构均构建成功、Node 架构断言通过，但启动探测在服务就绪前遇到连接重置（curl 退出 56），因此未执行资源断言或导出镜像。
+
+原等待命令的 `--retry-connrefused` 不处理连接重置，改为 curl 自带的 `--retry-all-errors`，仍限制为 15 次重试并保留非成功 HTTP 状态失败。Node TCP 样本复现了首次连接重置：原命令非零退出，修正后能等待到 HTTP 200；持续连接重置仍非零退出。页面、SVG 和脚本断言没有放宽。修正后的运行结果以 PR 的当前提交检查为准。
