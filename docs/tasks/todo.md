@@ -45,7 +45,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-02：运行最小 Next.js 页面
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 建立真实的简体中文应用壳和一个本地静态资源，证明页面、路由与生产编译可用。
 
@@ -54,11 +54,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 **预计文件：** `src/app/layout.tsx`、`src/app/page.tsx`、`public/runtime.svg`、`next.config.ts`、`tsconfig.json`。
 
 **验收：**
-- [ ] 页面通过本地资源渲染，可直接访问；内容只展示当前工程状态。
-- [ ] Next 配置开启 Standalone；TypeScript strict 与源码别名成立。
-- [ ] 移除两个运行密钥、使用不存在的数据目录时仍可构建，构建没有创建该目录。
+- [x] 页面通过本地资源渲染，可直接访问；内容只展示当前工程状态。
+- [x] Next 配置开启 Standalone；TypeScript strict 与源码别名成立。
+- [x] 移除两个运行密钥、使用不存在的数据目录时仍可构建，构建没有创建该目录。
 
 **验证：** `pnpm exec next build`；`pnpm exec next typegen`；`pnpm exec tsc --noEmit --project tsconfig.json`；`pnpm exec next dev --hostname 127.0.0.1 --port 3000`，另一个终端执行 `curl --fail --silent --show-error http://127.0.0.1:3000/` 和 `curl --fail --silent --show-error http://127.0.0.1:3000/runtime.svg`。检查页面并停止自建服务。
+
+**实施记录（2026-09-15）：** 已完成 Issue #2 的本地验收，详见 [开发环境记录](../development.md#runtime-02最小页面)。新增一项真实浏览器回归测试；独立产物打包与完整生产冒烟仍归后续任务。
 
 ### RUNTIME-03：接入工程检查
 
@@ -444,18 +446,18 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 
 - [ ] 完成。
 
-**说明：** 使用 Playwright 启动生产产物，验证用户能看见的实际页面和静态资源。
+**说明：** 启动真实生产产物，再使用 ego-browser 技能验证用户能看见的实际页面和静态资源。
 
-**依赖：** RUNTIME-17。**覆盖：** RT-02、RT-10、RT-11、RT-14。**规模：** M，4 个文件。
+**依赖：** RUNTIME-17。**覆盖：** RT-02、RT-10、RT-11、RT-14。**规模：** M，3 个文件。
 
-**预计文件：** `playwright.config.ts`、`e2e/runtime.spec.ts`、`package.json`、`pnpm-lock.yaml`。
+**预计文件：** `e2e/runtime.md`、`docs/runtime-verification.md`、`docs/development.md`。
 
 **验收：**
-- [ ] Chromium、Firefox、WebKit 项目配置完成；生产服务使用临时目录和临时密钥，不复用用户已有服务。
-- [ ] @smoke 实际访问页面、健康接口和静态资源，断言可见内容与成功响应。
+- [ ] ego 验收步骤可复现；生产服务使用临时目录和临时密钥，不复用用户已有服务，不下载配套浏览器。
+- [ ] 通过 ego 实际访问页面、健康接口和静态资源，断言可见内容与成功响应。
 - [ ] 应用尚无初始化、登录和上传，因此不创建跳过的业务假测试；浏览器失败保留报告并清理测试进程。
 
-**验证：** `pnpm run build`；`pnpm exec playwright install --with-deps chromium`；`pnpm exec playwright test --project=chromium --grep @smoke`。
+**验证：** `pnpm run build`；启动生产服务，按 ego-browser 技能执行 `e2e/runtime.md` 中的实际浏览器步骤并记录结果。
 
 ### RUNTIME-23：闭合 PR 与主分支检查
 
@@ -468,11 +470,11 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 **预计文件：** `.github/workflows/ci.yml`、`docs/runtime-verification.md`。
 
 **验收：**
-- [ ] PR 执行 Spec 第 12.3 节的全部九条命令，任何失败都会失败，测试产物与浏览器报告可追查。
-- [ ] 主分支或发布执行 Firefox、WebKit；使用目标 Node 和实际安装的浏览器环境。
+- [ ] PR 执行 Spec 第 12.3 节的七条 CI 命令，任一失败则检查失败；另外附 ego E2E 验证记录。
+- [ ] CI 使用目标 Node；ego E2E 记录实际浏览器环境与覆盖范围，不假定 Actions 支持 Ego Lite；其余浏览器兼容性按 PRD 单独记录。
 - [ ] 有远端时记录实际 CI 结果；没有远端时只记录本地结果与工作流待运行，不标 RT-14 完成。
 
-**验证：** 执行本文件“最终检查命令”；再执行 `pnpm exec playwright install --with-deps firefox webkit` 和 `pnpm exec playwright test --project=firefox --project=webkit --grep @smoke`。记录真实 CI 运行链接及结论。
+**验证：** 执行本文件“最终检查命令”，并按 ego-browser 技能完成浏览器验收。分别记录 CI 运行链接、ego 结果及浏览器兼容性未覆盖项。
 
 ### RUNTIME-24：接入双架构镜像交付检查
 
@@ -537,7 +539,7 @@ node scripts/verify-container.mjs --image ariso:runtime-arm64 --platform linux/a
 
 ## 最终检查命令
 
-下列顺序与 Spec 第 12.3 节一致。双架构镜像检查另见 RUNTIME-21，其他浏览器见 RUNTIME-23。
+下列 CI 命令顺序与 Spec 第 12.3 节一致；此外必须按 ego-browser 技能执行 E2E，并单独记录实际结果。双架构镜像检查另见 RUNTIME-21，ego E2E 与浏览器兼容性记录见 RUNTIME-22、23。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -547,8 +549,6 @@ pnpm run typecheck
 pnpm run test:unit
 pnpm run build
 pnpm run test:integration
-pnpm exec playwright install --with-deps chromium
-pnpm exec playwright test --project=chromium --grep @smoke
 ```
 
 ## 验收追踪
@@ -575,3 +575,5 @@ pnpm exec playwright test --project=chromium --grep @smoke
 默认按清单顺序推进；依赖满足时，RUNTIME-13 的加密与 RUNTIME-15 的日志核心可以分别实现，RUNTIME-18–19 的镜像工具可以在 RUNTIME-09 后提前验证，RUNTIME-22 的浏览器测试不依赖双架构环境。
 
 并行只按独立文件和已明确接口分工。package.json、锁文件、迁移、入口和打包脚本由负责整合的一方顺序修改。检查点记录当前实际结果，不把其他独立任务的环境限制扩大为整个仓库不可工作。
+
+> 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。

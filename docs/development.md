@@ -86,3 +86,57 @@ node --input-type=module -e 'import assert from "node:assert/strict"; import Dat
 后续 RUNTIME-18–21、24 在 GitHub Actions 中配置 Docker/buildx，以 `node:24-trixie-slim` 分别安装并运行 `linux/amd64`、`linux/arm64` 产物。可以采用原生 runner 或模拟执行，须记录实际方式及工作流结果链接。相关验收以 Actions 的实际运行结果为准，工作流尚未运行时保持未验证。
 
 本次未运行 Linux 镜像、双架构检查、磁盘持久化、Next 构建、类型检查、ESLint、Vitest 或浏览器测试。相关源码、配置和测试分别由后续任务提供，不增加返回成功的空脚本。内存查询只证明驱动可以加载并执行 SQL，磁盘持久化由 RUNTIME-05 验证。
+
+## RUNTIME-02：最小页面
+
+2026-09-15 在 `codex/runtime-02-next-page` 实施 [Issue #2](https://github.com/dnslin/ariso-next/issues/2)。沿用上述 Node 24.18.1 环境和现有依赖，没有新增依赖。
+
+页面仅展示当前工程状态，使用系统字体和 `public/runtime.svg`。根布局设置简体中文与页面标题。Next 使用官方 `output: "standalone"`，TypeScript 开启 strict，`@/*` 指向 `src/*`。`agentRules: false` 防止开发服务自动改写项目已有的 `AGENTS.md`。配置依据为已安装 Next 16.3.5 的类型、随包文档和 [Standalone 文档](https://nextjs.org/docs/app/api-reference/config/next-config-js/output)。
+
+### 复现构建与访问
+
+按本页前文选择 Node 24 和 pnpm 后执行：
+
+```sh
+verification_dir=$(mktemp -d)
+env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY DATA_DIR="$verification_dir/data" pnpm exec next build
+test ! -e "$verification_dir/data"
+test -f .next/standalone/server.js
+rmdir "$verification_dir"
+pnpm exec next typegen
+pnpm exec tsc --noEmit --project tsconfig.json
+pnpm exec next dev --hostname 127.0.0.1 --port 3000
+```
+
+另一个终端执行，完成后以 Ctrl+C 停止开发服务：
+
+```sh
+curl --fail --silent --show-error http://127.0.0.1:3000/
+curl --fail --silent --show-error http://127.0.0.1:3000/runtime.svg
+```
+
+E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)，复用 Ego Lite，不下载配套 Chrome/Chromium。使用 `ego-browser nodejs` 在一个 TaskSpace 中访问自建的 3000 端口服务，验证中文页面、标题、SVG 实际加载、手机与桌面布局，并记录实际结果及必要截图。完成后结束 TaskSpace 并停止自建服务。后续 RUNTIME-22 再接入生产服务与健康接口。
+
+本次仅修改文档约定，尚未执行 ego 验证。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
+
+### 历史验证记录（切换 ego 前）
+
+实际命令直接使用目标 Node 执行仓库内 CLI（与上述 `pnpm exec` 对应）：
+
+| 命令或检查 | 结果 |
+| --- | --- |
+| `node node_modules/next/dist/bin/next build`，通过 `env -u` 移除两个密钥并设置临时 DATA_DIR | 退出 0；首页静态生成；数据目录未创建；生成 `.next/standalone/server.js` |
+| `node node_modules/next/dist/bin/next typegen` | 退出 0 |
+| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` | 退出 0 |
+| TypeScript API 解析 `@/app/page`，并断言 strict | 退出 0；解析到 `src/app/page.tsx` |
+| `node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000` 和上述两条 curl | 页面与资源均为 HTTP 200；服务已停止 |
+| `node node_modules/@playwright/test/cli.js install chromium` | 下载多次超时，退出 1 |
+| `node node_modules/@playwright/test/cli.js test --config test-results/local.config.mjs --grep @smoke` | 使用本机 Chrome，1 项测试通过；桌面截图已人工检查 |
+
+以上 Playwright 命令仅保留为历史执行证据，不再作为操作步骤；历史临时配置也不再使用。
+
+本次仅完成 RUNTIME-02。Standalone 目录独立部署与资源组装、数据库启动、运行密钥校验、工程检查脚本和 CI 均由后续 Issue 接入；本次不代表这些能力已通过。Docker 和 Linux 双架构仍由 GitHub Actions 验证。
+
+补充检查：通过 ESLint Node API 加载现有 `eslint-config-next/core-web-vitals` 与 `eslint-config-next/typescript`，检查本次 TS/TSX 文件，零错误、零警告。`node node_modules/prettier/bin/prettier.cjs --check src/app/layout.tsx src/app/page.tsx next.config.ts tsconfig.json e2e/runtime.spec.ts` 和 `git diff --check` 均退出 0。
+
+验证中新增测试曾因 `naturalWidth` 的元素类型推断报错，导致构建退出 1。补充 `HTMLImageElement` 类型后，重新执行无密钥构建、typegen、tsc、浏览器回归和 lint，全部通过。
