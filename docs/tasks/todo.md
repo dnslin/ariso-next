@@ -196,7 +196,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-09：组装可独立启动的生产目录
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 接通完整 build/start 契约，将 CLI、迁移、原生依赖和静态资源随标准 Next 产物交付。
 
@@ -206,16 +206,18 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] 最终目录包含完整 CLI 依赖、迁移、SQLite 原生文件、public 和 .next/static；不需要 TypeScript、Drizzle Kit 或开发目录。
-- [ ] 入口先等待 prestart 成功，映射 HOST 到 HOSTNAME，再 exec 未修改的标准 server.js；失败时不监听 Web 端口。
-- [ ] 将运行目录复制到项目外后可以启动，健康和两类静态资源均成功，证明未借用开发 node_modules。
+- [x] 最终目录包含完整 CLI 依赖、迁移、SQLite 原生文件、public 和 .next/static；不需要 TypeScript、Drizzle Kit 或开发目录。
+- [x] 入口先等待 prestart 成功，映射 HOST 到 HOSTNAME，再 exec 未修改的标准 server.js；失败时不监听 Web 端口。
+- [x] 将运行目录复制到项目外后可以启动，健康和两类静态资源均成功，证明未借用开发 node_modules。
 
 **验证：** `pnpm run build`；`pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts`。测试覆盖默认 HOST、显式 HOST 及 Docker 风格的外部 HOSTNAME 值。
 
+**实施记录（2026-09-15）：** 完整 build/start、CLI 依赖追踪、入口与静态资源组装、现有 Docker/CI 接入已实现。6 项隔离产物测试、55 项单元测试、40 项集成测试及 Ego Lite、本地工程检查通过。独立审计与远端结果见 [开发记录](../development.md#runtime-09可独立启动的生产目录)。
+
 ### 检查点 K3
 
-- [ ] RUNTIME-07–09 已完成 CLI → 标准服务 → 真实健康响应的流程，独立目录可以启动。
-- [ ] 执行当前单元、集成和类型检查；产物测试前已构建。R4 的镜像工作可以从这里开始准备。
+- [x] RUNTIME-07–09 已完成 CLI → 标准服务 → 真实健康响应的流程，独立目录可以启动。
+- [x] 执行当前单元、集成和类型检查；产物测试前已构建。R4 的镜像工作可以从这里开始准备。
 
 ### RUNTIME-10：验证完整入口的失败与恢复
 

@@ -42,8 +42,7 @@ jobs:
             'require("node:assert/strict").equal(process.arch, process.argv[1])' "$NODE_ARCH"
           export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
           export ARISO_ENCRYPTION_KEY="$(openssl rand -hex 32)"
-          # RUNTIME-08: supply an empty writable database directory for Web startup.
-          # The production prestart/entrypoint remains a later runtime task.
+          # The production entrypoint prepares an empty writable data directory.
           docker run --detach --name ariso --publish 127.0.0.1:3000:3000 \
             --tmpfs /data:uid=1000,gid=1000 \
             --env DATA_DIR=/data --env BETTER_AUTH_SECRET --env ARISO_ENCRYPTION_KEY "$IMAGE"
