@@ -531,6 +531,10 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 
 ### 审计、远端检查与限制
 
-已使用 `code-review-and-quality` 完成独立只读审计，审阅测试、进程清理及完整生产调用链，未发现 Critical 或 Required 问题。CI 与 Docker AMD64/ARM64 工作流尚待 PR 触发，未标记通过。本机不执行 Docker。
+已使用 `code-review-and-quality` 完成独立只读审计，审阅测试、进程清理及完整生产调用链，未发现 Critical 或 Required 问题。本机未执行 Docker。
+
+实现提交 `e882335` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34946972625) 全部通过（1 分 22 秒），包含冻结安装、lint、格式、类型、55 项单元测试、完整构建及 52 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34946972472) 在 AMD64 与 ARM64 原生 runner 上均通过（各 1 分 14 秒），完成构建、架构断言、生产入口启动、健康/首页/静态资源检查及验证产物导出。`gh run watch 34946972625 --exit-status --interval 10` 与 `gh run watch 34946972472 --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+补充本记录后的最终提交结果见 [PR #36 检查页](https://github.com/dnslin/ariso-next/pull/36/checks)。最终推送前执行 `pnpm run format:check` 和 `git diff --check`；最终检查通过后转为正式待评审，合并与分支清理由用户决定。
 
 本次完成 RUNTIME-10 对 RT-03–06 的本地产物验收；容器故障与持久化矩阵仍由 RUNTIME-20 完成。健康接口的真实 HTTP 数据库故障注入归 RUNTIME-12，业务秘密预检、所有者初始化、上传和任务恢复仍由后续模块实现。冻结 PRD 未改写。不合并 PR、不关闭 Issue、不发布镜像或部署。
