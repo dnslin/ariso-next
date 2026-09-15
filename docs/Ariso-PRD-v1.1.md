@@ -1864,7 +1864,7 @@ S3、SMTP 和 GitHub OAuth 密钥由 Web 后台管理，并使用 `ARISO_ENCRYPT
 | 格式化 | Prettier |
 | 单元与集成测试 | Vitest |
 | React 交互测试 | React Testing Library |
-| 端到端测试 | Playwright |
+| 端到端测试 | ego-browser 技能，复用 Ego Lite 浏览器 |
 
 ### 25.2 PR 检查
 
@@ -1877,7 +1877,7 @@ format:check
 typecheck
 unit / integration tests
 next build
-Playwright Chromium 核心冒烟测试
+ego-browser 技能执行核心冒烟并记录结果
 ```
 
 核心冒烟流程：
@@ -1890,7 +1890,7 @@ Playwright Chromium 核心冒烟测试
 - 移入回收站；
 - 恢复并沿用原链接。
 
-完整 Firefox、WebKit 等浏览器测试可以在主分支或发布流程运行。
+E2E 统一使用 ego-browser 技能，不下载配套浏览器，不再使用 Playwright。PR 附上实际浏览器验证记录。第 22.2 节的浏览器兼容性要求保持不变；ego 未覆盖的浏览器需单独记录实际兼容性验证结果，不能推断为通过。
 
 ### 25.3 Git 工作流
 
@@ -2046,3 +2046,5 @@ Playwright Chromium 核心冒烟测试
 3. 首版按照单站点不超过 100,000 张图片进行性能设计和验收，该数量不是硬性上传上限。
 4. 旧版 Ariso 与 vNext 不进行数据兼容或迁移，vNext 作为全新安装发布。
 5. 最大像素、最大尺寸、动画帧数、多页页数、处理超时、磁盘阈值、接口错误码、数据库表、模块目录、任务锁和具体 ImageMagick 参数属于后续技术 Spec，不在本 PRD 中定义。
+
+> 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。

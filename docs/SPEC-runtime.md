@@ -41,7 +41,8 @@
 | Pino / Zod | 10.3.1 / 4.6.2 |
 | execa | 10.0.1，供镜像工具验证及后续图片模块调用 |
 | ESLint / Prettier | 9.39.5 / 3.9.6 |
-| Vitest / Playwright | 5.0.0 / 1.63.0 |
+| Vitest | 5.0.0 |
+| E2E | ego-browser 技能，复用 Ego Lite，不添加浏览器测试 npm 依赖 |
 
 Node 官方将 24 标记为 LTS，26 当前仍为 Current，因此目标运行版本选 24。[Node 发布状态](https://nodejs.org/en/about/previous-releases)
 
@@ -96,7 +97,7 @@ tests/
   fixtures/runtime/            迁移与进程测试样本
     images/                    真实 JPEG/PNG 镜像验证样本
 e2e/
-  runtime.spec.ts              实际服务和静态资源冒烟
+  runtime.md                   ego-browser 实际服务和静态资源验收步骤
 scripts/
   package-standalone.mjs        组装最终运行目录
   verify-image.mjs             调用工具并验证镜像样本
@@ -117,7 +118,6 @@ drizzle.config.ts
 eslint.config.mjs
 .prettierignore
 vitest.config.ts
-playwright.config.ts
 .env.example
 docs/CAPABILITY-MAP.md
 docs/SPEC-runtime.md
@@ -149,8 +149,7 @@ docs/SPEC-runtime.md
 | 本地运行生产产物 | `pnpm run start` | `sh .next/standalone/entrypoint.sh`；启动变量从父进程传入 |
 | 生成 SQL 迁移 | `pnpm run db:generate` | `drizzle-kit generate --config=drizzle.config.ts` |
 | 本地执行启动前检查 | `node --env-file=.env.local dist/cli/prestart.js` | 使用与 Docker 相同的迁移和检查逻辑；不会启动 Web |
-| 安装 Chromium 测试依赖 | `pnpm exec playwright install --with-deps chromium` | CI 安装浏览器与 Linux 依赖 |
-| Chromium 冒烟 | `pnpm exec playwright test --project=chromium --grep @smoke` | Playwright 配置启动真实生产产物 |
+| 浏览器冒烟 | 按 ego-browser 技能使用 `ego-browser nodejs` | 访问自建的真实生产服务，保留断言结果与必要截图；不下载配套浏览器 |
 | 在 Actions 构建当前 runner 架构镜像 | `docker build --tag ariso:runtime .` | 生成镜像，不发布 |
 | 验证镜像工具 | `docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs` | 检查工具、原生驱动和本模块样本 |
 | 启动本地容器 | `docker compose --env-file .env.local up --build --detach` | 从指定文件读取变量，再按 Compose 配置注入容器 |
@@ -372,10 +371,12 @@ export function parseEncryptionKey(value: string | undefined): Buffer {
 
 - 单元测试：环境变量边界、密文往返及错误密钥、日志脱敏、路径派生。
 - 集成测试：真实磁盘 SQLite、迁移重复执行与回滚、进程退出、构建无数据副作用、Standalone 自包含和健康响应。每个用例使用独立临时目录，不并行共享一个数据库。
-- 浏览器冒烟：运行生产产物，访问真实页面、健康接口及静态资源。使用 Chromium；业务流程就绪后将 PRD 25.2 的初始化、登录、上传、权限、回收站与恢复加入同一核心冒烟集合。
+- 浏览器冒烟：运行生产产物，访问真实页面、健康接口及静态资源。使用 ego-browser 技能；业务流程就绪后将 PRD 25.2 的初始化、登录、上传、权限、回收站与恢复加入同一核心冒烟集合。
 - 镜像测试：在每个目标架构中验证 Node、SQLite 原生驱动、ImageMagick、ExifTool、字体和样本处理。
 
-Vitest 分为 `unit` 和 `integration` 两个具名项目，Playwright 使用 `chromium`、`firefox`、`webkit` 项目。运行按指定项目筛选。[Vitest 项目](https://vitest.dev/guide/projects)、[Playwright 项目](https://playwright.dev/docs/test-projects)
+Vitest 分为 `unit` 和 `integration` 两个具名项目，按项目筛选执行。[Vitest 项目](https://vitest.dev/guide/projects)
+
+E2E 使用 ego-browser 技能，在同一个 TaskSpace 中访问自建服务，使用快照、页面断言、交互和必要截图验证结果。完成后关闭测试空间及自建服务。不使用 Playwright API、项目配置或浏览器安装命令。
 
 不设一个与风险无关的全仓覆盖率数字。下表中的成功和失败路径必须有测试；不能把没有测试文件、跳过原生依赖或只检查模拟返回值当作通过。
 
@@ -396,7 +397,7 @@ Vitest 分为 `unit` 和 `integration` 两个具名项目，Playwright 使用 `c
 | RT-11 | 仅复制最终运行目录即可启动；静态资源可用、CLI 能加载迁移器、better-sqlite3 能执行查询 | 脱离开发 node_modules 的产物测试 |
 | RT-12 | 容器只有一个长期运行的 Node Web 进程；停止后可用原数据目录重新启动，数据库保持可读 | 容器进程与重启测试 |
 | RT-13 | amd64 与 arm64 均实际运行 IM7、ExifTool 和 SQLite；能把真实 JPEG/PNG 样本生成 WebP、JPEG、AVIF，并生成可见中文与拉丁文字图片 | 双架构镜像样本测试；检查生成文件内容 |
-| RT-14 | PR 的安装、格式、lint、类型、单元/集成、构建和 Chromium 冒烟均运行成功 | CI 检查 |
+| RT-14 | PR 的安装、格式、lint、类型、单元/集成、构建均运行成功，并提供 ego 浏览器冒烟通过记录 | CI 检查与 ego 验证记录 |
 
 RT-08 的运行时部分使用真实加密记录样本测试；S3/SMTP/OAuth 全量字段接入由对应模块补齐。RT-12 不代替业务任务恢复测试。RT-13 只验证运行依赖基线，不代表完整格式矩阵已通过；完整矩阵由 `media` 验收。
 
@@ -410,11 +411,9 @@ pnpm run typecheck
 pnpm run test:unit
 pnpm run build
 pnpm run test:integration
-pnpm exec playwright install --with-deps chromium
-pnpm exec playwright test --project=chromium --grep @smoke
 ```
 
-以上命令失败则 PR 检查失败。主分支或发布流程增加 Firefox、WebKit 和双架构镜像验证。业务功能尚未实现时不创建会被跳过的假冒烟；随着完整流程实现添加实际测试。
+以上命令失败则 PR 检查失败。E2E 由 ego-browser 技能单独执行，并将实际结果作为 PR 验收证据；不假定 GitHub Actions runner 已具备 Ego Lite。主分支或发布流程增加双架构镜像验证。浏览器兼容性按 PRD 第 22.2 节另行验证并记录未覆盖项。业务功能尚未实现时不创建会被跳过的假冒烟；随着完整流程实现添加实际测试。
 
 ## 13. 开发边界
 
@@ -436,3 +435,5 @@ pnpm exec playwright test --project=chromium --grep @smoke
 本轮只编写与检查规格文档。没有安装应用依赖，没有执行本文件中的应用测试、构建或 Docker 验证。当前环境未找到 Docker 命令；实施阶段由 GitHub Actions 完成相关构建和验收，本机不要求 Docker。
 
 评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](./tasks/plan.md) 推进，当前评审 [任务清单](./tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。
+
+> 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。
