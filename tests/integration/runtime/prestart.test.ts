@@ -47,6 +47,13 @@ function run(overrides: Record<string, string | undefined> = {}) {
   );
   expect(result.error).toBeUndefined();
   expect(result.signal).toBeNull();
+  expect(result.stderr).toBe('');
+  expect(JSON.parse(result.stdout)).toMatchObject({
+    module: 'runtime.prestart',
+    phase: 'prestart',
+    level: result.status === 0 ? 'info' : 'fatal',
+    msg: result.status === 0 ? 'prestart completed' : 'prestart failed:',
+  });
   return result;
 }
 function expectClosed() {
@@ -86,10 +93,10 @@ describe('compiled prestart CLI', () => {
       ARISO_ENCRYPTION_KEY: 'private-invalid-key',
     });
     expect(result.status).toBe(1);
-    expect(result.stderr).toContain('PORT');
-    expect(result.stderr).toContain('ARISO_ENCRYPTION_KEY');
-    expect(result.stderr).not.toContain('private-invalid-key');
-    expect(result.stderr).not.toContain(env.BETTER_AUTH_SECRET);
+    expect(result.stdout).toContain('PORT');
+    expect(result.stdout).toContain('ARISO_ENCRYPTION_KEY');
+    expect(result.stdout).not.toContain('private-invalid-key');
+    expect(result.stdout).not.toContain(env.BETTER_AUTH_SECRET);
     expect(existsSync(env.DATA_DIR)).toBe(false);
   });
 
@@ -97,8 +104,8 @@ describe('compiled prestart CLI', () => {
     writeFileSync(env.DATA_DIR, 'keep');
     const result = run();
     expect(result.status).toBe(1);
-    expect(result.stderr).toContain('EEXIST');
-    expect(result.stderr).toContain(env.DATA_DIR);
+    expect(result.stdout).toContain('EEXIST');
+    expect(result.stdout).toContain(env.DATA_DIR);
     expect(readFileSync(env.DATA_DIR, 'utf8')).toBe('keep');
   });
 
@@ -119,7 +126,7 @@ describe('compiled prestart CLI', () => {
       '0002_broken.sql',
       join(env.DATA_DIR, 'ariso.db'),
     ]) {
-      expect(failed.stderr).toContain(diagnostic);
+      expect(failed.stdout).toContain(diagnostic);
     }
     expectClosed();
     expect(readRows('SELECT value FROM sample')).toEqual([
@@ -147,7 +154,7 @@ describe('compiled prestart CLI', () => {
     writeMigrations(join(directory, 'drizzle'), []);
     const result = run();
     expect(result.status).toBe(1);
-    expect(result.stderr).toContain('SCHEMA_TOO_NEW');
+    expect(result.stdout).toContain('SCHEMA_TOO_NEW');
     expectClosed();
     expect(readRows('SELECT value FROM sample')).toEqual([
       { value: 'original' },

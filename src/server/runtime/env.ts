@@ -45,6 +45,15 @@ export type RuntimeConfig = {
   encryptionKey: Buffer;
 };
 
+/** 日志入口只校验自身配置，不读取部署密钥或打开数据库。 */
+export function parseLogLevel(value: string | undefined) {
+  const result = envSchema.shape.LOG_LEVEL.safeParse(value);
+  if (!result.success) {
+    throw new Error('LOG_LEVEL: 必须是 trace/debug/info/warn/error/fatal 之一');
+  }
+  return result.data;
+}
+
 /** 启动方显式调用并保存结果；导入模块不会读取部署配置。 */
 export function parseRuntimeEnv(
   env: Record<string, string | undefined> = process.env,
