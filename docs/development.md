@@ -611,3 +611,20 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 实现提交 `3db07b8` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34950371188) 全部通过，覆盖冻结安装、lint、格式、类型、55 项单元、完整构建和 55 项集成。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34950371191) 在 AMD64 与 ARM64 原生 runner 上全部通过，完成构建、架构检查、实际生产入口启动、健康/首页/静态资源验证和产物导出。`gh run watch 34950371188 --exit-status --interval 10` 与 `gh run watch 34950371191 --exit-status --interval 10` 均退出 0。
 
 补充 IPC 等待期限及本记录后的最终提交结果见 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)。最终推送前格式与 diff 检查通过，最终检查全部通过后转为正式待评审。本机不执行 Docker；不合并 PR、不关闭 Issue、不发布镜像或部署。
+
+### PR #38 审查修复：健康请求超时与进程清理
+
+后续审查发现 P2：健康 HTTP 请求没有取消期限。若服务不返回响应头或一直不结束正文，Vitest 外层用例超时不会中断挂起的请求，`finally` 中的进程清理可能无法执行。隔离复现实验证明用例超时后仍未进入该 `finally`。
+
+所有健康请求改用同一文件内的 `requestHealth`，2 秒取消期限同时覆盖响应头和完整正文，启动轮询也复用该函数。用例总期限调整为 30 秒，为 10 秒就绪等待、5 秒 IPC 确认、请求失败及最多 5 秒进程停止留出余量。测试专用 IPC 增加“不发送响应头”和“正文不结束”两种场景，使用不同临时数据库目录；断言请求抛出 `TimeoutError`，并在清理后断言子进程因 SIGTERM 退出。
+
+同一 Node 24.18.1 / pnpm 11.19.0 环境实际执行结果：
+
+- `pnpm run lint`、`pnpm run typecheck`、`pnpm run build`、`pnpm run format:check`、`git diff --check`：均退出 0。
+- `pnpm exec vitest run --project integration tests/integration/runtime/health.test.ts tests/integration/runtime/server-start.test.ts`：退出 0，11 项通过。
+- `pnpm run test:unit`：退出 0，55 项通过。
+- `pnpm run test:integration`：退出 0，8 个文件、57 项通过。
+
+首轮正文超时错误名称断言预期为 `AbortError`，实际 Node 24 返回 `TimeoutError`，修正后通过。另一次聚焦测试与构建重叠，复制正在重建的 `.next/standalone` 时失败；等待构建完成后顺序重跑聚焦与全量集成均通过，没有跳过失败用例。后续应保持完整构建先于产物测试。
+
+`code-review-and-quality` 独立复核确认原 P2 已解决，无新增问题。本次只修改测试，浏览器页面及生产行为未改变；沿用此前 Ego 验证。修复提交的 CI 和双架构 Docker 结果以 [PR #38 检查页](https://github.com/dnslin/ariso-next/pull/38/checks)为准，推送后继续跟进；本机未运行 Docker。
