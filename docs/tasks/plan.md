@@ -188,3 +188,11 @@ pnpm run test:integration
 已完成上述本地验证，并补充 `e2e/runtime.spec.ts` 回归测试。详细命令、浏览器下载失败及本机 Chrome 验证结果见 [开发说明](../development.md#runtime-02最小页面)。R1 检查点仍需 RUNTIME-03 的工程检查；其他阶段保持原计划。
 
 > 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。
+
+## 10. RUNTIME-04 实施记录（2026-09-15）
+
+从最新 `main`（`093ab47`）建立 `codex/runtime-04-env`，起始工作区干净。前置 Issue #3 尚开放，但 PR #29 已合并，其 CI 与两个架构检查均通过；据实际交付继续实施。
+
+本次顺序：复用 Zod 实现显式配置解析 → 建立 Vitest `unit` 项目与边界测试 → 提供配置示例并接入 CI → 执行 Node 24 本地检查、Ego 回归与远端工作流。未新增依赖，未修改冻结 PRD。采用 [Zod safeParse](https://zod.dev/basics) 和 [Vitest 具名项目](https://vitest.dev/guide/projects) 的现有接口。
+
+当前完成的是解析函数。启动方后续显式调用 `parseRuntimeEnv()` 并保存结果；本次不增加 prestart、目录创建、端口绑定或 HOSTNAME 映射。实际验证结果和后续边界见 [开发说明](../development.md#runtime-04启动配置解析)。
