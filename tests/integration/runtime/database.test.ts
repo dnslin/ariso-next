@@ -61,18 +61,21 @@ describe('runtime disk database', () => {
     expect(existsSync(paths.database)).toBe(false);
   });
 
-  it('不可写的已有目录保留错误码和路径，不修改权限', () => {
-    const paths = initializeRuntimePaths(directory);
-    chmodSync(paths.tmp, 0o555);
-    try {
-      expect(() => initializeRuntimePaths(directory)).toThrowError(
-        expect.objectContaining({ code: 'EACCES', path: paths.tmp }),
-      );
-      expect(statSync(paths.tmp).mode & 0o777).toBe(0o555);
-    } finally {
-      chmodSync(paths.tmp, 0o755);
-    }
-  });
+  it.each([0o555, 0o666])(
+    '不可写或不可遍历的已有目录保留错误码和路径，不修改权限（%i）',
+    (mode) => {
+      const paths = initializeRuntimePaths(directory);
+      chmodSync(paths.tmp, mode);
+      try {
+        expect(() => initializeRuntimePaths(directory)).toThrowError(
+          expect.objectContaining({ code: 'EACCES', path: paths.tmp }),
+        );
+        expect(statSync(paths.tmp).mode & 0o777).toBe(mode);
+      } finally {
+        chmodSync(paths.tmp, 0o755);
+      }
+    },
+  );
 
   it('目录位置被文件占用时保留底层错误与路径', () => {
     const blocked = join(directory, 'storage');

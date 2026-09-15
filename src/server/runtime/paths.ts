@@ -21,7 +21,7 @@ export function initializeRuntimePaths(dataDir: string) {
     paths.tmp,
   ]) {
     mkdirSync(directory, { recursive: true });
-    accessSync(directory, constants.W_OK);
+    accessSync(directory, constants.W_OK | constants.X_OK);
   }
   return paths;
 }

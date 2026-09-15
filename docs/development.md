@@ -279,7 +279,7 @@ Ego 回归：复用 Ego Lite，`ego-browser nodejs` 在 TaskSpace 2 访问 `http
 
 ### 实现与调用边界
 
-- `initializeRuntimePaths(config.dataDir)` 从已校验配置派生数据库、storage、assets/watermarks、assets/branding 和 tmp 路径。显式调用时递归创建基础目录并检查可写权限；原始文件系统错误直接抛出，保留错误码与路径。重复调用保留 tmp 内容和已有权限，不创建 storage/default 或业务记录。
+- `initializeRuntimePaths(config.dataDir)` 从已校验配置派生数据库、storage、assets/watermarks、assets/branding 和 tmp 路径。显式调用时递归创建基础目录并检查写入与遍历权限；原始文件系统错误直接抛出，保留错误码与路径。重复调用保留 tmp 内容和已有权限，不创建 storage/default 或业务记录。
 - `openRuntimeDatabase(paths.database)` 打开磁盘 SQLite，设置 WAL、外键和 5000 ms busy timeout，返回 `{ db, close }`。`db` 是原生 Drizzle 实例，调用方使用自己的 Schema 和查询，并负责关闭连接。设置失败时关闭连接并重新抛出原始异常。
 - 使用现有 better-sqlite3 13.0.3 和 Drizzle 0.45.2，没有新增依赖或通用 Repository。实现核对了本地驱动源码、类型声明、[better-sqlite3 API](https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md) 与 [Drizzle SQLite 文档](https://orm.drizzle.team/docs/sqlite/get-started-sqlite)。
 - Vitest 新增 integration 项目及真实 `test:integration` 脚本，CI 随本次接入。两个独立 Node 24 进程通过同一生产连接函数写入、关闭、退出，再读取相同记录。子进程使用 Node 24 内置 TypeScript 支持；测试 Schema 与 SQL 仅在测试中存在。
@@ -288,19 +288,19 @@ Ego 回归：复用 Ego Lite，`ego-browser nodejs` 在 TaskSpace 2 访问 `http
 
 执行平台：macOS arm64，Node 24.18.1、pnpm 11.19.0，使用本页开头的 PATH 和 pnpm 函数设置。
 
-| 实际命令                                                                                       | 结果                                         |
-| ---------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `pnpm install --frozen-lockfile`                                                               | 退出 0；未改变锁文件                         |
-| `pnpm exec vitest run --project integration tests/integration/runtime/database.test.ts`        | 初版 7 项通过，退出 0                        |
-| `pnpm run test:integration`                                                                    | 增加真实锁冲突后 8 项通过，退出 0，约 5.9 秒 |
-| `pnpm run test:unit`                                                                           | 55 项通过，退出 0                            |
-| `pnpm run lint`                                                                                | 退出 0，零错误、零警告                       |
-| `pnpm run format:check`                                                                        | 退出 0                                       |
-| `pnpm run typecheck`                                                                           | 退出 0                                       |
-| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY node node_modules/next/dist/bin/next build` | 退出 0，无密钥生产构建成功                   |
-| `git diff --check`                                                                             | 退出 0                                       |
+| 实际命令                                                                                       | 结果                                                           |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                               | 退出 0；未改变锁文件                                           |
+| `pnpm exec vitest run --project integration tests/integration/runtime/database.test.ts`        | 初版 7 项通过，退出 0                                          |
+| `pnpm run test:integration`                                                                    | 增加真实锁冲突及目录遍历权限回归后 9 项通过，退出 0，约 5.9 秒 |
+| `pnpm run test:unit`                                                                           | 55 项通过，退出 0                                              |
+| `pnpm run lint`                                                                                | 退出 0，零错误、零警告                                         |
+| `pnpm run format:check`                                                                        | 退出 0                                                         |
+| `pnpm run typecheck`                                                                           | 退出 0                                                         |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY node node_modules/next/dist/bin/next build` | 退出 0，无密钥生产构建成功                                     |
+| `git diff --check`                                                                             | 退出 0                                                         |
 
-8 项集成测试覆盖重复目录初始化和 tmp 保留、已有目录不可写时的 EACCES/路径/权限、文件占位的 EEXIST、磁盘与三项 PRAGMA、空库无业务表、关闭后不可查询、外键实际生效与事务回滚、锁冲突超时保留 SQLITE_BUSY 且释放后可写、损坏数据库保持原内容、两个独立进程的数据持久化与 WAL/SHM 清理。测试先关闭连接再删除临时目录；权限测试在 finally 恢复权限。
+9 项集成测试覆盖重复目录初始化和 tmp 保留、已有目录不可写或不可遍历时的 EACCES/路径/权限、文件占位的 EEXIST、磁盘与三项 PRAGMA、空库无业务表、关闭后不可查询、外键实际生效与事务回滚、锁冲突超时保留 SQLITE_BUSY 且释放后可写、损坏数据库保持原内容、两个独立进程的数据持久化与 WAL/SHM 清理。测试先关闭连接再删除临时目录；权限测试在 finally 恢复权限。
 
 Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器。复制 public/static 至本次 Standalone 后，以 Node 24 启动 `.next/standalone/server.js`（`HOSTNAME=127.0.0.1 PORT=3105`，移除两个密钥）。`ego-browser nodejs` 在 TaskSpace 3 验证标题、简体中文标记、工程状态文案、SVG HTTP 200 与实际图片宽度 64、390 和 1440 × 900 视口无横向溢出，全部断言通过。TaskSpace 已关闭，服务已停止。
 
@@ -310,4 +310,4 @@ Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器�
 
 ### 审计与远端检查
 
-本地按 `code-review-and-quality` 审计，并安排独立审计检查测试、实现和边界；最终结果与远端 CI/Docker 链接将在完成后补充。
+按 `code-review-and-quality` 完成独立审计，发现一项 P2：已有目录权限 0666 时虽然可写，但不能进入并创建文件。已将权限检查改为 `W_OK | X_OK`，并将测试扩展为 0555 与 0666 两个真实故障样本。修复后 `pnpm run test:integration`（9 项）、lint、typecheck 与 `pnpm exec next build` 全部退出 0。审计复核与最终远端结果见本节后续记录。
