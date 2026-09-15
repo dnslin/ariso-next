@@ -14,7 +14,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, '.next/standalone');
 // Reuse Next's tracer for the CLI graph, which is not reachable from Web routes.
 const { fileList, warnings } = await nft.nodeFileTrace(
-  ['dist/cli/prestart.js'],
+  ['dist/cli/prestart.js', 'dist/cli/logging.js'],
   {
     base: root,
     processCwd: root,

@@ -96,6 +96,8 @@
 
 **RUNTIME-15 实施记录（2026-09-15）：** 已实现 Pino 日志核心、固定字段路径及已知 URL 查询凭据脱敏。28 项聚焦测试与 66 项集成检查通过；日志预加载和真实 Next 框架错误输出仍留在 RUNTIME-16–17，C3 不提前验收。审计及远端证据见 [开发记录](../development.md#runtime-15结构化日志与已知-url-脱敏)。
 
+**RUNTIME-16 实施记录（2026-09-15）：** 标准入口通过 Node --import 加载 console 桥接，prestart 成功/失败统一 JSON，独立产物包含日志依赖。104 项单元、67 项集成和本地工程/浏览器检查通过；真实请求错误与 K6/C3 仍待 RUNTIME-17。审计及远端证据见 [开发记录](../development.md#runtime-16标准入口日志桥接)。
+
 ### R4：在目标镜像里证明交付
 
 把 R2 的实际产物放入选定 Debian/Node 镜像，先验证容器启动、挂载、日志和重启，再验证两个架构的 SQLite、ImageMagick、ExifTool 与字体样本。

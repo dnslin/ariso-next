@@ -353,7 +353,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-16：在标准入口前加载日志桥接
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** 让 prestart 和标准 Next 的常规 console 输出进入同一日志规则。
 
@@ -363,11 +363,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] 通过 Node --import 在标准 server.js 前加载桥接；Pino 直接输出，console 转发无递归。
-- [ ] 级别和错误信息保留；prestart 成功和失败有 JSON 输出，无效日志配置也不会回显秘密。
-- [ ] 独立目录包含日志 CLI 及所需依赖；日志接入不改变 exec、失败退出或 Next 信号处理。
+- [x] 通过 Node --import 在标准 server.js 前加载桥接；Pino 直接输出，console 转发无递归。
+- [x] 级别和错误信息保留；prestart 成功和失败有 JSON 输出，无效日志配置也不会回显秘密。
+- [x] 独立目录包含日志 CLI 及所需依赖；日志接入不改变 exec、失败退出或 Next 信号处理。
 
 **验证：** `pnpm exec vitest run --project unit tests/unit/runtime/console-bridge.test.ts`；`pnpm run build`；`pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts tests/integration/runtime/startup.test.ts`。
+
+**实施记录（2026-09-15）：** 日志预加载、prestart JSON、CLI 依赖追踪已实现。6 项桥接子进程、19 项聚焦集成和全量 104 项单元/67 项集成通过。真实请求框架错误归 RUNTIME-17；审计及远端证据见 [开发记录](../development.md#runtime-16标准入口日志桥接)。
 
 ### RUNTIME-17：验证真实框架输出
 

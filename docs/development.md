@@ -773,3 +773,43 @@ URL 规则替换 token、resetToken、reset_token、uploadToken、access_token�
 | [Docker ARM64](https://github.com/dnslin/ariso-next/actions/runs/34986695343/job/104440502952) | success，同上                                                           |
 
 本记录后的提交仅补充文档；PR 最新检查以关联页面为准。本机未运行 Docker，不发布镜像、不部署、不合并 PR、不关闭 Issue。
+
+## RUNTIME-16：标准入口日志桥接
+
+2026-09-15 从最新 `origin/main`（`9278ac3`）创建 `codex/issue-16-console-bridge`，实施 [Issue #16](https://github.com/dnslin/ariso-next/issues/16)。初始工作区干净。通过 `gh` 读取 Issue、评论及前置 #9、#10、#15；前置均已关闭且实现和验证记录存在，Issue 中“未开始”是计划状态。
+
+### 实际实现
+
+入口保留先运行 prestart、再 `exec` 标准 Next `server.js` 的顺序，通过 `node --import ./dist/cli/logging.js server.js` 提前接管常规 console。`log/info` 映射为 info，其余 warn/error/debug/trace 对应同名级别。复用 Node 消息格式化和已有 Pino 日志、URL 脱敏规则，直接 Error 参数保存到 `err`，包含 cause、堆栈、路径和错误码。Pino 直接写 stdout，不经过 console；多个日志实例的缓冲输出不保证跨实例顺序。
+
+日志入口复用已有 LOG_LEVEL schema，导入不要求部署密钥、不访问数据库。非法级别产生不含输入值的 fatal JSON 并退出 1，不执行主入口。prestart 成功输出 info，失败输出 fatal 并保留退出 1；成功消息遵守 LOG_LEVEL 过滤。固定 fatal 日志器用于配置尚未通过时的错误报告，不忽略配置错误。独立打包追踪两个 CLI 根入口及其依赖，无新增依赖、无生成 server.js 修改、无信号处理覆盖。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。使用本页既有 Node 24 和临时 pnpm 入口链接，没有修改全局环境。
+
+| 实际命令                                                                                                                            | 结果                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `node --version` / `pnpm --version`                                                                                                 | 退出 0，v24.18.1 / 11.19.0                                                          |
+| `pnpm install --frozen-lockfile`                                                                                                    | 退出 0，锁文件不变                                                                  |
+| `pnpm exec vitest run --project unit tests/unit/runtime/console-bridge.test.ts`                                                     | 退出 0，6 项通过，真实 Node 预加载子进程                                            |
+| `pnpm run build:runtime`                                                                                                            | 退出 0                                                                              |
+| `pnpm run build`                                                                                                                    | 退出 0，生产构建和 Standalone 打包完成                                              |
+| `pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts tests/integration/runtime/startup.test.ts` | 退出 0，19 项通过；隔离目录、JSON 启动/端口错误、失败不监听及 SIGTERM 143           |
+| `pnpm run lint`                                                                                                                     | 退出 0，零警告                                                                      |
+| `pnpm run format:check`                                                                                                             | 退出 0                                                                              |
+| `pnpm run typecheck`                                                                                                                | 退出 0                                                                              |
+| `pnpm run test:unit`                                                                                                                | 退出 0，104 项通过                                                                  |
+| `pnpm run test:integration`                                                                                                         | 退出 0，67 项通过，包含无密钥无数据独立构建                                         |
+| `ego-browser nodejs`                                                                                                                | 退出 0，TaskSpace 3：首页、zh-CN、健康 200/no-store/精确 JSON、SVG 200 通过，已清理 |
+| `git diff --check`                                                                                                                  | 退出 0                                                                              |
+
+首轮聚焦测试修正了跨 Pino 实例输出顺序假设及测试默认级别参数；首轮构建修正测试环境类型声明。全量集成首轮 4 项旧 prestart 测试仍断言 stderr，已更新到 stdout 并增加 JSON/module/phase/level/msg 断言，所有诊断和数据完整性断言保留。修正后全量集成通过。构建继续输出既有可选 SQLite Debug 文件追踪提示，实际原生驱动、迁移和生产入口验证通过。
+
+### 验收边界
+
+本次证明常规 console 与 prestart 日志接入。真实请求携带 Token 触发 Next 自身错误的完整测试属于 RUNTIME-17，RT-09 与检查点 K6/C3 不提前标记完成。既有健康路由独立 Pino 日志尚未切换共享日志格式，本次不改动该路由；后续完整日志验收需覆盖此处。未新增业务能力、未修改冻结 PRD/Spec。本机没有执行 Docker；双架构镜像构建与容器运行交给现有 GitHub Actions。没有合并 PR、关闭 Issue、发布镜像或部署。
+
+### 代码审计
+
+使用 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计确认 stdout 断言变更合理、原诊断及数据完整性测试保留，标准入口及默认停止行为未改变。审计者未重复执行测试，以上命令由主任务实际执行。

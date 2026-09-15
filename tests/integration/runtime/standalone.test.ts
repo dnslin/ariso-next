@@ -26,6 +26,7 @@ describe('isolated production directory', () => {
       'server.js',
       'entrypoint.sh',
       'dist/cli/prestart.js',
+      'dist/cli/logging.js',
       'drizzle/meta/_journal.json',
       'public/runtime.svg',
     ]) {
@@ -89,6 +90,30 @@ describe('isolated production directory', () => {
         expect(await health.json()).toEqual({ status: 'ok' });
         expect(health.headers.get('cache-control')).toBe('no-store');
         expect(run.logs()).toContain(`http://${host}:${run.port}`);
+        const records = run
+          .logs()
+          .trim()
+          .split('\n')
+          .map((line) => JSON.parse(line));
+        expect(records).toContainEqual(
+          expect.objectContaining({
+            module: 'runtime.prestart',
+            level: 'info',
+            phase: 'prestart',
+            msg: 'prestart completed',
+          }),
+        );
+        expect(
+          records.some(
+            (record) =>
+              record.module === 'runtime.console' &&
+              record.msg.includes('Next.js'),
+          ),
+        ).toBe(true);
+        for (const record of records) {
+          expect(record.time).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+          expect(typeof record.msg).toBe('string');
+        }
         const home = await fetch(origin);
         expect(home.status).toBe(200);
         const html = await home.text();

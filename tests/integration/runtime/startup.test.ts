@@ -114,6 +114,16 @@ async function failed(
   if (prestart) {
     expect(await listening(Number(env.PORT)), run.logs()).toBe(false);
     expect(run.logs()).toContain('prestart failed:');
+    expect(JSON.parse(run.logs())).toMatchObject({
+      module: 'runtime.prestart',
+      level: 'fatal',
+      phase: 'prestart',
+      err: {
+        type: expect.any(String),
+        message: expect.any(String),
+        stack: expect.any(String),
+      },
+    });
     expect(run.logs()).not.toContain('Next.js');
   }
   for (const key of ['BETTER_AUTH_SECRET', 'ARISO_ENCRYPTION_KEY']) {
@@ -169,6 +179,7 @@ describe('完整生产入口的失败与恢复', () => {
     ['PORT', '65536'],
     ['PORT', '3.5'],
     ['PORT', 'abc'],
+    ['LOG_LEVEL', 'invalid-secret-log-level'],
   ])(
     '%s=%s：拒绝配置且不监听，修复后同目录启动',
     async (key, value) => {
@@ -211,6 +222,18 @@ describe('完整生产入口的失败与恢复', () => {
       const run = await start();
       await failed(run, false);
       expect(run.logs()).toContain('EADDRINUSE');
+      const records = run
+        .logs()
+        .trim()
+        .split('\n')
+        .map((line) => JSON.parse(line));
+      expect(records).toContainEqual(
+        expect.objectContaining({
+          module: 'runtime.console',
+          level: 'error',
+          err: expect.objectContaining({ code: 'EADDRINUSE' }),
+        }),
+      );
       expect(run.logs()).not.toContain('Ready in');
       expect(blocker.listening).toBe(true);
     } finally {
