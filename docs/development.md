@@ -764,4 +764,12 @@ URL 规则替换 token、resetToken、reset_token、uploadToken、access_token�
 
 ### 审计与远端验证
 
-已使用 `code-review-and-quality` 完成独立只读审计。初审发现非字符串 msg 抛错、非 Error cause 丢失，均已修复并补充 7 项回归测试。审计方复核 28 项聚焦测试通过，两项 Required 已消除，未发现新增问题。CI 与 AMD64/ARM64 Docker 工作流待 PR 触发，尚不标记通过。本机未运行 Docker，不发布镜像、不部署、不合并 PR、不关闭 Issue。
+已使用 `code-review-and-quality` 完成独立只读审计。初审发现非字符串 msg 抛错、非 Error cause 丢失，均已修复并补充 7 项回归测试。审计方复核 28 项聚焦测试通过，两项 Required 已消除，未发现新增问题。[PR #41](https://github.com/dnslin/ariso-next/pull/41) 的实现提交 `eddfe4f` 已通过以下远端检查：
+
+| 工作流                                                                                         | 实际结果                                                                |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [CI](https://github.com/dnslin/ariso-next/actions/runs/34986695323)                            | success，Node 24 安装、lint、格式、类型、单元、构建与集成检查通过       |
+| [Docker AMD64](https://github.com/dnslin/ariso-next/actions/runs/34986695343/job/104440502545) | success，镜像构建、实际架构、容器启动、健康接口、首页及静态资源验证通过 |
+| [Docker ARM64](https://github.com/dnslin/ariso-next/actions/runs/34986695343/job/104440502952) | success，同上                                                           |
+
+本记录后的提交仅补充文档；PR 最新检查以关联页面为准。本机未运行 Docker，不发布镜像、不部署、不合并 PR、不关闭 Issue。
