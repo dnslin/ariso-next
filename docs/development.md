@@ -227,4 +227,10 @@ docker run --rm --publish 127.0.0.1:3000:3000 ariso:ci-amd64
 - `actionlint` 1.7.12 检查两个工作流，退出 0。
 - Node 读取工作流断言三种触发方式和两种架构映射，并使用 `bash -n` 检查全部 shell 步骤，退出 0。
 - 将已有生产构建的 Standalone、静态资源与 public 复制到仓库外临时目录，以标准 `server.js` 启动；执行镜像工作流中的同一段 HTTP 断言（仅替换测试端口），首页、SVG 和 Next.js 脚本均通过，退出 0。服务和临时目录已清理。
-- 本地验证不代替 Linux 镜像构建。分支尚未推送，GitHub Actions 尚未运行，两个架构的实际构建结果待记录。
+- 本地验证不代替 Linux 镜像构建。分支现已推送，最新远端结果见 [PR #29 的检查记录](https://github.com/dnslin/ariso-next/pull/29/checks)。
+
+### 首次远端运行与启动等待修正
+
+`gh run watch 34927804447 --exit-status` 确认 [CI 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804447)通过。[Docker 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804541)的两个架构均构建成功、Node 架构断言通过，但启动探测在服务就绪前遇到连接重置（curl 退出 56），因此未执行资源断言或导出镜像。
+
+原等待命令的 `--retry-connrefused` 不处理连接重置，改为 curl 自带的 `--retry-all-errors`，仍限制为 15 次重试并保留非成功 HTTP 状态失败。Node TCP 样本复现了首次连接重置：原命令非零退出，修正后能等待到 HTTP 200；持续连接重置仍非零退出。页面、SVG 和脚本断言没有放宽。修正后的运行结果以 PR 的当前提交检查为准。
