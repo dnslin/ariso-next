@@ -241,7 +241,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-11：回归构建无运行副作用
 
-- [ ] 完成。
+- [x] 完成。
 
 **说明：** Web 初始化接入后，在独立工作目录自动验证无密钥构建，避免只在空应用时验证一次。
 
@@ -257,7 +257,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验证：** `pnpm exec vitest run --project integration tests/integration/runtime/build.test.ts`；`pnpm run typecheck`；`pnpm run lint`。
 
-**实施记录（2026-09-15）：** 新增独立目录的完整无密钥构建回归测试，现有 Vitest 与 CI 自动纳入。55 项单元测试、53 项集成测试、完整构建、类型、lint 和 Ego Lite 验证通过。审计与远端结果见 [开发记录](../development.md#runtime-11构建无运行副作用回归)。
+**实施记录（2026-09-15）：** 新增独立目录的完整无密钥构建回归测试，现有 Vitest 与 CI 自动纳入。55 项单元测试、53 项集成测试、完整构建、类型、lint 和 Ego Lite 验证通过。独立审计、CI 与 AMD64/ARM64 Docker 均通过，PR #37 由用户评审。实际证据见 [开发记录](../development.md#runtime-11构建无运行副作用回归)。
 
 ### RUNTIME-12：验证 HTTP 故障与初始化复用
 

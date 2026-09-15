@@ -568,4 +568,10 @@ Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完�
 
 ### 审计与剩余边界
 
-已使用 `code-review-and-quality` 做独立只读审计。审计发现超时默认只终止 pnpm，可能遗留 Next 子进程；已复用 Execa 的 `killDescendants: true` 修复。修复后类型、lint、53 项集成测试与格式检查再次通过；独立超时实验确认后代进程未继续写文件。远端 CI、AMD64/ARM64 Docker 结果待补充。本机未运行 Docker。当前不具备初始化码生成逻辑，日志断言是提前建立的回归约束，不代表 identity 初始化功能已验收。RUNTIME-23 的浏览器自动化、RUNTIME-12 的 HTTP 数据库故障覆盖，以及后续图片工具与业务流程仍按原任务交付。
+已使用 `code-review-and-quality` 做独立只读审计。审计发现超时默认只终止 pnpm，可能遗留 Next 子进程；已复用 Execa 的 `killDescendants: true` 修复。修复后类型、lint、53 项集成测试与格式检查再次通过；独立超时实验确认后代进程未继续写文件。独立审计复核确认无 Critical、无 Required。
+
+实现提交 `3c71c20` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34948755238) 全部通过（1 分 39 秒），覆盖冻结安装、lint、格式、类型、55 项单元、完整构建和 53 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34948755279) 在 AMD64 与 ARM64 原生 runner 上均通过（分别 1 分 29 秒、1 分 8 秒），完成镜像构建、架构断言、生产入口启动、健康/首页/静态资源检查和验证产物导出。对应 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+补充证据后的最终提交状态见 [PR #37 检查页](https://github.com/dnslin/ariso-next/pull/37/checks)。最终推送前再次执行格式与 diff 检查，全部远端检查通过后转为正式待评审。推送曾因系统 DNS 返回的 GitHub 地址无法连接而停滞，使用公共 DNS 返回地址进行单次 Git 连接后成功，没有修改系统配置。
+
+本机未运行 Docker。当前不具备初始化码生成逻辑，日志断言是提前建立的回归约束，不代表 identity 初始化功能已验收。RUNTIME-23 的浏览器自动化、RUNTIME-12 的 HTTP 数据库故障覆盖，以及后续图片工具与业务流程仍按原任务交付。
