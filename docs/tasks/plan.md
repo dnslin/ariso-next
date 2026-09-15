@@ -57,6 +57,8 @@
 
 #### RUNTIME-03 实施计划（2026-09-15）
 
+用户随后追加 GitHub CI 和 ARM64/AMD64 Docker 构建要求：补齐手动触发、当前 Next 页面的最小 Dockerfile 和双架构原生 runner 构建；在 Actions 中启动镜像并导出通过检查的产物。该增量不提前实现 R2 的持久化启动或完整镜像工具链，实际运行结果记录在 `docs/development.md`。
+
 在 `codex/runtime-03-engineering-checks` 实施 [Issue #3](https://github.com/dnslin/ariso-next/issues/3)，复用已合入的 RUNTIME-01、02。
 
 1. 为现有代码接入 Next Core Web Vitals、TypeScript ESLint 配置和 Spec 指定的 Prettier 风格。排除冻结 PRD、依赖、生成文件与测试输出；首次统一受检查文件的格式，不改变内容语义。

@@ -1,0 +1,85 @@
+name: Docker build
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and verify ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            node-arch: x64
+            runner: ubuntu-24.04
+          - arch: arm64
+            node-arch: arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/${{ matrix.arch }}
+          load: true
+          tags: ariso:ci-${{ matrix.arch }}
+      - name: Check architecture and start container
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+          NODE_ARCH: ${{ matrix.node-arch }}
+        run: |
+          docker run --rm --entrypoint node "$IMAGE" -e \
+            'require("node:assert/strict").equal(process.arch, process.argv[1])' "$NODE_ARCH"
+          docker run --detach --name ariso --publish 127.0.0.1:3000:3000 "$IMAGE"
+      - name: Verify page and static resources
+        run: |
+          curl --fail --silent --show-error --retry 15 --retry-delay 1 --retry-connrefused --max-time 5 \
+            http://127.0.0.1:3000/ --output /dev/null
+          docker exec -i ariso node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          const origin = 'http://127.0.0.1:3000';
+          const home = await fetch(origin);
+          assert.equal(home.status, 200);
+          const html = await home.text();
+          assert.match(html, /运行基础建设中/);
+          const scripts = [...html.matchAll(/src="([^" ]+\.js[^" ]*)"/g)].map(match => match[1]);
+          assert.ok(scripts.length > 0, 'Next.js client scripts must exist');
+          for (const path of ['/runtime.svg', ...scripts]) {
+            const response = await fetch(new URL(path, origin));
+            assert.equal(response.status, 200, path);
+            assert.ok((await response.arrayBuffer()).byteLength > 0, path);
+          }
+          console.log('Container page, SVG and Next.js scripts passed');
+          JS
+      - name: Container logs
+        if: always()
+        run: |
+          if [ -n "$(docker ps --all --quiet --filter name=^/ariso$)" ]; then
+            docker logs ariso
+          fi
+      - name: Stop container
+        if: always()
+        run: |
+          if [ -n "$(docker ps --all --quiet --filter name=^/ariso$)" ]; then
+            docker rm --force ariso
+          fi
+      - name: Export verified image
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: docker image save "$IMAGE" --output "$RUNNER_TEMP/ariso.tar"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ariso-linux-${{ matrix.arch }}
+          path: ${{ runner.temp }}/ariso.tar
+          if-no-files-found: error
+          retention-days: 7
