@@ -315,3 +315,43 @@ Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器�
 提交 `4a09cd3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34936986008) 全部通过（46 秒），包含冻结安装、lint、格式、类型、55 项单元测试、9 项真实集成测试及生产构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34936985935) 在 AMD64（1 分 12 秒）和 ARM64（1 分 5 秒）原生 runner 上完成镜像构建、架构断言、容器启动、页面及资源验证、清理和 artifact 导出。`gh run watch 34936986008 --exit-status` 与 `gh run watch 34936985935 --exit-status` 均退出 0。没有发布镜像或部署。
 
 上述远端记录对应最终实现提交；补充本段文档后的检查以 [PR #31 检查页](https://github.com/dnslin/ariso-next/pull/31/checks) 为准。Issue 保持 OPEN，PR 由用户评审和合并。
+
+## RUNTIME-06：向前迁移
+
+2026-09-15 实施 [Issue #6](https://github.com/dnslin/ariso-next/issues/6)。开始时工作区干净，从最新 main `bc1d4e0` 创建 `codex/runtime-06-migrations`。已通过 `gh` 读取 Issue、评论（无评论）和前置 Issue #5；RUNTIME-05 已合入 PR #31，原 Issue 正文中的“未开始”是计划时状态。
+
+### 实现与调用边界
+
+`migrateRuntimeDatabase(db, migrationsFolder)` 接受现有连接的 Drizzle 实例和迁移目录。函数读取默认 `__drizzle_migrations` 的最后进度，再比较当前集合的最新时间；数据库更新时抛出 `SCHEMA_TOO_NEW`，包括当前集合为空的情况。实际 SQL、事务提交和回滚完全使用 `drizzle-orm/better-sqlite3/migrator`，没有额外进度表或外层事务。调用方负责关闭连接。
+
+生产 `drizzle/meta/_journal.json` 为空，不添加占位业务表。`drizzle.config.ts` 使用 SQLite、`./drizzle` 输出及 `src/server/**/schema.ts` 模块 Schema 路径；目前没有业务 Schema，因此本任务不执行 generate，也不提供假 Schema 让它通过。业务模块加入 Schema 后由 Kit 生成 SQL 与 journal；`db:generate` 命令由 RUNTIME-07 接入。
+
+迁移错误提供 `code`、`stage`、`databasePath`、`migrationsFolder`、`currentMigration`、`latestMigration` 和本次待执行的 `migrationFiles`。读取进度、读取文件、版本检查及应用 SQL 有独立阶段。保留底层错误为 cause，移除 Drizzle 包含完整 SQL 的外层错误。待执行文件只有一个时可直接定位；多个文件时列表表示候选范围，官方同步迁移器不暴露失败文件名，不能把某个候选虚称为实际失败文件。迁移文件缺失的原生 Drizzle 错误包含具体路径。
+
+实现参考 [Drizzle 官方迁移流程](https://orm.drizzle.team/docs/migrations)和[配置说明](https://orm.drizzle.team/docs/drizzle-config-file)，并核对本地固定版本 0.45.2 的 `migrator.js`、`better-sqlite3/migrator.js`、SQLite dialect/session 源码及类型。官网已出现新版目录示例，本项目采用固定版本实际支持的 SQL + journal 格式，没有切换版本或新增依赖。
+
+### 实际本地验证
+
+平台为 macOS arm64、Node 24.18.1、pnpm 11.19.0，使用本页开头的 PATH 和 pnpm 函数设置。
+
+| 实际命令                                                                                       | 结果                                                                        |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                               | 退出 0，锁文件不变                                                          |
+| `pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts`      | 11 项通过，退出 0                                                           |
+| `pnpm run test:unit`                                                                           | 55 项通过，退出 0                                                           |
+| `pnpm run test:integration`                                                                    | 初版 18 项通过；补充诊断回归后 20 项通过（原磁盘 9 项、迁移 11 项），退出 0 |
+| `pnpm run lint`                                                                                | 退出 0，零错误、零警告                                                      |
+| `pnpm run format:check`                                                                        | 退出 0                                                                      |
+| `pnpm run typecheck`                                                                           | 退出 0                                                                      |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY node node_modules/next/dist/bin/next build` | 退出 0，首页静态生成                                                        |
+| `git diff --check`                                                                             | 退出 0                                                                      |
+
+先执行新测试确认模块尚不存在；最小实现后正常路径 2 项通过。加入故障/版本/诊断断言后 7 项按预期失败，补齐实现后 9 项全部通过。样本由测试辅助文件在临时目录生成；测试覆盖空生产集合、关闭重开后的幂等、升级、整批 DDL/DML/进度回滚、已提交数据保留、修复重试、首次失败、旧/空集合拒绝新数据库，以及 journal 缺失/损坏和 SQL 缺失。另补充完整错误不含 SQL 秘密值及读取进度失败不删除已有表两项回归，11 项通过。测试后先关闭连接再删除临时目录。
+
+使用 `ego-browser` 技能及现有 Ego Lite，在 TaskSpace 4 对本次 Standalone 构建执行真实浏览器断言。复制 public/static 后以 Node 24 启动 `.next/standalone/server.js`（HOSTNAME=127.0.0.1、PORT=3106，移除两个密钥）。标题、zh-CN、工程状态文案、SVG HTTP 200、图片原始宽度 64，以及 390/1440 × 900 视口无横向溢出均通过。`ego-browser nodejs` 退出 0，TaskSpace 已关闭。没有下载或运行 Playwright/Chromium。
+
+### 未交付与验证限制
+
+K2 的配置、磁盘及迁移测试已取得实际结果，页面仍可构建。迁移尚未接入 prestart 或 Web；进程非零退出、阻止监听、完整运行产物及容器数据库迁移仍由后续任务验收。当前 Docker 工作流只证明页面镜像和资源可运行，不代表 RT-05/RT-06 的最终镜像验收。Ego 视口模拟不代表手机实机或跨浏览器覆盖。冻结 PRD 不变。
+
+已使用 `code-review-and-quality` 完成独立审计，当前无阻塞发现；审计建议的敏感 SQL 诊断回归已补充并通过。远端 CI/Docker 检查待 PR 创建后执行，尚未标为通过。
