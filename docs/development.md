@@ -234,3 +234,39 @@ docker run --rm --publish 127.0.0.1:3000:3000 ariso:ci-amd64
 `gh run watch 34927804447 --exit-status` 确认 [CI 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804447)通过。[Docker 首次运行](https://github.com/dnslin/ariso-next/actions/runs/34927804541)的两个架构均构建成功、Node 架构断言通过，但启动探测在服务就绪前遇到连接重置（curl 退出 56），因此未执行资源断言或导出镜像。
 
 原等待命令的 `--retry-connrefused` 不处理连接重置，改为 curl 自带的 `--retry-all-errors`，仍限制为 15 次重试并保留非成功 HTTP 状态失败。Node TCP 样本复现了首次连接重置：原命令非零退出，修正后能等待到 HTTP 200；持续连接重置仍非零退出。页面、SVG 和脚本断言没有放宽。修正后的运行结果以 PR 的当前提交检查为准。
+
+## RUNTIME-04：启动配置解析
+
+2026-09-15 实施 [Issue #4](https://github.com/dnslin/ariso-next/issues/4)，本地环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0。
+
+`src/server/runtime/env.ts` 提供 `parseRuntimeEnv(env = process.env)`，仅在调用时解析。返回 `host`、数值 `port`、`dataDir`、`logLevel`、原样保留的 `betterAuthSecret` 和 32 字节 `encryptionKey`。启动方负责调用一次并保存配置；模块没有配置缓存、部署变量读取或密钥生成副作用。
+
+缺省值与规则沿用 Spec 5.1；空字符串不触发默认值。端口只接受十进制数字并检查 1–65535，支持前导零。HOST 拒绝纯空白；绝对路径保留原值。所有配置错误一次报告变量名和原因，不附带原始输入或 Zod 错误对象。复用现有 Zod/Vitest，没有新增依赖。
+
+复制 `.env.example` 为 `.env.local` 后，填写本地 DATA_DIR 绝对路径，并分别执行示例中的两条 Node 随机密钥生成命令，将结果保存到对应变量。示例的两个密钥为空，必须填写；应用不会自动生成替代值。示例不是当前完整启动入口。
+
+### 实际验证
+
+以下命令均使用本页开头的 Node 24 与 pnpm 设置：
+
+| 命令                                                                     | 结果                                           |
+| ------------------------------------------------------------------------ | ---------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                         | 退出 0；锁文件未变化                           |
+| `pnpm exec vitest run --project unit tests/unit/runtime/env.test.ts`     | 退出 0，55 项通过                              |
+| `pnpm run test:unit`                                                     | 退出 0，1 个真实测试文件、55 项通过；CI 已接入 |
+| `pnpm run lint`                                                          | 退出 0，零错误、零警告                         |
+| `pnpm run typecheck`                                                     | 修正输入类型后退出 0                           |
+| `pnpm run format:check`                                                  | 退出 0                                         |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY pnpm exec next build` | 修正输入类型后退出 0，无密钥构建成功           |
+
+首次 typecheck 与 build 因 Next 对 `ProcessEnv` 的扩展要求 `NODE_ENV` 而失败。解析输入改为 `Record<string, string | undefined>`，与函数实际接受的环境变量字典一致；之后重新执行 lint、类型、测试、格式和构建均通过。
+
+测试覆盖默认值、端口边界和非法格式、全部日志级别、绝对路径、密钥边界与混合大小写十六进制、错误不含秘密。重新导入模块时追踪六个部署变量的访问，确认零读取；随后移除密钥验证显式调用失败，设置环境验证调用读取当前值。
+
+Ego 回归：复用 Ego Lite，`ego-browser nodejs` 在 TaskSpace 2 访问 `http://127.0.0.1:3104`。服务为本次 `.next/standalone/server.js`，已复制 static/public，移除两个密钥后启动。标题、中文标记、工程状态文案、SVG HTTP 200 与图片宽度 64 均通过；390 与 1440 × 900 视口无横向溢出。浏览器断言退出 0，TaskSpace 已关闭，测试服务已停止。未下载或运行 Playwright/Chromium。
+
+### 边界与远端验证
+
+此任务只完成 RT-03 的配置解析部分。prestart 调用、HOST 到 HOSTNAME 的映射、目录可写性、端口占用导致进程退出及 Web 启动阻断由后续任务验证。尚未创建 integration 项目或空测试。Ego 视口模拟不代表手机实机或跨浏览器验收。
+
+CI 与 AMD64/ARM64 Docker 工作流沿用现有配置，远端结果待本次 PR 检查后补充；Docker 不在本机执行，不发布镜像或部署。
