@@ -1,7 +1,7 @@
 # 实现计划：runtime
 
 - 模块：`runtime`。
-- 状态：用户于 2026-09-12 确认继续推进任务拆解；当前进入 Phase 3（Tasks），尚未开始实施。
+- 状态：已进入实施。RUNTIME-01–04 已合入，RUNTIME-05 按“目录与连接 → 真实磁盘/跨进程测试 → 本地检查与 Ego 回归 → 审计与 PR 检查”交付。实际证据见 [开发记录](../development.md)，后续阶段仍是计划。
 - 依据：[已批准 runtime Spec](../SPEC-runtime.md)、[已批准能力地图](../CAPABILITY-MAP.md)。
 - 日期：2026-09-12。
 - 任务清单：[docs/tasks/todo.md](./todo.md)，已按下列阶段拆解，当前待评审。

@@ -272,3 +272,46 @@ Ego 回归：复用 Ego Lite，`ego-browser nodejs` 在 TaskSpace 2 访问 `http
 提交 `62acd29` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34934123550) 全部通过（40 秒），包含冻结安装、lint、格式、类型、55 项单元测试与生产构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34934123519) 的 AMD64（1 分 13 秒）和 ARM64（1 分 8 秒）原生 runner 均通过构建、架构断言、容器启动、首页/SVG/Next 脚本验证和镜像 artifact 导出。Docker 不在本机执行，没有发布到镜像仓库或部署。
 
 本节证据对应上述实现提交；补充文档后的最终提交检查由 [PR #30 检查页](https://github.com/dnslin/ariso-next/pull/30/checks) 记录。
+
+## RUNTIME-05：真实磁盘数据库
+
+2026-09-15 实施 [Issue #5](https://github.com/dnslin/ariso-next/issues/5)，分支为 `codex/runtime-05-disk-database`。从最新 main `1113bec` 创建，开始时工作区干净。前置 RUNTIME-04 已通过 [PR #30](https://github.com/dnslin/ariso-next/pull/30) 合入，最终 CI 与双架构 Docker 检查均通过；Issue #4 的 OPEN 状态不代表代码尚未交付。
+
+### 实现与调用边界
+
+- `initializeRuntimePaths(config.dataDir)` 从已校验配置派生数据库、storage、assets/watermarks、assets/branding 和 tmp 路径。显式调用时递归创建基础目录并检查写入与遍历权限；原始文件系统错误直接抛出，保留错误码与路径。重复调用保留 tmp 内容和已有权限，不创建 storage/default 或业务记录。
+- `openRuntimeDatabase(paths.database)` 打开磁盘 SQLite，设置 WAL、外键和 5000 ms busy timeout，返回 `{ db, close }`。`db` 是原生 Drizzle 实例，调用方使用自己的 Schema 和查询，并负责关闭连接。设置失败时关闭连接并重新抛出原始异常。
+- 使用现有 better-sqlite3 13.0.3 和 Drizzle 0.45.2，没有新增依赖或通用 Repository。实现核对了本地驱动源码、类型声明、[better-sqlite3 API](https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md) 与 [Drizzle SQLite 文档](https://orm.drizzle.team/docs/sqlite/get-started-sqlite)。
+- Vitest 新增 integration 项目及真实 `test:integration` 脚本，CI 随本次接入。两个独立 Node 24 进程通过同一生产连接函数写入、关闭、退出，再读取相同记录。子进程使用 Node 24 内置 TypeScript 支持；测试 Schema 与 SQL 仅在测试中存在。
+
+### 本地验证
+
+执行平台：macOS arm64，Node 24.18.1、pnpm 11.19.0，使用本页开头的 PATH 和 pnpm 函数设置。
+
+| 实际命令                                                                                       | 结果                                                           |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                               | 退出 0；未改变锁文件                                           |
+| `pnpm exec vitest run --project integration tests/integration/runtime/database.test.ts`        | 初版 7 项通过，退出 0                                          |
+| `pnpm run test:integration`                                                                    | 增加真实锁冲突及目录遍历权限回归后 9 项通过，退出 0，约 5.9 秒 |
+| `pnpm run test:unit`                                                                           | 55 项通过，退出 0                                              |
+| `pnpm run lint`                                                                                | 退出 0，零错误、零警告                                         |
+| `pnpm run format:check`                                                                        | 退出 0                                                         |
+| `pnpm run typecheck`                                                                           | 退出 0                                                         |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY node node_modules/next/dist/bin/next build` | 退出 0，无密钥生产构建成功                                     |
+| `git diff --check`                                                                             | 退出 0                                                         |
+
+9 项集成测试覆盖重复目录初始化和 tmp 保留、已有目录不可写或不可遍历时的 EACCES/路径/权限、文件占位的 EEXIST、磁盘与三项 PRAGMA、空库无业务表、关闭后不可查询、外键实际生效与事务回滚、锁冲突超时保留 SQLITE_BUSY 且释放后可写、损坏数据库保持原内容、两个独立进程的数据持久化与 WAL/SHM 清理。测试先关闭连接再删除临时目录；权限测试在 finally 恢复权限。
+
+Ego 验证使用 `ego-browser` 技能及现有 Ego Lite，没有下载浏览器。复制 public/static 至本次 Standalone 后，以 Node 24 启动 `.next/standalone/server.js`（`HOSTNAME=127.0.0.1 PORT=3105`，移除两个密钥）。`ego-browser nodejs` 在 TaskSpace 3 验证标题、简体中文标记、工程状态文案、SVG HTTP 200 与实际图片宽度 64、390 和 1440 × 900 视口无横向溢出，全部断言通过。TaskSpace 已关闭，服务已停止。
+
+### 尚未交付的边界
+
+本次完成目录与连接函数，未调用 Web 初始化或 prestart，未实现迁移、默认存储和业务表。Web 单连接生命周期由 RUNTIME-08 接入；迁移由 RUNTIME-06 实现。当前页面镜像尚不包含数据库启动流程，Docker 页面检查不能证明容器数据库持久化。浏览器验证是桌面视口模拟，不代表手机实机或跨浏览器验收。Linux 双架构原生 SQLite 运行验收仍由后续镜像任务负责。
+
+### 审计与远端检查
+
+按 `code-review-and-quality` 完成独立审计，发现一项 P2：已有目录权限 0666 时虽然可写，但不能进入并创建文件。已将权限检查改为 `W_OK | X_OK`，并将测试扩展为 0555 与 0666 两个真实故障样本。修复后 `pnpm run test:integration`（9 项）、lint、typecheck 与 `pnpm exec next build` 全部退出 0。独立审计复核确认 P2 已解决，无剩余阻塞发现；审计方独立重跑 9 项集成测试，退出 0（5.86 秒）。
+
+提交 `4a09cd3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34936986008) 全部通过（46 秒），包含冻结安装、lint、格式、类型、55 项单元测试、9 项真实集成测试及生产构建。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34936985935) 在 AMD64（1 分 12 秒）和 ARM64（1 分 5 秒）原生 runner 上完成镜像构建、架构断言、容器启动、页面及资源验证、清理和 artifact 导出。`gh run watch 34936986008 --exit-status` 与 `gh run watch 34936985935 --exit-status` 均退出 0。没有发布镜像或部署。
+
+上述远端记录对应最终实现提交；补充本段文档后的检查以 [PR #31 检查页](https://github.com/dnslin/ariso-next/pull/31/checks) 为准。Issue 保持 OPEN，PR 由用户评审和合并。
