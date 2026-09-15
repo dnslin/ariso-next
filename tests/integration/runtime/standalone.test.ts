@@ -1,11 +1,8 @@
-import { spawn, type ChildProcess } from 'node:child_process';
-import { randomBytes } from 'node:crypto';
 import { cp, mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
-import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
-import { once } from 'node:events';
+import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { launch, stop } from './process-helpers';
 
 let directory: string;
 let app: string;
@@ -21,56 +18,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await rm(directory, { recursive: true, force: true });
 });
-
-async function unusedPort() {
-  const server = createServer();
-  server.listen(0, '127.0.0.1');
-  await once(server, 'listening');
-  const address = server.address();
-  if (!address || typeof address === 'string') throw new Error('Missing port');
-  await new Promise<void>((resolve, reject) =>
-    server.close((error) => (error ? reject(error) : resolve())),
-  );
-  return address.port;
-}
-
-async function launch(overrides: Record<string, string> = {}) {
-  const port = await unusedPort();
-  const child = spawn('sh', [join(app, 'entrypoint.sh')], {
-    cwd: directory,
-    env: {
-      PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
-      NODE_ENV: 'production',
-      NODE_OPTIONS: '--no-experimental-strip-types',
-      PORT: String(port),
-      DATA_DIR: join(directory, `data-${port}`),
-      BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
-      ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
-      ...overrides,
-    },
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-  let logs = '';
-  child.stdout.on('data', (chunk) => {
-    logs += chunk;
-  });
-  child.stderr.on('data', (chunk) => {
-    logs += chunk;
-  });
-  const closed = once(child, 'close');
-  return { child, closed, port, logs: () => logs };
-}
-
-async function stop(child: ChildProcess, closed: Promise<unknown>) {
-  if (child.exitCode !== null || child.signalCode !== null) return;
-  child.kill('SIGTERM');
-  const timeout = setTimeout(() => child.kill('SIGKILL'), 5000);
-  try {
-    await closed;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
 
 describe('isolated production directory', () => {
   it('包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码', async () => {
@@ -122,7 +69,7 @@ describe('isolated production directory', () => {
   ])(
     '$name：完整入口迁移后提供健康、页面与两类静态资源',
     async ({ env, host }) => {
-      const run = await launch(env as Record<string, string>);
+      const run = await launch(app, directory, env as Record<string, string>);
       const origin = `http://127.0.0.1:${run.port}`;
       try {
         await expect
@@ -163,7 +110,7 @@ describe('isolated production directory', () => {
   );
 
   it('prestart 配置失败时非零退出且不监听 Web 端口', async () => {
-    const run = await launch({ HOST: '' });
+    const run = await launch(app, directory, { HOST: '' });
     try {
       const [code] = await run.closed;
       expect(code, run.logs()).toBe(1);

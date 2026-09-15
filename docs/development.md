@@ -492,3 +492,49 @@ Ego 验证使用已有 Ego Lite，没有下载浏览器或使用 Playwright。�
 补充本记录后的最终提交检查见 [PR #35 检查页](https://github.com/dnslin/ariso-next/pull/35/checks)。最终检查通过后转正式待评审，合并和分支清理由用户决定。
 
 RUNTIME-10 的完整失败与恢复矩阵、RUNTIME-12 的真实 HTTP 数据库故障、后续日志桥接与图片工具仍未交付。本次不实现业务初始化或上传，不代表完整 RT-03/RT-11 的所有后续验收完成。冻结 PRD、锁文件和依赖版本未改变。不合并 PR、不关闭 Issue、不发布镜像或部署。
+
+## RUNTIME-10：完整入口的失败与恢复
+
+2026-09-15 在 `codex/runtime-10-startup-recovery` 实施 [Issue #10](https://github.com/dnslin/ariso-next/issues/10)。前置 Issue #9 已关闭，PR #35 已合并。开始时工作区干净；GitHub API 与使用系统代理成功执行的 `git fetch origin main` 均确认基线为 `d7516ea`。环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0，继续用临时 PATH 入口保证嵌套 pnpm 和 Node 子进程版本一致。
+
+### 实际交付
+
+新增 `startup.test.ts` 的 12 项集成测试，在系统临时目录复制完整 Standalone 产物，从产物外运行真实 `entrypoint.sh`。每项测试使用独立数据目录、随机密钥和临时端口；只在产物副本内写测试迁移，源码和正式产物的迁移集合均不修改。复用既有迁移样本；没有新增依赖、业务 Schema 或生产故障入口。
+
+- 两种密钥分别验证缺失与非法值；端口覆盖零、超上限、小数及非数字。失败非零退出，修复后使用相同目录启动成功。日志不含生成密钥及非法密钥原值。
+- 将真实目录设为 `0500`，验证 `EACCES`、路径和文件内容，断言应用没有改写目录权限。恢复写权限后启动同一目录成功。此权限测试在普通用户下运行；不以文件占位模拟不可写目录。
+- 从启动后每 10 ms 尝试 TCP 连接直到退出，并在退出后再次检查；同时断言没有 Next 启动日志。轮询有 10 秒期限和单次连接超时，防止错误入口无限等待。端口占用由真实自建服务制造，断言 `EADDRINUSE` 和非零退出；释放后用相同端口启动成功。
+- 先提交初始迁移，再让同批退出 0的升级和故障 SQL 失败。确认升级写入及新建表都回滚，进度保持 `1000`，诊断包含数据库路径、阶段、SQL 文件与 SQLite 原因。修复 SQL 后连续启动两次，确认已提交迁移不重放。
+- 使用新迁移集合启动并写入真实磁盘记录；停止后以旧迁移集合运行，确认 `SCHEMA_TOO_NEW`，记录与 Drizzle 进度均未改变。恢复新集合后重新启动，仍能读到此前写入的记录和 `tmp` 中未完成文件。
+
+从 RUNTIME-09 测试提取 `process-helpers.ts`，两套产物测试复用同一启动与清理路径。清理向自建进程组发送 SIGTERM，5 秒后才在必要时升级为 SIGKILL，等待关闭后删除测试目录；覆盖尚未 exec 时的 shell/prestart 子进程。正常生产停止按已安装 Next 16.3.5 的默认处理断言退出码 `143`，并确认端口关闭。生产 preflight 和迁移实现无需修改。
+
+### 实际本地验证
+
+| 命令或检查                                                                                                                          | 结果                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `pnpm exec node -p 'process.version + " " + process.execPath'`                                                                      | 退出 0，Node v24.18.1                                                                      |
+| `env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY DATA_DIR=/tmp/ariso-10-build-no-data pnpm run build`                             | 退出 0，完整生产构建和打包成功                                                             |
+| `test ! -e /tmp/ariso-10-build-no-data`                                                                                             | 退出 0，构建未创建部署数据目录                                                             |
+| `pnpm exec vitest run --project integration tests/integration/runtime/startup.test.ts tests/integration/runtime/standalone.test.ts` | 退出 0，18 项通过（新增 12 项、原有 6 项）                                                 |
+| `pnpm exec vitest run --project integration tests/integration/runtime/startup.test.ts`                                              | 退出 0，最终构建后 12 项通过                                                               |
+| `pnpm run test:integration`                                                                                                         | 退出 0，6 个文件、52 项通过                                                                |
+| `pnpm run lint`                                                                                                                     | 退出 0，零警告                                                                             |
+| `pnpm run typecheck`                                                                                                                | 退出 0，应用与 runtime 类型检查通过                                                        |
+| `pnpm run test:unit`                                                                                                                | 退出 0，55 项通过                                                                          |
+| `pnpm run format:check`                                                                                                             | 退出 0                                                                                     |
+| `ego-browser nodejs`                                                                                                                | 退出 0；Ego Lite TaskSpace 8 验证缺失密钥失败后恢复的首页、健康 HTTP 200、JSON 与 no-store |
+
+首轮新增测试的停止断言预期为 0，实际全部得到 143；核对 Next 随包 `start-server.js` 的 SIGTERM 处理后修正为精确断言 `[143, null]`。不是生产故障，也没有放宽为任意退出码。类型检查曾发现辅助函数闭包中的 PID 可能为 undefined，调整闭包写法后重跑。打包仍输出 RUNTIME-09 已记录的可选 SQLite Debug 文件追踪诊断；实际发行驱动在隔离产物中成功执行查询与迁移。
+
+Ego 验证使用现有浏览器，没有下载 Playwright/Chromium。验证完成后 TaskSpace 已结束，3110 端口自建服务及其临时数据已清理。
+
+### 审计、远端检查与限制
+
+已使用 `code-review-and-quality` 完成独立只读审计，审阅测试、进程清理及完整生产调用链，未发现 Critical 或 Required 问题。本机未执行 Docker。
+
+实现提交 `e882335` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34946972625) 全部通过（1 分 22 秒），包含冻结安装、lint、格式、类型、55 项单元测试、完整构建及 52 项集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34946972472) 在 AMD64 与 ARM64 原生 runner 上均通过（各 1 分 14 秒），完成构建、架构断言、生产入口启动、健康/首页/静态资源检查及验证产物导出。`gh run watch 34946972625 --exit-status --interval 10` 与 `gh run watch 34946972472 --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
+
+补充本记录后的最终提交结果见 [PR #36 检查页](https://github.com/dnslin/ariso-next/pull/36/checks)。最终推送前执行 `pnpm run format:check` 和 `git diff --check`；最终检查通过后转为正式待评审，合并与分支清理由用户决定。
+
+本次完成 RUNTIME-10 对 RT-03–06 的本地产物验收；容器故障与持久化矩阵仍由 RUNTIME-20 完成。健康接口的真实 HTTP 数据库故障注入归 RUNTIME-12，业务秘密预检、所有者初始化、上传和任务恢复仍由后续模块实现。冻结 PRD 未改写。不合并 PR、不关闭 Issue、不发布镜像或部署。
