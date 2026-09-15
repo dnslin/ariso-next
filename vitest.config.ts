@@ -10,6 +10,13 @@ export default defineConfig({
           include: ['tests/unit/**/*.test.ts'],
         },
       },
+      {
+        test: {
+          name: 'integration',
+          environment: 'node',
+          include: ['tests/integration/**/*.test.ts'],
+        },
+      },
     ],
   },
 });

@@ -12,7 +12,8 @@
     "format:check": "prettier . --check",
     "format": "prettier . --write",
     "typecheck": "next typegen && tsc --noEmit --project tsconfig.json",
-    "test:unit": "vitest run --project unit"
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",

@@ -1,7 +1,7 @@
 # 任务清单：runtime
 
 - 模块：`runtime`。
-- 状态：Phase 3（Tasks）草案，待评审；所有实施任务尚未开始。
+- 状态：已进入实施；RUNTIME-01–04 的已合入结果见 [开发记录](../development.md)，RUNTIME-05 正在交付。下列未勾选能力仍是计划。
 - 日期：2026-09-12。
 - 依据：[runtime Spec](../SPEC-runtime.md)、[实现计划](./plan.md)、[能力地图](../CAPABILITY-MAP.md)。
 - 用户已要求从实现计划推进到任务拆解。本清单通过后进入 Implement。
@@ -121,11 +121,13 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 **验收：**
 
-- [ ] 重复创建基础目录成功，保留 tmp 原内容；不可写路径保留底层错误，未创建默认存储业务记录。
-- [ ] 磁盘 SQLite 启用 WAL、外键和 5000 ms busy timeout，连接提供 Drizzle 与关闭能力。
-- [ ] 一个进程写入测试记录后退出，另一个进程读到同一记录；连接与临时目录正确清理。
+- [x] 重复创建基础目录成功，保留 tmp 原内容；不可写路径保留底层错误，未创建默认存储业务记录。
+- [x] 磁盘 SQLite 启用 WAL、外键和 5000 ms busy timeout，连接提供 Drizzle 与关闭能力。
+- [x] 一个进程写入测试记录后退出，另一个进程读到同一记录；连接与临时目录正确清理。
 
 **验证：** `pnpm exec vitest run --project integration tests/integration/runtime/database.test.ts`；`pnpm run typecheck`。同时建立真实 `test:integration` 脚本。
+
+**实施记录（2026-09-15）：** 本地实现与验收通过，CI 已接入真实集成测试；远端检查与最终审计结果见 [开发记录](../development.md#runtime-05真实磁盘数据库)。本任务不接入 Web 启动或迁移。
 
 ### RUNTIME-06：实现向前迁移
 
