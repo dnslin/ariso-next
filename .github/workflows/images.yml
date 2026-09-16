@@ -39,7 +39,7 @@ jobs:
           for path in .env.context-check .data src/.env.context-check src/context-check.sqlite src/context-check.key .git .github docs node_modules .next dist tests/integration; do
             test ! -e "$context_dir/$path"
           done
-          for path in package.json pnpm-lock.yaml src/app/page.tsx drizzle/meta/_journal.json scripts/package-standalone.mjs docker/entrypoint.sh tests/fixtures/runtime/images/sample.jpg tests/fixtures/runtime/images/sample.png; do
+          for path in package.json pnpm-lock.yaml src/app/page.tsx drizzle/meta/_journal.json scripts/package-standalone.mjs scripts/verify-image.mjs docker/entrypoint.sh tests/fixtures/runtime/images/sample.jpg tests/fixtures/runtime/images/sample.png; do
             test -s "$context_dir/$path"
           done
       - name: Build image
@@ -75,6 +75,27 @@ jobs:
               test ! -e "$path"
             done
           '
+      - name: Verify actual image conversions and glyphs offline
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/image-verification"
+          chmod 777 "$RUNNER_TEMP/image-verification"
+          docker run --rm --network none --read-only --tmpfs /tmp \
+            --workdir /tmp --entrypoint sh \
+            --mount "type=bind,src=$RUNNER_TEMP/image-verification,dst=/verification-output" \
+            "$IMAGE" -eu -c '
+              node /app/scripts/verify-image.mjs
+              test -z "$(find /tmp -maxdepth 1 -name "ariso-verify-image-*")"
+              node /app/scripts/verify-image.mjs --output-dir /verification-output
+              test -z "$(find /tmp -maxdepth 1 -name "ariso-verify-image-*")"
+            '
+      - uses: actions/upload-artifact@v7
+        with:
+          name: image-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/image-verification
+          if-no-files-found: error
+          retention-days: 7
       - name: Check architecture and start container
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}

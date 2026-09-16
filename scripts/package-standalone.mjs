@@ -20,7 +20,16 @@ const { fileList, warnings } = await nft.nodeFileTrace(
     processCwd: root,
   },
 );
-for (const warning of warnings) console.warn(warning);
+// Verification reads explicitly copied fixtures and creates temporary outputs.
+// Do not infer filesystem globs from those runtime-only paths; trace imports.
+const verification = await nft.nodeFileTrace(['scripts/verify-image.mjs'], {
+  base: root,
+  processCwd: root,
+  analysis: { emitGlobs: false },
+});
+for (const file of verification.fileList) fileList.add(file);
+for (const warning of [...warnings, ...verification.warnings])
+  console.warn(warning);
 for (const file of fileList) {
   // Next has already written its package.json and standard server.js.
   if (file === 'package.json') continue;

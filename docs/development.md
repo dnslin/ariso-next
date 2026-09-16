@@ -913,3 +913,69 @@ RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所
 Docker 使用原生 AMD64（`ubuntu-24.04`）和 ARM64（`ubuntu-24.04-arm`）runner，两个架构均完成真实构建上下文导出及排除断言、无密钥构建、最终镜像离线只读检查、实际架构断言、空数据目录启动、健康/首页/静态资源及样本 URL 404 检查、容器清理和验证产物导出。运行基线为 Node 24.21.0、Debian trixie、ImageMagick 7.1.1-43、ExifTool 13.25；指定七个包和两套字体文件检查通过，SQLite 实际查询和真实 64×48 JPEG/PNG 识别通过。
 
 [PR #44](https://github.com/dnslin/ariso-next/pull/44) 关联 Issue #18。此补充提交仅更新文档，最新提交状态见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/44/checks)，全部通过后转为正式待评审。Issue 保持开放，未合并或清理分支。
+
+## RUNTIME-19：真实图片与字体验证
+
+2026-09-16 从最新 `origin/main`（`6b4e025`）创建 `codex/runtime-19-image-verification`，实施 [Issue #19](https://github.com/dnslin/ariso-next/issues/19)。初始工作区干净；通过 `gh` 读取 Issue、评论及前置 #18，确认 #18 已关闭且实现和双架构证据已在 main。使用 `using-agent-skills`、`incremental-implementation`、`git-workflow-and-versioning`、`vercel-react-best-practices`、`ego-browser` 和 `code-review-and-quality`。
+
+### 实现与使用
+
+新增 `scripts/verify-image.mjs`，随独立运行目录和已有样本打包。脚本实际使用 better-sqlite3 查询 SQLite 版本及计算结果，要求 ImageMagick 7，调用 ExifTool 读取源文件和输出的格式与尺寸。每个真实 JPEG/PNG 样本分别生成 WebP、JPEG、AVIF，重新解码为 8 位 RGB，验证 64×48 像素长度及与源图片的平均像素误差小于 20/255。阈值允许有损编码变化，同时拒绝白图及明显内容替换。命令遵循 [ImageMagick 官方参数说明](https://imagemagick.org/command-line-options/)。
+
+文字固定使用镜像中的 `NotoSansCJK-Regular.ttc` 与 `NotoSans-Regular.ttf`，渲染“中文图片验证”和“Ariso 123”。每个非空格字符独立绘制到 96×96 白底，以暗像素数量排除空白/纯色，并与同字体、同尺寸、同位置的 U+10FFFF 缺字控制图逐像素比较。另导出完整文字图片供目视核对。这仅验证指定样本文字，不宣称覆盖所有 Unicode 字符。
+
+脚本相对自身读取 `verification/fixtures`，所有生成内容写入系统临时目录，成功或抛错均清理。无需启动密钥、部署数据或 `/app` 写权限。可在最终镜像中执行：
+
+```sh
+docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs
+```
+
+使用 `--output-dir /verification-output` 可将报告、六张转换图片、完整文字和逐字/缺字控制图复制到调用方指定的可写挂载目录；临时目录仍会清理。报告包含工具版本、实际平台与架构、SQLite 查询结果、像素误差和逐字暗像素数。默认不保留样本。
+
+现有 Docker Actions 在原生 AMD64 和 ARM64 runner 上构建最终镜像，用无网络、只读根文件系统、可写 `/tmp` 的容器，从 `/tmp` 工作目录分别运行默认模式和导出模式，并断言临时目录清理。样本和报告上传为 `image-verification-amd64` / `image-verification-arm64`，供实际内容核对；不发布镜像。
+
+### 实际本地验证
+
+平台为 macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。临时 PATH 选择已有目标环境，不修改全局配置。
+
+| 实际命令                         | 结果                                                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile` | 退出 0，锁文件不变                                                                                                                                           |
+| `pnpm run lint`                  | 退出 0，零警告                                                                                                                                               |
+| `pnpm run format:check`          | 退出 0                                                                                                                                                       |
+| `pnpm run typecheck`             | 退出 0                                                                                                                                                       |
+| `pnpm run test:unit`             | 退出 0，109 项通过，含新增 5 项像素与字形失败检查                                                                                                            |
+| `pnpm run build`                 | 退出 0，生产构建及独立产物打包完成                                                                                                                           |
+| `pnpm run test:integration`      | 退出 0，11 个文件、71 项通过，含独立无密钥构建                                                                                                               |
+| `ego-browser nodejs`             | 退出 0，Ego Lite TaskSpace 6 验证独立生产目录：首页标题、zh-CN、页面内容、健康 200/no-store/精确 JSON、SVG 200、样本 URL 404；空间、自建服务与临时目录已清理 |
+
+新增独立目录测试先实际加载 execa 和 SQLite 并查询，再在空 PATH 下执行工具，要求 `magick` 的 ENOENT 非零失败和临时目录清理。它也验证新增依赖没有借用开发 node_modules。
+
+首轮构建暴露 NFT（Next 的文件依赖追踪器）将运行时临时输出路径扩大为仓库目录，误读旧产物。修复为单独追踪验证脚本并关闭其文件 glob 推断；静态代码依赖仍追踪，fixtures 已显式复制，原 CLI 图保持默认追踪以纳入 SQLite 原生二进制。修复后完整构建和隔离测试通过。仍有既有可选 SQLite Debug 文件追踪提示，实际 Release 驱动已验证。
+
+### 代码审计与远端验证
+
+使用 `code-review-and-quality` 对实现提交 `66e20e5` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计者使用 Node 24 独立运行新增单测 5 项、独立产物测试 7 项及 `git diff HEAD^ HEAD --check`，全部通过。主任务 `git diff --check` 也通过。
+
+实现提交已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35043012676) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35043012597)。两个 `gh run watch <run-id> --exit-status --interval 15` 均退出 0，没有远端失败或修复重跑。CI 运行冻结安装、格式、lint、类型、109 项单元、生产构建和 71 项集成。
+
+镜像在原生 AMD64（`ubuntu-24.04`）和 ARM64（`ubuntu-24.04-arm`）分别实际运行；没有使用模拟。两者报告的 Node 均为 24.21.0、SQLite 3.53.4（查询结果 42）、ImageMagick 7.1.1-43、ExifTool 13.25，实际 Node 架构分别为 `x64` / `arm64`。每个平台的默认执行、样本导出、临时目录清理、无网络只读运行，以及原有容器健康和静态资源检查全部通过。
+
+通过 `gh run download 35043012597 --name image-verification-<arch>` 下载两个架构的样本和 `report.json`。逐一查看两个架构的 `chinese.png` 与 `latin.png`，文字分别完整显示“中文图片验证”和“Ariso 123”，无空白或缺字方框。另目视确认导出的 WebP/JPEG 保留彩色渐变棋盘；所有六张转换文件已在容器内重新解码比较，两个架构记录相同：
+
+| 源文件 | 输出格式 | 尺寸  | 平均像素误差（0–255，阈值 <20） |
+| ------ | -------- | ----- | ------------------------------- |
+| JPEG   | WebP     | 64×48 | 5.5512                          |
+| JPEG   | JPEG     | 64×48 | 5.1259                          |
+| JPEG   | AVIF     | 64×48 | 6.2433                          |
+| PNG    | WebP     | 64×48 | 15.3800                         |
+| PNG    | JPEG     | 64×48 | 0.8640                          |
+| PNG    | AVIF     | 64×48 | 1.6049                          |
+
+每个中文字符的暗像素数为 487–820，每个拉丁/数字字符为 125–328，所有字符均不同于同字体缺字控制图。报告和生成样本保留在上述 Docker run 的 `image-verification-amd64`、`image-verification-arm64` 产物中，保留期为 7 天；本节保留检查数值和目视结果。
+
+[PR #45](https://github.com/dnslin/ariso-next/pull/45) 关联 Issue #19。此补充提交仅更新实施与验证记录，最新提交的检查见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/45/checks)，全部成功后转为正式待评审。Issue 保持开放，不执行合并、分支清理、镜像发布或部署。
+
+### 验收边界
+
+本任务只验证静态 JPEG/PNG 到 WebP/JPEG/AVIF 的运行依赖基线。动画识别、完整格式矩阵、真实上传和水印业务仍由 `media` 及对应模块验收。容器停止/重启和数据持久化属于 #20–21。本机不执行 Docker；AMD64/ARM64 结果以各自 Actions 实际运行证据为准。冻结 PRD 未修改。
