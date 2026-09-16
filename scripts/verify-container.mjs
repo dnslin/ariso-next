@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
 import {
   chmod,
-  cp,
   mkdir,
   mkdtemp,
   readFile,
@@ -90,6 +89,8 @@ async function main() {
     platform: values.platform,
     host: `${process.platform}/${process.arch}`,
     failureNetwork: 'Linux Docker host network; direct loopback TCP probe',
+    backupMethod:
+      'stopped whole-directory tar -cpf archive; restore with tar -xpf',
     checks: [],
     status: 'running',
   };
@@ -283,7 +284,7 @@ async function main() {
     assert.equal(actual.arch, image.Architecture === 'amd64' ? 'x64' : 'arm64');
     assert.match(actual.version, /^v24\./);
     assert.match(actual.pid1, /\/node$/);
-    const processes = (await docker(['top', id, '-eo', 'comm'])).stdout
+    const processes = (await docker(['top', id, '-eo', 'pid,comm'])).stdout
       .trim()
       .split('\n')
       .slice(1);
@@ -350,14 +351,14 @@ async function main() {
     await waitHealthy();
     assert.deepEqual(await rows(), expected);
     assert.equal(
-      (await docker(['top', id, '-eo', 'comm'])).stdout.trim().split('\n')
+      (await docker(['top', id, '-eo', 'pid,comm'])).stdout.trim().split('\n')
         .length,
       2,
       'restart leaves one Web process',
     );
     check('stop/start/restart persistence and repeated migrations');
     await stop();
-    await cp(data, join(root, 'backup'), { recursive: true });
+    await execa('tar', ['-C', data, '-cpf', join(root, 'backup.tar'), '.']);
     await chmod(data, 0o777);
     await configure(upgrade);
     await start();
@@ -388,7 +389,8 @@ async function main() {
     await compose(['down', '--volumes', '--remove-orphans']);
     await ownData();
     await rm(data, { recursive: true });
-    await cp(join(root, 'backup'), data, { recursive: true });
+    await mkdir(data);
+    await execa('tar', ['-C', data, '-xpf', join(root, 'backup.tar')]);
     // Restore ownership for the image's node user after host-side backup copying.
     await docker([
       'run',

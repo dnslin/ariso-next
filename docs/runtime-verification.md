@@ -37,7 +37,7 @@ JUnit 是测试结果的机器可读报告。CI 保留两份 XML；浏览器报�
 ## 本地实际执行记录
 
 - 冻结安装、lint、typecheck、build：退出 0。生产代码未改动；旧 E2E 移除后构建已重跑。
-- 单元测试：109 项通过；容器脚本新增测试另行整合后复跑。
+- 单元测试：最终 7 文件、118 项通过，包含 9 项容器脚本断言测试。
 - 集成测试：11 文件、71 项通过，包含无密钥隔离构建和真实框架故障日志。
 - `pnpm run test:browser`：2026-09-16 01:38:57–01:39:02 UTC，Darwin arm64，Node 24.18.1，Ego Lite / Chrome 152。首页 200、8 个本地资源 200、图片 64×64、健康 200/no-store/精确 JSON、四个验证样本 URL 404、390/1440 无水平溢出、零浏览器错误；两张截图已目视检查。
 - 浏览器负向演练：从测试子进程 PATH 移除 Ego CLI，退出 1 / ENOENT；失败报告保留，自建端口关闭、临时目录删除。没有用假浏览器返回通过。
@@ -90,4 +90,8 @@ done
 
 ## 审计与最终证据
 
-待独立代码审计及 Actions 完成后填写。未执行条目不勾选通过。
+独立代理使用 `code-review-and-quality` 对整批 diff 审计，覆盖正确性、简洁性、职责边界、安全和性能；未发现 Required / Critical 阻塞问题。审计者另行执行 `pnpm exec vitest run --project unit tests/unit/scripts`，9 项通过。首次误用不存在文件名返回“无匹配测试”，随后已用实际目录重跑，未跳过失败检查。
+
+整合时修正了容器测试继承父进程密钥、以 HTTP 超时误判无监听的问题。现在显式清除父配置，失败场景用 host 网络和 TCP 连接拒绝判断，新增真实 socket 失败断言。Ego 错误保留测试空间供诊断，符合技能要求，测试服务和数据仍清理。
+
+草稿 PR：[#46](https://github.com/dnslin/ariso-next/pull/46)。首轮 [CI](https://github.com/dnslin/ariso-next/actions/runs/35045333890) 与 [双架构 Docker](https://github.com/dnslin/ariso-next/actions/runs/35045334222) 已运行。两架构镜像构建、工具与图片检查通过，容器脚本因 `docker top -eo comm` 缺少 Docker 要求的 PID 列失败；报告确认清理成功。现已改为 `pid,comm` 并改用文档一致的 tar 备份/恢复，等待重跑。未将代码失败归为手动验收。

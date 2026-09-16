@@ -19,6 +19,6 @@ pnpm run test:browser
 EGO_TASK_SPACE=7 EGO_KEEP_SPACE=1 pnpm run test:browser
 ```
 
-将 7 替换成首次输出的 ID。`EGO_KEEP_SPACE=1` 只供仍需继续验证的任务使用；任务完成后使用 Ego 的 `task.finish({ keep: [] })` 关闭一次。独立运行默认成功即关闭 TaskSpace。失败后不得另建空间绕过已有问题。
+将 7 替换成本任务首次输出的测试空间 ID，只复用本任务创建且仍由本任务控制的空间，不指定用户已有的其他空间。`EGO_KEEP_SPACE=1` 只供仍需继续验证的任务使用；任务完成后使用 Ego 的 `task.finish({ keep: [] })` 关闭一次。独立运行默认成功即关闭 TaskSpace。失败后不得另建空间绕过已有问题。
 
 本方案依照当前用户要求取代旧 Playwright 方案。没有安装或验证 Firefox/WebKit，也不宣称覆盖三浏览器。标准 GitHub 托管 runner 未提供 Ego Lite，因此浏览器实际结果来自具备 Ego Lite 的工作站；CI 的人工验收边界见运行验收文档。
