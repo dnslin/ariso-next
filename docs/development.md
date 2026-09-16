@@ -953,7 +953,28 @@ docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs
 
 首轮构建暴露 NFT（Next 的文件依赖追踪器）将运行时临时输出路径扩大为仓库目录，误读旧产物。修复为单独追踪验证脚本并关闭其文件 glob 推断；静态代码依赖仍追踪，fixtures 已显式复制，原 CLI 图保持默认追踪以纳入 SQLite 原生二进制。修复后完整构建和隔离测试通过。仍有既有可选 SQLite Debug 文件追踪提示，实际 Release 驱动已验证。
 
-独立审计和远端真实图片验证尚在进行，未标记通过。
+### 代码审计与远端验证
+
+使用 `code-review-and-quality` 对实现提交 `66e20e5` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计者使用 Node 24 独立运行新增单测 5 项、独立产物测试 7 项及 `git diff HEAD^ HEAD --check`，全部通过。主任务 `git diff --check` 也通过。
+
+实现提交已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35043012676) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35043012597)。两个 `gh run watch <run-id> --exit-status --interval 15` 均退出 0，没有远端失败或修复重跑。CI 运行冻结安装、格式、lint、类型、109 项单元、生产构建和 71 项集成。
+
+镜像在原生 AMD64（`ubuntu-24.04`）和 ARM64（`ubuntu-24.04-arm`）分别实际运行；没有使用模拟。两者报告的 Node 均为 24.21.0、SQLite 3.53.4（查询结果 42）、ImageMagick 7.1.1-43、ExifTool 13.25，实际 Node 架构分别为 `x64` / `arm64`。每个平台的默认执行、样本导出、临时目录清理、无网络只读运行，以及原有容器健康和静态资源检查全部通过。
+
+通过 `gh run download 35043012597 --name image-verification-<arch>` 下载两个架构的样本和 `report.json`。逐一查看两个架构的 `chinese.png` 与 `latin.png`，文字分别完整显示“中文图片验证”和“Ariso 123”，无空白或缺字方框。另目视确认导出的 WebP/JPEG 保留彩色渐变棋盘；所有六张转换文件已在容器内重新解码比较，两个架构记录相同：
+
+| 源文件 | 输出格式 | 尺寸  | 平均像素误差（0–255，阈值 <20） |
+| ------ | -------- | ----- | ------------------------------- |
+| JPEG   | WebP     | 64×48 | 5.5512                          |
+| JPEG   | JPEG     | 64×48 | 5.1259                          |
+| JPEG   | AVIF     | 64×48 | 6.2433                          |
+| PNG    | WebP     | 64×48 | 15.3800                         |
+| PNG    | JPEG     | 64×48 | 0.8640                          |
+| PNG    | AVIF     | 64×48 | 1.6049                          |
+
+每个中文字符的暗像素数为 487–820，每个拉丁/数字字符为 125–328，所有字符均不同于同字体缺字控制图。报告和生成样本保留在上述 Docker run 的 `image-verification-amd64`、`image-verification-arm64` 产物中，保留期为 7 天；本节保留检查数值和目视结果。
+
+[PR #45](https://github.com/dnslin/ariso-next/pull/45) 关联 Issue #19。此补充提交仅更新实施与验证记录，最新提交的检查见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/45/checks)，全部成功后转为正式待评审。Issue 保持开放，不执行合并、分支清理、镜像发布或部署。
 
 ### 验收边界
 
