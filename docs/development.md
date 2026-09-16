@@ -819,3 +819,42 @@ URL 规则替换 token、resetToken、reset_token、uploadToken、access_token�
 实现提交 `9213141` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/34991396476) 已成功，覆盖冻结安装、lint、格式、类型、单元、完整构建和集成测试。[Docker build](https://github.com/dnslin/ariso-next/actions/runs/34991396292) 已成功，AMD64（ubuntu-24.04）和 ARM64（ubuntu-24.04-arm）均使用原生 runner，完成镜像构建、实际架构断言、生产入口启动、健康/首页/静态资源检查、容器清理与产物导出。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，无远端失败或修复重跑。
 
 [PR #42](https://github.com/dnslin/ariso-next/pull/42) 已关联 Issue #16。本次补充仅修改验证文档，最新提交状态见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/42/checks)，全部通过后转为正式待评审。Issue 保持开放，合并及分支清理由用户另行指示。
+
+## RUNTIME-17：真实框架日志验证
+
+2026-09-16 从最新 `origin/main`（`b34b41c`）创建 `codex/runtime-17-framework-logging`，实施 [Issue #17](https://github.com/dnslin/ariso-next/issues/17)。工作区初始干净。通过 `gh` 读取 Issue、评论与前置 #12、#14、#16；前置均已关闭，main 包含实际实现和验证记录。使用 `using-agent-skills`、`incremental-implementation`、`git-workflow-and-versioning`、`vercel-react-best-practices`、`ego-browser` 与 `code-review-and-quality`。
+
+### 实现与证据边界
+
+新增 3 项真实进程测试。最终 Standalone 复制到独立临时目录后，以实际入口启动，验证 prestart、Next ready、健康请求和非法密钥失败输出。stdout、stderr 分开收集，进程关闭后逐行解析 JSON，并断言时间、级别、模块、消息及错误上下文。测试地址 `/framework-error`、`/api/log-event` 在生产应用返回 404，产物文件中没有测试入口。
+
+临时 Pages 测试应用启用 Next 自身的国际化路由，并用 Node HTTP 客户端发送包含非法 authority（主机部分）的原始 URL。实际 Next 16.3.5 的 `router-server` 在路由处理前解析 URL，错误传播到 `start-server` 的 `requestListener`。测试要求 HTTP 500 / `Internal Server Error`、Next 自身的 `Failed to handle request for …` 以及 `ERR_INVALID_URL` 和 `router-server.js` 堆栈同时出现。没有伪造框架日志、替换 Next 模块或改写生成的 server.js。
+
+样本复用最终产物的日志预加载入口和日志模块，通过标准 `next start` 运行。正常事件测试显式传入认证、Cookie、API Key、上传 Token、S3 凭据、SMTP 密码、OAuth Secret、重置 Token、分享密码和两个启动密钥，验证字段实际被替换为 `[Redacted]`。框架 URL 包含 12 种已知敏感查询键；日志中所有随机秘密均不得出现，原始路径、非敏感参数与错误原因必须保留。正常事件保留 phase、路径、taskId、imageId、storageId。
+
+临时样本使用现有开发依赖和 Webpack 构建，以允许临时目录链接项目依赖；它不承担独立产物验收。生产产物由正常 Turbopack build 生成，并在另一测试中脱离开发依赖启动。本次没有新增依赖，也无需调整 `next.config.ts` 或生产依赖追踪。
+
+### 实际本地验证
+
+平台为 macOS / Darwin arm64，Node v24.18.1、pnpm 11.19.0。沿用本页目标 Node 与临时 pnpm 入口链接，不改变全局环境。
+
+| 实际命令                                                                                                                                  | 结果                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm exec node -p 'process.version'`                                                                                                     | 退出 0，v24.18.1                                                                                                         |
+| `pnpm exec vitest run --project integration tests/integration/runtime/logging.test.ts tests/integration/runtime/secret-preflight.test.ts` | 退出 0，7 项通过；包含真实密文预检失败、恢复和框架 URL 错误                                                              |
+| `pnpm run lint`                                                                                                                           | 退出 0，零警告                                                                                                           |
+| `pnpm run typecheck`                                                                                                                      | 退出 0                                                                                                                   |
+| `pnpm run test:unit`                                                                                                                      | 退出 0，104 项通过                                                                                                       |
+| `pnpm run build`                                                                                                                          | 退出 0，生产构建与 Standalone 打包完成                                                                                   |
+| `pnpm run test:integration`                                                                                                               | 退出 0，11 个文件、70 项通过，包含无密钥无数据目录构建                                                                   |
+| `ego-browser nodejs`                                                                                                                      | 退出 0，Ego Lite TaskSpace 4：生产首页标题、zh-CN、健康 200/no-store/精确 JSON、SVG 200 通过，TaskSpace 与自建服务已清理 |
+
+首轮临时样本采用页面和错误页抛错，Next 内部处理了这些错误，未到达含请求 URL 的日志入口，聚焦测试因此失败。改为上述真实 URL 解析错误后通过。最终构建仍有既有可选 SQLite Debug 二进制追踪提示；实际 Release 原生驱动、迁移和独立进程测试通过。
+
+RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所属模块验收。R4 容器持久化、完整图片工具矩阵及业务任务恢复不在本次范围。未改写冻结 PRD。本机不运行 Docker，远端 CI 与 AMD64/ARM64 容器验证结果将在本节补充；未执行的远端检查当前不标记通过。
+
+补充：`pnpm run format:check` 与 `git diff --check` 均退出 0。健康故障路由仍使用原有 Pino `name`、数字时间和级别；其共享格式接入是既存缺口，本次未修改，也未将健康故障与共享日志一致性标记通过。以上验收限定为启动、正常样本事件及真实框架 URL 错误。
+
+### 代码审计
+
+使用 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计确认错误来自 Next 自身、空日志不能通过、指定秘密及诊断上下文断言有效、测试入口不进入生产、子进程与目录会清理。审计者未独立重跑检查；上表命令由主任务实际执行。
