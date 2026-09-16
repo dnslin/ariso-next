@@ -212,6 +212,24 @@ async function main() {
       `const D=require('better-sqlite3');const d=new D('/data/ariso.db');console.log(JSON.stringify({rows:d.prepare('SELECT value FROM sample ORDER BY rowid').all(),migrations:d.prepare('SELECT count(*) AS n FROM __drizzle_migrations').get().n}));d.close()`,
     );
   }
+  async function assertSingleWebProcess() {
+    const mainPid = (await inspect()).State.Pid;
+    const deadline = Date.now() + 5000;
+    let processes;
+    do {
+      // Docker's Node healthcheck is short-lived; it is not a second Web server.
+      processes = (await docker(['top', id, '-eo', 'pid,comm'])).stdout
+        .trim()
+        .split('\n')
+        .slice(1);
+      if (processes.length === 1) {
+        assert.equal(Number(processes[0].trim().split(/\s+/)[0]), mainPid);
+        return;
+      }
+      await delay(100, undefined, { signal: abort.signal });
+    } while (Date.now() < deadline);
+    assert.fail(`extra container processes remain: ${processes.join('\n')}`);
+  }
   async function stop() {
     const began = Date.now();
     await compose(['stop', 'ariso']);
@@ -288,11 +306,7 @@ async function main() {
     assert.equal(actual.arch, image.Architecture === 'amd64' ? 'x64' : 'arm64');
     assert.match(actual.version, /^v24\./);
     assert.match(actual.pid1, /\/node$/);
-    const processes = (await docker(['top', id, '-eo', 'pid,comm'])).stdout
-      .trim()
-      .split('\n')
-      .slice(1);
-    assert.equal(processes.length, 1, 'one long-lived Web process');
+    await assertSingleWebProcess();
     const home = await fetch(origin);
     assert.equal(home.status, 200);
     const html = await home.text();
@@ -354,12 +368,7 @@ async function main() {
     origin = `http://127.0.0.1:${(await inspect()).NetworkSettings.Ports['3000/tcp'][0].HostPort}`;
     await waitHealthy();
     assert.deepEqual(await rows(), expected);
-    assert.equal(
-      (await docker(['top', id, '-eo', 'pid,comm'])).stdout.trim().split('\n')
-        .length,
-      2,
-      'restart leaves one Web process',
-    );
+    await assertSingleWebProcess();
     check('stop/start/restart persistence and repeated migrations');
     await stop();
     await execa('tar', ['-C', data, '-cpf', join(root, 'backup.tar'), '.']);
