@@ -40,14 +40,25 @@ export async function launch(
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   let logs = '';
+  let stdout = '';
+  let stderr = '';
   child.stdout.on('data', (chunk) => {
     logs += chunk;
+    stdout += chunk;
   });
   child.stderr.on('data', (chunk) => {
     logs += chunk;
+    stderr += chunk;
   });
   const closed = once(child, 'close');
-  return { child, closed, port, logs: () => logs };
+  return {
+    child,
+    closed,
+    port,
+    logs: () => logs,
+    stdout: () => stdout,
+    stderr: () => stderr,
+  };
 }
 
 export async function stop(child: ChildProcess, closed: Promise<unknown>) {
