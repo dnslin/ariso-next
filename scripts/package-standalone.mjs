@@ -45,6 +45,11 @@ for (const file of fileList) {
 for (const directory of ['drizzle', 'public', '.next/static']) {
   await cp(join(root, directory), join(output, directory), { recursive: true });
 }
+await cp(
+  join(root, 'tests/fixtures/runtime/images'),
+  join(output, 'verification/fixtures'),
+  { recursive: true },
+);
 await copyFile(
   join(root, 'docker/entrypoint.sh'),
   join(output, 'entrypoint.sh'),

@@ -29,6 +29,8 @@ describe('isolated production directory', () => {
       'dist/cli/logging.js',
       'drizzle/meta/_journal.json',
       'public/runtime.svg',
+      'verification/fixtures/sample.jpg',
+      'verification/fixtures/sample.png',
     ]) {
       expect(files).toContain(file);
     }
@@ -52,6 +54,11 @@ describe('isolated production directory', () => {
     expect(await readFile(join(app, 'server.js'), 'utf8')).not.toContain(
       'prestart',
     );
+    for (const name of ['sample.jpg', 'sample.png']) {
+      expect(await readFile(join(app, 'verification/fixtures', name))).toEqual(
+        await readFile(resolve('tests/fixtures/runtime/images', name)),
+      );
+    }
   });
 
   it.each([
@@ -126,6 +133,14 @@ describe('isolated production directory', () => {
           const response = await fetch(new URL(path, origin));
           expect(response.status, path).toBe(200);
           expect((await response.arrayBuffer()).byteLength).toBeGreaterThan(0);
+        }
+        for (const path of [
+          '/verification/fixtures/sample.jpg',
+          '/verification/fixtures/sample.png',
+          '/sample.jpg',
+          '/sample.png',
+        ]) {
+          expect((await fetch(new URL(path, origin))).status, path).toBe(404);
         }
       } finally {
         await stop(run.child, run.closed);
