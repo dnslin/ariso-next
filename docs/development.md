@@ -1,5 +1,7 @@
 # 开发环境
 
+当前入口见 [README](../README.md)，本批交付和最终验收见 [runtime 验证记录](./runtime-verification.md)。下文按日期保留历史实施记录，其中“尚未实现”仅描述该次任务结束时的状态。
+
 本页记录 [RUNTIME-01 / Issue #1](https://github.com/dnslin/ariso-next/issues/1) 的实际执行结果。工程采用单包 ESM，依赖版本沿用 [runtime Spec](./SPEC-runtime.md) 第 2.1 节。安装完成不代表 Next 页面、启动流程或 Docker 镜像已经实现。
 
 ## 本次实施顺序
@@ -117,7 +119,7 @@ curl --fail --silent --show-error http://127.0.0.1:3000/runtime.svg
 
 E2E 统一使用 [ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)，复用 Ego Lite，不下载配套 Chrome/Chromium。使用 `ego-browser nodejs` 在一个 TaskSpace 中访问自建的 3000 端口服务，验证中文页面、标题、SVG 实际加载、手机与桌面布局，并记录实际结果及必要截图。完成后结束 TaskSpace 并停止自建服务。后续 RUNTIME-22 再接入生产服务与健康接口。
 
-切换约定时尚未执行 ego 验证；现已补充，见本页末尾的 Ego 浏览器验证记录。已有 `e2e/runtime.spec.ts` 和 `@playwright/test` 依赖仍是旧方案遗留，待代码调整时移除，不再作为后续 E2E 入口。
+切换约定时尚未执行 ego 验证；现已补充，见本页末尾的 Ego 浏览器验证记录。旧 `e2e/runtime.spec.ts` 与直接依赖 `@playwright/test` 已在 RUNTIME-22 移除。当前入口为 `pnpm run test:browser`，步骤见 [Ego 冒烟](../e2e/runtime.md)。
 
 ### 历史验证记录（切换 ego 前）
 

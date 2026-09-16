@@ -1,0 +1,26 @@
+services:
+  ariso:
+    image: ariso:runtime
+    build: .
+    environment:
+      HOST: 0.0.0.0
+      PORT: '3000'
+      DATA_DIR: /data
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in the explicit --env-file}
+      ARISO_ENCRYPTION_KEY: ${ARISO_ENCRYPTION_KEY:?Set ARISO_ENCRYPTION_KEY in the explicit --env-file}
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - ./.data:/data
+    stop_grace_period: 30s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then(async r => { if (!r.ok || (await r.json()).status !== 'ok') process.exit(1) }).catch(() => process.exit(1))"
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 5s

@@ -1,0 +1,133 @@
+{
+  "node": "v24.21.0",
+  "platform": "linux",
+  "architecture": "x64",
+  "sqlite": {
+    "version": "3.53.4",
+    "answer": 42
+  },
+  "magick": "Version: ImageMagick 7.1.1-43 Q16 x86_64 22550 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/script/license.php\nFeatures: Cipher DPC Modules OpenMP(4.5) \nDelegates (built-in): bzlib djvu fftw fontconfig freetype heic jbig jng jp2 jpeg lcms lqr ltdl lzma openexr pangocairo png raw tiff webp wmf x xml zlib zstd\nCompiler: gcc (14.2)",
+  "exiftool": "13.25",
+  "conversions": [
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.webp",
+      "format": "WEBP",
+      "width": 64,
+      "height": 48,
+      "meanError": 5.551215277777778
+    },
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.jpg",
+      "format": "JPEG",
+      "width": 64,
+      "height": 48,
+      "meanError": 5.125868055555555
+    },
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.avif",
+      "format": "AVIF",
+      "width": 64,
+      "height": 48,
+      "meanError": 6.243272569444445
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.webp",
+      "format": "WEBP",
+      "width": 64,
+      "height": 48,
+      "meanError": 15.379991319444445
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.jpg",
+      "format": "JPEG",
+      "width": 64,
+      "height": 48,
+      "meanError": 0.8640407986111112
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.avif",
+      "format": "AVIF",
+      "width": 64,
+      "height": 48,
+      "meanError": 1.6049262152777777
+    }
+  ],
+  "fonts": [
+    {
+      "font": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+      "text": "中文图片验证",
+      "output": "chinese.png",
+      "glyphs": [
+        {
+          "character": "中",
+          "ink": 511
+        },
+        {
+          "character": "文",
+          "ink": 559
+        },
+        {
+          "character": "图",
+          "ink": 820
+        },
+        {
+          "character": "片",
+          "ink": 487
+        },
+        {
+          "character": "验",
+          "ink": 681
+        },
+        {
+          "character": "证",
+          "ink": 606
+        }
+      ]
+    },
+    {
+      "font": "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
+      "text": "Ariso 123",
+      "output": "latin.png",
+      "glyphs": [
+        {
+          "character": "A",
+          "ink": 328
+        },
+        {
+          "character": "r",
+          "ink": 149
+        },
+        {
+          "character": "i",
+          "ink": 125
+        },
+        {
+          "character": "s",
+          "ink": 215
+        },
+        {
+          "character": "o",
+          "ink": 267
+        },
+        {
+          "character": "1",
+          "ink": 170
+        },
+        {
+          "character": "2",
+          "ink": 277
+        },
+        {
+          "character": "3",
+          "ink": 292
+        }
+      ]
+    }
+  ]
+}

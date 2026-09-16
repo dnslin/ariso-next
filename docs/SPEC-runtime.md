@@ -1,10 +1,10 @@
 # Spec: runtime — 应用运行与工程基础
 
 - 模块 ID：`runtime`。
-- 状态：已通过评审；用户于 2026-09-12 确认继续推进，当前进入 Phase 3（Tasks）。尚未进入 Implement。
+- 状态：规格已通过评审；RUNTIME-01–19 已合入，RUNTIME-20–26 已完成本批实现与验收，整合 PR 待评审。实际验收以 [runtime 验证记录](./runtime-verification.md) 为准。
 - 日期：2026-09-12。
 - 上游依据：[已确认能力地图](./CAPABILITY-MAP.md)、[PRD v1.1](./Ariso-PRD-v1.1.md) 第 5.1–5.2、20、23–25、26.12、27 节。
-- 本文中的目录、命令、接口和测试均为实施要求，当前尚无应用代码，不能据此认为工程已经运行或通过验证。
+- 本文定义实施要求；已实现能力、实际验证结果和后续模块边界分别记录，规格描述本身不作为通过证据。
 
 ## 1. 目标与范围
 
@@ -432,8 +432,8 @@ pnpm run test:integration
 3. `media` 的 APNG、动态 AVIF 和其余完整格式矩阵，以及相应的资源上限和任务恢复。
 4. `identity` 接入后验证初始化码所在进程、全部秘密的预检，以及更换 BETTER_AUTH_SECRET 后会话失效。
 
-本轮只编写与检查规格文档。没有安装应用依赖，没有执行本文件中的应用测试、构建或 Docker 验证。当前环境未找到 Docker 命令；实施阶段由 GitHub Actions 完成相关构建和验收，本机不要求 Docker。
+规格编写阶段未执行应用验证。后续实现已进入交付阶段，实际命令、平台、结果和限制见 [runtime 验证记录](./runtime-verification.md)。Docker 仍由 GitHub Actions 验证，本机不要求 Docker。
 
-评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](./tasks/plan.md) 推进，当前评审 [任务清单](./tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。
+评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](./tasks/plan.md) 推进，实际进度见 [任务清单](./tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。
 
 > 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。

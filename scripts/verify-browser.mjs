@@ -1,0 +1,169 @@
+import assert from 'node:assert/strict';
+import { spawn } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
+import { once } from 'node:events';
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:net';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+
+assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
+const output = resolve(
+  process.env.BROWSER_REPORT_DIR ?? 'test-results/browser',
+);
+await mkdir(output, { recursive: true });
+const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
+const report = {
+  startedAt: new Date().toISOString(),
+  platform: process.platform,
+  arch: process.arch,
+  node: process.version,
+  status: 'failed',
+};
+let server;
+let browser;
+let logs = '';
+async function stop(child) {
+  if (!child?.pid || child.exitCode !== null || child.signalCode !== null)
+    return;
+  const closed = once(child, 'close');
+  const signal = (name) => {
+    try {
+      process.kill(-child.pid, name);
+    } catch (error) {
+      if (error.code !== 'ESRCH') throw error;
+    }
+  };
+  signal('SIGTERM');
+  const timer = setTimeout(() => signal('SIGKILL'), 5000);
+  try {
+    await closed;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+const controller = new AbortController();
+const interrupt = () =>
+  controller.abort(new Error('Browser verification interrupted'));
+process.once('SIGINT', interrupt);
+process.once('SIGTERM', interrupt);
+try {
+  const app = join(temporary, 'app');
+  await cp(resolve('.next/standalone'), app, {
+    recursive: true,
+    verbatimSymlinks: true,
+  });
+  controller.signal.throwIfAborted();
+  const socket = createServer();
+  socket.listen(0, '127.0.0.1');
+  await once(socket, 'listening');
+  const port = socket.address().port;
+  await new Promise((resolve, reject) =>
+    socket.close((error) => (error ? reject(error) : resolve())),
+  );
+  const origin = `http://127.0.0.1:${port}`;
+  report.origin = origin;
+  server = spawn('sh', [join(app, 'entrypoint.sh')], {
+    cwd: temporary,
+    detached: true,
+    stdio: ['ignore', 'pipe', 'pipe'],
+    env: {
+      PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
+      NODE_ENV: 'production',
+      HOST: '127.0.0.1',
+      PORT: String(port),
+      DATA_DIR: join(temporary, 'data'),
+      BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
+      ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
+    },
+  });
+  server.stdout.on('data', (chunk) => {
+    logs += chunk;
+  });
+  server.stderr.on('data', (chunk) => {
+    logs += chunk;
+  });
+  let spawnError;
+  server.on('error', (error) => {
+    spawnError = error;
+  });
+  const deadline = Date.now() + 30000;
+  while (true) {
+    controller.signal.throwIfAborted();
+    if (spawnError) throw spawnError;
+    assert.equal(server.exitCode, null, `Production server exited: ${logs}`);
+    try {
+      const response = await fetch(`${origin}/api/health`, {
+        signal: AbortSignal.timeout(1000),
+      });
+      if (response.status === 200) break;
+    } catch (error) {
+      if (Date.now() >= deadline) throw error;
+    }
+    assert.ok(Date.now() < deadline, 'Production server health timed out');
+    await delay(100, undefined, { signal: controller.signal });
+  }
+  const config = {
+    origin,
+    output,
+    spaceId: process.env.EGO_TASK_SPACE
+      ? Number(process.env.EGO_TASK_SPACE)
+      : undefined,
+    keepSpace: process.env.EGO_KEEP_SPACE === '1',
+  };
+  if (config.spaceId !== undefined)
+    assert.ok(
+      Number.isInteger(config.spaceId) && config.spaceId > 0,
+      'Invalid EGO_TASK_SPACE',
+    );
+  const source = await readFile(
+    new URL('../e2e/runtime.mjs', import.meta.url),
+    'utf8',
+  );
+  browser = spawn('ego-browser', ['nodejs'], {
+    detached: true,
+    stdio: ['pipe', 'pipe', 'pipe'],
+  });
+  let browserLogs = '';
+  browser.stdout.on('data', (chunk) => {
+    browserLogs += chunk;
+    process.stdout.write(chunk);
+  });
+  browser.stderr.on('data', (chunk) => {
+    browserLogs += chunk;
+    process.stderr.write(chunk);
+  });
+  const closed = once(browser, 'close', { signal: controller.signal });
+  browser.stdin.on('error', () => {
+    /* Process close/error below reports a failed CLI. */
+  });
+  browser.stdin.end(`const config = ${JSON.stringify(config)};\n${source}`);
+  const timeout = setTimeout(interrupt, 120000);
+  try {
+    const [code] = await closed;
+    assert.equal(code, 0, 'Ego browser verification failed');
+    report.status = 'passed';
+  } finally {
+    clearTimeout(timeout);
+    await writeFile(join(output, 'ego.log'), browserLogs);
+  }
+} catch (error) {
+  report.error = error.stack ?? String(error);
+  process.exitCode = 1;
+  console.error(error);
+} finally {
+  await stop(browser);
+  await stop(server);
+  await writeFile(join(output, 'server.log'), logs);
+  await rm(temporary, { recursive: true, force: true });
+  report.finishedAt = new Date().toISOString();
+  report.temporaryDirectoryRemoved = true;
+  await writeFile(
+    join(output, 'runner.json'),
+    `${JSON.stringify(report, null, 2)}\n`,
+  );
+  process.removeListener('SIGINT', interrupt);
+  process.removeListener('SIGTERM', interrupt);
+  console.log(`Browser report: ${output}`);
+}

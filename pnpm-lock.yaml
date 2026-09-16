@@ -33,9 +33,6 @@ importers:
         specifier: 4.6.2
         version: 4.6.2
     devDependencies:
-      '@playwright/test':
-        specifier: 1.63.0
-        version: 1.63.0
       '@types/better-sqlite3':
         specifier: 9.6.0
         version: 9.6.0
@@ -3522,6 +3519,7 @@ snapshots:
   '@playwright/test@1.63.0':
     dependencies:
       playwright: 1.63.0
+    optional: true
 
   '@rolldown/binding-android-arm-eabi@1.2.8':
     optional: true
@@ -5064,11 +5062,13 @@ snapshots:
       sonic-boom: 4.2.1
       thread-stream: 4.2.0
 
-  playwright-core@1.63.0: {}
+  playwright-core@1.63.0:
+    optional: true
 
   playwright@1.63.0:
     dependencies:
       playwright-core: 1.63.0
+    optional: true
 
   possible-typed-array-names@1.1.0: {}
 
