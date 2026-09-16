@@ -864,3 +864,46 @@ RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所
 实现提交 `3ca6af8` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35039594836) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35039594842)，两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0。CI 完成 Node 24 冻结安装、lint、格式、类型、单元、生产构建和完整集成测试。Docker 在原生 AMD64（ubuntu-24.04）和 ARM64（ubuntu-24.04-arm）runner 完成镜像构建、实际架构断言、容器启动、健康/页面/静态资源验证、容器清理与验证产物导出；没有发布镜像或部署。
 
 [PR #43](https://github.com/dnslin/ariso-next/pull/43) 关联 Issue #17。本次补充仅记录远端证据，最新提交检查见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/43/checks)，全部成功后转为正式待评审。Issue 保持开放，不执行合并或分支清理。首次直连 GitHub 推送超时，复用系统已配置的本地 HTTP 代理后推送成功；没有修改全局网络或 Git 配置。
+
+## RUNTIME-18：实际运行镜像
+
+2026-09-16 从最新 `origin/main`（`1532186`）创建 `codex/runtime-18-image`，实施 [Issue #18](https://github.com/dnslin/ariso-next/issues/18)。初始工作区干净；已通过 `gh` 读取 Issue、评论和前置 #9、#17，二者已关闭且实现已在 main。使用 `using-agent-skills` 选择增量实施、Git 工作流和代码审计技能，并应用 `vercel-react-best-practices` 与 `ego-browser`。
+
+### 实际交付
+
+构建和运行阶段继续使用 `node:24-trixie-slim`。构建阶段在目标 Linux 架构安装依赖，保留现有 Next Standalone 与 CLI 文件追踪。运行阶段显式安装 Spec 的七个 APT 包：`ca-certificates`、`imagemagick-7.q16`、`libmagickcore-7.q16-10-extra`、`libheif-plugin-aomenc`、`libimage-exiftool-perl`、`fonts-noto-cjk`、`fonts-noto-core`，使用 `--no-install-recommends` 并清理 APT 列表。入口不安装依赖。
+
+`.dockerignore` 只纳入生产构建所需的配置、源码、迁移、静态资源、打包脚本、入口和两个图片样本，并在允许的目录内继续排除环境文件、数据库、密钥和生成物。规则采用 [Docker 官方构建上下文语义](https://docs.docker.com/build/concepts/context/#dockerignore-files)。系统依赖沿用 [Debian IM7](https://packages.debian.org/trixie/imagemagick-7.q16)、[extra](https://packages.debian.org/trixie/libmagickcore-7.q16-10-extra) 和 [aomenc](https://packages.debian.org/trixie/libheif-plugin-aomenc) 官方包，不新增 npm 依赖。
+
+`tests/fixtures/runtime/images/sample.jpg`（638 字节）和 `sample.png`（6631 字节）是本项目自建的 64×48 RGB 渐变棋盘样本，没有引用外部图片或个人数据。坐标 `(x,y)` 的 RGB 为 `[4*x, 5*y, ((x>>3)+(y>>3))%2 ? 220 : 40]`；一次性使用现有 Next 依赖中的 sharp 0.35.4 默认 JPEG/PNG 编码生成。文件已提交，正常构建不需要重新生成。打包脚本复制到 `/app/verification/fixtures/`，不放入 `public`。
+
+扩展现有独立产物测试，断言样本与源文件逐字节相同，健康/页面/静态资源正常，四个可能的样本 URL 均返回 404。现有 Actions 增加真实 Docker 上下文导出检查，写入临时环境、数据、数据库和密钥占位文件验证排除；双架构最终镜像检查基线、包版本、字体文件、SQLite 查询和 JPEG/PNG 尺寸，检查在无网络、只读根文件系统且无启动密钥的容器中执行。
+
+### 实际本地验证
+
+平台：macOS / Darwin arm64；Node v24.18.1、pnpm 11.19.0。通过临时 PATH 和 pnpm 入口链接选择既有目标环境，不修改全局配置。
+
+| 实际命令                                                                                  | 结果                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec node -p 'process.version'`                                                     | 退出 0，v24.18.1                                                                                                                                         |
+| `pnpm install --frozen-lockfile`                                                          | 退出 0，锁文件不变                                                                                                                                       |
+| `pnpm run build`                                                                          | 退出 0，生产构建与独立目录打包完成                                                                                                                       |
+| `pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts` | 退出 0，6 项通过                                                                                                                                         |
+| `pnpm run lint`                                                                           | 退出 0，零警告                                                                                                                                           |
+| `pnpm run format:check`                                                                   | 退出 0                                                                                                                                                   |
+| `pnpm run typecheck`                                                                      | 退出 0                                                                                                                                                   |
+| `pnpm run test:unit`                                                                      | 退出 0，104 项通过                                                                                                                                       |
+| `pnpm run test:integration`                                                               | 退出 0，11 个文件、70 项通过，含独立无密钥构建                                                                                                           |
+| `file tests/fixtures/runtime/images/sample.*`                                             | 退出 0，真实 64×48 JPEG 和 RGB PNG                                                                                                                       |
+| `ego-browser nodejs`                                                                      | 退出 0，Ego Lite TaskSpace 5：独立生产目录首页、标题、zh-CN、健康 200/no-store/精确 JSON、SVG 200、四个样本 URL 404；TaskSpace、自建服务和临时目录已清理 |
+| `git diff --check`                                                                        | 退出 0                                                                                                                                                   |
+
+构建仍有既有 SQLite 可选 Debug 文件追踪提示；实际 Release 驱动和迁移、独立服务测试通过。本机未执行 Docker，镜像与 AMD64/ARM64 验证由 GitHub Actions 执行，未取得远端结果前不标记通过。
+
+### 验收边界
+
+本次只完成 #18 的运行镜像与样本交付。`scripts/verify-image.mjs`、JPEG/PNG 转 WebP/JPEG/AVIF 和可见中文/拉丁文字渲染属于 #19；完整容器停止、重启与持久化属于 #20–21。RT-13 完整格式矩阵、动画支持和业务任务恢复仍由后续模块验收，不以工具安装或样本识别成功替代。冻结 PRD 未修改。未合并 PR、关闭 Issue、发布镜像或部署。
+
+### 代码审计与远端验证
+
+独立审计及 GitHub Actions 正在进行，结果取得后补充。

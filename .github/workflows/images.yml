@@ -26,6 +26,22 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: docker/setup-buildx-action@v4
+      - name: Verify build context exclusions
+        run: |
+          context_dir=$(mktemp -d)
+          trap 'rm -rf "$context_dir" .env.context-check .data/context-check src/.env.context-check src/context-check.sqlite src/context-check.key' EXIT
+          mkdir -p .data
+          touch .env.context-check .data/context-check src/.env.context-check src/context-check.sqlite src/context-check.key
+          docker build --file - --output "type=local,dest=$context_dir" . <<'DOCKERFILE'
+          FROM scratch
+          COPY . /
+          DOCKERFILE
+          for path in .env.context-check .data src/.env.context-check src/context-check.sqlite src/context-check.key .git .github docs node_modules .next dist tests/integration; do
+            test ! -e "$context_dir/$path"
+          done
+          for path in package.json pnpm-lock.yaml src/app/page.tsx drizzle/meta/_journal.json scripts/package-standalone.mjs docker/entrypoint.sh tests/fixtures/runtime/images/sample.jpg tests/fixtures/runtime/images/sample.png; do
+            test -s "$context_dir/$path"
+          done
       - name: Build image
         uses: docker/build-push-action@v7
         with:
@@ -33,6 +49,32 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           load: true
           tags: ariso:ci-${{ matrix.arch }}
+      - name: Verify runtime baseline and packaged files offline
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only --entrypoint sh "$IMAGE" -eu -c '
+            . /etc/os-release
+            test "$VERSION_CODENAME" = trixie
+            node --version
+            node -e "require(\"node:assert/strict\").equal(process.versions.node.split(\".\")[0], \"24\")"
+            for package in ca-certificates imagemagick-7.q16 libmagickcore-7.q16-10-extra libheif-plugin-aomenc libimage-exiftool-perl fonts-noto-cjk fonts-noto-core; do
+              dpkg-query --show "$package"
+            done
+            magick -version
+            exiftool -ver
+            test -s /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+            test -s /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf
+            for path in server.js entrypoint.sh dist/cli/prestart.js dist/cli/logging.js drizzle/meta/_journal.json public/runtime.svg verification/fixtures/sample.jpg verification/fixtures/sample.png; do
+              test -s "$path"
+            done
+            node -e "const assert = require(\"node:assert/strict\"); const Database = require(\"better-sqlite3\"); const db = new Database(\":memory:\"); assert.equal(db.prepare(\"SELECT 1 AS ok\").get().ok, 1); db.close(); console.log(\"SQLite native query passed\");"
+            test "$(magick identify -format "%m %wx%h" verification/fixtures/sample.jpg)" = "JPEG 64x48"
+            test "$(magick identify -format "%m %wx%h" verification/fixtures/sample.png)" = "PNG 64x48"
+            for path in src tests .env.local .data node_modules/typescript node_modules/drizzle-kit node_modules/vitest; do
+              test ! -e "$path"
+            done
+          '
       - name: Check architecture and start container
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}
@@ -67,6 +109,9 @@ jobs:
             const response = await fetch(new URL(path, origin));
             assert.equal(response.status, 200, path);
             assert.ok((await response.arrayBuffer()).byteLength > 0, path);
+          }
+          for (const path of ['/verification/fixtures/sample.jpg', '/verification/fixtures/sample.png', '/sample.jpg', '/sample.png']) {
+            assert.equal((await fetch(new URL(path, origin))).status, 404, path);
           }
           console.log('Container health, page, SVG and Next.js scripts passed');
           JS
