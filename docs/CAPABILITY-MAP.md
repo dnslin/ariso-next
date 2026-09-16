@@ -2,7 +2,7 @@
 
 - 状态：已通过评审；用户于 2026-09-12 确认模块边界、依赖和推进顺序。
 - 需求基准：[Ariso-PRD-v1.1.md](./Ariso-PRD-v1.1.md)，v1.1，需求已冻结。
-- 当前阶段：`runtime` RUNTIME-01–19 已合入；RUNTIME-20–26 正在整批交付，详见 [runtime 验证记录](./runtime-verification.md)。
+- 当前阶段：`runtime` RUNTIME-01–19 已合入；RUNTIME-20–26 已完成本批实现与验收，整合 PR 待评审，详见 [runtime 验证记录](./runtime-verification.md)。
 - 范围：首版全部能力。当前应用仅交付运行基础、工程状态页和健康接口；账号、站点设置、存储与图片业务仍是后续模块。
 
 ## 1. 划分前提

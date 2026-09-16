@@ -35,7 +35,7 @@ docker compose --env-file .env.local stop ariso
 docker compose --env-file .env.local up --detach --no-build --wait
 ```
 
-Compose 给停止留出 30 秒。`/data/ariso.db`、可能存在的 SQLite WAL/SHM 文件、`storage/`、`assets/watermarks/`、`assets/branding/` 和 `tmp/` 均位于挂载目录。容器重建不会替换挂载数据。不要将此运行示例当作自动测试执行在已有部署上。
+Compose 给停止留出 30 秒。当前 Next 16.3.5 的标准 SIGTERM 清理会返回退出码 143（128 + 15）；它与超时强制 SIGKILL 的 137 不同。`/data/ariso.db`、可能存在的 SQLite WAL/SHM 文件、`storage/`、`assets/watermarks/`、`assets/branding/` 和 `tmp/` 均位于挂载目录。容器重建不会替换挂载数据。不要将此运行示例当作自动测试执行在已有部署上。
 
 ## 正式部署目录
 

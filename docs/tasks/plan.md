@@ -1,7 +1,7 @@
 # 实现计划：runtime
 
 - 模块：`runtime`。
-- 状态：RUNTIME-01–19 已合入；RUNTIME-20–26 正在整批交付。实际检查和剩余边界见 [runtime 验证记录](../runtime-verification.md)。
+- 状态：RUNTIME-01–19 已合入；RUNTIME-20–26 已完成本批实现与验收，整合 PR 待评审。实际检查和剩余边界见 [runtime 验证记录](../runtime-verification.md)。
 - 依据：[已批准 runtime Spec](../SPEC-runtime.md)、[已批准能力地图](../CAPABILITY-MAP.md)。
 - 日期：2026-09-12。
 - 任务清单：[docs/tasks/todo.md](./todo.md)，已按下列阶段拆解，实施与验收状态分别维护。

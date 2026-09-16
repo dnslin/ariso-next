@@ -1,7 +1,7 @@
 # Spec: runtime — 应用运行与工程基础
 
 - 模块 ID：`runtime`。
-- 状态：规格已通过评审；RUNTIME-01–19 已合入，RUNTIME-20–26 正在整批交付。实际验收以 [runtime 验证记录](./runtime-verification.md) 为准。
+- 状态：规格已通过评审；RUNTIME-01–19 已合入，RUNTIME-20–26 已完成本批实现与验收，整合 PR 待评审。实际验收以 [runtime 验证记录](./runtime-verification.md) 为准。
 - 日期：2026-09-12。
 - 上游依据：[已确认能力地图](./CAPABILITY-MAP.md)、[PRD v1.1](./Ariso-PRD-v1.1.md) 第 5.1–5.2、20、23–25、26.12、27 节。
 - 本文定义实施要求；已实现能力、实际验证结果和后续模块边界分别记录，规格描述本身不作为通过证据。
