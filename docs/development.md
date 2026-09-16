@@ -898,7 +898,7 @@ RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所
 | `ego-browser nodejs`                                                                      | 退出 0，Ego Lite TaskSpace 5：独立生产目录首页、标题、zh-CN、健康 200/no-store/精确 JSON、SVG 200、四个样本 URL 404；TaskSpace、自建服务和临时目录已清理 |
 | `git diff --check`                                                                        | 退出 0                                                                                                                                                   |
 
-构建仍有既有 SQLite 可选 Debug 文件追踪提示；实际 Release 驱动和迁移、独立服务测试通过。本机未执行 Docker，镜像与 AMD64/ARM64 验证由 GitHub Actions 执行，未取得远端结果前不标记通过。
+构建仍有既有 SQLite 可选 Debug 文件追踪提示；实际 Release 驱动和迁移、独立服务测试通过。本机未执行 Docker；GitHub Actions 已完成镜像与 AMD64/ARM64 验证，结果见下方记录。
 
 ### 验收边界
 
@@ -906,4 +906,10 @@ RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所
 
 ### 代码审计与远端验证
 
-独立审计及 GitHub Actions 正在进行，结果取得后补充。
+使用 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Required / Critical 阻塞发现。审计者核对 Issue、规格、完整差异、样本真实格式与验证边界，实际执行 `gh issue view 18`、`file` 和 `git diff --check`；未重复执行本地测试和 Docker。
+
+实现提交 `1e6d838` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35040991626) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35040992248)。两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0，没有远端失败或修复重跑。CI 完成冻结安装、lint、格式、类型、单元、生产构建与全量集成。
+
+Docker 使用原生 AMD64（`ubuntu-24.04`）和 ARM64（`ubuntu-24.04-arm`）runner，两个架构均完成真实构建上下文导出及排除断言、无密钥构建、最终镜像离线只读检查、实际架构断言、空数据目录启动、健康/首页/静态资源及样本 URL 404 检查、容器清理和验证产物导出。运行基线为 Node 24.21.0、Debian trixie、ImageMagick 7.1.1-43、ExifTool 13.25；指定七个包和两套字体文件检查通过，SQLite 实际查询和真实 64×48 JPEG/PNG 识别通过。
+
+[PR #44](https://github.com/dnslin/ariso-next/pull/44) 关联 Issue #18。此补充提交仅更新文档，最新提交状态见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/44/checks)，全部通过后转为正式待评审。Issue 保持开放，未合并或清理分支。
