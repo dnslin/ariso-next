@@ -2,8 +2,8 @@
 
 - 状态：已通过评审；用户于 2026-09-12 确认模块边界、依赖和推进顺序。
 - 需求基准：[Ariso-PRD-v1.1.md](./Ariso-PRD-v1.1.md)，v1.1，需求已冻结。
-- 当前阶段：能力地图和 `runtime` Spec 已通过评审；当前实施 `runtime`，RUNTIME-01–07 已合入，RUNTIME-08 的实际结果见 [开发记录](./development.md#runtime-08web-初始化与健康响应)。
-- 范围：首版全部能力。已建立最小应用、配置、SQLite、迁移和 prestart；Web 初始化与健康接口已实现并通过本地验证，其余业务能力仍是计划。
+- 当前阶段：`runtime` RUNTIME-01–19 已合入；RUNTIME-20–26 正在整批交付，详见 [runtime 验证记录](./runtime-verification.md)。
+- 范围：首版全部能力。当前应用仅交付运行基础、工程状态页和健康接口；账号、站点设置、存储与图片业务仍是后续模块。
 
 ## 1. 划分前提
 
@@ -11,7 +11,7 @@
 
 每个模块负责自己的业务规则、数据和对外提供的接口。跨模块流程由启动入口、Route Handler 或页面组合。表中的依赖表示模块内部使用的能力；入口同时调用多个模块的情况单独列在第 3 节，不要求被调用模块互相调用。
 
-模块 ID 保持稳定。对应 Spec 放在 `docs/` 目录，以本表作为索引。[SPEC-runtime.md](./SPEC-runtime.md) 已通过评审，[runtime 实现计划](./tasks/plan.md) 已确认推进，[任务清单](./tasks/todo.md) 待评审；其余 `SPEC-*.md` 为计划文件，尚未创建。
+模块 ID 保持稳定。对应 Spec 放在 `docs/` 目录，以本表作为索引。[SPEC-runtime.md](./SPEC-runtime.md) 已通过评审，[runtime 实现计划](./tasks/plan.md) 已确认推进，[任务清单](./tasks/todo.md) 记录实际实施和验收状态；其余 `SPEC-*.md` 为计划文件，尚未创建。
 
 ## 2. 模块与直接依赖
 
@@ -111,4 +111,4 @@ PRD 第 22 节的移动端完整功能、浏览器兼容、简体中文、键盘
 - [Immich 架构文档](https://docs.immich.app/developer/architecture/)将 HTTP 入口、业务逻辑、底层实现和后台任务分开描述。本地图据此采用入口组合业务能力的方向，这是针对 Ariso 的设计判断。
 - [PhotoPrism 目录文档](https://docs.photoprism.app/user-guide/backups/folders/)区分原文件、缩略图、元数据辅助文件和临时文件。本地图据此明确文件存取与图片资产生命周期的责任，并遵守 Ariso 同一图片全部版本位于同一存储配置的要求。
 
-本地图的评审已确认三项：11 个模块的职责边界、第 2–3 节的依赖及组合关系、第 4 节的推进顺序。`SPEC-runtime.md` 也已通过评审，用户确认进入任务拆解，当前评审该模块的任务清单。
+本地图的评审已确认三项：11 个模块的职责边界、第 2–3 节的依赖及组合关系、第 4 节的推进顺序。`SPEC-runtime.md` 也已通过评审，用户确认进入任务拆解，当前按任务清单交付该模块，实际结果见 runtime 验证记录。
