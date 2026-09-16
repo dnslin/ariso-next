@@ -2,6 +2,7 @@ name: CI
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
   push:
     branches: [main]
@@ -11,7 +12,8 @@ permissions:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -22,8 +24,16 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run format:check
       - run: pnpm run typecheck
-      - run: pnpm run test:unit
+      - run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
       - run: pnpm run build
-      - run: pnpm run test:integration
+      - run: pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/integration.xml
       # RUNTIME-22/23: record ego-browser E2E separately; do not install Chromium.
       # images.yml builds and checks the current app on AMD64 and ARM64.
+      - name: Preserve test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: runtime-tests
+          path: test-results/*.xml
+          if-no-files-found: warn
+          retention-days: 14
