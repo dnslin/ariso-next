@@ -175,6 +175,35 @@ describe('isolated production directory', () => {
     25000,
   );
 
+  it('标准 Next 收到 SIGTERM 后完成清理并以 143 退出', async () => {
+    const run = await launch(app, directory);
+    try {
+      await expect
+        .poll(
+          async () => {
+            if (run.child.exitCode !== null) throw new Error(run.logs());
+            try {
+              return (await fetch(`http://127.0.0.1:${run.port}/api/health`))
+                .status;
+            } catch {
+              return 0;
+            }
+          },
+          { timeout: 15000 },
+        )
+        .toBe(200);
+      run.child.kill('SIGTERM');
+      const [code, signal] = await run.closed;
+      expect(code, run.logs()).toBe(143);
+      expect(signal).toBeNull();
+      await expect(
+        fetch(`http://127.0.0.1:${run.port}/api/health`),
+      ).rejects.toThrow();
+    } finally {
+      await stop(run.child, run.closed);
+    }
+  }, 25000);
+
   it('prestart 配置失败时非零退出且不监听 Web 端口', async () => {
     const run = await launch(app, directory, { HOST: '' });
     try {

@@ -92,6 +92,7 @@ async function main() {
     backupMethod:
       'stopped whole-directory tar -cpf archive; restore with tar -xpf',
     checks: [],
+    stops: [],
     status: 'running',
   };
   const abort = new AbortController();
@@ -217,8 +218,11 @@ async function main() {
     const state = (await inspect()).State;
     assert.equal(state.Running, false);
     assert.equal(state.Pid, 0);
-    assert.equal(state.ExitCode, 0, 'graceful stop without SIGKILL');
-    assert.ok(Date.now() - began < 30000, 'stop before grace period');
+    const elapsedMs = Date.now() - began;
+    report.stops.push({ exitCode: state.ExitCode, elapsedMs });
+    // Next 16.3.5 completes SIGTERM cleanup and exits with 128 + 15.
+    assert.equal(state.ExitCode, 143, 'Next SIGTERM cleanup exit code');
+    assert.ok(elapsedMs < 30000, 'stop before grace period');
   }
   async function failed(code) {
     await start(false);
