@@ -420,7 +420,7 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 
 ### RUNTIME-19：用真实图片验证镜像工具
 
-- [ ] 完成。
+- [ ] 已实现并通过本地检查；待独立审计与双架构真实图片验证。
 
 **说明：** 提供镜像内可独立运行的验证脚本，实际查询 SQLite、转换图片并渲染文字。
 
@@ -435,6 +435,8 @@ Node 24 是本地目标验证的前提。Docker 镜像构建、容器运行验�
 - [ ] 从镜像 verification/fixtures 读取输入，临时输出退出后清理；无需密钥、部署数据或 /app 写权限。
 
 **验证：** `docker build --tag ariso:runtime .`；`docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs`。保留生成内容的检查结果；通过受支持的脚本输出选项把样本导出供查看，默认仍清理临时目录。
+
+**实施进度（2026-09-16）：** 脚本、依赖追踪、像素/字形失败测试和 Actions 样本导出已实现；109 项单元、71 项集成及本地构建和 Ego Lite 验证通过。真实图片转换与字体内容仍待 Linux Actions，见 [开发记录](../development.md#runtime-19真实图片与字体验证)。
 
 ### 检查点 K7
 

@@ -1,6 +1,7 @@
 import { cp, mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { execa } from 'execa';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launch, stop } from './process-helpers';
 
@@ -25,6 +26,7 @@ describe('isolated production directory', () => {
     for (const file of [
       'server.js',
       'entrypoint.sh',
+      'scripts/verify-image.mjs',
       'dist/cli/prestart.js',
       'dist/cli/logging.js',
       'drizzle/meta/_journal.json',
@@ -59,6 +61,30 @@ describe('isolated production directory', () => {
         await readFile(resolve('tests/fixtures/runtime/images', name)),
       );
     }
+  });
+
+  it('镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录', async () => {
+    const result = await execa(
+      process.execPath,
+      [join(app, 'scripts/verify-image.mjs')],
+      {
+        cwd: directory,
+        env: { PATH: '', TMPDIR: directory },
+        extendEnv: false,
+        reject: false,
+      },
+    );
+    expect(result.exitCode).not.toBe(0);
+    expect(result.stderr).toContain('magick');
+    expect(result.stderr).toContain('ENOENT');
+    expect(result.stdout).toContain(
+      'Verification temporary directory removed:',
+    );
+    expect(
+      (await readdir(directory)).filter((name) =>
+        name.startsWith('ariso-verify-image-'),
+      ),
+    ).toEqual([]);
   });
 
   it.each([
