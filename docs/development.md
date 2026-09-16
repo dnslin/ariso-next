@@ -851,10 +851,16 @@ URL 规则替换 token、resetToken、reset_token、uploadToken、access_token�
 
 首轮临时样本采用页面和错误页抛错，Next 内部处理了这些错误，未到达含请求 URL 的日志入口，聚焦测试因此失败。改为上述真实 URL 解析错误后通过。最终构建仍有既有可选 SQLite Debug 二进制追踪提示；实际 Release 原生驱动、迁移和独立进程测试通过。
 
-RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所属模块验收。R4 容器持久化、完整图片工具矩阵及业务任务恢复不在本次范围。未改写冻结 PRD。本机不运行 Docker，远端 CI 与 AMD64/ARM64 容器验证结果将在本节补充；未执行的远端检查当前不标记通过。
+RT-08 仅闭合 runtime 样本：S3/SMTP/OAuth 业务表和字段接入仍由所属模块验收。R4 容器持久化、完整图片工具矩阵及业务任务恢复不在本次范围。未改写冻结 PRD。本机不运行 Docker，远端 CI 与 AMD64/ARM64 容器验证已通过，结果见下方记录。
 
 补充：`pnpm run format:check` 与 `git diff --check` 均退出 0。健康故障路由仍使用原有 Pino `name`、数字时间和级别；其共享格式接入是既存缺口，本次未修改，也未将健康故障与共享日志一致性标记通过。以上验收限定为启动、正常样本事件及真实框架 URL 错误。
 
 ### 代码审计
 
 使用 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、架构、安全和性能，无 Critical / Required 阻塞发现。审计确认错误来自 Next 自身、空日志不能通过、指定秘密及诊断上下文断言有效、测试入口不进入生产、子进程与目录会清理。审计者未独立重跑检查；上表命令由主任务实际执行。
+
+### 远端验证
+
+实现提交 `3ca6af8` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35039594836) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35039594842)，两个 `gh run watch <run-id> --exit-status --interval 10` 均退出 0。CI 完成 Node 24 冻结安装、lint、格式、类型、单元、生产构建和完整集成测试。Docker 在原生 AMD64（ubuntu-24.04）和 ARM64（ubuntu-24.04-arm）runner 完成镜像构建、实际架构断言、容器启动、健康/页面/静态资源验证、容器清理与验证产物导出；没有发布镜像或部署。
+
+[PR #43](https://github.com/dnslin/ariso-next/pull/43) 关联 Issue #17。本次补充仅记录远端证据，最新提交检查见 [PR 检查页](https://github.com/dnslin/ariso-next/pull/43/checks)，全部成功后转为正式待评审。Issue 保持开放，不执行合并或分支清理。首次直连 GitHub 推送超时，复用系统已配置的本地 HTTP 代理后推送成功；没有修改全局网络或 Git 配置。
