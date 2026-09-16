@@ -18,7 +18,8 @@
     "format": "prettier . --write",
     "typecheck": "next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json",
     "test:unit": "vitest run --project unit",
-    "test:integration": "vitest run --project integration"
+    "test:integration": "vitest run --project integration",
+    "test:browser": "node scripts/verify-browser.mjs"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",
@@ -31,7 +32,6 @@
     "zod": "4.6.2"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "24.13.4",
     "@types/react": "19.3.0",
