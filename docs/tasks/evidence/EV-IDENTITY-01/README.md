@@ -20,7 +20,7 @@ pnpm exec drizzle-kit generate --config tests/experiments/identity/drizzle.confi
 pnpm run db:generate
 ```
 
-保留 [CLI 生成结果](./generated-schema.ts)。实验 schema 在生成结果上仅增加 `ownerSlot UNIQUE/CHECK = 1` 和 `(userId, providerId) UNIQUE`，数据库默认值与非空字段沿用生成结果。生成的独立 SQL 在实验目录提交，生产 `db:generate` 返回 **No schema changes**。重新生成到临时文件后比较，不直接覆盖人工核对后的约束。
+保留 [CLI 生成结果](./generated-schema.ts)。实验 schema 在生成结果上仅增加 `ownerSlot UNIQUE/CHECK = 1` 和 `(userId, providerId) UNIQUE`，数据库默认值与非空字段沿用生成结果。生成的独立 SQL 在实验目录提交，生产 `db:generate` 返回 **No schema changes**。已再次生成至 `test-results/identity-generated.ts`，用 Prettier 统一格式后 `cmp` 与归档生成结果一致；不直接覆盖人工核对后的约束。
 
 ## 实验结论与下游接入要求
 
@@ -59,7 +59,7 @@ EGO_TASK_SPACE=16 BROWSER_REPORT_DIR=test-results/identity-runtime-browser pnpm 
 pnpm audit --json
 ```
 
-本地安装、格式、lint、typecheck、190 项单元测试、生产构建和全部 140 项集成测试通过。身份实验的 11 项实际结果见 [local-identity.xml](./local-identity.xml)。Ego 认证实验通过；同一 TaskSpace 16 的生产浏览器冒烟在 390/1440 两宽度通过，静态资源、健康接口及错误监控通过，见 [runtime-browser.json](./runtime-browser.json)；TaskSpace 已成功关闭。远端 CI/Docker 尚待 PR 触发，不能据此标记完成。
+本地安装、格式、lint、typecheck、190 项单元测试、生产构建和全部 140 项集成测试通过。身份实验的 11 项实际结果见 [local-identity.xml](./local-identity.xml)。Ego 认证实验通过；同一 TaskSpace 16 的生产浏览器冒烟在 390/1440 两宽度通过，静态资源、健康接口及错误监控通过，见 [runtime-browser.json](./runtime-browser.json)；TaskSpace 已成功关闭。首轮远端 CI/Docker 已通过，详见下节；Issue 状态和合并仍由用户决定。
 
 生产构建退出 0，但 nft 打包器打印缺失 `build/Debug/better_sqlite3.node` 的诊断。实际使用的是 Release 二进制，保留原始诊断并以生产集成与镜像检查判断产物可用性，不隐藏日志。`pnpm audit` 报一个 moderate：原有 drizzle-kit 的 esbuild 0.18.20 开发服务器公告 GHSA-67mh-4wv8-2f99；新增依赖复用同一链。实验不运行 esbuild 开发服务器，也不把它打入生产，不在本 Issue 升级原有工具链。
 
@@ -67,4 +67,18 @@ pnpm audit --json
 
 ## 审计与远端验证
 
-正在使用 `code-review-and-quality` 进行独立审计。`.github/workflows/images.yml` 为 AMD64/ARM64 原生 runner 增加同一组 identity 实验，并归档 JUnit；现有真实 Docker 构建、图片、存储、生命周期检查继续执行。PR 事件不会触发 publish。远端结果将在检查完成后补入本报告。
+已使用 `code-review-and-quality` 完成独立审计，未发现必改问题。审计重点为需求覆盖、HTTP/API 保护边界、state 一次消费、真实磁盘并发、依赖与生产模块隔离。审计代理用 Node 24.19.0 / pnpm 11.19.0 独立重跑 `pnpm exec vitest run --project integration tests/integration/identity --reporter=verbose`，2 文件 / 11 项通过。其早先 Node 26 复跑不计入项目验收。`.github/workflows/images.yml` 为 AMD64/ARM64 原生 runner 增加同一组 identity 实验，并归档 JUnit；现有真实 Docker 构建、图片、存储、生命周期检查继续执行。PR 事件不会触发 publish。
+
+提交 [f57ff5f](https://github.com/dnslin/ariso-next/commit/f57ff5fdb1767ece3e006a6efb60aaf714bbbac8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35513964773) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35513964843) 均 success。AMD64/ARM64 各 11 项认证实验通过，原始 JUnit 已归档：[AMD64](./amd64.xml)、[ARM64](./arm64.xml)。原生 runner 为 Node 24.20.0；实际 Docker 为 Node 24.21.0。容器生命周期、迁移、备份恢复原始报告：[AMD64](./container-amd64.json)、[ARM64](./container-arm64.json)。两架构的图片转换、受限挂载存储及镜像内容检查均通过。release-checks / publish 因非 release 事件跳过，没有发布镜像或部署。
+
+```sh
+gh pr checks 91
+gh run view 35513964773
+gh run view 35513964843
+gh run download 35513964843 --name identity-verification-amd64 --dir test-results/remote-identity/amd64
+gh run download 35513964843 --name identity-verification-arm64 --dir test-results/remote-identity/arm64
+gh run download 35513964843 --name container-verification-amd64 --dir test-results/remote-identity/container-amd64
+gh run download 35513964843 --name container-verification-arm64 --dir test-results/remote-identity/container-arm64
+```
+
+本次归档只更新报告和原始结果，不修改受测代码。最新提交的复跑状态以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 为准；全部通过后转为待评审，不自动合并、关闭 Issue 或删除分支。
