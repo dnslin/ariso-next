@@ -34,9 +34,10 @@ const migrate = (folder: string) =>
   migrateRuntimeDatabase(connection.db, folder);
 
 describe('runtime forward migrations', () => {
-  it('空生产 journal 可重复执行且没有业务表', () => {
-    migrate(resolve('drizzle'));
-    migrate(resolve('drizzle'));
+  it('空 journal 可重复执行且没有业务表', () => {
+    const folder = writeMigrations(join(directory, 'empty-sql'), []);
+    migrate(folder);
+    migrate(folder);
     expect(progress()).toEqual([]);
     expect(
       connection.db.$client
@@ -131,7 +132,7 @@ describe('runtime forward migrations', () => {
       const before = progress();
       const folder =
         version === 'empty'
-          ? resolve('drizzle')
+          ? writeMigrations(join(directory, 'empty-sql'), [])
           : writeMigrations(join(directory, 'old'), [initialMigration]);
       expect(() => migrate(folder)).toThrowError(
         expect.objectContaining({

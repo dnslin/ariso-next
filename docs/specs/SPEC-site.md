@@ -1,7 +1,7 @@
 # Spec: site — 站点配置与品牌
 
 - 模块 ID：`site`。
-- 状态：已通过评审；用户于 2026-09-16 确认。尚未实施。品牌格式与大小规则见第 6 节。
+- 状态：已通过评审；用户于 2026-09-16 确认。T-SITE-01 底层契约已实现、待 PR 验收，见[实施证据](../verification/site-47/README.md)；其余能力仍待实施。品牌格式与大小规则见第 6 节。
 - 日期：2026-09-16。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.4–5.5、21.1–21.3、22、23、26.1；[能力地图](../product/CAPABILITY-MAP.md)。
 - 已有基础：[runtime 规格](../archive/runtime/SPEC-runtime.md)、`src/server/runtime`、`src/server/startup`、`drizzle.config.ts`。
@@ -49,7 +49,7 @@ site 提供配置读取、校验、持久化、链接生成和时间展示能力
 | `favicon_key` / `favicon_mime` | TEXT，可空                      | 同上                                                            |
 | `updated_at`                   | INTEGER NOT NULL                | UTC Unix 毫秒，Drizzle 使用 `timestamp_ms`                      |
 
-这是已评审的数据模型，尚未生成迁移。字段名不得兼容旧版 Ariso 的不存在于本仓库的表结构。
+这是已评审的数据模型；T-SITE-01 已生成迁移。字段名不得兼容旧版 Ariso 的不存在于本仓库的表结构。
 
 没有记录表示尚未保存站点配置，是正常初始状态。品牌展示可使用内置 Ariso 名称和标识；依赖公开地址的链接生成必须返回“站点尚未初始化”，不能猜测 `localhost` 或请求域名。
 
@@ -185,7 +185,7 @@ const { connection } = getServerRuntime();
 const settings = requireSiteSettings(connection.db);
 ```
 
-上例的 `requireSiteSettings` 是待实现契约，不是现有函数。内部普通函数可信，不重复解析已经通过入口 schema 的同一对象。
+上例的 `requireSiteSettings` 已在 T-SITE-01 实现。内部普通函数可信，不重复解析已经通过入口 schema 的同一对象。
 
 ## 9. Figma 对应与未满足的前置
 
@@ -231,7 +231,7 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-`db:generate` 仅在实际 schema 变更时执行并审查生成 SQL。测试随功能加入现有 Vitest 项目与 Ego 流程；site 聚焦测试目录尚不存在，未声称执行或通过。Docker 与双架构回归沿用 Actions；本草案未安装依赖、修改 schema 或运行应用测试。
+`db:generate` 仅在实际 schema 变更时执行并审查生成 SQL。测试随功能加入现有 Vitest 项目与 Ego 流程；T-SITE-01 已新增 site 聚焦测试，实际结果统一见[实施证据](../verification/site-47/README.md)。Docker 与双架构回归沿用 Actions；本节命令不代表全部 site 验收通过。
 
 ## 11. 实施边界
 
