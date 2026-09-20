@@ -1,0 +1,144 @@
+{
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.17.0-1022-azure",
+    "uid": 1000
+  },
+  "checks": [
+    {
+      "name": "paths",
+      "passed": true,
+      "evidence": {
+        "root": "/storage/ariso-storage-WZxuxF",
+        "accepted": ["target", "nested/../target", "nested/inside"],
+        "rejected": ["empty", "absolute", "escape", "NUL", "outside symlink"]
+      }
+    },
+    {
+      "name": "same-device",
+      "passed": true,
+      "evidence": [
+        {
+          "phase": "success",
+          "bytesWritten": 4194304,
+          "closed": true
+        },
+        {
+          "phase": "copying",
+          "bytesWritten": 65536,
+          "closed": true
+        },
+        {
+          "phase": "before-publish",
+          "bytesWritten": 4194304,
+          "closed": true
+        },
+        {
+          "phase": "published",
+          "bytesWritten": 4194304,
+          "closed": true
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "passed": true,
+      "evidence": {
+        "error": "Stream publish failed: {\"source\":\"/source/ariso-source-FzYqFM/original\",\"temporary\":\"/storage/ariso-storage-WZxuxF/denied/d155aaba-30a9-409a-a541-fe39975096f9.partial\",\"target\":\"/storage/ariso-storage-WZxuxF/denied/d155aaba-30a9-409a-a541-fe39975096f9.object\"}",
+        "code": "EACCES",
+        "closed": true
+      }
+    },
+    {
+      "name": "cross-device",
+      "passed": true,
+      "evidence": {
+        "sourceDevice": 71,
+        "targetDevice": 73,
+        "directRename": "EXDEV",
+        "samples": [
+          {
+            "phase": "success",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "copying",
+            "bytesWritten": 65536,
+            "closed": true
+          },
+          {
+            "phase": "before-publish",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "published",
+            "bytesWritten": 4194304,
+            "closed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "low-space",
+      "passed": true,
+      "evidence": {
+        "initialFree": 33554432,
+        "exhaustedFree": 0,
+        "recoveredFree": 33546240,
+        "recoveredSamples": [
+          {
+            "phase": "success",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "copying",
+            "bytesWritten": 65536,
+            "closed": true
+          },
+          {
+            "phase": "before-publish",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "published",
+            "bytesWritten": 4194304,
+            "closed": true
+          }
+        ],
+        "bytesWritten": 33546240,
+        "error": "Stream publish failed: {\"source\":\"/source/ariso-source-FzYqFM/larger-than-volume\",\"temporary\":\"/storage/low/ariso-low-CjzrBv/0272171f-8f19-46af-b0e3-20eab48a5672.partial\",\"target\":\"/storage/low/ariso-low-CjzrBv/0272171f-8f19-46af-b0e3-20eab48a5672.object\"}",
+        "code": "ENOSPC",
+        "closed": true,
+        "smallSamples": [
+          {
+            "phase": "success",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "copying",
+            "bytesWritten": 65536,
+            "closed": true
+          },
+          {
+            "phase": "before-publish",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "published",
+            "bytesWritten": 4194304,
+            "closed": true
+          }
+        ]
+      }
+    }
+  ],
+  "incomplete": []
+}

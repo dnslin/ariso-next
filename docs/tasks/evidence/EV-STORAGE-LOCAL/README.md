@@ -4,7 +4,7 @@
 
 ## 范围与结论
 
-当前独立实验已实现，本地同盘、跨盘和权限检查通过。Linux 双架构、真实低空间和 ENOSPC 仍待 Actions，暂不解除下游前置。
+本工程前置的三项验收已获得实际证据：同盘/跨盘成功与取消保留引用；低空间小文件成功且无固定预留；真实权限/空间失败保留路径，精确清理不影响其他文件。macOS 双卷与 Linux AMD64/ARM64 均通过。Issue 状态与合并由用户决定，下游仍须按其全部直接前置推进。
 
 实验位于 `tests/experiments/storage-local/`；普通集成测试覆盖本机可用环境，CLI 额外接收真实跨设备和低空间卷。无生产代码、数据库、依赖或冻结 PRD 变更。runtime 当前只准备 storage 父目录；默认存储与业务对象 API 仍属于 T-STO-01，不能把本报告当作 R-5.2-02、R-9.1-01、A-26.2-01 完成证据。
 
@@ -12,18 +12,18 @@
 
 ## 验收矩阵
 
-| 验收               | 实际断言                                                                                                           | 当前证据       |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------ | -------------- |
-| 受控路径           | 拒绝空、绝对、NUL、归一化越界和根外链接；允许根内相对链接、根内 `..` 和名称中 `..`；新叶目录检查已有父目录         | macOS 通过     |
-| 根内 symlink       | 同盘全部流写入实际经过 `nested/inside` 链接                                                                        | macOS 通过     |
-| 同盘与跨盘成功     | 4 MiB 内容 SHA-256 一致；原文件、旧对象和其他应用文件不变；不同 st_dev 且直接 rename 得 EXDEV                      | macOS 通过     |
-| 取消               | 实际写入 64 KiB 后取消；全部写完但发布前取消；发布后取消仍返回已完成对象                                           | macOS 两卷通过 |
-| 引用与精确清理     | 写前 JSON 记录 source/temporary/target；失败后可重读；仅 unlink 明确对象，再解除记录；检查目录清单和邻接文件       | macOS 通过     |
-| 句柄               | 成功/失败/取消后两流 closed；已打开描述符 fstat 得 EBADF                                                           | macOS 通过     |
-| 权限失败           | 非 root，真实目录 chmod 导致 EACCES；错误 cause 保留代码，外层保留实际路径                                         | macOS 通过     |
-| 低空间成功         | 8–64 MiB 独立受限卷上 4 MiB 对象完整写入，不做固定预留                                                             | 待 Actions     |
-| 真正耗尽与恢复     | 大于可用空间的源文件触发真实 ENOSPC；保留源、partial 与记录；再制造清理 EACCES，修复权限后仅删该 partial，空间恢复 | 待 Actions     |
-| Linux 挂载与双架构 | 当前应用镜像非 root，storage 子目录挂不同 tmpfs；AMD64/ARM64 原生 runner                                           | 待 Actions     |
+| 验收               | 实际断言                                                                                                           | 当前证据         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ | ---------------- |
+| 受控路径           | 拒绝空、绝对、NUL、归一化越界和根外链接；允许根内相对链接、根内 `..` 和名称中 `..`；新叶目录检查已有父目录         | macOS 通过       |
+| 根内 symlink       | 同盘全部流写入实际经过 `nested/inside` 链接                                                                        | macOS 通过       |
+| 同盘与跨盘成功     | 4 MiB 内容 SHA-256 一致；原文件、旧对象和其他应用文件不变；不同 st_dev 且直接 rename 得 EXDEV                      | macOS 通过       |
+| 取消               | 实际写入 64 KiB 后取消；全部写完但发布前取消；发布后取消仍返回已完成对象                                           | macOS 两卷通过   |
+| 引用与精确清理     | 写前 JSON 记录 source/temporary/target；失败后可重读；仅 unlink 明确对象，再解除记录；检查目录清单和邻接文件       | macOS 通过       |
+| 句柄               | 成功/失败/取消后两流 closed；已打开描述符 fstat 得 EBADF                                                           | macOS 通过       |
+| 权限失败           | 非 root，真实目录 chmod 导致 EACCES；错误 cause 保留代码，外层保留实际路径                                         | macOS 通过       |
+| 低空间成功         | 8–64 MiB 独立受限卷上 4 MiB 对象完整写入，不做固定预留                                                             | AMD64/ARM64 通过 |
+| 真正耗尽与恢复     | 大于可用空间的源文件触发真实 ENOSPC；保留源、partial 与记录；再制造清理 EACCES，修复权限后仅删该 partial，空间恢复 | AMD64/ARM64 通过 |
+| Linux 挂载与双架构 | 当前应用镜像非 root，storage 子目录挂不同 tmpfs；AMD64/ARM64 原生 runner                                           | AMD64/ARM64 通过 |
 
 JSON 是实验责任夹具，不是生产引用表。它验证调用方在 I/O 前保存两个候选路径、在清理完成前保留责任的可行性，不验证业务事务、进程崩溃恢复或断电持久性。尚未存在的多级目录创建与完整配置输入契约由 T-STO-01 实现。本实验不创建默认配置、不提供新业务接口。
 
@@ -65,8 +65,22 @@ git diff --check
 
 实验没有安装新工具。脚本仅临时 bind mount，不进入生产镜像。Actions 保存 `storage-verification-amd64` / `storage-verification-arm64`；现有 Docker 生命周期与图片检查照常执行。PR 事件不运行 release publish，不发布镜像、不部署。
 
-远端运行链接和永久报告将在实际完成后补齐。
+实现提交 [`77c1d2a`](https://github.com/dnslin/ariso-next/commit/77c1d2a14bb8f9d5dc833df203ef2587d8753ecc) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35500210985) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35500210911) 全部通过。旧提交的重复运行已取消。永久原始报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。报告归档提交仅更新文档，不改变受测代码或工作流；最新提交的复跑可在 [PR #87](https://github.com/dnslin/ariso-next/pull/87) 检查页查看。
+
+两架构均为 Linux 6.17.0-1022-azure / Node 24.21.0 / UID 1000。独立卷起始可用 33,554,432 字节；4 MiB 文件成功；真实 ENOSPC 时剩余 0 字节，partial 为 33,546,240 字节。清理后恢复 33,546,240 字节可用空间，保留两个各占 4 KiB 的哨兵文件。恢复后再次完整执行成功及三个取消时点矩阵，全部通过；两份报告 `incomplete` 均为空。
+
+远端命令：
+
+```sh
+gh run view 35500210985 --repo dnslin/ariso-next
+gh run view 35500210911 --repo dnslin/ariso-next
+gh run download 35500210911 --repo dnslin/ariso-next --name storage-verification-amd64 --dir test-results/remote-storage/amd64
+gh run download 35500210911 --repo dnslin/ariso-next --name storage-verification-arm64 --dir test-results/remote-storage/arm64
+gh pr checks 87 --repo dnslin/ariso-next
+```
+
+CI checks、Build and verify amd64、Build and verify arm64 均 success；release-checks、publish 按非发布事件跳过。这是事件边界，不是跳过失败验证。容器实际命令以工作流的 `Verify local storage streams on real limited mounts` 步骤为准，未在本机 Docker 执行。
 
 ## 审计
 
-已使用 `code-review-and-quality` 进行独立静态审计，重点核对需求覆盖、取消时点、路径与责任记录、清理边界及断言有效性。已修复未使用导入，并补充已有父目录检查及通过根内链接的实际 I/O。最终复审发现空间恢复只有测量、缺少断言，已补充 recoveredFree 大于 exhaustedFree 的检查，并在恢复后重新执行小文件写入/取消矩阵。远端验证尚待完成。
+已使用 `code-review-and-quality` 进行独立静态审计，重点核对需求覆盖、取消时点、路径与责任记录、清理边界及断言有效性。已修复未使用导入，并补充已有父目录检查及通过根内链接的实际 I/O。最终复审发现空间恢复只有测量、缺少断言，已补充 recoveredFree 大于 exhaustedFree 的检查，并在恢复后重新执行小文件写入/取消矩阵。独立复审确认无剩余静态阻塞；双架构运行也验证了恢复断言及再次写入。
