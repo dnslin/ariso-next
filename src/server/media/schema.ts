@@ -10,6 +10,7 @@ import {
   unique,
 } from 'drizzle-orm/sqlite-core';
 import { storageConfigs } from '../storage/schema.ts';
+import type { ProcessingSnapshot } from './validation.ts';
 
 export const versionKinds = [
   'original',
@@ -19,10 +20,34 @@ export const versionKinds = [
 ] as const;
 export type VersionKind = (typeof versionKinds)[number];
 export type DerivedVersionKind = Exclude<VersionKind, 'original'>;
-// The settings provider owns the snapshot shape; media persists the submitted JSON unchanged.
-export type ProcessingSnapshot = { [key: string]: JsonValue };
-type JsonValue =
-  string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
+export const mediaSettings = sqliteTable(
+  'media_settings',
+  {
+    id: integer('id').primaryKey().notNull().default(1),
+    compressionEnabled: integer('compression_enabled', {
+      mode: 'boolean',
+    }).notNull(),
+    outputFormat: text('output_format', {
+      enum: ['jpeg', 'webp', 'avif'],
+    }).notNull(),
+    quality: integer('quality').notNull(),
+    maxEdge: integer('max_edge'),
+    jpegBackground: text('jpeg_background').notNull(),
+    watermarkMode: text('watermark_mode', {
+      enum: ['off', 'text', 'image'],
+    }).notNull(),
+    defaultLinkVersion: text('default_link_version', {
+      enum: ['original', 'compressed', 'watermark'],
+    }).notNull(),
+    defaultVisibility: text('default_visibility', {
+      enum: ['public', 'private'],
+    }).notNull(),
+    concurrency: integer('concurrency').notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (t) => [check('media_settings_singleton', sql`${t.id} = 1`)],
+);
 
 export const mediaImages = sqliteTable(
   'media_images',

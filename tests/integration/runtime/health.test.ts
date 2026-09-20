@@ -53,6 +53,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'media_images' },
         { name: 'media_jobs' },
         { name: 'media_objects' },
+        { name: 'media_settings' },
         { name: 'media_versions' },
         { name: 'site_settings' },
         { name: 'storage_configs' },
@@ -77,6 +78,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         'media_images',
         'media_jobs',
         'media_objects',
+        'media_settings',
         'media_versions',
       ]) {
         expect(db.prepare(`SELECT * FROM ${table}`).all()).toEqual([]);
