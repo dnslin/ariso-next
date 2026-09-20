@@ -10,22 +10,31 @@ import { openFixture, seedOwner } from './fixture.ts';
 import { launchIdentity } from './http-process.ts';
 
 assert.equal(process.versions.node.split('.')[0], '24');
-const directory = await mkdtemp(join(tmpdir(), 'ariso-identity-browser-'));
 const output = resolve(
   process.env.BROWSER_REPORT_DIR ?? 'test-results/identity-browser',
 );
-await mkdir(output, { recursive: true });
-const dbPath = join(directory, 'auth.db');
-const configPath = join(directory, 'config.json');
-const connection = openFixture(dbPath);
+const controller = new AbortController();
+const interrupt = () =>
+  controller.abort(new Error('Identity browser verification interrupted'));
+process.on('SIGINT', interrupt);
+process.on('SIGTERM', interrupt);
+let directory: string | undefined;
+let connection: ReturnType<typeof openFixture> | undefined;
 let server: Awaited<ReturnType<typeof launchIdentity>> | undefined;
 try {
+  directory = await mkdtemp(join(tmpdir(), 'ariso-identity-browser-'));
+  await mkdir(output, { recursive: true });
+  controller.signal.throwIfAborted();
+  const dbPath = join(directory, 'auth.db');
+  const configPath = join(directory, 'config.json');
+  connection = openFixture(dbPath);
   await seedOwner(
     connection.db,
     'owner@example.test',
     'identity-experiment-password',
   );
   connection.close();
+  controller.signal.throwIfAborted();
   server = await launchIdentity(
     dbPath,
     configPath,
@@ -41,7 +50,7 @@ try {
       server.child.exitCode === null && Date.now() < deadline,
       server.logs(),
     );
-    await setTimeout(100);
+    await setTimeout(100, undefined, { signal: controller.signal });
   }
   const config = {
     port: server.port,
@@ -56,7 +65,9 @@ try {
     resolve('tests/experiments/identity/browser.mjs'),
     'utf8',
   );
+  controller.signal.throwIfAborted();
   const browser = promisify(execFile)('ego-browser', ['nodejs'], {
+    signal: controller.signal,
     timeout: 120000,
     maxBuffer: 1024 * 1024,
   });
@@ -67,10 +78,12 @@ try {
   console.log(stdout);
   if (stderr) console.error(stderr);
 } finally {
-  connection.close();
+  connection?.close();
   if (server) {
     await server.stop();
     await writeFile(join(output, 'server.log'), server.logs());
   }
-  await rm(directory, { recursive: true, force: true });
+  if (directory) await rm(directory, { recursive: true, force: true });
+  process.off('SIGINT', interrupt);
+  process.off('SIGTERM', interrupt);
 }

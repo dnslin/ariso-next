@@ -4,6 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, it, vi } from 'vitest';
+import { hasSecureAttribute } from './cookie-attributes.ts';
 import {
   createFixtureAuth,
   openFixture,
@@ -146,7 +147,7 @@ it('A→B→A refreshes Secure Cookies, rejects the previous origin and checks r
     const login = await signIn();
     expect(login.status).toBe(200);
     const raw = login.headers.getSetCookie()[0];
-    expect(raw.includes('Secure')).toBe(current.startsWith('https:'));
+    expect(hasSecureAttribute(raw)).toBe(current.startsWith('https:'));
     expect(raw.startsWith('__Secure-')).toBe(current.startsWith('https:'));
     const cookie = cookies(login);
     const bad = await signIn({ origin: previous, cookie });
@@ -174,7 +175,7 @@ it('A→B→A refreshes Secure Cookies, rejects the previous origin and checks r
     const logout = await post('/api/auth/sign-out', {}, { cookie });
     expect(logout.status).toBe(200);
     expect(logout.headers.getSetCookie().join(';')).toContain('Max-Age=0');
-    expect(logout.headers.getSetCookie()[0].includes('Secure')).toBe(
+    expect(hasSecureAttribute(logout.headers.getSetCookie()[0])).toBe(
       current.startsWith('https:'),
     );
   }

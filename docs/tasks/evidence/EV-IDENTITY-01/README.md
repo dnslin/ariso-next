@@ -82,3 +82,28 @@ gh run download 35513964843 --name container-verification-arm64 --dir test-resul
 ```
 
 本次归档只更新报告和原始结果，不修改受测代码。最新提交的复跑状态以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 为准；全部通过后转为待评审，不自动合并、关闭 Issue 或删除分支。
+
+## PR 复审修复（2026-09-21）
+
+两角度复审发现并修复了两个实验工具问题：原始 Cookie 检查用 `includes('Secure')` 会误命中 `__Secure-` 名称，现在只检查分号后的独立 Secure 属性（不区分大小写），同时保留前缀断言。新增 7 个回归用例；旧实现实际失败 5 个，修复后全部通过。
+
+浏览器验证脚本现在在创建资源前监听 SIGINT/SIGTERM，使用 AbortController 中止等待或外部浏览器命令，再进入 finally 停止真实 Next 进程组并删除临时数据库。取消测试在独立临时副本启动真实 Next，确认 HTTP 200 后分别发送两种信号，检查非成功退出、Next 与浏览器子进程消失、端口关闭和数据库目录删除，并在相同应用目录再次启动。旧实现实际遗留 Next，回归失败；修复后通过。测试仅将外部 Ego 命令替换为阻塞夹具，因此这项测试只证明进程取消行为，不冒充浏览器验证。
+
+环境仍为 macOS arm64、Node 24.19.0、pnpm 11.19.0。实际执行：
+
+```sh
+pnpm exec vitest run --project unit tests/unit/identity/cookie-attributes.test.ts
+pnpm exec vitest run --project integration tests/integration/identity/browser-runner.test.ts
+pnpm run format:check
+pnpm run lint
+pnpm run typecheck
+pnpm run test:unit
+pnpm run build
+pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/review-integration.xml
+pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/review-identity.xml
+BROWSER_REPORT_DIR=test-results/identity-review-browser node tests/experiments/identity/run-browser.ts
+```
+
+格式、lint、类型检查、197 项单元测试、生产构建、141 项完整集成测试均通过。构建仍输出前述 SQLite Debug 二进制诊断，退出码为 0。独立复审额外指出资源初始化早期的取消窗口，已将监听提前，并重新执行相关格式、lint、类型检查及全部 12 项 identity 集成测试，均通过，见 [原始 JUnit](./review-fixes/local-identity.xml)。真实 Ego Lite A→B→A 登录、会话和退出通过，见 [复跑浏览器报告](./review-fixes/browser.json)；TaskSpace 17 已关闭。本轮无生产 UI 改动，未重复执行原先的 390/1440 生产冒烟。
+
+使用 `debugging-and-error-recovery`、`test-driven-development` 修复，并按 `code-review-and-quality` 独立复审修复和回归测试，最终无剩余必改问题。远端 CI 与 AMD64/ARM64 Docker 需在推送后重新执行；最新结果以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 的当前提交检查为准。未合并、发布或部署。
