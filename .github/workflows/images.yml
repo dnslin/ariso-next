@@ -86,6 +86,31 @@ jobs:
               test ! -e "$path"
             done
           '
+      - name: Verify local storage streams on real limited mounts
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/storage-verification"
+          chmod 777 "$RUNNER_TEMP/storage-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/storage-local,dst=/experiment,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/storage-verification,dst=/evidence" \
+            "$IMAGE" /experiment/run.ts \
+              --source-root /source --storage-root /storage \
+              --target-root /storage/disk --low-space-root /storage/low \
+              --report /evidence/report.json --require-complete
+      - name: Preserve local storage evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: storage-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/storage-verification
+          if-no-files-found: warn
+          retention-days: 14
       - name: Verify actual image conversions and glyphs offline
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}

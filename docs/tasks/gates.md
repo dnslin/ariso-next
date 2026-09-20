@@ -66,6 +66,8 @@
 
 ### EV-STORAGE-LOCAL 本地路径与流式 I/O 验证
 
+实施与实际验证见[实验报告](./evidence/EV-STORAGE-LOCAL/README.md)；下游以前置验收证据为准。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[storage §4/8](../specs/SPEC-storage.md)
