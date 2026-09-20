@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { once } from 'node:events';
 import {
@@ -28,9 +29,20 @@ import {
   initialMigration,
   upgradeMigration,
   brokenMigration,
-  writeMigrations,
+  writeMigrations as writeRuntimeMigrations,
 } from '../../fixtures/runtime/migrations';
 import { launch, stop, unusedPort } from './process-helpers';
+
+const storageMigration = {
+  tag: '0000_storage',
+  when: 1,
+  sql: readFileSync(resolve('drizzle/0001_calm_hulk.sql'), 'utf8'),
+};
+function writeMigrations(
+  ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
+) {
+  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+}
 
 let root: string;
 let app: string;
@@ -269,9 +281,9 @@ describe('完整生产入口的失败与恢复', () => {
     expect(
       query("SELECT name FROM sqlite_master WHERE name = 'rolled_back'"),
     ).toEqual([]);
-    expect(query('SELECT created_at FROM __drizzle_migrations')).toEqual([
-      { created_at: 1000 },
-    ]);
+    expect(
+      query('SELECT created_at FROM __drizzle_migrations ORDER BY created_at'),
+    ).toEqual([{ created_at: 1 }, { created_at: 1000 }]);
     writeMigrations(folder, [
       initialMigration,
       upgradeMigration,

@@ -46,10 +46,28 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       expect(
         db
           .prepare(
-            "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name != '__drizzle_migrations'",
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name != '__drizzle_migrations' ORDER BY name",
           )
           .all(),
-      ).toEqual([{ name: 'site_settings' }]);
+      ).toEqual([
+        { name: 'site_settings' },
+        { name: 'storage_configs' },
+        { name: 'storage_settings' },
+      ]);
+      expect(
+        db
+          .prepare(
+            'SELECT c.name, c.type, c.enabled, c.local_path FROM storage_settings s JOIN storage_configs c ON c.id = s.default_storage_id WHERE s.id = 1',
+          )
+          .all(),
+      ).toEqual([
+        {
+          name: '默认本地存储',
+          type: 'local',
+          enabled: 1,
+          local_path: 'default',
+        },
+      ]);
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
     } finally {
       db.close();

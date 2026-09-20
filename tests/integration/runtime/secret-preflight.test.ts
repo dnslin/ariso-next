@@ -1,13 +1,24 @@
 import { randomBytes } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { cp, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import Database from 'better-sqlite3';
 import { afterAll, afterEach, beforeAll, beforeEach, expect, it } from 'vitest';
 import { createSecretCrypto } from '../../../src/server/runtime/crypto';
-import { writeMigrations } from '../../fixtures/runtime/migrations';
+import { writeMigrations as writeRuntimeMigrations } from '../../fixtures/runtime/migrations';
 import { launch, stop, unusedPort } from './process-helpers';
+
+const storageMigration = {
+  tag: '0000_storage',
+  when: 1,
+  sql: readFileSync(resolve('drizzle/0001_calm_hulk.sql'), 'utf8'),
+};
+function writeMigrations(
+  ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
+) {
+  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+}
 
 let root: string;
 let app: string;
@@ -95,9 +106,19 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
   const db = new Database(join(env.DATA_DIR, 'ariso.db'));
   try {
     expect(
-      db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all(),
-    ).toEqual([{ name: '__drizzle_migrations' }]);
-    expect(db.prepare('SELECT * FROM __drizzle_migrations').all()).toEqual([]);
+      db
+        .prepare(
+          "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name",
+        )
+        .all(),
+    ).toEqual([
+      { name: '__drizzle_migrations' },
+      { name: 'storage_configs' },
+      { name: 'storage_settings' },
+    ]);
+    expect(
+      db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
+    ).toEqual([{ created_at: 1 }]);
   } finally {
     db.close();
   }
@@ -189,8 +210,17 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
     }
     const afterFailure = inspect();
     expect(afterFailure).toEqual({
-      tables: [{ name: '__drizzle_migrations' }, { name: 'secret_sample' }],
-      migrations: [{ created_at: 1000 }, { created_at: 2000 }],
+      tables: [
+        { name: '__drizzle_migrations' },
+        { name: 'secret_sample' },
+        { name: 'storage_configs' },
+        { name: 'storage_settings' },
+      ],
+      migrations: [
+        { created_at: 1 },
+        { created_at: 1000 },
+        { created_at: 2000 },
+      ],
       rows: [
         { id: 'configured', secret: saved },
         { id: 'migration-committed', secret: null },

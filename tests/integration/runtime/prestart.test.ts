@@ -3,6 +3,7 @@ import { randomBytes } from 'node:crypto';
 import {
   existsSync,
   mkdtempSync,
+  mkdirSync,
   readFileSync,
   rmSync,
   writeFileSync,
@@ -16,8 +17,19 @@ import { runPreflight } from '../../../src/server/startup/preflight.ts';
 import {
   initialMigration,
   brokenMigration,
-  writeMigrations,
+  writeMigrations as writeRuntimeMigrations,
 } from '../../fixtures/runtime/migrations';
+
+const storageMigration = {
+  tag: '0000_storage',
+  when: 1,
+  sql: readFileSync(resolve('drizzle/0001_calm_hulk.sql'), 'utf8'),
+};
+function writeMigrations(
+  ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
+) {
+  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+}
 
 let directory: string;
 let env: Record<string, string>;
@@ -74,7 +86,7 @@ function readRows(query: string) {
 }
 
 describe('compiled prestart CLI', () => {
-  it('普通 Node 执行编译产物，空 journal 重复启动成功并关闭连接', () => {
+  it('普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接', () => {
     for (let attempt = 0; attempt < 2; attempt++) {
       const result = run();
       expect(result.status, result.stderr).toBe(0);
@@ -82,10 +94,52 @@ describe('compiled prestart CLI', () => {
       expectClosed();
     }
     expect(
-      readRows("SELECT name FROM sqlite_master WHERE type = 'table'"),
-    ).toEqual([{ name: '__drizzle_migrations' }]);
+      readRows(
+        "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name",
+      ),
+    ).toEqual([
+      { name: '__drizzle_migrations' },
+      { name: 'storage_configs' },
+      { name: 'storage_settings' },
+    ]);
+    expect(readRows('SELECT * FROM storage_settings')).toHaveLength(1);
+    expect(readRows('SELECT * FROM storage_configs')).toHaveLength(1);
     expect(existsSync(join(env.DATA_DIR, 'assets/branding'))).toBe(true);
+    expect(existsSync(join(env.DATA_DIR, 'storage/default'))).toBe(true);
+  });
+
+  it('重启保留清空默认和删除配置，不重新创建默认目录', () => {
+    expect(run().status).toBe(0);
+    const connection = database.openRuntimeDatabase(
+      join(env.DATA_DIR, 'ariso.db'),
+    );
+    try {
+      connection.db.$client.exec(
+        'UPDATE storage_settings SET default_storage_id = NULL; DELETE FROM storage_configs',
+      );
+    } finally {
+      connection.close();
+    }
+    rmSync(join(env.DATA_DIR, 'storage/default'), { recursive: true });
+    expect(run().status).toBe(0);
+    expect(readRows('SELECT * FROM storage_settings')).toEqual([
+      { id: 1, default_storage_id: null },
+    ]);
+    expect(readRows('SELECT * FROM storage_configs')).toEqual([]);
     expect(existsSync(join(env.DATA_DIR, 'storage/default'))).toBe(false);
+  });
+
+  it('默认目录不可用时启动非零退出、关闭连接且不留下部分默认值', () => {
+    mkdirSync(join(env.DATA_DIR, 'storage'), { recursive: true });
+    const path = join(env.DATA_DIR, 'storage/default');
+    writeFileSync(path, 'keep');
+    const result = run();
+    expect(result.status).toBe(1);
+    expect(result.stdout).toContain(path);
+    expect(readFileSync(path, 'utf8')).toBe('keep');
+    expectClosed();
+    expect(readRows('SELECT * FROM storage_configs')).toEqual([]);
+    expect(readRows('SELECT * FROM storage_settings')).toEqual([]);
   });
 
   it('无效配置先于目录操作失败，诊断不泄露密钥', () => {
