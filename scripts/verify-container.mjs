@@ -339,15 +339,37 @@ async function main() {
       'final image health, JSON logs, static assets, Node 24 architecture and PID 1',
     );
     await stop();
-    const initial = writeMigrations(join(root, 'initial'), [initialMigration]);
+    // 保留镜像的真实迁移，再追加测试迁移；不能以空生产 journal 为前提。
+    const baselineFolder = join(root, 'baseline');
+    await docker(['cp', `${id}:/app/drizzle`, baselineFolder]);
+    const journal = JSON.parse(
+      await readFile(join(baselineFolder, 'meta/_journal.json'), 'utf8'),
+    );
+    const baseline = await Promise.all(
+      journal.entries.map(async (entry) => ({
+        tag: entry.tag,
+        when: entry.when,
+        sql: await readFile(join(baselineFolder, `${entry.tag}.sql`), 'utf8'),
+      })),
+    );
+    const latest = Math.max(0, ...baseline.map((entry) => entry.when));
+    const samples = [initialMigration, upgradeMigration, brokenMigration].map(
+      (entry) => ({
+        ...entry,
+        when: latest + entry.when,
+      }),
+    );
+    const initial = writeMigrations(join(root, 'initial'), [
+      ...baseline,
+      samples[0],
+    ]);
     const upgrade = writeMigrations(join(root, 'upgrade'), [
-      initialMigration,
-      upgradeMigration,
+      ...baseline,
+      ...samples.slice(0, 2),
     ]);
     const broken = writeMigrations(join(root, 'broken'), [
-      initialMigration,
-      upgradeMigration,
-      brokenMigration,
+      ...baseline,
+      ...samples,
     ]);
     await configure(initial);
     await start();
@@ -356,7 +378,7 @@ async function main() {
     );
     const expected = {
       rows: [{ value: 'original' }, { value: 'persisted' }],
-      migrations: 1,
+      migrations: baseline.length + 1,
     };
     assert.deepEqual(await rows(), expected);
     await stop();
@@ -377,7 +399,7 @@ async function main() {
     await start();
     assert.deepEqual(await rows(), {
       rows: [...expected.rows, { value: 'upgrade' }],
-      migrations: 2,
+      migrations: baseline.length + 2,
     });
     await logs('upgrade');
     await stop();
@@ -386,7 +408,7 @@ async function main() {
     await failed('MIGRATION_FAILED');
     await configure(upgrade);
     await start();
-    assert.equal((await rows()).migrations, 2);
+    assert.equal((await rows()).migrations, baseline.length + 2);
     assert.equal(
       await exec(
         `const D=require('better-sqlite3');const d=new D('/data/ariso.db');console.log(JSON.stringify(d.prepare("SELECT count(*) AS n FROM sqlite_master WHERE name='rolled_back'").get().n));d.close()`,

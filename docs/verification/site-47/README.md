@@ -47,7 +47,7 @@ SITE-01–04 的本地证据由 43 项单元和 9 项真实磁盘集成测试提
 
 按 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、模块边界、输入安全及性能，未发现 Required / Critical 问题。审计者另外执行 `pnpm exec vitest run --project unit tests/unit/site/settings.test.ts --project integration tests/integration/site/settings.test.ts tests/integration/runtime/migrations.test.ts tests/integration/runtime/prestart.test.ts`，4 文件、70 项通过。
 
-远端 CI 与 AMD64/ARM64 Docker 验证待 PR 触发。Ego 两次运行均在 `Page.captureScreenshot` 超时，同空间 9 的页面快照正常，`Page.bringToFront` 后截图仍超时；已请求用户恢复窗口。浏览器保持未通过，PR 保留草稿直到该阻塞解除。
+草稿 [PR #86](https://github.com/dnslin/ariso-next/pull/86) 已创建。首轮 [CI](https://github.com/dnslin/ariso-next/actions/runs/35497264772) 通过；[Docker](https://github.com/dnslin/ariso-next/actions/runs/35497264844) 两架构构建、工具及图片检查通过，恢复脚本挂载旧测试迁移（1000）覆盖真实生产迁移，触发 `SCHEMA_TOO_NEW`。已修改脚本，从受测镜像复制生产迁移并追加样本，保留原迁移行与回滚/恢复断言；修复后远端结果待补。Ego 两次运行均在 `Page.captureScreenshot` 超时，同空间 9 的页面快照正常，`Page.bringToFront` 后截图仍超时；已请求用户恢复窗口。浏览器保持未通过，PR 保留草稿直到该阻塞解除。
 
 ## 保留边界
 
