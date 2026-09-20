@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites>
+  <testsuite name="tests/integration/identity/database.test.ts" timestamp="2026-09-20T13:32:48.362Z" hostname="dnslins-Mini.lan" tests="5" failures="0" errors="0" skipped="0" time="1.750232958">
+    <testcase classname="tests/integration/identity/database.test.ts" name="two processes race owner creation: one complete credential and no partial loser" time="1.415408709">
+        </testcase>
+    <testcase classname="tests/integration/identity/database.test.ts" name="owner CHECK/NOT NULL/default/UNIQUE and provider uniqueness are database constraints" time="0.09644325">
+        </testcase>
+    <testcase classname="tests/integration/identity/database.test.ts" name="a failed synchronous seed transaction rolls back the user and can be retried" time="0.175670958">
+        </testcase>
+    <testcase classname="tests/integration/identity/database.test.ts" name="library reads/writes the additional field without enabling registration" time="0.053887333">
+        </testcase>
+    <testcase classname="tests/integration/identity/database.test.ts" name="the enabled asynchronous adapter transaction fails with synchronous SQLite; use explicit false" time="0.0062715">
+        </testcase>
+  </testsuite>
+  <testsuite name="tests/integration/identity/http.test.ts" timestamp="2026-09-20T13:32:48.363Z" hostname="dnslins-Mini.lan" tests="6" failures="0" errors="0" skipped="0" time="20.024244209">
+    <testcase classname="tests/integration/identity/http.test.ts" name="direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it" time="4.622378375">
+        </testcase>
+    <testcase classname="tests/integration/identity/http.test.ts" name="public registration stays disabled at HTTP and trusted API boundaries" time="0.04100525">
+        </testcase>
+    <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses" time="0.758410083">
+        </testcase>
+    <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute" time="1.688503875">
+        </testcase>
+    <testcase classname="tests/integration/identity/http.test.ts" name="OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub" time="1.304569333">
+        </testcase>
+    <testcase classname="tests/integration/identity/http.test.ts" name="new process and Secret reject old signed Cookie without deleting users/credentials/sessions" time="5.794686541">
+        </testcase>
+  </testsuite>
+</testsuites>
