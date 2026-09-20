@@ -9,6 +9,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { readMigrationFiles } from 'drizzle-orm/migrator';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as database from '../../../src/server/runtime/db.ts';
 import { runPreflight } from '../../../src/server/startup/preflight.ts';
@@ -165,7 +166,15 @@ describe('compiled prestart CLI', () => {
     'preflight 返回或抛错前已关闭真实连接（故障=%s）',
     (fail) => {
       if (fail) {
-        writeMigrations(join(directory, 'drizzle'), [initialMigration]);
+        const latest = Math.max(
+          0,
+          ...readMigrationFiles({ migrationsFolder: resolve('drizzle') }).map(
+            (migration) => migration.folderMillis,
+          ),
+        );
+        writeMigrations(join(directory, 'drizzle'), [
+          { ...initialMigration, when: latest + 1 },
+        ]);
         expect(run().status).toBe(0);
       }
       const open = database.openRuntimeDatabase;

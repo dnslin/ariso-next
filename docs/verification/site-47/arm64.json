@@ -1,0 +1,45 @@
+{
+  "image": "ariso:ci-arm64",
+  "platform": "linux/arm64",
+  "host": "linux/arm64",
+  "failureNetwork": "Linux Docker host network; direct loopback TCP probe",
+  "backupMethod": "stopped whole-directory tar -cpf archive; restore with tar -xpf",
+  "checks": [
+    "final image health, JSON logs, static assets, Node 24 architecture and PID 1",
+    "stop/start/restart persistence and repeated migrations",
+    "MIGRATION_FAILED",
+    "SCHEMA_TOO_NEW",
+    "upgrade data preserved, failed migration rolled back and old schema refused",
+    "stopped whole-directory backup and restore before old-version startup"
+  ],
+  "stops": [
+    {
+      "exitCode": 143,
+      "elapsedMs": 206
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 214
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 196
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 185
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 197
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 207
+    }
+  ],
+  "status": "passed",
+  "imageId": "sha256:87ed8376248353bf90d834425c7cfb8bf2d218474a672b29b4e3a7377dabdab9",
+  "imageArchitecture": "arm64",
+  "cleaned": true
+}

@@ -49,7 +49,8 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
             "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name != '__drizzle_migrations'",
           )
           .all(),
-      ).toEqual([]);
+      ).toEqual([{ name: 'site_settings' }]);
+      expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
     } finally {
       db.close();
     }
