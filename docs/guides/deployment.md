@@ -1,6 +1,6 @@
 # Docker 部署
 
-正式部署运行一个 Docker 容器，持久化目录挂载到 `/data`。目前页面只提供工程状态，不能初始化账号或上传图片。实际验证状态见 [runtime 验证记录](./runtime-verification.md)。本次开发没有发布镜像或操作已有部署。
+正式部署运行一个 Docker 容器，持久化目录挂载到 `/data`。目前页面只提供工程状态，不能初始化账号或上传图片。实际验证状态见 [runtime 验证记录](../archive/runtime/runtime-verification.md)。本次开发没有发布镜像或操作已有部署。
 
 ## 镜像与配置
 
@@ -14,7 +14,7 @@ docker build --tag ariso:runtime .
 
 该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。Actions 在原生 AMD64、ARM64 runner 分别构建、实际运行和验证。发布流程仅在 GitHub Release 正式发布时消费同轮已验证镜像，再组合双架构镜像；普通 PR、main 检查和手动验证不发布。
 
-先按 [README](../README.md#本地开发) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
+先按 [README](../../README.md#本地开发) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
 
 ## 仓库内运行示例
 
@@ -98,7 +98,7 @@ docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs
 
 容器验证使用随机 Compose 项目名、临时挂载、临时密钥和自动分配端口，执行启动、停止、重启、数据库及文件持久化、失败迁移、升级和恢复，不读取 `.env.local` 或 `.data`，结束时清理自己创建的容器和临时目录。预期退出 0；报告路径通过 `--output-dir` 指定，包含 `report.json` 与启动、升级、失败迁移、过新数据库和恢复的 JSON 日志。图片验证执行真实格式转换、解码与字形检查，预期退出 0。迁移失败场景使用 Linux host 网络直接探测 TCP 监听，避免 Docker 端口代理影响结果；其余场景使用隔离 Compose 网络。指定架构可增加 `--platform linux/amd64` 或 `--platform linux/arm64`，但镜像和 Docker 执行环境必须支持对应平台。
 
-命令列表是复现步骤，不能替代运行证据。最终执行平台、结果、Actions 链接和任何未执行项均记录在 [runtime 验证记录](./runtime-verification.md)。
+命令列表是复现步骤，不能替代运行证据。最终执行平台、结果、Actions 链接和任何未执行项均记录在 [runtime 验证记录](../archive/runtime/runtime-verification.md)。
 
 ## 排错
 

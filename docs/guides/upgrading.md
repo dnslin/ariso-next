@@ -72,4 +72,4 @@ node scripts/verify-container.mjs --image ariso:runtime --output-dir /tmp/ariso-
 
 脚本创建独立环境，验证样本记录及磁盘文件在停止、重启后保留，停止后备份，应用升级样本，再拒绝旧迁移集合，最后恢复备份并使用旧集合启动。另验证失败迁移不提交部分变更、不启动 Web、不删除原数据。预期退出 0，报告列出检查结果；资源在成功或失败时清理。不要把用户部署目录传给它。
 
-该演练验证运行基础和完整目录恢复方式，不验证业务上传队列、账号或外部存储恢复。实际执行记录、平台、Actions 链接和未验收项见 [runtime 验证记录](./runtime-verification.md)，文档中的预期结果不等于已经执行通过。
+该演练验证运行基础和完整目录恢复方式，不验证业务上传队列、账号或外部存储恢复。实际执行记录、平台、Actions 链接和未验收项见 [runtime 验证记录](../archive/runtime/runtime-verification.md)，文档中的预期结果不等于已经执行通过。

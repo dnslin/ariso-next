@@ -1,0 +1,2007 @@
+{
+  "date": "2026-09-19",
+  "localChecks": [
+    {
+      "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node_modules/.bin/prettier --write docs/design/parallel-special-formats-2026-09-19.md docs/design/verification/parallel-special-formats-2026-09-19.json",
+      "exitCode": 0
+    },
+    {
+      "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node_modules/.bin/prettier --check docs/design/parallel-special-formats-2026-09-19.md docs/design/verification/parallel-special-formats-2026-09-19.json",
+      "exitCode": 0
+    },
+    { "command": "git diff --check", "exitCode": 0 }
+  ],
+  "scope": "R3 特殊格式预览与附件",
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "status": "Figma 结构及截图验证完成；应用、播放器、解码与文件下载未验证",
+  "desktop": {
+    "section": {
+      "id": "521:10110",
+      "x": 14200,
+      "y": 96754,
+      "w": 6600,
+      "h": 7340
+    },
+    "roots": [
+      {
+        "id": "522:4777",
+        "name": "00 · 特殊格式预览与附件",
+        "x": 120,
+        "y": 100,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4823",
+        "name": "01 · 图库 · 素材收藏",
+        "x": 1720,
+        "y": 100,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4883",
+        "name": "02 · SVG · 预览与原文件",
+        "x": 3320,
+        "y": 100,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4911",
+        "name": "03 · 查看大图 · SVG 预览",
+        "x": 4920,
+        "y": 100,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4935",
+        "name": "04 · 已发起原 SVG 下载",
+        "x": 120,
+        "y": 1140,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4960",
+        "name": "05 · 原 SVG 下载未能开始",
+        "x": 1720,
+        "y": 1140,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:4984",
+        "name": "06 · SVG 预览处理失败",
+        "x": 3320,
+        "y": 1140,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11096",
+        "name": "07 · HEIC · 查看压缩图",
+        "x": 4920,
+        "y": 1140,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11122",
+        "name": "08 · HEIC · 原图无法显示",
+        "x": 120,
+        "y": 2180,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11149",
+        "name": "09 · 单页 TIFF · 查看压缩图",
+        "x": 1720,
+        "y": 2180,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11175",
+        "name": "10 · 多页 TIFF · 首页预览",
+        "x": 3320,
+        "y": 2180,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11199",
+        "name": "11 · ICO · 静态预览",
+        "x": 4920,
+        "y": 2180,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11223",
+        "name": "12 · 动态 GIF · 原图",
+        "x": 120,
+        "y": 3220,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11249",
+        "name": "13 · 动态 GIF · 静态缩略图",
+        "x": 1720,
+        "y": 3220,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11275",
+        "name": "14 · 静态 GIF · 原图",
+        "x": 3320,
+        "y": 3220,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:11299",
+        "name": "15 · 动画原图无法显示",
+        "x": 4920,
+        "y": 3220,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12182",
+        "name": "16 · 已发起原 HEIC 下载",
+        "x": 120,
+        "y": 4260,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12205",
+        "name": "17 · 已发起单页 TIFF 下载",
+        "x": 1720,
+        "y": 4260,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12228",
+        "name": "18 · 已发起完整 TIFF 下载",
+        "x": 3320,
+        "y": 4260,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12251",
+        "name": "19 · 已发起原 ICO 下载",
+        "x": 4920,
+        "y": 4260,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12274",
+        "name": "20 · 已发起完整 GIF 下载",
+        "x": 120,
+        "y": 5300,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12297",
+        "name": "21 · 已发起静态 GIF 下载",
+        "x": 1720,
+        "y": 5300,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12320",
+        "name": "22 · 已发起动态 AVIF 下载",
+        "x": 3320,
+        "y": 5300,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12343",
+        "name": "23 · 已发起已保存 SVG 下载",
+        "x": 4920,
+        "y": 5300,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12366",
+        "name": "24 · 单页 TIFF · 原图无法显示",
+        "x": 120,
+        "y": 6340,
+        "w": 1440,
+        "h": 900
+      },
+      {
+        "id": "522:12393",
+        "name": "25 · 动态 AVIF · 静态预览",
+        "x": 1720,
+        "y": 6340,
+        "w": 1440,
+        "h": 900
+      }
+    ],
+    "fonts": ["Noto Sans SC", "Caveat"],
+    "errors": {
+      "horizontal": [],
+      "textBounds": [],
+      "overlap": [],
+      "rootBounds": [],
+      "targets": [],
+      "footers": [],
+      "businessDemo": []
+    },
+    "links": [
+      {
+        "source": "522:4780",
+        "name": "图库",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "30:285"
+      },
+      {
+        "source": "522:4789",
+        "name": "格式图片入口",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4793",
+        "name": "SVG：WebP 预览 / 原文件附件",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:4883"
+      },
+      {
+        "source": "523:12652",
+        "name": "下载失败与重试",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:4960"
+      },
+      {
+        "source": "523:12657",
+        "name": "SVG 预览失败：保留原文件",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:4984"
+      },
+      {
+        "source": "522:4797",
+        "name": "单图 HEIC：派生可用 / 原图不支持",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11096"
+      },
+      {
+        "source": "522:4801",
+        "name": "单页 TIFF 与多页 TIFF 的区别",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11149"
+      },
+      {
+        "source": "522:4805",
+        "name": "ICO：静态预览 / 完整原文件",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11199"
+      },
+      {
+        "source": "522:4809",
+        "name": "GIF 与动画：原图 / 静态预览",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11223"
+      },
+      {
+        "source": "522:4813",
+        "name": "静态 GIF：仍不生成压缩 / 水印",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11275"
+      },
+      {
+        "source": "522:4817",
+        "name": "动画原图不支持：明确切换",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:11299"
+      },
+      {
+        "source": "522:4821",
+        "name": "开始查看格式示例",
+        "frame": "522:4777",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4826",
+        "name": "返回",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "30:285"
+      },
+      {
+        "source": "522:4832",
+        "name": "forest-mark.svg",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:4883"
+      },
+      {
+        "source": "522:4838",
+        "name": "forest-light.heic",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11096"
+      },
+      {
+        "source": "522:4844",
+        "name": "forest-scan.tiff",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11149"
+      },
+      {
+        "source": "522:4850",
+        "name": "field-notes.tiff",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11175"
+      },
+      {
+        "source": "522:4856",
+        "name": "forest-icon.ico",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11199"
+      },
+      {
+        "source": "522:4862",
+        "name": "forest-motion.gif",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11223"
+      },
+      {
+        "source": "522:4868",
+        "name": "forest-still.gif",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11275"
+      },
+      {
+        "source": "522:4874",
+        "name": "forest-motion.avif",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "522:11299"
+      },
+      {
+        "source": "522:4881",
+        "name": "返回所有图片",
+        "frame": "522:4823",
+        "action": "NODE",
+        "target": "30:285"
+      },
+      {
+        "source": "522:4886",
+        "name": "返回",
+        "frame": "522:4883",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4901",
+        "name": "查看大图",
+        "frame": "522:4883",
+        "action": "NODE",
+        "target": "522:4911"
+      },
+      {
+        "source": "522:4907",
+        "name": "下载原 SVG 附件",
+        "frame": "522:4883",
+        "action": "NODE",
+        "target": "522:4935"
+      },
+      {
+        "source": "522:4909",
+        "name": "返回图库",
+        "frame": "522:4883",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4914",
+        "name": "返回",
+        "frame": "522:4911",
+        "action": "NODE",
+        "target": "522:4883"
+      },
+      {
+        "source": "522:4931",
+        "name": "下载原 SVG 附件",
+        "frame": "522:4911",
+        "action": "NODE",
+        "target": "522:4935"
+      },
+      {
+        "source": "522:4933",
+        "name": "返回图库",
+        "frame": "522:4911",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4938",
+        "name": "返回",
+        "frame": "522:4935",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:4956",
+        "name": "返回上一页",
+        "frame": "522:4935",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:4958",
+        "name": "返回图库",
+        "frame": "522:4935",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4963",
+        "name": "返回",
+        "frame": "522:4960",
+        "action": "NODE",
+        "target": "522:4883"
+      },
+      {
+        "source": "522:4977",
+        "name": "重试原文件下载",
+        "frame": "522:4960",
+        "action": "NODE",
+        "target": "522:4935"
+      },
+      {
+        "source": "522:4980",
+        "name": "返回图片详情",
+        "frame": "522:4960",
+        "action": "NODE",
+        "target": "522:4883"
+      },
+      {
+        "source": "522:4982",
+        "name": "返回图库",
+        "frame": "522:4960",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:4987",
+        "name": "返回",
+        "frame": "522:4984",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:5005",
+        "name": "下载原 SVG 附件",
+        "frame": "522:4984",
+        "action": "NODE",
+        "target": "522:12343"
+      },
+      {
+        "source": "522:5007",
+        "name": "返回图库",
+        "frame": "522:4984",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11099",
+        "name": "返回",
+        "frame": "522:11096",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11114",
+        "name": "查看原图",
+        "frame": "522:11096",
+        "action": "NODE",
+        "target": "522:11122"
+      },
+      {
+        "source": "522:11118",
+        "name": "下载原文件",
+        "frame": "522:11096",
+        "action": "NODE",
+        "target": "522:12182"
+      },
+      {
+        "source": "522:11120",
+        "name": "返回图库",
+        "frame": "522:11096",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11125",
+        "name": "返回",
+        "frame": "522:11122",
+        "action": "NODE",
+        "target": "522:11096"
+      },
+      {
+        "source": "522:11141",
+        "name": "查看已有压缩图",
+        "frame": "522:11122",
+        "action": "NODE",
+        "target": "522:11096"
+      },
+      {
+        "source": "522:11145",
+        "name": "下载原文件",
+        "frame": "522:11122",
+        "action": "NODE",
+        "target": "522:12182"
+      },
+      {
+        "source": "522:11147",
+        "name": "返回图库",
+        "frame": "522:11122",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11152",
+        "name": "返回",
+        "frame": "522:11149",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11167",
+        "name": "查看原图",
+        "frame": "522:11149",
+        "action": "NODE",
+        "target": "522:12366"
+      },
+      {
+        "source": "522:11171",
+        "name": "下载原文件",
+        "frame": "522:11149",
+        "action": "NODE",
+        "target": "522:12205"
+      },
+      {
+        "source": "522:11173",
+        "name": "返回图库",
+        "frame": "522:11149",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11178",
+        "name": "返回",
+        "frame": "522:11175",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11195",
+        "name": "下载原文件",
+        "frame": "522:11175",
+        "action": "NODE",
+        "target": "522:12228"
+      },
+      {
+        "source": "522:11197",
+        "name": "返回图库",
+        "frame": "522:11175",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11202",
+        "name": "返回",
+        "frame": "522:11199",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11219",
+        "name": "下载原文件",
+        "frame": "522:11199",
+        "action": "NODE",
+        "target": "522:12251"
+      },
+      {
+        "source": "522:11221",
+        "name": "返回图库",
+        "frame": "522:11199",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11226",
+        "name": "返回",
+        "frame": "522:11223",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11241",
+        "name": "切换静态缩略图",
+        "frame": "522:11223",
+        "action": "NODE",
+        "target": "522:11249"
+      },
+      {
+        "source": "522:11245",
+        "name": "下载原文件",
+        "frame": "522:11223",
+        "action": "NODE",
+        "target": "522:12274"
+      },
+      {
+        "source": "522:11247",
+        "name": "返回图库",
+        "frame": "522:11223",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11252",
+        "name": "返回",
+        "frame": "522:11249",
+        "action": "NODE",
+        "target": "522:11223"
+      },
+      {
+        "source": "522:11267",
+        "name": "切回完整原图",
+        "frame": "522:11249",
+        "action": "NODE",
+        "target": "522:11223"
+      },
+      {
+        "source": "522:11271",
+        "name": "下载原文件",
+        "frame": "522:11249",
+        "action": "NODE",
+        "target": "522:12274"
+      },
+      {
+        "source": "522:11273",
+        "name": "返回图库",
+        "frame": "522:11249",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11278",
+        "name": "返回",
+        "frame": "522:11275",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11295",
+        "name": "下载原文件",
+        "frame": "522:11275",
+        "action": "NODE",
+        "target": "522:12297"
+      },
+      {
+        "source": "522:11297",
+        "name": "返回图库",
+        "frame": "522:11275",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11302",
+        "name": "返回",
+        "frame": "522:11299",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:11318",
+        "name": "查看静态预览",
+        "frame": "522:11299",
+        "action": "NODE",
+        "target": "522:12393"
+      },
+      {
+        "source": "522:11322",
+        "name": "下载原文件",
+        "frame": "522:11299",
+        "action": "NODE",
+        "target": "522:12320"
+      },
+      {
+        "source": "522:11324",
+        "name": "返回图库",
+        "frame": "522:11299",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12185",
+        "name": "返回",
+        "frame": "522:12182",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12201",
+        "name": "返回上一页",
+        "frame": "522:12182",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12203",
+        "name": "返回图库",
+        "frame": "522:12182",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12208",
+        "name": "返回",
+        "frame": "522:12205",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12224",
+        "name": "返回上一页",
+        "frame": "522:12205",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12226",
+        "name": "返回图库",
+        "frame": "522:12205",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12231",
+        "name": "返回",
+        "frame": "522:12228",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12247",
+        "name": "返回上一页",
+        "frame": "522:12228",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12249",
+        "name": "返回图库",
+        "frame": "522:12228",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12254",
+        "name": "返回",
+        "frame": "522:12251",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12270",
+        "name": "返回上一页",
+        "frame": "522:12251",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12272",
+        "name": "返回图库",
+        "frame": "522:12251",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12277",
+        "name": "返回",
+        "frame": "522:12274",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12293",
+        "name": "返回上一页",
+        "frame": "522:12274",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12295",
+        "name": "返回图库",
+        "frame": "522:12274",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12300",
+        "name": "返回",
+        "frame": "522:12297",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12316",
+        "name": "返回上一页",
+        "frame": "522:12297",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12318",
+        "name": "返回图库",
+        "frame": "522:12297",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12323",
+        "name": "返回",
+        "frame": "522:12320",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12339",
+        "name": "返回上一页",
+        "frame": "522:12320",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12341",
+        "name": "返回图库",
+        "frame": "522:12320",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12346",
+        "name": "返回",
+        "frame": "522:12343",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12362",
+        "name": "返回上一页",
+        "frame": "522:12343",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12364",
+        "name": "返回图库",
+        "frame": "522:12343",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12369",
+        "name": "返回",
+        "frame": "522:12366",
+        "action": "NODE",
+        "target": "522:11149"
+      },
+      {
+        "source": "522:12385",
+        "name": "查看已有压缩图",
+        "frame": "522:12366",
+        "action": "NODE",
+        "target": "522:11149"
+      },
+      {
+        "source": "522:12389",
+        "name": "下载原文件",
+        "frame": "522:12366",
+        "action": "NODE",
+        "target": "522:12205"
+      },
+      {
+        "source": "522:12391",
+        "name": "返回图库",
+        "frame": "522:12366",
+        "action": "NODE",
+        "target": "522:4823"
+      },
+      {
+        "source": "522:12396",
+        "name": "返回",
+        "frame": "522:12393",
+        "action": "NODE",
+        "target": "522:11299"
+      },
+      {
+        "source": "522:12411",
+        "name": "返回原图状态",
+        "frame": "522:12393",
+        "action": "NODE",
+        "target": "522:11299"
+      },
+      {
+        "source": "522:12415",
+        "name": "下载原文件",
+        "frame": "522:12393",
+        "action": "NODE",
+        "target": "522:12320"
+      },
+      {
+        "source": "522:12417",
+        "name": "返回图库",
+        "frame": "522:12393",
+        "action": "NODE",
+        "target": "522:4823"
+      }
+    ]
+  },
+  "mobile": {
+    "section": {
+      "id": "521:10109",
+      "x": 5400,
+      "y": 79994,
+      "w": 2200,
+      "h": 7000
+    },
+    "roots": [
+      {
+        "id": "522:10691",
+        "name": "00 · 特殊格式预览与附件",
+        "x": 80,
+        "y": 100,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10737",
+        "name": "01 · 图库 · 素材收藏",
+        "x": 600,
+        "y": 100,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10797",
+        "name": "02 · SVG · 预览与原文件",
+        "x": 1120,
+        "y": 100,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10825",
+        "name": "03 · 查看大图 · SVG 预览",
+        "x": 1640,
+        "y": 100,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10849",
+        "name": "04 · 已发起原 SVG 下载",
+        "x": 80,
+        "y": 1080,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10874",
+        "name": "05 · 原 SVG 下载未能开始",
+        "x": 600,
+        "y": 1080,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:10898",
+        "name": "06 · SVG 预览处理失败",
+        "x": 1120,
+        "y": 1080,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11326",
+        "name": "07 · HEIC · 查看压缩图",
+        "x": 1640,
+        "y": 1080,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11352",
+        "name": "08 · HEIC · 原图无法显示",
+        "x": 80,
+        "y": 2060,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11379",
+        "name": "09 · 单页 TIFF · 查看压缩图",
+        "x": 600,
+        "y": 2060,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11405",
+        "name": "10 · 多页 TIFF · 首页预览",
+        "x": 1120,
+        "y": 2060,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11429",
+        "name": "11 · ICO · 静态预览",
+        "x": 1640,
+        "y": 2060,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11453",
+        "name": "12 · 动态 GIF · 原图",
+        "x": 80,
+        "y": 3040,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11479",
+        "name": "13 · 动态 GIF · 静态缩略图",
+        "x": 600,
+        "y": 3040,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11505",
+        "name": "14 · 静态 GIF · 原图",
+        "x": 1120,
+        "y": 3040,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:11529",
+        "name": "15 · 动画原图无法显示",
+        "x": 1640,
+        "y": 3040,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12419",
+        "name": "16 · 已发起原 HEIC 下载",
+        "x": 80,
+        "y": 4020,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12442",
+        "name": "17 · 已发起单页 TIFF 下载",
+        "x": 600,
+        "y": 4020,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12465",
+        "name": "18 · 已发起完整 TIFF 下载",
+        "x": 1120,
+        "y": 4020,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12488",
+        "name": "19 · 已发起原 ICO 下载",
+        "x": 1640,
+        "y": 4020,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12511",
+        "name": "20 · 已发起完整 GIF 下载",
+        "x": 80,
+        "y": 5000,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12534",
+        "name": "21 · 已发起静态 GIF 下载",
+        "x": 600,
+        "y": 5000,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12557",
+        "name": "22 · 已发起动态 AVIF 下载",
+        "x": 1120,
+        "y": 5000,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12580",
+        "name": "23 · 已发起已保存 SVG 下载",
+        "x": 1640,
+        "y": 5000,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12603",
+        "name": "24 · 单页 TIFF · 原图无法显示",
+        "x": 80,
+        "y": 5980,
+        "w": 390,
+        "h": 844
+      },
+      {
+        "id": "522:12630",
+        "name": "25 · 动态 AVIF · 静态预览",
+        "x": 600,
+        "y": 5980,
+        "w": 390,
+        "h": 844
+      }
+    ],
+    "fonts": ["Noto Sans SC", "Caveat"],
+    "errors": {
+      "horizontal": [],
+      "textBounds": [],
+      "overlap": [],
+      "rootBounds": [],
+      "targets": [],
+      "footers": [],
+      "businessDemo": []
+    },
+    "links": [
+      {
+        "source": "522:10694",
+        "name": "图库",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "98:748"
+      },
+      {
+        "source": "522:10703",
+        "name": "格式图片入口",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10707",
+        "name": "SVG：WebP 预览 / 原文件附件",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:10797"
+      },
+      {
+        "source": "523:12690",
+        "name": "下载失败与重试",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:10874"
+      },
+      {
+        "source": "523:12695",
+        "name": "SVG 预览失败：保留原文件",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:10898"
+      },
+      {
+        "source": "522:10711",
+        "name": "单图 HEIC：派生可用 / 原图不支持",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11326"
+      },
+      {
+        "source": "522:10715",
+        "name": "单页 TIFF 与多页 TIFF 的区别",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11379"
+      },
+      {
+        "source": "522:10719",
+        "name": "ICO：静态预览 / 完整原文件",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11429"
+      },
+      {
+        "source": "522:10723",
+        "name": "GIF 与动画：原图 / 静态预览",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11453"
+      },
+      {
+        "source": "522:10727",
+        "name": "静态 GIF：仍不生成压缩 / 水印",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11505"
+      },
+      {
+        "source": "522:10731",
+        "name": "动画原图不支持：明确切换",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:11529"
+      },
+      {
+        "source": "522:10735",
+        "name": "开始查看格式示例",
+        "frame": "522:10691",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10740",
+        "name": "返回",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "98:748"
+      },
+      {
+        "source": "522:10746",
+        "name": "forest-mark.svg",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:10797"
+      },
+      {
+        "source": "522:10752",
+        "name": "forest-light.heic",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11326"
+      },
+      {
+        "source": "522:10758",
+        "name": "forest-scan.tiff",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11379"
+      },
+      {
+        "source": "522:10764",
+        "name": "field-notes.tiff",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11405"
+      },
+      {
+        "source": "522:10770",
+        "name": "forest-icon.ico",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11429"
+      },
+      {
+        "source": "522:10776",
+        "name": "forest-motion.gif",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11453"
+      },
+      {
+        "source": "522:10782",
+        "name": "forest-still.gif",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11505"
+      },
+      {
+        "source": "522:10788",
+        "name": "forest-motion.avif",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "522:11529"
+      },
+      {
+        "source": "522:10795",
+        "name": "返回所有图片",
+        "frame": "522:10737",
+        "action": "NODE",
+        "target": "98:748"
+      },
+      {
+        "source": "522:10800",
+        "name": "返回",
+        "frame": "522:10797",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10815",
+        "name": "查看大图",
+        "frame": "522:10797",
+        "action": "NODE",
+        "target": "522:10825"
+      },
+      {
+        "source": "522:10821",
+        "name": "下载原 SVG 附件",
+        "frame": "522:10797",
+        "action": "NODE",
+        "target": "522:10849"
+      },
+      {
+        "source": "522:10823",
+        "name": "返回图库",
+        "frame": "522:10797",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10828",
+        "name": "返回",
+        "frame": "522:10825",
+        "action": "NODE",
+        "target": "522:10797"
+      },
+      {
+        "source": "522:10845",
+        "name": "下载原 SVG 附件",
+        "frame": "522:10825",
+        "action": "NODE",
+        "target": "522:10849"
+      },
+      {
+        "source": "522:10847",
+        "name": "返回图库",
+        "frame": "522:10825",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10852",
+        "name": "返回",
+        "frame": "522:10849",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:10870",
+        "name": "返回上一页",
+        "frame": "522:10849",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:10872",
+        "name": "返回图库",
+        "frame": "522:10849",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10877",
+        "name": "返回",
+        "frame": "522:10874",
+        "action": "NODE",
+        "target": "522:10797"
+      },
+      {
+        "source": "522:10891",
+        "name": "重试原文件下载",
+        "frame": "522:10874",
+        "action": "NODE",
+        "target": "522:10849"
+      },
+      {
+        "source": "522:10894",
+        "name": "返回图片详情",
+        "frame": "522:10874",
+        "action": "NODE",
+        "target": "522:10797"
+      },
+      {
+        "source": "522:10896",
+        "name": "返回图库",
+        "frame": "522:10874",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10901",
+        "name": "返回",
+        "frame": "522:10898",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:10919",
+        "name": "下载原 SVG 附件",
+        "frame": "522:10898",
+        "action": "NODE",
+        "target": "522:12580"
+      },
+      {
+        "source": "522:10921",
+        "name": "返回图库",
+        "frame": "522:10898",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11329",
+        "name": "返回",
+        "frame": "522:11326",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11344",
+        "name": "查看原图",
+        "frame": "522:11326",
+        "action": "NODE",
+        "target": "522:11352"
+      },
+      {
+        "source": "522:11348",
+        "name": "下载原文件",
+        "frame": "522:11326",
+        "action": "NODE",
+        "target": "522:12419"
+      },
+      {
+        "source": "522:11350",
+        "name": "返回图库",
+        "frame": "522:11326",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11355",
+        "name": "返回",
+        "frame": "522:11352",
+        "action": "NODE",
+        "target": "522:11326"
+      },
+      {
+        "source": "522:11371",
+        "name": "查看已有压缩图",
+        "frame": "522:11352",
+        "action": "NODE",
+        "target": "522:11326"
+      },
+      {
+        "source": "522:11375",
+        "name": "下载原文件",
+        "frame": "522:11352",
+        "action": "NODE",
+        "target": "522:12419"
+      },
+      {
+        "source": "522:11377",
+        "name": "返回图库",
+        "frame": "522:11352",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11382",
+        "name": "返回",
+        "frame": "522:11379",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11397",
+        "name": "查看原图",
+        "frame": "522:11379",
+        "action": "NODE",
+        "target": "522:12603"
+      },
+      {
+        "source": "522:11401",
+        "name": "下载原文件",
+        "frame": "522:11379",
+        "action": "NODE",
+        "target": "522:12442"
+      },
+      {
+        "source": "522:11403",
+        "name": "返回图库",
+        "frame": "522:11379",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11408",
+        "name": "返回",
+        "frame": "522:11405",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11425",
+        "name": "下载原文件",
+        "frame": "522:11405",
+        "action": "NODE",
+        "target": "522:12465"
+      },
+      {
+        "source": "522:11427",
+        "name": "返回图库",
+        "frame": "522:11405",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11432",
+        "name": "返回",
+        "frame": "522:11429",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11449",
+        "name": "下载原文件",
+        "frame": "522:11429",
+        "action": "NODE",
+        "target": "522:12488"
+      },
+      {
+        "source": "522:11451",
+        "name": "返回图库",
+        "frame": "522:11429",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11456",
+        "name": "返回",
+        "frame": "522:11453",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11471",
+        "name": "切换静态缩略图",
+        "frame": "522:11453",
+        "action": "NODE",
+        "target": "522:11479"
+      },
+      {
+        "source": "522:11475",
+        "name": "下载原文件",
+        "frame": "522:11453",
+        "action": "NODE",
+        "target": "522:12511"
+      },
+      {
+        "source": "522:11477",
+        "name": "返回图库",
+        "frame": "522:11453",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11482",
+        "name": "返回",
+        "frame": "522:11479",
+        "action": "NODE",
+        "target": "522:11453"
+      },
+      {
+        "source": "522:11497",
+        "name": "切回完整原图",
+        "frame": "522:11479",
+        "action": "NODE",
+        "target": "522:11453"
+      },
+      {
+        "source": "522:11501",
+        "name": "下载原文件",
+        "frame": "522:11479",
+        "action": "NODE",
+        "target": "522:12511"
+      },
+      {
+        "source": "522:11503",
+        "name": "返回图库",
+        "frame": "522:11479",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11508",
+        "name": "返回",
+        "frame": "522:11505",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11525",
+        "name": "下载原文件",
+        "frame": "522:11505",
+        "action": "NODE",
+        "target": "522:12534"
+      },
+      {
+        "source": "522:11527",
+        "name": "返回图库",
+        "frame": "522:11505",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11532",
+        "name": "返回",
+        "frame": "522:11529",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:11548",
+        "name": "查看静态预览",
+        "frame": "522:11529",
+        "action": "NODE",
+        "target": "522:12630"
+      },
+      {
+        "source": "522:11552",
+        "name": "下载原文件",
+        "frame": "522:11529",
+        "action": "NODE",
+        "target": "522:12557"
+      },
+      {
+        "source": "522:11554",
+        "name": "返回图库",
+        "frame": "522:11529",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12422",
+        "name": "返回",
+        "frame": "522:12419",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12438",
+        "name": "返回上一页",
+        "frame": "522:12419",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12440",
+        "name": "返回图库",
+        "frame": "522:12419",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12445",
+        "name": "返回",
+        "frame": "522:12442",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12461",
+        "name": "返回上一页",
+        "frame": "522:12442",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12463",
+        "name": "返回图库",
+        "frame": "522:12442",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12468",
+        "name": "返回",
+        "frame": "522:12465",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12484",
+        "name": "返回上一页",
+        "frame": "522:12465",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12486",
+        "name": "返回图库",
+        "frame": "522:12465",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12491",
+        "name": "返回",
+        "frame": "522:12488",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12507",
+        "name": "返回上一页",
+        "frame": "522:12488",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12509",
+        "name": "返回图库",
+        "frame": "522:12488",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12514",
+        "name": "返回",
+        "frame": "522:12511",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12530",
+        "name": "返回上一页",
+        "frame": "522:12511",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12532",
+        "name": "返回图库",
+        "frame": "522:12511",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12537",
+        "name": "返回",
+        "frame": "522:12534",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12553",
+        "name": "返回上一页",
+        "frame": "522:12534",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12555",
+        "name": "返回图库",
+        "frame": "522:12534",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12560",
+        "name": "返回",
+        "frame": "522:12557",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12576",
+        "name": "返回上一页",
+        "frame": "522:12557",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12578",
+        "name": "返回图库",
+        "frame": "522:12557",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12583",
+        "name": "返回",
+        "frame": "522:12580",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12599",
+        "name": "返回上一页",
+        "frame": "522:12580",
+        "action": "BACK",
+        "target": null
+      },
+      {
+        "source": "522:12601",
+        "name": "返回图库",
+        "frame": "522:12580",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12606",
+        "name": "返回",
+        "frame": "522:12603",
+        "action": "NODE",
+        "target": "522:11379"
+      },
+      {
+        "source": "522:12622",
+        "name": "查看已有压缩图",
+        "frame": "522:12603",
+        "action": "NODE",
+        "target": "522:11379"
+      },
+      {
+        "source": "522:12626",
+        "name": "下载原文件",
+        "frame": "522:12603",
+        "action": "NODE",
+        "target": "522:12442"
+      },
+      {
+        "source": "522:12628",
+        "name": "返回图库",
+        "frame": "522:12603",
+        "action": "NODE",
+        "target": "522:10737"
+      },
+      {
+        "source": "522:12633",
+        "name": "返回",
+        "frame": "522:12630",
+        "action": "NODE",
+        "target": "522:11529"
+      },
+      {
+        "source": "522:12648",
+        "name": "返回原图状态",
+        "frame": "522:12630",
+        "action": "NODE",
+        "target": "522:11529"
+      },
+      {
+        "source": "522:12652",
+        "name": "下载原文件",
+        "frame": "522:12630",
+        "action": "NODE",
+        "target": "522:12557"
+      },
+      {
+        "source": "522:12654",
+        "name": "返回图库",
+        "frame": "522:12630",
+        "action": "NODE",
+        "target": "522:10737"
+      }
+    ]
+  },
+  "reviewOnlyFrames": ["522:4777", "522:10691"],
+  "businessFrames": "两端01–25；01为固定样例相册列表",
+  "matrixRules": {
+    "singleImage": [
+      "单主图 HEIC/HEIF、单页 TIFF 与 JPEG/PNG/静态 WebP/AVIF/BMP 同类",
+      "原字节保留；WebP thumbnail；compressed/watermark 按快照开关生成",
+      "07/09为已有compressed、watermark未生成；08/24为浏览器不能显示原图"
+    ],
+    "animation": [
+      "所有 GIF（含静态）、APNG、动态 WebP/AVIF",
+      "保留完整原文件；thumbnail 为首个实际展示画面的静态 WebP；compressed/watermark 不适用",
+      "12↔13演示原图/静态预览；14演示静态GIF；15↔25演示浏览器不支持原动画"
+    ],
+    "container": [
+      "SVG、ICO、多页 TIFF、多张独立主图 HEIF/AVIF",
+      "保留完整原文件；静态/首主页面 WebP；compressed/watermark 不适用",
+      "SVG 原文件仅附件；多页TIFF原文件含全部页"
+    ],
+    "excluded": ["PDF", "PostScript", "办公文档", "视频"]
+  },
+  "assetReuse": {
+    "photoSource": "392:6662",
+    "photoImageHash": "19a49ccaa25bfe8947b9cd374882287a14af0ca3",
+    "svgPreviewSources": ["185:1841", "102:3033"],
+    "components": ["3:21", "3:23"],
+    "imageDisclaimer": "复用既有像素和字标只表达UI，不证明任何格式的真实解码、播放、文件编码或下载成功"
+  },
+  "screenshots": [
+    {
+      "node": "522:4883",
+      "path": "/tmp/ariso-special-final-0.png",
+      "result": "桌面SVG预览与附件，布局清楚"
+    },
+    {
+      "node": "522:10797",
+      "path": "/tmp/ariso-special-final-1.png",
+      "result": "手机SVG、固定底栏与返回"
+    },
+    {
+      "node": "522:10849",
+      "path": "/tmp/ariso-special-final-2.png",
+      "result": "仅表示已发起下载，不声称完整保存"
+    },
+    {
+      "node": "522:11453",
+      "path": "/tmp/ariso-special-final-3.png",
+      "result": "GIF原图状态与派生不适用"
+    },
+    {
+      "node": "522:10737",
+      "path": "/tmp/ariso-special-final-list.png",
+      "result": "8行均有缩略图，点击整行，标题与数量一致"
+    },
+    {
+      "node": "522:11352",
+      "path": "/tmp/ariso-special-m.heic.png",
+      "result": "HEIC浏览器不支持，仍显示压缩图已生成"
+    }
+  ],
+  "integration": {
+    "decision": "由 docs/design 总目录直达新分区00指引；旧阅读入口已满，不增加旧画板控件或扩高",
+    "desktopGuide": "522:4777",
+    "mobileGuide": "522:10691",
+    "owner": "root统一索引"
+  },
+  "unverified": [
+    "真实Figma播放器点击及history back",
+    "浏览器动画播放、HEIC/TIFF兼容性与格式解码",
+    "本地/S3原始字节及SVG附件头",
+    "实际网络错误、文件保存与浏览器下载列表",
+    "完整格式变体及分享访客端矩阵交叉组合"
+  ]
+}

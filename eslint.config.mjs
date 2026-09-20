@@ -16,6 +16,6 @@ export default defineConfig([
     '.data/**',
     '.pnpm-store/**',
     'next-env.d.ts',
-    'docs/Ariso-PRD-v1.1.md',
+    'docs/product/Ariso-PRD-v1.1.md',
   ]),
 ]);

@@ -1,0 +1,108 @@
+# 设计交付规范
+
+本文件汇总仍有效的设计约定。业务规则以 [PRD](../product/Ariso-PRD-v1.1.md) 和 [SPEC](../product/CAPABILITY-MAP.md) 为准；原型中的照片、名称、数量、预填值、计时跳转及成功反馈是示例。主页面和补充状态均需按真实数据实现。
+
+## 视觉基础
+
+沿用暖白、品牌黄、水绿与深靛蓝文字。深靛蓝不扩展为整页蓝紫背景，黄色不用于浅底小字号链接。品牌使用 Caveat，英文使用 Inter，中文使用 Noto Sans SC；常用间距为 8、12、16、24、32、48px。HeroUI 的结构与状态用于设计映射，不能据此声称已采用官方 Figma 组件库。
+
+浅色颜色以用户确认的 OKLCH 为来源，Figma 使用换算后的 sRGB；参考 HEX 不覆盖换算值。深色使用当前 Ariso / Dark 语义颜色。
+
+| 语义颜色           | 浅色来源                   | 深色值  |
+| ------------------ | -------------------------- | ------- |
+| background         | oklch(1 0.001 106.423)     | #181A22 |
+| foreground         | oklch(0.278 0.058 287.735) | #F4F1F8 |
+| muted-foreground   | oklch(0.326 0.042 272.656) | #B8B9C9 |
+| primary            | oklch(0.889 0.182 95.729)  | #FFD807 |
+| secondary          | oklch(0.959 0.02 193.005)  | #253D40 |
+| accent             | oklch(0.899 0.047 196.339) | #607D85 |
+| destructive        | oklch(0.6 0.2 25)          | #FF858A |
+| surface            | 当前 Figma Light 变量      | #22252F |
+| primary-foreground | 当前 Figma Light 变量      | #272343 |
+| focus-ring         | 当前 Figma Light 变量      | #82DBD3 |
+
+Ariso 变量集合为 `VariableCollectionId:2:2`，Light 为 `2:0`，Dark 为 `264:0`，共有 10 个颜色变量。Figma 默认 Light 是画布设置；产品默认跟随系统。界面偏好只属于当前浏览器 origin，支持浅色、深色和跟随系统，不写站点数据库，也不随站点信息保存提交。照片不反色，深色主按钮继续使用深色 `primary-foreground`，卡片和弹窗使用 `surface`。
+
+## 公共页面、导航与布局
+
+- 非后台完整页面及其错误、处理中、成功状态保留右上淡黄、左下水绿两处柔光和低对比度点阵。柔光位于内容底层，不拦截点击、焦点或辅助阅读。浮层沿用所在页面背景；深色降低柔光强度。
+- 除首页外，公共页面左上角提供明确“返回首页”；流程内另保留“返回登录”“上一步”等目的地。外部邮件直接打开页面也应有出口。全屏查看器可收起品牌和首页入口，但保留退出全屏。
+- 桌面后台基准 1440×1080，常驻侧栏 232px，主区左右 32px。手机基准 390×844、左右 16px；小于 768px 使用顶部入口与全屏导航，768–1199px 使用顶部菜单并按可用宽度排列，至少 1200px 使用桌面侧栏。
+- 手机图库通常双列；360px 代表为两列 158px、间隔 12px。不能缩小整张桌面页面来适配，也不能靠随机换行堆叠控件。标题与短操作、相关短字段优先并排，长名称、地址与凭据独占一行。
+- 手机全屏导航按当前路由高亮当前项，关闭后恢复来源与焦点。它不是侧边遮罩抽屉。设置分类使用当前分类选择器；桌面保留设置标签。用户信息位于侧栏或菜单底部。
+- 数量、分页及设置页操作栏与正文滚动区分离，固定在页面底部；正文留足操作栏空间。不要让底栏跟随上方图片、列表长度或卡片位置移动。短视口、软键盘与安全区域必须在真实网页验证。
+- 空状态采用居中图标、标题和说明，行动按钮放在说明下方，属于内容而非全页固定底栏。弹窗操作区在弹窗底部，也不按全页底栏处理。
+- 列表保持一致列宽和操作位置，无按钮行也保留操作列。正常可读图片在队列、已选清单和结果中提供对应缩略图；不可预览用格式占位，回收或存储停用的内容按权限用记录占位。
+
+公共背景母版：[桌面 192:799](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-799)、[手机 192:1836](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-1836)。分区背景采用浅灰青色，与白色业务画板区分；分区名称与当前入口统一见[模块目录](./README.md)。
+
+## 表单、提示与操作
+
+短对话框区分标题、正文、操作区，关闭在右上。确认框通常左侧取消、右侧主要操作；结果反馈只保留一个确认按钮。手机宽度为屏宽减 32px，正文过长时滚动，不能裁掉底部操作。图片详情、本地存储、S3 配置和长处理预览采用独立页面；桌面可按对应原型采用详情弹层。S3 页面中的测试、取消、保存是三个独立步骤，不套用确认框的两按钮限制。
+
+表单标签在控件外，字段和标签左对齐。错误紧跟字段，以文字和边框共同表达，保留其他输入；提交中禁止重复提交。开关标签在左、控件在右，下拉箭头固定右侧。水印九宫格有九个明确位置与当前文字，关闭时有禁用原因；静态预览不等于实时处理。
+
+次要说明可以使用 Tips，实际动作仍使用可识别、有底色或边框的短按钮。SMTP 清除入口采用短按钮与独立提示图标，并保留二次确认；桌面键盘聚焦可读提示、Esc 关闭，手机点击展开并可关闭，关闭后归还焦点。关键错误、禁用原因或必要操作后果不能仅靠鼠标悬停获取。
+
+手机按钮和独立图标按钮点击区至少 44×44px，视觉图标可更小。焦点使用清楚的 2px 描边；Tab 顺序遵循阅读顺序，展开控件同步状态，浮层关闭恢复焦点。状态不只靠颜色区分。减少动态效果时省略非必要过渡。桌面点击区按实际输入方式核验，不强制所有桌面控件变成 44px 高。
+
+长地址必须完整换行或展开查看，复制内容不含视觉换行；自动复制失败提供完整可选文本。图表提供等价数值表、范围、单位和图例，不能只依赖颜色或悬停。
+
+## 业务交互中已确认的修订
+
+下表防止早期原型被误作实施依据；完整字段和接口要求仍从对应 SPEC 读取。
+
+| 范围         | 当前约定                                                                                                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 初始化与认证 | 无公开注册、无 Telegram 登录。初始化两步在最终一次提交；成功前往登录，不自动登录。启动前目录失败由部署日志承接。响应丢失先核对结果，不能声称账号或密码必定未变。                                             |
+| 上传         | 手动开始，提交时冻结批次设置；100% 传输不等于保存或处理完成。取消、已交接不可取消、传输失败未创建图与处理失败已保存图分别表达。默认 50 MiB / 每批 20 / 队列 500；工程单文件上界尚待验证，不能自行编造。      |
+| 图库与选择   | 多标签任一匹配；同查询翻页保留选择，改变筛选清空，只切布局保留。新加载图片不自动选中。逐项清单显示名称、来源和缩略图；不能把不同固定样例的数量相接。默认每页 40，可选 20/40/80，不沿用早期 5/6 条演示值。    |
+| 详情与返回   | 显式选择不可用版本不静默回退；查看版本与复制模式独立。详情、大图关闭应保留来源查询、布局、选择、滚动与焦点。大图不增加下载、分享或幻灯片入口；下载由详情承载。                                               |
+| 链接、格式   | 默认外链随全站默认版本变化，显式选版保持固定。SVG 界面用 WebP 预览，原 SVG 为附件；预览不替换原文件。静态 GIF 也按 GIF 处理，不生成压缩/水印；不支持 PDF。真实格式规则见 media / delivery。                  |
+| 相册与标签   | 不提供相册调整顺序。相册内容固定按加入时间降序、图片 ID 升序；自动封面沿用该顺序。删除相册/标签不删除图片。标签大小写匹配和同名相册辨识按 collections。                                                      |
+| 回收与清理   | 回收站不读取真实缩略图、预览、下载或外链，使用记录占位。恢复和永久删除分开，删除已受理不可恢复。任务受理不等于清理完成；只重试剩余对象，失败保留责任与引用。                                                 |
+| 分享         | 访客解锁前不显示相册信息；隐藏名称也不通过 alt/title 泄露。精简大图不带后台版本、元数据和下载。关闭分享或加密不撤销公开图片自身外链。                                                                        |
+| 存储与处理   | 存储默认可清空/停用且不自动补选；有引用时位置字段只读。首版不支持启用或暂停版本控制、对象锁的 Bucket。压缩/水印开关控制适用范围，首次处理失败只能全部重试；不设固定像素/帧拒绝或每任务 4 GiB 预留。          |
+| 站点与品牌   | 站点信息只保存名称、描述、公开地址和时区；品牌、上传限制及其他设置独立保存。Logo 支持 PNG/JPEG/WebP/静态 SVG；Favicon 支持 PNG/ICO/静态 SVG，每份不超过 5 MiB。                                              |
+| 邮件与 Token | SMTP 保存与测试分开，只测试已保存配置；“SMTP 已接受”不保证收件。清除凭据同时清用户名和密码。Token 完整值仅首次展示，关闭后不可取回；创建结果未知先核对，不能自动重复创建。                                   |
+| 统计         | 趋势、热门与版本访问量同为 7/30/90 天周期；今日、累计、当前空间不随周期改变。正常原图/派生/回收站/处理中与待清理四类互斥；未知不写零，比例不当配额。删除后历史排行保留数字和通用占位，不保留旧名或内容入口。 |
+
+## UI 家族与主节点
+
+`UI-*` 是稳定页面家族键，不是路由。具体路由由 SPEC 定义；`/setup` 保持 PRD 规定。前端任务须同时引用家族键、桌面/手机节点及采用的补充状态。下表为主入口，完整状态表在归档中保留，不能只实现主入口就将家族标完成。
+
+| 家族              | 页面           | 业务模块                        | 桌面主节点                                                                       | 手机主节点                                                                                                                                                          |
+| ----------------- | -------------- | ------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UI-HOME`         | 首页           | site / identity                 | [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10)         | [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)                                                                                    |
+| `UI-SETUP`        | 首次初始化     | identity / site / storage       | [184:764](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-764)   | [184:1774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1774)                                                                                    |
+| `UI-AUTH`         | 登录           | identity                        | [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)         | [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)                                                                                    |
+| `UI-AUTH`         | 找回密码       | identity                        | [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)       | [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)                                                                                    |
+| `UI-RESET`        | 设置新密码     | identity                        | [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)   | [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)                                                                                      |
+| `UI-DASHBOARD`    | 工作台总览     | analytics / library             | [19:38](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=19-38)       | [101:793](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-793)                                                                                      |
+| `UI-UPLOAD`       | 上传图片       | upload                          | [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)       | [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)                                                                                    |
+| `UI-LIBRARY`      | 图库           | library                         | [30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)     | [98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)                                                                                        |
+| `UI-DETAIL`       | 图片详情       | library / media / delivery      | [36:312](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=36-312)     | [102:3228](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3228)                                                                                    |
+| `UI-ALBUMS`       | 相册           | collections                     | [30:473](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-473)     | [101:1155](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1155)                                                                                    |
+| `UI-TAGS`         | 标签           | collections                     | [30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)     | [101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295)                                                                                    |
+| `UI-SHARING`      | 分享管理       | sharing                         | [30:849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-849)     | [101:1463](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1463)                                                                                    |
+| `UI-SHARE-PUBLIC` | 匿名分享       | sharing / delivery              | [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610) | [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)                                                                                    |
+| `UI-TRASH`        | 回收站         | library / media                 | [30:1037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1037)   | [102:852](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-852)                                                                                      |
+| `UI-ANALYTICS`    | 访问统计       | analytics                       | [30:1225](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1225)   | [102:1038](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1038)                                                                                    |
+| `UI-STORAGE`      | 存储管理       | storage                         | [30:1413](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1413)   | [102:1231](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1231)                                                                                    |
+| `UI-SITE`         | 基本设置       | site / upload / media / storage | [30:1601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1601)   | [102:1389](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1389)                                                                                    |
+| `UI-MEDIA`        | 图片处理       | media                           | [34:338](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-338)     | [102:1526](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1526)                                                                                    |
+| `UI-ACCOUNT`      | 账号与安全     | identity                        | [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)     | [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)                                                                                    |
+| `UI-API`          | 上传 API       | identity / upload               | [34:586](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-586)     | [102:1837](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1837)                                                                                    |
+| `UI-SMTP`         | 邮件服务       | identity                        | [34:710](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-710)     | [99:786](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=99-786)                                                                                        |
+| `UI-SHELL`        | 导航与分类     | identity / site                 | 各后台页面 Sidebar / 设置标签                                                    | [106:1494](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=106-1494) / [113:1499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=113-1499) |
+| `UI-THEME`        | 主题与状态规范 | site                            | [266:1595](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-1595) | [266:3492](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-3492)                                                                                    |
+
+历史节点 `25:94` 是旧工作台上传弹窗，`40:502` 是旧回收站操作框；旧账号弹窗及早期手机 Token 撤销样例也只供追溯。采用完整上传页、当前记录操作和后续账号/Token 状态。历史节点保留不表示旧流程仍需实现。
+
+## 交付与检查
+
+开发任务记录 UI 家族、具体状态、对应 SPEC、直接前置和验收证据。相同错误容器和字段规则可以复用，不要求为任意数据组合复制画板；遇到没有表达清楚的业务差异，先补该范围设计。
+
+结构回读、代表截图、用户设计认可、播放器验证和真实网页验收分别记录。静态状态的自动跳转、预填输入、固定选中数量和成功提示不属于运行证据。当前未关闭责任统一见[待验收清单](./acceptance.md)，不从历史批次的“下一批”重新生成重复任务。
+
+完整来源：[早期与逐批设计索引](../archive/preparation-2026-09/design/README.md)、[并行补全](../archive/preparation-2026-09/design/parallel-design-completion-2026-09-19.md)、[模块整理](../archive/preparation-2026-09/design/module-sections-2026-09-19.md)。
