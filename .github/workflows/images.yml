@@ -111,6 +111,32 @@ jobs:
           path: ${{ runner.temp }}/storage-verification
           if-no-files-found: warn
           retention-days: 14
+      - name: Verify production local storage on real limited mounts
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/production-storage-verification"
+          chmod 777 "$RUNNER_TEMP/production-storage-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/verification/storage-local,dst=/verification-storage,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/production-storage-verification,dst=/evidence" \
+            "$IMAGE" /verification-storage/run.mjs \
+              --implementation /app/dist/server/storage/local.js \
+              --source-root /source --storage-root /storage \
+              --target-root /storage/disk --low-space-root /storage/low \
+              --report /evidence/report.json --require-complete
+      - name: Preserve production local storage evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-storage-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/production-storage-verification
+          if-no-files-found: warn
+          retention-days: 14
       - name: Verify actual image conversions and glyphs offline
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}

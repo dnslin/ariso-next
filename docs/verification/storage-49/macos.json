@@ -1,0 +1,103 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.6.0",
+    "uid": 501,
+    "implementation": "/Volumes/data/project/ariso-issue-49/src/server/storage/local.ts"
+  },
+  "checks": [
+    {
+      "name": "controlled-paths",
+      "passed": true,
+      "evidence": {
+        "root": "/Volumes/data",
+        "insideSymlink": "nested/inside -> ../target",
+        "outsideRejected": "/tmp/ariso-source-nPk7Fz"
+      }
+    },
+    {
+      "name": "same-device-and-symlink",
+      "passed": true,
+      "evidence": [
+        {
+          "phase": "success",
+          "bytes": 4194304,
+          "sourceClosed": true,
+          "handles": "Linux output descriptor inventory unavailable"
+        },
+        {
+          "phase": "copying",
+          "bytes": 983040,
+          "code": "ABORT_ERR",
+          "sourceClosed": true,
+          "handles": "Linux output descriptor inventory unavailable"
+        },
+        {
+          "phase": "before-publish",
+          "bytes": 4194304,
+          "code": "ABORT_ERR",
+          "sourceClosed": true,
+          "handles": "Linux output descriptor inventory unavailable"
+        },
+        {
+          "phase": "published",
+          "bytes": 4194304,
+          "sourceClosed": true,
+          "handles": "Linux output descriptor inventory unavailable"
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "passed": true,
+      "evidence": {
+        "code": "EACCES",
+        "path": "/Volumes/data/ariso-production-uU5vhd/denied",
+        "sourceClosed": true
+      }
+    },
+    {
+      "name": "cross-device-mounted-storage",
+      "passed": true,
+      "evidence": {
+        "sourceDevice": 16777230,
+        "targetDevice": 16777244,
+        "directRename": "EXDEV",
+        "samples": [
+          {
+            "phase": "success",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "Linux output descriptor inventory unavailable"
+          },
+          {
+            "phase": "copying",
+            "bytes": 983040,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "Linux output descriptor inventory unavailable"
+          },
+          {
+            "phase": "before-publish",
+            "bytes": 4194304,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "Linux output descriptor inventory unavailable"
+          },
+          {
+            "phase": "published",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "Linux output descriptor inventory unavailable"
+          }
+        ]
+      }
+    }
+  ],
+  "incomplete": [
+    "ENOSPC and cleanup-EACCES on limited volume",
+    "Linux output descriptor inventory"
+  ]
+}

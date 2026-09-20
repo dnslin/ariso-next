@@ -1,3 +1,5 @@
+import { join } from 'node:path';
+import { prepareInitialStorage } from '../server/storage/defaults.ts';
 import { runPreflight } from '../server/startup/preflight.ts';
 import { parseLogLevel } from '../server/runtime/env.ts';
 import { createRuntimeLogger } from '../server/runtime/logger.ts';
@@ -9,7 +11,9 @@ try {
     'runtime.prestart',
     parseLogLevel(process.env.LOG_LEVEL),
   );
-  runPreflight();
+  runPreflight(process.env, (db, config) => {
+    prepareInitialStorage(db, { storage: join(config.dataDir, 'storage') });
+  });
   logger.info({ phase: 'prestart' }, 'prestart completed');
 } catch (error) {
   logger.fatal({ err: error, phase: 'prestart' }, 'prestart failed:');
