@@ -1,0 +1,95 @@
+{
+  "taskSpaceId": 14,
+  "status": "passed",
+  "layouts": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "headingVisible": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "headingVisible": true
+    }
+  ],
+  "page": {
+    "title": "Ariso · 工程状态",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "lang": "zh-CN",
+    "text": "Ariso\n\n单用户，自托管图床。\n\n运行基础建设中\n\n当前已接通基础页面与本地静态资源。\n\n账号初始化、登录和图片上传尚未开放。",
+    "images": [
+      {
+        "width": 64,
+        "height": 64
+      }
+    ]
+  },
+  "homeStatus": 200,
+  "privateFixtures": [
+    {
+      "path": "/verification/fixtures/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/verification/fixtures/sample.png",
+      "status": 404
+    },
+    {
+      "path": "/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/sample.png",
+      "status": 404
+    }
+  ],
+  "health": {
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": "{\"status\":\"ok\"}"
+  },
+  "resources": [
+    {
+      "url": "/runtime.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/16neeak6x13rh.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/1au-qxq-llxoo.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/turbopack-0g5ayxu7f-xj9.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/2tl37ocl8f_ui.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/2inmf-42snvnc.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://127.0.0.1:58426/_next/static/chunks/1up6em96g5isc.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    }
+  ],
+  "errors": []
+}
