@@ -52,4 +52,6 @@
 
 `.github/workflows/images.yml` 在两种原生架构上新增媒体 SQLite 测试，然后执行已有 Docker 构建、镜像工具、存储故障与容器迁移/生命周期验证。媒体 API 测试在原生 Actions runner 执行，Docker 验证实际迁移与运行基线；不把后者称作完整上传或处理 API 验收。PR 事件不会执行 release-only 发布任务。
 
-远端检查与 PR 链接待实际创建后记录。未合并 PR、主动关闭 Issue、发布镜像、部署或删除分支/worktree。
+[PR #89](https://github.com/dnslin/ariso-next/pull/89) 的实现提交 `07b821e` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35504348191)（2m20s）和 [Docker 双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35504348430)（AMD64 3m24s、ARM64 2m54s）。两架构原生媒体模型测试均通过；容器迁移、失败回滚、旧版本拒绝、停止后备份恢复、生产存储故障及工具验证全部通过。`release-checks` 和 `publish` 均跳过。原始容器报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。
+
+实际执行 `gh pr checks 89`、`gh run view 35504348191/35504348430 --json ...`，并用 `gh run download 35504348430 --name container-verification-amd64/arm64 --dir test-results/remote/...` 分别下载两架构报告。证据归档提交只更新文档，最终提交检查继续在 [PR checks](https://github.com/dnslin/ariso-next/pull/89/checks) 核对，通过后转正式待评审。未合并 PR、主动关闭 Issue、发布镜像、部署或删除分支/worktree。
