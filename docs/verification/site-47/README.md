@@ -36,7 +36,7 @@
 | `pnpm run build`                                                                                                                  | 退出 0；保留历史已有的可选 SQLite Debug 二进制追踪提示                                                       |
 | `pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/integration.xml`                         | 首轮 80/81；修复 prestart 未来版本样本后全量重跑，12 文件、81 项通过（含隔离无密钥构建）                     |
 | `EGO_KEEP_SPACE=1 pnpm run test:browser`                                                                                          | 首轮页面/资源/健康通过，390 截图超时；同一空间 9 重跑仍失败，原始报告见本目录 browser-first 与 browser-retry |
-| `EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`                           | 同一截图调用超时，尚未通过                                                                                   |
+| `EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`                           | 同一截图调用超时；后续恢复后的通过记录见下文                                                                 |
 | `git diff --check`                                                                                                                | 通过；提交前再次检查                                                                                         |
 
 runtime 原有测试调整只涉及新增生产迁移使旧前提失效之处：空迁移测试改用独立空 journal；未来数据库测试使用晚于生产迁移的样本；未初始化健康检查断言业务表已迁移但没有配置行。未删除断言或跳过测试。
@@ -47,11 +47,19 @@ SITE-01–04 的本地证据由 43 项单元和 9 项真实磁盘集成测试提
 
 按 `code-review-and-quality` 完成独立只读审计，覆盖正确性、可读性、模块边界、输入安全及性能，未发现 Required / Critical 问题。审计者另外执行 `pnpm exec vitest run --project unit tests/unit/site/settings.test.ts --project integration tests/integration/site/settings.test.ts tests/integration/runtime/migrations.test.ts tests/integration/runtime/prestart.test.ts`，4 文件、70 项通过。
 
-草稿 [PR #86](https://github.com/dnslin/ariso-next/pull/86) 已创建。首轮 [CI](https://github.com/dnslin/ariso-next/actions/runs/35497264772) 通过；[Docker](https://github.com/dnslin/ariso-next/actions/runs/35497264844) 两架构构建、工具及图片检查通过，恢复脚本挂载旧测试迁移（1000）覆盖真实生产迁移，触发 `SCHEMA_TOO_NEW`。已修改脚本，从受测镜像复制生产迁移并追加样本，保留原迁移行与回滚/恢复断言；修复后的提交 `74e98a6` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35497559121) 和 [AMD64/ARM64 Docker](https://github.com/dnslin/ariso-next/actions/runs/35497559369)。原始容器报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。两架构实际完成图片检查、容器停止/重启、迁移故障回滚、旧版本拒绝和 tar 备份恢复；release-checks/publish 均跳过，没有发布镜像。
+[PR #86](https://github.com/dnslin/ariso-next/pull/86) 已创建。首轮 [CI](https://github.com/dnslin/ariso-next/actions/runs/35497264772) 通过；[Docker](https://github.com/dnslin/ariso-next/actions/runs/35497264844) 两架构构建、工具及图片检查通过，恢复脚本挂载旧测试迁移（1000）覆盖真实生产迁移，触发 `SCHEMA_TOO_NEW`。已修改脚本，从受测镜像复制生产迁移并追加样本，保留原迁移行与回滚/恢复断言；修复后的提交 `74e98a6` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35497559121) 和 [AMD64/ARM64 Docker](https://github.com/dnslin/ariso-next/actions/runs/35497559369)。原始容器报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。两架构实际完成图片检查、容器停止/重启、迁移故障回滚、旧版本拒绝和 tar 备份恢复；release-checks/publish 均跳过，没有发布镜像。
 
 容器脚本修改另行通过独立复审，并实际执行 `pnpm run lint`、`pnpm run format:check`、`pnpm run typecheck`、`pnpm exec vitest run --project unit tests/unit/scripts/container.test.ts`（9 项）及 `git diff --check`。Git 首次推送修正提交因连接超时失败，重试后成功，远端提交已核对。
 
-Ego 两次运行均在 `Page.captureScreenshot` 超时，同空间 9 的页面快照正常，`Page.bringToFront` 后截图仍超时；已请求用户恢复窗口。浏览器保持未通过，PR 保留草稿直到该阻塞解除。
+Ego 前两次运行均在 `Page.captureScreenshot` 超时，同空间 9 的页面快照正常，`Page.bringToFront` 后截图仍超时。用户恢复 Ego 后，原空间 9 已不存在；经用户明确授权新建空间，以下命令在空间 10 完整通过：
+
+```sh
+EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-recovered pnpm run test:browser
+```
+
+Ego Lite / Chrome 152，macOS arm64 / Node 24.18.1：页面 200、8 项资源 200、健康接口 200/no-store/精确 JSON、4 个验证样本 URL 为 404、390/1440 无横向溢出且标题可见、浏览器错误为零。两张截图已目视核对。临时生产服务与数据已清理，随后执行 `task.finish({ keep: [] })` 成功关闭空间 10。
+
+原始证据：[浏览器断言](./browser-recovered/browser.json)、[运行与清理](./browser-recovered/runner.json)、[390 截图](./browser-recovered/viewport-390.png)、[1440 截图](./browser-recovered/viewport-1440.png)。原失败报告保留。浏览器阻塞已解除；本次只补证据，应用代码未变化。PR 的最新执行状态以 [checks](https://github.com/dnslin/ariso-next/pull/86/checks) 为准。
 
 ## 保留边界
 
