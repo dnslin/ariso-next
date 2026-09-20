@@ -1,0 +1,173 @@
+{
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.17.0-1022-azure",
+    "uid": 1000,
+    "implementation": "/app/dist/server/storage/local.js"
+  },
+  "checks": [
+    {
+      "name": "controlled-paths",
+      "passed": true,
+      "evidence": {
+        "root": "/storage",
+        "insideSymlink": "nested/inside -> ../target",
+        "outsideRejected": "/source/ariso-source-VfbySH"
+      }
+    },
+    {
+      "name": "same-device-and-symlink",
+      "passed": true,
+      "evidence": [
+        {
+          "phase": "success",
+          "bytes": 4194304,
+          "sourceClosed": true,
+          "handles": "No fixture descriptors in /proc/self/fd"
+        },
+        {
+          "phase": "copying",
+          "bytes": 983040,
+          "code": "ABORT_ERR",
+          "sourceClosed": true,
+          "handles": "No fixture descriptors in /proc/self/fd"
+        },
+        {
+          "phase": "before-publish",
+          "bytes": 4194304,
+          "code": "ABORT_ERR",
+          "sourceClosed": true,
+          "handles": "No fixture descriptors in /proc/self/fd"
+        },
+        {
+          "phase": "published",
+          "bytes": 4194304,
+          "sourceClosed": true,
+          "handles": "No fixture descriptors in /proc/self/fd"
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "passed": true,
+      "evidence": {
+        "code": "EACCES",
+        "path": "/storage/ariso-production-6KHRX0/denied",
+        "sourceClosed": true
+      }
+    },
+    {
+      "name": "cross-device-mounted-storage",
+      "passed": true,
+      "evidence": {
+        "sourceDevice": 71,
+        "targetDevice": 73,
+        "directRename": "EXDEV",
+        "samples": [
+          {
+            "phase": "success",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "copying",
+            "bytes": 983040,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "before-publish",
+            "bytes": 4194304,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "published",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          }
+        ]
+      }
+    },
+    {
+      "name": "low-space",
+      "passed": true,
+      "evidence": {
+        "initialFree": 33554432,
+        "recoveredFree": 33538048,
+        "smallSamples": [
+          {
+            "phase": "success",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "copying",
+            "bytes": 983040,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "before-publish",
+            "bytes": 4194304,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "published",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          }
+        ],
+        "failures": [
+          {
+            "phase": "failure",
+            "bytes": 33538048,
+            "code": "ENOSPC",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          }
+        ],
+        "recoveredSamples": [
+          {
+            "phase": "success",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "copying",
+            "bytes": 983040,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "before-publish",
+            "bytes": 4194304,
+            "code": "ABORT_ERR",
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          },
+          {
+            "phase": "published",
+            "bytes": 4194304,
+            "sourceClosed": true,
+            "handles": "No fixture descriptors in /proc/self/fd"
+          }
+        ]
+      }
+    }
+  ],
+  "incomplete": []
+}

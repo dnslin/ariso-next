@@ -50,7 +50,21 @@
 
 按 `code-review-and-quality` 完成独立只读审计，覆盖需求、错误/取消、模块职责、路径、资源释放与测试有效性，未发现必须修复项。审计者另行运行 local/defaults 集成，2 文件 20 项通过，并通过差异检查。生成迁移没有默认种子；默认值只在启动准备时写入。
 
-`.github/workflows/images.yml` 新增当前生产实现验证，加载镜像中的 `dist/server/storage/local.js`，挂入独立测试脚本。两个原生架构使用非 root 用户与真实独立 tmpfs，32 MiB 限制卷验证小文件、ENOSPC、清理 EACCES、恢复、字节及 `/proc/self/fd`。`--require-complete` 拒绝缺少实际环境；PR 事件不发布镜像。远端结果仍待本次 PR 检查。历史 #48 实验不冒充本次生产 API 通过。
+`.github/workflows/images.yml` 新增当前生产实现验证，加载镜像中的 `dist/server/storage/local.js`，挂入独立测试脚本。两个原生架构使用非 root 用户与真实独立 tmpfs，32 MiB 限制卷验证小文件、ENOSPC、清理 EACCES、恢复、字节及 `/proc/self/fd`。`--require-complete` 拒绝缺少实际环境；PR 事件不发布镜像。提交 `8bc9bbc` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35501776328) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35501776441) 均成功；容器生命周期、迁移回滚与备份恢复亦通过。`release-checks`、`publish` 因非发布事件跳过，没有发布镜像或部署。
+
+原始报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。两架构 Linux 6.17.0-1022-azure / Node 24.21.0 / UID 1000，实际加载生产编译文件。32 MiB 卷初始可用 33,554,432 字节，4 MiB 小文件成功；ENOSPC partial 为 33,538,048 字节。清理权限失败时保留 partial 与 journal，恢复权限后仅删除该对象，剩余空间恢复为 33,538,048 字节；保留四个哨兵文件，随后重新完成成功与取消矩阵。所有流关闭，`/proc/self/fd` 中没有夹具文件描述符，两报告 `incomplete` 均为空。
+
+实际远端命令：
+
+```sh
+gh pr checks 88
+gh run view 35501776328 --json jobs
+gh run view 35501776441 --json jobs
+gh run download 35501776441 --name production-storage-verification-amd64 --dir test-results/remote-storage/amd64
+gh run download 35501776441 --name production-storage-verification-arm64 --dir test-results/remote-storage/arm64
+```
+
+[PR #88](https://github.com/dnslin/ariso-next/pull/88) 的最新检查以检查页为准。本次原始报告归档提交只修改文档，不改变受测应用或工作流；仍跟进最新提交的 CI 与双架构复跑。历史 #48 实验不冒充本次生产 API 通过。
 
 ## 保留边界
 
