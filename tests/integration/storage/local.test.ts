@@ -181,3 +181,51 @@ it('可写可执行普通文件也不能作为配置目录', () => {
   expect(() => prepareLocalDirectory(root, 'file')).toThrow('directory');
   expect(readFileSync(join(root, 'file'), 'utf8')).toBe('keep');
 });
+it('链接后的 .. 按实际目录解析，包括尚不存在的子目录', () => {
+  mkdirSync(join(root, 'disk/deep'), { recursive: true });
+  symlinkSync('disk/deep', join(root, 'alias'));
+  expect(prepareLocalDirectory(root, 'alias/../archive')).toBe(
+    join(root, 'disk/archive'),
+  );
+  expect(realpathSync.native(`${root}/alias/../archive`)).toBe(
+    join(root, 'disk/archive'),
+  );
+  expect(existsSync(join(root, 'archive'))).toBe(false);
+  expect(prepareLocalDirectory(root, 'alias/../../inside')).toBe(
+    join(root, 'inside'),
+  );
+  expect(() => prepareLocalDirectory(root, 'alias/../../../outside')).toThrow(
+    'outside',
+  );
+});
+it('对象 Key 中链接后的 .. 在写入、读取、检查与删除时指向同一对象', async () => {
+  const storage = { id: 'one', localPath: 'disk', enabled: true };
+  const namespace = prepareLocalDirectory(root, 'disk/ariso/one');
+  mkdirSync(join(namespace, 'deep/nested'), { recursive: true });
+  symlinkSync('deep/nested', join(namespace, 'alias'));
+  const plan = planLocalWrite('alias/../objects');
+  await writeObject(root, storage, plan, Readable.from(['bytes']));
+  expect(existsSync(join(namespace, 'objects'))).toBe(false);
+  expect(readFileSync(`${namespace}/${plan.key}`, 'utf8')).toBe('bytes');
+  expect(await inspectObject(root, storage, plan.key)).toEqual({ size: 5 });
+  const { stream } = await readObject(root, storage, plan.key, 'text/plain');
+  expect(await stream.toArray()).toEqual([Buffer.from('bytes')]);
+  await deleteObject(root, storage, plan.key);
+  expect(existsSync(`${namespace}/${plan.key}`)).toBe(false);
+});
+it('null 取消原因保留原值和存储上下文并关闭输入流', async () => {
+  const storage = { id: 'one', localPath: 'disk', enabled: true };
+  const plan = planLocalWrite('uploads/session');
+  const source = Readable.from(['cancelled']);
+  await expect(
+    writeObject(root, storage, plan, source, AbortSignal.abort(null)),
+  ).rejects.toMatchObject({
+    code: 'STORAGE_OPERATION_FAILED',
+    storageId: 'one',
+    key: plan.key,
+    temporaryKey: plan.temporaryKey,
+    cause: null,
+  });
+  expect(source.destroyed).toBe(true);
+  expect(existsSync(join(root, 'disk'))).toBe(false);
+});

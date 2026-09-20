@@ -11,7 +11,7 @@ import {
   realpathSync,
   statSync,
 } from 'node:fs';
-import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, sep } from 'node:path';
 
 function inside(root: string, path: string) {
   const part = relative(root, path);
@@ -25,14 +25,12 @@ function controlledPath(root: string, input: string, create: boolean) {
   if (!input || input.includes('\0') || isAbsolute(input)) {
     throw new Error(`Invalid relative storage path: ${JSON.stringify(input)}`);
   }
-  const actualRoot = realpathSync(root);
-  const candidate = resolve(actualRoot, input);
-  inside(actualRoot, candidate);
+  const actualRoot = realpathSync.native(root);
   let actual = actualRoot;
-  for (const part of relative(actualRoot, candidate)
-    .split(sep)
-    .filter(Boolean)) {
-    actual = join(actual, part);
+  for (const part of input.split(sep).filter(Boolean)) {
+    // Keep .. until the preceding symlink has been resolved by the filesystem.
+    actual = `${actual}${sep}${part}`;
+    inside(actualRoot, actual);
     try {
       lstatSync(actual);
     } catch (error) {
@@ -40,7 +38,7 @@ function controlledPath(root: string, input: string, create: boolean) {
       if (!create) throw error;
       mkdirSync(actual);
     }
-    actual = realpathSync(actual);
+    actual = realpathSync.native(actual);
     inside(actualRoot, actual);
   }
   return actual;
@@ -80,15 +78,11 @@ function objectPath(root: string, key: string, createParent = false) {
   // Object keys are internal relative paths, scoped to this configuration's namespace.
   if (!key || key.includes('\0') || isAbsolute(key))
     throw new Error(`Invalid object key: ${JSON.stringify(key)}`);
-  const path = resolve(root, key);
+  const parent = controlledPath(root, dirname(key), createParent);
+  const path = join(parent, basename(key));
   inside(root, path);
   if (path === root) throw new Error(`Object key names a directory: ${key}`);
-  const parent = controlledPath(
-    root,
-    relative(root, dirname(path)) || '.',
-    createParent,
-  );
-  return join(parent, relative(dirname(path), path));
+  return path;
 }
 
 function operationError(
@@ -151,7 +145,7 @@ export async function writeObject(
     // finished may repeat the original stream failure or report premature close after destroy.
     // Preserve the operation failure below rather than replace it during disposal.
     await finished(source, { cleanup: true }).catch(() => undefined);
-    if ((cause as NodeJS.ErrnoException).code === 'STORAGE_DISABLED')
+    if ((cause as NodeJS.ErrnoException | null)?.code === 'STORAGE_DISABLED')
       throw cause;
     throw Object.assign(
       operationError(cause, storage, plan.key, 'write', temporaryPath, plan),

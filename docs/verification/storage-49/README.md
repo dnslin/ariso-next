@@ -66,6 +66,19 @@ gh run download 35501776441 --name production-storage-verification-arm64 --dir t
 
 [PR #88](https://github.com/dnslin/ariso-next/pull/88) 的最新检查以检查页为准。本次原始报告归档提交只修改文档，不改变受测应用或工作流；仍跟进最新提交的 CI 与双架构复跑。历史 #48 实验不冒充本次生产 API 通过。
 
+## PR 复审修复
+
+针对 `cd7ddc0` 的双 agent 复审发现两个原有测试未覆盖的 P2，本次分别修复：
+
+- 路径不再先用 `resolve()` 折叠链接后的 `..`，而是逐段调用 `realpathSync.native()`。对象 Key 的父路径使用同样语义，写入、读取、检查和删除一致；根内/越界检查保留。
+- `writeObject` 的错误码读取改为空值安全访问，合法的 `AbortSignal.abort(null)` 保留原始 `cause: null`、storageId 和两个 Key，输入流仍关闭。
+
+新增三个回归测试先在旧实现上实际失败，再修复通过：配置链接后的父目录与新目录、对象 Key 链接后的完整读写删除、null 取消原因。独立复审确认两项已修复，并另外检查普通文件父级、链接目标含链接及 `..`、根外链接和多级越界。可选的迁移测试夹具合并没有纳入本次修复。
+
+Node 24.18.1 / pnpm 11.19.0 下，本次实际执行 `pnpm exec vitest run --project integration tests/integration/storage`，3 文件 24 项通过；独立复审的 local/defaults 两文件 23 项通过。`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`（161 项）及 `pnpm run build` 全部通过，构建保留前述可选 Debug 二进制诊断。
+
+本次 `pnpm run test:integration` 全量 15 文件、107 项通过。`BROWSER_REPORT_DIR=test-results/browser-review-fix pnpm run test:browser` 通过，Ego 空间 13 成功后自动关闭；390/1440、资源、健康检查及浏览器错误断言均通过。后续推送的 CI 和双架构结果在 [PR #88 检查页](https://github.com/dnslin/ariso-next/pull/88/checks) 按提交核对，不将前述旧提交报告冒充修复后的结果。
+
 ## 保留边界
 
 完整 setup 事务归 T-ID-02；上传会话/media 清理责任表、版本交接与进程恢复归对应提供方。本任务通过预先持久记录两个 Key 的测试夹具验证内部 API，不声称交付这些下游流程。管理默认切换、配置编辑/删除、完整引用约束归 T-STO-03/07；未创建可绕过引用检查的管理入口。
