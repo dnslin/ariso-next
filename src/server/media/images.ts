@@ -8,8 +8,8 @@ import {
   mediaVersions,
   versionKinds,
   type DerivedVersionKind,
-  type ProcessingSnapshot,
 } from './schema.ts';
+import type { ProcessingSnapshot } from './validation.ts';
 
 export type MediaTransaction = Parameters<
   Parameters<BetterSQLite3Database['transaction']>[0]

@@ -1,3 +1,7 @@
+import {
+  prepareInitialMedia,
+  createProcessingSnapshot,
+} from '../../../src/server/media/settings.ts';
 import { randomUUID } from 'node:crypto';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -65,7 +69,10 @@ beforeEach(async () => {
     animated: false,
     pageCount: 1,
     classification: 'static',
-    snapshot: { compression: { enabled: true, quality: 82 }, watermark: null },
+    snapshot: connection.db.transaction((tx) => {
+      prepareInitialMedia(tx);
+      return createProcessingSnapshot(tx);
+    }),
     expectedVersions: ['compressed', 'thumbnail'],
   };
 });
@@ -123,11 +130,8 @@ describe('T-MED-01 persistent asset contract', () => {
       snapshot: input.snapshot,
       expectedVersions: input.expectedVersions,
     });
-    input.snapshot.compression = false;
-    expect(state().latestJob!.snapshot.compression).toEqual({
-      enabled: true,
-      quality: 82,
-    });
+    input.snapshot.compressionEnabled = false;
+    expect(state().latestJob!.snapshot.compressionEnabled).toBe(true);
     connection.close();
     connection = openRuntimeDatabase(join(directory, 'ariso.db'));
     expect(
