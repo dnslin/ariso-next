@@ -299,10 +299,17 @@ export async function runLocalExperiment(options: ExperimentOptions) {
         'old.object',
         'other-app.txt',
       ]);
+      const recoveredFree = await freeBytes(low);
+      assert.ok(
+        recoveredFree > exhaustedFree,
+        'Exact partial cleanup must reclaim space',
+      );
+      const recoveredSamples = await exercise(low, source, 'low-recovered');
       check('low-space', {
         initialFree,
         exhaustedFree,
-        recoveredFree: await freeBytes(low),
+        recoveredFree,
+        recoveredSamples,
         bytesWritten: result.bytesWritten,
         error: result.failure.message,
         code: 'ENOSPC',
