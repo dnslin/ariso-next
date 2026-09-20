@@ -1,0 +1,87 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.6.0",
+    "uid": 501
+  },
+  "checks": [
+    {
+      "name": "paths",
+      "passed": true,
+      "evidence": {
+        "root": "/Users/dnslin/.codex/worktrees/issue-48-storage-io/ariso/ariso-storage-03RwKo",
+        "accepted": ["target", "nested/../target", "nested/inside"],
+        "rejected": ["empty", "absolute", "escape", "NUL", "outside symlink"]
+      }
+    },
+    {
+      "name": "same-device",
+      "passed": true,
+      "evidence": [
+        {
+          "phase": "success",
+          "bytesWritten": 4194304,
+          "closed": true
+        },
+        {
+          "phase": "copying",
+          "bytesWritten": 65536,
+          "closed": true
+        },
+        {
+          "phase": "before-publish",
+          "bytesWritten": 4194304,
+          "closed": true
+        },
+        {
+          "phase": "published",
+          "bytesWritten": 4194304,
+          "closed": true
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "passed": true,
+      "evidence": {
+        "error": "Stream publish failed: {\"source\":\"/Volumes/data/ariso-source-pWjAZg/original\",\"temporary\":\"/Users/dnslin/.codex/worktrees/issue-48-storage-io/ariso/ariso-storage-03RwKo/denied/cee8d9ab-8c7d-44e5-947f-a8f7322b1cb3.partial\",\"target\":\"/Users/dnslin/.codex/worktrees/issue-48-storage-io/ariso/ariso-storage-03RwKo/denied/cee8d9ab-8c7d-44e5-947f-a8f7322b1cb3.object\"}",
+        "code": "EACCES",
+        "closed": true
+      }
+    },
+    {
+      "name": "cross-device",
+      "passed": true,
+      "evidence": {
+        "sourceDevice": 16777244,
+        "targetDevice": 16777230,
+        "directRename": "EXDEV",
+        "samples": [
+          {
+            "phase": "success",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "copying",
+            "bytesWritten": 65536,
+            "closed": true
+          },
+          {
+            "phase": "before-publish",
+            "bytesWritten": 4194304,
+            "closed": true
+          },
+          {
+            "phase": "published",
+            "bytesWritten": 4194304,
+            "closed": true
+          }
+        ]
+      }
+    }
+  ],
+  "incomplete": ["low-space"]
+}
