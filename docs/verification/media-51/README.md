@@ -48,10 +48,12 @@
 
 按 `code-review-and-quality` 完成独立只读、tests-first 五维审计。默认值、回滚、幂等与重启保留、字段错误、快照职责、迁移及测试有效性未发现阻塞问题。审计另行执行 `git diff --check` 通过；未把代码审计等同浏览器或远端验收通过。
 
-使用 `ego-browser` / 现有 Ego Lite。首次 `pnpm run test:browser` 在截图调用超时，保留 [失败报告](./browser-first/browser.json) 和 [运行清理报告](./browser-first/runner.json)。后续在同一空间 15 诊断，不创建新空间绕过失败。
+使用 `ego-browser` / 现有 Ego Lite。首次 `pnpm run test:browser` 在截图调用超时，保留 [失败报告](./browser-first/browser.json) 和 [运行清理报告](./browser-first/runner.json)。同一空间 15 的 `Page.bringToFront` 和截图首次恢复仍超时；随后激活现有 Ego Lite 窗口，诊断截图成功。执行 `EGO_TASK_SPACE=15 BROWSER_REPORT_DIR=test-results/browser-recovered pnpm run test:browser` 全部通过并自动关闭空间。390/1440 无横向溢出、资源/健康接口/非公开样本/浏览器错误断言通过，两张截图已目视核对。原始 [恢复报告](./browser-recovered/browser.json) 和 [运行清理报告](./browser-recovered/runner.json) 保留。
 
 无界面变更，Figma/HeroUI、浅深色、键盘焦点、触控、软键盘和安全区域没有新增验收对象；浏览器只检查运行基线，不宣称设置 UI 已实现或跨浏览器验收完成。
 
-Docker 工作流原生架构的媒体测试入口扩展为整个 `tests/integration/media`，覆盖新设置测试；随后运行已有 Docker 构建、工具、存储故障、迁移及备份恢复。媒体函数测试在原生 runner 执行，容器验证迁移和运行基线。发布任务仅允许 release 事件，PR 不发布镜像。远端结果尚待本 PR 触发后记录。
+Docker 工作流原生架构的媒体测试入口扩展为整个 `tests/integration/media`，覆盖新设置测试；随后运行已有 Docker 构建、工具、存储故障、迁移及备份恢复。媒体函数测试在原生 runner 执行，容器验证迁移和运行基线。发布任务仅允许 release 事件，PR 不发布镜像。[PR #90](https://github.com/dnslin/ariso-next/pull/90) 的实现提交 `99cfdbd` 已通过 [CI](https://github.com/dnslin/ariso-next/actions/runs/35510671407)（2m20s）和 [Docker 双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35510671481)（AMD64 2m50s、ARM64 2m44s）。两种架构的媒体模型及默认值测试通过；镜像工具、存储故障、容器迁移/回滚/版本拒绝、停止备份恢复全部通过。`release-checks` 和 `publish` 均跳过。原始容器报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。
+
+实际执行 `gh pr checks 90`、`gh run view 35510671481 --json ...`，并分别执行 `gh run download 35510671481 --name container-verification-amd64/arm64 --dir test-results/remote/...` 下载报告。最后的证据提交仅修改文档；其检查在 [PR checks](https://github.com/dnslin/ariso-next/pull/90/checks) 跟进，全部成功后转为正式待评审。浏览器原始报告与集成测试数量另经独立复核，未发现误报。
 
 后续完整 setup 由 T-ID-02 组合；真实上传默认可见性覆盖和批次素材引用由 upload 接入；完整水印、调度与设置页面仍按原任务依赖交付。本次没有合并 PR、关闭 Issue、发布、部署或删除分支/worktree。
