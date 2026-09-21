@@ -1,24 +1,24 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { Providers } from '../components/shell/providers';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Ariso · 工程状态',
-  description: 'Ariso 单用户自托管图床，当前正在建设运行基础。',
+  title: 'Ariso',
+  description: '单用户，自托管图床。',
+};
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  interactiveWidget: 'resizes-content',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-CN">
-      <body
-        style={{
-          margin: 0,
-          background: '#fffffe',
-          color: '#272343',
-          fontFamily: 'system-ui, "PingFang SC", "Microsoft YaHei", sans-serif',
-          lineHeight: 1.7,
-        }}
-      >
-        {children}
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

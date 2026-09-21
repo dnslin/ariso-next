@@ -8,12 +8,55 @@ const task = await taskSpace(
 console.log({ taskSpaceId: task.spaceId });
 const page = task.page('p1');
 const report = { taskSpaceId: task.spaceId, status: 'failed', layouts: [] };
+async function verifyHome() {
+  for (const theme of ['light', 'dark']) {
+    await page.cdp('Emulation.setEmulatedMedia', {
+      features: [{ name: 'prefers-color-scheme', value: theme }],
+    });
+    await page.waitForFunction(
+      (value) => document.documentElement.classList.contains(value),
+      theme,
+    );
+    await page.evaluate(() => document.fonts.ready);
+    for (const width of [360, 390, 430, 768, 1440]) {
+      await page.cdp('Emulation.setDeviceMetricsOverride', {
+        width,
+        height: 844,
+        deviceScaleFactor: 1,
+        mobile: width < 768,
+      });
+      const state = await page.evaluate(() => ({
+        width: innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        background: getComputedStyle(document.body).backgroundColor,
+        font: document.fonts.check('112px Caveat'),
+      }));
+      assert.equal(state.width, width);
+      assert.ok(state.scrollWidth <= width);
+      assert.ok(state.font);
+      assert.equal(
+        state.background,
+        theme === 'dark' ? 'rgb(24, 26, 34)' : 'rgb(255, 255, 254)',
+      );
+      await page.screenshot({
+        path: join(config.output, `home-${theme}-${width}.png`),
+      });
+    }
+  }
+  await page.goto(`${config.origin}/missing-shell-page`);
+  await page.waitForSelector('loc=role:link[name="返回首页"]');
+  console.log(await page.snapshot());
+  await page.focus('loc=role:link[name="返回首页"]');
+  await page.keyboard.press('Enter');
+  await page.waitForURL(`${config.origin}/`);
+  await page.waitForSelector('#home-heading');
+}
 try {
   await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
     source: `window.__arisoSmokeErrors = []; window.addEventListener('error', e => window.__arisoSmokeErrors.push(e.message || 'Resource failed: ' + (e.target.src || e.target.href)), true); window.addEventListener('unhandledrejection', e => window.__arisoSmokeErrors.push(String(e.reason))); const originalError = console.error; console.error = (...args) => { window.__arisoSmokeErrors.push(args.map(String).join(' ')); originalError.apply(console, args); };`,
   });
   await page.goto(config.origin);
-  await page.waitForSelector('loc=css:#runtime-heading', { state: 'visible' });
+  await page.waitForSelector('loc=css:#home-heading', { state: 'visible' });
   await page.waitForFunction(
     () => [...document.images].every((image) => image.complete),
     undefined,
@@ -29,11 +72,20 @@ try {
       height: image.naturalHeight,
     })),
   }));
-  assert.equal(report.page.title, 'Ariso · 工程状态');
+  assert.equal(report.page.title, 'Ariso');
   assert.equal(report.page.lang, 'zh-CN');
-  assert.ok(report.page.text.includes('运行基础建设中'));
+  assert.ok(report.page.text.includes('轻装简从'));
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelectorAll(
+          'a[href="/login"],a[href="/upload"],a[href="/library"]',
+        ).length,
+    ),
+    0,
+  );
   assert.ok(report.page.text.includes('账号初始化、登录和图片上传尚未开放。'));
-  assert.deepEqual(report.page.images, [{ width: 64, height: 64 }]);
+  assert.deepEqual(report.page.images, []);
   const home = await page.fetch('/');
   assert.equal(home.status, 200);
   report.homeStatus = home.status;
@@ -91,7 +143,7 @@ try {
       timeout: 5000,
     });
     const layout = await page.evaluate(() => {
-      const heading = document.querySelector('#runtime-heading');
+      const heading = document.querySelector('#home-heading');
       const rect = heading.getBoundingClientRect();
       const style = getComputedStyle(heading);
       return {
@@ -116,7 +168,9 @@ try {
       path: join(config.output, `viewport-${width}.png`),
     });
   }
+  await verifyHome();
   report.errors = await page.evaluate(() => window.__arisoSmokeErrors);
+  await (await import(config.shellScript)).verifyShell(page, config);
   assert.deepEqual(report.errors, []);
   report.status = 'passed';
 } catch (error) {

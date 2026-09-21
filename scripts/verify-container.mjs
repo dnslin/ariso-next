@@ -326,7 +326,7 @@ async function main() {
     const home = await fetch(origin);
     assert.equal(home.status, 200);
     const html = await home.text();
-    assert.ok(html.includes('运行基础建设中'));
+    assert.ok(html.includes('账号初始化、登录和图片上传尚未开放。'));
     const scripts = [...html.matchAll(/src="([^" ]+\.js[^" ]*)"/g)].map(
       (m) => m[1],
     );
