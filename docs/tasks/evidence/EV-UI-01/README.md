@@ -80,4 +80,10 @@ EGO_TASK_SPACE=20 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/ui-runtime pn
 
 真实手机软键盘、非零安全区、真实触控、Safari/Firefox/Edge 未执行，保持未验收；窄视口和桌面触控模拟不替代设备证据。这些是后续产品页面验收范围，当前只证明指定库的最小真实页面组合可构建、水合和交互。
 
-远端 CI、Docker AMD64/ARM64 与最终审计结果将在 PR 检查完成后补充。只运行验证，发布 job 仅 release 事件执行，本任务不创建 release、不发布或部署。
+提交 `99613ed` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35560955444) 与 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35560955609) 全部适用检查通过，原始状态见 [ci.json](./ci.json)、[docker.json](./docker.json)。AMD64 和 ARM64 均实际完成构建、离线运行、存储有限挂载、图片转换、生命周期、迁移及备份恢复验证；release-checks 和 publish 按非 release 事件跳过，未发布镜像或部署。
+
+[PR #94](https://github.com/dnslin/ariso-next/pull/94) 保留每个提交的实时检查结果；本次证据补充不修改实现，仍等待其对应最新提交检查通过后转为正式待评审。Ego TaskSpace 20 已成功关闭。
+
+## 代码审计
+
+使用 `code-review-and-quality`，由独立审计代理先读测试，再核对实现、实际声明、依赖锁、CI 和证据范围。覆盖正确性、可读性、模块边界、安全及性能；无 Critical / Required 问题。确认没有预建业务模块、无 v2 API 混用、错误未被静默隐藏、测试失败会返回非零，真实设备与其他浏览器限制保留。审计未重复运行命令，运行结果来自上述实际执行和远端记录。
