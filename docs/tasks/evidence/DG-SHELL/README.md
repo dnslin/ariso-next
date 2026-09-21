@@ -34,3 +34,9 @@
 ## 保留验收边界
 
 文档走查未发现需要补画的具体状态；原型未穷举全路由、所有宽度和错误组合，消费任务已明确复用规则及承接任务。DES-07、DES-05、RG-07 与其他业务返回责任保持开放。真实触控、软键盘、非零安全区、键盘/焦点、登录回跳和请求失败均未由本次验证；由 T-UI-01、T-ID-03、设置任务、T-SITE-05 与 T-QA-02 按各自范围取得真实证据。
+
+## 审计与远端验证
+
+按 `code-review-and-quality` 完成独立只读审计：Critical 0、Required 0。审计核对 Issue、相对 main 的差异、SPEC、交接与历史节点来源；新增锚点一致，未引入新产品行为、业务代码、依赖或跨模块职责。安全/性能没有运行时变化，测试适用性以文档范围判断；没有用原型或依赖实验替代真实业务验收。
+
+[PR #95](https://github.com/dnslin/ariso-next/pull/95) 已作为草稿创建并触发 [CI](https://github.com/dnslin/ariso-next/actions/runs/35570073624) 和 [Docker 双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35570073699)。这两个链接对应首个提交 `b92c9a8`，记录时仍在运行，不标记通过。证据补充后的最新提交以 [PR checks](https://github.com/dnslin/ariso-next/pull/95/checks) 为准；全部适用检查通过后再转为正式待评审。Docker 的 release-checks/publish 仅 release 事件可执行，本次不发布镜像、不部署、不合并或关闭 Issue。
