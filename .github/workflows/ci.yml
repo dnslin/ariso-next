@@ -21,6 +21,9 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir tests/experiments/ui install --frozen-lockfile
+      - run: pnpm --dir tests/experiments/ui run typecheck
+      - run: pnpm --dir tests/experiments/ui run build
       - run: pnpm run lint
       - run: pnpm run format:check
       - run: pnpm run typecheck
