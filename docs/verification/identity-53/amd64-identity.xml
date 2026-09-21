@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="27" failures="0" errors="0" time="64.545946297">
+    <testsuite name="tests/integration/identity/auth.test.ts" timestamp="2026-09-21T00:28:21.523Z" hostname="runnervmlun5p" tests="15" failures="0" errors="0" skipped="0" time="25.605529691">
+        <testcase classname="tests/integration/identity/auth.test.ts" name="uninitialized production auth requests return setup-required without creating an owner" time="1.315527737">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="production constraints reject invalid owners and duplicate providers; incomplete identity is explicit" time="2.658956625">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false" time="6.432211148">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body { is a client error" time="0.013094769">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body undefined is a client error" time="0.012849616">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body null is a client error" time="0.017877602">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body [] is a client error" time="0.016511943">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not" time="5.856130708">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged" time="0.308780305">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="real sessions renew after one day, expire after seven days, and logout revokes only its own cookie" time="1.909438873">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="logout read failure preserves the cookie and reports failure until a successful retry" time="0.107088261">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="logout delete failure preserves the cookie and reports failure until a successful retry" time="0.10976421">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins" time="2.909825581">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="production login limiting survives saved-origin instance refresh" time="0.222632723">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="a new process with rotated Secret rejects old cookies while retaining persisted identity and session rows" time="1.777978288">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/browser-runner.test.ts" timestamp="2026-09-21T00:28:21.526Z" hostname="runnervmlun5p" tests="1" failures="0" errors="0" skipped="0" time="13.784608479">
+        <testcase classname="tests/integration/identity/browser-runner.test.ts" name="browser runner cancels on SIGINT and SIGTERM, stops real Next, removes its database and can restart" time="13.782700621">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/database.test.ts" timestamp="2026-09-21T00:28:21.526Z" hostname="runnervmlun5p" tests="5" failures="0" errors="0" skipped="0" time="1.704501694">
+        <testcase classname="tests/integration/identity/database.test.ts" name="two processes race owner creation: one complete credential and no partial loser" time="1.441807665">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="owner CHECK/NOT NULL/default/UNIQUE and provider uniqueness are database constraints" time="0.072910928">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="a failed synchronous seed transaction rolls back the user and can be retried" time="0.127487437">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="library reads/writes the additional field without enabling registration" time="0.050973179">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="the enabled asynchronous adapter transaction fails with synchronous SQLite; use explicit false" time="0.009857825">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/http.test.ts" timestamp="2026-09-21T00:28:21.527Z" hostname="runnervmlun5p" tests="6" failures="0" errors="0" skipped="0" time="23.451306433">
+        <testcase classname="tests/integration/identity/http.test.ts" name="direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it" time="8.459342599">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="public registration stays disabled at HTTP and trusted API boundaries" time="0.080930558">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses" time="0.800373778">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute" time="1.122084285">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub" time="0.889061923">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="new process and Secret reject old signed Cookie without deleting users/credentials/sessions" time="6.435175577">
+        </testcase>
+    </testsuite>
+</testsuites>

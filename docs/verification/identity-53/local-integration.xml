@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="156" failures="0" errors="0" time="178.135941291">
+    <testsuite name="tests/integration/identity/auth.test.ts" timestamp="2026-09-21T00:25:11.189Z" hostname="dnslins-Mini.lan" tests="15" failures="0" errors="0" skipped="0" time="19.484990625">
+        <testcase classname="tests/integration/identity/auth.test.ts" name="uninitialized production auth requests return setup-required without creating an owner" time="0.704623625">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="production constraints reject invalid owners and duplicate providers; incomplete identity is explicit" time="1.99614875">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false" time="4.245830125">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body { is a client error" time="0.007227916">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body undefined is a client error" time="0.006081125">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body null is a client error" time="0.00906275">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="login body [] is a client error" time="0.007654042">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not" time="4.617247833">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged" time="0.561502792">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="real sessions renew after one day, expire after seven days, and logout revokes only its own cookie" time="1.74771075">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="logout read failure preserves the cookie and reports failure until a successful retry" time="0.116388125">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="logout delete failure preserves the cookie and reports failure until a successful retry" time="0.097086917">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins" time="2.6974445">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="production login limiting survives saved-origin instance refresh" time="0.148485416">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="a new process with rotated Secret rejects old cookies while retaining persisted identity and session rows" time="1.231416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/browser-runner.test.ts" timestamp="2026-09-21T00:25:11.190Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="12.419748333">
+        <testcase classname="tests/integration/identity/browser-runner.test.ts" name="browser runner cancels on SIGINT and SIGTERM, stops real Next, removes its database and can restart" time="12.418596667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/database.test.ts" timestamp="2026-09-21T00:25:11.190Z" hostname="dnslins-Mini.lan" tests="5" failures="0" errors="0" skipped="0" time="1.374118333">
+        <testcase classname="tests/integration/identity/database.test.ts" name="two processes race owner creation: one complete credential and no partial loser" time="1.066423041">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="owner CHECK/NOT NULL/default/UNIQUE and provider uniqueness are database constraints" time="0.060584167">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="a failed synchronous seed transaction rolls back the user and can be retried" time="0.205906416">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="library reads/writes the additional field without enabling registration" time="0.034538459">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="the enabled asynchronous adapter transaction fails with synchronous SQLite; use explicit false" time="0.004175292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/http.test.ts" timestamp="2026-09-21T00:25:11.190Z" hostname="dnslins-Mini.lan" tests="6" failures="0" errors="0" skipped="0" time="16.764758625">
+        <testcase classname="tests/integration/identity/http.test.ts" name="direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it" time="4.327906917">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="public registration stays disabled at HTTP and trusted API boundaries" time="0.043860583">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses" time="0.626166459">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute" time="1.175874875">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub" time="1.253293292">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="new process and Secret reject old signed Cookie without deleting users/credentials/sessions" time="5.879586208">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/defaults.test.ts" timestamp="2026-09-21T00:25:11.191Z" hostname="dnslins-Mini.lan" tests="7" failures="0" errors="0" skipped="0" time="0.71545575">
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; migration leaves settings uninitialized and reads never invent defaults" time="0.014166834">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; prepares exactly the required defaults, once, with a stable timestamp" time="0.004706458">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; rolls back initialization with other setup writes and permits retry" time="0.005277584">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; rejects disabling the default without changing it, preserving all existing fields" time="0.005371375">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; rolls back a valid update when the transaction owner fails" time="0.003420208">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; new snapshots follow settings, while existing snapshots remain detached and exclude live controls" time="0.008751833">
+        </testcase>
+        <testcase classname="tests/integration/media/defaults.test.ts" name="T-MED-02 real SQLite defaults &gt; another process reruns migration and initialization without overwriting user settings" time="0.672050208">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/model.test.ts" timestamp="2026-09-21T00:25:11.191Z" hostname="dnslins-Mini.lan" tests="15" failures="0" errors="0" skipped="0" time="0.202201083">
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; accepts identical bytes twice as separate images and preserves original bytes through reopen" time="0.037035459">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; derives the initial display name for &quot;plain&quot;" time="0.008297083">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; derives the initial display name for &quot;.photo&quot;" time="0.007176209">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; derives the initial display name for &quot;photo.&quot;" time="0.007436292">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; derives the initial display name for &quot;旅行.final.PNG&quot;" time="0.008262333">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; derives the initial display name for &quot;&quot;" time="0.006934417">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; rolls back the whole handoff on media_objects failure without touching owner or bytes" time="0.03403175">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; rolls back the whole handoff on media_versions failure without touching owner or bytes" time="0.017588166">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; rolls back the whole handoff on media_jobs failure without touching owner or bytes" time="0.016625542">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; rolls back media when the later caller operation fails, then transfers ownership together on retry" time="0.009895625">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; enforces unique current kinds, object keys, storage references and image/object ownership" time="0.00686325">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; keeps rename, processing, trash and deletion independent from the original" time="0.015913333">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; persists both planned keys before I/O and does not expose uncommitted or unstored versions" time="0.011337083">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; returns the last submitted job when two jobs share a timestamp" time="0.005819333">
+        </testcase>
+        <testcase classname="tests/integration/media/model.test.ts" name="T-MED-01 persistent asset contract &gt; distinguishes unknown/inapplicable/missing/saved versions from the latest task result" time="0.007654209">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/build.test.ts" timestamp="2026-09-21T00:25:11.192Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="34.334971708">
+        <testcase classname="tests/integration/runtime/build.test.ts" name="无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码" time="34.334359125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/crypto.test.ts" timestamp="2026-09-21T00:25:11.192Z" hostname="dnslins-Mini.lan" tests="5" failures="0" errors="0" skipped="0" time="5.1930055">
+        <testcase classname="tests/integration/runtime/crypto.test.ts" name="persisted secret crypto &gt; 空磁盘数据库接受不同的有效部署密钥，始终不创建密钥校验表或记录" time="1.223273208">
+        </testcase>
+        <testcase classname="tests/integration/runtime/crypto.test.ts" name="persisted secret crypto &gt; 写入进程退出后另一进程解密原记录，认证密钥变更不影响解密且 null 保持未配置" time="0.84700825">
+        </testcase>
+        <testcase classname="tests/integration/runtime/crypto.test.ts" name="persisted secret crypto &gt; 读取 wrong key 明确失败，重开数据库后所有原记录和表不变" time="1.296752542">
+        </testcase>
+        <testcase classname="tests/integration/runtime/crypto.test.ts" name="persisted secret crypto &gt; 读取 tampered ciphertext 明确失败，重开数据库后所有原记录和表不变" time="0.853514041">
+        </testcase>
+        <testcase classname="tests/integration/runtime/crypto.test.ts" name="persisted secret crypto &gt; 读取 invalid ciphertext 明确失败，重开数据库后所有原记录和表不变" time="0.971751125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/database.test.ts" timestamp="2026-09-21T00:25:11.192Z" hostname="dnslins-Mini.lan" tests="9" failures="0" errors="0" skipped="0" time="6.25000925">
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 重复创建基础目录，保留 tmp 内容，不创建默认存储" time="0.024954584">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 不可写或不可遍历的已有目录保留错误码和路径，不修改权限（365）" time="0.002128291">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 不可写或不可遍历的已有目录保留错误码和路径，不修改权限（438）" time="0.000963625">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 目录位置被文件占用时保留底层错误与路径" time="0.000469917">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 真实磁盘连接启用规定设置，空数据库没有业务表，并能关闭" time="0.005744709">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 外键实际拒绝无效记录，原生事务回滚失败写入" time="0.002836708">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 锁冲突在驱动超时后保留 SQLITE_BUSY，释放锁后可继续写入" time="5.153753542">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 损坏数据库报原生错误，不覆盖已有数据" time="0.002729667">
+        </testcase>
+        <testcase classname="tests/integration/runtime/database.test.ts" name="runtime disk database &gt; 一个进程写入并退出后，另一个进程通过 Drizzle 读到同一记录" time="1.0482555">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/health.test.ts" timestamp="2026-09-21T00:25:11.193Z" hostname="dnslins-Mini.lan" tests="4" failures="0" errors="0" skipped="0" time="9.364949083">
+        <testcase classname="tests/integration/runtime/health.test.ts" name="未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接" time="1.554682875">
+        </testcase>
+        <testcase classname="tests/integration/runtime/health.test.ts" name="close-database：实际 HTTP 故障可诊断或及时取消，并清理子进程" time="0.710781292">
+        </testcase>
+        <testcase classname="tests/integration/runtime/health.test.ts" name="stall-headers：实际 HTTP 故障可诊断或及时取消，并清理子进程" time="2.780775458">
+        </testcase>
+        <testcase classname="tests/integration/runtime/health.test.ts" name="stall-body：实际 HTTP 故障可诊断或及时取消，并清理子进程" time="2.600510916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/logging.test.ts" timestamp="2026-09-21T00:25:11.193Z" hostname="dnslins-Mini.lan" tests="3" failures="0" errors="0" skipped="0" time="10.825811042">
+        <testcase classname="tests/integration/runtime/logging.test.ts" name="隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用" time="1.782480583">
+        </testcase>
+        <testcase classname="tests/integration/runtime/logging.test.ts" name="最终产物的启动失败为 JSON，保留配置位置且不泄露非法输入" time="0.758127709">
+        </testcase>
+        <testcase classname="tests/integration/runtime/logging.test.ts" name="真实 Next URL 错误及正常事件隐藏指定秘密，保留错误原因、路径和业务上下文" time="6.329224084">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/migrations.test.ts" timestamp="2026-09-21T00:25:11.193Z" hostname="dnslins-Mini.lan" tests="11" failures="0" errors="0" skipped="0" time="0.048295541">
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 空 journal 可重复执行且没有业务表" time="0.00782125">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 正常迁移与升级，关闭重开后不重放" time="0.006460625">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 故障回滚整批 SQL 和进度，保留已提交数据，修复后继续" time="0.004152">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 首次迁移故障同样回滚，单个待执行文件可定位" time="0.00447275">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 拒绝较新数据库（old 集合），保留现有数据和进度" time="0.003354875">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 拒绝较新数据库（empty 集合），保留现有数据和进度" time="0.002820542">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 迁移文件故障提供读取阶段和已有进度（missing-journal）" time="0.003539458">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 迁移文件故障提供读取阶段和已有进度（invalid-journal）" time="0.00287225">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 迁移文件故障提供读取阶段和已有进度（missing-sql）" time="0.003932542">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 诊断保留 SQLite 原因但不复制 SQL 中的秘密值" time="0.005262166">
+        </testcase>
+        <testcase classname="tests/integration/runtime/migrations.test.ts" name="runtime forward migrations &gt; 进度表无法读取时报告阶段，不删除已有表" time="0.001551042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/prestart.test.ts" timestamp="2026-09-21T00:25:11.194Z" hostname="dnslins-Mini.lan" tests="9" failures="0" errors="0" skipped="0" time="7.046491875">
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接" time="1.361043584">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 重启保留清空默认和删除配置，不重新创建默认目录" time="0.879200667">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值" time="0.412817">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 无效配置先于目录操作失败，诊断不泄露密钥" time="0.460386375">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 目录故障保留原文件、错误码和路径，非零退出" time="0.394556083">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放" time="1.934911791">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接" time="0.9814285">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; preflight 返回或抛错前已关闭真实连接（故障=false）" time="0.008011125">
+        </testcase>
+        <testcase classname="tests/integration/runtime/prestart.test.ts" name="compiled prestart CLI &gt; preflight 返回或抛错前已关闭真实连接（故障=true）" time="0.612301416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/secret-preflight.test.ts" timestamp="2026-09-21T00:25:11.194Z" hostname="dnslins-Mini.lan" tests="4" failures="0" errors="0" skipped="0" time="16.4929145">
+        <testcase classname="tests/integration/runtime/secret-preflight.test.ts" name="空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录" time="2.887544459">
+        </testcase>
+        <testcase classname="tests/integration/runtime/secret-preflight.test.ts" name="wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移" time="3.72818125">
+        </testcase>
+        <testcase classname="tests/integration/runtime/secret-preflight.test.ts" name="invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移" time="4.556527291">
+        </testcase>
+        <testcase classname="tests/integration/runtime/secret-preflight.test.ts" name="tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移" time="3.584504375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/server-start.test.ts" timestamp="2026-09-21T00:25:11.194Z" hostname="dnslins-Mini.lan" tests="7" failures="0" errors="0" skipped="0" time="3.362066417">
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 导入和非 Web 初始化不读密钥或建立数据库：{&quot;NEXT_RUNTIME&quot;:&quot;edge&quot;}" time="0.430884375">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 导入和非 Web 初始化不读密钥或建立数据库：{}" time="0.448495">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 导入和非 Web 初始化不读密钥或建立数据库：{&quot;NEXT_RUNTIME&quot;:&quot;nodejs&quot;,&quot;NEXT_PHASE&quot;:&quot;phase-production-build&quot;}" time="0.438324166">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 初始化缺失时健康接口返回 503，不按请求偷偷打开数据库" time="0.508458666">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; Node 初始化在无业务表的磁盘库执行 SELECT 1；重复调用及模块重载复用连接" time="0.525537167">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 真实连接关闭后返回 503，保留错误日志，响应没有秘密或路径且不会自动重连" time="0.528845208">
+        </testcase>
+        <testcase classname="tests/integration/runtime/server-start.test.ts" name="Web startup and real health handler &gt; 初始化失败向上传播，不保存失败状态，修复配置后可以重试" time="0.479645708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/standalone.test.ts" timestamp="2026-09-21T00:25:11.195Z" hostname="dnslins-Mini.lan" tests="8" failures="0" errors="0" skipped="0" time="9.820519917">
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码" time="0.191812958">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录" time="0.301139334">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源" time="1.375291084">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源" time="1.633367083">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源" time="1.262663958">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源" time="1.410096959">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; 标准 Next 收到 SIGTERM 后完成清理并以 143 退出" time="1.0476975">
+        </testcase>
+        <testcase classname="tests/integration/runtime/standalone.test.ts" name="isolated production directory &gt; prestart 配置失败时非零退出且不监听 Web 端口" time="0.826933">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/runtime/startup.test.ts" timestamp="2026-09-21T00:25:11.195Z" hostname="dnslins-Mini.lan" tests="13" failures="0" errors="0" skipped="0" time="22.510498875">
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动" time="1.682542209">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动" time="1.934753083">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动" time="1.645524833">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动" time="1.531121459">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; PORT=0：拒绝配置且不监听，修复后同目录启动" time="2.102836791">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; PORT=65536：拒绝配置且不监听，修复后同目录启动" time="1.884989792">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; PORT=3.5：拒绝配置且不监听，修复后同目录启动" time="1.408446958">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; PORT=abc：拒绝配置且不监听，修复后同目录启动" time="1.530890583">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动" time="1.605721">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; 真实不可写目录保留权限、路径和文件，恢复写权限后启动" time="1.441478125">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; 占用生产端口时退出而不换端口，释放后原端口可启动" time="0.952916166">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移" time="1.791517917">
+        </testcase>
+        <testcase classname="tests/integration/runtime/startup.test.ts" name="完整生产入口的失败与恢复 &gt; 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件" time="1.241836791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/site/settings.test.ts" timestamp="2026-09-21T00:25:11.196Z" hostname="dnslins-Mini.lan" tests="9" failures="0" errors="0" skipped="0" time="1.25812525">
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 生产迁移可重复执行，空库不生成站点或虚构地址" time="0.039157917">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 事务保存规范化配置和默认品牌，时间存为 UTC 毫秒并可序列化为 ISO UTC" time="0.0054495">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 数据库拒绝第二站点、重复初始化、缺失必填字段和半个素材引用" time="0.007626083">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 非法输入在入口拒绝，没有部分写入" time="0.004240208">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 初始化后另一项 SQL 失败则整体回滚；修正后可以重试" time="0.004421208">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 更新失败保留旧配置；已有快照稳定而新读取立即使用新地址" time="0.005123417">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 修改时区不改写历史 UTC 时间和品牌，只改变展示" time="0.003672125">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 数据库读取故障向上传播，不能伪装成未初始化" time="0.003078417">
+        </testcase>
+        <testcase classname="tests/integration/site/settings.test.ts" name="site 真实磁盘 SQLite &gt; 独立进程写入退出后，另一个进程通过公开读取函数得到持久化配置" time="1.184555875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/storage/defaults.test.ts" timestamp="2026-09-21T00:25:11.196Z" hostname="dnslins-Mini.lan" tests="6" failures="0" errors="0" skipped="0" time="0.044944959">
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 首次准备创建目录、启用配置及默认指针，重开数据库不改写" time="0.014648792">
+        </testcase>
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 清空默认、停用、删除全部配置后保留已初始化状态，不重建目录" time="0.005872834">
+        </testcase>
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 目录失败不写默认行，修复目录后可以重试" time="0.006113583">
+        </testcase>
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 第二行写入失败时配置也回滚，保留目录供修复后重试" time="0.006828333">
+        </testcase>
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 上传选择区分无默认、缺失及停用，不回退到其他存储" time="0.00608325">
+        </testcase>
+        <testcase classname="tests/integration/storage/defaults.test.ts" name="默认本地存储持久初始化 &gt; 数据库约束拒绝第二设置行和不存在的默认配置" time="0.004191625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/storage/local-experiment.test.ts" timestamp="2026-09-21T00:25:11.197Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="0.149267875">
+        <testcase classname="tests/integration/storage/local-experiment.test.ts" name="真实文件流验证路径、发布、取消、权限和清理；缺失环境不能填通过" time="0.148195792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/storage/local.test.ts" timestamp="2026-09-21T00:25:11.197Z" hostname="dnslins-Mini.lan" tests="17" failures="0" errors="0" skipped="0" time="0.47279675">
+        <testcase classname="tests/integration/storage/local.test.ts" name="创建嵌套目录，允许根内链接和合法 ..，不触碰邻接文件" time="0.0025305">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="拒绝非法配置路径 &quot;&quot;" time="0.000508667">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="拒绝非法配置路径 &quot;../escape&quot;" time="0.000299875">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="拒绝非法配置路径 &quot;/absolute&quot;" time="0.000594125">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="拒绝非法配置路径 &quot;bad\u0000path&quot;" time="0.000731833">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="创建之前拒绝根外链接，错误保留真实路径" time="0.003207209">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="完整流写入、读取实际大小和字节，删除幂等且不影响旧对象" time="0.426226542">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="源失败保留 partial 与错误上下文，明确清理不影响旧对象" time="0.006177583">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="停用拒绝读取与新写入，取消在发布前保留清理责任" time="0.002291958">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="不同配置命名空间隔离，越界 Key 和根外对象链接拒绝" time="0.005161125">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="重复使用已发布的计划拒绝覆盖原字节" time="0.005115083">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="不存在源文件的错误可捕获，没有未处理的流错误" time="0.004280458">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="读取取消关闭真实文件句柄，缺失对象返回明确错误" time="0.006191709">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="可写可执行普通文件也不能作为配置目录" time="0.001967584">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="链接后的 .. 按实际目录解析，包括尚不存在的子目录" time="0.001532083">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="对象 Key 中链接后的 .. 在写入、读取、检查与删除时指向同一对象" time="0.003951125">
+        </testcase>
+        <testcase classname="tests/integration/storage/local.test.ts" name="null 取消原因保留原值和存储上下文并关闭输入流" time="0.000451875">
+        </testcase>
+    </testsuite>
+</testsuites>
