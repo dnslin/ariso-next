@@ -1,0 +1,193 @@
+$ vitest run --project integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-integration.xml
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-54
+
+{"time":"2026-09-21T02:52:58.413Z","level":"info","module":"identity.setup","event":"setup-code","code":"[Redacted]","msg":"请使用初始化码完成 setup"}
+{"time":"2026-09-21T02:52:59.011Z","level":"info","module":"identity.setup","event":"setup-code","code":"[Redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-21T02:52:59.014Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso-issue-54/tests/integration/identity/setup-lifecycle.test.ts:120:40\n    at file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso-issue-54/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-TaPqwF/data/ariso.db","msg":"Initialization request failed"}
+{"time":"2026-09-21T02:52:59.795Z","level":"info","module":"identity.setup","event":"setup-code","code":"[Redacted]","msg":"请使用初始化码完成 setup"}
+ ✓ |integration| tests/integration/runtime/logging.test.ts (3 tests) 10178ms
+   ✓ 隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用 1481ms
+   ✓ 最终产物的启动失败为 JSON，保留配置位置且不泄露非法输入 729ms
+   ✓ 真实 Next URL 错误及正常事件隐藏指定秘密，保留错误原因、路径和业务上下文 5898ms
+ ✓ |integration| tests/integration/identity/http.test.ts (6 tests) 15408ms
+   ✓ direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it 3901ms
+   ✓ A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses 584ms
+   ✓ A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute 1147ms
+   ✓ OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub 1040ms
+   ✓ new process and Secret reject old signed Cookie without deleting users/credentials/sessions 5703ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests) 16388ms
+   ✓ 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 2865ms
+   ✓ wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4522ms
+   ✓ invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 3675ms
+   ✓ tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 3466ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts (11 tests) 17200ms
+   ✓ setup process lifecycle (2)
+     ✓ imports without deployment secrets neither open a database nor issue a code 517ms
+     ✓ prestart prepares storage without issuing a code; real module reloads share one startup code 1346ms
+   ✓ setup hash await boundary (controlled hash, real SQLite) (3)
+     ✓ hashes outside the transaction and rechecks a code invalidated while awaiting 673ms
+     ✓ a hash failure leaves setup open and a later request can retry 535ms
+     ✓ a second completed request prevents the awaiting request from creating another owner 836ms
+   ✓ setup real SIGKILL crash recovery (6)
+     ✓ recovers after process death at hash and can use real credential login 2451ms
+     ✓ recovers after process death at site_settings and can use real credential login 2681ms
+     ✓ recovers after process death at media_settings and can use real credential login 2096ms
+     ✓ recovers after process death at user and can use real credential login 1948ms
+     ✓ recovers after process death at account and can use real credential login 2211ms
+     ✓ recovers after process death at committed and can use real credential login 1904ms
+ ✓ |integration| tests/integration/runtime/standalone.test.ts (8 tests) 9345ms
+   ✓ isolated production directory (8)
+     ✓ 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码 319ms
+     ✓ 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源 1333ms
+     ✓ 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源 1141ms
+     ✓ 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 1040ms
+     ✓ HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 1026ms
+     ✓ 标准 Next 收到 SIGTERM 后完成清理并以 143 退出 1082ms
+     ✓ prestart 配置失败时非零退出且不监听 Web 端口 456ms
+ ✓ |integration| tests/integration/runtime/database.test.ts (9 tests) 6081ms
+   ✓ runtime disk database (9)
+     ✓ 锁冲突在驱动超时后保留 SQLITE_BUSY，释放锁后可继续写入 5306ms
+     ✓ 一个进程写入并退出后，另一个进程通过 Drizzle 读到同一记录 754ms
+ ✓ |integration| tests/integration/runtime/health.test.ts (4 tests) 9373ms
+   ✓ 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接 1596ms
+   ✓ close-database：实际 HTTP 故障可诊断或及时取消，并清理子进程 610ms
+   ✓ stall-headers：实际 HTTP 故障可诊断或及时取消，并清理子进程 2566ms
+   ✓ stall-body：实际 HTTP 故障可诊断或及时取消，并清理子进程 2455ms
+ ✓ |integration| tests/integration/identity/browser-runner.test.ts (1 test) 9289ms
+   ✓ browser runner cancels on SIGINT and SIGTERM, stops real Next, removes its database and can restart 9287ms
+ ✓ |integration| tests/integration/runtime/startup.test.ts (13 tests) 26432ms
+   ✓ 完整生产入口的失败与恢复 (13)
+     ✓ BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动 1838ms
+     ✓ BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动 1984ms
+     ✓ ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动 1847ms
+     ✓ ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动 1857ms
+     ✓ PORT=0：拒绝配置且不监听，修复后同目录启动 1770ms
+     ✓ PORT=65536：拒绝配置且不监听，修复后同目录启动 1406ms
+     ✓ PORT=3.5：拒绝配置且不监听，修复后同目录启动 1651ms
+     ✓ PORT=abc：拒绝配置且不监听，修复后同目录启动 1551ms
+     ✓ LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动 1407ms
+     ✓ 真实不可写目录保留权限、路径和文件，恢复写权限后启动 1519ms
+     ✓ 占用生产端口时退出而不换端口，释放后原端口可启动 1924ms
+     ✓ 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 3075ms
+     ✓ 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件 2701ms
+ ✓ |integration| tests/integration/runtime/prestart.test.ts (9 tests) 6224ms
+   ✓ compiled prestart CLI (9)
+     ✓ 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接 932ms
+     ✓ 重启保留清空默认和删除配置，不重新创建默认目录 801ms
+     ✓ 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值 397ms
+     ✓ 无效配置先于目录操作失败，诊断不泄露密钥 359ms
+     ✓ 目录故障保留原文件、错误码和路径，非零退出 368ms
+     ✓ 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放 1823ms
+     ✓ 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接 1024ms
+     ✓ preflight 返回或抛错前已关闭真实连接（故障=true） 506ms
+ ✓ |integration| tests/integration/media/defaults.test.ts (7 tests) 544ms
+   ✓ T-MED-02 real SQLite defaults (7)
+     ✓ another process reruns migration and initialization without overwriting user settings 507ms
+ ✓ |integration| tests/integration/identity/database.test.ts (5 tests) 1204ms
+   ✓ two processes race owner creation: one complete credential and no partial loser 948ms
+ ✓ |integration| tests/integration/site/settings.test.ts (9 tests) 1052ms
+   ✓ site 真实磁盘 SQLite (9)
+     ✓ 独立进程写入退出后，另一个进程通过公开读取函数得到持久化配置 1005ms
+ ✓ |integration| tests/integration/storage/local.test.ts (17 tests) 325ms
+ ✓ |integration| tests/integration/media/model.test.ts (15 tests) 288ms
+ ✓ |integration| tests/integration/storage/local-experiment.test.ts (1 test) 314ms
+   ✓ 真实文件流验证路径、发布、取消、权限和清理；缺失环境不能填通过 313ms
+ ✓ |integration| tests/integration/runtime/migrations.test.ts (11 tests) 54ms
+ ✓ |integration| tests/integration/storage/defaults.test.ts (6 tests) 43ms
+ ✓ |integration| tests/integration/runtime/server-start.test.ts (7 tests) 3767ms
+   ✓ Web startup and real health handler (7)
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{"NEXT_RUNTIME":"edge"} 547ms
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{} 639ms
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{"NEXT_RUNTIME":"nodejs","NEXT_PHASE":"phase-production-build"} 552ms
+     ✓ 初始化缺失时健康接口返回 503，不按请求偷偷打开数据库 500ms
+     ✓ Node 初始化在已迁移无所有者的磁盘库执行 SELECT 1；重复调用及模块重载复用连接 644ms
+     ✓ 真实连接关闭后返回 503，保留错误日志，响应没有秘密或路径且不会自动重连 504ms
+     ✓ 初始化失败向上传播，不保存失败状态，修复配置后可以重试 380ms
+ ✓ |integration| tests/integration/runtime/crypto.test.ts (5 tests) 4984ms
+   ✓ persisted secret crypto (5)
+     ✓ 空磁盘数据库接受不同的有效部署密钥，始终不创建密钥校验表或记录 963ms
+     ✓ 写入进程退出后另一进程解密原记录，认证密钥变更不影响解密且 null 保持未配置 977ms
+     ✓ 读取 wrong key 明确失败，重开数据库后所有原记录和表不变 1499ms
+     ✓ 读取 tampered ciphertext 明确失败，重开数据库后所有原记录和表不变 886ms
+     ✓ 读取 invalid ciphertext 明确失败，重开数据库后所有原记录和表不变 658ms
+ ✓ |integration| tests/integration/identity/auth.test.ts (15 tests) 32677ms
+   ✓ uninitialized production auth requests return setup-required without creating an owner 1710ms
+   ✓ initialized production auth (14)
+     ✓ production constraints reject invalid owners and duplicate providers; incomplete identity is explicit 3061ms
+     ✓ real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false 6004ms
+     ✓ login body { is a client error 1057ms
+     ✓ login body undefined is a client error 1076ms
+     ✓ login body null is a client error 1270ms
+     ✓ login body [] is a client error 1089ms
+     ✓ only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not 5129ms
+     ✓ only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged 1391ms
+     ✓ real sessions renew after one day, expire after seven days, and logout revokes only its own cookie 2571ms
+     ✓ logout read failure preserves the cookie and reports failure until a successful retry 1372ms
+     ✓ logout delete failure preserves the cookie and reports failure until a successful retry 1420ms
+     ✓ saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins 2904ms
+     ✓ production login limiting survives saved-origin instance refresh 810ms
+     ✓ a new process with rotated Secret rejects old cookies while retaining persisted identity and session rows 1811ms
+ ✓ |integration| tests/integration/identity/setup.test.ts (28 tests) 37187ms
+   ✓ empty production startup prepares storage and prints exactly one code even with fatal logging; HTTP never returns it 1049ms
+   ✓ missing code returns a field error and writes nothing 1009ms
+   ✓ missing email returns a field error and writes nothing 1062ms
+   ✓ missing password returns a field error and writes nothing 1406ms
+   ✓ missing publicUrl returns a field error and writes nothing 1182ms
+   ✓ missing timeZone returns a field error and writes nothing 1375ms
+   ✓ concurrent setup commits one complete owner, creates no session, and supports a real password login 1588ms
+   ✓ a failed site_settings insert rolls back every business row and the same code can retry 1406ms
+   ✓ a failed media_settings insert rolls back every business row and the same code can retry 1118ms
+   ✓ a failed user insert rolls back every business row and the same code can retry 1134ms
+   ✓ a failed account insert rolls back every business row and the same code can retry 1142ms
+   ✓ ignoring the committed response then retrying directs to login; restart issues no code or reset 5172ms
+   ✓ a real uninitialized restart replaces the code and rejects the old one 2164ms
+   ✓ an owner missing site_settings fails startup with the database path instead of reopening setup 1389ms
+   ✓ an owner missing account fails startup with the database path instead of reopening setup 1419ms
+   ✓ an owner missing media_settings fails startup with the database path instead of reopening setup 1721ms
+   ✓ an owner missing storage_settings fails startup with the database path instead of reopening setup 1828ms
+   ✓ a cleared default storage is preserved on initialized restart 1874ms
+   ✓ a disabled default storage is preserved on initialized restart 1233ms
+   ✓ malformed or non-object JSON { is a client error with no business writes 563ms
+   ✓ malformed or non-object JSON null is a client error with no business writes 579ms
+   ✓ malformed or non-object JSON [] is a client error with no business writes 572ms
+   ✓ invalid email uses the field validation contract 612ms
+   ✓ invalid password uses the field validation contract 559ms
+   ✓ invalid publicUrl uses the field validation contract 665ms
+   ✓ invalid timeZone uses the field validation contract 605ms
+   ✓ a credential write failure logs its diagnostic without passwords, hashes or repeated setup codes 1405ms
+   ✓ restart preserves changed site/media settings and a deliberately deleted default storage 1357ms
+ ✓ |integration| tests/integration/runtime/build.test.ts (1 test) 44987ms
+   ✓ 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 44986ms
+ ❯ |integration| tests/integration/identity/setup-dev.test.ts (1 test | 1 failed) 63636ms
+   × real Next dev recompilation retains the startup code and the original code creates a login-capable owner 63635ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/setup-dev.test.ts > real Next dev recompilation retains the startup code and the original code creates a login-capable owner
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ vi.waitFor.timeout tests/integration/identity/setup-dev.test.ts:100:55
+     98|       async () => {
+     99|         expect(child!.exitCode, logs).toBeNull();
+    100|         expect((await request('/api/health')).status).toBe(200);
+       |                                                       ^
+    101|       },
+    102|       { timeout: 30000 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 23 passed (24)
+      Tests  1 failed | 195 passed (196)
+   Start at  10:52:55
+   Duration  64.26s (tests 98%, import 2%)
+
+JUNIT report written to /Volumes/data/project/ariso-issue-54/test-results/issue-54-integration.xml
+[ELIFECYCLE] Command failed with exit code 1.

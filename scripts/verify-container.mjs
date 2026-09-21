@@ -69,6 +69,19 @@ export async function assertPortClosed(port) {
   });
 }
 
+function redactSetupCodes(logs) {
+  return logs.replace(/^(.*)$/gm, (line) => {
+    try {
+      const record = JSON.parse(line);
+      if (record.module === 'identity.setup' && record.event === 'setup-code')
+        return JSON.stringify({ ...record, code: '[Redacted]' });
+    } catch {
+      // Preserve non-JSON diagnostics when reporting a failed container.
+    }
+    return line;
+  });
+}
+
 async function main() {
   const { values } = parseArgs({
     options: {
@@ -201,7 +214,10 @@ async function main() {
     const result = await docker(['logs', id]);
     const text = `${result.stdout}\n${result.stderr}`.trim();
     if (values['output-dir'])
-      await writeFile(join(values['output-dir'], `${name}.jsonl`), `${text}\n`);
+      await writeFile(
+        join(values['output-dir'], `${name}.jsonl`),
+        `${redactSetupCodes(text)}\n`,
+      );
     return parseRecords(text);
   }
   async function exec(code) {
@@ -338,6 +354,86 @@ async function main() {
     check(
       'final image health, JSON logs, static assets, Node 24 architecture and PID 1',
     );
+    const setupCodes = (entries) =>
+      entries.filter(
+        (entry) =>
+          entry.module === 'identity.setup' && entry.event === 'setup-code',
+      );
+    assert.equal(setupCodes(records).length, 1);
+    const setupCode = setupCodes(records)[0].code;
+    assert.ok(
+      typeof setupCode === 'string' && /^[A-Za-z0-9_-]{32}$/.test(setupCode),
+    );
+    const credentials = {
+      email: 'container-owner@example.test',
+      password: randomBytes(24).toString('base64url'),
+    };
+    const post = (path, body) =>
+      fetch(`${origin}${path}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', origin },
+        body: JSON.stringify(body),
+        redirect: 'manual',
+        signal: AbortSignal.timeout(15000),
+      });
+    const payload = {
+      ...credentials,
+      code: setupCode,
+      publicUrl: origin,
+      timeZone: 'UTC',
+    };
+    const denied = await post('/api/setup', { ...payload, code: 'wrong' });
+    assert.equal(denied.status, 401);
+    assert.equal((await denied.json()).code, 'INVALID_SETUP_CODE');
+    const completed = await post('/api/setup', payload);
+    assert.equal(completed.status, 200);
+    assert.ok(
+      completed.headers.get('set-cookie') === null,
+      'setup must not create a cookie',
+    );
+    assert.equal(completed.headers.get('cache-control'), 'no-store');
+    const completedBody = await completed.text();
+    assert.ok(!completedBody.includes(setupCode));
+    assert.ok(!completedBody.includes(credentials.password));
+    assert.deepEqual(JSON.parse(completedBody), {
+      code: 'SETUP_COMPLETED',
+      redirectTo: '/login',
+    });
+    const login = await post('/api/auth/sign-in/email', credentials);
+    assert.equal(login.status, 200);
+    const cookie = login.headers
+      .getSetCookie()
+      .map((value) => value.split(';')[0])
+      .join('; ');
+    assert.ok(
+      cookie.includes('session_token='),
+      'login creates session cookie',
+    );
+    const session = await fetch(`${origin}/api/auth/get-session`, {
+      headers: { cookie },
+      signal: AbortSignal.timeout(15000),
+    });
+    assert.equal(session.status, 200);
+    assert.equal((await session.json()).user.email, credentials.email);
+    const beforeRestart = setupCodes(await logs('setup-completed')).length;
+    assert.equal(beforeRestart, 1);
+    await compose(['restart', 'ariso']);
+    origin = `http://127.0.0.1:${(await inspect()).NetworkSettings.Ports['3000/tcp'][0].HostPort}`;
+    await waitHealthy();
+    assert.equal(
+      setupCodes(await logs('setup-restarted')).length,
+      beforeRestart,
+    );
+    const repeated = await post('/api/setup', payload);
+    assert.equal(repeated.status, 409);
+    assert.ok(
+      repeated.headers.get('set-cookie') === null,
+      'completed setup retry must not create a cookie',
+    );
+    assert.equal((await repeated.json()).code, 'SETUP_ALREADY_COMPLETED');
+    check(
+      'production setup rejects wrong code, commits without session, supports login and stays completed after restart',
+    );
     await stop();
     // 保留镜像的真实迁移，再追加测试迁移；不能以空生产 journal 为前提。
     const baselineFolder = join(root, 'baseline');
@@ -460,7 +556,10 @@ async function main() {
     report.error = error.message;
     if (id) {
       const result = await execa('docker', ['logs', id], { reject: false });
-      console.error(result.stdout, result.stderr);
+      console.error(
+        redactSetupCodes(result.stdout),
+        redactSetupCodes(result.stderr),
+      );
     }
     throw error;
   } finally {

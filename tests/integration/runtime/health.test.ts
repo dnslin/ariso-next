@@ -123,7 +123,7 @@ it.each(['close-database', 'stall-headers', 'stall-body'] as const)(
       process.execPath,
       [resolve('tests/fixtures/runtime/health-failure.ts')],
       {
-        cwd: directory,
+        cwd: resolve('.'),
         env: {
           NODE_ENV: 'test',
           DATA_DIR: dataDir,

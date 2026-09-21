@@ -1,10 +1,11 @@
 import { startServer } from '../../../src/server/startup/server-start.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
 
-const runtime = startServer();
+let runtime: ReturnType<typeof startServer> | undefined;
 try {
   const { url, method, headers } = JSON.parse(process.argv[2]);
   try {
+    runtime = startServer();
     const user = await requireOwner(new Request(url, { method, headers }));
     console.log(JSON.stringify({ user }));
   } catch (error) {
@@ -13,5 +14,5 @@ try {
     console.log(JSON.stringify({ status: error.status, code: error.code }));
   }
 } finally {
-  runtime.connection.close();
+  runtime?.connection.close();
 }

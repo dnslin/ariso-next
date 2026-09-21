@@ -1,11 +1,11 @@
 import { betterAuth } from 'better-auth';
 import { createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
-import { and, eq } from 'drizzle-orm';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { readSiteSettings } from '../site/settings.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import * as schema from './schema.ts';
+import { readSetupOwner } from './setup.ts';
 
 type Runtime = ReturnType<typeof getServerRuntime>;
 
@@ -80,30 +80,8 @@ const processState = globalThis as typeof globalThis & {
 /** 导入不查库。无所有者是正常 setup 状态；已有所有者缺少必需记录是数据错误。 */
 export function getAuth(runtime = getServerRuntime()) {
   const db = runtime.connection.db;
-  const owner = db.select({ id: schema.user.id }).from(schema.user).get();
-  if (!owner) return null;
-  const settings = readSiteSettings(db);
-  const credential = db
-    .select()
-    .from(schema.account)
-    .where(
-      and(
-        eq(schema.account.userId, owner.id),
-        eq(schema.account.providerId, 'credential'),
-      ),
-    )
-    .get();
-  if (!settings || !credential?.password || credential.accountId !== owner.id) {
-    throw Object.assign(
-      new Error(
-        `所有者数据不完整：缺少或无效的 ${!settings ? 'site_settings' : 'credential'}；数据库：${runtime.config.dataDir}/ariso.db`,
-      ),
-      {
-        code: 'IDENTITY_INCOMPLETE',
-        status: 500,
-      },
-    );
-  }
+  if (!readSetupOwner(db, runtime.connection.db.$client.name)) return null;
+  const settings = readSiteSettings(db)!;
   const origin = new URL(settings.publicUrl).origin;
   const instances = (processState.arisoAuthInstances ??= new WeakMap());
   let current = instances.get(runtime);

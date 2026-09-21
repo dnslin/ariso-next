@@ -1,8 +1,10 @@
 import { createServer } from 'node:http';
 import { GET } from '../../../src/app/api/health/route.ts';
+import { runPreflight } from '../../../src/server/startup/preflight.ts';
 import { startServer } from '../../../src/server/startup/server-start.ts';
 
 // 仅由集成测试启动；故障控制走 IPC，不向生产应用添加路由。
+runPreflight();
 const state = startServer();
 let stall: 'headers' | 'body' | undefined;
 const server = createServer(async (_request, response) => {

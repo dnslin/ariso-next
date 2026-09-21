@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 let directory: string;
@@ -39,12 +39,16 @@ function run(source: string, overrides: Partial<NodeJS.ProcessEnv> = {}) {
       `
     import assert from 'node:assert/strict';
     import { existsSync } from 'node:fs';
-    import { join } from 'node:path';
+    import { join, resolve } from 'node:path';
     const startupUrl = ${JSON.stringify(startup.href)};
     const { startServer, getServerRuntime } = await import(startupUrl);
     const { register } = await import(${JSON.stringify(instrumentation.href)});
     const { GET } = await import(${JSON.stringify(health.href)});
     const databasePath = join(process.env.DATA_DIR, 'ariso.db');
+    async function prepare() {
+      const { runPreflight } = await import(${JSON.stringify(new URL('../../../src/server/startup/preflight.ts', import.meta.url).href)});
+      runPreflight();
+    }
     ${source}
   `,
     ],
@@ -52,6 +56,7 @@ function run(source: string, overrides: Partial<NodeJS.ProcessEnv> = {}) {
       env: { ...env, ...overrides },
       encoding: 'utf8',
       timeout: 10000,
+      cwd: resolve('.'),
     },
   );
   expect(result.error).toBeUndefined();
@@ -91,16 +96,17 @@ describe('Web startup and real health handler', () => {
     `);
   });
 
-  it('Node 初始化在无业务表的磁盘库执行 SELECT 1；重复调用及模块重载复用连接', () => {
+  it('Node 初始化在已迁移无所有者的磁盘库执行 SELECT 1；重复调用及模块重载复用连接', () => {
     run(
       `
+      await prepare();
       await Promise.all([register(), register()]);
       const state = getServerRuntime();
       try {
         assert.equal(existsSync(databasePath), true);
         assert.equal(state.connection.db.$client.memory, false);
         assert.equal(state.connection.db.$client.name, databasePath);
-        assert.deepEqual(state.connection.db.$client.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all(), []);
+        assert.equal(state.connection.db.$client.prepare("SELECT count(*) AS count FROM user").get().count, 0);
         state.connection.db.$client.exec('CREATE TEMP TABLE connection_marker (value TEXT)');
         state.connection.db.$client.prepare('INSERT INTO connection_marker VALUES (?)').run('preserved');
         assert.strictEqual(startServer(), state);
@@ -121,6 +127,7 @@ describe('Web startup and real health handler', () => {
 
   it('真实连接关闭后返回 503，保留错误日志，响应没有秘密或路径且不会自动重连', () => {
     const result = run(`
+      await prepare();
       const state = startServer();
       assert.equal(GET().status, 200);
       state.connection.close();
@@ -146,6 +153,7 @@ describe('Web startup and real health handler', () => {
       assert.throws(getServerRuntime, /not been initialized/);
       assert.equal(existsSync(databasePath), false);
       process.env.BETTER_AUTH_SECRET = secret;
+      await prepare();
       await register();
       getServerRuntime().connection.close();
     `,

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { hashPassword } from 'better-auth/crypto';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { account, user } from '../../../src/server/identity/schema.ts';
+import { prepareInitialMedia } from '../../../src/server/media/settings.ts';
 import { siteSettings } from '../../../src/server/site/schema.ts';
 
 export const email = 'owner@example.test';
@@ -15,6 +16,7 @@ export async function seedAuthOwner(
   const id = randomUUID();
   const hash = await hashPassword(password);
   connection.db.transaction((tx) => {
+    prepareInitialMedia(tx);
     tx.insert(user).values({ id, name: 'Owner', email }).run();
     tx.insert(account)
       .values({
