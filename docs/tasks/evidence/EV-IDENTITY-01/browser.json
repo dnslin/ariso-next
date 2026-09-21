@@ -1,0 +1,43 @@
+{
+  "taskSpaceId": 16,
+  "status": "passed",
+  "checks": [
+    {
+      "origin": "http://127.0.0.1:64552",
+      "login": 200,
+      "session": 200,
+      "serverApiAgrees": true,
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "domain": "127.0.0.1",
+      "crossHostAnonymous": true,
+      "logout": 200
+    },
+    {
+      "origin": "http://localhost:64552",
+      "login": 200,
+      "session": 200,
+      "serverApiAgrees": true,
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "domain": "localhost",
+      "crossHostAnonymous": true,
+      "logout": 200
+    },
+    {
+      "origin": "http://127.0.0.1:64552",
+      "login": 200,
+      "session": 200,
+      "serverApiAgrees": true,
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "domain": "127.0.0.1",
+      "crossHostAnonymous": true,
+      "logout": 200
+    }
+  ],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+}

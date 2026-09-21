@@ -35,6 +35,16 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Verify media contracts on native architecture
         run: pnpm exec vitest run --project integration tests/integration/media
+      - name: Verify identity protocol on native architecture
+        run: pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/identity.xml
+      - name: Preserve identity protocol evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: identity-verification-${{ matrix.arch }}
+          path: test-results/identity.xml
+          if-no-files-found: error
+          retention-days: 14
       - uses: docker/setup-buildx-action@v4
       - name: Verify build context exclusions
         run: |

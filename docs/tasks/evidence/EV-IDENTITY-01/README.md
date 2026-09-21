@@ -1,0 +1,109 @@
+# EV-IDENTITY-01 认证接入实验
+
+日期：2026-09-20。关联 [Issue #52](https://github.com/dnslin/ariso-next/issues/52)。依据 [任务定义](../../gates.md#ev-identity-01-认证初始化及地址切换接入验证)和 [identity §13](../../../specs/SPEC-identity.md#13-实施前需要实测的接入点)。`gh issue view 52 --json number,title,body,comments,url,state` 及原生 dependencies API 确认无评论、无 blocked by，blocking 为 #53、#68。从最新 `origin/main`（1658996）建立 `codex/issue-52-identity-evidence`，原工作区无未提交修改。
+
+## 交付边界
+
+实验位于 `tests/experiments/identity/`，回归入口为 `tests/integration/identity/`。认证依赖仅为开发依赖，不增加生产路由、模块或迁移。Next 测试应用只监听 loopback；`/probe/*` 故意暴露受信任服务端 API 以观察边界，不能复制为公开业务入口。
+
+没有产品界面或 Figma 改动。主题、触控、软键盘、安全区域和 DES/RG 不在本协议实验中验收。真实 GitHub 绑定、API Key、SMTP、邮件重置和 CLI 分别留给 EV-IDENTITY-02/03/04；这里的 GitHub Client ID/Secret 是不能访问服务的固定实验值。
+
+## 固定组合与生成
+
+Better Auth / `@better-auth/drizzle-adapter` / `auth` CLI 均为 **1.7.5**；Drizzle ORM **0.45.2**、Drizzle Kit **0.31.10**、better-sqlite3 **13.0.3**、Next **16.3.5**、React **19.3.0**。Node **24.19.0**、pnpm **11.19.0**，macOS arm64。完整传递依赖由根锁文件固定。
+
+先读取固定发布包的 adapter、rate-limiter、origin-check、state、callback 及类型定义。官方入口：[Drizzle adapter](https://better-auth.com/docs/adapters/drizzle)、[schema CLI](https://better-auth.com/docs/concepts/cli)。生成过程：
+
+```sh
+pnpm exec auth generate --config tests/experiments/identity/generate.config.ts --adapter drizzle --dialect sqlite --output tests/experiments/identity/schema.ts --yes
+pnpm exec drizzle-kit generate --config tests/experiments/identity/drizzle.config.ts
+pnpm run db:generate
+```
+
+保留 [CLI 生成结果](./generated-schema.ts)。实验 schema 在生成结果上仅增加 `ownerSlot UNIQUE/CHECK = 1` 和 `(userId, providerId) UNIQUE`，数据库默认值与非空字段沿用生成结果。生成的独立 SQL 在实验目录提交，生产 `db:generate` 返回 **No schema changes**。已再次生成至 `test-results/identity-generated.ts`，用 Prettier 统一格式后 `cmp` 与归档生成结果一致；不直接覆盖人工核对后的约束。
+
+## 实验结论与下游接入要求
+
+| 项目           | 实际验证                                                                                                                                                                                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 初始化持久化   | 两个独立 Node 进程同时尝试写同一磁盘库；一个成功，一个被所有者唯一约束拒绝；只留下一个匹配 user.id 的 credential。注入 credential 写失败后 user 一起回滚，移除故障可重试。                                                                                               |
+| 数据约束       | ownerSlot 默认 1，拒绝 NULL/0/2；拒绝重复 credential 和第二个 GitHub provider 记录。库 internalAdapter 能写入并读回额外字段。                                                                                                                                            |
+| 注册与字段     | HTTP 和 `auth.api.signUpEmail` 均返回 `EMAIL_PASSWORD_SIGN_UP_DISABLED`。登录后客户端写 ownerSlot 返回 400 / `FIELD_NOT_ALLOWED`，会话响应不返回 ownerSlot。                                                                                                             |
+| 真正登录与退出 | setup 夹具只调用库 hashPassword 并同步写 user/account，随后通过真实 Next HTTP 登录。原始 Set-Cookie 断言 HttpOnly、SameSite=Lax、Path=/、7 天 Max-Age、无 Domain；HTTP 与 `auth.api.getSession` 结果相同；退出清 Cookie 并使重放失效。                                   |
+| Secret 轮换    | 停止旧 Next 进程，以不同 Secret 和相同磁盘库启动新进程；旧 Cookie 在 HTTP 和服务端会话 API 均得到 null；用户、credential、原会话行保持不变；密码仍能重新登录。                                                                                                           |
+| A→B→A          | 单个当前实例按已保存 origin 刷新，验证 HTTP→HTTPS→HTTP 原始 Secure / `__Secure-` 策略和清 Cookie 属性。当前来源通过，旧来源、缺 Origin 的带 Cookie 写入、外部 callbackURL 均拒绝。原始 HTTP 导航请求验证 cross-site CSRF 拒绝。                                          |
+| 限流           | 固定同一实验 IP，默认 10 秒/3 次登录阈值后得到 429 和正的 X-Retry-After；A→B→A 实例刷新仍拒绝。该版本模块级 memory store 保留同进程限流；不承诺跨进程保留。                                                                                                              |
+| OAuth state    | 在 A/B/A 分别生成真实库 state，检查 GitHub authorize URL 的 redirect_uri；缺 Cookie、缺 state、重复消费被拒绝；实例切换再返回原 origin 后，原 Cookie 可完成一次取消回调。服务端 signInSocial 生成的 state 也经过真实 HTTP 回调校验。没有调用 GitHub token/profile 服务。 |
+| 浏览器         | Ego Lite / Chrome 152 实际 A→B→A 登录、会话、Host-only、HttpOnly、SameSite=Lax 和退出通过，见 [browser.json](./browser.json)。未读取或归档会话 Cookie 值。                                                                                                               |
+| 同步事务       | `transaction: true` 的库 adapter 接收异步回调时，真实 better-sqlite3 报 Transaction function cannot return a promise。实验显式 false；密码哈希在短同步事务外，不能把异步库流程包进 SQLite 同步事务。                                                                     |
+
+**HTTP 与受信任服务端 API 不可互换。** 实测直接 `auth.api.signInEmail` 即使传旧/不可信 Origin、处于 HTTP 限流状态，仍可登录并生成 Cookie。来源/CSRF 和限流是库路由入口的职责，不能把直接服务端调用包装为公开登录接口。下游本地登录使用 `auth.handler(request)`；自定义管理写入按规格明确检查来源与所有者。读取会话的 HTTP/API 结果一致，不代表所有写入保护一致。
+
+`x-experiment-ip` 只用于 loopback 测试分离请求桶，不是生产可信代理配置。Cookie 使用实验专属前缀，避免覆盖浏览器其他应用的 Cookie。HTTPS 项是 HTTP 响应头策略实验；Ego 的实际网络为本地 HTTP，不将其称为真实 TLS 或外部域名部署验收。完整 setup 的初始化码、site/storage/media 组合事务属于后续业务任务。
+
+## 验证记录
+
+本地命令使用独立 Node 24 路径置于 PATH 首位，不修改全局 Node 配置：
+
+```sh
+export PATH=/Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:$PATH
+pnpm install --frozen-lockfile
+pnpm run format:check
+pnpm run lint
+pnpm run typecheck
+pnpm run test:unit
+pnpm run build
+pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/integration.xml
+EGO_TASK_SPACE=16 EGO_KEEP_SPACE=1 node tests/experiments/identity/run-browser.ts
+EGO_TASK_SPACE=16 BROWSER_REPORT_DIR=test-results/identity-runtime-browser pnpm run test:browser
+pnpm audit --json
+```
+
+本地安装、格式、lint、typecheck、190 项单元测试、生产构建和全部 140 项集成测试通过。身份实验的 11 项实际结果见 [local-identity.xml](./local-identity.xml)。Ego 认证实验通过；同一 TaskSpace 16 的生产浏览器冒烟在 390/1440 两宽度通过，静态资源、健康接口及错误监控通过，见 [runtime-browser.json](./runtime-browser.json)；TaskSpace 已成功关闭。首轮远端 CI/Docker 已通过，详见下节；Issue 状态和合并仍由用户决定。
+
+生产构建退出 0，但 nft 打包器打印缺失 `build/Debug/better_sqlite3.node` 的诊断。实际使用的是 Release 二进制，保留原始诊断并以生产集成与镜像检查判断产物可用性，不隐藏日志。`pnpm audit` 报一个 moderate：原有 drizzle-kit 的 esbuild 0.18.20 开发服务器公告 GHSA-67mh-4wv8-2f99；新增依赖复用同一链。实验不运行 esbuild 开发服务器，也不把它打入生产，不在本 Issue 升级原有工具链。
+
+过程中修正了：Next 对 `new URL('./drizzle', import.meta.url)` 的目录打包解析、库 input:false 的 400 行为、Node fetch 改写 Sec-Fetch-Mode、实际 X-Retry-After 头，以及测试 Next 生成产物被根 lint 扫入的问题。Ego 首次子进程因 stdin 未结束而超时，未发生浏览器请求；改为 stdin 完整写入并关闭后通过。未跳过失败断言或测试。
+
+## 审计与远端验证
+
+已使用 `code-review-and-quality` 完成独立审计，未发现必改问题。审计重点为需求覆盖、HTTP/API 保护边界、state 一次消费、真实磁盘并发、依赖与生产模块隔离。审计代理用 Node 24.19.0 / pnpm 11.19.0 独立重跑 `pnpm exec vitest run --project integration tests/integration/identity --reporter=verbose`，2 文件 / 11 项通过。其早先 Node 26 复跑不计入项目验收。`.github/workflows/images.yml` 为 AMD64/ARM64 原生 runner 增加同一组 identity 实验，并归档 JUnit；现有真实 Docker 构建、图片、存储、生命周期检查继续执行。PR 事件不会触发 publish。
+
+提交 [f57ff5f](https://github.com/dnslin/ariso-next/commit/f57ff5fdb1767ece3e006a6efb60aaf714bbbac8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35513964773) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35513964843) 均 success。AMD64/ARM64 各 11 项认证实验通过，原始 JUnit 已归档：[AMD64](./amd64.xml)、[ARM64](./arm64.xml)。原生 runner 为 Node 24.20.0；实际 Docker 为 Node 24.21.0。容器生命周期、迁移、备份恢复原始报告：[AMD64](./container-amd64.json)、[ARM64](./container-arm64.json)。两架构的图片转换、受限挂载存储及镜像内容检查均通过。release-checks / publish 因非 release 事件跳过，没有发布镜像或部署。
+
+```sh
+gh pr checks 91
+gh run view 35513964773
+gh run view 35513964843
+gh run download 35513964843 --name identity-verification-amd64 --dir test-results/remote-identity/amd64
+gh run download 35513964843 --name identity-verification-arm64 --dir test-results/remote-identity/arm64
+gh run download 35513964843 --name container-verification-amd64 --dir test-results/remote-identity/container-amd64
+gh run download 35513964843 --name container-verification-arm64 --dir test-results/remote-identity/container-arm64
+```
+
+本次归档只更新报告和原始结果，不修改受测代码。最新提交的复跑状态以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 为准；全部通过后转为待评审，不自动合并、关闭 Issue 或删除分支。
+
+## PR 复审修复（2026-09-21）
+
+两角度复审发现并修复了两个实验工具问题：原始 Cookie 检查用 `includes('Secure')` 会误命中 `__Secure-` 名称，现在只检查分号后的独立 Secure 属性（不区分大小写），同时保留前缀断言。新增 7 个回归用例；旧实现实际失败 5 个，修复后全部通过。
+
+浏览器验证脚本现在在创建资源前监听 SIGINT/SIGTERM，使用 AbortController 中止等待或外部浏览器命令，再进入 finally 停止真实 Next 进程组并删除临时数据库。取消测试在独立临时副本启动真实 Next，确认 HTTP 200 后分别发送两种信号，检查非成功退出、Next 与浏览器子进程消失、端口关闭和数据库目录删除，并在相同应用目录再次启动。旧实现实际遗留 Next，回归失败；修复后通过。测试仅将外部 Ego 命令替换为阻塞夹具，因此这项测试只证明进程取消行为，不冒充浏览器验证。
+
+环境仍为 macOS arm64、Node 24.19.0、pnpm 11.19.0。实际执行：
+
+```sh
+pnpm exec vitest run --project unit tests/unit/identity/cookie-attributes.test.ts
+pnpm exec vitest run --project integration tests/integration/identity/browser-runner.test.ts
+pnpm run format:check
+pnpm run lint
+pnpm run typecheck
+pnpm run test:unit
+pnpm run build
+pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/review-integration.xml
+pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/review-identity.xml
+BROWSER_REPORT_DIR=test-results/identity-review-browser node tests/experiments/identity/run-browser.ts
+```
+
+格式、lint、类型检查、197 项单元测试、生产构建、141 项完整集成测试均通过。构建仍输出前述 SQLite Debug 二进制诊断，退出码为 0。独立复审额外指出资源初始化早期的取消窗口，已将监听提前，并重新执行相关格式、lint、类型检查及全部 12 项 identity 集成测试，均通过，见 [原始 JUnit](./review-fixes/local-identity.xml)。真实 Ego Lite A→B→A 登录、会话和退出通过，见 [复跑浏览器报告](./review-fixes/browser.json)；TaskSpace 17 已关闭。本轮无生产 UI 改动，未重复执行原先的 390/1440 生产冒烟。
+
+使用 `debugging-and-error-recovery`、`test-driven-development` 修复，并按 `code-review-and-quality` 独立复审修复和回归测试，最终无剩余必改问题。远端 CI 与 AMD64/ARM64 Docker 需在推送后重新执行；最新结果以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 的当前提交检查为准。未合并、发布或部署。
