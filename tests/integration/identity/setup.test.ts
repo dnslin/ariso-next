@@ -203,6 +203,7 @@ it.each(businessTables)(
   },
 );
 
+// A restart includes stop (up to 5s) and readiness (up to 15s); the default 5s case budget cannot cover it.
 it('ignoring the committed response then retrying directs to login; restart issues no code or reset', async () => {
   const code = codes()[0];
   const response = await setup();
@@ -223,7 +224,7 @@ it('ignoring the committed response then retrying directs to login; restart issu
   }
   expect(codes()).toEqual([]);
   expect(businessTables.map(records)).toEqual(before);
-});
+}, 30000);
 
 it('a real uninitialized restart replaces the code and rejects the old one', async () => {
   const oldCode = codes()[0];
@@ -235,7 +236,7 @@ it('a real uninitialized restart replaces the code and rejects the old one', asy
   expect(denied.status).toBe(401);
   expect(await denied.json()).toMatchObject({ code: 'INVALID_SETUP_CODE' });
   await completed(await setup());
-});
+}, 30000);
 
 it.each(['site_settings', 'account', 'media_settings', 'storage_settings'])(
   'an owner missing %s fails startup with the database path instead of reopening setup',
@@ -342,7 +343,7 @@ it('a credential write failure logs its diagnostic without passwords, hashes or 
     connection.db.$client.exec('DROP TRIGGER reject_setup');
   }
   await completed(await setup({ code }));
-});
+}, 30000);
 
 it('restart preserves changed site/media settings and a deliberately deleted default storage', async () => {
   await completed(await setup());
@@ -363,4 +364,4 @@ it('restart preserves changed site/media settings and a deliberately deleted def
   await ready();
   expect(codes()).toEqual([]);
   expect(tables.map(records)).toEqual(before);
-});
+}, 30000);

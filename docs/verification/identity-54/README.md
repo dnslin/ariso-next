@@ -42,7 +42,7 @@
 | `pnpm exec vitest run --project integration tests/integration/identity/setup-lifecycle.test.ts`      | 11 项通过                                                                        |
 | `node --check scripts/verify-container.mjs`                                                          | 通过；不等同容器实跑                                                             |
 
-`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-integration.xml` 在加入真实 dev 测试前，全量 23 文件、195 项通过，包含无密钥隔离构建。[单元 JUnit](./local-unit.xml)、[集成 JUnit](./local-integration.xml) 保留结果，临时初始化码字段已脱敏。
+`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-integration.xml` 在重启测试预算修正后，全量 24 文件、196 项通过（45.32s），包含真实 dev 重执行与无密钥隔离构建。[单元 JUnit](./local-unit.xml)、[集成 JUnit](./local-integration.xml) 保留结果，临时初始化码字段已脱敏。
 
 `EGO_TASK_SPACE=19 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-54-browser-final pnpm run test:browser` 最终生产构建复跑通过。Ego Lite / Chrome 152、390/1440 布局无横向溢出，健康、静态资源、私有样本与浏览器错误检查通过，两个截图已目视核对。[浏览器报告](./browser/browser.json)、[运行清理](./browser/runner.json)、[空间关闭记录](./browser/space-cleanup.json)。同一 TaskSpace 19 已通过 `task.finish({ keep: [] })` 关闭。仅验收运行页面，不宣称初始化/登录 UI 完成。
 
@@ -61,3 +61,15 @@
 使用 `code-review-and-quality` 完成独立 tests-first 五维审计。已落实日志秘密检查、删除存储及修改设置后重启保留、容器内真实 setup 验证建议。当前生产代码复审未发现剩余必改问题；远端未完成前不声明全部验收通过。
 
 `.github/workflows/images.yml` 已自动在原生 AMD64/ARM64 构建 standalone 后运行完整 identity 集成目录。`verify-container.mjs` 新增最终镜像内 setup、真实登录/会话、重启和重复提交拒绝检查，随后继续原迁移、停止备份及恢复流程。本机未运行 Docker，远端容器结果待 Actions。发布仍只允许 release 事件，本任务不发布镜像或部署。
+
+## 首轮远端与重启测试预算修正
+
+提交 `010e0bf` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35555915128) 全部成功。[双架构首轮](https://github.com/dnslin/ariso-next/actions/runs/35555915315) 的 ARM64 全部成功，最终镜像内真实 setup、登录、重启、迁移故障与停止备份恢复通过，见 [ARM64 容器报告](./first-arm64-container.json)。发布相关步骤跳过。
+
+AMD64 的 67 项 identity 测试中 66 项通过；唯一失败是“已提交响应丢失后重试及重启”触发 Vitest 默认 5000ms 总超时，见 [首次 AMD64 JUnit](./first-amd64-identity.xml)。该用例包含最多 5s 的停止过程及最多 15s 的启动等待，默认总时限无法覆盖自身生命周期；不是数据库、码或 HTTP 状态断言失败。
+
+仅将四个遗漏总预算的重启用例与已有同类用例统一为 30s。单请求 10s、启动 15s、停止 5s 的边界和全部断言保持。独立审计确认是测试预算冲突；没有改生产代码或全局放宽测试。
+
+修正后实际执行 `pnpm exec vitest run --project integration tests/integration/identity/setup.test.ts --reporter=default --reporter=junit --outputFile=test-results/issue-54-restart-budget.xml`：28 项通过，见 [定向 JUnit](./restart-budget.xml)。全量 `pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-integration.xml`：196 项通过，最终 [集成 JUnit](./local-integration.xml) 已更新。`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check` 均通过。生产行为、schema 与依赖未变，不重复单元或独立生产构建；隔离构建随全量集成实际执行并通过。
+
+PR 继续保持草稿，等待修正后的 CI 与双架构重新验证，不把 ARM64 单侧成功记为双架构通过。
