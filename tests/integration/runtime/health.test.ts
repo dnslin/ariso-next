@@ -50,14 +50,18 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
           )
           .all(),
       ).toEqual([
+        { name: 'account' },
         { name: 'media_images' },
         { name: 'media_jobs' },
         { name: 'media_objects' },
         { name: 'media_settings' },
         { name: 'media_versions' },
+        { name: 'session' },
         { name: 'site_settings' },
         { name: 'storage_configs' },
         { name: 'storage_settings' },
+        { name: 'user' },
+        { name: 'verification' },
       ]);
       expect(
         db
@@ -75,6 +79,10 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       ]);
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
       for (const table of [
+        'account',
+        'session',
+        'user',
+        'verification',
         'media_images',
         'media_jobs',
         'media_objects',

@@ -35,6 +35,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Verify media contracts on native architecture
         run: pnpm exec vitest run --project integration tests/integration/media
+      - name: Build standalone for production identity verification
+        run: pnpm run build
       - name: Verify identity protocol on native architecture
         run: pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/identity.xml
       - name: Preserve identity protocol evidence
