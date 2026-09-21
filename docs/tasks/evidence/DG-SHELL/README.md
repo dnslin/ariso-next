@@ -40,3 +40,5 @@
 按 `code-review-and-quality` 完成独立只读审计：Critical 0、Required 0。审计核对 Issue、相对 main 的差异、SPEC、交接与历史节点来源；新增锚点一致，未引入新产品行为、业务代码、依赖或跨模块职责。安全/性能没有运行时变化，测试适用性以文档范围判断；没有用原型或依赖实验替代真实业务验收。
 
 [PR #95](https://github.com/dnslin/ariso-next/pull/95) 已作为草稿创建并触发 [CI](https://github.com/dnslin/ariso-next/actions/runs/35570073624) 和 [Docker 双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35570073699)。这两个链接对应首个提交 `b92c9a8`，记录时仍在运行，不标记通过。证据补充后的最新提交以 [PR checks](https://github.com/dnslin/ariso-next/pull/95/checks) 为准；全部适用检查通过后再转为正式待评审。Docker 的 release-checks/publish 仅 release 事件可执行，本次不发布镜像、不部署、不合并或关闭 Issue。
+
+提交 `af8400a07845411bc2cb3326edcabe38d0a6a886` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35570195575) 与 [Docker](https://github.com/dnslin/ariso-next/actions/runs/35570195766) 已全部通过。CI 实际运行根/隔离 UI 冻结安装、UI 类型/构建、根 lint、format:check、typecheck、test:unit、build 和 test:integration（25 文件、199 项）。AMD64/ARM64 均完成原生 media/identity 验证、镜像构建、离线文件/工具核对、有限挂载存储、生命周期、迁移、备份恢复；release-checks 与 publish 跳过。通过 `gh pr checks 95`、`gh run view <run-id> --json status,conclusion,jobs` 和 CI 日志核对。此证据补充不改变任务规则，最新提交仍以 PR checks 为准，不把前一提交的通过状态当成后一提交已通过。
