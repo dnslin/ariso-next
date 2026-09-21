@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="67" failures="0" errors="0" time="173.490512822">
+    <testsuite name="tests/integration/identity/auth.test.ts" timestamp="2026-09-21T03:08:36.908Z" hostname="runnervmec22z" tests="15" failures="0" errors="0" skipped="0" time="45.800553104">
+        <testcase classname="tests/integration/identity/auth.test.ts" name="uninitialized production auth requests return setup-required without creating an owner" time="2.476515956">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; production constraints reject invalid owners and duplicate providers; incomplete identity is explicit" time="3.621631918">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false" time="7.313945202">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; login body { is a client error" time="1.501179805">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; login body undefined is a client error" time="1.501907307">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; login body null is a client error" time="1.458813613">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; login body [] is a client error" time="1.354496414">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not" time="6.778606819">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged" time="2.014926574">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; real sessions renew after one day, expire after seven days, and logout revokes only its own cookie" time="3.859940253">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; logout read failure preserves the cookie and reports failure until a successful retry" time="1.577492562">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; logout delete failure preserves the cookie and reports failure until a successful retry" time="1.580309389">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins" time="5.052593417">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; production login limiting survives saved-origin instance refresh" time="1.73564997">
+        </testcase>
+        <testcase classname="tests/integration/identity/auth.test.ts" name="initialized production auth &gt; a new process with rotated Secret rejects old cookies while retaining persisted identity and session rows" time="3.970283053">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/browser-runner.test.ts" timestamp="2026-09-21T03:08:36.923Z" hostname="runnervmec22z" tests="1" failures="0" errors="0" skipped="0" time="9.708588763">
+        <testcase classname="tests/integration/identity/browser-runner.test.ts" name="browser runner cancels on SIGINT and SIGTERM, stops real Next, removes its database and can restart" time="9.707489294">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/database.test.ts" timestamp="2026-09-21T03:08:36.923Z" hostname="runnervmec22z" tests="5" failures="0" errors="0" skipped="0" time="1.73631538">
+        <testcase classname="tests/integration/identity/database.test.ts" name="two processes race owner creation: one complete credential and no partial loser" time="1.431372106">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="owner CHECK/NOT NULL/default/UNIQUE and provider uniqueness are database constraints" time="0.091152676">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="a failed synchronous seed transaction rolls back the user and can be retried" time="0.149790757">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="library reads/writes the additional field without enabling registration" time="0.049895801">
+        </testcase>
+        <testcase classname="tests/integration/identity/database.test.ts" name="the enabled asynchronous adapter transaction fails with synchronous SQLite; use explicit false" time="0.012746665">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/http.test.ts" timestamp="2026-09-21T03:08:36.924Z" hostname="runnervmec22z" tests="6" failures="0" errors="0" skipped="0" time="20.33519724">
+        <testcase classname="tests/integration/identity/http.test.ts" name="direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it" time="6.925576584">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="public registration stays disabled at HTTP and trusted API boundaries" time="0.04150575">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses" time="0.533655773">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute" time="0.977995059">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub" time="0.948533328">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="new process and Secret reject old signed Cookie without deleting users/credentials/sessions" time="6.721769506">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/setup-dev.test.ts" timestamp="2026-09-21T03:08:36.925Z" hostname="runnervmec22z" tests="1" failures="0" errors="0" skipped="0" time="21.077311666">
+        <testcase classname="tests/integration/identity/setup-dev.test.ts" name="real Next dev recompilation retains the startup code and the original code creates a login-capable owner" time="21.076018001">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/setup-lifecycle.test.ts" timestamp="2026-09-21T03:08:36.925Z" hostname="runnervmec22z" tests="11" failures="0" errors="0" skipped="0" time="21.143079531">
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup process lifecycle &gt; imports without deployment secrets neither open a database nor issue a code" time="0.716909927">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup process lifecycle &gt; prestart prepares storage without issuing a code; real module reloads share one startup code" time="2.132138589">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup hash await boundary (controlled hash, real SQLite) &gt; hashes outside the transaction and rechecks a code invalidated while awaiting" time="0.849720851">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup hash await boundary (controlled hash, real SQLite) &gt; a hash failure leaves setup open and a later request can retry" time="0.764767729">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup hash await boundary (controlled hash, real SQLite) &gt; a second completed request prevents the awaiting request from creating another owner" time="0.770862298">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at hash and can use real credential login" time="2.636071314">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at site_settings and can use real credential login" time="2.633498328">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at media_settings and can use real credential login" time="2.69708029">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at user and can use real credential login" time="2.648815616">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at account and can use real credential login" time="2.730332414">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup-lifecycle.test.ts" name="setup real SIGKILL crash recovery &gt; recovers after process death at committed and can use real credential login" time="2.560162428">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/setup.test.ts" timestamp="2026-09-21T03:08:36.928Z" hostname="runnervmec22z" tests="28" failures="0" errors="0" skipped="0" time="53.689467138">
+        <testcase classname="tests/integration/identity/setup.test.ts" name="empty production startup prepares storage and prints exactly one code even with fatal logging; HTTP never returns it" time="1.472288866">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="missing code returns a field error and writes nothing" time="1.330613818">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="missing email returns a field error and writes nothing" time="1.441055212">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="missing password returns a field error and writes nothing" time="1.377157994">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="missing publicUrl returns a field error and writes nothing" time="1.29765135">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="missing timeZone returns a field error and writes nothing" time="1.317224434">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="concurrent setup commits one complete owner, creates no session, and supports a real password login" time="1.947711531">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a failed site_settings insert rolls back every business row and the same code can retry" time="1.656286453">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a failed media_settings insert rolls back every business row and the same code can retry" time="1.566857764">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a failed user insert rolls back every business row and the same code can retry" time="1.562248375">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a failed account insert rolls back every business row and the same code can retry" time="1.496316964">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="ignoring the committed response then retrying directs to login; restart issues no code or reset" time="5.820601397">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a real uninitialized restart replaces the code and rejects the old one" time="2.728951906">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="an owner missing site_settings fails startup with the database path instead of reopening setup" time="2.11130136">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="an owner missing account fails startup with the database path instead of reopening setup" time="2.083831195">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="an owner missing media_settings fails startup with the database path instead of reopening setup" time="2.142071146">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="an owner missing storage_settings fails startup with the database path instead of reopening setup" time="2.12300654">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a cleared default storage is preserved on initialized restart" time="2.693643292">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a disabled default storage is preserved on initialized restart" time="2.810452832">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="malformed or non-object JSON { is a client error with no business writes" time="1.308669324">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="malformed or non-object JSON null is a client error with no business writes" time="1.334879638">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="malformed or non-object JSON [] is a client error with no business writes" time="1.272651081">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="invalid email uses the field validation contract" time="1.251156108">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="invalid password uses the field validation contract" time="1.338544518">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="invalid publicUrl uses the field validation contract" time="1.273424466">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="invalid timeZone uses the field validation contract" time="1.500074319">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="a credential write failure logs its diagnostic without passwords, hashes or repeated setup codes" time="2.692045809">
+        </testcase>
+        <testcase classname="tests/integration/identity/setup.test.ts" name="restart preserves changed site/media settings and a deliberately deleted default storage" time="2.73656862">
+        </testcase>
+    </testsuite>
+</testsuites>

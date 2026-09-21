@@ -48,7 +48,7 @@
 
 加入真实 dev 测试后的 `pnpm exec vitest run --project integration` 最终全量 24 文件、196 项通过（44.58s），见 [最终完整运行输出](./local-integration-final.txt)。上一轮出现一次 dev 健康接口 500，见 [首次失败输出](./dev-first-failure.txt)；补充 HTTP 正文及服务日志诊断后，专项、与隔离 build 并行及全量检查均通过，未提高超时或跳过断言。该次 500 原因未确定，不能宣称已修复，远端继续观察。新增测试的 `NODE_ENV` 类型推断问题已修正，最终类型检查与格式检查通过。
 
-`node docs/tasks/check.mjs` 通过（120 任务、298 需求，无缺失或循环）；`git diff --check` 通过。远端结果将在实际完成后补记。
+`node docs/tasks/check.mjs` 通过（120 任务、298 需求，无缺失或循环）；`git diff --check` 通过。最终远端结果见本文末节。
 
 40 项初始化测试包含真实生产 HTTP/SQLite、错码和字段错误、并发唯一提交、四张表 SQL trigger 中断全回滚、丢响应重试、未完成重启换码、已完成重启不发码、损坏数据拒绝启动与合法设置保留。
 
@@ -58,9 +58,9 @@
 
 ## 审计与远端
 
-使用 `code-review-and-quality` 完成独立 tests-first 五维审计。已落实日志秘密检查、删除存储及修改设置后重启保留、容器内真实 setup 验证建议。当前生产代码复审未发现剩余必改问题；远端未完成前不声明全部验收通过。
+使用 `code-review-and-quality` 完成独立 tests-first 五维审计。已落实日志秘密检查、删除存储及修改设置后重启保留、容器内真实 setup 验证建议。当前生产代码复审未发现剩余必改问题；最终远端验收见下文。
 
-`.github/workflows/images.yml` 已自动在原生 AMD64/ARM64 构建 standalone 后运行完整 identity 集成目录。`verify-container.mjs` 新增最终镜像内 setup、真实登录/会话、重启和重复提交拒绝检查，随后继续原迁移、停止备份及恢复流程。本机未运行 Docker，远端容器结果待 Actions。发布仍只允许 release 事件，本任务不发布镜像或部署。
+`.github/workflows/images.yml` 已自动在原生 AMD64/ARM64 构建 standalone 后运行完整 identity 集成目录。`verify-container.mjs` 新增最终镜像内 setup、真实登录/会话、重启和重复提交拒绝检查，随后继续原迁移、停止备份及恢复流程。本机未运行 Docker，真实容器结果由下文 Actions 提供。发布仍只允许 release 事件，本任务不发布镜像或部署。
 
 ## 首轮远端与重启测试预算修正
 
@@ -72,4 +72,21 @@ AMD64 的 67 项 identity 测试中 66 项通过；唯一失败是“已提交�
 
 修正后实际执行 `pnpm exec vitest run --project integration tests/integration/identity/setup.test.ts --reporter=default --reporter=junit --outputFile=test-results/issue-54-restart-budget.xml`：28 项通过，见 [定向 JUnit](./restart-budget.xml)。全量 `pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-integration.xml`：196 项通过，最终 [集成 JUnit](./local-integration.xml) 已更新。`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check` 均通过。生产行为、schema 与依赖未变，不重复单元或独立生产构建；隔离构建随全量集成实际执行并通过。
 
-PR 继续保持草稿，等待修正后的 CI 与双架构重新验证，不把 ARM64 单侧成功记为双架构通过。
+该轮保持 PR 草稿，等待修正后的 CI 与双架构重新验证，没有把 ARM64 单侧成功记为双架构通过。
+
+## 最终远端验证
+
+修正提交 `fce11f3` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35556389303) 全部成功（3m14s）。[Docker 双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35556389560) 全部成功：AMD64 4m59s，ARM64 4m12s。两架构分别执行 67 项 identity 测试且零失败，包含本次 40 项 setup 测试：[AMD64 JUnit](./amd64-identity.xml)、[ARM64 JUnit](./arm64-identity.xml)。
+
+两种最终镜像都实际验证了错码拒绝、一次完整 setup、无自动会话、真实登录/会话、重启不发新码和重复提交 409，随后完成工具/原生驱动、离线图片转换、存储故障、迁移回滚、旧版本拒绝、停止整目录备份及恢复。原始容器报告：[AMD64](./amd64-container.json)、[ARM64](./arm64-container.json)。`release-checks`、`publish` 均跳过，没有镜像发布或部署。
+
+实际执行 `gh pr checks 93`、`gh run view 35556389303`、`gh run view 35556389560`、`gh run watch ... --interval 30 --exit-status`，并分别执行：
+
+```sh
+gh run download 35556389560 --name identity-verification-<arch> --dir test-results/remote-54/identity-<arch>
+gh run download 35556389560 --name container-verification-<arch> --dir test-results/remote-54/container-<arch>
+```
+
+`<arch>` 分别为 `amd64`、`arm64`。早期 AMD64 总预算失败和本地一次未复现的 dev 500 保留在前文；修正后的本地全量、CI 及两架构检查均通过，没有把重跑结果写成首次通过。
+
+本次最后提交只归档已完成的远端证据，不改变受测实现或测试。该证据提交的最新检查以 [PR #93 checks](https://github.com/dnslin/ariso-next/pull/93/checks) 为准；全部通过后转为正式待评审。合并、Issue 关闭、发布、部署及分支/worktree 清理由用户另行决定。
