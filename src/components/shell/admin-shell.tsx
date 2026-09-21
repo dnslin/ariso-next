@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
@@ -43,14 +43,25 @@ export function AdminShell({
     const closeOnResize = () => {
       if (desktop.matches) {
         setOpen(false);
-        document
-          .querySelector<HTMLElement>('.shell-navigation [aria-current="page"]')
-          ?.focus();
       }
     };
     desktop.addEventListener('change', closeOnResize);
     return () => desktop.removeEventListener('change', closeOnResize);
   }, [open]);
+
+  // 等菜单实际移除后再聚焦，避免关闭动画中的焦点范围把焦点拉回隐藏按钮。
+  const menuRef = useCallback((node: HTMLElement | null) => {
+    if (node) return;
+    requestAnimationFrame(() => {
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        document
+          .querySelector<HTMLElement>(
+            '.shell-navigation [aria-current="page"], .shell-navigation .shell-brand',
+          )
+          ?.focus();
+      }
+    });
+  }, []);
 
   const links = (close?: () => void) =>
     navigation.map(({ href, label, icon }) => (
@@ -104,7 +115,9 @@ export function AdminShell({
                   <p className="shell-description">{description}</p>
                 ) : null}
                 <Modal.Body className="shell-menu-body">
-                  <nav aria-label="后台导航">{links(() => setOpen(false))}</nav>
+                  <nav ref={menuRef} aria-label="后台导航">
+                    {links(() => setOpen(false))}
+                  </nav>
                 </Modal.Body>
                 <Modal.Footer className="shell-menu-user">{user}</Modal.Footer>
               </Modal.Dialog>

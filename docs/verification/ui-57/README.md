@@ -63,6 +63,8 @@
 
 使用 `code-review-and-quality` 独立审计，先看测试，再核对实现、声明、锁文件、CI/Docker 与交接。首轮两项 Required 为 Tabs 缺少真实关联面板、缺少断点边界与减少动态效果断言；均已修复。复审无 Critical / Required。审计另执行 shell 单元测试 10 项通过。字体完整字符集的 7.4 MiB 成本已明确记录，不引入字体子集构建系统。
 
+追加边界检查实际发现菜单打开后从 767 切到 768，Modal 关闭的焦点恢复会覆盖导航聚焦，最终落在 BODY。改为菜单实际卸载后恢复到可见导航，并增加真实浏览器断言。`pnpm run lint`、`pnpm run typecheck`、`pnpm exec vitest run --project unit tests/unit/shell`（10 项）、`EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/shell-resize pnpm run test:browser` 全部通过；[运行器](./shell-resize/runner.json)、[首页](./shell-resize/browser.json)、[外壳](./shell-resize/shell-browser.json)。独立复审该补丁无 Critical / Required。
+
 真实浏览器覆盖：品牌字体和中文、两主题五档宽度、资源与水合、首页无虚假入口、404 键盘回首页；后台最长路由当前项、Tabs 的面板关联与 ArrowRight/Enter、Select 实际跳转、菜单全屏尺寸、Tab 焦点限制、关闭/Esc 后焦点恢复和来源滚动、767/768/1199/1200 边界、整行点击区域、减少动态效果、390×400 可滚动输入与固定底栏、长名称与空导航。截图已目视核对；Ego 扩展浮标属于浏览器环境，不是页面组件。
 
 [首页浅色手机](./shell-final/home-light-390.png) · [首页深色桌面](./shell-final/home-dark-1440.png) · [外壳浅色桌面](./shell-final/shell-light-1440.png) · [外壳深色手机](./shell-final/shell-dark-390.png) · [短视口](./shell-final/shell-short-viewport.png)。完整五宽度截图由复现命令生成，提交保留代表图与全部结构断言。
@@ -73,4 +75,4 @@
 - 错误页静态内容已测试；真实数据库故障后的浏览器重试恢复尚未实测，不标记通过。
 - 本次无 schema 改动，未执行 db:generate。T-ID-03 接入认证和权限；后续业务任务接入后台，T-SITE-05 交付完整主题行为，不由本次夹具提前验收。
 - 原有 esbuild 公告涉及其开发服务器跨源读取，未在本次修改既有 Drizzle 依赖；未运行 esbuild 开发服务器。后续依赖升级需单独处理。
-- Docker 与 AMD64/ARM64 将通过 PR 的 GitHub Actions 验证；记录实际远端结果后再补充。未运行本机 Docker、发布镜像、部署、合并或关闭 Issue；保留分支与工作目录。
+- 提交 `90bcd6e9518654a0a100542f742fc9d476dc1b2d` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35578922747) 与 [Docker 验证](https://github.com/dnslin/ariso-next/actions/runs/35578922920) 全部成功；[AMD64 报告](./remote/container-amd64.json)、[ARM64 报告](./remote/container-arm64.json)来自 Actions 原始产物。发布与 release-checks 均按 PR 条件跳过。菜单断点焦点补丁推送后，以 [PR #96 最新检查](https://github.com/dnslin/ariso-next/pull/96/checks)为准，不将此前提交的检查冒充补丁验证。未运行本机 Docker、发布镜像、部署、合并或关闭 Issue；保留分支与工作目录。

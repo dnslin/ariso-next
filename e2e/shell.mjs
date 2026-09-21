@@ -175,6 +175,22 @@ export async function verifyShell(page, config) {
     report.checks.push(
       '767/768/1199/1200 navigation boundaries; reduced-motion disables transitions',
     );
+    await resize(767);
+    await page.click('loc=role:button[name="菜单"]');
+    await page.waitForSelector('[role="dialog"]');
+    await resize(768);
+    await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+    await page.waitForFunction(() =>
+      document.activeElement.matches('.shell-navigation a'),
+    );
+    assert.ok(
+      await page.evaluate(
+        () => document.activeElement.getBoundingClientRect().width > 0,
+      ),
+    );
+    report.checks.push(
+      'Open mobile menu closes on tablet breakpoint and restores focus to visible navigation',
+    );
     await resize(390);
     console.log(await page.snapshot());
     await page.click('loc=role:button[name="菜单"]');
