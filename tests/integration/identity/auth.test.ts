@@ -87,7 +87,10 @@ function owner(
         }),
       ],
       { env: { ...process.env, ...env }, encoding: 'utf8', timeout: 10000 },
-    ),
+    )
+      .trim()
+      .split('\n')
+      .at(-1)!,
   );
 }
 beforeEach(async () => {

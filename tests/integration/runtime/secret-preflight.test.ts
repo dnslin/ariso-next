@@ -17,7 +17,16 @@ const storageMigration = {
 function writeMigrations(
   ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
 ) {
-  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+  const identityMigration = {
+    tag: '0001_identity',
+    when: 2,
+    sql: readFileSync(resolve('drizzle/0004_shiny_korath.sql'), 'utf8'),
+  };
+  return writeRuntimeMigrations(folder, [
+    storageMigration,
+    identityMigration,
+    ...migrations,
+  ]);
 }
 
 let root: string;
@@ -113,12 +122,16 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
         .all(),
     ).toEqual([
       { name: '__drizzle_migrations' },
+      { name: 'account' },
+      { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_settings' },
+      { name: 'user' },
+      { name: 'verification' },
     ]);
     expect(
       db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
-    ).toEqual([{ created_at: 1 }]);
+    ).toEqual([{ created_at: 1 }, { created_at: 2 }]);
   } finally {
     db.close();
   }
@@ -212,12 +225,17 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
     expect(afterFailure).toEqual({
       tables: [
         { name: '__drizzle_migrations' },
+        { name: 'account' },
         { name: 'secret_sample' },
+        { name: 'session' },
         { name: 'storage_configs' },
         { name: 'storage_settings' },
+        { name: 'user' },
+        { name: 'verification' },
       ],
       migrations: [
         { created_at: 1 },
+        { created_at: 2 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

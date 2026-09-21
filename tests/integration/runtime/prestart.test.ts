@@ -28,7 +28,16 @@ const storageMigration = {
 function writeMigrations(
   ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
 ) {
-  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+  const identityMigration = {
+    tag: '0001_identity',
+    when: 2,
+    sql: readFileSync(resolve('drizzle/0004_shiny_korath.sql'), 'utf8'),
+  };
+  return writeRuntimeMigrations(folder, [
+    storageMigration,
+    identityMigration,
+    ...migrations,
+  ]);
 }
 
 let directory: string;
@@ -99,8 +108,12 @@ describe('compiled prestart CLI', () => {
       ),
     ).toEqual([
       { name: '__drizzle_migrations' },
+      { name: 'account' },
+      { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_settings' },
+      { name: 'user' },
+      { name: 'verification' },
     ]);
     expect(readRows('SELECT * FROM storage_settings')).toHaveLength(1);
     expect(readRows('SELECT * FROM storage_configs')).toHaveLength(1);

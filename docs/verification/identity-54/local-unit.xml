@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="197" failures="0" errors="0" time="0.798816665">
+    <testsuite name="tests/unit/identity/cookie-attributes.test.ts" timestamp="2026-09-21T02:46:01.296Z" hostname="dnslins-Mini.lan" tests="7" failures="0" errors="0" skipped="0" time="0.00176325">
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="does not mistake a name or value for a Secure attribute: __Secure-session=token; Path=/; HttpOnly; SameSite=Lax" time="0.000844208">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="does not mistake a name or value for a Secure attribute: __Secure-session=; Max-Age=0; Path=/" time="0.000075917">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="does not mistake a name or value for a Secure attribute: session=containsSecure; Path=/" time="0.000050959">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="does not mistake a name or value for a Secure attribute: session=token; SecureFlag=true" time="0.000053333">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="recognizes the actual case-insensitive Secure attribute: __Secure-session=token; Path=/; Secure; HttpOnly" time="0.000065917">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="recognizes the actual case-insensitive Secure attribute: __Secure-session=; Max-Age=0; Secure" time="0.0000415">
+        </testcase>
+        <testcase classname="tests/unit/identity/cookie-attributes.test.ts" name="recognizes the actual case-insensitive Secure attribute: session=token; secure; Path=/" time="0.000044958">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/media/settings.test.ts" timestamp="2026-09-21T02:46:01.296Z" hostname="dnslins-Mini.lan" tests="29" failures="0" errors="0" skipped="0" time="0.023608458">
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts the specified initialization defaults" time="0.004525791">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects quality=0 with a field error" time="0.001023916">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects quality=101 with a field error" time="0.000285333">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects quality=1.5 with a field error" time="0.000277292">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects quality=82 with a field error" time="0.000252">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects maxEdge=0 with a field error" time="0.000242542">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects maxEdge=32769 with a field error" time="0.000287083">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects maxEdge=1.5 with a field error" time="0.000247166">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects concurrency=0 with a field error" time="0.000278333">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects concurrency=5 with a field error" time="0.000273167">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects concurrency=1.5 with a field error" time="0.000220792">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects outputFormat=png with a field error" time="0.000295375">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects jpegBackground=#fff with a field error" time="0.000286542">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects jpegBackground=white with a field error" time="0.000831208">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects watermarkMode=both with a field error" time="0.000718375">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects defaultLinkVersion=thumbnail with a field error" time="0.000429417">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects defaultVisibility=hidden with a field error" time="0.000173459">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; rejects compressionEnabled=false with a field error" time="0.000165375">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts quality boundary 1" time="0.000137417">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts quality boundary 100" time="0.000062708">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts maxEdge boundary null" time="0.00006975">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts maxEdge boundary 1" time="0.000055291">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts maxEdge boundary 32768" time="0.000052709">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts output jpeg" time="0.000064">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts output webp" time="0.00004275">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; accepts output avif" time="0.000046833">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; checks every watermark/default combination with compression=false" time="0.010419208">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; checks every watermark/default combination with compression=true" time="0.000140083">
+        </testcase>
+        <testcase classname="tests/unit/media/settings.test.ts" name="media settings full-save validation &gt; requires the entire settings value rather than silently filling absent fields" time="0.000070292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/console-bridge.test.ts" timestamp="2026-09-21T02:46:01.297Z" hostname="dnslins-Mini.lan" tests="6" failures="0" errors="0" skipped="0" time="0.565624958">
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 在主入口之前接管级别、插值与多行消息，Pino 直接输出无递归" time="0.144561541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 保留前缀后的 Error、cause、路径和错误码，并复用 URL 脱敏" time="0.083033208">
+        </testcase>
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 遵守日志级别 undefined" time="0.083419666">
+        </testcase>
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 遵守日志级别 warn" time="0.084268625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 遵守日志级别 fatal" time="0.086557083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/console-bridge.test.ts" name="console preload bridge &gt; 无效日志配置输出 JSON 错误且不执行主入口、不回显原值" time="0.082382542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/crypto.test.ts" timestamp="2026-09-21T02:46:01.298Z" hostname="dnslins-Mini.lan" tests="15" failures="0" errors="0" skipped="0" time="0.010570208">
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 按 UTF-8 无损往返 &quot;secret&quot;，相同明文使用不同 nonce" time="0.001663292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 按 UTF-8 无损往返 &quot;密钥 🔑\u0000\n&quot;，相同明文使用不同 nonce" time="0.000356917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 按 UTF-8 无损往返 &quot;&quot;，相同明文使用不同 nonce" time="0.000249958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 按 UTF-8 无损往返 &quot; \t\n&quot;，相同明文使用不同 nonce" time="0.000209083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 解密标准 Node 实现生成的记录，context 仅用于诊断" time="0.000130083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 只使用独立部署加密密钥，改变认证密钥不影响解密" time="0.001079375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝错误密钥或被篡改的 key，错误保留位置且不泄密" time="0.001643292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝错误密钥或被篡改的 nonce，错误保留位置且不泄密" time="0.000392459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝错误密钥或被篡改的 tag，错误保留位置且不泄密" time="0.000323792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝错误密钥或被篡改的 body，错误保留位置且不泄密" time="0.000330417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝无效或缺少 nonce/tag 的文本 &quot;&quot;" time="0.000384458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝无效或缺少 nonce/tag 的文本 &quot; &quot;" time="0.000075167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝无效或缺少 nonce/tag 的文本 &quot;not-base64!&quot;" time="0.000054167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝无效或缺少 nonce/tag 的文本 &quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;" time="0.00147875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/crypto.test.ts" name="runtime secret crypto &gt; 拒绝 Node 解码会忽略的字符、空白和缺失填充" time="0.000747292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/env.test.ts" timestamp="2026-09-21T02:46:01.299Z" hostname="dnslins-Mini.lan" tests="55" failures="0" errors="0" skipped="0" time="0.020352542">
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 应用默认值并解码独立密钥，忽略无关环境变量" time="0.006286625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受十进制端口 1" time="0.000827875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受十进制端口 65535" time="0.000341167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受十进制端口 03000" time="0.000252583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留监听地址 127.0.0.1" time="0.000307166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留监听地址 ::" time="0.000091333">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留监听地址 localhost" time="0.000077125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留绝对路径 /" time="0.000077667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留绝对路径 /tmp/ariso data" time="0.000077">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留绝对路径 /tmp/../data" time="0.000082166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 trace" time="0.000071042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 debug" time="0.000038417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 info" time="0.000031792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 warn" time="0.000031084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 error" time="0.000028958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 接受日志级别 fatal" time="0.000028167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留 32 字符的认证密钥" time="0.000044417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留 33 字符的认证密钥" time="0.000030208">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 保留 128 字符的认证密钥" time="0.00003675">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（）并指出变量名" time="0.000676667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（ ）并指出变量名" time="0.000273584">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（0）并指出变量名" time="0.00020525">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（65536）并指出变量名" time="0.000294375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（-1）并指出变量名" time="0.000255125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（+1）并指出变量名" time="0.000748125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（1.5）并指出变量名" time="0.000295208">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（1e3）并指出变量名" time="0.000087792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（0x10）并指出变量名" time="0.000088917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（3000x）并指出变量名" time="0.000067583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（ 3000）并指出变量名" time="0.000054291">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（3000
+）并指出变量名" time="0.000048125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 PORT（9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999）并指出变量名" time="0.000513042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 HOST（）并指出变量名" time="0.000493833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 HOST（ 	）并指出变量名" time="0.00037075">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 DATA_DIR（）并指出变量名" time="0.000547417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 DATA_DIR（ ）并指出变量名" time="0.000208166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 DATA_DIR（data）并指出变量名" time="0.000268708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 DATA_DIR（./data）并指出变量名" time="0.000122">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 DATA_DIR（~/data）并指出变量名" time="0.000136833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 LOG_LEVEL（）并指出变量名" time="0.000140584">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 LOG_LEVEL（INFO）并指出变量名" time="0.000065375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 LOG_LEVEL（silent）并指出变量名" time="0.000048792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 LOG_LEVEL（verbose）并指出变量名" time="0.0000465">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 BETTER_AUTH_SECRET（undefined）并指出变量名" time="0.000057459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 BETTER_AUTH_SECRET（）并指出变量名" time="0.000068">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 BETTER_AUTH_SECRET（sssssssssssssssssssssssssssssss）并指出变量名" time="0.00004175">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（undefined）并指出变量名" time="0.000043">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（）并指出变量名" time="0.000044958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa）并指出变量名" time="0.000136667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa）并指出变量名" time="0.000080916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg）并指出变量名" time="0.000222208">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa）并指出变量名" time="0.000381958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 拒绝非法 ARISO_ENCRYPTION_KEY（aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+）并指出变量名" time="0.000101333">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 一次报告全部错误，错误对象不包含秘密或原始输入" time="0.000540458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/env.test.ts" name="parseRuntimeEnv &gt; 导入时不访问部署变量，调用时才读取当前环境且不生成替代密钥" time="0.001608209">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/log-redaction.test.ts" timestamp="2026-09-21T02:46:01.301Z" hostname="dnslins-Mini.lan" tests="15" failures="0" errors="0" skipped="0" time="0.00650325">
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 token，保留路径与普通参数" time="0.00174225">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 resetToken，保留路径与普通参数" time="0.000184666">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 reset_token，保留路径与普通参数" time="0.000130083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 uploadToken，保留路径与普通参数" time="0.000124333">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 access_token，保留路径与普通参数" time="0.000189541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 refresh_token，保留路径与普通参数" time="0.000172375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 code，保留路径与普通参数" time="0.000134542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 X-Amz-Signature，保留路径与普通参数" time="0.000164667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 X-Amz-Credential，保留路径与普通参数" time="0.000332125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 X-Amz-Security-Token，保留路径与普通参数" time="0.000281625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 AWSAccessKeyId，保留路径与普通参数" time="0.000135958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 Signature，保留路径与普通参数" time="0.000077125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 隐藏 %74oken，保留路径与普通参数" time="0.000251125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 处理多个 URL、重复参数和空值" time="0.00014975">
+        </testcase>
+        <testcase classname="tests/unit/runtime/log-redaction.test.ts" name="known URL credentials &gt; 保留普通路径、查询编码及非 URL 文本，不扫描任意秘密" time="0.0001065">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/logger.test.ts" timestamp="2026-09-21T02:46:01.302Z" hostname="dnslins-Mini.lan" tests="13" failures="0" errors="0" skipped="0" time="0.112304833">
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 每次输出单行 JSON，包含时间、级别、模块与插值消息" time="0.012263541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 无需部署密钥即可导入并向 stdout 输出真实 JSON" time="0.086249042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 遵守显式日志级别" time="0.000838708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 隐藏指定结构化字段，保留上下文且不修改输入" time="0.002431959">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 隐藏消息插值、嵌套字符串、错误堆栈与 cause 的 URL 凭据" time="0.002105083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; Pino 对象消息 123 不导致日志失败" time="0.001030917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; Pino 对象消息 null 不导致日志失败" time="0.000932375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; Pino 对象消息 {&quot;url&quot;:&quot;/reset?token=object-private&quot;} 不导致日志失败" time="0.000733083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 保留非 Error cause &quot;ENOENT /data/file?token=cause-private&quot;" time="0.000522708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 保留非 Error cause {&quot;code&quot;:&quot;ENOENT&quot;,&quot;path&quot;:&quot;/data/file&quot;,&quot;url&quot;:&quot;/reset?token=cause-private&quot;}" time="0.000447375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 保留非 Error cause null" time="0.002206042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 保留非 Error cause 42" time="0.000868875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/logger.test.ts" name="runtime logger &gt; 子日志绑定使用同一规则；循环对象仍能输出" time="0.000692417">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/verify-image.test.ts" timestamp="2026-09-21T02:46:01.303Z" hostname="dnslins-Mini.lan" tests="5" failures="0" errors="0" skipped="0" time="0.012243208">
+        <testcase classname="tests/unit/runtime/verify-image.test.ts" name="decoded image verification &gt; 接受有损编码造成的小幅像素变化并记录误差" time="0.001721791">
+        </testcase>
+        <testcase classname="tests/unit/runtime/verify-image.test.ts" name="decoded image verification &gt; 拒绝仍有丰富色彩但内容被替换的图片" time="0.006676625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/verify-image.test.ts" name="decoded image verification &gt; 拒绝空输出、错误尺寸和替换为空白的图片" time="0.001214541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/verify-image.test.ts" name="rendered glyph verification &gt; 接受可见且不同于缺字控制图的字形" time="0.000449375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/verify-image.test.ts" name="rendered glyph verification &gt; 拒绝空白、纯色、截断和缺字方框" time="0.000672666">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/scripts/container.test.ts" timestamp="2026-09-21T02:46:01.303Z" hostname="dnslins-Mini.lan" tests="9" failures="0" errors="0" skipped="0" time="0.023383958">
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 接受逐行 JSON 并保留可诊断字段" time="0.002417583">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: " time="0.007222416">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: Next.js started" time="0.000157709">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: {&quot;time&quot;:&quot;today&quot;,&quot;level&quot;:&quot;info&quot;,&quot;module&quot;:&quot;runtime.prestart&quot;,&quot;msg&quot;:&quot;prestart completed&quot;,&quot;phase&quot;:&quot;prestart&quot;}" time="0.000323416">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: {&quot;time&quot;:&quot;2026-09-16T12:00:00Z&quot;,&quot;level&quot;:&quot;info&quot;,&quot;module&quot;:&quot;runtime.prestart&quot;,&quot;phase&quot;:&quot;prestart&quot;}" time="0.000377542">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: {&quot;time&quot;:&quot;2026-09-16T12:00:00Z&quot;,&quot;level&quot;:&quot;unknown&quot;,&quot;module&quot;:&quot;runtime.prestart&quot;,&quot;msg&quot;:&quot;prestart completed&quot;,&quot;phase&quot;:&quot;prestart&quot;}" time="0.0001505">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 拒绝空日志、普通文本或缺失必要字段: {&quot;time&quot;:&quot;2026-09-16T12:00:00Z&quot;,&quot;level&quot;:&quot;info&quot;,&quot;module&quot;:&quot;&quot;,&quot;msg&quot;:&quot;prestart completed&quot;,&quot;phase&quot;:&quot;prestart&quot;}" time="0.000127958">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 显式隔离父进程配置，保留Docker连接环境" time="0.000149292">
+        </testcase>
+        <testcase classname="tests/unit/scripts/container.test.ts" name="container verification assertions &gt; 即使没有HTTP响应也拒绝已监听TCP端口，关闭后通过" time="0.011042042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/site/settings.test.ts" timestamp="2026-09-21T02:46:01.303Z" hostname="dnslins-Mini.lan" tests="43" failures="0" errors="0" skipped="0" time="0.022462">
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 规范化  HTTPS://IMG.Example.COM:443/ " time="0.001830333">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 规范化 http://localhost:3000" time="0.000223084">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 规范化 http://example.com:80/" time="0.000083875">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 规范化 https://example.com:8443/" time="0.000077541">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 规范化 http://[::1]:3000/" time="0.00007175">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;&quot; 并定位字段" time="0.012624333">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;example.com&quot; 并定位字段" time="0.000262625">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;ftp://example.com&quot; 并定位字段" time="0.000152667">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;//example.com&quot; 并定位字段" time="0.000133542">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https:example.com&quot; 并定位字段" time="0.000140958">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https:///example.com&quot; 并定位字段" time="0.000100292">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://user:pass@example.com&quot; 并定位字段" time="0.000144084">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://user@example.com&quot; 并定位字段" time="0.000448333">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://@example.com&quot; 并定位字段" time="0.000212583">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/ariso/&quot; 并定位字段" time="0.000540709">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/a/..&quot; 并定位字段" time="0.001382292">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/%2e/&quot; 并定位字段" time="0.000172916">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/?mode=1&quot; 并定位字段" time="0.00010475">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/?&quot; 并定位字段" time="0.000071042">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/#fragment&quot; 并定位字段" time="0.000062792">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com/#&quot; 并定位字段" time="0.000056125">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://example.com\\&quot; 并定位字段" time="0.000056125">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非法公开地址 &quot;https://exa\nmple.com&quot; 并定位字段" time="0.000057167">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 接受 IANA/别名 UTC" time="0.000112084">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 接受 IANA/别名 Asia/Shanghai" time="0.00010175">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 接受 IANA/别名 America/New_York" time="0.000096709">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 接受 IANA/别名 US/Eastern" time="0.000079125">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 接受 IANA/别名 Etc/GMT-8" time="0.000073959">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;&quot; 并定位字段" time="0.000099792">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;+08:00&quot; 并定位字段" time="0.000039542">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;-0500&quot; 并定位字段" time="0.000034917">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;+08&quot; 并定位字段" time="0.000038084">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;UTC+8&quot; 并定位字段" time="0.000046542">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝时区 &quot;Mars/Olympus&quot; 并定位字段" time="0.000046667">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 用同一配置生成链接，正确编码查询与重复参数" time="0.000163959">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;https://other.example&quot;" time="0.000431">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;//other.example&quot;" time="0.000080875">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;/\\other.example&quot;" time="0.000056833">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;relative&quot;" time="0.000033375">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;/path?x=1&quot;" time="0.000031333">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;/path#hash&quot;" time="0.000029166">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 拒绝非站内路径 &quot;/\n/other.example&quot;" time="0.000028083">
+        </testcase>
+        <testcase classname="tests/unit/site/settings.test.ts" name="site 地址与时区契约 &gt; 按站点时区展示 UTC 时间点，覆盖夏令时跳跃和重复小时" time="0.000387083">
+        </testcase>
+    </testsuite>
+</testsuites>

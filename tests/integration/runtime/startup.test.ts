@@ -41,7 +41,16 @@ const storageMigration = {
 function writeMigrations(
   ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
 ) {
-  return writeRuntimeMigrations(folder, [storageMigration, ...migrations]);
+  const identityMigration = {
+    tag: '0001_identity',
+    when: 2,
+    sql: readFileSync(resolve('drizzle/0004_shiny_korath.sql'), 'utf8'),
+  };
+  return writeRuntimeMigrations(folder, [
+    storageMigration,
+    identityMigration,
+    ...migrations,
+  ]);
 }
 
 let root: string;
@@ -283,7 +292,7 @@ describe('完整生产入口的失败与恢复', () => {
     ).toEqual([]);
     expect(
       query('SELECT created_at FROM __drizzle_migrations ORDER BY created_at'),
-    ).toEqual([{ created_at: 1 }, { created_at: 1000 }]);
+    ).toEqual([{ created_at: 1 }, { created_at: 2 }, { created_at: 1000 }]);
     writeMigrations(folder, [
       initialMigration,
       upgradeMigration,
