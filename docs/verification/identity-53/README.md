@@ -74,3 +74,13 @@ gh run download 35547748439 --name container-verification-<arch> --dir test-resu
 ```
 
 本次追加只归档已完成的远端结果，不更改受测代码。证据提交后的最新检查以 [PR #92](https://github.com/dnslin/ariso-next/pull/92/checks) 为准；全部通过后转为正式待评审，合并由用户另行决定。
+
+## PR 复审修复：测试初始化独立性
+
+两角度复审发现 `auth.test.ts` 在首个“未初始化”测试末尾创建账号，后续测试隐式依赖它先运行。单独执行 `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts -t 'real sessions renew'` 实际失败：登录得到 409 / SETUP_REQUIRED，无法验证续期行为。
+
+修复仅调整测试准备：每个用例在 `beforeEach` 创建独立临时数据库和生产进程，`afterEach` 清理；已初始化场景在所属 `describe` 的 `beforeEach` 写入真实账号。未初始化用例只断言空库行为，不承担其他用例的初始化。原有 15 项用例与业务断言全部保留，地址、Secret 和数据库故障状态也随用例隔离。
+
+环境仍为 macOS arm64、Node 24.19.0、pnpm 11.19.0。单独筛选续期用例通过（1 项；其他 14 项由命令筛选排除，不是代码跳过）。`pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts --sequence.shuffle --sequence.seed=53` 打乱顺序后 15 项全部通过。
+
+本次未改生产实现、schema、依赖或浏览器脚本；不重复原有 UI/浏览器验收。`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check` 和 `git diff --check` 全部通过。`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-53-fixture-fix.xml` 全量 21 文件、156 项通过，含隔离无部署密钥构建；见 [本次 JUnit](./fixture-fix-integration.xml)。按 `code-review-and-quality` 和严格结构评审标准独立复审通过，无剩余必改项。推送后的 CI 与双架构验证继续以 PR #92 当前提交 checks 为准。
