@@ -58,4 +58,19 @@
 
 `requireOwner` 只读取会话；T-ID-03 客户端需调用会话 HTTP 来续期，不能假设任意管理请求自动延长 Cookie。完整 setup、GitHub/SMTP、上传 Token 和界面均由各自任务交付，不在本次提前实现。
 
-本机未运行 Docker；`.github/workflows/images.yml` 在原生 AMD64/ARM64 identity 检查前构建 standalone，确保新增生产测试实跑。PR 仅触发验证，release-checks/publish 仍受 release 事件约束。远端状态将在推送后记录。未合并、关闭 Issue、发布、部署或删除分支/worktree。
+本机未运行 Docker；`.github/workflows/images.yml` 在原生 AMD64/ARM64 identity 检查前构建 standalone，确保新增生产测试实跑。PR 仅触发验证，release-checks/publish 仍受 release 事件约束。远端通过证据见下节。未合并、关闭 Issue、发布、部署或删除分支/worktree。
+
+## 远端验证
+
+提交 `1cedfbe` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35547748346) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35547748439) 全部成功。两个原生 runner 各执行 27 项 identity 测试（12 项已有实验及 15 项本次生产认证），全部通过：[AMD64 JUnit](./amd64-identity.xml)、[ARM64 JUnit](./arm64-identity.xml)。
+
+两架构实际完成镜像构建、生产文件及原生驱动检查、离线图片转换、存储受限挂载、容器停止／重启、迁移故障回滚、拒绝旧版本和停止后整目录备份恢复。容器原始报告：[AMD64](./amd64-container.json)、[ARM64](./arm64-container.json)。`release-checks` 与 `publish` 均跳过，没有镜像发布或部署。
+
+实际使用 `gh pr checks 92`、`gh run view 35547748346`、`gh run view 35547748439`，并用以下命令分别下载 `amd64`、`arm64` 证据：
+
+```sh
+gh run download 35547748439 --name identity-verification-<arch> --dir test-results/remote-53/identity-<arch>
+gh run download 35547748439 --name container-verification-<arch> --dir test-results/remote-53/container-<arch>
+```
+
+本次追加只归档已完成的远端结果，不更改受测代码。证据提交后的最新检查以 [PR #92](https://github.com/dnslin/ariso-next/pull/92/checks) 为准；全部通过后转为正式待评审，合并由用户另行决定。
