@@ -87,3 +87,22 @@ EGO_TASK_SPACE=20 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/ui-runtime pn
 ## 代码审计
 
 使用 `code-review-and-quality`，由独立审计代理先读测试，再核对实现、实际声明、依赖锁、CI 和证据范围。覆盖正确性、可读性、模块边界、安全及性能；无 Critical / Required 问题。确认没有预建业务模块、无 v2 API 混用、错误未被静默隐藏、测试失败会返回非零，真实设备与其他浏览器限制保留。审计未重复运行命令，运行结果来自上述实际执行和远端记录。
+
+## 后续 P2 复查与修复
+
+后续双代理复查发现首轮审计遗漏：缺少 `ego-browser` 时，浏览器子进程的关闭 Promise 会在异步读取脚本期间提前拒绝，Node 未处理异常退出，跳过服务清理并遗留上一轮成功报告。
+
+现已先读取脚本再启动浏览器，并立即等待子进程结果；统一记录失败和清理日志。每轮删除旧 `browser.json`，写入本轮 `runner.json` 的开始、结果和完成时间。失败退出码保持非零，不把启动失败写成浏览器测试通过。
+
+新增 `tests/integration/runtime/ui-browser-runner.test.ts`：真实进程/HTTP 夹具分别覆盖命令缺失、命令非零退出、SIGTERM 取消，断言服务和浏览器进程退出、旧结果移除、失败报告及日志。修复前 3 项失败，修复后通过。进程夹具不代表实际 UI 验收。
+
+```sh
+pnpm exec vitest run --project integration tests/integration/runtime/ui-browser-runner.test.ts
+pnpm --dir tests/experiments/ui run test:browser
+```
+
+额外使用真实 Next 生产服务及移除 Ego 的 PATH 复现命令缺失，结果为退出 1、服务端口关闭、旧报告移除；见 [runner-missing.json](./runner-missing.json)。正常 Ego TaskSpace 21 的完整页面验证通过并自动关闭，见更新后的 [browser.json](./browser.json) 和 [runner.json](./runner.json)。上述机器报告描述本地运行，不冒充远端执行。
+
+修复经 `code-review-and-quality` 独立只读复核，无新增阻塞问题。远端最新提交结果继续以 [PR #94 检查页](https://github.com/dnslin/ariso-next/pull/94/checks) 为准，上方固定链接保留先前提交的历史证据。
+
+本次修复另执行 `pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run format:check`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration` 和 `node docs/tasks/check.mjs`，全部通过：197 项单元测试、199 项集成测试（含新增 3 项）。新增测试首次类型检查暴露缺少 Next 声明要求的 NODE_ENV，补齐测试环境字段后重跑通过。
