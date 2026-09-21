@@ -2,7 +2,6 @@ import { betterAuth } from 'better-auth';
 import { createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { getServerRuntime } from '../startup/server-start.ts';
-import { readSiteSettings } from '../site/settings.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import * as schema from './schema.ts';
 import { readSetupOwner } from './setup.ts';
@@ -80,9 +79,9 @@ const processState = globalThis as typeof globalThis & {
 /** 导入不查库。无所有者是正常 setup 状态；已有所有者缺少必需记录是数据错误。 */
 export function getAuth(runtime = getServerRuntime()) {
   const db = runtime.connection.db;
-  if (!readSetupOwner(db, runtime.connection.db.$client.name)) return null;
-  const settings = readSiteSettings(db)!;
-  const origin = new URL(settings.publicUrl).origin;
+  const identity = readSetupOwner(db, runtime.connection.db.$client.name);
+  if (!identity) return null;
+  const origin = new URL(identity.siteSettings.publicUrl).origin;
   const instances = (processState.arisoAuthInstances ??= new WeakMap());
   let current = instances.get(runtime);
   if (!current || current.origin !== origin) {

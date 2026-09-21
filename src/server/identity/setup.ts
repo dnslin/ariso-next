@@ -37,8 +37,8 @@ export function readSetupOwner(
 ) {
   const owner = db.select({ id: user.id }).from(user).get();
   if (!owner) return null;
-  if (!readSiteSettings(db))
-    throw incompleteIdentity(databasePath, 'site_settings');
+  const siteSettings = readSiteSettings(db);
+  if (!siteSettings) throw incompleteIdentity(databasePath, 'site_settings');
   const credential = db
     .select()
     .from(account)
@@ -48,7 +48,7 @@ export function readSetupOwner(
     .get();
   if (!credential?.password || credential.accountId !== owner.id)
     throw incompleteIdentity(databasePath, 'credential');
-  return owner;
+  return { owner, siteSettings };
 }
 
 export function createSetupState(

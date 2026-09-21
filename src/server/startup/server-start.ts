@@ -1,9 +1,8 @@
 import { join } from 'node:path';
 import { openRuntimeDatabase } from '../runtime/db.ts';
 import { parseRuntimeEnv } from '../runtime/env.ts';
-import { createSetupState, incompleteIdentity } from '../identity/setup.ts';
-import { readMediaSettings } from '../media/settings.ts';
-import { storageSettings } from '../storage/schema.ts';
+import { createSetupState } from '../identity/setup.ts';
+import { requireInitialSettings } from './initial-settings.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -17,14 +16,7 @@ function initializeServerRuntime() {
   try {
     const setup = createSetupState(connection.db, connection.db.$client.name);
     if (!setup.code) {
-      if (!readMediaSettings(connection.db))
-        throw incompleteIdentity(connection.db.$client.name, 'media_settings');
-      // 默认指针为空、停用或删除配置都是初始化后的合法修改。
-      if (!connection.db.select().from(storageSettings).get())
-        throw incompleteIdentity(
-          connection.db.$client.name,
-          'storage_settings',
-        );
+      requireInitialSettings(connection.db, connection.db.$client.name);
     } else {
       // 初始化码必须在 fatal 等任何日志级别下可见，仅此启动输出包含码。
       process.stdout.write(

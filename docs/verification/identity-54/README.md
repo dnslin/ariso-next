@@ -90,3 +90,16 @@ gh run download 35556389560 --name container-verification-<arch> --dir test-resu
 `<arch>` 分别为 `amd64`、`arm64`。早期 AMD64 总预算失败和本地一次未复现的 dev 500 保留在前文；修正后的本地全量、CI 及两架构检查均通过，没有把重跑结果写成首次通过。
 
 本次最后提交只归档已完成的远端证据，不改变受测实现或测试。该证据提交的最新检查以 [PR #93 checks](https://github.com/dnslin/ariso-next/pull/93/checks) 为准；全部通过后转为正式待评审。合并、Issue 关闭、发布、部署及分支/worktree 清理由用户另行决定。
+
+## 评审后的两项简化
+
+双 agent 对 `402ffbb` 的独立评审没有发现必改问题。按用户要求落实两项可选简化：`readSetupOwner` 返回已验证的站点设置，认证入口不再重复查询或使用非空断言；两启动入口复用 startup 层的 `requireInitialSettings`，统一 media/storage 必需记录检查。入口条件、错误信息、检查顺序及合法存储修改语义保持。没有新增依赖、schema、配置或兼容路径，现有测试未改动。
+
+同一 macOS arm64 / Node 24.19.0 / pnpm 11.19.0 环境，实际执行：
+
+- `pnpm exec vitest run --project integration tests/integration/identity/setup-lifecycle.test.ts`：第一项简化后 11 项通过（8.17s）。
+- `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`：全部通过；构建保留前文记录的 SQLite 可选 Debug 文件追踪提示。
+- `pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-54-simplify.xml`：两项简化后 24 文件、196 项全部通过（46.39s），包含真实 dev 重执行、登录、损坏启动、SIGKILL 与隔离生产构建。
+- `git diff --check`：通过。
+
+结构复审确认两项建议均已落实，没有新增必改问题。本轮未重跑本地单元、浏览器或 Docker；没有界面变更，Docker 交由 PR 的原生双架构工作流。重构提交的最新 CI/容器结果以 [PR #93 checks](https://github.com/dnslin/ariso-next/pull/93/checks) 为准，不沿用此前提交的通过状态。
