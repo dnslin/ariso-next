@@ -145,6 +145,24 @@ jobs:
               --source-root /source --storage-root /storage \
               --target-root /storage/disk --low-space-root /storage/low \
               --report /evidence/report.json --require-complete
+      - name: Verify persistent media processing with actual image tools
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \
+              --reporter=default --reporter=junit --outputFile=test-results/media-process.xml
+      - name: Preserve persistent media processing evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-process-${{ matrix.arch }}
+          path: test-results/media-process.xml
+          if-no-files-found: warn
+          retention-days: 14
       - name: Preserve local storage evidence
         if: always()
         uses: actions/upload-artifact@v7

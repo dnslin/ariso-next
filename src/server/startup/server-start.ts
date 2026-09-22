@@ -1,8 +1,10 @@
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { openRuntimeDatabase } from '../runtime/db.ts';
 import { parseRuntimeEnv } from '../runtime/env.ts';
 import { createSetupState } from '../identity/setup.ts';
 import { requireInitialSettings } from './initial-settings.ts';
+import { startMediaQueue } from '../media/queue.ts';
+import { createRuntimeLogger } from '../runtime/logger.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -23,7 +25,14 @@ function initializeServerRuntime() {
         `${JSON.stringify({ time: new Date().toISOString(), level: 'info', module: 'identity.setup', event: 'setup-code', code: setup.code, msg: '请使用初始化码完成 setup' })}\n`,
       );
     }
-    return { config, connection, setup };
+    const mediaQueue = startMediaQueue({
+      db: connection.db,
+      // DATA_DIR is absolute; keep runtime data paths absolute for output tracing.
+      storageRoot: resolve(config.dataDir, 'storage'),
+      temporaryRoot: resolve(config.dataDir, 'tmp'),
+      logger: createRuntimeLogger('media.queue', config.logLevel),
+    });
+    return { config, connection, setup, mediaQueue };
   } catch (error) {
     connection.close();
     throw error;

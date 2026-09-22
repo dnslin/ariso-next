@@ -31,6 +31,8 @@ pnpm run dev
 
 Linux 从源码安装原生依赖时需要 Python 和 C/C++ 构建工具；不要跨操作系统或架构复制 `node_modules`。图片工具完整环境由 Docker 镜像提供。本机环境差异和历史命令见 [历史开发记录](./docs/archive/runtime/development.md)。
 
+本地运行图片处理及完整集成测试还需 PATH 中有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）。可分别用 `magick -version`、`exiftool -ver` 检查。缺少工具时真实图片测试会失败，不会自动跳过；无需为此安装本机 Docker。
+
 ## 本地生产产物
 
 构建无需运行密钥，也不会创建部署数据。`start` 从父进程接收配置，不自行读取 `.env.local`。下面的变量文件须由你创建并信任，含空格的路径须用引号包住：
@@ -58,6 +60,8 @@ pnpm run test:browser
 ```
 
 浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。Docker、图片和双架构验证优先使用 GitHub Actions；[部署说明](./docs/guides/deployment.md) 列出有 Docker 的机器可复现的命令。
+
+`test:integration` 同时执行普通集成和真实工具测试。CI 的普通集成组使用 `pnpm exec vitest run --project integration`；实际工具组 `pnpm exec vitest run --project media-tools` 在 Docker 工作流的 AMD64、ARM64 生产镜像内必跑。两组结果共同构成集成验收，不能用其中一组代替另一组。
 
 - [升级、停止备份与恢复](./docs/guides/upgrading.md)
 - [runtime 规格](./docs/archive/runtime/SPEC-runtime.md)与[任务验收清单](./docs/archive/runtime/tasks/todo.md)

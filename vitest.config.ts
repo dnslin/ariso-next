@@ -15,6 +15,20 @@ export default defineConfig({
           name: 'integration',
           environment: 'node',
           include: ['tests/integration/**/*.test.ts'],
+          exclude: [
+            'tests/integration/media/process.test.ts',
+            'tests/integration/media/formats-tools.test.ts',
+          ],
+        },
+      },
+      {
+        test: {
+          name: 'media-tools',
+          environment: 'node',
+          include: [
+            'tests/integration/media/process.test.ts',
+            'tests/integration/media/formats-tools.test.ts',
+          ],
         },
       },
     ],

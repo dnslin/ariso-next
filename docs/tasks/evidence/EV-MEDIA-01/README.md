@@ -6,7 +6,7 @@
 
 新增 `tests/experiments/media-basic/` 独立实验、两个实际子进程集成测试及现有 Docker 验证工作流步骤。不改业务模块、数据库、依赖、Figma 或冻结 PRD。实验不提供上传、持久队列、业务重启恢复和对象发布接口；这些仍由 T-MED-03/04 实施。全格式、动画/多页及完整元数据属于 EV-MEDIA-02。
 
-当前状态：实验已交付，#62 验收仍被现有镜像策略阻塞。AMD64/ARM64 的基础图片、子进程和资源场景全部通过；镜像 policy 都保留 width/height 32KP，真实超宽构造失败，完整运行仍非零退出。[PR #101](https://github.com/dnslin/ariso-next/pull/101) 保持草稿。生产镜像策略不在本 Issue 明确的实验/测试/报告修改边界内，本次未修改，#62 不能解锁下游。
+当前状态（2026-09-22 更新）：原验收的镜像策略阻塞已在 #63 经所有者授权修复。[提交 72078d0 的双架构验证](https://github.com/dnslin/ariso-next/actions/runs/35701518860) 全部通过，原实验与断言未改；策略和 32769×1 实际处理均通过，已解锁 #63 的工程前置。新报告及完整结论统一维护于 [T-MED-03 前置记录](../../../verification/media-63/README.md#前置授权与分支)。下文保留 #62 当时的失败报告和范围决定，不将历史失败 JSON 改写为成功；[PR #101](https://github.com/dnslin/ariso-next/pull/101) 此后已由所有者合并。
 
 ## 实验和证据边界
 
@@ -89,7 +89,9 @@ gh pr checks 101 --repo dnslin/ariso-next
 
 最后一条命令退出码 1：checks 成功；两个 Build and verify 因真实 policy/超宽断言失败；release-checks/publish 因非发布事件跳过。媒体步骤失败后的旧静态图片验证、容器生命周期验证和镜像导出没有执行，不标为本轮通过。前序原生身份、已有 storage 实际挂载检查已通过。
 
-## 剩余阻塞与审计结论
+## 原验收剩余阻塞与审计结论（历史）
+
+以下描述 #62 原提交的验收时点。镜像阻塞已按本文顶部的新状态解除，后续复验不覆盖原始失败证据。
 
 - **Required，现有镜像配置：** `/etc/ImageMagick-7/policy.xml` 的 width/height=32KP 等效 32000P。需在获得相应修改范围后修正生产镜像策略，再运行本实验；不能用独立实验覆盖 policy、降低超宽样本尺寸或删断言获得通过。
 - **范围外浏览器失败：** 未修改的身份页测试错误地要求 group outline-width=0px。其修订正在原工作区 #61 进行；本 PR 未合入或覆盖该任务。完整 Ego 回归需在相应修订交付后重跑。

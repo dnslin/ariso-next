@@ -117,6 +117,8 @@ export const mediaJobs = sqliteTable(
       enum: ['queued', 'running', 'succeeded', 'failed', 'cancelled'],
     }).notNull(),
     error: text('error'),
+    startedAt: integer('started_at', { mode: 'timestamp_ms' }),
+    finishedAt: integer('finished_at', { mode: 'timestamp_ms' }),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
   },

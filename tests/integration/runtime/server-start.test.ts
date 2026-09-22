@@ -110,8 +110,10 @@ describe('Web startup and real health handler', () => {
         state.connection.db.$client.exec('CREATE TEMP TABLE connection_marker (value TEXT)');
         state.connection.db.$client.prepare('INSERT INTO connection_marker VALUES (?)').run('preserved');
         assert.strictEqual(startServer(), state);
+        assert.strictEqual(startServer().mediaQueue, state.mediaQueue);
         const reloaded = await import(startupUrl + '?reload');
         assert.strictEqual(reloaded.startServer(), state);
+        assert.strictEqual(reloaded.startServer().mediaQueue, state.mediaQueue);
         assert.deepEqual(reloaded.getServerRuntime().connection.db.$client.prepare('SELECT value FROM connection_marker').all(), [{ value: 'preserved' }]);
         await register();
         process.stdout.write('finite initialization completed\\n');
@@ -119,7 +121,7 @@ describe('Web startup and real health handler', () => {
         assert.equal(response.status, 200);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         assert.deepEqual(await response.json(), { status: 'ok' });
-      } finally { state.connection.close(); }
+      } finally { await state.mediaQueue.stop(); state.connection.close(); }
     `,
       { NEXT_RUNTIME: 'nodejs' },
     );
@@ -137,11 +139,14 @@ describe('Web startup and real health handler', () => {
       assert.equal(await response.text(), '{"status":"unavailable"}');
       assert.strictEqual(startServer(), state);
       assert.equal(state.connection.db.$client.open, false);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      await state.mediaQueue.stop();
     `);
     expect(result.stdout).toContain('Database health check failed');
     expect(result.stdout).toContain('not open');
     expect(result.stdout).not.toContain(env.BETTER_AUTH_SECRET);
     expect(result.stdout).not.toContain(env.ARISO_ENCRYPTION_KEY);
+    expect(result.stdout).not.toContain('Media queue stopped after an error');
   });
 
   it('初始化失败向上传播，不保存失败状态，修复配置后可以重试', () => {
