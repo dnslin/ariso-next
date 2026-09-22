@@ -38,7 +38,7 @@ import {
 import { initialMediaSettings } from '../../../src/server/media/validation.ts';
 import { mediaJobs } from '../../../src/server/media/schema.ts';
 import { startMediaQueue } from '../../../src/server/media/queue.ts';
-import { describeProcessingError } from '../../../src/server/media/formats.ts';
+import { analyzeMediaError } from '../../../src/server/media/errors.ts';
 import type { MediaRuntime } from '../../../src/server/media/process.ts';
 
 const MiB = 1024 * 1024;
@@ -328,7 +328,7 @@ try {
       phase,
       beforeFreeBytes: fullFree,
       nativeCode: (native as NodeJS.ErrnoException).code,
-      diagnostic: describeProcessingError(writeFailure),
+      diagnostic: analyzeMediaError(writeFailure).diagnostic,
       originalDigests: [lowImage.digest, fullImage.digest],
       boundary:
         'Actual writeObject storage operation failed ENOSPC after an external filler exhausted this volume. This bypasses the media low-water guard; it is not claimed as an end-to-end media write ENOSPC.',

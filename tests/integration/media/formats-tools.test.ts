@@ -115,7 +115,7 @@ describe('native container identification through tool stdin', () => {
         'IFD0:ImageWidth': 999,
         'IFD0:ImageHeight': 777,
       });
-      const facts = await inspectImage(createReadStream(file));
+      const facts = await inspectImage(createReadStream(file), directory);
       expect(facts).toMatchObject({
         format: format.toUpperCase(),
         mime: `image/${format}`,
@@ -147,7 +147,7 @@ describe('native container identification through tool stdin', () => {
     const native = JSON.parse(stdout)[0];
     expect(native['PNG:AnimationFrames']).toBe(1);
     expect(native['ExifTool:Warning']).toBeUndefined();
-    const facts = await inspectImage(Readable.from(bytes));
+    const facts = await inspectImage(Readable.from(bytes), directory);
     expect(facts).toMatchObject({
       format: 'APNG',
       width: 16,
@@ -177,7 +177,7 @@ describe('native container identification through tool stdin', () => {
       encoding: 'buffer',
     });
     expect(Buffer.from(extracted.stdout)).toEqual(second);
-    const facts = await inspectImage(Readable.from(bytes));
+    const facts = await inspectImage(Readable.from(bytes), directory);
     expect(facts.pageCount).toBe(2);
     expect(() => requireFirstImageFormat(facts)).toThrow(
       'static JPEG/PNG only',

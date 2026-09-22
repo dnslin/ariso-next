@@ -9,7 +9,7 @@ import { processMediaJob, type MediaRuntime } from './process.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 import { readMediaSettings } from './settings.ts';
 import { recoverMediaJobs } from './recovery.ts';
-import { mediaError } from './formats.ts';
+import { mediaError } from './errors.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
 export function claimNextMediaJob(db: BetterSQLite3Database) {

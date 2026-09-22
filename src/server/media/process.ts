@@ -6,12 +6,8 @@ import { startMediaTool, terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import { readObject, writeObject } from '../storage/local.ts';
-import {
-  describeProcessingError,
-  inspectImage,
-  mediaError,
-  requireFirstImageFormat,
-} from './formats.ts';
+import { inspectImage, requireFirstImageFormat } from './formats.ts';
+import { analyzeMediaError, mediaError } from './errors.ts';
 import { planDerivedObject } from './objects.ts';
 import {
   activeMediaJob,
@@ -127,7 +123,7 @@ export async function processMediaJob(
     budget = beginStep();
     let stepSignal = AbortSignal.any([signal, budget.signal]);
     const source = await openOriginal();
-    const facts = await inspectImage(source.stream, stepSignal, workspace);
+    const facts = await inspectImage(source.stream, workspace, stepSignal);
     budget.close();
     budget = undefined;
     const coder = requireFirstImageFormat(facts);
@@ -279,7 +275,7 @@ export async function processMediaJob(
         'image/webp',
         signal,
       );
-      const result = await inspectImage(output.stream, stepSignal, workspace);
+      const result = await inspectImage(output.stream, workspace, stepSignal);
       if (
         result.mime !== 'image/webp' ||
         !['WEBP', 'Extended WEBP'].includes(result.format)
@@ -347,7 +343,7 @@ export async function processMediaJob(
       (signal.reason as { code?: string })?.code === 'MEDIA_INTERRUPTED';
     let diagnostic: string;
     if (interrupted) {
-      diagnostic = `${step}: ${describeProcessingError(signal.reason)}`;
+      diagnostic = `${step}: ${analyzeMediaError(signal.reason).diagnostic}`;
       db.update(mediaJobs)
         .set({ error: diagnostic, updatedAt: new Date() })
         .where(and(eq(mediaJobs.id, jobId), eq(mediaJobs.status, 'running')))

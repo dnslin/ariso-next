@@ -1,15 +1,12 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { resolveUploadStorage } from '../storage/defaults.ts';
-import {
-  mediaError,
-  inspectImage,
-  describeProcessingError,
-} from './formats.ts';
+import { inspectImage } from './formats.ts';
+import { analyzeMediaError, mediaError } from './errors.ts';
 import { readObject, inspectObject, deleteObject } from '../storage/local.ts';
 import type { MediaRuntime } from './process.ts';
 import { startMediaTool } from './tools.ts';
-import { advanceMediaStep, isTemporaryMediaError } from './recovery.ts';
+import { advanceMediaStep } from './recovery.ts';
 import {
   mediaImages,
   mediaJobs,
@@ -165,7 +162,7 @@ export async function reconcileMediaObjects(
           'image/webp',
           signal,
         );
-        const facts = await inspectImage(data.stream, signal, workspace);
+        const facts = await inspectImage(data.stream, workspace, signal);
         if (facts.mime !== 'image/webp')
           throw mediaError(
             'MEDIA_OUTPUT_INVALID',
@@ -214,21 +211,15 @@ export async function reconcileMediaObjects(
         )
           throw err;
         signal.throwIfAborted();
-        const diagnostic = describeProcessingError(err);
-        if (
-          isTemporaryMediaError(err) ||
-          /^(MEDIA_TOOL_TIMEOUT|MEDIA_TOOL_UNAVAILABLE|MEDIA_TOOL_SHUTDOWN_FAILED|INSUFFICIENT_DISK_SPACE|STORAGE_|MEDIA_RESOURCE)/.test(
-            diagnostic,
-          )
-        )
-          throw err;
+        const analysis = analyzeMediaError(err);
+        if (analysis.preserveCandidate) throw err;
         // A bounded check could not establish a complete result. Its owned candidate
         // is discarded and regenerated; original and committed versions stay intact.
         logger.info(
           { err, jobId, objectId: candidate.id },
           'Discarding unverified recovery candidate',
         );
-        markMediaCandidates(db, [candidate.id], diagnostic);
+        markMediaCandidates(db, [candidate.id], analysis.diagnostic);
       }
       if (verified) {
         publishMediaVersion(db, jobId, kind, candidate.id, {
@@ -250,7 +241,7 @@ export async function reconcileMediaObjects(
         .set({
           status: 'cleanup_failed',
           byteSize: existing?.size ?? 0,
-          error: describeProcessingError(err),
+          error: analyzeMediaError(err).diagnostic,
           updatedAt: new Date(),
         })
         .where(eq(mediaObjects.id, candidate.id))

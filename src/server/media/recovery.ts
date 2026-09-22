@@ -1,40 +1,7 @@
 import { and, eq, ne, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { describeProcessingError } from './formats.ts';
+import { analyzeMediaError } from './errors.ts';
 import { mediaImages, mediaJobs, mediaObjects } from './schema.ts';
-
-/** Only explicitly transient I/O errors spend the one automatic retry. */
-export function isTemporaryMediaError(error: unknown): boolean {
-  let current = error;
-  let temporary = false;
-  while (current instanceof Error) {
-    const detail = current as Error & { code?: string; timedOut?: boolean };
-    if (detail.timedOut || detail.name === 'AbortError') return false;
-    if (
-      detail.code &&
-      ['ENOSPC', 'EACCES', 'EPERM', 'INSUFFICIENT_DISK_SPACE'].includes(
-        detail.code,
-      )
-    )
-      return false;
-    if (
-      detail.code &&
-      [
-        'EAGAIN',
-        'EBUSY',
-        'EMFILE',
-        'ENFILE',
-        'EIO',
-        'ECONNRESET',
-        'ETIMEDOUT',
-        'EPIPE',
-      ].includes(detail.code)
-    )
-      temporary = true;
-    current = detail.cause;
-  }
-  return temporary;
-}
 
 export function settleMediaFailure(
   db: BetterSQLite3Database,
@@ -42,7 +9,8 @@ export function settleMediaFailure(
   step: string,
   error: unknown,
 ) {
-  const diagnostic = `${step}: ${describeProcessingError(error)}`;
+  const analysis = analyzeMediaError(error);
+  const diagnostic = `${step}: ${analysis.diagnostic}`;
   db.transaction((tx) => {
     const job = tx
       .select()
@@ -50,7 +18,7 @@ export function settleMediaFailure(
       .where(eq(mediaJobs.id, jobId))
       .get();
     if (!job || job.status !== 'running') return;
-    const retry = job.retryCount < 1 && isTemporaryMediaError(error);
+    const retry = job.retryCount < 1 && analysis.retryable;
     const now = new Date();
     tx.update(mediaJobs)
       .set({
