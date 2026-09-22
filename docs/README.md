@@ -9,6 +9,7 @@
 | 产品要做什么、首版如何验收     | [PRD v1.1](./product/Ariso-PRD-v1.1.md)               |
 | 模块职责、接口提供方和依赖     | [能力地图与十份规格索引](./product/CAPABILITY-MAP.md) |
 | 先开发什么、前置未完成如何处理 | [第二阶段计划](./tasks/plan.md)                       |
+| 本地检查和发布验证何时执行     | [任务执行与验证约定](./tasks/execution.md#适用检查)   |
 | 全部首版实施任务与直接前置     | [任务索引](./tasks/todo.md)                           |
 | 需求原文与任务映射             | [PRD 逐条覆盖表](./tasks/coverage.md)                 |
 | 页面对应哪个 Figma 原型        | [17 个设计模块](./design/README.md)                   |
@@ -35,6 +36,7 @@
 - [升级、停止备份与恢复](./guides/upgrading.md)
 - [当前浏览器冒烟运行方式](../e2e/runtime.md)
 - [M1 空目录初始化与登录关卡验证](./verification/m1-61/README.md)
+- [JPEG/PNG 首图处理与持久任务实施验证](./verification/media-63/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
 

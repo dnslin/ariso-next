@@ -13,19 +13,25 @@
 
 ## 适用检查
 
-下列命令从仓库根目录、Node 24 和项目锁定 pnpm 运行。它们是未来业务任务要求，本轮文档工作未运行应用构建与业务测试。
+2026-09-22 所有者调整执行策略：日常开发、PR 和 main 推送统一在本地执行适用检查，不自动运行 GitHub Actions，也不以每个 PR 的双架构镜像结果作为完成条件。只有发布 GitHub Release（`release.published`）才执行发布检查、AMD64/ARM64 镜像构建、实际容器验证和镜像发布；单独推送 tag 不触发，未保留手动运行入口。
 
-| 检查           | 命令与执行条件                                                                                                                                          |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 安装           | 每个 PR/CI 运行 `pnpm install --frozen-lockfile`，确认锁文件可复现                                                                                      |
-| 迁移           | schema 变化运行 `pnpm run db:generate` 并审查SQL；部署仍用已提交向前迁移                                                                                |
-| 格式/静态/类型 | `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`                                                                                          |
-| 单元/集成      | `pnpm run test:unit`、`pnpm run test:integration`；可先 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts` 聚焦运行 |
-| 构建           | `pnpm run build`；保留无部署密钥/无数据库构建回归                                                                                                       |
-| 浏览器         | `pnpm run test:browser`；各界面任务新增场景并接入 `scripts/verify-browser.mjs`，不能只跑旧 `e2e/runtime.mjs` 就称业务通过                               |
-| 镜像           | 按 `.github/workflows/images.yml` 与 `scripts/verify-image.mjs`、`scripts/verify-container.mjs` 的实际参数运行；amd64/arm64分别有报告                   |
+下列命令从仓库根目录、Node 24 和项目锁定 pnpm 运行。真实图片测试要求 PATH 中已有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）；不要求本机 Docker，不下载浏览器。命令清单是执行约定，不代表某次任务已通过。
 
-同一轮实现、审计修复与验证记录收齐后统一推送。CI 结果在 PR 描述中回填，不为更新结果单独追加文档提交。纯文档 PR/主分支推送不触发应用与镜像构建；代码 PR 的路径过滤按整个 PR 差异判断，同一 PR 新提交会取消尚未完成的旧检查。手动验证与正式 Release 的检查仍保留；当前 main 未配置必需检查，后续设置时需同时处理纯文档 PR 的检查豁免。
+| 检查           | 命令与执行条件                                                                                                                                                                          |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 安装           | 每轮本地交付运行 `pnpm install --frozen-lockfile`，确认锁文件可复现                                                                                                                     |
+| 迁移           | schema 变化运行 `pnpm run db:generate` 并审查SQL；部署仍用已提交向前迁移                                                                                                                |
+| 格式/静态/类型 | `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`                                                                                                                          |
+| 单元/集成      | `pnpm run test:unit`、`pnpm run test:integration`（普通集成与真实工具两组均执行）；可先 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts` 聚焦运行 |
+| 构建           | `pnpm run build`；保留无部署密钥/无数据库构建回归                                                                                                                                       |
+| 浏览器         | `pnpm run test:browser`；各界面任务新增场景并接入 `scripts/verify-browser.mjs`，不能只跑旧 `e2e/runtime.mjs` 就称业务通过                                                               |
+| 镜像发布验证   | GitHub Release 发布时按 `.github/workflows/images.yml` 执行，AMD64/ARM64 分别保留报告；日常本地交付不要求此项                                                                           |
+
+先完成 `pnpm run build` 再运行集成测试。资源紧张时可以用 `pnpm run test:integration --maxWorkers=4` 限制并行数量，不修改测试超时、断言或跳过测试。涉及 `tests/experiments/ui` 或其依赖时，在本地执行该目录的冻结安装、typecheck 和 build；Ego 运行器通过 `test:browser` 自行构建外壳夹具。
+
+同一轮实现、审计修复与本地验证记录收齐后统一推送，PR 写明实际环境、命令、结果及未执行项，无需等待不存在的远端 PR 检查。纯文档或工作流配置改动执行格式、文档依赖和配置检查；没有业务或构建输入变更时，不机械重跑应用构建与全部浏览器流程。当前 main 未配置必需检查；后续保护规则不得要求已取消的 PR Actions 检查。
+
+本地验证证明当前机器上的行为，不等于另一种 CPU 架构、Linux 受限挂载或最终镜像已经验证。这些差异在发布阶段取得真实证据，保留双架构产品目标；不能把未运行的发布验证标为通过，也不因日常未运行它而阻塞功能 PR。任务卡中的容器或双架构要求也按这一执行时机处理：前置实验先交付本地可执行部分及待发布验证清单，不因尚未运行双架构而阻塞后续开发；缺少本地应验证的功能或格式样本仍未通过。正式发布仍须全部发布检查通过后才推送镜像，流程见[部署说明](../guides/deployment.md#发布验证)。历史报告保留当时的实际结果，不继续作为每日执行门槛。
 
 每2–3项相关任务完成后运行本切片真实流程及适用检查，M1/M2切片与M5全量关卡见 [验收任务](./acceptance-tasks.md)。真实服务环境缺失就记录阻塞；模拟接口可以证明单元行为，不能证明S3/OAuth/SMTP或用户完整流程可用。规模测量写明CPU/内存/磁盘/数据分布及冷暖查询，SPEC中的起始参数不冒充实测阈值。
 

@@ -1,21 +1,14 @@
-name: Docker build
+name: Release images
 
 on:
-  workflow_dispatch:
   release:
     types: [published]
-  pull_request:
-    paths-ignore: ['docs/**', '**/*.md']
-  push:
-    branches: [main]
-    paths-ignore: ['docs/**', '**/*.md']
 
 permissions:
   contents: read
 
 concurrency:
   group: images-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -145,6 +138,24 @@ jobs:
               --source-root /source --storage-root /storage \
               --target-root /storage/disk --low-space-root /storage/low \
               --report /evidence/report.json --require-complete
+      - name: Verify persistent media processing with actual image tools
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \
+              --reporter=default --reporter=junit --outputFile=test-results/media-process.xml
+      - name: Preserve persistent media processing evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-process-${{ matrix.arch }}
+          path: test-results/media-process.xml
+          if-no-files-found: warn
+          retention-days: 14
       - name: Preserve local storage evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -248,12 +259,10 @@ jobs:
           retention-days: 7
 
   release-checks:
-    if: github.event_name == 'release'
     uses: ./.github/workflows/ci.yml
 
   publish:
-    # Only a published GitHub Release can publish; PR/push/dispatch never do.
-    if: github.event_name == 'release'
+    # This workflow is triggered only by a published GitHub Release.
     needs: [build, release-checks]
     runs-on: ubuntu-24.04
     timeout-minutes: 15

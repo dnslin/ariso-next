@@ -131,7 +131,7 @@ docker exec -it ariso node dist/cli/reset-password.js
 
 哈希在事务外计算；短事务更新唯一 credential、撤销全部会话和未使用重置凭据。成功后明确提示重新登录；异常或取消无半次密码写入，finally 关闭连接并恢复终端状态。Web 开着时可执行，其他会话下一次请求失效。
 
-`tsconfig.runtime.json` 已包含 `src/cli/**/*.ts`，但 standalone 打包器目前只追踪 prestart/logging，必须把新 CLI 加入 `scripts/package-standalone.mjs` 的入口并验证生产镜像。仅在源码目录执行成功不算交付。
+`tsconfig.runtime.json` 已包含 `src/cli/**/*.ts`，但 standalone 打包器目前只追踪 prestart/logging，必须把新 CLI 加入 `scripts/package-standalone.mjs` 的入口并在本地 standalone 产物中验证。仅在源码目录执行成功不算交付；生产镜像验证的执行阶段按[适用检查](../tasks/execution.md#适用检查)。
 
 ## 7. GitHub 主动绑定与配置生效
 
@@ -292,23 +292,10 @@ const settings = readGithubSettings(connection.db);
 | ID-13 | Token 仅 POST 上传；不能形成会话或访问其他任何管理/私有入口                                                         | 完整权限矩阵、真实 upload       | R-6.5-01、R-8.4-01、A-26.3-01    |
 | ID-14 | SMTP/GitHub Secret 加密；错误 ARISO_ENCRYPTION_KEY 启动失败不清空；auth Secret 换后旧会话失效                       | 真实秘密和 Cookie 跨进程        | R-24.2-02–04、A-26.12-01–03      |
 | ID-15 | 密钥、密码、Token、重置链接不出现在真实失败日志；含路径段 token 的库 URL 也脱敏；初始化码只在必要启动输出           | 嵌套错误与日志断言              | R-20-02/03                       |
-| ID-16 | CLI 在 standalone 与双架构容器可用，不依赖 SMTP/Web；取消无修改                                                     | 生产容器运行实际命令            | R-6.3-02、R-24.1-01              |
+| ID-16 | CLI 在 standalone 与双架构容器可用，不依赖 SMTP/Web；取消无修改                                                     | 本地 standalone；发布阶段容器   | R-6.3-02、R-24.1-01              |
 | ID-17 | 桌面/手机/键盘覆盖全部认证和管理状态，缺图先补齐                                                                    | Ego 真实流程、截图及兼容矩阵    | R-22.1-01、R-22.4-01、A-26.13-01 |
 
-实施阶段从仓库根目录、Node 24 环境运行：
-
-```sh
-pnpm run db:generate
-pnpm run format:check
-pnpm run lint
-pnpm run typecheck
-pnpm run test:unit
-pnpm run build
-pnpm run test:integration
-pnpm run test:browser
-```
-
-`db:generate` 仅在 schema 变化时运行并审核 SQL。CLI 的实际 Docker 命令见第 6 节；Docker amd64/arm64 继续使用项目 Actions。第三方回调、真实收件、双架构和浏览器版本分别记录实际证据，测试替身不冒充外部服务验收。本轮只编写文档，未执行这些应用测试。
+通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../tasks/execution.md#适用检查)。CLI 的实际 Docker 命令见第 6 节。第三方回调、真实收件、双架构和浏览器版本分别记录实际证据，测试替身不冒充外部服务验收。规格编写时未执行这些应用测试。
 
 ## 13. 实施前需要实测的接入点
 

@@ -218,20 +218,7 @@ const settings = requireSiteSettings(connection.db);
 | SITE-11 | 无部署密钥与数据库仍可构建；启动后才读取真实配置；保存后新页面无旧缓存                                | 保留 runtime 隔离构建测试并增加配置读取回归       |
 | SITE-12 | 桌面/手机、键盘、错误状态及已确认 Figma 对应通过                                                      | 真实浏览器与截图；不能用静态原型替代              |
 
-实施阶段从项目根目录、Node 24 环境执行：
-
-```sh
-pnpm run db:generate
-pnpm run format:check
-pnpm run lint
-pnpm run typecheck
-pnpm run test:unit
-pnpm run build
-pnpm run test:integration
-pnpm run test:browser
-```
-
-`db:generate` 仅在实际 schema 变更时执行并审查生成 SQL。测试随功能加入现有 Vitest 项目与 Ego 流程；T-SITE-01 已新增 site 聚焦测试，实际结果统一见[实施证据](../verification/site-47/README.md)。Docker 与双架构回归沿用 Actions；本节命令不代表全部 site 验收通过。
+通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../tasks/execution.md#适用检查)。测试随功能加入现有 Vitest 项目与 Ego 流程；T-SITE-01 已新增 site 聚焦测试，实际结果统一见[实施证据](../verification/site-47/README.md)。本节要求不代表全部 site 验收通过。
 
 ## 11. 实施边界
 

@@ -26,6 +26,7 @@ ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
+# Input dimensions and frame counts are not admission limits (SPEC-media §10).
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
         ca-certificates \
@@ -35,6 +36,7 @@ RUN apt-get update \
         libimage-exiftool-perl \
         fonts-noto-cjk \
         fonts-noto-core \
+    && sed -i -E '/<policy domain="resource" name="(width|height|list-length)" /d' /etc/ImageMagick-7/policy.xml \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder --chown=node:node /app/.next/standalone ./

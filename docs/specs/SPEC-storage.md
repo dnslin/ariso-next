@@ -299,20 +299,7 @@ connection.db.transaction((tx) => {
 | ST-17 | 管理与凭据接口拒绝匿名/上传 Token；真实错误日志无密钥或签名，诊断路径保留                           | R-20-02/03、R-6.5-01                |
 | ST-18 | 桌面/手机完整保存测试启停默认删除流程、错误/重试/无障碍及规定设计节点                               | R-22.1-01、R-22.4-01、A-26.13-01    |
 
-实际实施从仓库根目录、Node 24 执行：
-
-```sh
-pnpm run db:generate
-pnpm run format:check
-pnpm run lint
-pnpm run typecheck
-pnpm run test:unit
-pnpm run build
-pnpm run test:integration
-pnpm run test:browser
-```
-
-schema 变化才执行 db:generate 并审查 SQL。测试覆盖真实临时目录与磁盘 SQLite、故障注入、请求/流取消和进程恢复；服务协议不能仅靠模拟 SDK 返回值。AWS S3/R2/MinIO 分别记录版本、权限、Bucket 配置、执行结果和对象清理证据；没有服务环境就明确未验收。Docker 双架构继续由项目 Actions 验证。本轮仅编写文档，未执行应用测试或连接用户 S3。
+通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../tasks/execution.md#适用检查)。测试覆盖真实临时目录与磁盘 SQLite、故障注入、请求/流取消和进程恢复；服务协议不能仅靠模拟 SDK 返回值。AWS S3/R2/MinIO 分别记录版本、权限、Bucket 配置、执行结果和对象清理证据；没有服务环境就明确未验收。规格编写时未执行应用测试或连接用户 S3。
 
 ## 13. 后续规格必须闭合的契约
 
