@@ -131,6 +131,8 @@
 
 ### EV-MEDIA-01 基础处理与按需资源验证
 
+实施、实测结果与限制见[实验报告](./evidence/EV-MEDIA-01/README.md)。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[media §6–7/10](../specs/SPEC-media.md)

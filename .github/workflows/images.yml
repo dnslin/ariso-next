@@ -179,6 +179,28 @@ jobs:
           path: ${{ runner.temp }}/production-storage-verification
           if-no-files-found: warn
           retention-days: 14
+      - name: Verify media behavior and resources on a real limited volume
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/media-verification"
+          chmod 777 "$RUNNER_TEMP/media-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /media-low:rw,size=384m,uid=1000,gid=1000 \
+            --tmpfs /tmp:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/media-basic,dst=/app/verification-media,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/media-verification,dst=/evidence" \
+            "$IMAGE" /app/verification-media/run.mjs \
+              --source-root /source --low-space-root /media-low --report /evidence/report.json
+      - name: Preserve media resource evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/media-verification
+          if-no-files-found: warn
+          retention-days: 14
       - name: Verify actual image conversions and glyphs offline
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}
