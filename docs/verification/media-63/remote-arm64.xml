@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="5.958245391">
+    <testsuite name="tests/integration/media/formats-tools.test.ts" timestamp="2026-09-22T08:34:22.181Z" hostname="cc329c4c5412" tests="4" failures="0" errors="0" skipped="0" time="1.018742184">
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; jpeg dimensions come from raster headers rather than contradictory EXIF tags" time="0.320997986">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; png dimensions come from raster headers rather than contradictory EXIF tags" time="0.311512126">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; rejects a valid single-frame APNG instead of treating its one frame as static PNG" time="0.163748316">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; reads the actual MPF image count from stdin and rejects two-image MPO" time="0.220954339">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/process.test.ts" timestamp="2026-09-22T08:34:22.183Z" hostname="cc329c4c5412" tests="18" failures="0" errors="0" skipped="0" time="4.939503207">
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original jpg bytes, fixes supplied type and saves both actual WebP versions" time="0.520469752">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original png bytes, fixes supplied type and saves both actual WebP versions" time="0.454943125">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 6 before resizing and strips metadata" time="0.713180616">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies png orientation 6 before resizing and strips metadata" time="0.716774522">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 2 before resizing and strips metadata" time="0.702621127">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; retains alpha, uses the queued quality/maxEdge snapshot, and does not use later settings" time="0.392508482">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; compression off creates only a thumbnail" time="0.178275023">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; thumbnail publication failure retains the original and published compressed version, and records candidate responsibility" time="0.281190725">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not start the next step after storage is disabled" time="0.17829111">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks disabled after asynchronous I/O and before publishing" time="0.102134999">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks deleting after asynchronous I/O and before publishing" time="0.100212302">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks cancelled after asynchronous I/O and before publishing" time="0.098151414">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;outputFormat&quot;:&quot;jpeg&quot;}" time="0.025164384">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;watermarkMode&quot;:&quot;text&quot;}" time="0.025797753">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; failed full decode retains the accepted truncated original and no incomplete version is published" time="0.104471726">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; actual storage write failure is bounded, retains bytes, and records the failed step" time="0.115086572">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not impose a fixed input dimension limit on a real 32769-pixel PNG" time="0.195010251">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; persists cancellation during real asynchronous processing without publishing a partial output" time="0.033270482">
+        </testcase>
+    </testsuite>
+</testsuites>

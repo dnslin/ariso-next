@@ -2,7 +2,7 @@
 
 对应 [Issue #63](https://github.com/dnslin/ariso-next/issues/63) 和 [PR #105](https://github.com/dnslin/ariso-next/pull/105)。范围及需求编号沿用 [T-MED-03](../../tasks/m1-m2.md#t-med-03-本地首图处理与持久任务)，业务规则见 [media §5–7](../../specs/SPEC-media.md)。记录日期：2026-09-22。
 
-当前状态：前置双架构验收、业务实现、独立代码审计和最终本地检查已完成。完整集成 34 文件、251 项通过，真实图片工具与 Ego 浏览器回归通过。业务提交的远端 CI/双架构验证仍待完成，PR 保持草稿；不能用前置提交的绿灯代表本次业务通过。
+当前状态：前置双架构验收、业务实现、独立代码审计、本地检查及业务提交 `e1d736a` 的远端 CI/双架构验证均已完成。完整本地集成 34 文件、251 项通过；远端普通集成 229 项、每种生产架构真实工具测试 22 项均通过。Ego 浏览器回归及两个架构的完整容器工作流通过，无未完成的 #63 验收项。
 
 ## 前置、授权与分支
 
@@ -72,17 +72,30 @@ export PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
 
 Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空间，没有下载 Playwright/Chromium。[主页/运行基线](./browser-browser.json)、[桌面初始化](./browser-identity-1440-setup.json)、[桌面重启](./browser-identity-1440-restart.json)、[手机初始化](./browser-identity-390-setup.json)、[手机重启](./browser-identity-390-restart.json) 保留原始检查。当前不新增页面，浏览器结果验证 Web 启动与既有界面回归，不冒充上传或媒体设置/详情 UI 验收。
 
-## 验证入口与远端待完成项
+## 验证入口与远端结果
 
 普通 `integration` project 不要求本机图片工具；`media-tools` project 包含两个实际工具测试，缺工具时失败、不跳过。`pnpm run test:integration` 同时运行两组。通用 CI 执行普通 integration；Docker 工作流在两个实际生产镜像内执行 media-tools，使用临时目录、关闭网络并导出 `media-process-amd64/arm64` XML。测试依赖从工作区挂载，不进入生产镜像。
 
 业务提交 `fa20fd4` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35704396275) 已通过。[首轮双架构运行](https://github.com/dnslin/ariso-next/actions/runs/35704396667) 在新增工具组各有 21 项通过、1 项失败：旧版 ImageMagick 生成的测试底图在 IDAT 后附带文本，ExifTool 对单帧 APNG 样本发出警告。18 项处理测试全部通过；该失败阻止后续容器步骤，不能标整套通过。
 
-已在测试底图生成时增加 `-strip`，保留动画控制块、帧数、尺寸、警告和 MPF 提取等全部断言。该改动不修改业务逻辑；独立审计通过。`pnpm exec vitest run --project media-tools --reporter=default --reporter=junit --outputFile=test-results/media-63/media-tools-fixture-fix.xml` 本地复测 22 项通过。首轮 [AMD64](./remote-first-amd64.xml)、[ARM64](./remote-first-arm64.xml) XML 保留失败。修复后的双架构及完整容器结果待补充，通过前保持草稿。
+已在测试底图生成时增加 `-strip`，保留动画控制块、帧数、尺寸、警告和 MPF 提取等全部断言。该改动不修改业务逻辑；独立审计通过。`pnpm exec vitest run --project media-tools --reporter=default --reporter=junit --outputFile=test-results/media-63/media-tools-fixture-fix.xml` 本地复测 22 项通过。首轮 [AMD64](./remote-first-amd64.xml)、[ARM64](./remote-first-arm64.xml) XML 保留失败。修复后的结果如下。
+
+业务与样本修复提交 [`e1d736a`](https://github.com/dnslin/ariso-next/commit/e1d736a7bea8c864b2b7b06dcd9b27878b1fb63a) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35705138400) 和 [Docker 双架构工作流](https://github.com/dnslin/ariso-next/actions/runs/35705138845) 均成功。实际跟进命令为 `gh run watch 35705138400 --repo dnslin/ariso-next --interval 45 --exit-status` 和 `gh run watch 35705138845 --repo dnslin/ariso-next --interval 45 --exit-status`，均退出 0。
+
+| 远端验证               | 结果及归档                                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
+| CI 普通集成            | 229 项通过，[XML](./remote-integration.xml)                                                                    |
+| CI 单元测试            | 279 项通过，[XML](./remote-unit.xml)                                                                           |
+| AMD64 生产镜像真实工具 | 22 项通过，[XML](./remote-amd64.xml)                                                                           |
+| ARM64 生产镜像真实工具 | 22 项通过，[XML](./remote-arm64.xml)                                                                           |
+| 两架构其他必跑步骤     | 媒体契约、身份、交付、镜像产物隔离、本地存储真实挂载、媒体资源、离线转换与字体、生命周期/迁移/备份恢复全部通过 |
+| 发布步骤               | release-checks/publish 均因非 release 事件跳过，没有镜像发布或部署                                             |
+
+最终归档提交只更新文档和测试报告，不改业务或测试代码。
 
 ## 审计及边界
 
-已使用 `code-review-and-quality` 独立审查需求覆盖、模块边界、对象责任、发布复核、流和子进程生命周期、错误诊断及测试真实性，当前没有必须修复的代码审计项。审计不替代尚未完成的远端业务验证。
+已使用 `code-review-and-quality` 独立审查需求覆盖、模块边界、对象责任、发布复核、流和子进程生命周期、错误诊断及测试真实性，当前没有必须修复的代码审计项。随后完成了上表的真实远端验证。样本修复及绝对路径追踪修复均经独立复核，无必须修复项。
 
 本次不实现上传入口、完整元数据、其他格式、非 WebP 压缩、水印、设置/详情界面、ready 图重处理发布、重启恢复、自动重试、动态并发 1–4、持续空间监测或失败对象自动清理。这些沿用后续任务边界；当前不支持的任务参数明确失败，不静默改格式。候选 cleanup_pending 保留可恢复责任，不等于文件已清除。
 
