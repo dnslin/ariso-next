@@ -299,13 +299,27 @@ try {
       {
         ...identityConfig,
         phase: 'restart',
-        keepSpace: width !== 390 || process.env.EGO_KEEP_SPACE === '1',
+        keepSpace: true,
       },
       `identity-${width}-restart.log`,
     );
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
     await stop(server);
   }
+  // Reuse the same Ego space for isolated UI/library checks and let its runner
+  // close it after the final successful suite (unless the caller keeps it).
+  browser = spawn(process.execPath, ['run-browser.mjs'], {
+    cwd: resolve('tests/experiments/ui'),
+    detached: true,
+    stdio: ['ignore', 'inherit', 'inherit'],
+    env: {
+      ...process.env,
+      EGO_TASK_SPACE: String(report.taskSpaceId),
+      BROWSER_REPORT_DIR: join(output, 'ui'),
+    },
+  });
+  const [uiCode] = await once(browser, 'close', { signal: controller.signal });
+  assert.equal(uiCode, 0, 'Isolated UI/library browser verification failed');
   report.status = 'passed';
 } catch (error) {
   report.error = redact(error.stack ?? String(error));

@@ -13,6 +13,7 @@ const output = resolve(
 await mkdir(output, { recursive: true });
 // A failed rerun must not expose the previous browser's successful result.
 await rm(`${output}/browser.json`, { force: true });
+await rm(`${output}/library.json`, { force: true });
 const report = { startedAt: new Date().toISOString(), status: 'running' };
 await writeFile(
   `${output}/runner.json`,
@@ -78,6 +79,7 @@ try {
     await delay(100, undefined, { signal: controller.signal });
   }
   const config = {
+    libraryScript: new URL('./library-browser.mjs', import.meta.url).href,
     origin,
     output,
     spaceId: process.env.EGO_TASK_SPACE
