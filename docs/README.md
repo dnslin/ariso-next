@@ -9,6 +9,7 @@
 | 产品要做什么、首版如何验收     | [PRD v1.1](./product/Ariso-PRD-v1.1.md)               |
 | 模块职责、接口提供方和依赖     | [能力地图与十份规格索引](./product/CAPABILITY-MAP.md) |
 | 先开发什么、前置未完成如何处理 | [第二阶段计划](./tasks/plan.md)                       |
+| 本地检查和发布验证何时执行     | [任务执行与验证约定](./tasks/execution.md#适用检查)   |
 | 全部首版实施任务与直接前置     | [任务索引](./tasks/todo.md)                           |
 | 需求原文与任务映射             | [PRD 逐条覆盖表](./tasks/coverage.md)                 |
 | 页面对应哪个 Figma 原型        | [17 个设计模块](./design/README.md)                   |

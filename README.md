@@ -59,9 +59,9 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。Docker、图片和双架构验证优先使用 GitHub Actions；[部署说明](./docs/guides/deployment.md) 列出有 Docker 的机器可复现的命令。
+浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送不运行 Actions；本地执行范围与发布验证边界统一见[任务执行约定](./docs/tasks/execution.md#适用检查)。
 
-`test:integration` 同时执行普通集成和真实工具测试。CI 的普通集成组使用 `pnpm exec vitest run --project integration`；实际工具组 `pnpm exec vitest run --project media-tools` 在 Docker 工作流的 AMD64、ARM64 生产镜像内必跑。两组结果共同构成集成验收，不能用其中一组代替另一组。
+`test:integration` 在本地同时执行普通集成和真实工具测试，包含实际 ImageMagick/ExifTool 转换，不需要 Docker。请先完成生产构建；资源紧张时可使用 `pnpm run test:integration --maxWorkers=4`。浏览器检查通过 `test:browser` 复用现有 Ego Lite。
 
 - [升级、停止备份与恢复](./docs/guides/upgrading.md)
 - [runtime 规格](./docs/archive/runtime/SPEC-runtime.md)与[任务验收清单](./docs/archive/runtime/tasks/todo.md)

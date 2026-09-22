@@ -2,6 +2,8 @@
 
 对应 [Issue #63](https://github.com/dnslin/ariso-next/issues/63) 和 [PR #105](https://github.com/dnslin/ariso-next/pull/105)。范围及需求编号沿用 [T-MED-03](../../tasks/m1-m2.md#t-med-03-本地首图处理与持久任务)，业务规则见 [media §5–7](../../specs/SPEC-media.md)。记录日期：2026-09-22。
 
+后续验证策略已按所有者决定调整，当前执行范围统一见[适用检查](../../tasks/execution.md#适用检查)。下文保留 #63 实施时的本地与远端验证事实和原始证据，不作为后续 PR 的远端验收要求。
+
 当前状态：前置双架构验收、业务实现、独立代码审计、本地检查及业务提交 `e1d736a` 的远端 CI/双架构验证均已完成。完整本地集成 34 文件、251 项通过；远端普通集成 229 项、每种生产架构真实工具测试 22 项均通过。Ego 浏览器回归及两个架构的完整容器工作流通过，无未完成的 #63 验收项。
 
 ## 前置、授权与分支
@@ -74,7 +76,7 @@ Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空�
 
 ## 验证入口与远端结果
 
-普通 `integration` project 不要求本机图片工具；`media-tools` project 包含两个实际工具测试，缺工具时失败、不跳过。`pnpm run test:integration` 同时运行两组。通用 CI 执行普通 integration；Docker 工作流在两个实际生产镜像内执行 media-tools，使用临时目录、关闭网络并导出 `media-process-amd64/arm64` XML。测试依赖从工作区挂载，不进入生产镜像。
+普通 `integration` project 不要求本机图片工具；`media-tools` project 包含两个实际工具测试，缺工具时失败、不跳过。`pnpm run test:integration` 同时运行两组。本次实施时，通用 CI 执行了普通 integration；Docker 工作流在两个实际生产镜像内执行了 media-tools，使用临时目录、关闭网络并导出 `media-process-amd64/arm64` XML。测试依赖从工作区挂载，不进入生产镜像。
 
 业务提交 `fa20fd4` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35704396275) 已通过。[首轮双架构运行](https://github.com/dnslin/ariso-next/actions/runs/35704396667) 在新增工具组各有 21 项通过、1 项失败：旧版 ImageMagick 生成的测试底图在 IDAT 后附带文本，ExifTool 对单帧 APNG 样本发出警告。18 项处理测试全部通过；该失败阻止后续容器步骤，不能标整套通过。
 
@@ -92,6 +94,14 @@ Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空�
 | 发布步骤               | release-checks/publish 均因非 release 事件跳过，没有镜像发布或部署                                             |
 
 最终归档提交只更新文档和测试报告，不改业务或测试代码。
+
+## 后续调整：日常本地验证
+
+所有者在本次 PR 中确认：日常 PR/main 不运行任何 Actions，保留 GitHub Release 发布时的完整检查、镜像构建与发布。两个工作流取消了 PR、push 和 workflow_dispatch 入口；所有发布步骤及依赖关系保留，未创建 tag/Release 或发布镜像。共用执行规则见本文顶部引用，历史远端证据仍按原提交解释。
+
+这次仅改工作流和文档。Node 24.18.1 / pnpm 11.19.0 下重新执行 `pnpm run test:unit`（279 项）与 `pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/media-63/local-policy-integration.xml`（251 项，105.76 秒），均通过；后者包含 22 项真实 ImageMagick/ExifTool 测试及隔离生产构建测试。未额外重跑 UI 浏览器回归。
+
+使用现有 ESLint 依赖的 js-yaml 解析两个工作流，断言 images 仅有 release.published、ci 仅有 workflow_call、发布依赖 build/release-checks，且去掉冗余条件后发布作业和测试步骤与调整前完全一致，全部通过。此项是本地配置验证，不声称执行了真实 Release 发布。 `pnpm run format:check`、`pnpm run lint`、`node docs/tasks/check.mjs`（120 个任务、298 条需求）及 `git diff --check` 均通过；独立代码审计无必须修复项。
 
 ## 审计及边界
 

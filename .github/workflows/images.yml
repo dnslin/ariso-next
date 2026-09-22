@@ -1,21 +1,14 @@
-name: Docker build
+name: Release images
 
 on:
-  workflow_dispatch:
   release:
     types: [published]
-  pull_request:
-    paths-ignore: ['docs/**', '**/*.md']
-  push:
-    branches: [main]
-    paths-ignore: ['docs/**', '**/*.md']
 
 permissions:
   contents: read
 
 concurrency:
   group: images-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -266,12 +259,10 @@ jobs:
           retention-days: 7
 
   release-checks:
-    if: github.event_name == 'release'
     uses: ./.github/workflows/ci.yml
 
   publish:
-    # Only a published GitHub Release can publish; PR/push/dispatch never do.
-    if: github.event_name == 'release'
+    # This workflow is triggered only by a published GitHub Release.
     needs: [build, release-checks]
     runs-on: ubuntu-24.04
     timeout-minutes: 15

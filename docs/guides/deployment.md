@@ -12,7 +12,7 @@
 docker build --tag ariso:runtime .
 ```
 
-该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。Actions 在原生 AMD64、ARM64 runner 分别构建、实际运行和验证。发布流程仅在 GitHub Release 正式发布时消费同轮已验证镜像，再组合双架构镜像；普通 PR、main 检查和手动验证不发布。
+该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。日常开发使用[本地适用检查](../tasks/execution.md#适用检查)。这条 Docker 命令用于需要容器演练的机器，不是每个 PR 的必跑项。
 
 先按 [README](../../README.md#本地开发) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
 
@@ -86,9 +86,17 @@ curl --fail --silent --show-error http://127.0.0.1:3000/api/health
 
 远程镜像须先 `docker pull` 确切版本。当前没有要求拉取尚未发布的镜像。升级、备份与失败恢复必须按 [升级说明](./upgrading.md) 操作。
 
+## 发布验证
+
+`.github/workflows/images.yml` 仅响应 GitHub Release 的 `published` 事件。普通 PR、main 推送、单独推送 tag 均不触发；工作流没有手动运行入口。创建或编辑 Release 草稿也不会构建。触发语义见 [GitHub 官方文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#release)。
+
+发布时在原生 AMD64、ARM64 runner 分别构建、实际运行并验证生产镜像，同时调用 `ci.yml` 完成发布前的格式、lint、类型、单元、应用构建和普通集成检查。真实图片工具测试在两个生产镜像内运行。所有检查通过后，发布任务消费同轮已验证镜像并推送 GHCR，再组合双架构 manifest；不会重新构建待发布镜像。
+
+版本名沿用工作流中的 SemVer 校验（允许 `v` 前缀）。发布失败时不绕过检查推送镜像；修复后针对正确版本重新发布验证。日常 PR 的本地测试不能替代这次实际镜像验收，但不需要提前为每次提交执行它。本次流程调整不创建 tag、Release 或操作部署。
+
 ## 独立容器演练
 
-下面的命令从源码仓库运行，需要 Node 24、冻结安装后的依赖、Linux Docker 和 Compose 2.24.4 或更新版本（测试覆盖文件使用 `!override`）。可以在有 Docker 的独立机器或已有 Actions runner 执行；无需本机安装 Docker 才能开发。
+下面的命令从源码仓库运行，需要 Node 24、冻结安装后的依赖、Linux Docker 和 Compose 2.24.4 或更新版本（测试覆盖文件使用 `!override`）。可以在有 Docker 的独立机器按需执行；Actions 仅在上述 Release 发布流程中执行，无需本机安装 Docker 才能开发。
 
 ```sh
 docker build --tag ariso:runtime .

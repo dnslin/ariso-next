@@ -33,4 +33,4 @@ EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 pnpm run test:browser
 
 将 22 替换为本任务首次输出的 ID。默认独立运行成功即关闭空间；连续任务设置 `EGO_KEEP_SPACE=1`，完成后调用一次 `task.finish({ keep: [] })`。不得新建空间绕过失败。
 
-设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。GitHub 托管 runner 未提供 Ego Lite，浏览器证据来自工作站，CI 执行夹具构建与实际生产回归，Docker 由 Actions 验证双架构。
+设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。

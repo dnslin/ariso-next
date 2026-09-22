@@ -36,6 +36,8 @@
 
 ## Verification
 
+- 本地检查、PR 完成条件与发布验证的执行边界统一遵守[任务执行与验证约定](docs/tasks/execution.md#适用检查)。
+
 - Whenever behavior changes, add or update tests that verify the new behavior. Prefer testing externally observable behavior rather than relying on implementation details.
 
 - After completing the changes, run the tests, type checks, static analysis, and build commands directly related to the modification.
