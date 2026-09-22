@@ -42,10 +42,9 @@ describe('生产首页与公共壳层', () => {
     expect(html).toContain('<title>Ariso</title>');
     expect(html).toMatch(/<h1[^>]*>Ariso<\/h1>/);
     expect(html).toContain('轻装简从');
-    expect(html).toContain('账号初始化、登录和图片上传尚未开放。');
-    expect(html).not.toMatch(
-      /<a\b[^>]*href="\/(?:login|upload|images|setup)?"/,
-    );
+    expect(html).toContain('首次使用，请完成站点初始化。');
+    expect(html).toMatch(/<a\b[^>]*href="\/setup"/);
+    expect(html).not.toMatch(/<a\b[^>]*href="\/(?:login|upload|images)?"/);
   });
 
   it('数据库品牌修改在下一请求同步更新正文与 metadata，并转义 HTML', async () => {
@@ -56,6 +55,7 @@ describe('生产首页与公共壳层', () => {
       .run(origin, 'Asia/Shanghai', '新站点', '新的描述', Date.now());
     const first = await home();
     expect(first).toContain('<title>新站点</title>');
+    expect(first).toMatch(/<a\b[^>]*href="\/login"/);
     expect(first).toMatch(/<h1[^>]*>新站点<\/h1>/);
     expect(first).toContain('name="description" content="新的描述"');
     expect(first).toMatch(/<p[^>]*class="home-description"[^>]*>新的描述<\/p>/);

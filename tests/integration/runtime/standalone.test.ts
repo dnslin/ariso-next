@@ -150,7 +150,8 @@ describe('isolated production directory', () => {
         const home = await fetch(origin);
         expect(home.status).toBe(200);
         const html = await home.text();
-        expect(html).toContain('账号初始化、登录和图片上传尚未开放。');
+        expect(html).toContain('首次使用，请完成站点初始化。');
+        expect(html).toMatch(/<a\b[^>]*href="\/setup"/);
         const scripts = [...html.matchAll(/src="([^" ]+\.js[^" ]*)"/g)].map(
           (match) => match[1],
         );

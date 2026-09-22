@@ -128,6 +128,53 @@ describe('initialized production auth', () => {
     await seedAuthOwner(connection, origin);
   });
 
+  it('protects the real admin page independently of navigation, including expired and revoked Cookie replay', async () => {
+    const page = (headers: Record<string, string> = {}) =>
+      fetch(`${origin}/admin`, { headers, redirect: 'manual' });
+    const anonymousHeaders: Record<string, string>[] = [
+      {},
+      { authorization: 'Bearer upload-token', cookie: 'share_access=granted' },
+    ];
+    for (const headers of anonymousHeaders) {
+      const response = await page(headers);
+      expect(response.status).toBe(307);
+      expect(response.headers.get('location')).toBe('/login?returnTo=%2Fadmin');
+      expect(await response.text()).not.toContain(email);
+    }
+    const serverComponent = await fetch(`${origin}/admin?_rsc`, {
+      headers: { RSC: '1' },
+    });
+    const componentBody = await serverComponent.text();
+    expect(componentBody).toContain('/login?returnTo=%2Fadmin');
+    expect(componentBody).not.toContain(email);
+    const cookie = cookies(await login());
+    const allowed = await page({ cookie });
+    expect(allowed.status).toBe(200);
+    expect(allowed.headers.get('cache-control')).toContain('no-store');
+    expect(await allowed.text()).toContain(email);
+    connection.db
+      .update(session)
+      .set({ expiresAt: new Date(Date.now() - 1000) })
+      .run();
+    const expired = await page({ cookie });
+    expect(expired.status).toBe(307);
+    expect(expired.headers.get('location')).toBe(
+      '/login?returnTo=%2Fadmin&reason=expired',
+    );
+    expect(await expired.text()).not.toContain(email);
+    const fresh = cookies(await login());
+    expect((await post('sign-out', {}, { cookie: fresh })).status).toBe(200);
+    const replay = await page({ cookie: fresh });
+    expect(replay.status).toBe(307);
+    expect(await replay.text()).not.toContain(email);
+    const notice = await fetch(
+      `${origin}/login?reason=expired&returnTo=https://evil.test`,
+    );
+    const html = await notice.text();
+    expect(html).toContain('会话已失效');
+    expect(html).not.toContain('"returnTo":"https://evil.test"');
+  });
+
   it('production constraints reject invalid owners and duplicate providers; incomplete identity is explicit', async () => {
     for (const value of ['NULL', '0', '2']) {
       expect(() =>
