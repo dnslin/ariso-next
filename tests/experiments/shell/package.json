@@ -1,0 +1,13 @@
+{
+  "name": "ariso-shell-verification",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "build": "node ../../../node_modules/next/dist/bin/next build --webpack",
+    "start": "node ../../../node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3057",
+    "typecheck": "node ../../../node_modules/next/dist/bin/next typegen && node ../../../node_modules/typescript/bin/tsc --noEmit"
+  }
+}

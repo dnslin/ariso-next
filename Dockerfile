@@ -11,7 +11,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN npm install --global "$(node --print "require('./package.json').packageManager")" \
     && pnpm install --frozen-lockfile
 
-COPY next.config.ts tsconfig.json tsconfig.runtime.json ./
+COPY next.config.ts postcss.config.mjs tsconfig.json tsconfig.runtime.json ./
 COPY src ./src
 COPY public ./public
 COPY drizzle ./drizzle

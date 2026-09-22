@@ -6,6 +6,7 @@ import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
@@ -13,6 +14,12 @@ const output = resolve(
   process.env.BROWSER_REPORT_DIR ?? 'test-results/browser',
 );
 await mkdir(output, { recursive: true });
+for (const name of [
+  'browser.json',
+  'shell-browser.json',
+  'error-recovery.json',
+])
+  await rm(join(output, name), { force: true });
 const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
 const report = {
   startedAt: new Date().toISOString(),
@@ -21,8 +28,14 @@ const report = {
   node: process.version,
   status: 'failed',
 };
+await writeFile(
+  join(output, 'runner.json'),
+  `${JSON.stringify({ ...report, status: 'running' }, null, 2)}\n`,
+);
 let server;
 let browser;
+let shellServer;
+let shellLogs = '';
 let logs = '';
 async function stop(child) {
   if (!child?.pid || child.exitCode !== null || child.signalCode !== null)
@@ -104,7 +117,68 @@ try {
     assert.ok(Date.now() < deadline, 'Production server health timed out');
     await delay(100, undefined, { signal: controller.signal });
   }
+  const shellSocket = createServer();
+  shellSocket.listen(0, '127.0.0.1');
+  await once(shellSocket, 'listening');
+  const shellPort = shellSocket.address().port;
+  await new Promise((resolve, reject) =>
+    shellSocket.close((error) => (error ? reject(error) : resolve())),
+  );
+  const shellOrigin = `http://127.0.0.1:${shellPort}`;
+  shellServer = spawn(
+    process.execPath,
+    [
+      resolve('node_modules/next/dist/bin/next'),
+      'start',
+      resolve('tests/experiments/shell'),
+      '--hostname',
+      '127.0.0.1',
+      '--port',
+      String(shellPort),
+    ],
+    { detached: true, stdio: ['ignore', 'pipe', 'pipe'] },
+  );
+  shellServer.stdout.on('data', (chunk) => {
+    shellLogs += chunk;
+  });
+  shellServer.stderr.on('data', (chunk) => {
+    shellLogs += chunk;
+  });
+  shellServer.on('error', (error) => {
+    spawnError = error;
+  });
+  const shellDeadline = Date.now() + 30000;
+  while (true) {
+    controller.signal.throwIfAborted();
+    if (spawnError) throw spawnError;
+    assert.equal(
+      shellServer.exitCode,
+      null,
+      `Shell fixture exited: ${shellLogs}`,
+    );
+    try {
+      if (
+        (
+          await fetch(`${shellOrigin}/dashboard`, {
+            signal: AbortSignal.timeout(1000),
+          })
+        ).status === 200
+      )
+        break;
+    } catch (error) {
+      if (Date.now() >= shellDeadline) throw error;
+    }
+    assert.ok(Date.now() < shellDeadline, 'Shell fixture startup timed out');
+    await delay(100, undefined, { signal: controller.signal });
+  }
   const config = {
+    nodeExecutable: process.execPath,
+    projectDirectory: resolve('.'),
+    databasePath: join(temporary, 'data', 'ariso.db'),
+    errorsScript: pathToFileURL(resolve('e2e/browser-errors.mjs')).href,
+    recoveryScript: pathToFileURL(resolve('e2e/error-recovery.mjs')).href,
+    shellOrigin,
+    shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
     origin,
     output,
     spaceId: process.env.EGO_TASK_SPACE
@@ -139,7 +213,7 @@ try {
     /* Process close/error below reports a failed CLI. */
   });
   browser.stdin.end(`const config = ${JSON.stringify(config)};\n${source}`);
-  const timeout = setTimeout(interrupt, 120000);
+  const timeout = setTimeout(interrupt, 300000);
   try {
     const [code] = await closed;
     assert.equal(code, 0, 'Ego browser verification failed');
@@ -155,6 +229,8 @@ try {
 } finally {
   await stop(browser);
   await stop(server);
+  await stop(shellServer);
+  await writeFile(join(output, 'shell-server.log'), shellLogs);
   await writeFile(join(output, 'server.log'), logs);
   await rm(temporary, { recursive: true, force: true });
   report.finishedAt = new Date().toISOString();

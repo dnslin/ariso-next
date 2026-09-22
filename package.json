@@ -19,21 +19,28 @@
     "typecheck": "next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
-    "test:browser": "node scripts/verify-browser.mjs"
+    "test:browser": "pnpm run build:shell && node scripts/verify-browser.mjs",
+    "build:shell": "next build tests/experiments/shell --webpack"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.5",
+    "@heroui/react": "3.2.6",
+    "@heroui/styles": "3.2.6",
+    "@tanstack/react-query": "5.103.1",
     "better-auth": "1.7.5",
     "better-sqlite3": "13.0.3",
     "drizzle-orm": "0.45.2",
     "execa": "10.0.1",
     "next": "16.3.5",
+    "next-themes": "0.4.6",
     "pino": "10.3.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "react-hook-form": "7.88.0",
     "zod": "4.6.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "24.13.4",
     "@types/react": "19.3.0",
@@ -43,6 +50,7 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.5",
     "prettier": "3.9.6",
+    "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
     "vitest": "5.0.0"
   }
