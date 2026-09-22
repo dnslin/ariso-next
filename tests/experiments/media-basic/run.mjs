@@ -38,6 +38,24 @@ const report = {
   incomplete: [],
 };
 const owned = [];
+function failure(error) {
+  return {
+    message: error.message,
+    stack: error.stack,
+    stderr: error.stderr,
+    code: error.code,
+    measurement: error.measurement,
+  };
+}
+// Independent scenarios continue collecting evidence; any failed assertion
+// still makes the complete run fail. Environment failures stop the run.
+async function check(name, action) {
+  try {
+    report.checks.push({ name, status: 'passed', evidence: await action() });
+  } catch (error) {
+    report.checks.push({ name, status: 'failed', failure: failure(error) });
+  }
+}
 try {
   assert.equal(process.versions.node.split('.')[0], '24');
   assert.equal(
@@ -63,20 +81,21 @@ try {
   ).stdout;
   assert.match(report.environment.magick, /ImageMagick 7\./);
   // Do not override installed policy: detect any inherited fixed admission cap.
-  for (const policy of report.environment.policy.split('Policy:')) {
-    if (/Resource/.test(policy))
-      assert.doesNotMatch(
-        policy,
-        /name:\s*(width|height|list-length)\b/i,
-        'Installed policy must not reintroduce fixed input limits',
-      );
-  }
+  await check('installed-policy', async () => {
+    for (const policy of report.environment.policy.split('Policy:')) {
+      if (/Resource/.test(policy))
+        assert.doesNotMatch(
+          policy,
+          /name:\s*(width|height|list-length)\b/i,
+          'Installed policy must not reintroduce fixed input limits',
+        );
+    }
+  });
   const outputDirectory = join(directory, 'images');
   await mkdir(outputDirectory);
-  report.checks.push({
-    name: 'image-behavior',
-    evidence: await verifyImages({ sourceDirectory, outputDirectory, run }),
-  });
+  await check('image-behavior', () =>
+    verifyImages({ sourceDirectory, outputDirectory, run }),
+  );
   const evidenceDirectory = dirname(resolve(values.report));
   await mkdir(evidenceDirectory, { recursive: true });
   await cp(outputDirectory, join(evidenceDirectory, 'derivatives'), {
@@ -86,53 +105,52 @@ try {
     recursive: true,
   });
   await rm(outputDirectory, { recursive: true });
-  const processResult = await verifyProcessLifecycle();
-  report.checks.push({ name: 'process-lifecycle', evidence: processResult });
-  report.incomplete.push(...processResult.incomplete);
-  report.checks.push({
-    name: 'stopped-real-tool',
-    evidence: await verifyStoppedTool({ sourceDirectory, directory, run }),
+  await check('process-lifecycle', async () => {
+    const result = await verifyProcessLifecycle();
+    report.incomplete.push(...result.incomplete);
+    assert.deepEqual(result.incomplete, []);
+    return result;
   });
-  // A skinny real raster crosses historical 16K/32K width restrictions cheaply.
-  const wide = join(sourceDirectory, 'wide.png');
-  await run('magick', [...limits(0), '-size', '32769x1', 'xc:red', wide]);
-  const widePreview = join(directory, 'wide.webp');
-  await run('magick', [...limits(0), wide, '-resize', '640x640>', widePreview]);
-  assert.equal(
-    (await run('magick', ['identify', '-format', '%m %wx%h', widePreview]))
-      .stdout,
-    'WEBP 640x1',
+  await check('stopped-real-tool', () =>
+    verifyStoppedTool({ sourceDirectory, directory, run }),
   );
-  await rm(widePreview);
-  report.checks.push({
-    name: 'wide-raster-without-fixed-admission',
-    width: 32769,
-    preview: '640x1',
+  // A skinny real raster crosses historical 16K/32K width restrictions cheaply.
+  const wideDirectory = join(directory, 'wide');
+  await mkdir(wideDirectory);
+  await check('wide-raster-without-fixed-admission', async () => {
+    const wide = join(wideDirectory, 'wide.png');
+    await run('magick', [...limits(0), '-size', '32769x1', 'xc:red', wide]);
+    const widePreview = join(wideDirectory, 'wide.webp');
+    await run('magick', [
+      ...limits(0),
+      wide,
+      '-resize',
+      '640x640>',
+      widePreview,
+    ]);
+    assert.equal(
+      (await run('magick', ['identify', '-format', '%m %wx%h', widePreview]))
+        .stdout,
+      'WEBP 640x1',
+    );
+    return { width: 32769, preview: '640x1' };
   });
-  report.checks.push({
-    name: 'resources',
-    evidence: await verifyResources({
-      sourceDirectory,
-      directory,
-      run,
-      measure,
-    }),
-  });
+  await rm(wideDirectory, { recursive: true });
+  await check('resources', () =>
+    verifyResources({ sourceDirectory, directory, run, measure }),
+  );
   assert.deepEqual(
     report.incomplete,
     [],
     'Missing real environments cannot pass',
   );
-  report.status = 'passed';
+  report.status = report.checks.some((check) => check.status === 'failed')
+    ? 'failed'
+    : 'passed';
+  if (report.status === 'failed') process.exitCode = 1;
 } catch (error) {
   report.status = 'failed';
-  report.failure = {
-    message: error.message,
-    stack: error.stack,
-    stderr: error.stderr,
-    code: error.code,
-    measurement: error.measurement,
-  };
+  report.failure = failure(error);
   process.exitCode = 1;
 } finally {
   for (const directory of owned.reverse())
@@ -145,7 +163,11 @@ try {
         status: report.status,
         report: values.report,
         failure: report.failure,
-        checks: report.checks.map(({ name }) => name),
+        checks: report.checks.map(({ name, status, failure }) => ({
+          name,
+          status,
+          failure,
+        })),
       },
       null,
       2,
