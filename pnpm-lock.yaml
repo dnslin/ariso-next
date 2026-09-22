@@ -75,6 +75,9 @@ importers:
       auth:
         specifier: 1.7.5
         version: 1.7.5(@better-fetch/fetch@1.3.2)(better-call@1.4.0(zod@4.6.2))(drizzle-kit@0.31.10)(drizzle-orm@0.45.2(@types/better-sqlite3@9.6.0)(better-sqlite3@13.0.3)(kysely@0.29.6))(jose@6.2.12)(kysely@0.29.6)(nanostores@1.5.3)(next@16.3.5(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@24.13.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(vitest@5.0.0(@types/node@24.13.4)(vite@8.3.0(@types/node@24.13.4)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.13)))
+      content-disposition:
+        specifier: 3.0.0
+        version: 3.0.0
       drizzle-kit:
         specifier: 0.31.10
         version: 0.31.10
@@ -2097,6 +2100,10 @@ packages:
 
   confbox@0.3.1:
     resolution: {integrity: sha512-cKUSoKa8YxFZZSmraVi7onONx3amu77ngK3kGpsYHDH7drPwCRkQE1RYMPlLRrMtnciRj274XNRxcHxnKmDSnA==}
+
+  content-disposition@3.0.0:
+    resolution: {integrity: sha512-ZH/0Xs9rMIFWCOmGdmS9eHBTF62qqQYNz4nVjQhkdIO/a0fCP4UIM3mRz/wiqL0L14YgAz/1xio4OaSY4+ON/A==}
+    engines: {node: '>=22'}
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
@@ -5552,6 +5559,8 @@ snapshots:
   concat-map@0.0.1: {}
 
   confbox@0.3.1: {}
+
+  content-disposition@3.0.0: {}
 
   convert-source-map@2.0.0: {}
 

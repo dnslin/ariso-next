@@ -155,6 +155,8 @@
 
 ### EV-DELIVERY-01 Next 本地流与条件请求验证
 
+实验实现、验证证据与后续接入边界见[实验报告](./evidence/EV-DELIVERY-01/README.md)；不代替 T-DEL-01 业务验收。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[delivery §4/6–10](../specs/SPEC-delivery.md)
