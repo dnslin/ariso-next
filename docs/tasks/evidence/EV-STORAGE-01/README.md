@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；AWS S3、R2、MinIO 均未提供测试 Bucket/凭据，三份报告均为 `incomplete`。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；AWS S3、R2、MinIO 均未提供测试 Bucket/凭据，三份报告均为 `incomplete`。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -100,4 +100,4 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 
 仍需三种真实服务分别提供普通 Bucket 能力、私有读取、条件复制、签名覆盖、真实 CORS/附件及最终清理证据。R2 还须提供整个 Bucket 无锁规则、关闭公共域名/其他公开旁路的实际所有者确认。此 PR 保持草稿，不能将报告模板和本地回归等同 Issue 验收。
 
-远端规则按[执行约定](../../execution.md#适用检查)：当前 `.github/workflows/ci.yml` 仅 workflow_call，images.yml 仅 release.published，没有 PR、push 或 workflow_dispatch 验证入口。本次不创建 Release、不推送镜像、不部署；AMD64/ARM64 容器检查未执行，不标通过。PR 创建后再核对实际检查状态。
+远端规则按[执行约定](../../execution.md#适用检查)：当前 `.github/workflows/ci.yml` 仅 workflow_call，images.yml 仅 release.published，没有 PR、push 或 workflow_dispatch 验证入口。本次不创建 Release、不推送镜像、不部署；AMD64/ARM64 容器检查未执行，不标通过。已用 `gh pr view 109 --json isDraft,statusCheckRollup`、`gh pr checks 109` 和 `gh run list --branch codex/70-storage-protocol` 回读：草稿为 true，检查列表及 Actions 运行列表为空；checks 命令报告 no checks，不记作 CI 通过。
