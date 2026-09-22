@@ -3,9 +3,9 @@ import {
   insertSetupOwner,
   requireSetupOpen,
   SetupError,
-  setupInputSchema,
   verifySetupCode,
 } from '../../../server/identity/setup.ts';
+import { setupInputSchema } from '../../../server/identity/validation.ts';
 import { prepareInitialMedia } from '../../../server/media/settings.ts';
 import { createRuntimeLogger } from '../../../server/runtime/logger.ts';
 import { initializeSiteSettings } from '../../../server/site/settings.ts';

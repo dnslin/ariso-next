@@ -1,16 +1,8 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 import { and, eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { z } from 'zod';
 import { readSiteSettings, type SiteTransaction } from '../site/settings.ts';
-import { siteSettingsInputSchema } from '../site/validation.ts';
 import { account, user } from './schema.ts';
-
-export const setupInputSchema = siteSettingsInputSchema.extend({
-  code: z.string().min(1),
-  email: z.string().trim().toLowerCase().pipe(z.email()),
-  password: z.string().min(8).max(128),
-});
 
 export class SetupError extends Error {
   code: string;

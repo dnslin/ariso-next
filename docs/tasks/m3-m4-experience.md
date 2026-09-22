@@ -10,7 +10,7 @@
 
 - 每项任务交付对应实现、外部行为测试和记录；范围中的目录为预计修改边界，按现有结构落地，不创建空层。数据库变更运行 `pnpm run db:generate` 并审查 SQL。
 - 每项实现均运行 `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration`；含界面任务另运行 `pnpm run test:browser`。下文验证方法指定需新增的行为断言；测试放 `tests/unit/<模块>/`、`tests/integration/<模块>/`，浏览器用现有 e2e 入口新增场景。记录实际命令、环境、结果与证据路径，不能用原型截图替代实现证据。
-- 所有界面同时验收桌面和手机，含 360/390/430、768 及桌面宽度、浅深色、长内容、44px 触控目标、焦点恢复、软键盘和安全区域。正文滚动与底部操作区分离；手机设置分类用 Select，手机详情为独立页面。按[交接规范](../design/handoff.md)组合 HeroUI，必要差异记录在 PR。
+- 所有界面同时验收桌面和手机，含 360/390/430、768 及桌面宽度、浅深色、长内容、44px 点击目标、焦点恢复和短视口滚动。正文滚动与底部操作区分离；手机设置分类用 Select，手机详情为独立页面。按[交接规范](../design/handoff.md)组合 HeroUI，必要差异记录在 PR。
 - `DG-*` 只核对实施所需设计规则和状态表达；真实输入、请求竞争、剪贴板、手势与持久化由本文件对应任务验收。未覆盖状态须先补足适用说明或设计，不把已有代表图当全组合已通过。专门业务组件不重新实现 HeroUI 通用控件。
 - `/library`、`/albums/{albumId}`、`/tags`、`/trash`、`/settings/general`、`/s/{token}` 沿用规格。规格未命名的工作台、统计及分享管理页在本轮采用 `/dashboard`、`/analytics`、`/shares`，由相应 DG 核对与外壳导航衔接。
 
@@ -264,7 +264,7 @@
 - 范围：[site 规格](../specs/SPEC-site.md) §6/7/9；品牌文本、Logo/Favicon上传替换删除、预览与首页/登录/分享/标题元信息实时配置。
 - 直接前置：`T-SITE-03`、`T-SHR-03`、`T-UI-01`、`DG-SITE`
 - 验收条件：保存后新请求/当前页面使用最新名称描述图标；修改失败保留旧配置和输入，缺失素材有明确状态不当默认素材。允许格式/5MiB提示准确，删除恢复内置品牌；不把素材选择预览当成功保存。
-- 验证方法：真实文件上传替换删除及失败，跨刷新/重启/首页/登录/匿名分享/浏览器标签对比；网络缓存不展示旧素材，无HTML注入；手机软键盘与文件选择。
+- 验证方法：真实文件上传替换删除及失败，跨刷新/重启/首页/登录/匿名分享/浏览器标签对比；网络缓存不展示旧素材，无HTML注入；手机宽度下的滚动与文件选择。
 - 界面：所有者 /settings/general；匿名首页/登录与 /s/{token} 消费品牌；site配置与branding服务。桌面[468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)、手机[468:12216](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-12216)、桌面状态[469:10633](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10633)、手机状态[469:10934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10934)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Button](https://heroui.com/en/docs/react/components/button)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Card](https://heroui.com/en/docs/react/components/card)。跨页代表首页 [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10) / [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)，匿名分享 [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610) / [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)；DG-SITE核对RG-08的Favicon/元信息，保留失败输入；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 
 ### T-SITE-05 浅深系统主题与浏览器偏好

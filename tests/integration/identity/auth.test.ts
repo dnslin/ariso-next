@@ -113,6 +113,10 @@ afterEach(async () => {
 });
 
 it('uninitialized production auth requests return setup-required without creating an owner', async () => {
+  const loginPage = await fetch(`${origin}/login?setup=completed`);
+  const loginHtml = await loginPage.text();
+  expect(loginHtml).toContain('站点尚未初始化');
+  expect(loginHtml).not.toContain('初始化已完成');
   for (const path of ['get-session', 'sign-in/email', 'sign-up/email']) {
     const response = await post(path);
     expect(response.status).toBe(409);
@@ -126,6 +130,63 @@ it('uninitialized production auth requests return setup-required without creatin
 describe('initialized production auth', () => {
   beforeEach(async () => {
     await seedAuthOwner(connection, origin);
+  });
+
+  it('renders the login form when the return destination is malformed', async () => {
+    const response = await fetch(
+      `${origin}/login?returnTo=${encodeURIComponent('/\n/[')}`,
+    );
+    expect(response.status).toBe(200);
+    const html = await response.text();
+    expect(html).toContain('login-heading');
+    expect(html).toContain('current-password');
+  });
+
+  it('protects the real admin page independently of navigation, including expired and revoked Cookie replay', async () => {
+    const page = (headers: Record<string, string> = {}) =>
+      fetch(`${origin}/admin`, { headers, redirect: 'manual' });
+    const anonymousHeaders: Record<string, string>[] = [
+      {},
+      { authorization: 'Bearer upload-token', cookie: 'share_access=granted' },
+    ];
+    for (const headers of anonymousHeaders) {
+      const response = await page(headers);
+      expect(response.status).toBe(307);
+      expect(response.headers.get('location')).toBe('/login?returnTo=%2Fadmin');
+      expect(await response.text()).not.toContain(email);
+    }
+    const serverComponent = await fetch(`${origin}/admin?_rsc`, {
+      headers: { RSC: '1' },
+    });
+    const componentBody = await serverComponent.text();
+    expect(componentBody).toContain('/login?returnTo=%2Fadmin');
+    expect(componentBody).not.toContain(email);
+    const cookie = cookies(await login());
+    const allowed = await page({ cookie });
+    expect(allowed.status).toBe(200);
+    expect(allowed.headers.get('cache-control')).toContain('no-store');
+    expect(await allowed.text()).toContain(email);
+    connection.db
+      .update(session)
+      .set({ expiresAt: new Date(Date.now() - 1000) })
+      .run();
+    const expired = await page({ cookie });
+    expect(expired.status).toBe(307);
+    expect(expired.headers.get('location')).toBe(
+      '/login?returnTo=%2Fadmin&reason=expired',
+    );
+    expect(await expired.text()).not.toContain(email);
+    const fresh = cookies(await login());
+    expect((await post('sign-out', {}, { cookie: fresh })).status).toBe(200);
+    const replay = await page({ cookie: fresh });
+    expect(replay.status).toBe(307);
+    expect(await replay.text()).not.toContain(email);
+    const notice = await fetch(
+      `${origin}/login?reason=expired&returnTo=https://evil.test`,
+    );
+    const html = await notice.text();
+    expect(html).toContain('会话已失效');
+    expect(html).not.toContain('"returnTo":"https://evil.test"');
   });
 
   it('production constraints reject invalid owners and duplicate providers; incomplete identity is explicit', async () => {

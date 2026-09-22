@@ -100,13 +100,19 @@ try {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelectorAll(
-          'a[href="/login"],a[href="/upload"],a[href="/library"]',
-        ).length,
+        document.querySelectorAll('a[href="/upload"],a[href="/library"]')
+          .length,
     ),
     0,
   );
-  assert.ok(report.page.text.includes('账号初始化、登录和图片上传尚未开放。'));
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelectorAll('a[href="/setup"],a[href="/login"]').length >
+        0,
+    ),
+    true,
+  );
   assert.deepEqual(report.page.images, []);
   const home = await page.fetch('/');
   assert.equal(home.status, 200);

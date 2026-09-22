@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "phase": "restart",
+  "checks": [
+    "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [],
+  "sessionChecks": [
+    {
+      "check": "Real HTTP 429 feedback disables login until the retry header window expires",
+      "retrySeconds": 10
+    },
+    {
+      "check": "Aged real session renews on window focus and browser cookie expiry advances",
+      "beforeExpiry": 1790650849.588132,
+      "afterExpiry": 1790650850.689441
+    },
+    {
+      "check": "Expired real session redirects from the visible admin page to the expiry notice"
+    },
+    {
+      "check": "Real SQLite logout deletion failure keeps owner signed in with visible error; retry succeeds after removing the fault"
+    }
+  ],
+  "errors": []
+}

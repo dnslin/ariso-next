@@ -56,10 +56,6 @@ body {
   font-family: var(--font-sans);
   line-height: 1.5;
 }
-h1 {
-  font-size: 28px;
-  font-weight: 600;
-}
 p {
   overflow-wrap: anywhere;
 }
@@ -68,10 +64,17 @@ button,
 input {
   touch-action: manipulation;
 }
-:focus-visible,
-[data-focus-visible='true'] {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
+@layer base {
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  :focus-visible,
+  [data-focus-visible='true'] {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
 }
 .public-shell {
   min-height: 100dvh;

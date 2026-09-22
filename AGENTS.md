@@ -18,6 +18,10 @@
 
 - Before designing a solution, study how mature products solve the same problem. Prefer proven patterns and conventions over inventing new ones from scratch.
 
+## Frontend Implementation
+
+- 前端实现与代码评审必须遵守[设计交付规范中的前端实现约束](docs/design/handoff.md#前端实现约束)。图标来源、Tailwind CSS 使用和 HeroUI 复用规则统一在该文档维护。
+
 ## Working Method
 
 - Before modifying code, read the relevant implementation, tests, type definitions, configuration, and call paths. Do not start implementing based only on filenames, isolated code fragments, or assumptions.

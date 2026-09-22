@@ -150,6 +150,7 @@ it('concurrent setup commits one complete owner, creates no session, and support
     expect(response.headers.getSetCookie()).toEqual([]);
   }
   for (const table of businessTables) expect(records(table)).toHaveLength(1);
+  expect((await request('/setup')).headers.get('location')).toBe('/login');
   expect(JSON.stringify(businessTables.map(records))).not.toContain(codes()[0]);
   expect(JSON.stringify(businessTables.map(records))).not.toContain(password);
   expect(records('session')).toEqual([]);

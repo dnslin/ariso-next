@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { connection } from 'next/server';
 import { cache } from 'react';
+import { Link } from '@heroui/react/link';
 import { PublicShell } from '../components/shell/public-shell';
 import { readSiteSettings } from '../server/site/settings';
 import { getServerRuntime } from '../server/startup/server-start';
@@ -31,8 +32,13 @@ export default async function HomePage() {
           {settings?.description ?? '轻装简从'}
         </p>
         <p className="home-availability">
-          账号初始化、登录和图片上传尚未开放。
+          {settings
+            ? '登录后进入你的工作空间。'
+            : '首次使用，请完成站点初始化。'}
         </p>
+        <Link href={settings ? '/login' : '/setup'}>
+          {settings ? '登录' : '开始初始化'}
+        </Link>
         <p className="home-caption">开源 · 极简 · 图片托管</p>
       </div>
     </PublicShell>
