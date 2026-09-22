@@ -1,0 +1,47 @@
+[
+  {
+    "command": "EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-browser pnpm run test:browser",
+    "startedAt": "2026-09-22T05:47:49.316Z",
+    "finishedAt": "2026-09-22T05:48:50.230Z",
+    "status": "failed",
+    "phase": "identity-1440-setup",
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'2px' !== '0px'\n\n    at file:////[eval2]:271:12",
+    "temporaryDirectoryRemoved": true
+  },
+  {
+    "command": "EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-browser-final pnpm run test:browser",
+    "startedAt": "2026-09-22T05:52:50.427Z",
+    "finishedAt": "2026-09-22T05:53:51.134Z",
+    "status": "failed",
+    "phase": "identity-1440-setup",
+    "error": "Error: page.waitForSelector timed out after 10000ms: text=\"没有匹配的时区\"\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+    "temporaryDirectoryRemoved": true
+  },
+  {
+    "command": "EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-browser-verified pnpm run test:browser",
+    "startedAt": "2026-09-22T05:54:42.574Z",
+    "finishedAt": "2026-09-22T05:55:32.817Z",
+    "status": "failed",
+    "phase": "identity-1440-setup",
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'' !== 'code'\n\n    at file:////[eval2]:363:12",
+    "temporaryDirectoryRemoved": true
+  },
+  {
+    "command": "EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-browser-pass pnpm run test:browser",
+    "startedAt": "2026-09-22T05:56:55.180Z",
+    "finishedAt": "2026-09-22T05:58:18.621Z",
+    "status": "failed",
+    "phase": "identity-1440-setup",
+    "error": "Error: page.waitForSelector timed out after 10000ms: loc=role:button[name=\"正在提交…\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+    "temporaryDirectoryRemoved": true
+  },
+  {
+    "command": "EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-browser-complete pnpm run test:browser",
+    "startedAt": "2026-09-22T05:59:31.855Z",
+    "finishedAt": "2026-09-22T06:00:54.553Z",
+    "status": "failed",
+    "phase": "identity-1440-setup",
+    "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://127.0.0.1:56016/login?setup=completed\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+    "temporaryDirectoryRemoved": true
+  }
+]

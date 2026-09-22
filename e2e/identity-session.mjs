@@ -4,22 +4,24 @@ import { promisify } from 'node:util';
 import { setTimeout as delay } from 'node:timers/promises';
 
 // Mutations only affect the runner's disposable real database.
+export async function identitySql(config, statement) {
+  const { stdout } = await promisify(execFile)(
+    config.nodeExecutable,
+    [
+      '--input-type=module',
+      '-e',
+      "import Database from 'better-sqlite3'; const db = new Database(process.argv[1]); try { const statement = db.prepare(process.argv[2]); console.log(JSON.stringify(statement.reader ? statement.all() : statement.run())); } finally { db.close(); }",
+      config.databasePath,
+      statement,
+    ],
+    { cwd: config.projectDirectory },
+  );
+  return JSON.parse(stdout);
+}
+
 export async function verifyIdentitySession(page, config) {
   const checks = [];
-  const sql = async (statement) => {
-    const { stdout } = await promisify(execFile)(
-      config.nodeExecutable,
-      [
-        '--input-type=module',
-        '-e',
-        "import Database from 'better-sqlite3'; const db = new Database(process.argv[1]); try { const statement = db.prepare(process.argv[2]); console.log(JSON.stringify(statement.reader ? statement.all() : statement.run())); } finally { db.close(); }",
-        config.databasePath,
-        statement,
-      ],
-      { cwd: config.projectDirectory },
-    );
-    return JSON.parse(stdout);
-  };
+  const sql = (statement) => identitySql(config, statement);
   const signIn = async () => {
     await page.fill('#email', config.credentials.email);
     await page.fill('#password', config.credentials.password);

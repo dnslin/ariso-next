@@ -1,6 +1,9 @@
 /* global taskSpace, config */
 const { default: assert } = await import('node:assert/strict');
-const { writeFile } = await import('node:fs/promises');
+const { readFile, writeFile } = await import('node:fs/promises');
+const { identitySql, verifyIdentitySession } = await import(
+  config.identitySessionScript
+);
 const { join } = await import('node:path');
 const { installBrowserErrors, assertNoBrowserErrors } = await import(
   config.errorsScript
@@ -15,6 +18,7 @@ const report = {
   layouts: [],
 };
 let errorScript;
+let secondPage;
 const post = (path, body) =>
   page.fetch(path, {
     method: 'POST',
@@ -27,6 +31,33 @@ const setupBody = {
   publicUrl: config.origin,
   timeZone: 'UTC',
 };
+async function settingsSnapshot() {
+  const tables = [
+    'site_settings',
+    'media_settings',
+    'storage_settings',
+    'storage_configs',
+  ];
+  return Object.fromEntries(
+    await Promise.all(
+      tables.map(async (table) => [
+        table,
+        await identitySql(config, `SELECT * FROM ${table}`),
+      ]),
+    ),
+  );
+}
+async function health() {
+  const response = await page.fetch('/api/health');
+  assert.equal(response.status, 200);
+  assert.equal(response.headers['cache-control'], 'no-store');
+  assert.deepEqual(JSON.parse(response.body), { status: 'ok' });
+  return {
+    status: response.status,
+    cacheControl: response.headers['cache-control'],
+    body: JSON.parse(response.body),
+  };
+}
 async function resize(width, height = 844) {
   await page.cdp('Emulation.setDeviceMetricsOverride', {
     width,
@@ -114,6 +145,16 @@ async function loginAndLogout() {
     JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,
     config.credentials.email,
   );
+  if (secondPage) {
+    assert.equal(
+      JSON.parse((await secondPage.fetch('/api/auth/get-session')).body),
+      null,
+      'The second hostname has an independent browser cookie jar',
+    );
+    report.checks.push(
+      'Owner session on 127.0.0.1 does not authenticate the localhost browser page',
+    );
+  }
   await page.focus('loc=role:button[name="退出登录"]');
   await page.keyboard.press('Enter');
   await page.waitForSelector('#email');
@@ -130,6 +171,7 @@ try {
   errorScript = await installBrowserErrors(page);
   await resize(config.width);
   await page.goto(`${config.origin}/login`);
+  report.health = [await health()];
   if (config.phase === 'setup') {
     await page.waitForSelector('a[href="/setup"]');
     const initial = await page.fetch('/api/auth/get-session');
@@ -138,6 +180,37 @@ try {
     assert.equal(JSON.parse(initial.body).code, 'SETUP_REQUIRED');
     await page.click('a[href="/setup"]');
     await page.waitForSelector('#code');
+    // Navigating away before the final submit must not leave a partial account.
+    await page.fill('#code', 'invalid-setup-code');
+    await page.fill('#email', config.credentials.email);
+    await page.fill('#password', config.credentials.password);
+    await page.fill('#confirmPassword', 'different-confirmation');
+    await page.click('loc=role:button[name="下一步：设置站点"]');
+    await page.waitForSelector('#confirmPassword[aria-invalid="true"]');
+    await page.waitForFunction(
+      () => document.activeElement.id === 'confirmPassword',
+    );
+    await page.screenshot({
+      path: join(config.output, `identity-confirm-error-${config.width}.png`),
+    });
+    await page.fill('#confirmPassword', config.credentials.password);
+    await page.click('loc=role:button[name="下一步：设置站点"]');
+    await page.waitForSelector('#publicUrl');
+    await page.reload();
+    await page.waitForSelector('#code');
+    assert.equal(
+      await page.evaluate(() => document.querySelector('#code').value),
+      '',
+    );
+    assert.equal(
+      await page.evaluate(() => document.querySelector('#password').value),
+      '',
+    );
+    assert.equal((await page.fetch('/api/auth/get-session')).status, 409);
+    await noPersistedSecrets();
+    report.checks.push(
+      'Reload before final submission leaves setup open and clears in-memory secrets',
+    );
     await layouts('setup');
     if (config.width === 390) {
       // Exercise browsers without a usable timezone recommendation; no HTTP result is substituted.
@@ -185,14 +258,21 @@ try {
       () => document.querySelector('#password').type === 'password',
     );
     await page.focus('#password');
+    await page.waitForFunction(() =>
+      getComputedStyle(
+        document
+          .querySelector('#password')
+          .closest('[data-slot="input-group"]'),
+      ).boxShadow.includes('0px 0px 0px 2px'),
+    );
     const focusStyles = await page.evaluate(() => {
       const input = document.querySelector('#password');
       const group = input.closest('[data-slot="input-group"]');
       const style = getComputedStyle(input);
       return {
         innerBorder: style.borderTopWidth,
-        innerOutline: style.outlineWidth,
-        groupOutline: getComputedStyle(group).outlineWidth,
+        innerOutline: style.outlineStyle,
+        groupOutline: getComputedStyle(group).outlineStyle,
         groupShadow: getComputedStyle(group).boxShadow,
         buttonRadius: getComputedStyle(
           document.querySelector('button[type="submit"]'),
@@ -200,13 +280,14 @@ try {
       };
     });
     assert.equal(focusStyles.innerBorder, '0px');
-    assert.equal(focusStyles.innerOutline, '0px');
-    assert.equal(focusStyles.groupOutline, '0px');
-    assert.notEqual(
+    assert.equal(focusStyles.innerOutline, 'none');
+    assert.equal(focusStyles.groupOutline, 'none');
+    assert.match(
       focusStyles.groupShadow,
-      'none',
+      /rgb\(\d+, \d+, \d+\) 0px 0px 0px 2px/,
       'HeroUI retains the group focus ring',
     );
+    report.focusStyles = focusStyles;
     assert.equal(focusStyles.buttonRadius, '12px');
     await page.focus('loc=role:button[name="下一步：设置站点"]');
     await page.keyboard.press('Enter');
@@ -231,6 +312,7 @@ try {
       );
     }
     await page.fill('#publicUrl', config.origin);
+    await layouts('site');
     await page.fill('#timeZone', 'Tokyo');
     await page.press('#timeZone', 'ArrowDown');
     await page.press('#timeZone', 'Enter');
@@ -239,6 +321,15 @@ try {
       'Asia/Tokyo',
     );
     await page.fill('#timeZone', 'no-such-time-zone');
+    // HeroUI's empty option uses display:contents, so observe its visible listbox.
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[role="listbox"][data-empty="true"]')
+          ?.textContent === '没有匹配的时区',
+    );
+    await page.screenshot({
+      path: join(config.output, `identity-timezone-empty-${config.width}.png`),
+    });
     await page.press('#timeZone', 'Escape');
     assert.equal(
       await page.evaluate(() => document.querySelector('#timeZone').value),
@@ -254,8 +345,18 @@ try {
     await page.fill('#timeZone', 'UTC');
     await page.press('#timeZone', 'ArrowDown');
     await page.press('#timeZone', 'Enter');
+    await page.fill('#publicUrl', `${config.origin}/invalid-subpath`);
+    await page.click('loc=role:button[name="完成初始化"]');
+    await page.waitForSelector('#publicUrl[aria-invalid="true"]');
+    await page.waitForFunction(() => document.activeElement.id === 'publicUrl');
+    await page.screenshot({
+      path: join(config.output, `identity-address-error-${config.width}.png`),
+    });
+    await page.fill('#publicUrl', config.origin);
     await page.click('loc=role:button[name="完成初始化"]');
     await page.waitForSelector('#code[aria-invalid="true"]');
+    await page.waitForFunction(() => document.activeElement.id === 'code');
+    await layouts('code-error');
     assert.equal(
       await page.evaluate(
         ({ email, password }) =>
@@ -275,6 +376,54 @@ try {
     );
     await noPersistedSecrets();
     if (config.width === 390) {
+      // A transport failure before sending is distinct from a committed response loss.
+      await page.evaluate(() => {
+        const original = window.fetch;
+        window.fetch = async (...args) => {
+          if (args[0] === '/api/setup' && args[1]?.method === 'POST') {
+            window.fetch = original;
+            throw new TypeError(
+              'Verification: connection lost before setup was sent',
+            );
+          }
+          return original(...args);
+        };
+      });
+      await page.click('loc=role:button[name="完成初始化"]');
+      await page.waitForSelector('loc=role:button[name="核对初始化结果"]');
+      await layouts('unknown');
+      await page.evaluate(() => {
+        const original = window.fetch;
+        window.fetch = async (...args) => {
+          window.fetch = original;
+          if (args[0] === '/api/auth/get-session')
+            throw new TypeError('Verification: status connection lost');
+          return original(...args);
+        };
+      });
+      await page.click('loc=role:button[name="核对初始化结果"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[role="alert"]')
+          ?.textContent.includes('仍无法确认'),
+      );
+      assert.equal(
+        await page.evaluate(
+          () => !!document.querySelector('button[type="submit"]'),
+        ),
+        false,
+      );
+      await page.click('loc=role:button[name="核对初始化结果"]');
+      await page.waitForSelector('loc=role:button[name="完成初始化"]');
+      assert.equal(
+        await page.evaluate(() => document.querySelector('#publicUrl').value),
+        config.origin,
+      );
+      report.checks.push(
+        'Unsent setup and failed status check remain unknown; real SETUP_REQUIRED unlocks retry without losing fields',
+      );
+    }
+    if (config.width === 390) {
       await resize(390, 400);
       await page.focus('#publicUrl');
       await page.focus('loc=role:button[name="完成初始化"]');
@@ -293,23 +442,63 @@ try {
       );
       await resize(config.width);
     }
-    if (config.width === 1440) {
-      // Deliver the real request, then lose its response at the browser boundary.
-      await page.evaluate(() => {
-        const original = window.fetch;
-        window.fetch = async (...args) => {
-          if (args[0] === '/api/setup' && args[1]?.method === 'POST') {
-            window.fetch = original;
-            await original(...args);
-            throw new TypeError('Verification: setup response connection lost');
-          }
-          return original(...args);
-        };
+    // Separate hostnames keep cookie jars independent without a second Ego TaskSpace.
+    // Both pages use the same real server; this is not a second browser-engine claim.
+    secondPage = await task.newPage();
+    const secondOrigin = config.origin.replace('127.0.0.1', 'localhost');
+    await secondPage.goto(`${secondOrigin}/setup`);
+    await secondPage.waitForSelector('#code');
+    await secondPage.fill('#code', config.code);
+    await secondPage.fill('#email', 'second-owner@example.test');
+    await secondPage.fill('#password', config.credentials.password);
+    await secondPage.fill('#confirmPassword', config.credentials.password);
+    await secondPage.click('loc=role:button[name="下一步：设置站点"]');
+    await secondPage.waitForSelector('#publicUrl');
+    await secondPage.fill('#publicUrl', config.origin);
+    await secondPage.fill('#timeZone', 'UTC');
+    await secondPage.press('#timeZone', 'ArrowDown');
+    await secondPage.press('#timeZone', 'Enter');
+    // Hold the real response to observe pending/disabled on both layouts.
+    await page.evaluate((loseResponse) => {
+      const original = window.fetch;
+      const gate = new Promise((resolve) => {
+        window.__releaseSetupResponse = resolve;
       });
-    }
+      window.__setupRequests = 0;
+      window.fetch = async (...args) => {
+        if (args[0] === '/api/setup' && args[1]?.method === 'POST') {
+          window.__setupRequests++;
+          const response = await original(...args);
+          await gate;
+          window.fetch = original;
+          if (loseResponse)
+            throw new TypeError('Verification: setup response connection lost');
+          return response;
+        }
+        return original(...args);
+      };
+    }, config.width === 1440);
     await page.click('loc=role:button[name="完成初始化"]');
+    await page.waitForFunction(() =>
+      document
+        .querySelector('button[type="submit"]')
+        ?.textContent.includes('正在提交'),
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('button[type="submit"]').disabled,
+      ),
+      true,
+    );
+    await page.keyboard.press('Enter');
+    assert.equal(await page.evaluate(() => window.__setupRequests), 1);
+    await page.screenshot({
+      path: join(config.output, `identity-pending-${config.width}.png`),
+    });
+    await page.evaluate(() => window.__releaseSetupResponse());
     if (config.width === 1440) {
       await page.waitForSelector('loc=role:button[name="核对初始化结果"]');
+      await layouts('unknown');
       assert.equal(
         await page.evaluate(() =>
           [...document.querySelectorAll('button')].some(
@@ -331,7 +520,96 @@ try {
       null,
     );
     await noPersistedSecrets();
+    // The second page was already collecting a different owner before setup completed.
+    await secondPage.click('loc=role:button[name="完成初始化"]');
+    await secondPage.waitForSelector('#email');
+    assert.equal(new URL(await secondPage.url()).pathname, '/login');
+    const secondAttempt = await secondPage.fetch('/api/setup', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        ...setupBody,
+        email: 'second-owner@example.test',
+      }),
+    });
+    assert.equal(secondAttempt.status, 409);
+    assert.equal(
+      JSON.parse(secondAttempt.body).code,
+      'SETUP_ALREADY_COMPLETED',
+    );
+    report.checks.push(
+      'Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner',
+    );
+    report.settings = await settingsSnapshot();
+    assert.equal(report.settings.site_settings[0].public_url, config.origin);
+    assert.equal(report.settings.site_settings[0].time_zone, 'UTC');
+    assert.equal(report.settings.media_settings[0].quality, 82);
+    assert.equal(report.settings.storage_configs.length, 1);
+    assert.equal(
+      report.settings.storage_settings[0].default_storage_id,
+      report.settings.storage_configs[0].id,
+    );
     await layouts('login');
+    await page.click('loc=role:button[name="登录"]');
+    await page.waitForSelector('#email[aria-invalid="true"]');
+    await page.waitForFunction(() => document.activeElement.id === 'email');
+    await page.screenshot({
+      path: join(config.output, `identity-login-required-${config.width}.png`),
+    });
+    await page.fill('#email', config.credentials.email);
+    await page.fill('#password', config.credentials.password);
+    await identitySql(
+      config,
+      "CREATE TRIGGER reject_m1_login BEFORE INSERT ON session BEGIN SELECT RAISE(ABORT, 'M1 login persistence failure'); END",
+    );
+    try {
+      await page.evaluate(() => {
+        const original = window.fetch;
+        window.fetch = async (...args) => {
+          const response = await original(...args);
+          if (args[0] === '/api/auth/sign-in/email') {
+            window.fetch = original;
+            window.__loginFailure = {
+              status: response.status,
+              body: await response.clone().text(),
+            };
+          }
+          return response;
+        };
+      });
+      await page.click('loc=role:button[name="登录"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[role="alert"]')
+          ?.textContent.includes('无法确认登录结果'),
+      );
+      report.loginFailure = await page.evaluate(() => window.__loginFailure);
+      assert.equal(report.loginFailure.status, 500);
+      assert.equal(report.loginFailure.body, '');
+      assert.equal(
+        await page.evaluate(() => document.querySelector('#email').value),
+        config.credentials.email,
+      );
+      assert.equal(
+        await page.evaluate(() => document.querySelector('#password').value),
+        config.credentials.password,
+      );
+      assert.equal(
+        JSON.parse((await page.fetch('/api/auth/get-session')).body),
+        null,
+      );
+      await page.screenshot({
+        path: join(
+          config.output,
+          `identity-login-unavailable-${config.width}.png`,
+        ),
+      });
+    } finally {
+      await identitySql(config, 'DROP TRIGGER reject_m1_login');
+    }
+    report.checks.push(
+      'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows unconfirmed-result feedback, retains fields and creates no session; later login recovers',
+    );
     await page.fill('#email', config.credentials.email);
     await page.fill('#password', 'incorrect-password');
     await page.click('loc=role:button[name="登录"]');
@@ -340,6 +618,7 @@ try {
         .querySelector('[role="alert"]')
         ?.textContent.includes('邮箱或密码不正确'),
     );
+    await layouts('password-error');
     assert.equal(new URL(await page.url()).pathname, '/login');
     assert.equal(
       JSON.parse((await page.fetch('/api/auth/get-session')).body),
@@ -349,6 +628,19 @@ try {
       'Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback',
     );
   } else {
+    const initialReport = JSON.parse(
+      await readFile(
+        join(config.output, `identity-${config.width}-setup.json`),
+        'utf8',
+      ),
+    );
+    assert.equal(initialReport.status, 'passed');
+    report.settings = await settingsSnapshot();
+    assert.deepEqual(
+      report.settings,
+      initialReport.settings,
+      'Real restart must retain all site/media/storage fields, IDs and timestamps',
+    );
     assert.equal((await page.fetch('/api/auth/get-session')).status, 200);
     const repeat = await post('/api/setup', setupBody);
     assert.equal(repeat.status, 409);
@@ -362,11 +654,10 @@ try {
   }
   await loginAndLogout();
   if (config.phase === 'restart') {
-    report.sessionChecks = await (
-      await import(config.identitySessionScript)
-    ).verifyIdentitySession(page, config);
+    report.sessionChecks = await verifyIdentitySession(page, config);
   }
   await noPersistedSecrets();
+  report.health.push(await health());
   report.checks.push(
     'Real credential login; protected route return; real logout; anonymous protected page redirects',
   );
@@ -386,6 +677,7 @@ try {
     await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
       identifier: errorScript,
     });
+  if (secondPage) await secondPage.close();
 }
 if (!config.keepSpace) await task.finish({ keep: [] });
 console.log(report);

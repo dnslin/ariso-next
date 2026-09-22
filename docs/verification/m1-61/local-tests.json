@@ -1,0 +1,445 @@
+{
+  "environment": {
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "node": "24.19.0",
+    "pnpm": "11.19.0"
+  },
+  "suites": [
+    {
+      "command": "pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/issue-61-unit.xml",
+      "result": {
+        "name": "vitest tests",
+        "tests": "231",
+        "failures": "0",
+        "errors": "0",
+        "time": "1.407046665"
+      },
+      "files": [
+        {
+          "name": "tests/unit/identity/cookie-attributes.test.ts",
+          "timestamp": "2026-09-22T05:47:36.779Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.003966292"
+        },
+        {
+          "name": "tests/unit/identity/return-to.test.ts",
+          "timestamp": "2026-09-22T05:47:36.780Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "13",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.007230583"
+        },
+        {
+          "name": "tests/unit/identity/validation.test.ts",
+          "timestamp": "2026-09-22T05:47:36.783Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.031013708"
+        },
+        {
+          "name": "tests/unit/media/settings.test.ts",
+          "timestamp": "2026-09-22T05:47:36.784Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "29",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.009483708"
+        },
+        {
+          "name": "tests/unit/runtime/console-bridge.test.ts",
+          "timestamp": "2026-09-22T05:47:36.789Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "6",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.87947075"
+        },
+        {
+          "name": "tests/unit/runtime/crypto.test.ts",
+          "timestamp": "2026-09-22T05:47:36.790Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "15",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.024302416"
+        },
+        {
+          "name": "tests/unit/runtime/env.test.ts",
+          "timestamp": "2026-09-22T05:47:36.791Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "55",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.030671917"
+        },
+        {
+          "name": "tests/unit/runtime/log-redaction.test.ts",
+          "timestamp": "2026-09-22T05:47:36.794Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "15",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.003427375"
+        },
+        {
+          "name": "tests/unit/runtime/logger.test.ts",
+          "timestamp": "2026-09-22T05:47:36.795Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "13",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.164015458"
+        },
+        {
+          "name": "tests/unit/runtime/verify-image.test.ts",
+          "timestamp": "2026-09-22T05:47:36.797Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.048251958"
+        },
+        {
+          "name": "tests/unit/scripts/browser-errors.test.ts",
+          "timestamp": "2026-09-22T05:47:36.797Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.008347208"
+        },
+        {
+          "name": "tests/unit/scripts/container.test.ts",
+          "timestamp": "2026-09-22T05:47:36.798Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.091084"
+        },
+        {
+          "name": "tests/unit/shell/navigation.test.ts",
+          "timestamp": "2026-09-22T05:47:36.800Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "10",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.03652675"
+        },
+        {
+          "name": "tests/unit/site/settings.test.ts",
+          "timestamp": "2026-09-22T05:47:36.801Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "43",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.069254542"
+        }
+      ]
+    },
+    {
+      "command": "pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-61-integration.xml",
+      "result": {
+        "name": "vitest tests",
+        "tests": "205",
+        "failures": "0",
+        "errors": "0",
+        "time": "457.428242458"
+      },
+      "files": [
+        {
+          "name": "tests/integration/identity/auth.test.ts",
+          "timestamp": "2026-09-22T05:49:10.159Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "17",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "50.209933125"
+        },
+        {
+          "name": "tests/integration/identity/browser-runner.test.ts",
+          "timestamp": "2026-09-22T05:49:10.161Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "14.201680875"
+        },
+        {
+          "name": "tests/integration/identity/database.test.ts",
+          "timestamp": "2026-09-22T05:49:10.161Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "1.454528083"
+        },
+        {
+          "name": "tests/integration/identity/http.test.ts",
+          "timestamp": "2026-09-22T05:49:10.162Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "6",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "22.364161"
+        },
+        {
+          "name": "tests/integration/identity/m1-gate.test.ts",
+          "timestamp": "2026-09-22T05:49:10.162Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "3.253280166"
+        },
+        {
+          "name": "tests/integration/identity/setup-dev.test.ts",
+          "timestamp": "2026-09-22T05:49:10.162Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "67.693885917"
+        },
+        {
+          "name": "tests/integration/identity/setup-lifecycle.test.ts",
+          "timestamp": "2026-09-22T05:49:10.162Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "25.149064042"
+        },
+        {
+          "name": "tests/integration/identity/setup.test.ts",
+          "timestamp": "2026-09-22T05:49:10.162Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "28",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "53.039648625"
+        },
+        {
+          "name": "tests/integration/media/defaults.test.ts",
+          "timestamp": "2026-09-22T05:49:10.163Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.613946875"
+        },
+        {
+          "name": "tests/integration/media/model.test.ts",
+          "timestamp": "2026-09-22T05:49:10.164Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "15",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.292355792"
+        },
+        {
+          "name": "tests/integration/runtime/build.test.ts",
+          "timestamp": "2026-09-22T05:49:10.164Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "79.085069083"
+        },
+        {
+          "name": "tests/integration/runtime/crypto.test.ts",
+          "timestamp": "2026-09-22T05:49:10.164Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "6.819904166"
+        },
+        {
+          "name": "tests/integration/runtime/database.test.ts",
+          "timestamp": "2026-09-22T05:49:10.165Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "6.07850625"
+        },
+        {
+          "name": "tests/integration/runtime/health.test.ts",
+          "timestamp": "2026-09-22T05:49:10.165Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "11.15940025"
+        },
+        {
+          "name": "tests/integration/runtime/logging.test.ts",
+          "timestamp": "2026-09-22T05:49:10.165Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "13.105557083"
+        },
+        {
+          "name": "tests/integration/runtime/migrations.test.ts",
+          "timestamp": "2026-09-22T05:49:10.165Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.064642042"
+        },
+        {
+          "name": "tests/integration/runtime/prestart.test.ts",
+          "timestamp": "2026-09-22T05:49:10.166Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "9.158170042"
+        },
+        {
+          "name": "tests/integration/runtime/secret-preflight.test.ts",
+          "timestamp": "2026-09-22T05:49:10.166Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "26.418600042"
+        },
+        {
+          "name": "tests/integration/runtime/server-start.test.ts",
+          "timestamp": "2026-09-22T05:49:10.166Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "5.078348375"
+        },
+        {
+          "name": "tests/integration/runtime/standalone.test.ts",
+          "timestamp": "2026-09-22T05:49:10.167Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "16.962772583"
+        },
+        {
+          "name": "tests/integration/runtime/startup.test.ts",
+          "timestamp": "2026-09-22T05:49:10.167Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "13",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "40.228996458"
+        },
+        {
+          "name": "tests/integration/runtime/ui-browser-runner.test.ts",
+          "timestamp": "2026-09-22T05:49:10.167Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "1.521157208"
+        },
+        {
+          "name": "tests/integration/shell/home.test.ts",
+          "timestamp": "2026-09-22T05:49:10.168Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "1.853311792"
+        },
+        {
+          "name": "tests/integration/site/settings.test.ts",
+          "timestamp": "2026-09-22T05:49:10.168Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "1.0416005"
+        },
+        {
+          "name": "tests/integration/storage/defaults.test.ts",
+          "timestamp": "2026-09-22T05:49:10.168Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "6",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.089792375"
+        },
+        {
+          "name": "tests/integration/storage/local-experiment.test.ts",
+          "timestamp": "2026-09-22T05:49:10.169Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.158153834"
+        },
+        {
+          "name": "tests/integration/storage/local.test.ts",
+          "timestamp": "2026-09-22T05:49:10.169Z",
+          "hostname": "dnslins-Mini.lan",
+          "tests": "17",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0",
+          "time": "0.331775875"
+        }
+      ]
+    }
+  ]
+}

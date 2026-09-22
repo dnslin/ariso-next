@@ -34,6 +34,7 @@
 - [Docker 部署](./guides/deployment.md)
 - [升级、停止备份与恢复](./guides/upgrading.md)
 - [当前浏览器冒烟运行方式](../e2e/runtime.md)
+- [M1 空目录初始化与登录关卡验证](./verification/m1-61/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
 
