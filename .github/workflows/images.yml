@@ -39,6 +39,16 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
+      - name: Verify collections Unicode and SQLite contention on native architecture
+        run: node tests/experiments/collections/run.ts --report test-results/collections.json
+      - name: Preserve collections evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: collections-verification-${{ matrix.arch }}
+          path: test-results/collections.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Verify media contracts on native architecture
         run: pnpm exec vitest run --project integration tests/integration/media
       - name: Build standalone for production identity verification
