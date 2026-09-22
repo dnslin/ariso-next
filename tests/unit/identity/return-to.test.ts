@@ -11,6 +11,9 @@ it.each([
   '/api/auth/sign-out',
   '/admin/unknown',
   'javascript:alert(1)',
+  '/\n/[',
+  '/\t/:',
+  '/\r/[invalid',
 ])('uses the delivered default for invalid return destination %s', (value) => {
   expect(loginDestination(value)).toBe('/admin');
 });

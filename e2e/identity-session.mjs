@@ -153,19 +153,104 @@ export async function verifyIdentitySession(page, config) {
       JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,
       config.credentials.email,
     );
+    await page.evaluate(() => {
+      const fetch = window.fetch;
+      window.__identityFocusSettled = false;
+      window.fetch = async (...args) => {
+        window.fetch = fetch;
+        const response = await fetch(...args);
+        void response
+          .clone()
+          .json()
+          .then(() => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                window.__identityFocusSettled = true;
+              });
+            });
+          });
+        return response;
+      };
+      window.dispatchEvent(new Event('focus'));
+    });
+    await page.waitForFunction(() => window.__identityFocusSettled);
+    assert.ok(
+      (
+        await page.evaluate(
+          () => document.querySelector('[role="alert"]')?.textContent,
+        )
+      )?.includes('退出失败（HTTP 500）'),
+      'A successful background session check must preserve the failed logout message',
+    );
   } finally {
     await sql('DROP TRIGGER reject_browser_logout');
   }
+
+  // Reorder real responses so the background check observes the deleted session
+  // while the explicit logout is still awaiting its own successful response.
+  await page.evaluate(() => {
+    const fetch = window.fetch;
+    let releaseBackground;
+    const backgroundGate = new Promise((resolve) => {
+      releaseBackground = resolve;
+    });
+    const signOutGate = new Promise((resolve) => {
+      window.__identityReleaseSignOut = resolve;
+    });
+    window.__identityBackgroundStarted = false;
+    window.__identityBackgroundSettled = false;
+    window.fetch = async (...args) => {
+      if (args[0] === '/api/auth/sign-out') {
+        const response = await fetch(...args);
+        releaseBackground();
+        await signOutGate;
+        return response;
+      }
+      if (
+        args[0] === '/api/auth/get-session' &&
+        !window.__identityBackgroundStarted
+      ) {
+        window.__identityBackgroundStarted = true;
+        await backgroundGate;
+        const response = await fetch(...args);
+        window.__identityBackgroundSession = await response.clone().json();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.__identityBackgroundSettled = true;
+          });
+        });
+        return response;
+      }
+      return fetch(...args);
+    };
+    window.dispatchEvent(new Event('focus'));
+  });
+  await page.waitForFunction(() => window.__identityBackgroundStarted);
   await page.focus('loc=role:button[name="退出登录"]');
   await page.keyboard.press('Enter');
+  await page.waitForFunction(() => window.__identityBackgroundSettled);
+  assert.equal(
+    await page.evaluate(() => window.__identityBackgroundSession),
+    null,
+  );
+  assert.equal(
+    new URL(await page.url()).pathname,
+    '/admin',
+    'A background empty session must not redirect while explicit logout is pending',
+  );
+  await page.evaluate(() => window.__identityReleaseSignOut());
   await page.waitForSelector('#email');
+  assert.equal(
+    new URL(await page.url()).searchParams.get('reason'),
+    'signed-out',
+  );
   assert.equal(
     JSON.parse((await page.fetch('/api/auth/get-session')).body),
     null,
   );
   checks.push({
     check:
-      'Real SQLite logout deletion failure keeps owner signed in with visible error; retry succeeds after removing the fault',
+      'Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry',
   });
   return checks;
 }

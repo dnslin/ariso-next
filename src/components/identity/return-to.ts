@@ -7,7 +7,12 @@ export function loginDestination(value: string | string[] | undefined) {
     value.includes('\\')
   )
     return '/admin';
-  const url = new URL(value, 'https://ariso.invalid');
+  let url: URL;
+  try {
+    url = new URL(value, 'https://ariso.invalid');
+  } catch {
+    return '/admin';
+  }
   return url.origin === 'https://ariso.invalid' && url.pathname === '/admin'
     ? `${url.pathname}${url.search}${url.hash}`
     : '/admin';

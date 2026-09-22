@@ -8,7 +8,7 @@
 
 所有测试路径均是该任务拟新增或扩展的交付物；命令是实施后的验证要求，本轮未执行业务验证。每项还运行 `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`；修改 schema 时运行 `pnpm run db:generate` 并审查迁移。远端协议必须分别记录 AWS S3、R2、MinIO 真实环境，不能用模拟返回代替。
 
-所有界面任务采用 [HeroUI 官方组件索引](https://heroui.com/react/llms.txt) 与项目锁定版本的文档和类型；不混用 v2/v3。下面列出组件组合，实际选型记录在任务证据中。通用控件使用 HeroUI，业务专用部分注明原因。除另述外，相对原型无业务差异，控件内部细节按 HeroUI 统一；具体状态及复用规则先通过对应 DG 门槛。真实验收共同覆盖 360/390/430、768 和桌面、浅深色、键盘焦点、44px 手机点击区、软键盘与安全区域；长表单独立页面，手机设置分类用 Select，操作栏固定并给正文留空间。适用的加载、空、错误、成功和禁用状态都由真实数据驱动。
+所有界面任务采用 [HeroUI 官方组件索引](https://heroui.com/react/llms.txt) 与项目锁定版本的文档和类型；不混用 v2/v3。下面列出组件组合，实际选型记录在任务证据中。通用控件使用 HeroUI，业务专用部分注明原因。除另述外，相对原型无业务差异，控件内部细节按 HeroUI 统一；具体状态及复用规则先通过对应 DG 门槛。真实验收共同覆盖 360/390/430、768 和桌面、浅深色、键盘焦点、44px 手机点击区与短视口滚动；长表单独立页面，手机设置分类用 Select，操作栏固定并给正文留空间。适用的加载、空、错误、成功和禁用状态都由真实数据驱动。
 
 ### T-MED-06 全格式分类与派生处理
 
@@ -102,7 +102,7 @@
 - 规格与预计文件：SPEC-media §4/9/12.3、DES-06-MEDIA/RG-05；`src/app/settings/processing/`、处理设置组件、浏览器测试。
 - 直接前置：`T-MED-09`、`T-UI-01`、`DG-PROCESSING`
 - 验收条件：默认可见性 public/private 读取和保存真实值，只影响新提交，已有图片/已冻结提交不变；未保存参数可真实预览且保存失败保留输入；开关与默认链接联动、素材未保存/过期/拒绝、队列/取消/失效/清理错误均明确；切设置不修改旧任务；不显示高级资源参数。用户从当前数据完成任意有效字段组合，而非固定示例跳转。
-- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增处理设置浏览器用例，对实际产物进行 MIME/尺寸检查，取消后重新预览，检查软键盘下固定操作栏。
+- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增处理设置浏览器用例，对实际产物进行 MIME/尺寸检查，取消后重新预览，检查短视口下固定操作栏。
 - 界面：`/settings/processing`，仅所有者，数据来自 media settings/assets/previews/jobs。桌面 [34:338](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-338)、手机 [102:1526](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1526)；状态桌面 [369:5005](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5005)、手机 [369:4957](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-4957)；文字 桌面 [60:686](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=60-686)、手机 [102:2120](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2120)；图片 桌面 [60:879](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=60-879)、手机 [102:2361](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2361)；预览 桌面 [367:2258](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=367-2258)、手机 [367:5113](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=367-5113)；状态桌面 [369:5278](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5278)、手机 [369:5230](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5230)。HeroUI：Switch、Select、NumberField、Slider、TextField、TextArea、ColorField/ColorSwatch、Button、Alert、Modal、Spinner。九宫格为专用业务布局，内部选择按钮复用 HeroUI；上传素材使用原生文件输入配 Button，浏览器滤镜不可冒充结果。桌面分组表单，手机长页滚动，九个位置均可键盘选。
 - 需求：`R-14.1-01`、`R-11.3-01`、`R-11.3-02`、`R-11.5-01`、`R-11.5-02`、`R-11.6-01`、`R-11.6-02`、`R-14.4-01`、`R-14.4-02`、`R-11.2-02`、`R-22.1-01`、`R-22.4-01`
 
@@ -259,7 +259,7 @@
 - 直接前置：`T-ID-03`、`T-UI-01`、`DG-ACCOUNT`
 - 验收条件：无SMTP且emailVerified不同值均能改邮箱，新邮箱登录、旧邮箱失效，GitHub关系不改；核密码期间发生并发密码修改时要求重试。改密码旧密码失败无写入，成功保留当前会话撤销其他会话。字段错误与结果不确定不假报成功或旧值未变；不开放任意用户更新/本地credential解绑。
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/account.test.ts` 使用真实库/SQLite和两浏览器上下文验证改邮箱/密码后登录与会话，不只mock认证。
-- 界面：`/settings/account`，仅所有者Cookie；identity account/API真实数据。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:872](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-872)、手机 [196:1988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1988)；邮箱成功 桌面 [197:2126](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2126)、手机 [197:2059](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2059)。HeroUI：TextField/Input、Button、Modal、Alert、FieldError；密码显示切换复用InputGroup；手机弹窗留软键盘滚动空间，错误关联字段、关闭回焦点。无自定义基础控件。
+- 界面：`/settings/account`，仅所有者Cookie；identity account/API真实数据。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:872](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-872)、手机 [196:1988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1988)；邮箱成功 桌面 [197:2126](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2126)、手机 [197:2059](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2059)。HeroUI：TextField/Input、Button、Modal、Alert、FieldError；密码显示切换复用InputGroup；手机弹窗在短视口下可滚动，错误关联字段、关闭回焦点。无自定义基础控件。
 - 需求：`R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`
 
 ### T-ID-05 GitHub 配置、主动绑定与登录
@@ -306,7 +306,7 @@
 - 规格与预计文件：SPEC-identity §8.2、ID-07/10/11、DES-02；认证回调、`src/app/forgot-password/`、`src/app/reset-password/`、身份测试。
 - 直接前置：`T-ID-06`、`T-ID-09`、`DG-RESET`
 - 验收条件：存在/不存在邮箱均通用反馈，SMTP未配置明确不可用并展示CLI。链接一小时/一次使用，过期/并发重复拒绝；成功撤销全部会话并去登录，不自动登录。消费后数据库/哈希/撤会话失败按实际结果说明，能重申请或CLI恢复，不假设整个库流程事务回滚。邮件等待真实发送结果；重置URL不入日志/第三方资源请求。
-- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/password-reset.test.ts` 冻结时钟/并发/消费后故障与真实收件链接，检查全部旧会话；浏览器直接从邮件打开、软键盘、失效再申请。
+- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/password-reset.test.ts` 冻结时钟/并发/消费后故障与真实收件链接，检查全部旧会话；浏览器直接从邮件打开、短视口滚动、失效再申请。
 - 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；CLI说明 桌面 [217:2380](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2380)、手机 [217:2321](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2321)；未配置 桌面 [217:2475](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2475)、手机 [217:2768](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2768)。HeroUI：TextField/Input、Button、Link、Alert、Spinner；采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果状态通过DG-RESET核对适用现有节点，不以定时跳转代替请求。
 - 需求：`R-6.3-01`、`R-6.3-02`、`A-26.1-09`、`A-26.1-10`、`R-22.1-01`、`R-22.4-01`
 
@@ -344,4 +344,4 @@
 - 范围：在基础设置页组合 upload 自有 GET/PATCH，单独保存文件大小、批次和队列上限；不把字段塞入 site PATCH。
 - 验收条件：默认50MiB/20/500，批次1–200、队列100–2000且批次不大于队列；文件大小正整数MiB上界显示UPLOAD-V02真实结论；只影响新提交，固定并发3不可配置；字段错误/服务失败保留输入，无其他模块假成功。
 - 验证方法：新增设置浏览器用例并接入 `pnpm run test:browser`，测试边界/保存失败/重启读取，以及旧submission与新submission限制差异；适用工程检查按执行约定。
-- 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、软键盘不遮底栏，通用控件按HeroUI统一，无业务差异。
+- 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、短视口不裁底栏，通用控件按HeroUI统一，无业务差异。

@@ -7,14 +7,16 @@ import { Spinner } from '@heroui/react/spinner';
 
 /** 服务端已鉴权；浏览器会话请求负责接收续期 Cookie，并观察失效。 */
 export function SessionControls({ returnTo }: { returnTo: string }) {
-  const [message, setMessage] = useState('');
+  const [sessionError, setSessionError] = useState('');
+  const [signOutError, setSignOutError] = useState('');
   const [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
   useEffect(() => {
     let disposed = false;
     let checking = false;
     const check = async () => {
-      if (checking || document.visibilityState === 'hidden') return;
+      if (checking || inFlight.current || document.visibilityState === 'hidden')
+        return;
       checking = true;
       try {
         const response = await fetch('/api/auth/get-session', {
@@ -23,15 +25,15 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
         if (!response.ok)
           throw new Error(`会话核对失败（HTTP ${response.status}）`);
         const session = await response.json();
-        if (disposed) return;
+        if (disposed || inFlight.current) return;
         if (!session)
           window.location.replace(
             `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
           );
-        else setMessage('');
+        else setSessionError('');
       } catch (error) {
-        if (!disposed)
-          setMessage(
+        if (!disposed && !inFlight.current)
+          setSessionError(
             `${error instanceof Error ? error.message : '会话核对失败'}，请检查连接后重试。`,
           );
       } finally {
@@ -55,7 +57,7 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
     if (inFlight.current) return;
     inFlight.current = true;
     setBusy(true);
-    setMessage('');
+    setSignOutError('');
     try {
       const response = await fetch('/api/auth/sign-out', {
         method: 'POST',
@@ -70,14 +72,14 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
         throw new Error('尚未确认会话已退出');
       window.location.replace('/login?reason=signed-out');
     } catch (error) {
-      setMessage(
+      setSignOutError(
         `${error instanceof Error ? error.message : '退出失败'}，请重试。`,
       );
-    } finally {
       inFlight.current = false;
       setBusy(false);
     }
   }
+  const message = signOutError || sessionError;
   return (
     <div className="grid gap-3">
       {message ? (

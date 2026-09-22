@@ -132,6 +132,16 @@ describe('initialized production auth', () => {
     await seedAuthOwner(connection, origin);
   });
 
+  it('renders the login form when the return destination is malformed', async () => {
+    const response = await fetch(
+      `${origin}/login?returnTo=${encodeURIComponent('/\n/[')}`,
+    );
+    expect(response.status).toBe(200);
+    const html = await response.text();
+    expect(html).toContain('login-heading');
+    expect(html).toContain('current-password');
+  });
+
   it('protects the real admin page independently of navigation, including expired and revoked Cookie replay', async () => {
     const page = (headers: Record<string, string> = {}) =>
       fetch(`${origin}/admin`, { headers, redirect: 'manual' });
