@@ -1,0 +1,57 @@
+{
+  "codeCommit": "8b25712333522dd0a489c5e39aa69ce415fe3af5",
+  "runs": [
+    {
+      "databaseId": 35681942917,
+      "headSha": "8b25712333522dd0a489c5e39aa69ce415fe3af5",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/dnslin/ariso-next/actions/runs/35681942917",
+      "createdAt": "2026-09-22T03:06:35Z",
+      "updatedAt": "2026-09-22T03:12:12Z",
+      "jobs": [
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "status": "completed",
+          "url": "https://github.com/dnslin/ariso-next/actions/runs/35681942917/job/106600557425"
+        }
+      ]
+    },
+    {
+      "databaseId": 35681943144,
+      "headSha": "8b25712333522dd0a489c5e39aa69ce415fe3af5",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/dnslin/ariso-next/actions/runs/35681943144",
+      "createdAt": "2026-09-22T03:06:35Z",
+      "updatedAt": "2026-09-22T03:12:19Z",
+      "jobs": [
+        {
+          "name": "Build and verify arm64",
+          "conclusion": "success",
+          "status": "completed",
+          "url": "https://github.com/dnslin/ariso-next/actions/runs/35681943144/job/106600558536"
+        },
+        {
+          "name": "Build and verify amd64",
+          "conclusion": "success",
+          "status": "completed",
+          "url": "https://github.com/dnslin/ariso-next/actions/runs/35681943144/job/106600558631"
+        },
+        {
+          "name": "release-checks",
+          "conclusion": "skipped",
+          "status": "completed",
+          "url": "https://github.com/dnslin/ariso-next/actions/runs/35681943144/job/106600559173"
+        },
+        {
+          "name": "publish",
+          "conclusion": "skipped",
+          "status": "completed",
+          "url": "https://github.com/dnslin/ariso-next/actions/runs/35681943144/job/106601615006"
+        }
+      ]
+    }
+  ]
+}

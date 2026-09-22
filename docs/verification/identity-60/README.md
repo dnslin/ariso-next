@@ -45,4 +45,8 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin
 
 真实手机触控、物理软键盘及非零安全区尚无设备实测；窄视口、短视口和 CDP 触控模拟不替代这些证据。跨浏览器矩阵仍按 T-QA-02 归属，本次只记录实际 Ego 环境。此前 #57/#59 的所有者验收决定保留，不因本任务的新页面设备验证项而重新阻塞其交付。
 
-创建草稿 PR 后，由现有 CI 和 Docker build 工作流验证本分支；AMD64/ARM64 原生检查只验证不发布。已创建 [草稿 PR #100](https://github.com/dnslin/ariso-next/pull/100)，[首轮 CI](https://github.com/dnslin/ariso-next/actions/runs/35681794064) 与 [双架构容器检查](https://github.com/dnslin/ariso-next/actions/runs/35681794281)已启动，最终结果尚待记录。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。
+代码提交 `8b25712333522dd0a489c5e39aa69ce415fe3af5` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35681942917) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35681943144) 均已通过。CI 执行锁文件安装、UI 实验类型/构建、lint、格式、类型、单元、生产构建、外壳构建及完整集成测试。Docker 工作流在 AMD64、ARM64 原生 runner 上分别通过媒体和身份协议测试、镜像构建、离线运行、真实受限挂载、图片/字体与容器生命周期/迁移/备份恢复验证；`release-checks` 和 `publish` 均跳过，没有发布镜像。[远端结果快照](./remote-checks.json)记录提交、运行链接和各 job 结论。
+
+另已执行 `node docs/tasks/check.mjs`（120 个任务、298 个需求，无缺失或循环）、`node docs/tasks/check.mjs --self-test`（5 个拒绝用例通过）、`git diff --check`，以及相关文档 79 个相对链接核对，均通过。最后一次代码修改后重新执行 build、lint、typecheck、format 和身份认证集成测试（[16 项通过记录](./auth-final.txt)）；远端再次执行完整检查通过。
+
+[PR #100](https://github.com/dnslin/ariso-next/pull/100) 因上述真实手机设备验证缺口保留草稿。本次证据回填仅修改文档，最终提交的检查状态以 PR 为准。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。
