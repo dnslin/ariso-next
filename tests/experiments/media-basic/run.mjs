@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { chmod, cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { arch, platform, release } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
@@ -104,6 +104,8 @@ try {
   await cp(sourceDirectory, join(evidenceDirectory, 'sources'), {
     recursive: true,
   });
+  // mkdtemp uses 0700; exported public fixtures must be readable by the host runner.
+  await chmod(join(evidenceDirectory, 'sources'), 0o755);
   await rm(outputDirectory, { recursive: true });
   await check('process-lifecycle', async () => {
     const result = await verifyProcessLifecycle();

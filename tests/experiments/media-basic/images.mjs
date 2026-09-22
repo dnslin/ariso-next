@@ -18,6 +18,7 @@ export async function verifyImages({ sourceDirectory, outputDirectory, run }) {
       '-json',
       '-n',
       '-FileType',
+      '-MIMEType',
       '-ImageWidth',
       '-ImageHeight',
       '-Orientation',
@@ -83,7 +84,14 @@ export async function verifyImages({ sourceDirectory, outputDirectory, run }) {
       path,
     ]);
     const metadata = await inspect(path);
-    assert.equal(metadata.FileType, name.endsWith('.jpg') ? 'JPEG' : 'WEBP');
+    assert.equal(
+      metadata.FileType,
+      name.endsWith('.jpg') ? 'JPEG' : alpha ? 'Extended WEBP' : 'WEBP',
+    );
+    assert.equal(
+      metadata.MIMEType,
+      name.endsWith('.jpg') ? 'image/jpeg' : 'image/webp',
+    );
     assert.equal(metadata.ImageWidth, width);
     assert.equal(metadata.ImageHeight, height);
     const { stdout } = await run('exiftool', [
