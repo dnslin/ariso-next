@@ -75,7 +75,7 @@ describe('公共壳层', () => {
 
 describe('公共错误页面', () => {
   it('失败时提供明确错误、重试和首页出口，不显示默认成功内容', () => {
-    const html = renderToStaticMarkup(jsx(ErrorPage, { reset: () => {} }));
+    const html = renderToStaticMarkup(jsx(ErrorPage, { retry: () => {} }));
     expect(html).toContain('role="alert"');
     expect(html).toContain('页面加载失败');
     expect(html).toMatch(/<button[^>]*>重试<\/button>/);

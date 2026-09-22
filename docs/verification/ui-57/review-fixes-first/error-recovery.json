@@ -1,0 +1,11 @@
+{
+  "status": "failed",
+  "expectedErrors": [
+    {
+      "url": "http://127.0.0.1:52685/",
+      "kind": "console.error",
+      "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: [{\"url\":\"http://127.0.0.1:52685/\",\"kind\":\"console.error\",\"message\":\"Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\"}]\n    at Module.verifyErrorRecovery (file:///Volumes/data/project/ariso/e2e/error-recovery.mjs:41:12)\n    at async file:////[eval2]:197:21"
+}

@@ -2,12 +2,16 @@
 const { default: assert } = await import('node:assert/strict');
 const { writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
+const { installBrowserErrors, assertNoBrowserErrors } = await import(
+  config.errorsScript
+);
 const task = await taskSpace(
   config.spaceId ?? 'Ariso production browser smoke',
 );
 console.log({ taskSpaceId: task.spaceId });
 const page = task.page('p1');
 const report = { taskSpaceId: task.spaceId, status: 'failed', layouts: [] };
+let errorScript;
 async function verifyHome() {
   for (const theme of ['light', 'dark']) {
     await page.cdp('Emulation.setEmulatedMedia', {
@@ -52,9 +56,27 @@ async function verifyHome() {
   await page.waitForSelector('#home-heading');
 }
 try {
-  await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
-    source: `window.__arisoSmokeErrors = []; window.addEventListener('error', e => window.__arisoSmokeErrors.push(e.message || 'Resource failed: ' + (e.target.src || e.target.href)), true); window.addEventListener('unhandledrejection', e => window.__arisoSmokeErrors.push(String(e.reason))); const originalError = console.error; console.error = (...args) => { window.__arisoSmokeErrors.push(args.map(String).join(' ')); originalError.apply(console, args); };`,
-  });
+  errorScript = await installBrowserErrors(page);
+  await page.goto(config.origin);
+  await page.waitForSelector('#home-heading');
+  await assertNoBrowserErrors(page);
+  const marker = `Ariso error collector self-test ${Date.now()}`;
+  const expectedError = {
+    url: await page.evaluate(() => location.href),
+    kind: 'console.error',
+    message: marker,
+  };
+  await page.evaluate((message) => console.error(message), marker);
+  await page.goto(`${config.origin}/missing-shell-page`);
+  await page.waitForSelector('loc=role:link[name="返回首页"]');
+  await assert.rejects(
+    () => assertNoBrowserErrors(page),
+    (error) => {
+      assert.deepEqual(error.actual, [expectedError]);
+      return true;
+    },
+  );
+  report.errorCollectorSelfTest = { status: 'passed', expectedError };
   await page.goto(config.origin);
   await page.waitForSelector('loc=css:#home-heading', { state: 'visible' });
   await page.waitForFunction(
@@ -169,9 +191,12 @@ try {
     });
   }
   await verifyHome();
-  report.errors = await page.evaluate(() => window.__arisoSmokeErrors);
+  report.errors = await assertNoBrowserErrors(page);
   await (await import(config.shellScript)).verifyShell(page, config);
-  assert.deepEqual(report.errors, []);
+  await assertNoBrowserErrors(page);
+  report.recovery = await (
+    await import(config.recoveryScript)
+  ).verifyErrorRecovery(page, config);
   report.status = 'passed';
 } catch (error) {
   report.error = error.stack ?? String(error);
@@ -181,6 +206,10 @@ try {
     join(config.output, 'browser.json'),
     `${JSON.stringify(report, null, 2)}\n`,
   );
+  if (errorScript)
+    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+      identifier: errorScript,
+    });
 }
 if (!config.keepSpace) await task.finish({ keep: [] });
 console.log(report);

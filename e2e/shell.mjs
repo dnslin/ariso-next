@@ -1,3 +1,5 @@
+import { assertNoBrowserErrors } from './browser-errors.mjs';
+
 // Appended to the existing Ego runner; the caller owns its page and TaskSpace.
 export async function verifyShell(page, config) {
   const { default: assert } = await import('node:assert/strict');
@@ -24,9 +26,6 @@ export async function verifyShell(page, config) {
         .map((node) => node.getAttribute('href')),
     );
   try {
-    await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
-      source: `window.__shellErrors=[];window.addEventListener('error',e=>window.__shellErrors.push(e.message || 'Resource failed: ' + (e.target.src || e.target.href)),true);window.addEventListener('unhandledrejection',e=>window.__shellErrors.push(String(e.reason)));const shellOriginalError=console.error;console.error=(...args)=>{window.__shellErrors.push(args.map(String).join(' '));shellOriginalError.apply(console,args)};`,
-    });
     await resize(1440);
     await page.goto(`${origin}/dashboard`);
     await page.waitForSelector('#fixture-content');
@@ -87,7 +86,6 @@ export async function verifyShell(page, config) {
             .querySelector('#main-content')
             .getBoundingClientRect();
           return {
-            errors: window.__shellErrors,
             width: innerWidth,
             scrollWidth: document.documentElement.scrollWidth,
             background: getComputedStyle(document.body).backgroundColor,
@@ -104,11 +102,7 @@ export async function verifyShell(page, config) {
               })),
           };
         });
-        assert.deepEqual(
-          layout.errors,
-          [],
-          'No browser runtime or resource errors',
-        );
+        layout.errors = await assertNoBrowserErrors(page);
         assert.equal(layout.width, width);
         assert.ok(layout.scrollWidth <= width, 'No horizontal overflow');
         assert.ok(
@@ -343,7 +337,7 @@ export async function verifyShell(page, config) {
     report.limitations = [
       'Desktop Chromium emulation does not verify physical soft keyboard, touch hardware, or safe-area insets',
     ];
-    assert.deepEqual(await page.evaluate(() => window.__shellErrors), []);
+    report.errors = await assertNoBrowserErrors(page);
     report.status = 'passed';
   } catch (error) {
     report.error = error.stack ?? String(error);

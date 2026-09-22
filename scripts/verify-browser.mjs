@@ -14,7 +14,11 @@ const output = resolve(
   process.env.BROWSER_REPORT_DIR ?? 'test-results/browser',
 );
 await mkdir(output, { recursive: true });
-for (const name of ['browser.json', 'shell-browser.json'])
+for (const name of [
+  'browser.json',
+  'shell-browser.json',
+  'error-recovery.json',
+])
   await rm(join(output, name), { force: true });
 const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
 const report = {
@@ -168,6 +172,11 @@ try {
     await delay(100, undefined, { signal: controller.signal });
   }
   const config = {
+    nodeExecutable: process.execPath,
+    projectDirectory: resolve('.'),
+    databasePath: join(temporary, 'data', 'ariso.db'),
+    errorsScript: pathToFileURL(resolve('e2e/browser-errors.mjs')).href,
+    recoveryScript: pathToFileURL(resolve('e2e/error-recovery.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
     origin,

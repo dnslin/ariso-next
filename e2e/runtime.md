@@ -11,9 +11,13 @@ pnpm run test:browser
 
 生产页面验证中文、动态标题、字体、浅深色 360/390/430/768/1440 宽度、404 返回首页、资源、健康接口和浏览器错误。后台尚无已交付路由，隔离夹具直接导入实际 Shell/Providers/CSS，验证导航与分类、Modal 全屏/键盘/焦点/滚动、断点边界、44px 点击区、短视口底栏、长名称与空导航。它不证明登录、图库或设置写入已经交付。
 
+浏览器错误通过 Ego 的文档外事件缓冲收集，保留页面 URL、错误类型与消息，导航不会清空前页错误。运行器先注入一条精确匹配的测试错误，验证导航到正常页面后门禁仍会拒绝；之后的普通场景要求零错误。
+
+最后在一次性生产数据库中临时改名站点表，触发真实读取失败；恢复表后点击“重试”，必须在不刷新页面的情况下恢复首页。故障期间只接受并记录 React 生产构建的服务端渲染错误 441，恢复后重新要求零错误。数据库操作使用运行器的 Node 24 和既有 SQLite 驱动，避免 Ego 内嵌进程的原生模块加载限制；失败时恢复表名并由运行器清理整个临时目录。
+
 根生产构建仍使用 Turbopack。夹具固定使用 Next 的 `--webpack`：共享仓库根目录的 Turbopack 会发现根应用 instrumentation，导致没有部署环境的纯组件夹具错误启动。独立 Webpack 夹具无生产启动钩子，不通过假密钥或替换生产行为规避。
 
-默认报告目录 `test-results/browser/`，包括 runner.json、browser.json、shell-browser.json、ego.log、server.log、shell-server.log 及各场景截图。`BROWSER_REPORT_DIR` 可指定输出目录。每轮先移除旧断言报告并写本轮状态；失败非零退出，保留诊断，停止自建进程并删除临时目录。失败 TaskSpace 保留供诊断，ID 输出在日志和 browser.json。
+默认报告目录 `test-results/browser/`，包括 runner.json、browser.json、shell-browser.json、error-recovery.json、ego.log、server.log、shell-server.log 及各场景截图。`BROWSER_REPORT_DIR` 可指定输出目录。每轮先移除旧断言报告并写本轮状态；失败非零退出，保留诊断，停止自建进程并删除临时目录。失败 TaskSpace 保留供诊断，ID 输出在日志和 browser.json。
 
 同一任务重跑必须复用空间：
 

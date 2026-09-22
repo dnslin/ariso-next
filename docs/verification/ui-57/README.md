@@ -72,7 +72,34 @@
 ## 未完成与远端边界
 
 - 真实手机软键盘、物理触控、非零安全区和其他浏览器未执行。桌面模拟不替代设备，相关验收保持开放，PR 保持草稿。
-- 错误页静态内容已测试；真实数据库故障后的浏览器重试恢复尚未实测，不标记通过。
+- 数据库故障后的浏览器重试恢复已在 2026-09-22 修复并实测，见下方复审修复记录。
 - 本次无 schema 改动，未执行 db:generate。T-ID-03 接入认证和权限；后续业务任务接入后台，T-SITE-05 交付完整主题行为，不由本次夹具提前验收。
 - 原有 esbuild 公告涉及其开发服务器跨源读取，未在本次修改既有 Drizzle 依赖；未运行 esbuild 开发服务器。后续依赖升级需单独处理。
 - 提交 `90bcd6e9518654a0a100542f742fc9d476dc1b2d` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35578922747) 与 [Docker 验证](https://github.com/dnslin/ariso-next/actions/runs/35578922920) 全部成功；[AMD64 报告](./remote/container-amd64.json)、[ARM64 报告](./remote/container-arm64.json)来自 Actions 原始产物。发布与 release-checks 均按 PR 条件跳过。菜单断点焦点补丁推送后，以 [PR #96 最新检查](https://github.com/dnslin/ariso-next/pull/96/checks)为准，不将此前提交的检查冒充补丁验证。未运行本机 Docker、发布镜像、部署、合并或关闭 Issue；保留分支与工作目录。
+
+## 2026-09-22 双代理复审修复
+
+对提交 `1bda385` 分别按 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review` 进行独立评审，确认两项 P2：错误页只调用 `reset`，无法重新执行失败的服务端查询；浏览器错误数组属于当前文档，导航会丢失前页错误。该缺陷说明上文历史浏览器报告的零错误结论覆盖不足，不能作为整轮无错误的证明；本轮使用修复后的门禁重新执行。
+
+错误页现直接使用 Next 16.3.5 已提供的 `retry`，其实现刷新服务端结果后清除错误边界。新增真实恢复场景先在旧构建执行：临时改名站点表，页面报错后恢复表，点击重试仍无法出现首页，10 秒超时；[修复前失败记录](./review-fixes-red/error-recovery.json)。修复后同一场景通过，不使用整页刷新或模拟请求代替。
+
+错误收集规则与运行方式只维护在 [e2e/runtime.md](../../../e2e/runtime.md)。新增单元测试覆盖前页 console 错误跨导航仍使门禁失败，以及多页运行错误、资源错误和未处理 Promise 拒绝的来源及顺序。真实浏览器也先注入唯一错误，再导航到正常文档，确认门禁拒绝且记录精确匹配；常规场景继续要求零错误。测试结束移除注入脚本。
+
+首次联调在 Ego 内嵌 Node 加载原生 SQLite 驱动时被 macOS 签名限制拒绝，改由运行器的 Node 24 执行临时库操作。之后首轮完整浏览器测试在预期错误文案断言失败：生产构建输出 React 压缩错误 441。核对 [React 官方解释](https://react.dev/errors/441) 后，故障阶段精确限定页面 URL、console.error 和错误码 441；未放宽普通场景门禁。[首轮失败](./review-fixes-first/error-recovery.json)与[运行清理](./review-fixes-first/runner.json)保留。
+
+本轮环境：macOS arm64、Node 24.18.1、pnpm 11.19.0、Ego Lite / Chromium 152，TaskSpace 24。所有 pnpm 命令 PATH 前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`。
+
+| 实际命令                                                                                                      | 结果                                                                       |
+| ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                              | 通过，无依赖或锁文件变化                                                   |
+| `pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check`                                                | 通过                                                                       |
+| `pnpm run test:unit`                                                                                          | 12 文件、209 项通过                                                        |
+| `pnpm run build`                                                                                              | 通过；保留原有可选 SQLite Debug 驱动追踪提示                               |
+| `pnpm run test:integration`                                                                                   | 26 文件、202 项通过                                                        |
+| `pnpm exec vitest run --project unit tests/unit/shell tests/unit/scripts/browser-errors.test.ts`              | 独立复审执行，2 文件、12 项通过                                            |
+| `EGO_TASK_SPACE=24 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/review-fixes-final pnpm run test:browser` | 夹具构建、两主题/宽度/键盘场景、跨导航错误自检、真实数据库重试恢复全部通过 |
+| `git diff --check`                                                                                            | 通过                                                                       |
+
+最终原始证据：[运行器](./review-fixes/runner.json)、[首页及门禁自检](./review-fixes/browser.json)、[后台外壳](./review-fixes/shell-browser.json)、[真实故障恢复](./review-fixes/error-recovery.json)。生产服务、夹具服务和临时数据库已清理，TaskSpace 24 已关闭。本轮没有布局变化，截图仍由运行器生成到本地报告目录，不重复提交同类截图。
+
+独立复审本轮补丁未发现新的 Critical / Required 问题。真实手机触控、物理软键盘、非零安全区和其他浏览器仍未执行，PR 保持草稿。远端结果以 [PR #96 当前提交检查](https://github.com/dnslin/ariso-next/pull/96/checks)为准；本地通过不替代新提交的 CI 和双架构验证。
