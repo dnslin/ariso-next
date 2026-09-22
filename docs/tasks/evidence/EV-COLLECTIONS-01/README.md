@@ -4,7 +4,7 @@
 
 ## 交付范围与状态
 
-本地实验三项验收通过：Unicode 规则符合规格；同名相册保持独立；重复标签和并发竞争不产生第二条。独立审计无必须修复项；双架构 Actions 尚待完成。既有身份页面浏览器回归失败，PR 保持草稿，不把部分回归成功表述为全部通过。
+macOS arm64、Linux AMD64 和 ARM64 实验三项验收通过：Unicode 规则符合规格；同名相册保持独立；重复标签和并发竞争不产生第二条。独立审计无必须修复项；双架构实验和完整 Docker 工作流均通过。既有身份页面浏览器回归失败，PR 保持草稿，不把部分回归成功表述为全部通过。
 
 代码仅位于 `tests/experiments/collections/` 和对应测试、固定数据；另将实验接入现有 Docker 验证工作流。未创建 `src/server/collections`、生产迁移或界面，未改冻结 PRD。`R-16.1-01/02`、`R-16.2-01` 和 COL-01/02/03 这里只获得名称与唯一性前置证据，不代表完整业务验收；上传关联、真实图片模型、Web/API 统一输入和产品界面仍由 T-COL-01 及后续任务交付。
 
@@ -22,7 +22,7 @@
 
 ## 验收证据
 
-完整输入、显示名称、规范键、数据库记录和冲突结果见 [macOS 原始报告](./macos.json)。
+完整输入、显示名称、规范键、数据库记录和冲突结果见 [macOS 原始报告](./macos.json)、[Linux AMD64](./amd64.json)、[Linux ARM64](./arm64.json)。
 
 | 场景             | 实际断言                                                                                                                        |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -59,6 +59,10 @@ pnpm run test:integration
 pnpm run test:browser
 pnpm audit --json
 git diff --check
+gh run view 35693081249 --repo dnslin/ariso-next
+gh run view 35693081487 --repo dnslin/ariso-next
+gh run download 35693081487 --repo dnslin/ariso-next --name collections-verification-amd64 --dir /tmp/ariso-65-amd64
+gh run download 35693081487 --repo dnslin/ariso-next --name collections-verification-arm64 --dir /tmp/ariso-65-arm64
 ```
 
 固定锁安装、格式、lint、类型、15 文件/243 项单元测试、生产构建、外壳构建、27 文件/205 项集成测试均通过。新增定向单元 12 项、定向集成 1 项、CLI 报告通过。采纳审计建议补强相册改名断言并明确 configuredPackageManager 字段后，定向 13 项、CLI、lint 和类型检查再次通过。实际 pnpm 版本由 `pnpm -v` 确认为 11.19.0。
@@ -67,7 +71,7 @@ git diff --check
 
 ## 远端与审计
 
-现有 `images.yml` 新增原生 AMD64/ARM64 实验命令，报告保存为 `collections-verification-{arch}`。其后执行原有完整应用镜像构建与容器检查。PR 事件只构建验证，不满足 release 发布条件，不推送镜像或部署。尚未取得本轮远端结果，保持未完成。
+现有 `images.yml` 新增原生 AMD64/ARM64 实验命令，报告保存为 `collections-verification-{arch}`。其后执行原有完整应用镜像构建与容器检查。PR 事件只构建验证，不满足 release 发布条件，不推送镜像或部署。本轮 [Docker 工作流](https://github.com/dnslin/ariso-next/actions/runs/35693081487) 的两端实验及证据上传已通过，Node 24.20.0 / ICU 78.3 / Unicode 17.0 / SQLite 3.53.4。完整容器回归（运行基础、存储、图片转换、生命周期、迁移、备份恢复）两端均成功，镜像仅作为 Actions artifact 保存，publish / release-checks 均跳过。[CI](https://github.com/dnslin/ariso-next/actions/runs/35693081249) 全部通过：固定依赖安装、UI 实验类型与构建、lint、格式、类型、单元、生产及外壳构建、集成测试。验证代码提交为 `eb3ff222f12e994ba9efa37a70e8f9fde51effa2`，PR 为 [#102](https://github.com/dnslin/ariso-next/pull/102)。
 
 独立子代理按 `code-review-and-quality` 先审测试，再核对 Unicode 规则、唯一约束和真实竞争、错误传播、实验边界及依赖。无必须修复项；两项建议已落实：把不同名相册改成已有名称并检查三条独立记录；将声明的包管理器字段标明 configuredPackageManager。独立审计者也实际运行定向 13 项测试及 `git diff --check`，均通过。
 
@@ -78,3 +82,5 @@ git diff --check
 `pnpm run test:browser` 使用现有 Ego Lite / Chrome 152、TaskSpace 4，退出码 1。首页、资源、健康接口、错误恢复和外壳阶段已完成；桌面 setup 在 `e2e/identity.mjs:204` 失败：聚焦后字段组 outline 宽度期望 `0px`、实际 `2px`。其后的身份流程没有执行。见 [运行器报告](./browser-runner.json) 和 [初始化失败报告](./browser-identity-failure.json)。没有把该项标为通过，也未改身份页面、CSS 或断言。失败 TaskSpace 按 Ego 规则保留；自建服务与临时目录已清理。
 
 该检查及对应生产界面与分支基线相同，本次只新增实验和开发依赖。此范围外问题需所属身份/外壳任务处理；本 PR 保留草稿，待该回归恢复后再转正式评审。生产 collections、上传关系、管理界面、跨浏览器矩阵仍不属于本前置实验。
+
+最终只补充远端证据及本报告，不改已通过验证的实验代码。文档格式检查与本地相对链接检查通过；PR #102 保持草稿。未合并、未关闭 Issue、未发布或部署，分支与 worktree 保留。
