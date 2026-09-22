@@ -1,7 +1,7 @@
 # Spec: collections — 相册、标签与图片关联
 
 - 模块 ID：`collections`。
-- 状态：已通过评审；用户于 2026-09-17 确认五组建议。未实现，未安装依赖。
+- 状态：产品行为已通过评审；用户于 2026-09-17 确认五组建议。T-COL-01 已实施模型与上传关联内部契约，见[实施与验证记录](../verification/collections-66/README.md)；管理界面、封面与真实上传联验仍待后续任务。
 - 日期：2026-09-17。
 - 前置：[media](./SPEC-media.md)的资产、回收与永久删除契约。管理入口组合 identity，图片展示组合 delivery，不让底层关系操作反向依赖页面或分享模块。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 7.3、8.4、15、16、17、18、22、26.10–26.13；[能力地图](../product/CAPABILITY-MAP.md)、[覆盖表](../tasks/coverage.md)。
@@ -19,7 +19,7 @@ collections 负责相册、标签、成员关系、固定展示规则和封面�
 
 ## 2. 当前工程与采用方式
 
-现有代码只有 runtime，尚无相册或标签表。沿用 Drizzle、better-sqlite3、Zod 和 Pino，使用当前数据库连接及迁移目录。runtime 已开启 SQLite 外键；关系清理使用 [SQLite 的 CASCADE/SET NULL](https://www.sqlite.org/foreignkeys.html)，不用后台扫描弥补悬空关系。
+T-COL-01 已沿用 Drizzle、better-sqlite3 和 Zod 建立相册、标签及关联表，使用当前数据库连接及迁移目录。runtime 已开启 SQLite 外键；关系清理使用 [SQLite 的 CASCADE/SET NULL](https://www.sqlite.org/foreignkeys.html)，不用后台扫描弥补悬空关系。
 
 标签大小写匹配使用 Unicode 默认完整大小写折叠，并统一 NFC 规范化；例如 `Go/go/GO` 对应同一个键。依据 [Unicode 大小写说明](https://www.unicode.org/faq/casemap_charprop.html)，实现时选用经核对的成熟实现，不自己维护映射表。[SQLite NOCASE](https://www.sqlite.org/datatype3.html#collating_sequences)只处理 ASCII 大小写，不能独自满足此规则。名称键唯一约束仍由数据库保证。
 

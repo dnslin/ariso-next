@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="55" failures="0" errors="0" time="9.152443624">
+    <testsuite name="tests/integration/collections/concurrency.test.ts" timestamp="2026-09-22T16:13:46.339Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="1.866689416">
+        <testcase classname="tests/integration/collections/concurrency.test.ts" name="T-COL-01: competing production upload preparations keep one tag ID and the first successful display name" time="1.865403">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/collections/model.test.ts" timestamp="2026-09-22T16:13:46.345Z" hostname="dnslins-Mini.lan" tests="8" failures="0" errors="0" skipped="0" time="0.714179583">
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; keeps same-name albums distinct and matches Unicode keys without rewriting first display form" time="0.066767167">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; enforces production tag uniqueness and exposes real database failures" time="0.04348925">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; preserves joinedAt on duplicate add, changes it after removal, and isolates albums" time="0.176396834">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; returns per-image results and rolls back all targets when any target is missing" time="0.034941875">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; reports a middle database failure with its cause while committing other images independently" time="0.07844675">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; keeps metadata editable for private/failed/pending/processing images and disabled storage" time="0.035926292">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; uses foreign keys for hidden relation cleanup without deleting assets, and SET NULL on final image deletion" time="0.093821584">
+        </testcase>
+        <testcase classname="tests/integration/collections/model.test.ts" name="T-COL-01 records and memberships &gt; filters before count and paging, orders equal timestamps by image ID, and preserves order through processing/trash/restore" time="0.178528833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/collections/unicode-experiment.test.ts" timestamp="2026-09-22T16:13:46.369Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="4.614817917">
+        <testcase classname="tests/integration/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01: real SQLite preserves names and relationships across duplicate creation and competing renames" time="4.613470542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/collections/upload.test.ts" timestamp="2026-09-22T16:13:46.370Z" hostname="dnslins-Mini.lan" tests="4" failures="0" errors="0" skipped="0" time="0.398127208">
+        <testcase classname="tests/integration/collections/upload.test.ts" name="T-COL-01 synchronous upload handoff &gt; retains committed empty records but rolls back all records from a failed preparation" time="0.041377333">
+        </testcase>
+        <testcase classname="tests/integration/collections/upload.test.ts" name="T-COL-01 synchronous upload handoff &gt; rolls back the whole accepted asset when a fixed album ID was deleted, without rebinding names" time="0.097116">
+        </testcase>
+        <testcase classname="tests/integration/collections/upload.test.ts" name="T-COL-01 synchronous upload handoff &gt; rolls back the whole accepted asset when a fixed tag ID was deleted, without rebinding names" time="0.116639333">
+        </testcase>
+        <testcase classname="tests/integration/collections/upload.test.ts" name="T-COL-01 synchronous upload handoff &gt; rolls back relations and media after a later caller error, then accepts into every fixed target" time="0.140309667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/collections/unicode-experiment.test.ts" timestamp="2026-09-22T16:13:46.373Z" hostname="dnslins-Mini.lan" tests="12" failures="0" errors="0" skipped="0" time="1.524536208">
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; matches the complete pinned default full-fold data and explicit name samples" time="1.488407625">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; counts NFC display-name code points before folding, not UTF-16 units or folded length" time="0.010178583">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;&quot;" time="0.000882458">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot; 　 &quot;" time="0.001116">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;Go\n&quot;" time="0.00071225">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;\tGo&quot;" time="0.000949833">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;a\rb&quot;" time="0.002398208">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;a\u0000b&quot;" time="0.000658292">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;ab&quot;" time="0.005350584">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;ab&quot;" time="0.001299458">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;a b&quot;" time="0.000573917">
+        </testcase>
+        <testcase classname="tests/unit/collections/unicode-experiment.test.ts" name="EV-COLLECTIONS-01 Unicode experiment &gt; rejects blank, control and newline input &quot;a b&quot;" time="0.008986584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/collections/validation.test.ts" timestamp="2026-09-22T16:13:46.399Z" hostname="dnslins-Mini.lan" tests="29" failures="0" errors="0" skipped="0" time="0.034093292">
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot; Go &quot; without compatibility folding or changing inner whitespace" time="0.010890916">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;Straße&quot; without compatibility folding or changing inner whitespace" time="0.000856959">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;STRASSE&quot; without compatibility folding or changing inner whitespace" time="0.000778959">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;Σ&quot; without compatibility folding or changing inner whitespace" time="0.001277583">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;ς&quot; without compatibility folding or changing inner whitespace" time="0.000256125">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;I&quot; without compatibility folding or changing inner whitespace" time="0.000480916">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;İ&quot; without compatibility folding or changing inner whitespace" time="0.000358833">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;ı&quot; without compatibility folding or changing inner whitespace" time="0.000255334">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;Café&quot; without compatibility folding or changing inner whitespace" time="0.000210708">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;̀ͅ&quot; without compatibility folding or changing inner whitespace" time="0.000282292">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;ＦＯＯ&quot; without compatibility folding or changing inner whitespace" time="0.000170334">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;FOO&quot; without compatibility folding or changing inner whitespace" time="0.000095083">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;①&quot; without compatibility folding or changing inner whitespace" time="0.000070458">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;a  b&quot; without compatibility folding or changing inner whitespace" time="0.000057208">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;a b&quot; without compatibility folding or changing inner whitespace" time="0.000071417">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes &quot;𐐀&quot; without compatibility folding or changing inner whitespace" time="0.0000755">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; counts NFC code points before folding rather than UTF-16 units" time="0.005610333">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;&quot;" time="0.000403083">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot; 　 &quot;" time="0.000371292">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;Go\n&quot;" time="0.000310167">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;\tGo&quot;" time="0.000372583">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;a\rb&quot;" time="0.000555167">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;a\u0000b&quot;" time="0.000516334">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;ab&quot;" time="0.000376375">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;ab&quot;" time="0.00047575">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;a b&quot;" time="0.000497959">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects blank, newline or control names before trimming: &quot;a b&quot;" time="0.000673875">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; normalizes descriptions, allows newlines and defaults to empty plain text" time="0.000969209">
+        </testcase>
+        <testcase classname="tests/unit/collections/validation.test.ts" name="collections name validation &gt; rejects invalid types and validates every tag before a caller writes records" time="0.000452458">
+        </testcase>
+    </testsuite>
+</testsuites>
