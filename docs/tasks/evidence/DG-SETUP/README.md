@@ -26,8 +26,12 @@
 | `git diff --check`                                                                                          | 通过                                                                                 |
 | Python 标准库检查三文件相对文件链接及新增 node-id 的既有来源                                                | 128 个文件链接存在；22 个节点与历史 DES-01 索引一致，不代表远端链接／实时 Figma 验证 |
 
-本地未执行应用 lint、类型、单元／集成、构建与浏览器：没有运行时变更，适用本地验证为文档结构、链接、格式与契约走查。独立审计结论待补充。
+本地未执行应用 lint、类型、单元／集成、构建与浏览器：没有运行时变更，适用本地验证为文档结构、链接、格式与契约走查。按 `code-review-and-quality` 完成独立只读审计：Critical 0、Required 0。已核对 11×2 节点、输入／状态码、模块边界与测试适用性，未增加产品规则或运行时安全／性能变化；审计方另运行 `git diff --check` 与 `node docs/tasks/check.mjs`，均通过。
 
 PR 的 CI 与 Docker AMD64/ARM64 检查均须通过后才转为正式待评审。镜像工作流仅 release 事件可发布，本次不发布或部署。
 
 真实输入、接口恢复、浏览器、触屏／软键盘、安全区和主题验收未执行，由消费任务继续完成。文档走查没有发现具体补图缺口；DES-01、DES-05、DES-07、RG-07 不因本核对关闭。
+
+## 远端验证
+
+[PR #97](https://github.com/dnslin/ariso-next/pull/97) 已触发 [CI](https://github.com/dnslin/ariso-next/actions/runs/35674780670) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35674780866)。这两次运行对应首个提交 `d2f3d23`，记录时仍在运行，不标记通过。证据补充后的最新提交以 [PR checks](https://github.com/dnslin/ariso-next/pull/97/checks) 为准，全部适用检查通过后才转正式待评审；release-checks / publish 仅 release 事件执行。
