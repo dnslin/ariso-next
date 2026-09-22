@@ -51,6 +51,9 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
           .all(),
       ).toEqual([
         { name: 'account' },
+        { name: 'album_images' },
+        { name: 'albums' },
+        { name: 'image_tags' },
         { name: 'media_images' },
         { name: 'media_jobs' },
         { name: 'media_objects' },
@@ -60,6 +63,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'site_settings' },
         { name: 'storage_configs' },
         { name: 'storage_settings' },
+        { name: 'tags' },
         { name: 'user' },
         { name: 'verification' },
       ]);
@@ -80,6 +84,10 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
       for (const table of [
         'account',
+        'albums',
+        'album_images',
+        'tags',
+        'image_tags',
         'session',
         'user',
         'verification',
