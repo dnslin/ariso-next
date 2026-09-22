@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="25.868823347">
+    <testsuite name="tests/integration/delivery/http.test.ts" timestamp="2026-09-22T06:09:04.755Z" hostname="runnervmlun5p" tests="12" failures="0" errors="0" skipped="0" time="25.868823347">
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real Next GET returns complete bytes, ignores Range, and records one start" time="0.20158356">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="HEAD/304/412 close files without body delivery; dates are ignored without Last-Modified" time="0.200358914">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="final async authorization rejects private, unavailable, disabled and not-ready states before conditions" time="0.274857125">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real owner Cookie permits private access, revoked Cookie is rechecked and public access then counts" time="0.491047406">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="one version reselection succeeds; a second conflict returns IMAGE_CHANGED and releases both handles" time="0.241007416">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="read failures run through Next HTTP: first read never counts, midstream disconnect keeps one count" time="0.036042824">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real client cancellation before headers and after first network chunk releases file handles" time="0.072675062">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="thumbnail is excluded, attachments count normally, and counter failure does not truncate bytes" time="0.123121094">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="missing and inconsistent physical files cannot return 304 or emit an event" time="0.024051057">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="current owner remains authorized after public becomes private during open" time="0.191135772">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="an already started stream finishes after permission changes; the next request is rejected" time="1.407322647">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="HTTP filename and cache matrix uses the supplied format metadata and UTF-8 names" time="0.369058805">
+        </testcase>
+    </testsuite>
+</testsuites>

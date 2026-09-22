@@ -66,4 +66,17 @@ git diff --check
 
 ## 远端验证
 
-PR 将触发 CI 与 Docker build。images 工作流在原生 AMD64/ARM64 runner 上运行同一生产模式 Next HTTP 实验，保存 delivery JUnit 和服务日志；同时保留现有 Docker 构建、镜像内容、图片转换、存储挂载与生命周期检查。只运行验证事件，发布仍限定 release，不发布镜像或部署。远端运行结果将在完成后补充，当前未标通过。
+PR 将触发 CI 与 Docker build。images 工作流在原生 AMD64/ARM64 runner 上运行同一生产模式 Next HTTP 实验，保存 delivery JUnit 和服务日志；同时保留现有 Docker 构建、镜像内容、图片转换、存储挂载与生命周期检查。只运行验证事件，发布仍限定 release，不发布镜像或部署。实现提交 [`1e48918`](https://github.com/dnslin/ariso-next/commit/1e489181466b0c263a81c920849ec3dc3e0f53c8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35693366039) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35693366034) 全部 success。CI 为 267 项单元、216 项集成通过；AMD64/ARM64 各 12 项 delivery 实验通过，见 [AMD64 JUnit](./amd64.xml)、[ARM64 JUnit](./arm64.xml)。原生 runner 使用 Node 24.20.0，实际 Docker 使用 Node 24.21.0。两架构镜像、图片转换、受限挂载存储与容器生命周期全部通过；容器原始报告：[AMD64](./container-amd64.json)、[ARM64](./container-arm64.json)。release-checks / publish 按非 release 事件跳过，没有发布镜像或部署。
+
+```sh
+gh pr checks 103 --repo dnslin/ariso-next
+gh run view 35693366039 --repo dnslin/ariso-next
+gh run view 35693366034 --repo dnslin/ariso-next
+gh run download 35693366039 --repo dnslin/ariso-next --name runtime-tests --dir test-results/remote-delivery/ci
+gh run download 35693366034 --repo dnslin/ariso-next --name delivery-verification-amd64 --dir test-results/remote-delivery/amd64
+gh run download 35693366034 --repo dnslin/ariso-next --name delivery-verification-arm64 --dir test-results/remote-delivery/arm64
+gh run download 35693366034 --repo dnslin/ariso-next --name container-verification-amd64 --dir test-results/remote-delivery/container-amd64
+gh run download 35693366034 --repo dnslin/ariso-next --name container-verification-arm64 --dir test-results/remote-delivery/container-arm64
+```
+
+本次归档提交仅增加实际证据，不改变受测代码。归档后的最新复跑状态以 [PR #103](https://github.com/dnslin/ariso-next/pull/103) 检查页为准，全部通过后转为待评审。未合并、主动关闭 Issue、发布、部署或删除分支/worktree。
