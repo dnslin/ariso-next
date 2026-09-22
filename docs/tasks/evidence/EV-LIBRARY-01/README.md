@@ -114,4 +114,6 @@ UI 原始证据：[browser.json](./browser.json)、[browser-runner.json](./brows
 
 使用 `code-review-and-quality`，两位独立只读代理分别先读 UI/SQLite 测试，再核对实现、类型与证据。当前未发现 Critical / Required 问题；确认生产模块边界、四种混合顺序、计数一致、游标身份、仅指定插件及测试失败传播。报告保留固定窗口、未测排序按钮和冷缓存限制。
 
-远端 `.github/workflows/ci.yml` 只有 workflow_call，images.yml 只接受 release.published。按[当前执行约定](../../execution.md#适用检查)，PR 不运行 Actions，双架构容器留待 Release；没有可单独触发的验证工作流。本任务不创建 Release，不发布镜像，不部署，也不把未运行的远端检查标成通过。创建 PR 后会回读实际检查状态。
+远端 `.github/workflows/ci.yml` 只有 workflow_call，images.yml 只接受 release.published。按[当前执行约定](../../execution.md#适用检查)，PR 不运行 Actions，双架构容器留待 Release；没有可单独触发的验证工作流。本任务不创建 Release，不发布镜像，不部署，也不把未运行的远端检查标成通过。已回读实际检查状态。
+
+实施提交 `37419f9` 已推送至 [PR #107](https://github.com/dnslin/ariso-next/pull/107)。本地检查、两份独立审计及证据复核通过后，PR 已转为正式待评审。`gh pr view 107 --json isDraft,headRefOid,statusCheckRollup,mergeStateStatus` 返回非草稿、CLEAN、空检查列表；`gh api repos/dnslin/ariso-next/commits/37419f9/check-runs` 返回 0，`gh run list --branch codex/issue-75-library-validation` 返回空列表。这是未配置 PR Actions 的真实结果，不称为远端检查通过。未合并、未关闭 Issue，分支与 worktree 保留。
