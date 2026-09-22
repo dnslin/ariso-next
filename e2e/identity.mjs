@@ -164,6 +164,50 @@ try {
     await page.fill('#email', config.credentials.email);
     await page.fill('#password', config.credentials.password);
     await page.fill('#confirmPassword', config.credentials.password);
+    await page.focus('loc=role:button[name="显示密码"]');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () => document.querySelector('#password').type === 'text',
+    );
+    assert.equal(
+      await page.evaluate(() => {
+        const button = document.querySelector('button[aria-label="隐藏密码"]');
+        return (
+          !!button?.querySelector('svg') && button.textContent.trim() === ''
+        );
+      }),
+      true,
+      'Password visibility uses a named icon button without visible label text',
+    );
+    await page.focus('loc=role:button[name="隐藏密码"]');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () => document.querySelector('#password').type === 'password',
+    );
+    await page.focus('#password');
+    const focusStyles = await page.evaluate(() => {
+      const input = document.querySelector('#password');
+      const group = input.closest('[data-slot="input-group"]');
+      const style = getComputedStyle(input);
+      return {
+        innerBorder: style.borderTopWidth,
+        innerOutline: style.outlineWidth,
+        groupOutline: getComputedStyle(group).outlineWidth,
+        groupShadow: getComputedStyle(group).boxShadow,
+        buttonRadius: getComputedStyle(
+          document.querySelector('button[type="submit"]'),
+        ).borderRadius,
+      };
+    });
+    assert.equal(focusStyles.innerBorder, '0px');
+    assert.equal(focusStyles.innerOutline, '0px');
+    assert.equal(focusStyles.groupOutline, '0px');
+    assert.notEqual(
+      focusStyles.groupShadow,
+      'none',
+      'HeroUI retains the group focus ring',
+    );
+    assert.equal(focusStyles.buttonRadius, '12px');
     await page.focus('loc=role:button[name="下一步：设置站点"]');
     await page.keyboard.press('Enter');
     await page.waitForSelector('#publicUrl');

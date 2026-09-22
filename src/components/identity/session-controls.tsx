@@ -90,6 +90,7 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
         </Alert>
       ) : null}
       <Button
+        className="rounded-xl"
         variant="outline"
         isDisabled={busy}
         onPress={() => void signOut()}

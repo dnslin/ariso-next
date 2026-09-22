@@ -17,7 +17,6 @@ import {
 } from '../../server/identity/validation';
 import { timeZoneSchema } from '../../server/site/validation';
 import { IdentityField } from './identity-field';
-import './identity.css';
 
 type Fields = {
   code: string;
@@ -204,17 +203,25 @@ export function SetupForm() {
   const items = options.map((id) => ({ id }));
 
   return (
-    <div className="identity-panel">
-      <p className="identity-brand">Ariso</p>
-      <section className="identity-card" aria-labelledby="setup-heading">
-        <header>
-          <p className="identity-step">
+    <div className="grid w-full max-w-[520px] gap-5">
+      <p className="text-center font-[Caveat] text-5xl">Ariso</p>
+      <section
+        className="grid gap-4 rounded-3xl border border-border bg-surface px-5 py-6 md:px-7"
+        aria-labelledby="setup-heading"
+      >
+        <header className="grid gap-2">
+          <p className="text-xs text-muted">
             {step} / 2 · {step === 1 ? '创建账号' : '设置站点'}
           </p>
-          <h1 id="setup-heading" ref={heading} tabIndex={-1}>
+          <h1
+            id="setup-heading"
+            ref={heading}
+            tabIndex={-1}
+            className="text-2xl font-medium"
+          >
             {step === 1 ? '欢迎使用 Ariso' : '让图片有自己的地址'}
           </h1>
-          <p>
+          <p className="text-sm">
             {step === 1
               ? '先设置你的管理账号。完成下一步后，账号才会创建。'
               : '确认公开地址与时区，然后完成初始化。'}
@@ -228,6 +235,7 @@ export function SetupForm() {
           </Alert>
         ) : null}
         <Form
+          className="grid min-w-0 gap-4"
           validationBehavior="aria"
           onSubmit={(event) => {
             event.preventDefault();
@@ -300,8 +308,11 @@ export function SetupForm() {
                   menuTrigger="input"
                 >
                   <Label>站点时区</Label>
-                  <ComboBox.InputGroup>
-                    <Input id="timeZone" />
+                  <ComboBox.InputGroup className="w-full">
+                    <Input
+                      id="timeZone"
+                      className="min-h-12 w-full rounded-xl border shadow-none"
+                    />
                     <ComboBox.Trigger aria-label="选择时区" />
                   </ComboBox.InputGroup>
                   <Description>
@@ -323,12 +334,15 @@ export function SetupForm() {
                     </ListBox>
                   </ComboBox.Popover>
                 </ComboBox>
-                <p>点击「完成初始化」即确认以上设置并创建账号。</p>
+                <p className="text-sm">
+                  点击「完成初始化」即确认以上设置并创建账号。
+                </p>
               </>
             )}
           </fieldset>
           {unknown ? (
             <Button
+              className="min-h-12 w-full rounded-xl"
               type="button"
               onPress={() => void checkResult()}
               isDisabled={busy}
@@ -337,6 +351,7 @@ export function SetupForm() {
             </Button>
           ) : (
             <Button
+              className="min-h-12 w-full rounded-xl"
               type="submit"
               isDisabled={busy || (step === 2 && !fields.timeZone)}
             >
@@ -350,6 +365,7 @@ export function SetupForm() {
           )}
           {step === 2 ? (
             <Button
+              className="min-h-12 w-full rounded-xl"
               type="button"
               variant="outline"
               isDisabled={busy}

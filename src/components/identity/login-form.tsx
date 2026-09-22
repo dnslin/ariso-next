@@ -8,7 +8,6 @@ import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
 import { accountInputSchema } from '../../server/identity/validation';
 import { IdentityField } from './identity-field';
-import './identity.css';
 
 export function LoginForm({
   initialized,
@@ -104,12 +103,14 @@ export function LoginForm({
 
   return (
     <section
-      className="identity-card identity-login"
+      className="grid w-full max-w-md gap-4 rounded-3xl border border-dashed border-border bg-surface px-4 py-6 shadow-sm md:px-7"
       aria-labelledby="login-heading"
     >
-      <header>
-        <h1 id="login-heading">登录</h1>
-        <p>轻装简从 · 欢迎回来</p>
+      <header className="grid gap-2">
+        <h1 id="login-heading" className="text-2xl font-medium">
+          登录
+        </h1>
+        <p className="text-sm">轻装简从 · 欢迎回来</p>
       </header>
       {message || setupRequired ? (
         <div ref={alertRef} tabIndex={-1}>
@@ -127,6 +128,7 @@ export function LoginForm({
         <Link href="/setup">开始初始化</Link>
       ) : (
         <Form
+          className="grid min-w-0 gap-4"
           validationBehavior="aria"
           onSubmit={(event) => {
             event.preventDefault();
@@ -158,7 +160,11 @@ export function LoginForm({
             autoComplete="current-password"
             icon="password"
           />
-          <Button type="submit" isDisabled={busy || remaining > 0}>
+          <Button
+            className="min-h-12 w-full rounded-xl"
+            type="submit"
+            isDisabled={busy || remaining > 0}
+          >
             {busy ? <Spinner size="sm" /> : null}
             {busy ? '正在登录…' : '登录'}
           </Button>
