@@ -14,7 +14,7 @@
 
 三个 PR 最终提交的 CI、AMD64、ARM64 检查均成功；发布任务跳过。文档里的早期“未实现”描述是编写时的状态，不能覆盖后续交付证据。#60 最后增加的自动化焦点断言此前未执行，本次没有把所有者手工确认误记为自动化通过。
 
-初始工作区干净，无其他活动任务占用。从最新 `origin/main=a30ae21ae664c650b873d98be77a3ed6f4d2db5c` 建立 `codex/issue-61-m1-gate`。未修改生产页面、业务 API、schema、依赖、冻结 PRD 或 Figma。
+初始工作区干净，无其他活动任务占用。从最新 `origin/main=a30ae21ae664c650b873d98be77a3ed6f4d2db5c` 建立 `codex/issue-61-m1-gate`。首次 M1 提交未修改生产页面、业务 API、schema、依赖、冻结 PRD 或 Figma。后续按用户要求补修登录错误提示，见[修复与回归记录](login-error-fix/README.md)；以下首次验证的原始证据保留。
 
 - `tests/integration/identity/m1-gate.test.ts`：空目录启动、完整 setup、登录、退出、真实进程重启；核对所有者、完整站点/媒体设置、存储 ID/时间戳及真实对象 API 写入的 64 KiB 字节，重启后拒绝第二所有者和已撤销 Cookie，再次登录退出。
 - `e2e/identity.mjs`：补齐状态、未提交刷新、两类响应未知恢复、独立 Cookie 页面、健康响应及重启前后完整配置快照。`identity-session.mjs` 仅导出现有测试数据库访问函数供这些场景复用。
@@ -89,6 +89,6 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-brows
 
 实际验证覆盖响应式、短视口滚动、手机 44px 触控目标及键盘/焦点。保留现有安全区适配；未执行真实手机触摸、物理软键盘和非零安全区设备测试。现行[共用验收](../../tasks/execution.md#前端共用验收)已取消其设备实测门槛，未将豁免写成实测通过。
 
-登录故障注入暴露既有表现：SQLite session 插入失败时 Better Auth 返回空 HTTP 500，页面保留输入并显示“无法确认登录结果”，随后附带原生 JSON 解析错误。恢复后可以正常登录；提示细节未在本验证任务中改写。
+首次登录故障注入发现：SQLite session 插入失败时 Better Auth 返回空 HTTP 500，页面附带原生 JSON 解析错误。该提示问题已按用户后续要求修复，见[修复与回归记录](login-error-fix/README.md)。修复前截图和报告保留，不代表当前页面行为。
 
 不合并 PR、不主动关闭 Issue、不发布镜像、不部署、不删除分支或 worktree。

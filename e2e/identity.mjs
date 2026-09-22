@@ -1,9 +1,8 @@
 /* global taskSpace, config */
 const { default: assert } = await import('node:assert/strict');
 const { readFile, writeFile } = await import('node:fs/promises');
-const { identitySql, verifyIdentitySession } = await import(
-  config.identitySessionScript
-);
+const { identitySql, verifyIdentitySession, verifyLoginFailures } =
+  await import(config.identitySessionScript);
 const { join } = await import('node:path');
 const { installBrowserErrors, assertNoBrowserErrors } = await import(
   config.errorsScript
@@ -581,7 +580,15 @@ try {
       await page.waitForFunction(() =>
         document
           .querySelector('[role="alert"]')
-          ?.textContent.includes('无法确认登录结果'),
+          ?.textContent.includes(
+            '登录失败，请稍后重试或检查服务日志。（HTTP 500）',
+          ),
+      );
+      assert.equal(
+        await page.evaluate(() =>
+          document.querySelector('[role="alert"]').textContent.trim(),
+        ),
+        '登录失败，请稍后重试或检查服务日志。（HTTP 500）',
       );
       report.loginFailure = await page.evaluate(() => window.__loginFailure);
       assert.equal(report.loginFailure.status, 500);
@@ -608,7 +615,7 @@ try {
       await identitySql(config, 'DROP TRIGGER reject_m1_login');
     }
     report.checks.push(
-      'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows unconfirmed-result feedback, retains fields and creates no session; later login recovers',
+      'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers',
     );
     await page.fill('#email', config.credentials.email);
     await page.fill('#password', 'incorrect-password');
@@ -655,6 +662,7 @@ try {
   await loginAndLogout();
   if (config.phase === 'restart') {
     report.sessionChecks = await verifyIdentitySession(page, config);
+    report.loginFailureChecks = await verifyLoginFailures(page, config);
   }
   await noPersistedSecrets();
   report.health.push(await health());

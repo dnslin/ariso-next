@@ -63,8 +63,25 @@ export function LoginForm({
         const session = await fetch('/api/auth/get-session', {
           cache: 'no-store',
         });
-        if (!session.ok || !(await session.json())?.user)
-          throw new Error('登录结果尚未确认，请重试');
+        if (!session.ok) {
+          setMessage(
+            `无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP ${session.status}）`,
+          );
+          return;
+        }
+        let user: unknown;
+        try {
+          user = (await session.json())?.user;
+        } catch {
+          setMessage(
+            `登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP ${session.status}）`,
+          );
+          return;
+        }
+        if (!user) {
+          setMessage('尚未确认登录会话，请重试。');
+          return;
+        }
         window.location.replace(returnTo);
         return;
       }
@@ -76,24 +93,30 @@ export function LoginForm({
         }
         setMessage('登录请求过于频繁，请等待服务允许后重试。（HTTP 429）');
       } else {
-        const body = await response.json();
-        if (body.code === 'SETUP_REQUIRED') {
+        const failure = '登录失败，请稍后重试或检查服务日志。';
+        let code: unknown;
+        try {
+          code = (await response.json())?.code;
+        } catch {
+          // 错误正文不保证是 JSON；已收到的 HTTP 失败仍应明确展示。
+          setMessage(`${failure}（HTTP ${response.status}）`);
+          return;
+        }
+        if (code === 'SETUP_REQUIRED') {
           setSetupRequired(true);
           setMessage('站点尚未初始化，请先完成初始化。');
         } else if (
-          body.code === 'INVALID_EMAIL_OR_PASSWORD' ||
-          body.code === 'INVALID_PASSWORD'
+          code === 'INVALID_EMAIL_OR_PASSWORD' ||
+          code === 'INVALID_PASSWORD'
         )
-          setMessage(`邮箱或密码不正确，请检查后重试。（${body.code}）`);
+          setMessage(`邮箱或密码不正确，请检查后重试。（${code}）`);
         else
           setMessage(
-            `登录失败，请稍后重试或检查服务日志。（HTTP ${response.status} / ${body.code ?? 'UNKNOWN_ERROR'}）`,
+            `${failure}（HTTP ${response.status}${typeof code === 'string' && code ? ` / ${code}` : ''}）`,
           );
       }
-    } catch (error) {
-      setMessage(
-        `无法确认登录结果，请检查连接后重试。${error instanceof Error ? error.message : ''}`,
-      );
+    } catch {
+      setMessage('连接中断，无法确认登录结果，请检查网络后重试。');
     } finally {
       inFlight.current = false;
       setBusy(false);

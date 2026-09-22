@@ -19,6 +19,196 @@ export async function identitySql(config, statement) {
   return JSON.parse(stdout);
 }
 
+// Faults are injected at the browser's fetch boundary. Session checks follow
+// real successful sign-ins and verify/clean up the actual cookie afterward.
+export async function verifyLoginFailures(page, config) {
+  const checks = [];
+  const networkMessage = '连接中断，无法确认登录结果，请检查网络后重试。';
+  const failures = [
+    { name: 'HTML gateway error', status: 502, body: '<h1>Bad Gateway</h1>' },
+    { name: 'malformed error JSON', status: 500, body: '{"code":' },
+    { name: 'null error JSON', status: 400, body: 'null' },
+    { name: 'array error JSON', status: 400, body: '[]' },
+    { name: 'non-string error code', status: 400, body: '{"code":42}' },
+    {
+      name: 'stable server error code',
+      status: 503,
+      body: '{"code":"SERVICE_UNAVAILABLE"}',
+      message:
+        '登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）',
+    },
+    {
+      name: 'credential error code',
+      status: 401,
+      body: '{"code":"INVALID_PASSWORD"}',
+      message: '邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）',
+    },
+    { name: 'login request rejected', network: true, message: networkMessage },
+    {
+      name: 'empty rate-limit response',
+      status: 429,
+      body: '',
+      headers: { 'x-retry-after': '1' },
+      message: '登录请求过于频繁，请等待服务允许后重试。（HTTP 429）',
+    },
+    {
+      name: 'session HTTP failure',
+      session: true,
+      status: 500,
+      body: '',
+      message:
+        '无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）',
+    },
+    {
+      name: 'invalid session response',
+      session: true,
+      status: 200,
+      body: '<h1>Unexpected proxy response</h1>',
+      message:
+        '登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）',
+    },
+    {
+      name: 'unconfirmed session',
+      session: true,
+      status: 200,
+      body: 'null',
+      message: '尚未确认登录会话，请重试。',
+    },
+    {
+      name: 'session request rejected',
+      session: true,
+      network: true,
+      message: networkMessage,
+    },
+  ];
+  for (const failure of failures) {
+    await page.goto(`${config.origin}/login`);
+    await page.waitForSelector('#email');
+    await page.fill('#email', config.credentials.email);
+    await page.fill('#password', config.credentials.password);
+    await page.evaluate((fault) => {
+      const original = window.fetch;
+      window.__loginFaultUsed = false;
+      window.__loginStatuses = [];
+      window.fetch = async (...args) => {
+        const target = fault.session
+          ? '/api/auth/get-session'
+          : '/api/auth/sign-in/email';
+        if (args[0] === target) {
+          window.fetch = original;
+          window.__loginFaultUsed = true;
+          if (fault.network) throw new TypeError('controlled network failure');
+          return new Response(fault.body, {
+            status: fault.status,
+            headers: fault.headers,
+          });
+        }
+        const response = await original(...args);
+        if (args[0] === '/api/auth/sign-in/email')
+          window.__loginStatuses.push(response.status);
+        return response;
+      };
+    }, failure);
+    const submit = async () => {
+      await page.focus('loc=role:button[name="登录"]');
+      await page.keyboard.press('Enter');
+    };
+    await submit();
+    await page.waitForFunction(
+      () =>
+        window.__loginFaultUsed ||
+        document
+          .querySelector('[role="alert"]')
+          ?.textContent.includes('HTTP 429'),
+    );
+    // Repeated real sign-ins can reach the existing limiter. Honor its actual
+    // wait window, then explicitly retry; never bypass the server's limit.
+    if (!(await page.evaluate(() => window.__loginFaultUsed))) {
+      await page.waitForFunction(
+        () => !document.querySelector('button[type="submit"]').disabled,
+        undefined,
+        { timeout: 15000 },
+      );
+      await submit();
+    }
+    const expected =
+      failure.message ??
+      `登录失败，请稍后重试或检查服务日志。（HTTP ${failure.status}）`;
+    await page.waitForFunction(
+      (message) =>
+        document.querySelector('[role="alert"]')?.textContent.includes(message),
+      expected,
+    );
+    if (failure.status === 429) {
+      assert.equal(
+        await page.evaluate(
+          () => document.querySelector('button[type="submit"]').disabled,
+        ),
+        true,
+      );
+    }
+    await page.waitForFunction(
+      () => !document.querySelector('button[type="submit"]').disabled,
+      undefined,
+      { timeout: 15000 },
+    );
+    await page.waitForFunction(
+      () =>
+        document.activeElement?.getAttribute('tabindex') === '-1' &&
+        document.activeElement.contains(
+          document.querySelector('[role="alert"]'),
+        ),
+    );
+    const message = await page.evaluate(() =>
+      document.querySelector('[role="alert"]').textContent.trim(),
+    );
+    assert.equal(message, expected);
+    assert.equal(new URL(await page.url()).pathname, '/login');
+    assert.equal(
+      await page.evaluate(
+        ({ email, password }) =>
+          document.querySelector('#email').value === email &&
+          document.querySelector('#password').value === password,
+        config.credentials,
+      ),
+      true,
+    );
+    const session = JSON.parse(
+      (await page.fetch('/api/auth/get-session')).body,
+    );
+    const loginStatuses = await page.evaluate(() => window.__loginStatuses);
+    if (failure.session) {
+      assert.equal(
+        loginStatuses.at(-1),
+        200,
+        'Session faults must follow real successful login',
+      );
+      assert.equal(session.user.email, config.credentials.email);
+      assert.equal(
+        (
+          await page.fetch('/api/auth/sign-out', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: '{}',
+          })
+        ).status,
+        200,
+      );
+      assert.equal(
+        JSON.parse((await page.fetch('/api/auth/get-session')).body),
+        null,
+      );
+    } else assert.equal(session, null);
+    checks.push({
+      scenario: failure.name,
+      injection: 'browser fetch boundary',
+      message,
+      loginStatuses,
+    });
+  }
+  return checks;
+}
+
 export async function verifyIdentitySession(page, config) {
   const checks = [];
   const sql = (statement) => identitySql(config, statement);
