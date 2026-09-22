@@ -48,42 +48,42 @@ git diff --check
 
 Ego Chrome 152 / TaskSpace 4：主页、外壳、静态资源、健康接口和数据库读取错误恢复通过。完整 `pnpm run test:browser` 退出码 1，停在未修改的 `e2e/identity.mjs:204`：group outline-width 实际 2px，旧断言期望 0px。原工作区 #61 正在修订该身份测试，本 PR 不混入其改动。保留[运行器报告](./browser-runner.json)与[失败场景](./browser-identity.json)。完整浏览器回归仍未通过。
 
-独立 `code-review-and-quality` 已按实现、失败分支及实际报告复审；审计者另行运行两个新增集成测试通过。已修复透明 WebP 容器名误判、导出样本目录权限，并采纳保留失败资源曲线的建议。最终结论见下节；生产策略与完整浏览器回归的失败没有隐藏或削弱断言。最终覆盖核对另补充 PNG 方向 6 样本，当前归档仍是增加该样本前的实测结果，正在重跑补证。
+独立 `code-review-and-quality` 已按实现、失败分支及实际报告复审；审计者另行运行两个新增集成测试通过。已修复透明 WebP 容器名误判、导出样本目录权限，并采纳保留失败资源曲线的建议。最终结论见下节；生产策略与完整浏览器回归的失败没有隐藏或削弱断言。最终覆盖核对补充 PNG 方向 6 样本，已在第四轮两个架构全部通过。审计者逐项比较归档 JSON 与下载报告，并核对每个基础原/派生样本实际字节与摘要。
 
 ## 最终双架构实测
 
-受测提交 [`8cd88a6`](https://github.com/dnslin/ariso-next/commit/8cd88a6b8d0609e2fdf92d1c1582a71fd3e17f3c)，[CI 通过](https://github.com/dnslin/ariso-next/actions/runs/35694034771)，[Docker 实测失败](https://github.com/dnslin/ariso-next/actions/runs/35694034912)。永久报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。后续归档提交只改文档，不改变受测代码。Actions 同名 artifact 另保留原/派生基础样本。
+受测提交 [`32e2968`](https://github.com/dnslin/ariso-next/commit/32e29683ef29900e8f5221cdbd3a9daee453c471)，[CI 通过](https://github.com/dnslin/ariso-next/actions/runs/35694650314)，[Docker 实测失败](https://github.com/dnslin/ariso-next/actions/runs/35694650431)。永久报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。后续归档提交只改文档，不改变受测代码。Actions 同名 artifact 另保留原/派生基础样本。
 
 两架构环境均为 Node 24.21.0、Linux 6.17.0-1022-azure、UID 1000、ImageMagick 7.1.1-43 Q16、ExifTool 13.25。未在本机运行 Docker。
 
 | 场景                                                             | AMD64                       | ARM64                       |
 | ---------------------------------------------------------------- | --------------------------- | --------------------------- |
-| JPEG 方向 6 旋转、2 镜像；大图缩小和小 PNG 不放大                | 通过                        | 通过                        |
+| JPEG/PNG 方向 6 旋转、JPEG 方向 2 镜像；缩小且不放大             | 通过                        | 通过                        |
 | 透明 WebP、指定背景 JPEG、sRGB、清除元数据、原图摘要不变         | 通过                        | 通过                        |
 | IPC 就绪后的 TERM、忽略 TERM、超时、Linux STOP 后强杀及 PID 回收 | 通过                        | 通过                        |
 | 真实 magick STOP 后取消至退出                                    | 1003ms，SIGKILL             | 1003ms，SIGKILL             |
-| 384 MiB 卷、并发 1–4、256 MiB 缓存基线                           | 通过，批次 332–450ms        | 通过，批次 195–207ms        |
-| 强制 1 MiB 缓存、并发 1–4                                        | 通过，批次 783–1076ms       | 通过，批次 434–451ms        |
+| 384 MiB 卷、并发 1–4、256 MiB 缓存基线                           | 通过，批次 335–446ms        | 通过，批次 195–214ms        |
+| 强制 1 MiB 缓存、并发 1–4                                        | 通过，批次 786–1050ms       | 通过，批次 436–453ms        |
 | 真实 ENOSPC、原图保留、准确清理后再次处理                        | 通过                        | 通过                        |
 | 无固定尺寸准入                                                   | **失败：width/height 32KP** | **失败：width/height 32KP** |
 
-资源源图为 2048×1536 PNG、32,102 字节。256 MiB 缓存基线的并发 4 子进程 RSS 采样峰值分别为 142,155,776 / 138,145,792 字节。强制 1 MiB 缓存时，并发 1–4 磁盘峰值分别约 25.4 / 50.8 / 76.2 / 101.5 MiB；并发 4 子进程 RSS 采样峰值分别为 40,079,360 / 39,190,528 字节。两架构最低剩余都为 296,185,856 字节（约 282.46 MiB），高于 256 MiB 起始低水位。最终释放任务缓存；这些是所选样本与采样间隔下的结果，不能当作全部图片的资源上界。
+资源源图为 2048×1536 PNG、32,102 字节。256 MiB 缓存基线的并发 4 子进程 RSS 采样峰值分别为 142,295,040 / 138,170,368 字节。强制 1 MiB 缓存时，并发 1–4 磁盘峰值分别约 25.4 / 50.8 / 76.2 / 101.5 MiB；并发 4 子进程 RSS 采样峰值分别为 44,695,552 / 32,772,096 字节。两架构最低剩余都为 296,185,856 字节（约 282.46 MiB），高于 256 MiB 起始低水位。最终释放任务缓存；这些是所选样本与采样间隔下的结果，不能当作全部图片的资源上界。
 
 真实耗尽时剩余 0 字节，raw partial 为 65,536 字节，工具退出码 1 并保留 partial 路径，Node 写入实得 ENOSPC。两架构各自原图 SHA-256 在处理前后相同；自产 PNG 不要求跨架构编码字节一致，具体摘要见各自原始报告。删除明确 filler/partial 后，剩余空间从 0 恢复到 402,649,088 字节；与初始 402,653,184 字节仅差保留的 4 KiB 邻接文件；随后转 WebP 成功。
 
-测得 magick 命令耗时范围为 AMD64 6–1062ms、ARM64 5–436ms；ExifTool 为 82–218ms / 59–178ms。命令范围包含诊断及预期失败，不是纯编码基准。120 秒图片/30 秒元数据超时、256 MiB memory、512 MiB disk 上限仍作为后续工程起始值：本实验验证小样本余量与取消机制，没有证明复杂格式都在这些限额内完成。强制缓存实验按剩余空间分摊预算，无 4 GiB 预留；256 MiB 低水位对本样本的并发 1–4 有实际余量依据。600 秒业务任务计时、已知在途字节恢复、持久队列重启与全格式边界仍由 T-MED-03/04、EV-MEDIA-02 验收。
+测得 magick 命令耗时范围为 AMD64 6–1032ms、ARM64 5–439ms；ExifTool 为 84–232ms / 61–180ms。命令范围包含诊断及预期失败，不是纯编码基准。120 秒图片/30 秒元数据超时、256 MiB memory、512 MiB disk 上限仍作为后续工程起始值：本实验验证小样本余量与取消机制，没有证明复杂格式都在这些限额内完成。强制缓存实验按剩余空间分摊预算，无 4 GiB 预留；256 MiB 低水位对本样本的并发 1–4 有实际余量依据。600 秒业务任务计时、已知在途字节恢复、持久队列重启与全格式边界仍由 T-MED-03/04、EV-MEDIA-02 验收。
 
 ### 失败与修正记录
 
 1. [首轮](https://github.com/dnslin/ariso-next/actions/runs/35692930904)：实际发现镜像 32KP 规则，脚本立即非零退出，未报告其余场景通过。
 2. [第二轮](https://github.com/dnslin/ariso-next/actions/runs/35693360324)：保留 policy/超宽失败，其他独立场景继续执行。发现透明输出是 ExifTool 的 `Extended WEBP`，旧断言误判；同时复制自 mkdtemp 的 sources 目录保留 0700，宿主 artifact 上传得到 EACCES。这轮日志能证明资源场景执行，但没有完整 artifact，不能补造曲线。
-3. 第三轮：透明格式期望按 alpha 分支精确判断，并增加 image/webp MIME 断言；尺寸、像素和 alpha 断言保留。仅公开实验夹具的导出 sources 目录设为 0755。两个架构完整 artifact 上传成功，只剩原有策略/超宽失败。扩展容器与 alpha 的关系见 [WebP 容器规范](https://developers.google.com/speed/webp/docs/riff_container#extended_file_format)。
+3. 第三轮：透明格式期望按 alpha 分支精确判断，并增加 image/webp MIME 断言；尺寸、像素和 alpha 断言保留。仅公开实验夹具的导出 sources 目录设为 0755。两个架构完整 artifact 上传成功，只剩原有策略/超宽失败。第四轮另补 PNG 实际旋转样本，6 个基础图片场景均通过，工程阻塞不变。扩展容器与 alpha 的关系见 [WebP 容器规范](https://developers.google.com/speed/webp/docs/riff_container#extended_file_format)。
 
 ```sh
-gh run view 35694034771 --repo dnslin/ariso-next
-gh run view 35694034912 --repo dnslin/ariso-next
-gh run download 35694034912 --repo dnslin/ariso-next --name media-verification-amd64 --dir test-results/remote-media/third-amd64
-gh run download 35694034912 --repo dnslin/ariso-next --name media-verification-arm64 --dir test-results/remote-media/third-arm64
+gh run view 35694650314 --repo dnslin/ariso-next
+gh run view 35694650431 --repo dnslin/ariso-next
+gh run download 35694650431 --repo dnslin/ariso-next --name media-verification-amd64 --dir test-results/remote-media/fourth-amd64
+gh run download 35694650431 --repo dnslin/ariso-next --name media-verification-arm64 --dir test-results/remote-media/fourth-arm64
 gh pr checks 101 --repo dnslin/ariso-next
 ```
 
