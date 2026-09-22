@@ -157,6 +157,7 @@ export async function verifyImages({ sourceDirectory, outputDirectory, run }) {
   for (const [name, width, height, orientation, expected] of [
     ['rotate.jpg', 1200, 800, 6, [colors[2], colors[0], colors[3], colors[1]]],
     ['mirror.jpg', 1200, 800, 2, [colors[1], colors[0], colors[3], colors[2]]],
+    ['rotate.png', 1200, 800, 6, [colors[2], colors[0], colors[3], colors[1]]],
     ['small.png', 120, 80, 1, colors],
   ]) {
     const source = join(sourceDirectory, name);

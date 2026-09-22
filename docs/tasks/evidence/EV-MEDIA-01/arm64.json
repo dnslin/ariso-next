@@ -1,0 +1,3486 @@
+{
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "linux",
+    "arch": "arm64",
+    "release": "6.17.0-1022-azure",
+    "uid": 1000,
+    "magick": "Version: ImageMagick 7.1.1-43 Q16 aarch64 22550 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/script/license.php\nFeatures: Cipher DPC Modules OpenMP(4.5) \nDelegates (built-in): bzlib djvu fftw fontconfig freetype heic jbig jng jp2 jpeg lcms lqr ltdl lzma openexr pangocairo png raw tiff webp wmf x xml zlib zstd\nCompiler: gcc (14.2)",
+    "exiftool": "13.25",
+    "policy": "\nPath: /etc/ImageMagick-7/policy.xml\n  Policy: Resource\n    name: disk\n    value: 2GiB\n  Policy: Resource\n    name: map\n    value: 2048MiB\n  Policy: Resource\n    name: memory\n    value: 1024MiB\n  Policy: Resource\n    name: area\n    value: 256MP\n  Policy: Resource\n    name: height\n    value: 32KP\n  Policy: Resource\n    name: width\n    value: 32KP\n  Policy: Undefined\n    rights: None \n  Policy: Path\n    rights: None \n    pattern: @*\n  Policy: Coder\n    rights: None \n    pattern: URL\n  Policy: Coder\n    rights: None \n    pattern: HTTPS\n  Policy: Coder\n    rights: None \n    pattern: HTTP\n\nPath: [built-in]\n  Policy: Undefined\n    rights: None ",
+    "resources": "Resource limits:\n  Width: 32000P\n  Height: 32000P\n  Area: 256MP\n  List length: unlimited\n  Memory: 1GiB\n  Map: 2GiB\n  Disk: 2GiB\n  File: 49152\n  Thread: 3\n  Throttle: 0\n  Time: unlimited"
+  },
+  "baseline": {
+    "memory": 268435456,
+    "disk": 536870912,
+    "lowWater": 268435456,
+    "imageTimeout": 120000,
+    "metadataTimeout": 30000,
+    "killDelay": 1000
+  },
+  "commands": [
+    {
+      "file": "magick",
+      "args": ["-version"],
+      "durationMs": 12
+    },
+    {
+      "file": "exiftool",
+      "args": ["-ver"],
+      "durationMs": 59
+    },
+    {
+      "file": "magick",
+      "args": ["-list", "policy"],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": ["-list", "resource"],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "1200x800",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 600,0 1199,399",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,400 599,799",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 600,400 1199,799",
+        "-quality",
+        "95",
+        "/source/media-source-u7g3JM/rotate.jpg"
+      ],
+      "durationMs": 64
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=6",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-u7g3JM/rotate.jpg"
+      ],
+      "durationMs": 173
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-u7g3JM/rotate.jpg"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/rotate.jpg",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp"
+      ],
+      "durationMs": 64
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp"
+      ],
+      "durationMs": 74
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp"
+      ],
+      "durationMs": 75
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+106+160",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+320+160",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+106+480",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+320+480",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "1200x800",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 600,0 1199,399",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,400 599,799",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 600,400 1199,799",
+        "-quality",
+        "95",
+        "/source/media-source-u7g3JM/mirror.jpg"
+      ],
+      "durationMs": 64
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=2",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-u7g3JM/mirror.jpg"
+      ],
+      "durationMs": 171
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-u7g3JM/mirror.jpg"
+      ],
+      "durationMs": 69
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/mirror.jpg",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp"
+      ],
+      "durationMs": 61
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp"
+      ],
+      "durationMs": 73
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp"
+      ],
+      "durationMs": 72
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+160+106",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+480+106",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+160+320",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+480+320",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "120x80",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 60,0 119,39",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,40 59,79",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 60,40 119,79",
+        "-quality",
+        "95",
+        "/source/media-source-u7g3JM/small.png"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=1",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-u7g3JM/small.png"
+      ],
+      "durationMs": 178
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-u7g3JM/small.png"
+      ],
+      "durationMs": 76
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/small.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/images/small.png.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-4PRFK1/images/small.png.webp"
+      ],
+      "durationMs": 74
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-4PRFK1/images/small.png.webp"
+      ],
+      "durationMs": 75
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/small.png.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/small.png.webp",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/small.png.webp",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/small.png.webp",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/small.png.webp",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "120x80",
+        "xc:none",
+        "-fill",
+        "red",
+        "-draw",
+        "rectangle 0,0 59,79",
+        "/source/media-source-u7g3JM/transparent.png"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/images/transparent.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-4PRFK1/images/transparent.webp"
+      ],
+      "durationMs": 73
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-4PRFK1/images/transparent.webp"
+      ],
+      "durationMs": 75
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/transparent.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/transparent.webp",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/transparent.webp",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/transparent.webp",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/transparent.webp",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/transparent.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-background",
+        "#f0f0f0",
+        "-alpha",
+        "remove",
+        "-alpha",
+        "off",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/images/background.jpg"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-4PRFK1/images/background.jpg"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-4PRFK1/images/background.jpg"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/background.jpg",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/background.jpg",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/background.jpg",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/background.jpg",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-4PRFK1/images/background.jpg",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 5
+    },
+    {
+      "file": "mkfifo",
+      "args": ["/source/media-source-u7g3JM/waiting.png"],
+      "durationMs": 3
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "32769x1",
+        "xc:red",
+        "/media-low/media-work-4PRFK1/wide/wide.png"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "2048x1536",
+        "gradient:#173047-#e7af70",
+        "/source/media-source-u7g3JM/resource.png"
+      ],
+      "durationMs": 433
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 185
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 185
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 186
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 184
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 185
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 185
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 184
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 185
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 188
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-3/thumbnail.webp"
+      ],
+      "durationMs": 190
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 16
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 16
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 15
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-3/thumbnail.webp"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 426
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 425
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 429
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 426
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 425
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 430
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 427
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 426
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 430
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-0/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-2/thumbnail.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-1/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-4PRFK1/job-3/thumbnail.webp"
+      ],
+      "durationMs": 436
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/job-3/thumbnail.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-depth",
+        "8",
+        "rgba:/media-low/media-work-4PRFK1/partial.rgba"
+      ],
+      "durationMs": 115
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-u7g3JM/resource.png",
+        "-resize",
+        "640x640>",
+        "/media-low/media-work-4PRFK1/recovered.webp"
+      ],
+      "durationMs": 186
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-4PRFK1/recovered.webp"
+      ],
+      "durationMs": 8
+    }
+  ],
+  "checks": [
+    {
+      "name": "installed-policy",
+      "status": "failed",
+      "failure": {
+        "message": "Installed policy must not reintroduce fixed input limits",
+        "stack": "AssertionError [ERR_ASSERTION]: Installed policy must not reintroduce fixed input limits\n    at file:///app/verification-media/run.mjs:87:16\n    at check (file:///app/verification-media/run.mjs:54:66)\n    at file:///app/verification-media/run.mjs:84:9",
+        "code": "ERR_ASSERTION"
+      }
+    },
+    {
+      "name": "image-behavior",
+      "status": "passed",
+      "evidence": {
+        "fixtureLicense": "Generated by this repository from solid colors; no external media or license dependencies.",
+        "scope": "JPEG/PNG basic pipeline only; this is not the complete EV-02 format acceptance suite.",
+        "cases": [
+          {
+            "orientation": 6,
+            "source": {
+              "path": "/source/media-source-u7g3JM/rotate.jpg",
+              "bytes": 12474,
+              "sha256": "cfb9a2e31e648a9f0f9daa2112c0499f15eb8d87c7225b2cfd4ac601465b9f29"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-4PRFK1/images/rotate.jpg.webp",
+              "bytes": 872,
+              "sha256": "8ca409efa95082b51424edd371812e6339c3c461842e60d5dc71d575dc633d79"
+            },
+            "durationMs": 64.011342,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 427,
+            "height": 640,
+            "samples": [
+              [0, 0, 255],
+              [254, 0, 0],
+              [255, 255, 0],
+              [0, 255, 1]
+            ],
+            "maximumChannelErrors": [0, 1, 0, 1],
+            "metadataStripped": true
+          },
+          {
+            "orientation": 2,
+            "source": {
+              "path": "/source/media-source-u7g3JM/mirror.jpg",
+              "bytes": 12474,
+              "sha256": "ef5e25e0c3c924109a22cbd4acf9dd3c2b6f723bbcf8297e450221107f77e1b0"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-4PRFK1/images/mirror.jpg.webp",
+              "bytes": 890,
+              "sha256": "81731f4d6815364a3f40456f1d5b3b50ff727e859727928887d7ca37bba20735"
+            },
+            "durationMs": 60.990032,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 640,
+            "height": 427,
+            "samples": [
+              [0, 255, 1],
+              [254, 0, 0],
+              [255, 255, 0],
+              [0, 0, 255]
+            ],
+            "maximumChannelErrors": [1, 1, 0, 0],
+            "metadataStripped": true
+          },
+          {
+            "orientation": 1,
+            "source": {
+              "path": "/source/media-source-u7g3JM/small.png",
+              "bytes": 489,
+              "sha256": "48133195c6242d94f1b4d32afd9bc71cb32015fd0b64680986f7cd605165fa8b"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-4PRFK1/images/small.png.webp",
+              "bytes": 200,
+              "sha256": "4afda58e4e3b7007b3435f3147f547984d9327d681121b7379c0b3e2228198e8"
+            },
+            "durationMs": 6.882431,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [255, 1, 0],
+              [0, 255, 1],
+              [0, 0, 255],
+              [255, 255, 0]
+            ],
+            "maximumChannelErrors": [1, 1, 0, 0],
+            "metadataStripped": true
+          },
+          {
+            "source": {
+              "path": "/source/media-source-u7g3JM/transparent.png",
+              "bytes": 351,
+              "sha256": "b34f0811264601a8638ef5f8a9159b70e271fb889f0cfcfdc809a244edb30114"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-4PRFK1/images/transparent.webp",
+              "bytes": 204,
+              "sha256": "c69a29a5a103ecb7016745f2cfd7a7066b2d1924099e8f0b5c84016ecb626131"
+            },
+            "durationMs": 6.435819,
+            "format": "Extended WEBP",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [255, 1, 0, 255],
+              [0, 0, 0, 0],
+              [255, 1, 0, 255],
+              [0, 0, 0, 0]
+            ],
+            "maximumChannelErrors": [1, 0, 1, 0],
+            "metadataStripped": true
+          },
+          {
+            "source": {
+              "path": "/source/media-source-u7g3JM/transparent.png",
+              "bytes": 351,
+              "sha256": "b34f0811264601a8638ef5f8a9159b70e271fb889f0cfcfdc809a244edb30114"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-4PRFK1/images/background.jpg",
+              "bytes": 517,
+              "sha256": "2a4cb337645a4d40e553d4ef7946503ca86dd1b9a2de82d3251638faf2700fea"
+            },
+            "durationMs": 6.028972,
+            "format": "JPEG",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [254, 0, 0],
+              [240, 240, 240],
+              [254, 0, 0],
+              [240, 240, 240]
+            ],
+            "maximumChannelErrors": [1, 0, 1, 0],
+            "metadataStripped": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "process-lifecycle",
+      "status": "passed",
+      "evidence": {
+        "forceKillAfterDelayMs": 250,
+        "cancellationBudgetMs": 5000,
+        "checks": [
+          {
+            "name": "sigterm",
+            "passed": true,
+            "evidence": {
+              "pid": 75,
+              "signal": "SIGTERM",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": false,
+              "elapsedAfterReadyOrCancelMs": 6,
+              "processAbsentAfterReap": true
+            }
+          },
+          {
+            "name": "ignore-sigterm",
+            "passed": true,
+            "evidence": {
+              "pid": 82,
+              "signal": "SIGKILL",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 255,
+              "processAbsentAfterReap": true
+            }
+          },
+          {
+            "name": "timeout",
+            "passed": true,
+            "evidence": {
+              "pid": 89,
+              "signal": "SIGKILL",
+              "isCanceled": false,
+              "timedOut": true,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 2163,
+              "processAbsentAfterReap": true,
+              "timeoutMs": 2000
+            }
+          },
+          {
+            "name": "stopped-linux",
+            "passed": true,
+            "evidence": {
+              "pid": 96,
+              "signal": "SIGKILL",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 255,
+              "processAbsentAfterReap": true
+            }
+          }
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "name": "stopped-real-tool",
+      "status": "passed",
+      "evidence": {
+        "file": "magick",
+        "signal": "SIGKILL",
+        "isCanceled": true,
+        "cancellationMs": 1003
+      }
+    },
+    {
+      "name": "wide-raster-without-fixed-admission",
+      "status": "failed",
+      "failure": {
+        "message": "Command failed with exit code 1: magick -limit memory 268435456 -limit map 0 -limit disk 0 -limit thread 1 -size 32769x1 'xc:red' /media-low/media-work-4PRFK1/wide/wide.png\n\nmagick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714.",
+        "stack": "ExecaError: Command failed with exit code 1: magick -limit memory 268435456 -limit map 0 -limit disk 0 -limit thread 1 -size 32769x1 'xc:red' /media-low/media-work-4PRFK1/wide/wide.png\n\nmagick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714.\n    at getFinalError (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/final-error.js:6:9)\n    at makeError (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/result.js:108:16)\n    at getAsyncResult (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:209:4)\n    at handlePromise (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:192:17)\n    at async run (file:///app/verification-media/resources.mjs:104:14)\n    at async file:///app/verification-media/run.mjs:124:5\n    at async check (file:///app/verification-media/run.mjs:54:60)\n    at async file:///app/verification-media/run.mjs:122:3",
+        "stderr": "magick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714."
+      }
+    },
+    {
+      "name": "resources",
+      "status": "passed",
+      "evidence": {
+        "initialFree": 402653184,
+        "volumeBytes": 402653184,
+        "originalHash": "6cd609752b3b886ee6b35f32dcd7bd1f1ace2a4a88c441537de10c337434a4b4",
+        "originalBytes": 32102,
+        "batches": [
+          {
+            "concurrency": 1,
+            "memory": 268435456,
+            "disk": 134213632,
+            "name": "memory-268435456-concurrency-1",
+            "result": [
+              {
+                "durationMs": 184.871059,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057957492,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 79093760,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957517,
+                "active": 1,
+                "childRss": 26705920,
+                "parentRss": 79224832,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957543,
+                "active": 1,
+                "childRss": 26705920,
+                "parentRss": 79224832,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957567,
+                "active": 1,
+                "childRss": 26861568,
+                "parentRss": 79224832,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957592,
+                "active": 1,
+                "childRss": 29028352,
+                "parentRss": 79486976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957618,
+                "active": 1,
+                "childRss": 31203328,
+                "parentRss": 79486976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957643,
+                "active": 1,
+                "childRss": 34529280,
+                "parentRss": 79486976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957669,
+                "active": 1,
+                "childRss": 12034048,
+                "parentRss": 79486976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957687,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 79749120,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 195
+          },
+          {
+            "concurrency": 2,
+            "memory": 268435456,
+            "disk": 67106816,
+            "name": "memory-268435456-concurrency-2",
+            "result": [
+              {
+                "durationMs": 184.766944,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 185.67388,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057957687,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 79749120,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957712,
+                "active": 2,
+                "childRss": 53420032,
+                "parentRss": 80142336,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957738,
+                "active": 2,
+                "childRss": 53420032,
+                "parentRss": 80142336,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957762,
+                "active": 2,
+                "childRss": 53592064,
+                "parentRss": 80142336,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957787,
+                "active": 2,
+                "childRss": 57933824,
+                "parentRss": 80273408,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957812,
+                "active": 2,
+                "childRss": 62242816,
+                "parentRss": 80273408,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957838,
+                "active": 2,
+                "childRss": 69066752,
+                "parentRss": 80273408,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957863,
+                "active": 2,
+                "childRss": 24072192,
+                "parentRss": 80273408,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957883,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 82239488,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 196
+          },
+          {
+            "concurrency": 3,
+            "memory": 268435456,
+            "disk": 44737877,
+            "name": "memory-268435456-concurrency-3",
+            "result": [
+              {
+                "durationMs": 183.834962,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 184.467123,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 184.890289,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057957883,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 82239488,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957909,
+                "active": 3,
+                "childRss": 80154624,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957934,
+                "active": 3,
+                "childRss": 80154624,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957960,
+                "active": 3,
+                "childRss": 80683008,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057957984,
+                "active": 3,
+                "childRss": 86941696,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958009,
+                "active": 3,
+                "childRss": 93429760,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958034,
+                "active": 3,
+                "childRss": 103624704,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958060,
+                "active": 3,
+                "childRss": 36122624,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958080,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 197
+          },
+          {
+            "concurrency": 4,
+            "memory": 268435456,
+            "disk": 33553408,
+            "name": "memory-268435456-concurrency-4",
+            "result": [
+              {
+                "durationMs": 184.081554,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 188.425487,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 184.524623,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 189.717671,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057958080,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958106,
+                "active": 4,
+                "childRss": 106856448,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958131,
+                "active": 4,
+                "childRss": 106856448,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958156,
+                "active": 4,
+                "childRss": 107483136,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958182,
+                "active": 4,
+                "childRss": 115867648,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958207,
+                "active": 4,
+                "childRss": 124399616,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958232,
+                "active": 4,
+                "childRss": 138145792,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958257,
+                "active": 4,
+                "childRss": 48136192,
+                "parentRss": 82501632,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958284,
+                "active": 2,
+                "childRss": 7725056,
+                "parentRss": 83156992,
+                "allocated": 20480,
+                "free": 402632704
+              },
+              {
+                "time": 1790057958287,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 207
+          },
+          {
+            "concurrency": 1,
+            "memory": 1048576,
+            "disk": 134213632,
+            "name": "memory-1048576-concurrency-1",
+            "result": [
+              {
+                "durationMs": 425.601486,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057958287,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958312,
+                "active": 1,
+                "childRss": 7884800,
+                "parentRss": 83156992,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790057958337,
+                "active": 1,
+                "childRss": 7884800,
+                "parentRss": 83156992,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790057958363,
+                "active": 1,
+                "childRss": 7884800,
+                "parentRss": 83156992,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790057958388,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 20152320,
+                "free": 382500864
+              },
+              {
+                "time": 1790057958413,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 22032384,
+                "free": 380620800
+              },
+              {
+                "time": 1790057958439,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 23912448,
+                "free": 378740736
+              },
+              {
+                "time": 1790057958464,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958489,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958515,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958539,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958564,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958590,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958616,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958640,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958665,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790057958691,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 83156992,
+                "allocated": 1847296,
+                "free": 400805888
+              },
+              {
+                "time": 1790057958716,
+                "active": 1,
+                "childRss": 5730304,
+                "parentRss": 83156992,
+                "allocated": 8192,
+                "free": 402644992
+              },
+              {
+                "time": 1790057958721,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 434
+          },
+          {
+            "concurrency": 2,
+            "memory": 1048576,
+            "disk": 67106816,
+            "name": "memory-1048576-concurrency-2",
+            "result": [
+              {
+                "durationMs": 429.72124,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 425.60099,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057958721,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057958747,
+                "active": 2,
+                "childRss": 15761408,
+                "parentRss": 83156992,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790057958771,
+                "active": 2,
+                "childRss": 15761408,
+                "parentRss": 83156992,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790057958796,
+                "active": 2,
+                "childRss": 15761408,
+                "parentRss": 83156992,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790057958821,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 40042496,
+                "free": 362610688
+              },
+              {
+                "time": 1790057958847,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 43839488,
+                "free": 358801408
+              },
+              {
+                "time": 1790057958872,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 47648768,
+                "free": 355004416
+              },
+              {
+                "time": 1790057958897,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057958923,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057958947,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057958972,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057958998,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959022,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959047,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959073,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959097,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959122,
+                "active": 2,
+                "childRss": 16375808,
+                "parentRss": 83156992,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790057959148,
+                "active": 2,
+                "childRss": 17174528,
+                "parentRss": 83156992,
+                "allocated": 12288,
+                "free": 402640896
+              },
+              {
+                "time": 1790057959159,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 438
+          },
+          {
+            "concurrency": 3,
+            "memory": 1048576,
+            "disk": 44737877,
+            "name": "memory-1048576-concurrency-3",
+            "result": [
+              {
+                "durationMs": 425.89182,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 429.421555,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 425.491077,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057959159,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057959185,
+                "active": 3,
+                "childRss": 23650304,
+                "parentRss": 83156992,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790057959209,
+                "active": 3,
+                "childRss": 23650304,
+                "parentRss": 83156992,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790057959234,
+                "active": 3,
+                "childRss": 23650304,
+                "parentRss": 83156992,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790057959260,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 59944960,
+                "free": 342708224
+              },
+              {
+                "time": 1790057959284,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 65400832,
+                "free": 337240064
+              },
+              {
+                "time": 1790057959309,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 71065600,
+                "free": 331575296
+              },
+              {
+                "time": 1790057959335,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959360,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959386,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959410,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959436,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959460,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959485,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959511,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959536,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790057959562,
+                "active": 3,
+                "childRss": 24571904,
+                "parentRss": 83156992,
+                "allocated": 55078912,
+                "free": 328699904
+              },
+              {
+                "time": 1790057959588,
+                "active": 3,
+                "childRss": 11083776,
+                "parentRss": 83156992,
+                "allocated": 16384,
+                "free": 402636800
+              },
+              {
+                "time": 1790057959599,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 440
+          },
+          {
+            "concurrency": 4,
+            "memory": 1048576,
+            "disk": 33553408,
+            "name": "memory-1048576-concurrency-4",
+            "result": [
+              {
+                "durationMs": 426.977809,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 429.794276,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 426.166267,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 435.902307,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790057959599,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83156992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790057959624,
+                "active": 4,
+                "childRss": 31535104,
+                "parentRss": 83156992,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790057959649,
+                "active": 4,
+                "childRss": 31535104,
+                "parentRss": 83156992,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790057959675,
+                "active": 4,
+                "childRss": 31535104,
+                "parentRss": 83156992,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790057959700,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 79466496,
+                "free": 323174400
+              },
+              {
+                "time": 1790057959726,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 87171072,
+                "free": 315457536
+              },
+              {
+                "time": 1790057959752,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 94998528,
+                "free": 307617792
+              },
+              {
+                "time": 1790057959778,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959803,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959829,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959854,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959879,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959906,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959931,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959957,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057959983,
+                "active": 4,
+                "childRss": 32763904,
+                "parentRss": 83156992,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790057960009,
+                "active": 4,
+                "childRss": 39190528,
+                "parentRss": 83156992,
+                "allocated": 32149504,
+                "free": 370503680
+              },
+              {
+                "time": 1790057960033,
+                "active": 4,
+                "childRss": 27361280,
+                "parentRss": 83156992,
+                "allocated": 1859584,
+                "free": 400793600
+              },
+              {
+                "time": 1790057960050,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 83419136,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 451
+          }
+        ],
+        "exhaustion": {
+          "name": "real-enospc",
+          "result": {
+            "exitCode": 1,
+            "stderr": "magick: unable to write file `/media-low/media-work-4PRFK1/partial.rgba' @ error/constitute.c/WriteImage/1454.",
+            "free": 0,
+            "partialBytes": 65536,
+            "originalHash": "6cd609752b3b886ee6b35f32dcd7bd1f1ace2a4a88c441537de10c337434a4b4"
+          },
+          "curve": [
+            {
+              "time": 1790057960173,
+              "active": 0,
+              "childRss": 0,
+              "parentRss": 84467712,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790057960198,
+              "active": 1,
+              "childRss": 26718208,
+              "parentRss": 84467712,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790057960223,
+              "active": 1,
+              "childRss": 26718208,
+              "parentRss": 84467712,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790057960248,
+              "active": 1,
+              "childRss": 26804224,
+              "parentRss": 84467712,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790057960274,
+              "active": 1,
+              "childRss": 57655296,
+              "parentRss": 84467712,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790057960289,
+              "active": 0,
+              "childRss": 0,
+              "parentRss": 84467712,
+              "allocated": 402653184,
+              "free": 0
+            }
+          ],
+          "durationMs": 116
+        },
+        "recoveredFree": 402649088
+      }
+    }
+  ],
+  "incomplete": [],
+  "status": "failed"
+}

@@ -1,0 +1,4334 @@
+{
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.17.0-1022-azure",
+    "uid": 1000,
+    "magick": "Version: ImageMagick 7.1.1-43 Q16 x86_64 22550 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/script/license.php\nFeatures: Cipher DPC Modules OpenMP(4.5) \nDelegates (built-in): bzlib djvu fftw fontconfig freetype heic jbig jng jp2 jpeg lcms lqr ltdl lzma openexr pangocairo png raw tiff webp wmf x xml zlib zstd\nCompiler: gcc (14.2)",
+    "exiftool": "13.25",
+    "policy": "\nPath: /etc/ImageMagick-7/policy.xml\n  Policy: Resource\n    name: disk\n    value: 2GiB\n  Policy: Resource\n    name: map\n    value: 2048MiB\n  Policy: Resource\n    name: memory\n    value: 1024MiB\n  Policy: Resource\n    name: area\n    value: 256MP\n  Policy: Resource\n    name: height\n    value: 32KP\n  Policy: Resource\n    name: width\n    value: 32KP\n  Policy: Undefined\n    rights: None \n  Policy: Path\n    rights: None \n    pattern: @*\n  Policy: Coder\n    rights: None \n    pattern: URL\n  Policy: Coder\n    rights: None \n    pattern: HTTPS\n  Policy: Coder\n    rights: None \n    pattern: HTTP\n\nPath: [built-in]\n  Policy: Undefined\n    rights: None ",
+    "resources": "Resource limits:\n  Width: 32000P\n  Height: 32000P\n  Area: 256MP\n  List length: unlimited\n  Memory: 1GiB\n  Map: 2GiB\n  Disk: 2GiB\n  File: 49152\n  Thread: 3\n  Throttle: 0\n  Time: unlimited"
+  },
+  "baseline": {
+    "memory": 268435456,
+    "disk": 536870912,
+    "lowWater": 268435456,
+    "imageTimeout": 120000,
+    "metadataTimeout": 30000,
+    "killDelay": 1000
+  },
+  "commands": [
+    {
+      "file": "magick",
+      "args": ["-version"],
+      "durationMs": 13
+    },
+    {
+      "file": "exiftool",
+      "args": ["-ver"],
+      "durationMs": 82
+    },
+    {
+      "file": "magick",
+      "args": ["-list", "policy"],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": ["-list", "resource"],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "1200x800",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 600,0 1199,399",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,400 599,799",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 600,400 1199,799",
+        "-quality",
+        "95",
+        "/source/media-source-Uh9ndN/rotate.jpg"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=6",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-Uh9ndN/rotate.jpg"
+      ],
+      "durationMs": 218
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-Uh9ndN/rotate.jpg"
+      ],
+      "durationMs": 94
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/rotate.jpg",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp"
+      ],
+      "durationMs": 72
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp"
+      ],
+      "durationMs": 99
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+106+160",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+320+160",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+106+480",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+        "-crop",
+        "1x1+320+480",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "1200x800",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 600,0 1199,399",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,400 599,799",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 600,400 1199,799",
+        "-quality",
+        "95",
+        "/source/media-source-Uh9ndN/mirror.jpg"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=2",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-Uh9ndN/mirror.jpg"
+      ],
+      "durationMs": 216
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-Uh9ndN/mirror.jpg"
+      ],
+      "durationMs": 94
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/mirror.jpg",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp"
+      ],
+      "durationMs": 71
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+160+106",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+480+106",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+160+320",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 12
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+        "-crop",
+        "1x1+480+320",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "120x80",
+        "xc:red",
+        "-fill",
+        "#00ff00",
+        "-draw",
+        "rectangle 60,0 119,39",
+        "-fill",
+        "blue",
+        "-draw",
+        "rectangle 0,40 59,79",
+        "-fill",
+        "yellow",
+        "-draw",
+        "rectangle 60,40 119,79",
+        "-quality",
+        "95",
+        "/source/media-source-Uh9ndN/small.png"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-Orientation#=1",
+        "-Artist=Ariso generated fixture",
+        "/source/media-source-Uh9ndN/small.png"
+      ],
+      "durationMs": 218
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/source/media-source-Uh9ndN/small.png"
+      ],
+      "durationMs": 100
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/small.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/images/small.png.webp"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-rMPlWF/images/small.png.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-rMPlWF/images/small.png.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/small.png.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/small.png.webp",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/small.png.webp",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/small.png.webp",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/small.png.webp",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "120x80",
+        "xc:none",
+        "-fill",
+        "red",
+        "-draw",
+        "rectangle 0,0 59,79",
+        "/source/media-source-Uh9ndN/transparent.png"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/images/transparent.webp"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-rMPlWF/images/transparent.webp"
+      ],
+      "durationMs": 97
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-rMPlWF/images/transparent.webp"
+      ],
+      "durationMs": 98
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/transparent.webp",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/transparent.webp",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/transparent.webp",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/transparent.webp",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/transparent.webp",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/transparent.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-background",
+        "#f0f0f0",
+        "-alpha",
+        "remove",
+        "-alpha",
+        "off",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/images/background.jpg"
+      ],
+      "durationMs": 8
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-n",
+        "-FileType",
+        "-MIMEType",
+        "-ImageWidth",
+        "-ImageHeight",
+        "-Orientation",
+        "-Artist",
+        "/media-low/media-work-rMPlWF/images/background.jpg"
+      ],
+      "durationMs": 93
+    },
+    {
+      "file": "exiftool",
+      "args": [
+        "-json",
+        "-EXIF:all",
+        "-XMP:all",
+        "-IPTC:all",
+        "-ICC_Profile:all",
+        "/media-low/media-work-rMPlWF/images/background.jpg"
+      ],
+      "durationMs": 94
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/background.jpg",
+        "-format",
+        "%[colorspace]",
+        "info:"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/background.jpg",
+        "-crop",
+        "1x1+30+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/background.jpg",
+        "-crop",
+        "1x1+90+20",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/background.jpg",
+        "-crop",
+        "1x1+30+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/media-low/media-work-rMPlWF/images/background.jpg",
+        "-crop",
+        "1x1+90+60",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "durationMs": 6
+    },
+    {
+      "file": "mkfifo",
+      "args": ["/source/media-source-Uh9ndN/waiting.png"],
+      "durationMs": 4
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "32769x1",
+        "xc:red",
+        "/media-low/media-work-rMPlWF/wide/wide.png"
+      ],
+      "durationMs": 7
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "-size",
+        "2048x1536",
+        "gradient:#173047-#e7af70",
+        "/source/media-source-Uh9ndN/resource.png"
+      ],
+      "durationMs": 527
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 322
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 322
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 323
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 13
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 328
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 394
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 394
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 413
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 13
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-3/thumbnail.webp"
+      ],
+      "durationMs": 429
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 435
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 432
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-3/thumbnail.webp"
+      ],
+      "durationMs": 13
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 772
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 775
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "67106816",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 776
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 779
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 10
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 964
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "44737877",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 965
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 11
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 1011
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-0/thumbnail.webp"
+      ],
+      "durationMs": 15
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-3/thumbnail.webp"
+      ],
+      "durationMs": 1022
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-3/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 1045
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-1/thumbnail.webp"
+      ],
+      "durationMs": 13
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "1048576",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "33553408",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 1062
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/job-2/thumbnail.webp"
+      ],
+      "durationMs": 9
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "0",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-depth",
+        "8",
+        "rgba:/media-low/media-work-rMPlWF/partial.rgba"
+      ],
+      "durationMs": 125
+    },
+    {
+      "file": "magick",
+      "args": [
+        "-limit",
+        "memory",
+        "268435456",
+        "-limit",
+        "map",
+        "0",
+        "-limit",
+        "disk",
+        "134213632",
+        "-limit",
+        "thread",
+        "1",
+        "/source/media-source-Uh9ndN/resource.png",
+        "-resize",
+        "640x640>",
+        "/media-low/media-work-rMPlWF/recovered.webp"
+      ],
+      "durationMs": 322
+    },
+    {
+      "file": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/media-low/media-work-rMPlWF/recovered.webp"
+      ],
+      "durationMs": 11
+    }
+  ],
+  "checks": [
+    {
+      "name": "installed-policy",
+      "status": "failed",
+      "failure": {
+        "message": "Installed policy must not reintroduce fixed input limits",
+        "stack": "AssertionError [ERR_ASSERTION]: Installed policy must not reintroduce fixed input limits\n    at file:///app/verification-media/run.mjs:87:16\n    at check (file:///app/verification-media/run.mjs:54:66)\n    at file:///app/verification-media/run.mjs:84:9",
+        "code": "ERR_ASSERTION"
+      }
+    },
+    {
+      "name": "image-behavior",
+      "status": "passed",
+      "evidence": {
+        "fixtureLicense": "Generated by this repository from solid colors; no external media or license dependencies.",
+        "scope": "JPEG/PNG basic pipeline only; this is not the complete EV-02 format acceptance suite.",
+        "cases": [
+          {
+            "orientation": 6,
+            "source": {
+              "path": "/source/media-source-Uh9ndN/rotate.jpg",
+              "bytes": 12474,
+              "sha256": "cfb9a2e31e648a9f0f9daa2112c0499f15eb8d87c7225b2cfd4ac601465b9f29"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-rMPlWF/images/rotate.jpg.webp",
+              "bytes": 872,
+              "sha256": "8ca409efa95082b51424edd371812e6339c3c461842e60d5dc71d575dc633d79"
+            },
+            "durationMs": 72.2707,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 427,
+            "height": 640,
+            "samples": [
+              [0, 0, 255],
+              [254, 0, 0],
+              [255, 255, 0],
+              [0, 255, 1]
+            ],
+            "maximumChannelErrors": [0, 1, 0, 1],
+            "metadataStripped": true
+          },
+          {
+            "orientation": 2,
+            "source": {
+              "path": "/source/media-source-Uh9ndN/mirror.jpg",
+              "bytes": 12474,
+              "sha256": "ef5e25e0c3c924109a22cbd4acf9dd3c2b6f723bbcf8297e450221107f77e1b0"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-rMPlWF/images/mirror.jpg.webp",
+              "bytes": 890,
+              "sha256": "81731f4d6815364a3f40456f1d5b3b50ff727e859727928887d7ca37bba20735"
+            },
+            "durationMs": 71.310793,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 640,
+            "height": 427,
+            "samples": [
+              [0, 255, 1],
+              [254, 0, 0],
+              [255, 255, 0],
+              [0, 0, 255]
+            ],
+            "maximumChannelErrors": [1, 1, 0, 0],
+            "metadataStripped": true
+          },
+          {
+            "orientation": 1,
+            "source": {
+              "path": "/source/media-source-Uh9ndN/small.png",
+              "bytes": 489,
+              "sha256": "c1509ec96392f423351a1e35c0e4423118a451e1b4d6b98d06d7ebc0006d99bb"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-rMPlWF/images/small.png.webp",
+              "bytes": 200,
+              "sha256": "4afda58e4e3b7007b3435f3147f547984d9327d681121b7379c0b3e2228198e8"
+            },
+            "durationMs": 7.826579,
+            "format": "WEBP",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [255, 1, 0],
+              [0, 255, 1],
+              [0, 0, 255],
+              [255, 255, 0]
+            ],
+            "maximumChannelErrors": [1, 1, 0, 0],
+            "metadataStripped": true
+          },
+          {
+            "source": {
+              "path": "/source/media-source-Uh9ndN/transparent.png",
+              "bytes": 351,
+              "sha256": "db232e3626abac7fd8bef8c331b220d0bac72e0abb5666e75db95637ca30eb4c"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-rMPlWF/images/transparent.webp",
+              "bytes": 204,
+              "sha256": "c69a29a5a103ecb7016745f2cfd7a7066b2d1924099e8f0b5c84016ecb626131"
+            },
+            "durationMs": 7.548108,
+            "format": "Extended WEBP",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [255, 1, 0, 255],
+              [0, 0, 0, 0],
+              [255, 1, 0, 255],
+              [0, 0, 0, 0]
+            ],
+            "maximumChannelErrors": [1, 0, 1, 0],
+            "metadataStripped": true
+          },
+          {
+            "source": {
+              "path": "/source/media-source-Uh9ndN/transparent.png",
+              "bytes": 351,
+              "sha256": "db232e3626abac7fd8bef8c331b220d0bac72e0abb5666e75db95637ca30eb4c"
+            },
+            "derivative": {
+              "path": "/media-low/media-work-rMPlWF/images/background.jpg",
+              "bytes": 517,
+              "sha256": "2a4cb337645a4d40e553d4ef7946503ca86dd1b9a2de82d3251638faf2700fea"
+            },
+            "durationMs": 7.429756,
+            "format": "JPEG",
+            "colorSpace": "sRGB",
+            "width": 120,
+            "height": 80,
+            "samples": [
+              [254, 0, 0],
+              [240, 240, 240],
+              [254, 0, 0],
+              [240, 240, 240]
+            ],
+            "maximumChannelErrors": [1, 0, 1, 0],
+            "metadataStripped": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "process-lifecycle",
+      "status": "passed",
+      "evidence": {
+        "forceKillAfterDelayMs": 250,
+        "cancellationBudgetMs": 5000,
+        "checks": [
+          {
+            "name": "sigterm",
+            "passed": true,
+            "evidence": {
+              "pid": 75,
+              "signal": "SIGTERM",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": false,
+              "elapsedAfterReadyOrCancelMs": 5,
+              "processAbsentAfterReap": true
+            }
+          },
+          {
+            "name": "ignore-sigterm",
+            "passed": true,
+            "evidence": {
+              "pid": 82,
+              "signal": "SIGKILL",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 254,
+              "processAbsentAfterReap": true
+            }
+          },
+          {
+            "name": "timeout",
+            "passed": true,
+            "evidence": {
+              "pid": 89,
+              "signal": "SIGKILL",
+              "isCanceled": false,
+              "timedOut": true,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 2159,
+              "processAbsentAfterReap": true,
+              "timeoutMs": 2000
+            }
+          },
+          {
+            "name": "stopped-linux",
+            "passed": true,
+            "evidence": {
+              "pid": 96,
+              "signal": "SIGKILL",
+              "isCanceled": true,
+              "timedOut": false,
+              "isForcefullyTerminated": true,
+              "elapsedAfterReadyOrCancelMs": 255,
+              "processAbsentAfterReap": true
+            }
+          }
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "name": "stopped-real-tool",
+      "status": "passed",
+      "evidence": {
+        "file": "magick",
+        "signal": "SIGKILL",
+        "isCanceled": true,
+        "cancellationMs": 1003
+      }
+    },
+    {
+      "name": "wide-raster-without-fixed-admission",
+      "status": "failed",
+      "failure": {
+        "message": "Command failed with exit code 1: magick -limit memory 268435456 -limit map 0 -limit disk 0 -limit thread 1 -size 32769x1 'xc:red' /media-low/media-work-rMPlWF/wide/wide.png\n\nmagick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714.",
+        "stack": "ExecaError: Command failed with exit code 1: magick -limit memory 268435456 -limit map 0 -limit disk 0 -limit thread 1 -size 32769x1 'xc:red' /media-low/media-work-rMPlWF/wide/wide.png\n\nmagick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714.\n    at getFinalError (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/final-error.js:6:9)\n    at makeError (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/result.js:108:16)\n    at getAsyncResult (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:209:4)\n    at handlePromise (file:///app/node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:192:17)\n    at async run (file:///app/verification-media/resources.mjs:104:14)\n    at async file:///app/verification-media/run.mjs:124:5\n    at async check (file:///app/verification-media/run.mjs:54:60)\n    at async file:///app/verification-media/run.mjs:122:3",
+        "stderr": "magick: width or height exceeds limit `red' @ error/cache.c/OpenPixelCache/3714."
+      }
+    },
+    {
+      "name": "resources",
+      "status": "passed",
+      "evidence": {
+        "initialFree": 402653184,
+        "volumeBytes": 402653184,
+        "originalHash": "3184fdfa0748a1a7f6d7e0ff8bafc0715539e6f74d3149c9b8341e81777072c1",
+        "originalBytes": 32102,
+        "batches": [
+          {
+            "concurrency": 1,
+            "memory": 268435456,
+            "disk": 134213632,
+            "name": "memory-268435456-concurrency-1",
+            "result": [
+              {
+                "durationMs": 321.464337,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058001949,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85454848,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058001975,
+                "active": 1,
+                "childRss": 27910144,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002000,
+                "active": 1,
+                "childRss": 27910144,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002025,
+                "active": 1,
+                "childRss": 27910144,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002050,
+                "active": 1,
+                "childRss": 28164096,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002075,
+                "active": 1,
+                "childRss": 28962816,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002100,
+                "active": 1,
+                "childRss": 31436800,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002125,
+                "active": 1,
+                "childRss": 31436800,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002150,
+                "active": 1,
+                "childRss": 31436800,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002175,
+                "active": 1,
+                "childRss": 33533952,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002200,
+                "active": 1,
+                "childRss": 33533952,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002225,
+                "active": 1,
+                "childRss": 33722368,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002250,
+                "active": 1,
+                "childRss": 35667968,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002275,
+                "active": 1,
+                "childRss": 6062080,
+                "parentRss": 85585920,
+                "allocated": 8192,
+                "free": 402644992
+              },
+              {
+                "time": 1790058002281,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 332
+          },
+          {
+            "concurrency": 2,
+            "memory": 268435456,
+            "disk": 67106816,
+            "name": "memory-268435456-concurrency-2",
+            "result": [
+              {
+                "durationMs": 321.479465,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 322.796731,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058002281,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002306,
+                "active": 2,
+                "childRss": 55767040,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002331,
+                "active": 2,
+                "childRss": 55767040,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002356,
+                "active": 2,
+                "childRss": 55767040,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002382,
+                "active": 2,
+                "childRss": 56262656,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002407,
+                "active": 2,
+                "childRss": 61595648,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002432,
+                "active": 2,
+                "childRss": 61595648,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002457,
+                "active": 2,
+                "childRss": 61595648,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002482,
+                "active": 2,
+                "childRss": 65789952,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002507,
+                "active": 2,
+                "childRss": 65789952,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002532,
+                "active": 2,
+                "childRss": 65998848,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002557,
+                "active": 2,
+                "childRss": 67330048,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002582,
+                "active": 2,
+                "childRss": 71294976,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002608,
+                "active": 2,
+                "childRss": 3571712,
+                "parentRss": 85585920,
+                "allocated": 12288,
+                "free": 402640896
+              },
+              {
+                "time": 1790058002618,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 337
+          },
+          {
+            "concurrency": 3,
+            "memory": 268435456,
+            "disk": 44737877,
+            "name": "memory-268435456-concurrency-3",
+            "result": [
+              {
+                "durationMs": 393.909754,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 328.262932,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 393.297477,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058002618,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85585920,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002644,
+                "active": 3,
+                "childRss": 83574784,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002669,
+                "active": 3,
+                "childRss": 83574784,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002694,
+                "active": 3,
+                "childRss": 83574784,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002719,
+                "active": 3,
+                "childRss": 83566592,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002744,
+                "active": 3,
+                "childRss": 84357120,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002769,
+                "active": 3,
+                "childRss": 85893120,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002794,
+                "active": 3,
+                "childRss": 89415680,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002819,
+                "active": 3,
+                "childRss": 92585984,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002844,
+                "active": 3,
+                "childRss": 94724096,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002869,
+                "active": 3,
+                "childRss": 95485952,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002894,
+                "active": 3,
+                "childRss": 98381824,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002919,
+                "active": 3,
+                "childRss": 101265408,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002944,
+                "active": 3,
+                "childRss": 79532032,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002969,
+                "active": 2,
+                "childRss": 69144576,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058002994,
+                "active": 2,
+                "childRss": 46944256,
+                "parentRss": 85716992,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003019,
+                "active": 2,
+                "childRss": 16633856,
+                "parentRss": 85848064,
+                "allocated": 12288,
+                "free": 402640896
+              },
+              {
+                "time": 1790058003024,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 406
+          },
+          {
+            "concurrency": 4,
+            "memory": 268435456,
+            "disk": 33553408,
+            "name": "memory-268435456-concurrency-4",
+            "result": [
+              {
+                "durationMs": 412.714727,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 434.728672,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 432.008721,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 429.246823,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058003024,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003049,
+                "active": 4,
+                "childRss": 111058944,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003074,
+                "active": 4,
+                "childRss": 111058944,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003100,
+                "active": 4,
+                "childRss": 111058944,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003125,
+                "active": 4,
+                "childRss": 111058944,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003151,
+                "active": 4,
+                "childRss": 111058944,
+                "parentRss": 85848064,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003178,
+                "active": 4,
+                "childRss": 114012160,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003203,
+                "active": 4,
+                "childRss": 119558144,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003228,
+                "active": 4,
+                "childRss": 120250368,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003253,
+                "active": 4,
+                "childRss": 124694528,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003278,
+                "active": 4,
+                "childRss": 128888832,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003303,
+                "active": 4,
+                "childRss": 128888832,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003328,
+                "active": 4,
+                "childRss": 129949696,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003354,
+                "active": 4,
+                "childRss": 131969024,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003380,
+                "active": 4,
+                "childRss": 136060928,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003405,
+                "active": 4,
+                "childRss": 142155776,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003430,
+                "active": 4,
+                "childRss": 67543040,
+                "parentRss": 86654976,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003455,
+                "active": 3,
+                "childRss": 39374848,
+                "parentRss": 86917120,
+                "allocated": 16384,
+                "free": 402636800
+              },
+              {
+                "time": 1790058003474,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 450
+          },
+          {
+            "concurrency": 1,
+            "memory": 1048576,
+            "disk": 134213632,
+            "name": "memory-1048576-concurrency-1",
+            "result": [
+              {
+                "durationMs": 771.998194,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058003474,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058003499,
+                "active": 1,
+                "childRss": 9146368,
+                "parentRss": 87179264,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790058003524,
+                "active": 1,
+                "childRss": 9146368,
+                "parentRss": 87179264,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790058003550,
+                "active": 1,
+                "childRss": 9146368,
+                "parentRss": 87179264,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790058003575,
+                "active": 1,
+                "childRss": 9146368,
+                "parentRss": 87179264,
+                "allocated": 18878464,
+                "free": 383774720
+              },
+              {
+                "time": 1790058003600,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 19312640,
+                "free": 383336448
+              },
+              {
+                "time": 1790058003625,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 20213760,
+                "free": 382439424
+              },
+              {
+                "time": 1790058003650,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 21073920,
+                "free": 381579264
+              },
+              {
+                "time": 1790058003675,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 21970944,
+                "free": 380682240
+              },
+              {
+                "time": 1790058003700,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 22867968,
+                "free": 379785216
+              },
+              {
+                "time": 1790058003725,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 23764992,
+                "free": 378875904
+              },
+              {
+                "time": 1790058003750,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 24637440,
+                "free": 378015744
+              },
+              {
+                "time": 1790058003775,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003800,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003824,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003850,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003875,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003900,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003925,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003950,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058003975,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004000,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004026,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004051,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004076,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004101,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004126,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004151,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004176,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004202,
+                "active": 1,
+                "childRss": 9322496,
+                "parentRss": 87179264,
+                "allocated": 26619904,
+                "free": 376033280
+              },
+              {
+                "time": 1790058004227,
+                "active": 1,
+                "childRss": 9592832,
+                "parentRss": 87179264,
+                "allocated": 1847296,
+                "free": 400805888
+              },
+              {
+                "time": 1790058004252,
+                "active": 1,
+                "childRss": 8192000,
+                "parentRss": 87179264,
+                "allocated": 8192,
+                "free": 402644992
+              },
+              {
+                "time": 1790058004257,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 783
+          },
+          {
+            "concurrency": 2,
+            "memory": 1048576,
+            "disk": 67106816,
+            "name": "memory-1048576-concurrency-2",
+            "result": [
+              {
+                "durationMs": 774.563108,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 776.025013,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058004257,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058004282,
+                "active": 2,
+                "childRss": 18067456,
+                "parentRss": 87179264,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790058004307,
+                "active": 2,
+                "childRss": 18067456,
+                "parentRss": 87179264,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790058004332,
+                "active": 2,
+                "childRss": 18067456,
+                "parentRss": 87179264,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790058004357,
+                "active": 2,
+                "childRss": 18067456,
+                "parentRss": 87179264,
+                "allocated": 37752832,
+                "free": 364900352
+              },
+              {
+                "time": 1790058004382,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 38494208,
+                "free": 364158976
+              },
+              {
+                "time": 1790058004407,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 40275968,
+                "free": 362377216
+              },
+              {
+                "time": 1790058004432,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 41996288,
+                "free": 360656896
+              },
+              {
+                "time": 1790058004457,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 43790336,
+                "free": 358862848
+              },
+              {
+                "time": 1790058004482,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 45584384,
+                "free": 357068800
+              },
+              {
+                "time": 1790058004507,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 47316992,
+                "free": 355323904
+              },
+              {
+                "time": 1790058004532,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 49111040,
+                "free": 353542144
+              },
+              {
+                "time": 1790058004557,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004582,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004607,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004632,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004657,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004682,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004707,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004731,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004757,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004782,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004807,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004833,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004858,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004883,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004908,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004933,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004958,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058004983,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005008,
+                "active": 2,
+                "childRss": 18300928,
+                "parentRss": 87179264,
+                "allocated": 47337472,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005034,
+                "active": 2,
+                "childRss": 892928,
+                "parentRss": 87179264,
+                "allocated": 12288,
+                "free": 402640896
+              },
+              {
+                "time": 1790058005044,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 787
+          },
+          {
+            "concurrency": 3,
+            "memory": 1048576,
+            "disk": 44737877,
+            "name": "memory-1048576-concurrency-3",
+            "result": [
+              {
+                "durationMs": 964.047316,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 778.775635,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 965.431426,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058005044,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058005069,
+                "active": 3,
+                "childRss": 26263552,
+                "parentRss": 87179264,
+                "allocated": 42360832,
+                "free": 360214528
+              },
+              {
+                "time": 1790058005094,
+                "active": 3,
+                "childRss": 27271168,
+                "parentRss": 87179264,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790058005120,
+                "active": 3,
+                "childRss": 27271168,
+                "parentRss": 87179264,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790058005145,
+                "active": 3,
+                "childRss": 27271168,
+                "parentRss": 87179264,
+                "allocated": 56627200,
+                "free": 346025984
+              },
+              {
+                "time": 1790058005170,
+                "active": 3,
+                "childRss": 27525120,
+                "parentRss": 87179264,
+                "allocated": 56905728,
+                "free": 345747456
+              },
+              {
+                "time": 1790058005195,
+                "active": 3,
+                "childRss": 27525120,
+                "parentRss": 87179264,
+                "allocated": 57802752,
+                "free": 344850432
+              },
+              {
+                "time": 1790058005220,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 59342848,
+                "free": 343310336
+              },
+              {
+                "time": 1790058005246,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 61665280,
+                "free": 340987904
+              },
+              {
+                "time": 1790058005271,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 63975424,
+                "free": 338673664
+              },
+              {
+                "time": 1790058005296,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 66187264,
+                "free": 336465920
+              },
+              {
+                "time": 1790058005321,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 68472832,
+                "free": 334180352
+              },
+              {
+                "time": 1790058005346,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 71954432,
+                "free": 330698752
+              },
+              {
+                "time": 1790058005371,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 73355264,
+                "free": 329297920
+              },
+              {
+                "time": 1790058005396,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 74768384,
+                "free": 327872512
+              },
+              {
+                "time": 1790058005421,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 77930496,
+                "free": 324722688
+              },
+              {
+                "time": 1790058005446,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005471,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005496,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005521,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005546,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005571,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005596,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005621,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005646,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005671,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005696,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005721,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005746,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005771,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005796,
+                "active": 3,
+                "childRss": 28008448,
+                "parentRss": 87179264,
+                "allocated": 79851520,
+                "free": 322801664
+              },
+              {
+                "time": 1790058005821,
+                "active": 3,
+                "childRss": 30334976,
+                "parentRss": 87179264,
+                "allocated": 55078912,
+                "free": 347574272
+              },
+              {
+                "time": 1790058005847,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005872,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005897,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005922,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005948,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005973,
+                "active": 2,
+                "childRss": 18530304,
+                "parentRss": 87179264,
+                "allocated": 53235712,
+                "free": 349417472
+              },
+              {
+                "time": 1790058005998,
+                "active": 2,
+                "childRss": 23171072,
+                "parentRss": 87179264,
+                "allocated": 3690496,
+                "free": 398962688
+              },
+              {
+                "time": 1790058006022,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 8192,
+                "free": 402644992
+              },
+              {
+                "time": 1790058006023,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 979
+          },
+          {
+            "concurrency": 4,
+            "memory": 1048576,
+            "disk": 33553408,
+            "name": "memory-1048576-concurrency-4",
+            "result": [
+              {
+                "durationMs": 1010.798305,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 1044.769618,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 1061.827662,
+                "bytes": 2076
+              },
+              {
+                "durationMs": 1021.55334,
+                "bytes": 2076
+              }
+            ],
+            "curve": [
+              {
+                "time": 1790058006023,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 87179264,
+                "allocated": 4096,
+                "free": 402649088
+              },
+              {
+                "time": 1790058006049,
+                "active": 4,
+                "childRss": 34897920,
+                "parentRss": 87572480,
+                "allocated": 45252608,
+                "free": 357281792
+              },
+              {
+                "time": 1790058006074,
+                "active": 4,
+                "childRss": 36179968,
+                "parentRss": 87572480,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790058006100,
+                "active": 4,
+                "childRss": 36179968,
+                "parentRss": 87703552,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790058006125,
+                "active": 4,
+                "childRss": 36179968,
+                "parentRss": 87703552,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790058006151,
+                "active": 4,
+                "childRss": 36179968,
+                "parentRss": 87703552,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790058006177,
+                "active": 4,
+                "childRss": 36179968,
+                "parentRss": 87703552,
+                "allocated": 75501568,
+                "free": 327151616
+              },
+              {
+                "time": 1790058006202,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87703552,
+                "allocated": 76886016,
+                "free": 325767168
+              },
+              {
+                "time": 1790058006228,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87834624,
+                "allocated": 79773696,
+                "free": 322879488
+              },
+              {
+                "time": 1790058006254,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87834624,
+                "allocated": 82575360,
+                "free": 320065536
+              },
+              {
+                "time": 1790058006280,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87834624,
+                "allocated": 85364736,
+                "free": 317288448
+              },
+              {
+                "time": 1790058006305,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87965696,
+                "allocated": 88227840,
+                "free": 314425344
+              },
+              {
+                "time": 1790058006331,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87965696,
+                "allocated": 90992640,
+                "free": 311648256
+              },
+              {
+                "time": 1790058006357,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87965696,
+                "allocated": 93904896,
+                "free": 308736000
+              },
+              {
+                "time": 1790058006383,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 87965696,
+                "allocated": 96731136,
+                "free": 305922048
+              },
+              {
+                "time": 1790058006408,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88096768,
+                "allocated": 104583168,
+                "free": 298070016
+              },
+              {
+                "time": 1790058006433,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88096768,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006458,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88096768,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006484,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88227840,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006510,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88227840,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006535,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88227840,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006561,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88227840,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006587,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88358912,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006612,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88358912,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006638,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88358912,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006664,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88489984,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006689,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88489984,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006715,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88489984,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006741,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88489984,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006766,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88621056,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006792,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88621056,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006818,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88621056,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006843,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88752128,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006868,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88752128,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006894,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88752128,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006919,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88883200,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006945,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88883200,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006971,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88883200,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058006996,
+                "active": 4,
+                "childRss": 37146624,
+                "parentRss": 88883200,
+                "allocated": 106467328,
+                "free": 296185856
+              },
+              {
+                "time": 1790058007023,
+                "active": 4,
+                "childRss": 40079360,
+                "parentRss": 89014272,
+                "allocated": 56922112,
+                "free": 345731072
+              },
+              {
+                "time": 1790058007048,
+                "active": 4,
+                "childRss": 32555008,
+                "parentRss": 89276416,
+                "allocated": 30310400,
+                "free": 372342784
+              },
+              {
+                "time": 1790058007073,
+                "active": 2,
+                "childRss": 13053952,
+                "parentRss": 89800704,
+                "allocated": 1851392,
+                "free": 400801792
+              },
+              {
+                "time": 1790058007098,
+                "active": 1,
+                "childRss": 0,
+                "parentRss": 90193920,
+                "allocated": 8192,
+                "free": 402644992
+              },
+              {
+                "time": 1790058007099,
+                "active": 0,
+                "childRss": 0,
+                "parentRss": 90193920,
+                "allocated": 4096,
+                "free": 402649088
+              }
+            ],
+            "durationMs": 1076
+          }
+        ],
+        "exhaustion": {
+          "name": "real-enospc",
+          "result": {
+            "exitCode": 1,
+            "stderr": "magick: unable to write file `/media-low/media-work-rMPlWF/partial.rgba' @ error/constitute.c/WriteImage/1454.",
+            "free": 0,
+            "partialBytes": 65536,
+            "originalHash": "3184fdfa0748a1a7f6d7e0ff8bafc0715539e6f74d3149c9b8341e81777072c1"
+          },
+          "curve": [
+            {
+              "time": 1790058007267,
+              "active": 0,
+              "childRss": 0,
+              "parentRss": 92160000,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790058007292,
+              "active": 1,
+              "childRss": 27762688,
+              "parentRss": 92422144,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790058007317,
+              "active": 1,
+              "childRss": 27762688,
+              "parentRss": 92422144,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790058007342,
+              "active": 1,
+              "childRss": 27762688,
+              "parentRss": 92422144,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790058007367,
+              "active": 1,
+              "childRss": 27783168,
+              "parentRss": 92422144,
+              "allocated": 402587648,
+              "free": 65536
+            },
+            {
+              "time": 1790058007391,
+              "active": 1,
+              "childRss": 0,
+              "parentRss": 92422144,
+              "allocated": 402653184,
+              "free": 0
+            },
+            {
+              "time": 1790058007394,
+              "active": 0,
+              "childRss": 0,
+              "parentRss": 92553216,
+              "allocated": 402653184,
+              "free": 0
+            }
+          ],
+          "durationMs": 127
+        },
+        "recoveredFree": 402649088
+      }
+    }
+  ],
+  "incomplete": [],
+  "status": "failed"
+}
