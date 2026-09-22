@@ -18,7 +18,11 @@ beforeEach(() => {
 });
 afterEach(() => rmSync(directory, { recursive: true, force: true }));
 
-function run(source: string, overrides: Partial<NodeJS.ProcessEnv> = {}) {
+function run(
+  source: string,
+  overrides: Partial<NodeJS.ProcessEnv> = {},
+  expectedStatus = 0,
+) {
   const startup = new URL(
     '../../../src/server/startup/server-start.ts',
     import.meta.url,
@@ -61,7 +65,7 @@ function run(source: string, overrides: Partial<NodeJS.ProcessEnv> = {}) {
   );
   expect(result.error).toBeUndefined();
   expect(result.signal).toBeNull();
-  expect(result.status, result.stderr).toBe(0);
+  expect(result.status, result.stderr).toBe(expectedStatus);
   return result;
 }
 
@@ -165,4 +169,102 @@ describe('Web startup and real health handler', () => {
       { NEXT_RUNTIME: 'nodejs' },
     );
   });
+});
+
+describe('Web shutdown ownership', () => {
+  it('停止幂等，队列完成前保留连接，停止后健康接口拒绝新访问', () => {
+    run(`
+      await prepare();
+      const state = startServer();
+      const originalStop = state.mediaQueue.stop.bind(state.mediaQueue);
+      let finish;
+      let calls = 0;
+      state.mediaQueue.stop = async () => {
+        calls += 1;
+        await originalStop();
+        await new Promise(resolve => { finish = resolve; });
+      };
+      const stopping = state.stop();
+      assert.strictEqual(state.stop(), stopping);
+      assert.equal(calls, 1);
+      assert.equal(state.connection.db.$client.open, true);
+      assert.throws(getServerRuntime, /stopping/);
+      assert.equal(GET().status, 503);
+      await new Promise(resolve => setImmediate(resolve));
+      finish();
+      await stopping;
+      assert.equal(state.connection.db.$client.open, false);
+    `);
+  });
+
+  it.each([
+    { signal: 'SIGINT', status: 130 },
+    { signal: 'SIGTERM', status: 143 },
+  ])(
+    '$signal 等待队列再关闭数据库，重复信号不重复停止',
+    ({ signal, status }) => {
+      const result = run(
+        `
+      await prepare();
+      const state = startServer();
+      const originalStop = state.mediaQueue.stop.bind(state.mediaQueue);
+      let completed = false;
+      let calls = 0;
+      state.mediaQueue.stop = async () => {
+        calls += 1;
+        await originalStop();
+        await new Promise(resolve => setTimeout(resolve, 40));
+        assert.equal(state.connection.db.$client.open, true);
+        completed = true;
+      };
+      process.on('exit', () => {
+        assert.equal(completed, true);
+        assert.equal(calls, 1);
+        assert.equal(state.connection.db.$client.open, false);
+      });
+      setInterval(() => {}, 1000);
+      process.kill(process.pid, '${signal}');
+      setTimeout(() => process.kill(process.pid, '${signal}'), 10);
+    `,
+        { NEXT_MANUAL_SIG_HANDLE: '1' },
+        status,
+      );
+      expect(result.stdout).toContain(
+        'Media queue stopped and database closed',
+      );
+    },
+  );
+
+  it('队列停止失败保留错误并非零退出', () => {
+    const result = run(
+      `
+      await prepare();
+      const state = startServer();
+      state.mediaQueue.stop = async () => { throw new Error('stop failure evidence'); };
+      setInterval(() => {}, 1000);
+      process.kill(process.pid, 'SIGTERM');
+    `,
+      { NEXT_MANUAL_SIG_HANDLE: '1' },
+      1,
+    );
+    expect(result.stdout).toContain('Web shutdown failed');
+    expect(result.stdout).toContain('stop failure evidence');
+  });
+
+  it('停止超过有界预算时保留诊断并非零退出', () => {
+    const result = run(
+      `
+      await prepare();
+      const state = startServer();
+      state.mediaQueue.stop = () => new Promise(() => {});
+      setInterval(() => {}, 1000);
+      process.kill(process.pid, 'SIGTERM');
+    `,
+      { NEXT_MANUAL_SIG_HANDLE: '1' },
+      1,
+    );
+    expect(result.stdout).toContain(
+      'Web shutdown exceeded the 5000ms deadline',
+    );
+  }, 10000);
 });

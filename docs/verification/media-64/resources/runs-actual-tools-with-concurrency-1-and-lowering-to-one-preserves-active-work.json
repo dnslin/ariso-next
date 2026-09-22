@@ -1,0 +1,267 @@
+{
+  "name": "runs actual tools with concurrency 1, and lowering to one preserves active work",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v24.18.1",
+  "samplingIntervalMs": 25,
+  "parentRssScope": "Vitest Node process; forked worker Node RSS is not included",
+  "toolRssScope": "Sampled live ImageMagick/ExifTool processes identified by this test workspace; ps RSS KiB converted to bytes",
+  "diskScope": "Actual allocated filesystem blocks in this test data directory, including SQLite/WAL, objects and scratch files",
+  "peakParentRssBytes": 275365888,
+  "toolProcessSamples": 8,
+  "peakToolRssBytes": 14270464,
+  "peakAllocatedBytes": 839680,
+  "remainingTools": [],
+  "samples": [
+    {
+      "time": 1790087307627,
+      "parentRssBytes": 270827520,
+      "toolRssBytes": 0,
+      "allocatedBytes": 229376,
+      "tools": []
+    },
+    {
+      "time": 1790087307695,
+      "parentRssBytes": 271302656,
+      "toolRssBytes": 0,
+      "allocatedBytes": 450560,
+      "tools": []
+    },
+    {
+      "time": 1790087307744,
+      "parentRssBytes": 271466496,
+      "toolRssBytes": 14270464,
+      "allocatedBytes": 450560,
+      "tools": [
+        {
+          "pid": 17888,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087307799,
+      "parentRssBytes": 272056320,
+      "toolRssBytes": 0,
+      "allocatedBytes": 487424,
+      "tools": []
+    },
+    {
+      "time": 1790087307847,
+      "parentRssBytes": 272367616,
+      "toolRssBytes": 0,
+      "allocatedBytes": 487424,
+      "tools": []
+    },
+    {
+      "time": 1790087307901,
+      "parentRssBytes": 272547840,
+      "toolRssBytes": 11042816,
+      "allocatedBytes": 487424,
+      "tools": [
+        {
+          "pid": 18006,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087307950,
+      "parentRssBytes": 272744448,
+      "toolRssBytes": 0,
+      "allocatedBytes": 487424,
+      "tools": []
+    },
+    {
+      "time": 1790087308004,
+      "parentRssBytes": 273252352,
+      "toolRssBytes": 0,
+      "allocatedBytes": 524288,
+      "tools": []
+    },
+    {
+      "time": 1790087308055,
+      "parentRssBytes": 273661952,
+      "toolRssBytes": 7045120,
+      "allocatedBytes": 524288,
+      "tools": [
+        {
+          "pid": 18116,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087308104,
+      "parentRssBytes": 274448384,
+      "toolRssBytes": 0,
+      "allocatedBytes": 524288,
+      "tools": []
+    },
+    {
+      "time": 1790087308153,
+      "parentRssBytes": 275365888,
+      "toolRssBytes": 0,
+      "allocatedBytes": 561152,
+      "tools": []
+    },
+    {
+      "time": 1790087308215,
+      "parentRssBytes": 270172160,
+      "toolRssBytes": 0,
+      "allocatedBytes": 561152,
+      "tools": []
+    },
+    {
+      "time": 1790087308262,
+      "parentRssBytes": 270336000,
+      "toolRssBytes": 0,
+      "allocatedBytes": 561152,
+      "tools": []
+    },
+    {
+      "time": 1790087308313,
+      "parentRssBytes": 270680064,
+      "toolRssBytes": 0,
+      "allocatedBytes": 598016,
+      "tools": []
+    },
+    {
+      "time": 1790087308365,
+      "parentRssBytes": 270991360,
+      "toolRssBytes": 0,
+      "allocatedBytes": 598016,
+      "tools": []
+    },
+    {
+      "time": 1790087308420,
+      "parentRssBytes": 271138816,
+      "toolRssBytes": 14057472,
+      "allocatedBytes": 598016,
+      "tools": [
+        {
+          "pid": 18358,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087308469,
+      "parentRssBytes": 271433728,
+      "toolRssBytes": 0,
+      "allocatedBytes": 630784,
+      "tools": []
+    },
+    {
+      "time": 1790087308523,
+      "parentRssBytes": 271581184,
+      "toolRssBytes": 0,
+      "allocatedBytes": 634880,
+      "tools": []
+    },
+    {
+      "time": 1790087308595,
+      "parentRssBytes": 271876096,
+      "toolRssBytes": 13778944,
+      "allocatedBytes": 634880,
+      "tools": [
+        {
+          "pid": 18459,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087308645,
+      "parentRssBytes": 272171008,
+      "toolRssBytes": 0,
+      "allocatedBytes": 700416,
+      "tools": []
+    },
+    {
+      "time": 1790087308697,
+      "parentRssBytes": 272351232,
+      "toolRssBytes": 0,
+      "allocatedBytes": 700416,
+      "tools": []
+    },
+    {
+      "time": 1790087308756,
+      "parentRssBytes": 270434304,
+      "toolRssBytes": 5439488,
+      "allocatedBytes": 700416,
+      "tools": [
+        {
+          "pid": 18564,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087308826,
+      "parentRssBytes": 270729216,
+      "toolRssBytes": 0,
+      "allocatedBytes": 765952,
+      "tools": []
+    },
+    {
+      "time": 1790087308872,
+      "parentRssBytes": 270876672,
+      "toolRssBytes": 0,
+      "allocatedBytes": 770048,
+      "tools": []
+    },
+    {
+      "time": 1790087308923,
+      "parentRssBytes": 271171584,
+      "toolRssBytes": 7782400,
+      "allocatedBytes": 770048,
+      "tools": [
+        {
+          "pid": 18674,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087308975,
+      "parentRssBytes": 271466496,
+      "toolRssBytes": 0,
+      "allocatedBytes": 770048,
+      "tools": []
+    },
+    {
+      "time": 1790087309023,
+      "parentRssBytes": 271777792,
+      "toolRssBytes": 0,
+      "allocatedBytes": 774144,
+      "tools": []
+    },
+    {
+      "time": 1790087309074,
+      "parentRssBytes": 271925248,
+      "toolRssBytes": 10518528,
+      "allocatedBytes": 774144,
+      "tools": [
+        {
+          "pid": 18748,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087309124,
+      "parentRssBytes": 272220160,
+      "toolRssBytes": 0,
+      "allocatedBytes": 839680,
+      "tools": []
+    },
+    {
+      "time": 1790087309163,
+      "parentRssBytes": 272367616,
+      "toolRssBytes": 0,
+      "allocatedBytes": 839680,
+      "tools": []
+    }
+  ]
+}

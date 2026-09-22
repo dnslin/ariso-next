@@ -18,6 +18,7 @@ export default defineConfig({
           exclude: [
             'tests/integration/media/process.test.ts',
             'tests/integration/media/formats-tools.test.ts',
+            'tests/integration/media/recovery-tools.test.ts',
           ],
         },
       },
@@ -28,6 +29,7 @@ export default defineConfig({
           include: [
             'tests/integration/media/process.test.ts',
             'tests/integration/media/formats-tools.test.ts',
+            'tests/integration/media/recovery-tools.test.ts',
           ],
         },
       },

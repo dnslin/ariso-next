@@ -64,7 +64,13 @@ if (process.argv[2] === 'imports') {
     );
     runtime.connection.db.transaction = (...args) => {
       const result = transaction(...args);
-      process.kill(process.pid, 'SIGKILL');
+      // Media polling also commits transactions while the password is hashing.
+      // Interrupt only the committed owner setup, not an unrelated queue poll.
+      if (
+        !client.inTransaction &&
+        client.prepare('SELECT COUNT(*) AS count FROM user').get().count === 1
+      )
+        process.kill(process.pid, 'SIGKILL');
       return result;
     };
   } else if (mode.startsWith('crash-')) {

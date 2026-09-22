@@ -49,6 +49,16 @@ function writeMigrations(
   return writeRuntimeMigrations(folder, [
     storageMigration,
     identityMigration,
+    ...[
+      '0002_red_gideon',
+      '0003_wealthy_hydra',
+      '0005_sharp_paper_doll',
+      '0006_material_joseph',
+    ].map((tag, index) => ({
+      tag,
+      when: index + 3,
+      sql: readFileSync(resolve(`drizzle/${tag}.sql`), 'utf8'),
+    })),
     ...migrations,
   ]);
 }
@@ -176,7 +186,7 @@ async function healthy() {
 
 async function stopped(run: Awaited<ReturnType<typeof launch>>) {
   await stop(run.child, run.closed);
-  // Next 16 的默认 SIGTERM 清理以 128 + 15 退出。
+  // 应用等待媒体队列与数据库清理后，沿用 Next 的 128 + 15 退出码。
   expect(await run.closed, run.logs()).toEqual([143, null]);
   expect(await listening(Number(env.PORT))).toBe(false);
 }
@@ -292,7 +302,15 @@ describe('完整生产入口的失败与恢复', () => {
     ).toEqual([]);
     expect(
       query('SELECT created_at FROM __drizzle_migrations ORDER BY created_at'),
-    ).toEqual([{ created_at: 1 }, { created_at: 2 }, { created_at: 1000 }]);
+    ).toEqual([
+      { created_at: 1 },
+      { created_at: 2 },
+      { created_at: 3 },
+      { created_at: 4 },
+      { created_at: 5 },
+      { created_at: 6 },
+      { created_at: 1000 },
+    ]);
     writeMigrations(folder, [
       initialMigration,
       upgradeMigration,

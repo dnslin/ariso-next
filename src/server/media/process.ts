@@ -1,10 +1,11 @@
-import { and, eq, inArray, ne } from 'drizzle-orm';
-import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { execa } from 'execa';
+import { and, eq, inArray } from 'drizzle-orm';
+import { mkdir, rm } from 'node:fs/promises';
+import { sep } from 'node:path';
+import { createMediaResources } from './resources.ts';
+import { startMediaTool, terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import { readObject, writeObject } from '../storage/local.ts';
-import { resolveUploadStorage } from '../storage/defaults.ts';
 import {
   describeProcessingError,
   inspectImage,
@@ -12,6 +13,14 @@ import {
   requireFirstImageFormat,
 } from './formats.ts';
 import { planDerivedObject } from './objects.ts';
+import {
+  activeMediaJob,
+  publishMediaVersion,
+  savedMediaVersion,
+  markMediaCandidates,
+  reconcileMediaObjects,
+} from './steps.ts';
+import { advanceMediaStep, settleMediaFailure } from './recovery.ts';
 import {
   mediaImages,
   mediaJobs,
@@ -24,40 +33,49 @@ export type MediaRuntime = {
   storageRoot: string;
   temporaryRoot: string;
   logger: Pick<Logger, 'info' | 'error'>;
+  resources?: ReturnType<typeof createMediaResources>;
 };
-
-function activeJob(db: BetterSQLite3Database, jobId: string) {
-  const job = db.select().from(mediaJobs).where(eq(mediaJobs.id, jobId)).get();
-  if (!job || job.status !== 'running')
-    throw mediaError(
-      'MEDIA_JOB_INACTIVE',
-      `Media job is not running: ${jobId}`,
-    );
-  const image = db
-    .select()
-    .from(mediaImages)
-    .where(eq(mediaImages.id, job.imageId))
-    .get()!;
-  if (image.deletionStatus)
-    throw mediaError(
-      'MEDIA_IMAGE_DELETING',
-      `Image is being deleted: ${image.id}`,
-    );
-  const storage = resolveUploadStorage(db, image.storageId);
-  return { job, image, storage };
-}
 
 /** Each I/O step gets current storage state; processing always uses the saved job snapshot. */
 export async function processMediaJob(
   runtime: MediaRuntime,
   jobId: string,
-  signal?: AbortSignal,
+  externalSignal?: AbortSignal,
 ) {
   const { db, storageRoot, temporaryRoot, logger } = runtime;
   let plan: ReturnType<typeof planDerivedObject> | undefined;
   let step = 'identify';
+  const deadline = new AbortController();
+  const timer = setTimeout(
+    () =>
+      deadline.abort(
+        mediaError(
+          'MEDIA_JOB_TIMEOUT',
+          'Content processing exceeded 600 seconds',
+        ),
+      ),
+    600_000,
+  );
+  timer.unref();
+  const signal = externalSignal
+    ? AbortSignal.any([externalSignal, deadline.signal])
+    : deadline.signal;
+  const workspace = `${temporaryRoot}${sep}media-${jobId}`;
+  const resources = (runtime.resources ??= createMediaResources());
+  let budget: ReturnType<typeof resources.beginStep> | undefined;
+  let workspaceReady = false;
+  let toolCleanupFailed = false;
   try {
-    const { job, image } = activeJob(db, jobId);
+    const { job, image, storage } = activeMediaJob(db, jobId);
+    await terminateMediaTools(workspace);
+    await rm(workspace, { recursive: true, force: true });
+    await mkdir(workspace, { recursive: true });
+    workspaceReady = true;
+    const beginStep = () =>
+      resources.beginStep({
+        temporaryDirectory: workspace,
+        storageDirectory: `${storageRoot}${sep}${storage.localPath}`,
+      });
     const { snapshot } = job;
     if (
       job.scope !== 'all' ||
@@ -97,7 +115,7 @@ export async function processMediaJob(
       .get()!;
     const openOriginal = async () => {
       signal?.throwIfAborted();
-      const { storage } = activeJob(db, jobId);
+      const { storage } = activeMediaJob(db, jobId);
       return readObject(
         storageRoot,
         storage,
@@ -106,11 +124,15 @@ export async function processMediaJob(
         signal,
       );
     };
+    budget = beginStep();
+    let stepSignal = AbortSignal.any([signal, budget.signal]);
     const source = await openOriginal();
-    const facts = await inspectImage(source.stream, signal);
+    const facts = await inspectImage(source.stream, stepSignal, workspace);
+    budget.close();
+    budget = undefined;
     const coder = requireFirstImageFormat(facts);
     db.transaction((tx) => {
-      activeJob(tx, jobId);
+      activeMediaJob(tx, jobId);
       const details = {
         format: facts.format,
         mime: facts.mime,
@@ -140,13 +162,30 @@ export async function processMediaJob(
         .set({ format: facts.format, mime: facts.mime, updatedAt: new Date() })
         .where(eq(mediaObjects.id, original.media_objects.id))
         .run();
+      if (job.step === 'identify')
+        advanceMediaStep(tx, jobId, job.expectedVersions[0] ?? 'complete');
     });
 
     for (const kind of job.expectedVersions) {
       step = kind;
-      signal?.throwIfAborted();
+      signal.throwIfAborted();
+      budget = beginStep();
+      stepSignal = AbortSignal.any([signal, budget.signal]);
+      await reconcileMediaObjects(
+        runtime,
+        jobId,
+        kind,
+        workspace,
+        budget.diskLimitBytes,
+        stepSignal,
+      );
+      if (savedMediaVersion(db, jobId, kind)) {
+        budget.close();
+        budget = undefined;
+        continue;
+      }
       plan = db.transaction((tx) => {
-        activeJob(tx, jobId);
+        activeMediaJob(tx, jobId);
         const candidate = planDerivedObject(tx, jobId, kind);
         tx.update(mediaObjects)
           .set({ status: 'writing', updatedAt: new Date() })
@@ -161,11 +200,9 @@ export async function processMediaJob(
       });
       const input = await openOriginal();
       const controller = new AbortController();
-      const cancelSignal = signal
-        ? AbortSignal.any([signal, controller.signal])
-        : controller.signal;
+      const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
       const edge = kind === 'thumbnail' ? 640 : snapshot.maxEdge;
-      const child = execa(
+      const { child, settled } = startMediaTool(
         'magick',
         [
           '-limit',
@@ -176,7 +213,7 @@ export async function processMediaJob(
           '0',
           '-limit',
           'disk',
-          '512MiB',
+          String(Math.floor(budget.diskLimitBytes)),
           '-limit',
           'thread',
           '1',
@@ -193,35 +230,48 @@ export async function processMediaJob(
         {
           input: input.stream,
           buffer: { stdout: false, stderr: true },
-          env: { MAGICK_TEMPORARY_PATH: temporaryRoot },
+          workspace,
+          env: { MAGICK_TEMPORARY_PATH: workspace },
           timeout: 120_000,
           forceKillAfterDelay: 1000,
           cancelSignal,
         },
       );
-      // Attach immediately: even a storage validation failure must reap the process.
-      const settled = child.then(
-        () => undefined,
-        (error) => error as Error,
-      );
       let saved;
       try {
-        const { storage } = activeJob(db, jobId);
+        const { storage } = activeMediaJob(db, jobId);
         saved = await writeObject(
           storageRoot,
           storage,
           plan,
-          child.readable(),
+          budget.countOutput(child.readable()),
           cancelSignal,
         );
       } catch (error) {
         controller.abort();
-        await settled;
+        const toolError = await settled;
+        if (
+          (toolError as (Error & { code?: string }) | undefined)?.code ===
+          'MEDIA_TOOL_SHUTDOWN_FAILED'
+        )
+          throw toolError;
+        // Cancellation here is cleanup, not the cause of a storage failure.
+        if (stepSignal.aborted) throw stepSignal.reason;
+        let cause = error;
+        while (cause instanceof Error && cause.cause instanceof Error)
+          cause = cause.cause;
+        const code = (cause as NodeJS.ErrnoException)?.code;
+        if (
+          toolError &&
+          !(toolError as Error & { isCanceled?: boolean }).isCanceled &&
+          (code === 'ERR_STREAM_PREMATURE_CLOSE' || code === 'EPIPE')
+        )
+          throw toolError;
         throw error;
       }
       const toolError = await settled;
       if (toolError) throw toolError;
-      const { storage } = activeJob(db, jobId);
+      const { storage } = activeMediaJob(db, jobId);
       const output = await readObject(
         storageRoot,
         storage,
@@ -229,7 +279,7 @@ export async function processMediaJob(
         'image/webp',
         signal,
       );
-      const result = await inspectImage(output.stream, signal);
+      const result = await inspectImage(output.stream, stepSignal, workspace);
       if (
         result.mime !== 'image/webp' ||
         !['WEBP', 'Extended WEBP'].includes(result.format)
@@ -238,41 +288,22 @@ export async function processMediaJob(
           'MEDIA_OUTPUT_INVALID',
           `Unexpected derived encoding: ${result.format}`,
         );
-      const completed = plan;
-      db.transaction((tx) => {
-        activeJob(tx, jobId);
-        const now = new Date();
-        const details = {
-          byteSize: saved.size,
-          format: 'WEBP',
-          mime: 'image/webp',
-        };
-        tx.update(mediaObjects)
-          .set({ ...details, status: 'stored', updatedAt: now })
-          .where(eq(mediaObjects.id, completed.objectId))
-          .run();
-        tx.update(mediaObjects)
-          .set({ status: 'deleted', byteSize: 0, updatedAt: now })
-          .where(eq(mediaObjects.id, completed.temporaryObjectId))
-          .run();
-        tx.insert(mediaVersions)
-          .values({
-            imageId: image.id,
-            kind,
-            objectId: completed.objectId,
-            ...details,
-            width: result.width,
-            height: result.height,
-            createdAt: now,
-          })
-          .run();
-      });
+      publishMediaVersion(
+        db,
+        jobId,
+        kind,
+        plan.objectId,
+        { size: saved.size, width: result.width, height: result.height },
+        plan.temporaryObjectId,
+      );
       plan = undefined;
+      budget.close();
+      budget = undefined;
     }
 
     step = 'complete';
     db.transaction((tx) => {
-      activeJob(tx, jobId);
+      activeMediaJob(tx, jobId);
       const saved = tx
         .select({ kind: mediaVersions.kind })
         .from(mediaVersions)
@@ -307,41 +338,47 @@ export async function processMediaJob(
     });
     logger.info({ jobId, imageId: image.id }, 'Media processing completed');
   } catch (error) {
-    const diagnostic = `${step}: ${describeProcessingError(error)}`;
-    db.transaction((tx) => {
-      const now = new Date();
-      if (plan)
-        tx.update(mediaObjects)
-          .set({ status: 'cleanup_pending', error: diagnostic, updatedAt: now })
-          .where(
-            inArray(mediaObjects.id, [plan.objectId, plan.temporaryObjectId]),
-          )
-          .run();
-      const job = tx
-        .update(mediaJobs)
-        .set({
-          status: 'failed',
-          error: diagnostic,
-          finishedAt: now,
-          updatedAt: now,
-        })
+    toolCleanupFailed =
+      (error as { code?: string } | null)?.code ===
+      'MEDIA_TOOL_SHUTDOWN_FAILED';
+    const interrupted =
+      !toolCleanupFailed &&
+      signal?.aborted &&
+      (signal.reason as { code?: string })?.code === 'MEDIA_INTERRUPTED';
+    const diagnostic = interrupted
+      ? `${step}: ${describeProcessingError(signal.reason)}`
+      : settleMediaFailure(
+          db,
+          jobId,
+          step,
+          toolCleanupFailed
+            ? error
+            : signal.aborted
+              ? signal.reason
+              : budget?.signal.aborted
+                ? budget.signal.reason
+                : error,
+        );
+    if (plan && !interrupted)
+      markMediaCandidates(
+        db,
+        [plan.objectId, plan.temporaryObjectId],
+        diagnostic,
+      );
+    if (interrupted)
+      db.update(mediaJobs)
+        .set({ error: diagnostic, updatedAt: new Date() })
         .where(and(eq(mediaJobs.id, jobId), eq(mediaJobs.status, 'running')))
-        .returning()
-        .get();
-      if (job)
-        tx.update(mediaImages)
-          .set({ processingStatus: 'failed', updatedAt: now })
-          .where(
-            and(
-              eq(mediaImages.id, job.imageId),
-              ne(mediaImages.processingStatus, 'ready'),
-            ),
-          )
-          .run();
-    });
+        .run();
     logger.error(
       { err: error, jobId, step, diagnostic },
-      'Media processing failed',
+      'Media processing interrupted or failed',
     );
+    if (toolCleanupFailed) throw error;
+  } finally {
+    clearTimeout(timer);
+    budget?.close();
+    if (workspaceReady && !toolCleanupFailed)
+      await rm(workspace, { recursive: true, force: true });
   }
 }

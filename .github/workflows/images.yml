@@ -104,7 +104,7 @@ jobs:
             test "$VERSION_CODENAME" = trixie
             node --version
             node -e "require(\"node:assert/strict\").equal(process.versions.node.split(\".\")[0], \"24\")"
-            for package in ca-certificates imagemagick-7.q16 libmagickcore-7.q16-10-extra libheif-plugin-aomenc libimage-exiftool-perl fonts-noto-cjk fonts-noto-core; do
+            for package in ca-certificates procps imagemagick-7.q16 libmagickcore-7.q16-10-extra libheif-plugin-aomenc libimage-exiftool-perl fonts-noto-cjk fonts-noto-core; do
               dpkg-query --show "$package"
             done
             magick -version
@@ -148,6 +148,25 @@ jobs:
             --workdir /workspace --entrypoint node \
             "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \
               --reporter=default --reporter=junit --outputFile=test-results/media-process.xml
+      - name: Verify media recovery resources on a real limited volume
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" \
+            --tmpfs /tmp:rw,size=512m,mode=1777 \
+            --tmpfs /media-volume:rw,size=384m,mode=1777 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" tests/experiments/media-recovery/resources.ts /media-volume
+      - name: Preserve media recovery resource evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-recovery-resources-${{ matrix.arch }}
+          path: test-results/media-64/low-space.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Preserve persistent media processing evidence
         if: always()
         uses: actions/upload-artifact@v7

@@ -1,5 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
@@ -42,6 +49,7 @@ import {
   type MediaRuntime,
 } from '../../../src/server/media/process.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
+import * as mediaTools from '../../../src/server/media/tools.ts';
 
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
@@ -124,6 +132,78 @@ async function image(args: string[], extension = 'png') {
 
 // This project requires actual ImageMagick 7 + ExifTool; missing tools fail, never skip.
 describe('T-MED-03 real JPEG/PNG processing', () => {
+  it.each([false, true])(
+    'propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=%s)',
+    async (shutdown) => {
+      const accepted = await accept(
+        await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+      );
+      const job = claimNextMediaJob(connection.db)!;
+      const controller = new AbortController();
+      const failure = Object.assign(
+        new Error('Injected process-group confirmation failure'),
+        {
+          code: 'MEDIA_TOOL_SHUTDOWN_FAILED',
+        },
+      );
+      const actualStart = mediaTools.startMediaTool;
+      // This injects a cleanup diagnostic only after the real codec has exited.
+      // It verifies error propagation, not evidence of a live orphan process.
+      const injectedStart: typeof mediaTools.startMediaTool = (
+        command,
+        args,
+        options,
+      ) => {
+        const actual = actualStart(command, args, options);
+        if (command !== 'magick') return actual;
+        return {
+          ...actual,
+          settled: actual.settled.then((error) => {
+            if (error) throw error;
+            if (shutdown)
+              controller.abort(
+                Object.assign(new Error('Web runtime is stopping'), {
+                  code: 'MEDIA_INTERRUPTED',
+                }),
+              );
+            return failure;
+          }),
+        };
+      };
+      const spy = vi
+        .spyOn(mediaTools, 'startMediaTool')
+        .mockImplementation(injectedStart);
+      try {
+        await expect(
+          processMediaJob(runtime, job.id, controller.signal),
+        ).rejects.toBe(failure);
+        expect(state(accepted.imageId).latestJob).toMatchObject({
+          status: 'failed',
+          retryCount: 0,
+          error: expect.stringContaining('MEDIA_TOOL_SHUTDOWN_FAILED'),
+        });
+        expect(state(accepted.imageId).latestJob!.error).not.toContain(
+          'MEDIA_INTERRUPTED',
+        );
+        expect(
+          (
+            await stat(join(runtime.temporaryRoot, `media-${job.id}`))
+          ).isDirectory(),
+        ).toBe(true);
+        expect(
+          state(accepted.imageId)
+            .versions.filter((version) => version.saved)
+            .map((version) => version.kind),
+        ).toEqual(['original']);
+        expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+          accepted.bytes,
+        );
+      } finally {
+        spy.mockRestore();
+      }
+    },
+  );
+
   it.each(['jpg', 'png'])(
     'preserves original %s bytes, fixes supplied type and saves both actual WebP versions',
     async (extension) => {
@@ -582,6 +662,25 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
     expect(
       state(accepted.imageId).versions.filter((v) => v.saved),
     ).toHaveLength(1);
+    expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+      accepted.bytes,
+    );
+  });
+  it('the 600-second content deadline fails durably without spending an automatic retry', async () => {
+    const accepted = await accept(
+      await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+    );
+    const job = claimNextMediaJob(connection.db)!;
+    vi.useFakeTimers();
+    const pending = processMediaJob(runtime, job.id);
+    vi.advanceTimersByTime(600_000);
+    vi.useRealTimers();
+    await pending;
+    expect(state(accepted.imageId).latestJob).toMatchObject({
+      status: 'failed',
+      retryCount: 0,
+      error: expect.stringContaining('MEDIA_JOB_TIMEOUT'),
+    });
     expect(await versionBytes(accepted.imageId, 'original')).toEqual(
       accepted.bytes,
     );

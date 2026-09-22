@@ -1,6 +1,7 @@
 import type { Readable } from 'node:stream';
 import { execa } from 'execa';
 import { z } from 'zod';
+import { startMediaTool } from './tools.ts';
 
 export function mediaError(code: string, message: string, cause?: unknown) {
   return Object.assign(new Error(message, { cause }), { code });
@@ -22,34 +23,48 @@ const factsSchema = z.object({
 });
 
 /** ExifTool supplies signature/container parsing; no extension or supplied MIME is trusted. */
-export async function inspectImage(source: Readable, signal?: AbortSignal) {
-  const { stdout } = await execa(
-    'exiftool',
-    [
-      '-json',
-      '-G1',
-      '-n',
-      '-File:FileType',
-      '-File:MIMEType',
-      '-File:ImageWidth',
-      '-File:ImageHeight',
-      '-PNG:ImageWidth',
-      '-PNG:ImageHeight',
-      '-PNG:AnimationFrames',
-      '-RIFF:ImageWidth',
-      '-RIFF:ImageHeight',
-      '-MPF:NumberOfImages',
-      '-Error',
-      '-',
-    ],
-    {
-      input: source,
-      cancelSignal: signal,
-      timeout: 30_000,
-      forceKillAfterDelay: 1000,
-      maxBuffer: 32 * 1024 * 1024,
-    },
-  );
+export async function inspectImage(
+  source: Readable,
+  signal?: AbortSignal,
+  workspace?: string,
+) {
+  const args = [
+    '-json',
+    '-G1',
+    '-n',
+    '-File:FileType',
+    '-File:MIMEType',
+    '-File:ImageWidth',
+    '-File:ImageHeight',
+    '-PNG:ImageWidth',
+    '-PNG:ImageHeight',
+    '-PNG:AnimationFrames',
+    '-RIFF:ImageWidth',
+    '-RIFF:ImageHeight',
+    '-MPF:NumberOfImages',
+    '-Error',
+    '-',
+  ];
+  const options = {
+    input: source,
+    cancelSignal: signal,
+    timeout: 30_000,
+    forceKillAfterDelay: 1000,
+    maxBuffer: 32 * 1024 * 1024,
+  };
+  let stdout: string;
+  if (workspace) {
+    const tool = startMediaTool('exiftool', args, { ...options, workspace });
+    try {
+      const result = await tool.child;
+      stdout = String(result.stdout);
+    } finally {
+      const error = await tool.settled;
+      if (error) throw error;
+    }
+  } else {
+    stdout = (await execa('exiftool', args, options)).stdout;
+  }
   const [facts] = z.array(factsSchema).length(1).parse(JSON.parse(stdout));
   if (facts['ExifTool:Error'])
     throw mediaError('MEDIA_IDENTIFICATION_FAILED', facts['ExifTool:Error']);
@@ -108,7 +123,9 @@ export function describeProcessingError(error: unknown): string {
     };
     if (
       typeof detail.code === 'string' &&
-      (detail.code.startsWith('MEDIA_') || detail.code.startsWith('STORAGE_'))
+      (detail.code.startsWith('MEDIA_') ||
+        detail.code.startsWith('STORAGE_') ||
+        detail.code === 'INSUFFICIENT_DISK_SPACE')
     )
       code = detail.code;
     if (detail.code === 'ENOENT' && !code.startsWith('STORAGE_'))

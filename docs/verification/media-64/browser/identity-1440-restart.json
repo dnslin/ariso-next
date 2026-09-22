@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "phase": "restart",
+  "checks": [
+    "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [],
+  "health": [
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "settings": {
+    "site_settings": [
+      {
+        "id": 1,
+        "public_url": "http://127.0.0.1:60313",
+        "time_zone": "UTC",
+        "name": "Ariso",
+        "description": "",
+        "logo_key": null,
+        "logo_mime": null,
+        "favicon_key": null,
+        "favicon_mime": null,
+        "updated_at": 1790086960578
+      }
+    ],
+    "media_settings": [
+      {
+        "id": 1,
+        "compression_enabled": 1,
+        "output_format": "webp",
+        "quality": 82,
+        "max_edge": null,
+        "jpeg_background": "#FFFFFF",
+        "watermark_mode": "off",
+        "default_link_version": "compressed",
+        "default_visibility": "public",
+        "concurrency": 1,
+        "updated_at": 1790086960578
+      }
+    ],
+    "storage_settings": [
+      {
+        "id": 1,
+        "default_storage_id": "ccdcb3db-1704-4ec9-9c41-ec9e21ce8a3b"
+      }
+    ],
+    "storage_configs": [
+      {
+        "id": "ccdcb3db-1704-4ec9-9c41-ec9e21ce8a3b",
+        "name": "默认本地存储",
+        "type": "local",
+        "enabled": 1,
+        "local_path": "default",
+        "created_at": 1790086934297,
+        "updated_at": 1790086934297
+      }
+    ]
+  },
+  "sessionChecks": [
+    {
+      "check": "Real HTTP 429 feedback disables login until the retry header window expires",
+      "retrySeconds": 10
+    },
+    {
+      "check": "Aged real session renews on window focus and browser cookie expiry advances",
+      "beforeExpiry": 1790691784.937293,
+      "afterExpiry": 1790691786.03222
+    },
+    {
+      "check": "Expired real session redirects from the visible admin page to the expiry notice"
+    },
+    {
+      "check": "Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry"
+    }
+  ],
+  "loginFailureChecks": [
+    {
+      "scenario": "HTML gateway error",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 502）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "malformed error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 500）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "null error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "array error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "non-string error code",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "stable server error code",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "credential error code",
+      "injection": "browser fetch boundary",
+      "message": "邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "login request rejected",
+      "injection": "browser fetch boundary",
+      "message": "连接中断，无法确认登录结果，请检查网络后重试。",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "empty rate-limit response",
+      "injection": "browser fetch boundary",
+      "message": "登录请求过于频繁，请等待服务允许后重试。（HTTP 429）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "session HTTP failure",
+      "injection": "browser fetch boundary",
+      "message": "无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "invalid session response",
+      "injection": "browser fetch boundary",
+      "message": "登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "unconfirmed session",
+      "injection": "browser fetch boundary",
+      "message": "尚未确认登录会话，请重试。",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "session request rejected",
+      "injection": "browser fetch boundary",
+      "message": "连接中断，无法确认登录结果，请检查网络后重试。",
+      "loginStatuses": [429, 200]
+    }
+  ],
+  "errors": []
+}

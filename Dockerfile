@@ -30,6 +30,7 @@ ENV PORT=3000
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
         ca-certificates \
+        procps \
         imagemagick-7.q16 \
         libmagickcore-7.q16-10-extra \
         libheif-plugin-aomenc \
