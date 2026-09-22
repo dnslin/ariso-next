@@ -1,0 +1,58 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 13ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1120ms
+  Running TypeScript ...
+  Finished TypeScript in 2.7s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/6) ...
+  Generating static pages using 9 workers (1/6)
+  Generating static pages using 9 workers (2/6)
+  Generating static pages using 9 workers (4/6)
+✓ Generating static pages using 9 workers (6/6) in 201ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /api/auth/[...all]
+├ ƒ /api/health
+├ ƒ /api/setup
+├ ƒ /login
+└ ƒ /setup
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Error: Failed to resolve dependency "/Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node":
+Cannot find module '/Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node' loaded from /Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/binding.js
+    at Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 10)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40142)
+    at async Promise.all (index 0)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+Error: Failed to resolve dependency "/Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node":
+Cannot find module '/Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node' loaded from /Volumes/data/project/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/binding.js
+    at Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 2)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40142)
+    at async Promise.all (index 6)
+    at async Job.emitDependency (/Volumes/data/project/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Promise.all (index 0)

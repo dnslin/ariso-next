@@ -32,7 +32,50 @@ function initializeServerRuntime() {
       temporaryRoot: resolve(config.dataDir, 'tmp'),
       logger: createRuntimeLogger('media.queue', config.logLevel),
     });
-    return { config, connection, setup, mediaQueue };
+    let stopping: Promise<void> | undefined;
+    const runtime = {
+      config,
+      connection,
+      setup,
+      mediaQueue,
+      get stopping() {
+        return stopping !== undefined;
+      },
+      stop() {
+        return (stopping ??= mediaQueue
+          .stop()
+          .finally(() => connection.close()));
+      },
+    };
+    // Next's signal handler calls process.exit without awaiting application work.
+    // The standard entrypoint opts into Next's manual signal handling instead.
+    if (process.env.NEXT_MANUAL_SIG_HANDLE) {
+      const logger = createRuntimeLogger('runtime.shutdown', config.logLevel);
+      let signalReceived = false;
+      const shutdown = (signal: NodeJS.Signals) => {
+        if (signalReceived) return;
+        signalReceived = true;
+        const timeout = setTimeout(() => {
+          logger.error({ signal }, 'Web shutdown exceeded the 5000ms deadline');
+          process.exit(1);
+        }, 5000);
+        runtime.stop().then(
+          () => {
+            clearTimeout(timeout);
+            logger.info({ signal }, 'Media queue stopped and database closed');
+            process.exit(signal === 'SIGINT' ? 130 : 143);
+          },
+          (err: unknown) => {
+            clearTimeout(timeout);
+            logger.error({ err, signal }, 'Web shutdown failed');
+            process.exit(1);
+          },
+        );
+      };
+      process.on('SIGINT', shutdown);
+      process.on('SIGTERM', shutdown);
+    }
+    return runtime;
   } catch (error) {
     connection.close();
     throw error;
@@ -47,6 +90,9 @@ export function startServer() {
 export function getServerRuntime() {
   if (!processState.arisoServerRuntime) {
     throw new Error('Web runtime has not been initialized');
+  }
+  if (processState.arisoServerRuntime.stopping) {
+    throw new Error('Web runtime is stopping');
   }
   return processState.arisoServerRuntime;
 }

@@ -1,0 +1,260 @@
+{
+  "name": "runs actual tools with concurrency 3, and lowering to one preserves active work",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v24.18.1",
+  "samplingIntervalMs": 25,
+  "parentRssScope": "Vitest Node process; forked worker Node RSS is not included",
+  "toolRssScope": "Sampled live ImageMagick/ExifTool processes identified by this test workspace; ps RSS KiB converted to bytes",
+  "diskScope": "Actual allocated filesystem blocks in this test data directory, including SQLite/WAL, objects and scratch files",
+  "peakParentRssBytes": 274481152,
+  "toolProcessSamples": 6,
+  "peakToolRssBytes": 40697856,
+  "peakAllocatedBytes": 1130496,
+  "remainingTools": [],
+  "samples": [
+    {
+      "time": 1790087310731,
+      "parentRssBytes": 273121280,
+      "toolRssBytes": 0,
+      "allocatedBytes": 229376,
+      "tools": []
+    },
+    {
+      "time": 1790087310801,
+      "parentRssBytes": 273711104,
+      "toolRssBytes": 0,
+      "allocatedBytes": 593920,
+      "tools": []
+    },
+    {
+      "time": 1790087310850,
+      "parentRssBytes": 271384576,
+      "toolRssBytes": 40697856,
+      "allocatedBytes": 593920,
+      "tools": [
+        {
+          "pid": 19651,
+          "state": "Rs"
+        },
+        {
+          "pid": 19658,
+          "state": "Rs"
+        },
+        {
+          "pid": 19665,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087310907,
+      "parentRssBytes": 271826944,
+      "toolRssBytes": 0,
+      "allocatedBytes": 659456,
+      "tools": []
+    },
+    {
+      "time": 1790087310955,
+      "parentRssBytes": 272121856,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790087311006,
+      "parentRssBytes": 273006592,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790087311058,
+      "parentRssBytes": 271712256,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790087311108,
+      "parentRssBytes": 272318464,
+      "toolRssBytes": 0,
+      "allocatedBytes": 831488,
+      "tools": []
+    },
+    {
+      "time": 1790087311161,
+      "parentRssBytes": 272908288,
+      "toolRssBytes": 0,
+      "allocatedBytes": 831488,
+      "tools": []
+    },
+    {
+      "time": 1790087311210,
+      "parentRssBytes": 273055744,
+      "toolRssBytes": 39469056,
+      "allocatedBytes": 831488,
+      "tools": [
+        {
+          "pid": 19963,
+          "state": "Rs"
+        },
+        {
+          "pid": 19970,
+          "state": "Rs"
+        },
+        {
+          "pid": 19977,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790087311264,
+      "parentRssBytes": 271581184,
+      "toolRssBytes": 0,
+      "allocatedBytes": 856064,
+      "tools": []
+    },
+    {
+      "time": 1790087311304,
+      "parentRssBytes": 272023552,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790087311357,
+      "parentRssBytes": 272318464,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790087311408,
+      "parentRssBytes": 272465920,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790087311462,
+      "parentRssBytes": 272760832,
+      "toolRssBytes": 0,
+      "allocatedBytes": 954368,
+      "tools": []
+    },
+    {
+      "time": 1790087311511,
+      "parentRssBytes": 273055744,
+      "toolRssBytes": 0,
+      "allocatedBytes": 954368,
+      "tools": []
+    },
+    {
+      "time": 1790087311564,
+      "parentRssBytes": 273219584,
+      "toolRssBytes": 0,
+      "allocatedBytes": 954368,
+      "tools": []
+    },
+    {
+      "time": 1790087311615,
+      "parentRssBytes": 273514496,
+      "toolRssBytes": 0,
+      "allocatedBytes": 991232,
+      "tools": []
+    },
+    {
+      "time": 1790087311664,
+      "parentRssBytes": 272039936,
+      "toolRssBytes": 0,
+      "allocatedBytes": 991232,
+      "tools": []
+    },
+    {
+      "time": 1790087311716,
+      "parentRssBytes": 272220160,
+      "toolRssBytes": 0,
+      "allocatedBytes": 991232,
+      "tools": []
+    },
+    {
+      "time": 1790087311765,
+      "parentRssBytes": 272515072,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1056768,
+      "tools": []
+    },
+    {
+      "time": 1790087311818,
+      "parentRssBytes": 272809984,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1056768,
+      "tools": []
+    },
+    {
+      "time": 1790087311869,
+      "parentRssBytes": 272957440,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1056768,
+      "tools": []
+    },
+    {
+      "time": 1790087311922,
+      "parentRssBytes": 273252352,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1126400,
+      "tools": []
+    },
+    {
+      "time": 1790087311971,
+      "parentRssBytes": 273547264,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1126400,
+      "tools": []
+    },
+    {
+      "time": 1790087312022,
+      "parentRssBytes": 273694720,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1126400,
+      "tools": []
+    },
+    {
+      "time": 1790087312073,
+      "parentRssBytes": 273989632,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1130496,
+      "tools": []
+    },
+    {
+      "time": 1790087312123,
+      "parentRssBytes": 274333696,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1130496,
+      "tools": []
+    },
+    {
+      "time": 1790087312174,
+      "parentRssBytes": 274481152,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1130496,
+      "tools": []
+    },
+    {
+      "time": 1790087312223,
+      "parentRssBytes": 272318464,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1130496,
+      "tools": []
+    },
+    {
+      "time": 1790087312260,
+      "parentRssBytes": 272465920,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1130496,
+      "tools": []
+    }
+  ]
+}

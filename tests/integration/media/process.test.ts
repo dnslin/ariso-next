@@ -1,5 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
@@ -42,6 +49,8 @@ import {
   type MediaRuntime,
 } from '../../../src/server/media/process.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
+import * as mediaTools from '../../../src/server/media/tools.ts';
+import { recoverMediaJobs } from '../../../src/server/media/recovery.ts';
 
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
@@ -124,6 +133,78 @@ async function image(args: string[], extension = 'png') {
 
 // This project requires actual ImageMagick 7 + ExifTool; missing tools fail, never skip.
 describe('T-MED-03 real JPEG/PNG processing', () => {
+  it.each([false, true])(
+    'propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=%s)',
+    async (shutdown) => {
+      const accepted = await accept(
+        await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+      );
+      const job = claimNextMediaJob(connection.db)!;
+      const controller = new AbortController();
+      const failure = Object.assign(
+        new Error('Injected process-group confirmation failure'),
+        {
+          code: 'MEDIA_TOOL_SHUTDOWN_FAILED',
+        },
+      );
+      const actualStart = mediaTools.startMediaTool;
+      // This injects a cleanup diagnostic only after the real codec has exited.
+      // It verifies error propagation, not evidence of a live orphan process.
+      const injectedStart: typeof mediaTools.startMediaTool = (
+        command,
+        args,
+        options,
+      ) => {
+        const actual = actualStart(command, args, options);
+        if (command !== 'magick') return actual;
+        return {
+          ...actual,
+          settled: actual.settled.then((error) => {
+            if (error) throw error;
+            if (shutdown)
+              controller.abort(
+                Object.assign(new Error('Web runtime is stopping'), {
+                  code: 'MEDIA_INTERRUPTED',
+                }),
+              );
+            return failure;
+          }),
+        };
+      };
+      const spy = vi
+        .spyOn(mediaTools, 'startMediaTool')
+        .mockImplementation(injectedStart);
+      try {
+        await expect(
+          processMediaJob(runtime, job.id, controller.signal),
+        ).rejects.toBe(failure);
+        expect(state(accepted.imageId).latestJob).toMatchObject({
+          status: 'failed',
+          retryCount: 0,
+          error: expect.stringContaining('MEDIA_TOOL_SHUTDOWN_FAILED'),
+        });
+        expect(state(accepted.imageId).latestJob!.error).not.toContain(
+          'MEDIA_INTERRUPTED',
+        );
+        expect(
+          (
+            await stat(join(runtime.temporaryRoot, `media-${job.id}`))
+          ).isDirectory(),
+        ).toBe(true);
+        expect(
+          state(accepted.imageId)
+            .versions.filter((version) => version.saved)
+            .map((version) => version.kind),
+        ).toEqual(['original']);
+        expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+          accepted.bytes,
+        );
+      } finally {
+        spy.mockRestore();
+      }
+    },
+  );
+
   it.each(['jpg', 'png'])(
     'preserves original %s bytes, fixes supplied type and saves both actual WebP versions',
     async (extension) => {
@@ -412,6 +493,72 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
     ).toBe('stored');
   });
 
+  it('rolls back failed job and image settlement when candidate cleanup registration fails, then recovers after reopening', async () => {
+    const accepted = await accept(
+      await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+    );
+    connection.db.$client.exec(`
+      CREATE TRIGGER fail_thumbnail BEFORE INSERT ON media_versions
+      WHEN NEW.kind = 'thumbnail'
+      BEGIN SELECT RAISE(ABORT, 'controlled thumbnail publication failure'); END;
+      CREATE TRIGGER fail_cleanup BEFORE UPDATE OF status ON media_objects
+      WHEN NEW.status = 'cleanup_pending'
+      BEGIN SELECT RAISE(ABORT, 'controlled candidate cleanup registration failure'); END;
+    `);
+    await expect(processNext()).rejects.toThrow(
+      'controlled candidate cleanup registration failure',
+    );
+    connection.close();
+    connection = openRuntimeDatabase(join(directory, 'ariso.db'));
+    runtime.db = connection.db;
+    const interrupted = state(accepted.imageId);
+    expect(interrupted.latestJob).toMatchObject({
+      status: 'running',
+      finishedAt: null,
+      retryCount: 0,
+    });
+    expect(interrupted.image.processingStatus).toBe('processing');
+    const compressedId = interrupted.versions.find(
+      (version) => version.kind === 'compressed',
+    )!.saved!.object.id;
+    const unfinished = connection.db
+      .select()
+      .from(mediaObjects)
+      .where(
+        and(
+          eq(mediaObjects.jobId, accepted.jobId),
+          eq(mediaObjects.status, 'writing'),
+        ),
+      )
+      .all();
+    expect(unfinished.map((object) => object.purpose).sort()).toEqual([
+      'temporary',
+      'thumbnail',
+    ]);
+    connection.db.$client.exec('DROP TRIGGER fail_thumbnail');
+    connection.db.$client.exec('DROP TRIGGER fail_cleanup');
+    recoverMediaJobs(connection.db);
+    await processNext();
+    const recovered = state(accepted.imageId);
+    expect(recovered.latestJob).toMatchObject({
+      status: 'succeeded',
+      retryCount: 0,
+      error: null,
+    });
+    expect(recovered.image.processingStatus).toBe('ready');
+    expect(
+      recovered.versions.find((version) => version.kind === 'compressed')!
+        .saved!.object.id,
+    ).toBe(compressedId);
+    expect(
+      recovered.versions.find((version) => version.kind === 'thumbnail')!.saved!
+        .object.id,
+    ).toBe(unfinished.find((object) => object.purpose === 'thumbnail')!.id);
+    expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+      accepted.bytes,
+    );
+  });
+
   it('does not start the next step after storage is disabled', async () => {
     const accepted = await accept(
       await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
@@ -582,6 +729,25 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
     expect(
       state(accepted.imageId).versions.filter((v) => v.saved),
     ).toHaveLength(1);
+    expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+      accepted.bytes,
+    );
+  });
+  it('the 600-second content deadline fails durably without spending an automatic retry', async () => {
+    const accepted = await accept(
+      await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+    );
+    const job = claimNextMediaJob(connection.db)!;
+    vi.useFakeTimers();
+    const pending = processMediaJob(runtime, job.id);
+    vi.advanceTimersByTime(600_000);
+    vi.useRealTimers();
+    await pending;
+    expect(state(accepted.imageId).latestJob).toMatchObject({
+      status: 'failed',
+      retryCount: 0,
+      error: expect.stringContaining('MEDIA_JOB_TIMEOUT'),
+    });
     expect(await versionBytes(accepted.imageId, 'original')).toEqual(
       accepted.bytes,
     );

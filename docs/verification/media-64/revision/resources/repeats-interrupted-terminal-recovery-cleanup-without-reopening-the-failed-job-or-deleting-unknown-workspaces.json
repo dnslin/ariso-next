@@ -1,0 +1,38 @@
+{
+  "name": "repeats interrupted terminal recovery cleanup without reopening the failed job or deleting unknown workspaces",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v24.18.1",
+  "samplingIntervalMs": 25,
+  "parentRssScope": "Vitest Node process; forked worker Node RSS is not included",
+  "toolRssScope": "Sampled live ImageMagick/ExifTool processes identified by this test workspace; ps RSS KiB converted to bytes",
+  "diskScope": "Actual allocated filesystem blocks in this test data directory, including SQLite/WAL, objects and scratch files",
+  "peakParentRssBytes": 254853120,
+  "toolProcessSamples": 0,
+  "peakToolRssBytes": null,
+  "peakAllocatedBytes": 299008,
+  "remainingTools": [],
+  "samples": [
+    {
+      "time": 1790089946616,
+      "parentRssBytes": 254230528,
+      "toolRssBytes": 0,
+      "allocatedBytes": 229376,
+      "tools": []
+    },
+    {
+      "time": 1790089946693,
+      "parentRssBytes": 254689280,
+      "toolRssBytes": 0,
+      "allocatedBytes": 299008,
+      "tools": []
+    },
+    {
+      "time": 1790089946738,
+      "parentRssBytes": 254853120,
+      "toolRssBytes": 0,
+      "allocatedBytes": 299008,
+      "tools": []
+    }
+  ]
+}

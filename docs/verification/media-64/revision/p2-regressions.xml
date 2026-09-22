@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="25.405538083">
+    <testsuite name="tests/integration/media/process.test.ts" timestamp="2026-09-22T15:06:11.948Z" hostname="dnslins-Mini.lan" tests="22" failures="0" errors="0" skipped="0" time="8.405731125">
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=false)" time="0.41179725">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=true)" time="0.226309875">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original jpg bytes, fixes supplied type and saves both actual WebP versions" time="0.630219833">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original png bytes, fixes supplied type and saves both actual WebP versions" time="0.635461125">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 6 before resizing and strips metadata" time="0.798005959">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies png orientation 6 before resizing and strips metadata" time="0.812057125">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 2 before resizing and strips metadata" time="0.799613333">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; retains alpha, uses the queued quality/maxEdge snapshot, and does not use later settings" time="0.565511875">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; compression off creates only a thumbnail" time="0.31777525">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; thumbnail publication failure retains the original and published compressed version, and records candidate responsibility" time="0.477772084">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rolls back failed job and image settlement when candidate cleanup registration fails, then recovers after reopening" time="0.788582917">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not start the next step after storage is disabled" time="0.312209041">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks disabled after asynchronous I/O and before publishing" time="0.211396667">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks deleting after asynchronous I/O and before publishing" time="0.204430792">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks cancelled after asynchronous I/O and before publishing" time="0.217101958">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;outputFormat&quot;:&quot;jpeg&quot;}" time="0.062778">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;watermarkMode&quot;:&quot;text&quot;}" time="0.057889167">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; failed full decode retains the accepted truncated original and no incomplete version is published" time="0.217949291">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; actual storage write failure is bounded, retains bytes, and records the failed step" time="0.210107334">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not impose a fixed input dimension limit on a real 32769-pixel PNG" time="0.327074042">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; persists cancellation during real asynchronous processing without publishing a partial output" time="0.062321833">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; the 600-second content deadline fails durably without spending an automatic retry" time="0.057787791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/recovery-tools.test.ts" timestamp="2026-09-22T15:06:11.951Z" hostname="dnslins-Mini.lan" tests="14" failures="0" errors="0" skipped="0" time="16.999806958">
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; preserves healthy concurrent work for recovery after a queue claim failure" time="1.340997875">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; preserves healthy concurrent work for recovery after a queue settlement failure" time="1.459953291">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; repeats interrupted terminal recovery cleanup without reopening the failed job or deleting unknown workspaces" time="0.169791875">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; jpg survives a real worker SIGKILL after compressed publication" time="1.3415955">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; png survives a real worker SIGKILL after compressed publication" time="1.314482375">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; png survives a real worker SIGTERM after compressed publication" time="1.299191958">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; cleans unfinished objects for an already stored step without replacing its published versions" time="0.774231458">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates complete-final bytes before claiming a writing object" time="0.628383333">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates truncated-final bytes before claiming a writing object" time="0.729154666">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates partial-only bytes before claiming a writing object" time="0.627284125">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 1, and lowering to one preserves active work" time="1.671612667">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 2, and lowering to one preserves active work" time="1.72477325">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 3, and lowering to one preserves active work" time="1.803856875">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 4, and lowering to one preserves active work" time="2.113306167">
+        </testcase>
+    </testsuite>
+</testsuites>

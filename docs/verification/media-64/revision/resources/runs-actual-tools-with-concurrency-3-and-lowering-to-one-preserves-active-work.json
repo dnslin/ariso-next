@@ -1,0 +1,240 @@
+{
+  "name": "runs actual tools with concurrency 3, and lowering to one preserves active work",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v24.18.1",
+  "samplingIntervalMs": 25,
+  "parentRssScope": "Vitest Node process; forked worker Node RSS is not included",
+  "toolRssScope": "Sampled live ImageMagick/ExifTool processes identified by this test workspace; ps RSS KiB converted to bytes",
+  "diskScope": "Actual allocated filesystem blocks in this test data directory, including SQLite/WAL, objects and scratch files",
+  "peakParentRssBytes": 268042240,
+  "toolProcessSamples": 4,
+  "peakToolRssBytes": 8273920,
+  "peakAllocatedBytes": 1163264,
+  "remainingTools": [],
+  "samples": [
+    {
+      "time": 1790089958106,
+      "parentRssBytes": 265437184,
+      "toolRssBytes": 0,
+      "allocatedBytes": 229376,
+      "tools": []
+    },
+    {
+      "time": 1790089958192,
+      "parentRssBytes": 266076160,
+      "toolRssBytes": 0,
+      "allocatedBytes": 593920,
+      "tools": []
+    },
+    {
+      "time": 1790089958266,
+      "parentRssBytes": 266223616,
+      "toolRssBytes": 0,
+      "allocatedBytes": 593920,
+      "tools": []
+    },
+    {
+      "time": 1790089958344,
+      "parentRssBytes": 265207808,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790089958430,
+      "parentRssBytes": 265830400,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790089958500,
+      "parentRssBytes": 265977856,
+      "toolRssBytes": 0,
+      "allocatedBytes": 704512,
+      "tools": []
+    },
+    {
+      "time": 1790089958580,
+      "parentRssBytes": 265256960,
+      "toolRssBytes": 0,
+      "allocatedBytes": 831488,
+      "tools": []
+    },
+    {
+      "time": 1790089958656,
+      "parentRssBytes": 265502720,
+      "toolRssBytes": 0,
+      "allocatedBytes": 831488,
+      "tools": []
+    },
+    {
+      "time": 1790089958734,
+      "parentRssBytes": 265797632,
+      "toolRssBytes": 0,
+      "allocatedBytes": 856064,
+      "tools": []
+    },
+    {
+      "time": 1790089958798,
+      "parentRssBytes": 266240000,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790089958851,
+      "parentRssBytes": 266534912,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790089958901,
+      "parentRssBytes": 266682368,
+      "toolRssBytes": 0,
+      "allocatedBytes": 917504,
+      "tools": []
+    },
+    {
+      "time": 1790089958954,
+      "parentRssBytes": 265748480,
+      "toolRssBytes": 0,
+      "allocatedBytes": 950272,
+      "tools": []
+    },
+    {
+      "time": 1790089959007,
+      "parentRssBytes": 266043392,
+      "toolRssBytes": 0,
+      "allocatedBytes": 954368,
+      "tools": []
+    },
+    {
+      "time": 1790089959052,
+      "parentRssBytes": 266190848,
+      "toolRssBytes": 4325376,
+      "allocatedBytes": 954368,
+      "tools": [
+        {
+          "pid": 59255,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790089959115,
+      "parentRssBytes": 266338304,
+      "toolRssBytes": 0,
+      "allocatedBytes": 954368,
+      "tools": []
+    },
+    {
+      "time": 1790089959208,
+      "parentRssBytes": 266633216,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1024000,
+      "tools": []
+    },
+    {
+      "time": 1790089959265,
+      "parentRssBytes": 267141120,
+      "toolRssBytes": 6160384,
+      "allocatedBytes": 1024000,
+      "tools": [
+        {
+          "pid": 59329,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790089959327,
+      "parentRssBytes": 267288576,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1024000,
+      "tools": []
+    },
+    {
+      "time": 1790089959394,
+      "parentRssBytes": 267599872,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1089536,
+      "tools": []
+    },
+    {
+      "time": 1790089959448,
+      "parentRssBytes": 267894784,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1089536,
+      "tools": []
+    },
+    {
+      "time": 1790089959524,
+      "parentRssBytes": 268042240,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1089536,
+      "tools": []
+    },
+    {
+      "time": 1790089959575,
+      "parentRssBytes": 266141696,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1093632,
+      "tools": []
+    },
+    {
+      "time": 1790089959657,
+      "parentRssBytes": 266436608,
+      "toolRssBytes": 8273920,
+      "allocatedBytes": 1093632,
+      "tools": [
+        {
+          "pid": 59470,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790089959725,
+      "parentRssBytes": 266747904,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1159168,
+      "tools": []
+    },
+    {
+      "time": 1790089959777,
+      "parentRssBytes": 267059200,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1163264,
+      "tools": []
+    },
+    {
+      "time": 1790089959834,
+      "parentRssBytes": 267206656,
+      "toolRssBytes": 4734976,
+      "allocatedBytes": 1163264,
+      "tools": [
+        {
+          "pid": 59544,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790089959931,
+      "parentRssBytes": 267501568,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1163264,
+      "tools": []
+    },
+    {
+      "time": 1790089959982,
+      "parentRssBytes": 267698176,
+      "toolRssBytes": 0,
+      "allocatedBytes": 1163264,
+      "tools": []
+    }
+  ]
+}

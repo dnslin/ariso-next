@@ -185,8 +185,10 @@ describe('persistent media queue', () => {
     const active = start();
     expect(job(first.jobId).status).toBe('running');
     await active.stop();
-    expect(job(first.jobId).status).toBe('failed');
-    expect(job(first.jobId).finishedAt).toBeInstanceOf(Date);
+    expect(job(first.jobId).status).toBe('running');
+    expect(job(first.jobId).finishedAt).toBeNull();
+    expect(job(first.jobId).error).toContain('MEDIA_INTERRUPTED');
+    expect(job(first.jobId).retryCount).toBe(0);
     expect(job(second.jobId).status).toBe('queued');
   });
 
@@ -204,7 +206,8 @@ describe('persistent media queue', () => {
       "CREATE TRIGGER interrupt BEFORE UPDATE ON media_jobs BEGIN SELECT RAISE(ABORT, 'queue database failed'); END",
     );
     start();
-    await queue!.stop();
+    await expect(queue!.stop()).rejects.toThrow('queue database failed');
+    queue = undefined;
     expect(logger.error).toHaveBeenCalledOnce();
     expect(logger.error.mock.calls[0][0].err.message).toContain(
       'queue database failed',

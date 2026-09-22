@@ -37,6 +37,7 @@
 - [当前浏览器冒烟运行方式](../e2e/runtime.md)
 - [M1 空目录初始化与登录关卡验证](./verification/m1-61/README.md)
 - [JPEG/PNG 首图处理与持久任务实施验证](./verification/media-63/README.md)
+- [媒体任务恢复与按需资源实施验证](./verification/media-64/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
 
