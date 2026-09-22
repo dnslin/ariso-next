@@ -17,8 +17,9 @@ export default async function LoginPage({
     runtime.setup.databasePath,
   );
   const query = await searchParams;
-  const notice =
-    query.setup === 'completed'
+  const notice = !initialized
+    ? ''
+    : query.setup === 'completed'
       ? '初始化已完成，请使用刚才设置的邮箱和密码登录。'
       : query.reason === 'expired'
         ? '会话已失效，请重新登录后继续。'

@@ -113,6 +113,10 @@ afterEach(async () => {
 });
 
 it('uninitialized production auth requests return setup-required without creating an owner', async () => {
+  const loginPage = await fetch(`${origin}/login?setup=completed`);
+  const loginHtml = await loginPage.text();
+  expect(loginHtml).toContain('站点尚未初始化');
+  expect(loginHtml).not.toContain('初始化已完成');
   for (const path of ['get-session', 'sign-in/email', 'sign-up/email']) {
     const response = await post(path);
     expect(response.status).toBe(409);

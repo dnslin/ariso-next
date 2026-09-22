@@ -20,7 +20,7 @@
 
 ## 验证环境与进展
 
-macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin`。浏览器使用现有 Ego Lite，唯一 TaskSpace 1；未下载 Chromium，未运行本地 Docker。
+macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin`。浏览器使用现有 Ego Lite / Chrome 152，唯一 TaskSpace 1（验证完成后已关闭）；未下载 Chromium，未运行本地 Docker。
 
 | 已实际执行命令                                                                                                     | 结果                                                                         |
 | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
@@ -39,10 +39,10 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin
 
 ## 审计
 
-使用 `code-review-and-quality`，先审测试，再核对正确性、模块边界、可读性、安全与性能。独立审计发现两项时区缺陷：双受控选择未同步显示文字、有效别名被组件再次过滤。均已修复并增加关键词选择、别名和 Esc 恢复测试。审计还纠正了“无法推荐时区”故障注入的范围，避免影响显式时区验证。登录闭环走查未发现额外明确缺陷；真实限流恢复、退出失败、过期及续期已在两端浏览器通过；最终独立复核通过，当前无必修问题。
+使用 `code-review-and-quality`，先审测试，再核对正确性、模块边界、可读性、安全与性能。独立审计发现两项时区缺陷：双受控选择未同步显示文字、有效别名被组件再次过滤。均已修复并增加关键词选择、别名和 Esc 恢复测试。审计还纠正了“无法推荐时区”故障注入的范围，避免影响显式时区验证。登录闭环走查未发现额外明确缺陷；真实限流恢复、退出失败、过期及续期已在两端浏览器通过；最终独立复核通过，当前无必修问题。主线程最终补充修复未初始化时伪造 `?setup=completed` 显示矛盾提示的问题，并增加真实 HTTP 回归断言。
 
 ## 未完成与远端验证
 
 真实手机触控、物理软键盘及非零安全区尚无设备实测；窄视口、短视口和 CDP 触控模拟不替代这些证据。跨浏览器矩阵仍按 T-QA-02 归属，本次只记录实际 Ego 环境。此前 #57/#59 的所有者验收决定保留，不因本任务的新页面设备验证项而重新阻塞其交付。
 
-创建草稿 PR 后，由现有 CI 和 Docker build 工作流验证本分支；AMD64/ARM64 原生检查只验证不发布。远端结果尚待记录。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。
+创建草稿 PR 后，由现有 CI 和 Docker build 工作流验证本分支；AMD64/ARM64 原生检查只验证不发布。已创建 [草稿 PR #100](https://github.com/dnslin/ariso-next/pull/100)，[首轮 CI](https://github.com/dnslin/ariso-next/actions/runs/35681794064) 与 [双架构容器检查](https://github.com/dnslin/ariso-next/actions/runs/35681794281)已启动，最终结果尚待记录。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。
