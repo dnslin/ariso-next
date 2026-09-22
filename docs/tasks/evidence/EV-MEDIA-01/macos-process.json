@@ -1,0 +1,52 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "forceKillAfterDelayMs": 250,
+  "cancellationBudgetMs": 5000,
+  "checks": [
+    {
+      "name": "sigterm",
+      "passed": true,
+      "evidence": {
+        "pid": 82091,
+        "signal": "SIGTERM",
+        "isCanceled": true,
+        "timedOut": false,
+        "isForcefullyTerminated": false,
+        "elapsedAfterReadyOrCancelMs": 3,
+        "processAbsentAfterReap": true
+      }
+    },
+    {
+      "name": "ignore-sigterm",
+      "passed": true,
+      "evidence": {
+        "pid": 82092,
+        "signal": "SIGKILL",
+        "isCanceled": true,
+        "timedOut": false,
+        "isForcefullyTerminated": true,
+        "elapsedAfterReadyOrCancelMs": 254,
+        "processAbsentAfterReap": true
+      }
+    },
+    {
+      "name": "timeout",
+      "passed": true,
+      "evidence": {
+        "pid": 82099,
+        "signal": "SIGKILL",
+        "isCanceled": false,
+        "timedOut": true,
+        "isForcefullyTerminated": true,
+        "elapsedAfterReadyOrCancelMs": 2187,
+        "processAbsentAfterReap": true,
+        "timeoutMs": 2000
+      }
+    }
+  ],
+  "incomplete": ["stopped-linux: requires Linux /proc stopped-state evidence"]
+}
