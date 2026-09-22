@@ -83,6 +83,8 @@
 
 ### EV-STORAGE-01 三服务对象与私有性协议验证
 
+实验实现、实际验证和环境阻塞见[协议实验报告](./evidence/EV-STORAGE-01/README.md)；三服务真实证据未齐，不解除下游前置。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[storage §5–9](../specs/SPEC-storage.md)、[delivery §6–8](../specs/SPEC-delivery.md)

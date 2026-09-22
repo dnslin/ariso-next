@@ -1,0 +1,101 @@
+{
+  "scope": "local browser runner regression only; no real storage service tested",
+  "evidence": {
+    "date": "2026-09-22T16:14:06.089Z",
+    "origin": "http://127.0.0.1:47070",
+    "put": {
+      "status": 200,
+      "type": "cors",
+      "headers": {
+        "content-length": "0"
+      },
+      "body": "",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+    },
+    "actualPutHeaders": [
+      {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "connection": "keep-alive",
+        "content-length": "110",
+        "host": "127.0.0.1:49674",
+        "origin": "http://127.0.0.1:47070",
+        "referer": "http://127.0.0.1:47070/",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "content-type": "image/svg+xml",
+        "sec-ch-ua": "\"Not?A_Brand\";v=\"24\", \"Chromium\";v=\"152\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    ],
+    "download": {
+      "filename": "旅行.svg",
+      "completed": true
+    }
+  },
+  "requests": [
+    {
+      "method": "OPTIONS",
+      "headers": {
+        "host": "127.0.0.1:49674",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "access-control-request-method": "PUT",
+        "access-control-request-headers": "content-type",
+        "origin": "http://127.0.0.1:47070",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-dest": "empty",
+        "referer": "http://127.0.0.1:47070/",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9"
+      }
+    },
+    {
+      "method": "PUT",
+      "headers": {
+        "host": "127.0.0.1:49674",
+        "connection": "keep-alive",
+        "content-length": "110",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "sec-ch-ua": "\"Not?A_Brand\";v=\"24\", \"Chromium\";v=\"152\"",
+        "content-type": "image/svg+xml",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "origin": "http://127.0.0.1:47070",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "http://127.0.0.1:47070/",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9"
+      }
+    },
+    {
+      "method": "GET",
+      "headers": {
+        "host": "127.0.0.1:49674",
+        "connection": "keep-alive",
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-user": "?1",
+        "sec-fetch-dest": "document",
+        "sec-ch-ua": "\"Not?A_Brand\";v=\"24\", \"Chromium\";v=\"152\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "referer": "http://127.0.0.1:47070/",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9"
+      }
+    }
+  ]
+}
