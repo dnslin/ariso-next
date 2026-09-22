@@ -228,6 +228,25 @@ async function main() {
       `const D=require('better-sqlite3');const d=new D('/data/ariso.db');console.log(JSON.stringify({rows:d.prepare('SELECT value FROM sample ORDER BY rowid').all(),migrations:d.prepare('SELECT count(*) AS n FROM __drizzle_migrations').get().n}));d.close()`,
     );
   }
+  async function initialConfiguration() {
+    // Keep credentials, password hashes and session tokens out of evidence.
+    return exec(`
+      const D = require('better-sqlite3');
+      const d = new D('/data/ariso.db', { readonly: true });
+      const rows = (sql) => d.prepare(sql).all();
+      console.log(JSON.stringify({
+        owners: rows('SELECT id, email, owner_slot FROM user'),
+        credentials: rows('SELECT id, account_id, user_id, provider_id FROM account'),
+        site: rows('SELECT * FROM site_settings'),
+        media: rows('SELECT * FROM media_settings'),
+        storage: rows('SELECT * FROM storage_configs'),
+        storageSettings: rows('SELECT * FROM storage_settings'),
+        sessionCount: d.prepare('SELECT count(*) AS n FROM session').get().n,
+        defaultDirectory: require('fs').statSync('/data/storage/default').isDirectory(),
+      }));
+      d.close();
+    `);
+  }
   async function assertSingleWebProcess() {
     const mainPid = (await inspect()).State.Pid;
     const deadline = Date.now() + 5000;
@@ -365,18 +384,84 @@ async function main() {
     assert.ok(
       typeof setupCode === 'string' && /^[A-Za-z0-9_-]{32}$/.test(setupCode),
     );
+    const beforeSetup = await initialConfiguration();
+    assert.deepEqual(beforeSetup.owners, []);
+    assert.deepEqual(beforeSetup.credentials, []);
+    assert.deepEqual(beforeSetup.site, []);
+    assert.deepEqual(beforeSetup.media, []);
+    assert.equal(beforeSetup.sessionCount, 0);
+    assert.equal(beforeSetup.defaultDirectory, true);
+    assert.equal(beforeSetup.storage.length, 1);
+    const defaultStorage = beforeSetup.storage[0];
+    assert.ok(defaultStorage.id);
+    assert.deepEqual(defaultStorage, {
+      id: defaultStorage.id,
+      name: '默认本地存储',
+      type: 'local',
+      enabled: 1,
+      local_path: 'default',
+      created_at: defaultStorage.created_at,
+      updated_at: defaultStorage.updated_at,
+    });
+    assert.deepEqual(beforeSetup.storageSettings, [
+      { id: 1, default_storage_id: defaultStorage.id },
+    ]);
+    report.identity = { beforeSetup };
+    check(
+      'empty data directory prepares default local storage without an owner',
+    );
     const credentials = {
       email: 'container-owner@example.test',
       password: randomBytes(24).toString('base64url'),
     };
-    const post = (path, body) =>
+    const post = (path, body, headers = {}) =>
       fetch(`${origin}${path}`, {
         method: 'POST',
-        headers: { 'content-type': 'application/json', origin },
+        headers: { 'content-type': 'application/json', origin, ...headers },
         body: JSON.stringify(body),
         redirect: 'manual',
         signal: AbortSignal.timeout(15000),
       });
+    async function loginAndLogout() {
+      const login = await post('/api/auth/sign-in/email', credentials);
+      assert.equal(login.status, 200);
+      const cookie = login.headers
+        .getSetCookie()
+        .map((value) => value.split(';')[0])
+        .join('; ');
+      assert.ok(
+        cookie.includes('session_token='),
+        'login creates session cookie',
+      );
+      const session = () =>
+        fetch(`${origin}/api/auth/get-session`, {
+          headers: { cookie },
+          signal: AbortSignal.timeout(15000),
+        });
+      const authenticated = await session();
+      assert.equal(authenticated.status, 200);
+      assert.equal((await authenticated.json()).user.email, credentials.email);
+      const logout = await post('/api/auth/sign-out', {}, { cookie });
+      assert.equal(logout.status, 200);
+      assert.equal(logout.headers.get('cache-control'), 'no-store');
+      assert.ok(
+        logout.headers
+          .getSetCookie()
+          .some(
+            (value) =>
+              value.startsWith('ariso.session_token=') &&
+              /Max-Age=0(?:;|$)/.test(value),
+          ),
+        'logout expires the session cookie',
+      );
+      const replay = await session();
+      assert.equal(replay.status, 200);
+      assert.equal(
+        await replay.json(),
+        null,
+        'logged-out cookie must not authenticate',
+      );
+    }
     const payload = {
       ...credentials,
       code: setupCode,
@@ -386,36 +471,87 @@ async function main() {
     const denied = await post('/api/setup', { ...payload, code: 'wrong' });
     assert.equal(denied.status, 401);
     assert.equal((await denied.json()).code, 'INVALID_SETUP_CODE');
-    const completed = await post('/api/setup', payload);
-    assert.equal(completed.status, 200);
-    assert.ok(
-      completed.headers.get('set-cookie') === null,
-      'setup must not create a cookie',
-    );
-    assert.equal(completed.headers.get('cache-control'), 'no-store');
-    const completedBody = await completed.text();
-    assert.ok(!completedBody.includes(setupCode));
-    assert.ok(!completedBody.includes(credentials.password));
-    assert.deepEqual(JSON.parse(completedBody), {
-      code: 'SETUP_COMPLETED',
-      redirectTo: '/login',
+    const concurrent = await Promise.all([
+      post('/api/setup', payload),
+      post('/api/setup', payload),
+    ]);
+    report.identity.setupStatuses = concurrent
+      .map((response) => response.status)
+      .sort();
+    assert.deepEqual(report.identity.setupStatuses, [200, 409]);
+    for (const response of concurrent) {
+      assert.equal(
+        response.headers.get('set-cookie'),
+        null,
+        'setup must not create a cookie',
+      );
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      const body = await response.text();
+      assert.ok(!body.includes(setupCode));
+      assert.ok(!body.includes(credentials.password));
+      if (response.status === 200)
+        assert.deepEqual(JSON.parse(body), {
+          code: 'SETUP_COMPLETED',
+          redirectTo: '/login',
+        });
+      else assert.equal(JSON.parse(body).code, 'SETUP_ALREADY_COMPLETED');
+    }
+    const afterSetup = await initialConfiguration();
+    assert.equal(afterSetup.owners.length, 1);
+    const owner = afterSetup.owners[0];
+    assert.deepEqual(owner, {
+      id: owner.id,
+      email: credentials.email,
+      owner_slot: 1,
     });
-    const login = await post('/api/auth/sign-in/email', credentials);
-    assert.equal(login.status, 200);
-    const cookie = login.headers
-      .getSetCookie()
-      .map((value) => value.split(';')[0])
-      .join('; ');
-    assert.ok(
-      cookie.includes('session_token='),
-      'login creates session cookie',
-    );
-    const session = await fetch(`${origin}/api/auth/get-session`, {
-      headers: { cookie },
-      signal: AbortSignal.timeout(15000),
+    assert.equal(afterSetup.credentials.length, 1);
+    assert.deepEqual(afterSetup.credentials[0], {
+      id: afterSetup.credentials[0].id,
+      account_id: owner.id,
+      user_id: owner.id,
+      provider_id: 'credential',
     });
-    assert.equal(session.status, 200);
-    assert.equal((await session.json()).user.email, credentials.email);
+    assert.equal(afterSetup.site.length, 1);
+    assert.deepEqual(afterSetup.site[0], {
+      id: 1,
+      public_url: origin,
+      time_zone: 'UTC',
+      name: 'Ariso',
+      description: '',
+      logo_key: null,
+      logo_mime: null,
+      favicon_key: null,
+      favicon_mime: null,
+      updated_at: afterSetup.site[0].updated_at,
+    });
+    assert.equal(afterSetup.media.length, 1);
+    assert.deepEqual(afterSetup.media[0], {
+      id: 1,
+      compression_enabled: 1,
+      output_format: 'webp',
+      quality: 82,
+      max_edge: null,
+      jpeg_background: '#FFFFFF',
+      watermark_mode: 'off',
+      default_link_version: 'compressed',
+      default_visibility: 'public',
+      concurrency: 1,
+      updated_at: afterSetup.media[0].updated_at,
+    });
+    assert.deepEqual(afterSetup.storage, beforeSetup.storage);
+    assert.deepEqual(afterSetup.storageSettings, beforeSetup.storageSettings);
+    assert.equal(afterSetup.sessionCount, 0);
+    report.identity.afterSetup = afterSetup;
+    check(
+      'concurrent setup commits one owner and the initial site/media settings without a session',
+    );
+    // M1 verifies the default directory's persisted bytes; uploads belong to M2.
+    const probe = randomBytes(256);
+    await exec(
+      `require('fs').writeFileSync('/data/storage/default/m1-persistence.bin', Buffer.from('${probe.toString('base64')}', 'base64'));console.log('null')`,
+    );
+    await loginAndLogout();
+    check('production login and logout revoke the cookie before restart');
     const beforeRestart = setupCodes(await logs('setup-completed')).length;
     assert.equal(beforeRestart, 1);
     await compose(['restart', 'ariso']);
@@ -425,15 +561,31 @@ async function main() {
       setupCodes(await logs('setup-restarted')).length,
       beforeRestart,
     );
-    const repeated = await post('/api/setup', payload);
+    const repeated = await post('/api/setup', {
+      ...payload,
+      email: 'second-owner@example.test',
+    });
     assert.equal(repeated.status, 409);
     assert.ok(
       repeated.headers.get('set-cookie') === null,
       'completed setup retry must not create a cookie',
     );
     assert.equal((await repeated.json()).code, 'SETUP_ALREADY_COMPLETED');
+    const afterRestart = await initialConfiguration();
+    assert.deepEqual(afterRestart, afterSetup);
+    report.identity.afterRestart = afterRestart;
+    assert.deepEqual(
+      await readFile(join(data, 'storage/default/m1-persistence.bin')),
+      probe,
+    );
+    report.identity.storageProbe = {
+      path: '/data/storage/default/m1-persistence.bin',
+      byteLength: probe.byteLength,
+    };
+    await loginAndLogout();
+    await waitHealthy();
     check(
-      'production setup rejects wrong code, commits without session, supports login and stays completed after restart',
+      'restart preserves configuration and default storage bytes, emits no setup code, rejects a second owner and supports fresh login/logout with healthy service',
     );
     await stop();
     // 保留镜像的真实迁移，再追加测试迁移；不能以空生产 journal 为前提。

@@ -1,0 +1,92 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "phase": "restart",
+  "checks": [
+    "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [],
+  "health": [
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "settings": {
+    "site_settings": [
+      {
+        "id": 1,
+        "public_url": "http://127.0.0.1:59226",
+        "time_zone": "UTC",
+        "name": "Ariso",
+        "description": "",
+        "logo_key": null,
+        "logo_mime": null,
+        "favicon_key": null,
+        "favicon_mime": null,
+        "updated_at": 1790057002189
+      }
+    ],
+    "media_settings": [
+      {
+        "id": 1,
+        "compression_enabled": 1,
+        "output_format": "webp",
+        "quality": 82,
+        "max_edge": null,
+        "jpeg_background": "#FFFFFF",
+        "watermark_mode": "off",
+        "default_link_version": "compressed",
+        "default_visibility": "public",
+        "concurrency": 1,
+        "updated_at": 1790057002190
+      }
+    ],
+    "storage_settings": [
+      {
+        "id": 1,
+        "default_storage_id": "ac6276a0-e3ca-4b0b-8f28-46f701bccdf8"
+      }
+    ],
+    "storage_configs": [
+      {
+        "id": "ac6276a0-e3ca-4b0b-8f28-46f701bccdf8",
+        "name": "默认本地存储",
+        "type": "local",
+        "enabled": 1,
+        "local_path": "default",
+        "created_at": 1790056986931,
+        "updated_at": 1790056986931
+      }
+    ]
+  },
+  "sessionChecks": [
+    {
+      "check": "Real HTTP 429 feedback disables login until the retry header window expires",
+      "retrySeconds": 10
+    },
+    {
+      "check": "Aged real session renews on window focus and browser cookie expiry advances",
+      "beforeExpiry": 1790661827.63762,
+      "afterExpiry": 1790661828.744628
+    },
+    {
+      "check": "Expired real session redirects from the visible admin page to the expiry notice"
+    },
+    {
+      "check": "Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry"
+    }
+  ],
+  "errors": []
+}
