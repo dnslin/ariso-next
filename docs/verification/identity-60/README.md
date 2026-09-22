@@ -1,48 +1,48 @@
-# T-ID-03 前置核对与验收决定
+# T-ID-03 初始化与登录实施记录
 
-日期：2026-09-22；关联 [Issue #60](https://github.com/dnslin/ariso-next/issues/60)。项目所有者明确确认 #57、#59 正常完成，不存在待处理前置缺口；此前的实施阻塞结论已解除。所有者要求不再校验，直接合并本 PR 并关闭 #60。本 PR 仅交付前置核对记录，未实现初始化或登录页面，关闭 Issue 不代表页面已交付。业务规则和节点矩阵继续以[消费任务](../../tasks/m1-m2.md#t-id-03-两端初始化与登录闭环)为唯一入口。
+日期：2026-09-22。关联 [Issue #60](https://github.com/dnslin/ariso-next/issues/60)；规则、需求编号和 Figma 节点继续维护于 [T-ID-03](../../tasks/m1-m2.md#t-id-03-两端初始化与登录闭环)。此前的前置核对及所有者验收决定保留于[历史记录](./prerequisites.md)，不再构成实施阻塞。
 
-## 直接前置
+## 范围与实现
 
-使用 `gh issue view 60 --json number,title,body,comments,state,url` 读取任务，当前 OPEN、无评论；使用 `gh api repos/dnslin/ariso-next/issues/60/dependencies/blocked_by` 与 `.../blocking` 核对原生关系。直接前置为 #54、#57、#58、#59，后置为 #61。四项前置均已关闭，但关闭状态不代替实际验收。
+从最新 `origin/main=8901dc0` 创建 `codex/issue-60-setup-login`。工作区初始干净，没有其他运行任务占用。使用 `gh` 读取 Issue、评论和原生依赖：#54、#57、#58、#59 均已关闭；后置为 #61。普通 Git 连接失败后复用 macOS 已配置的本地 HTTP 代理完成 fetch，未修改仓库网络配置。
 
-| 前置           | 交付与证据                                                                                                                  | 本次核对结论                                                                                                                          |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| #54 / T-ID-02  | [PR #93](https://github.com/dnslin/ariso-next/pull/93)，提交 `611d0da`；[初始化证据](../identity-54/README.md)              | 已交付完整事务、错误/并发/重启处理和真实登录；CI、AMD64、ARM64 均成功。没有将 HTTP 证据扩大为页面验收。                               |
-| #57 / T-UI-01  | [PR #96](https://github.com/dnslin/ariso-next/pull/96)，提交 `e26e8ff`；[外壳证据](../ui-57/README.md)                      | 公共/后台组件已交付，CI、AMD64、ARM64 成功。PR 描述明确按所有者指示合并，同时保留真实手机触控、软键盘、非零安全区和其他浏览器未验收。 |
-| #58 / DG-SETUP | [PR #97](https://github.com/dnslin/ariso-next/pull/97)，提交 `83016e4`；[核对证据](../../tasks/evidence/DG-SETUP/README.md) | 两端 11 态与服务端契约走查已交付，最终 CI、AMD64、ARM64 成功；真实页面验收属于 T-ID-03，没有把设计走查当作页面通过。                  |
-| #59 / DG-AUTH  | [PR #98](https://github.com/dnslin/ariso-next/pull/98)，提交 `5fd253a`；[核对证据](../../tasks/evidence/DG-AUTH/README.md)  | 登录状态、限流、会话和回跳规则走查已交付，最终 CI、AMD64、ARM64 成功；同时明确保留 #57 的实际设备证据缺口。                           |
+- `/setup` 两步收集，只在最终提交调用既有 POST；错误跨步定位且保留当前内存字段。复用共享 Zod 输入规则，邮箱规范化，密码不 trim，确认密码不进入 API。时区推荐可修改，无法推荐时必须手选；支持有效别名与 UTC。
+- 提交结果未知时锁住再次 POST，通过既有 `GET /api/auth/get-session` 核对：仅 `409 / SETUP_REQUIRED` 允许重提，已初始化进入登录，核对失败继续保留未知。没有新增状态接口、数据库结构或依赖。
+- `/login` 使用现有本地邮箱密码认证；必填、凭据错误、真实 429、服务故障、会话失效和未初始化分别反馈。限流等待读取 `x-retry-after`。不渲染尚未交付的 GitHub 或找回密码入口。
+- `/admin` 是当前最小受保护工作空间，只展示已登录账号和退出入口。任务卡将默认目的地交由路由实施任务落实；这里不提前实现图库或设置。服务端页面消费 `requireOwner`，回跳仅接受该已交付路径；会话 HTTP 请求承接续期 Cookie，退出失败保留重试。
+- 首页显示实际可用的初始化/登录入口。码与密码仅在表单内存中，应用不写 URL、Cookie、Web Storage 或持久查询缓存；会话仍由 Better Auth 的 HttpOnly Cookie 承载。
 
-本轮回读各 PR 的正文、评论及 `statusCheckRollup`。上述远端结果属于前置提交，不是本分支或 T-ID-03 的检查结果。设计走查的证据文件中“运行中”属于记录时状态，最终状态由本次 PR 回读补充；没有改写原始记录。
+## 设计与组件
 
-## 验收决定与实施边界
+已实时读取任务指定的桌面/手机账号、站点、码错误、未知结果、登录与凭据错误节点。复用 PublicShell、AdminShell、已有字体/颜色/公共背景；使用锁定的 HeroUI 3.2.6 Form、TextField、InputGroup、ComboBox、Button、Alert、Spinner、Label、FieldError、Description、ListBox。核对了官方文档与安装类型，以及 React Aria 双受控 ComboBox 的实际行为。
 
-初次核对依据当时的任务交接和设备记录，将 #57 判为前置验收未完成。项目所有者随后明确调整验收结论：#57、#59 均正常完成，不存在缺口，不再要求补充校验；后续任务可以消费其交付，不再受本记录的旧阻塞结论限制。
+必要差异：通用控件内部样式统一按 HeroUI；密码增加可键盘操作的显示按钮；仅保留当前可用的本地登录；后台仅提供已交付账号状态。登录邮箱/密码图标直接保存 Figma 导出的 SVG，公共背景复用已交付资产。深色字段增加现有主题边框以保持可辨识。没有修改 Figma 或冻结 PRD。
 
-这是所有者的验收决定，不是新增实测结果。上表和历史证据中未执行的真实设备测试仍如实保留，不改写为测试通过；它们不再构成 #57、#59 的待处理缺口或 #60 的实施前置。
+## 验证环境与进展
 
-已完成不依赖设备的代码与调用路径阅读：`POST /api/setup` 组合 identity/site/media/storage，`readSetupOwner` 可识别已初始化状态；认证入口仅开放登录、退出及会话读取；`requireOwner` 只鉴权，不负责续期 Cookie。`PublicShell` / `AdminShell` 已存在，生产 `/setup`、`/login`、受保护后台页面尚未交付。现有 `e2e/identity-auth.mjs` 只验证认证 HTTP，不代表表单闭环。
+macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin`。浏览器使用现有 Ego Lite，唯一 TaskSpace 1；未下载 Chromium，未运行本地 Docker。
 
-结果核对可消费已有 `GET /api/auth/get-session`：未初始化返回 `409 / SETUP_REQUIRED`，已初始化但匿名返回 `200 / null`。无需为此新增查询接口。该结论来自代码阅读，不是新增页面的运行证据。
+| 已实际执行命令                                                                                                     | 结果                                                                         |
+| ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                   | 通过，依赖和锁文件未改变                                                     |
+| `pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/issue-60-unit.xml`               | 228 项通过                                                                   |
+| `pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check`                                                     | 通过，含最终新增浏览器验证文件                                               |
+| `pnpm run build`                                                                                                   | 通过；已有 SQLite 可选 Debug 二进制追踪提示保留，实际 Release 驱动由集成验证 |
+| `pnpm exec vitest run --project integration tests/integration/identity/setup.test.ts`                              | 28 项通过                                                                    |
+| `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts`                               | 16 项通过，含真实受保护页面与撤销 Cookie 重放                                |
+| `pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-60-integration.xml` | 最终 26 文件、203 项通过（81.81s）                                           |
+| `EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-60-browser pnpm run test:browser`         | 最终通过：桌面/手机各自空目录、初始化、登录、退出、重启与会话故障恢复        |
 
-当前变更仅为前置记录及任务验收结论，不修改生产代码、Figma、冻结 PRD、需求编号、依赖关系或数据 schema。
+无 schema 变化，`db:generate` 不适用。测试出现的真实失败均修复后重跑：旧首页“未开放”断言随本次真实入口开放更新，并继续断言未交付入口不可见；新增 ListBox 泛型和 HTTP 测试请求头类型；RSC 请求先规范化 `_rsc`，测试按实际协议检查不能泄露邮箱；浏览器扩展遮挡通过正常 UI/键盘操作处理，不隐藏扩展伪造截图。
 
-## 后续业务实施顺序（尚未执行）
+[单元 JUnit](./local-unit.xml)、[集成 JUnit](./local-integration.xml)、[浏览器运行与清理报告](./browser/runner.json)及两端 [1440](./browser/identity-1440-restart.json) / [390](./browser/identity-390-restart.json)会话检查均保留。截图覆盖 360/390/430/768/1440 浅深色且无横向溢出，手机可见触控目标均至少 44px；代表截图见本目录 browser。短视口滚动、Tab/Enter、时区别名/关键词/Esc、错误焦点、无推荐、真实提交丢响应核对均有断言。丢响应与无推荐为明确受控浏览器故障注入；初始化/登录/限流/退出仍调用真实服务，续期和过期使用一次性真实数据库。
 
-1. 实时读取任务列出的桌面、手机和状态 Figma 节点，核对已安装 HeroUI 类型。复用公共外壳完成两步表单、内存字段保留、时区确认，以及提交结果未知时的只读核对。
-2. 接入真实登录、限流/未初始化反馈、退出和会话续期；落实已交付受保护入口及允许的站内回跳，分别验证页面和 HTTP 权限。
-3. 新增 `e2e/identity.mjs` 并接入现有运行器，覆盖两端初始化到登录/退出、重启及旧码拒绝，补充错误恢复和绕过页面负测。执行 Issue 规定的安装、格式、lint、类型、单元、构建、集成及 Ego 浏览器验证；仅 schema 变化时生成迁移。
-4. 按后续业务任务的授权完成审计、提交和适用验证。本次所有者要求直接合并的是前置记录 PR，不代表这些业务步骤已经执行。
+## 审计
 
-## 本轮验证
+使用 `code-review-and-quality`，先审测试，再核对正确性、模块边界、可读性、安全与性能。独立审计发现两项时区缺陷：双受控选择未同步显示文字、有效别名被组件再次过滤。均已修复并增加关键词选择、别名和 Esc 恢复测试。审计还纠正了“无法推荐时区”故障注入的范围，避免影响显式时区验证。登录闭环走查未发现额外明确缺陷；真实限流恢复、退出失败、过期及续期已在两端浏览器通过；最终独立复核通过，当前无必修问题。
 
-环境：macOS arm64、Node 24.19.0、pnpm 11.19.0；PATH 前置 `/Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin`。原工作区干净，未发现其他运行中的任务占用；`git fetch origin` 后从 `origin/main` 的 `1d326ec` 建立 `codex/issue-60-identity-flow`。
+## 未完成与远端验证
 
-- `pnpm install --frozen-lockfile`：通过，锁文件未改动。
-- `node docs/tasks/check.mjs`：通过，120 个任务、298 条需求，无缺失 ID 或循环。
-- `node docs/tasks/check.mjs --self-test`：通过，5 个拒绝用例。
-- `pnpm exec prettier --write docs/verification/identity-60/README.md docs/tasks/m1-m2.md`、`pnpm run format:check`：通过。
-- Python 标准库核对两份改动文件中的相对文件链接：73 项均存在；未声称远端链接或 Figma 实时通过。
-- `git diff --check`：通过。
+真实手机触控、物理软键盘及非零安全区尚无设备实测；窄视口、短视口和 CDP 触控模拟不替代这些证据。跨浏览器矩阵仍按 T-QA-02 归属，本次只记录实际 Ego 环境。此前 #57/#59 的所有者验收决定保留，不因本任务的新页面设备验证项而重新阻塞其交付。
 
-以上为验收决定前已执行的本地检查。本地未执行应用 lint、类型、单元、构建、集成或浏览器检查；已有提交的远端结果见 [PR #99](https://github.com/dnslin/ariso-next/pull/99)。按所有者最新要求，本次验收结论更新不再运行或等待校验，停止追加双 agent 评审，不把此前结果当作更新后提交的验证。业务实施仍未完成。
+创建草稿 PR 后，由现有 CI 和 Docker build 工作流验证本分支；AMD64/ARM64 原生检查只验证不发布。远端结果尚待记录。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。

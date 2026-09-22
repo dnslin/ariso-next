@@ -18,6 +18,9 @@ for (const name of [
   'browser.json',
   'shell-browser.json',
   'error-recovery.json',
+  ...[1440, 390].flatMap((width) =>
+    ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
+  ),
 ])
   await rm(join(output, name), { force: true });
 const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
@@ -37,6 +40,26 @@ let browser;
 let shellServer;
 let shellLogs = '';
 let logs = '';
+const secrets = [];
+function setupCodes(value) {
+  return value.split('\n').flatMap((line) => {
+    let record;
+    try {
+      record = JSON.parse(line);
+    } catch {
+      return [];
+    }
+    return record.module === 'identity.setup' && record.event === 'setup-code'
+      ? [record.code]
+      : [];
+  });
+}
+function redact(value) {
+  let safe = String(value);
+  for (const secret of [...secrets, ...setupCodes(logs)])
+    safe = safe.replaceAll(secret, '[redacted]');
+  return safe;
+}
 async function stop(child) {
   if (!child?.pid || child.exitCode !== null || child.signalCode !== null)
     return;
@@ -77,46 +100,56 @@ try {
   );
   const origin = `http://127.0.0.1:${port}`;
   report.origin = origin;
-  server = spawn('sh', [join(app, 'entrypoint.sh')], {
-    cwd: temporary,
-    detached: true,
-    stdio: ['ignore', 'pipe', 'pipe'],
-    env: {
-      PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
-      NODE_ENV: 'production',
-      HOST: '127.0.0.1',
-      PORT: String(port),
-      DATA_DIR: join(temporary, 'data'),
-      BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
-      ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
-    },
-  });
-  server.stdout.on('data', (chunk) => {
-    logs += chunk;
-  });
-  server.stderr.on('data', (chunk) => {
-    logs += chunk;
-  });
+  const productionEnv = {
+    PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
+    NODE_ENV: 'production',
+    HOST: '127.0.0.1',
+    PORT: String(port),
+    BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
+    ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
+  };
   let spawnError;
-  server.on('error', (error) => {
-    spawnError = error;
-  });
-  const deadline = Date.now() + 30000;
-  while (true) {
-    controller.signal.throwIfAborted();
-    if (spawnError) throw spawnError;
-    assert.equal(server.exitCode, null, `Production server exited: ${logs}`);
-    try {
-      const response = await fetch(`${origin}/api/health`, {
-        signal: AbortSignal.timeout(1000),
-      });
-      if (response.status === 200) break;
-    } catch (error) {
-      if (Date.now() >= deadline) throw error;
+  async function startProduction(dataDirectory) {
+    const logStart = logs.length;
+    spawnError = undefined;
+    server = spawn('sh', [join(app, 'entrypoint.sh')], {
+      cwd: temporary,
+      detached: true,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...productionEnv, DATA_DIR: dataDirectory },
+    });
+    server.stdout.on('data', (chunk) => {
+      logs += chunk;
+    });
+    server.stderr.on('data', (chunk) => {
+      logs += chunk;
+    });
+    server.on('error', (error) => {
+      spawnError = error;
+    });
+    const deadline = Date.now() + 30000;
+    while (true) {
+      controller.signal.throwIfAborted();
+      if (spawnError) throw spawnError;
+      assert.equal(
+        server.exitCode,
+        null,
+        `Production server exited: ${redact(logs)}`,
+      );
+      try {
+        const response = await fetch(`${origin}/api/health`, {
+          signal: AbortSignal.timeout(1000),
+        });
+        if (response.status === 200) break;
+      } catch (error) {
+        if (Date.now() >= deadline) throw error;
+      }
+      assert.ok(Date.now() < deadline, 'Production server health timed out');
+      await delay(100, undefined, { signal: controller.signal });
     }
-    assert.ok(Date.now() < deadline, 'Production server health timed out');
-    await delay(100, undefined, { signal: controller.signal });
+    return setupCodes(logs.slice(logStart));
   }
+  await startProduction(join(temporary, 'data'));
   const shellSocket = createServer();
   shellSocket.listen(0, '127.0.0.1');
   await once(shellSocket, 'listening');
@@ -176,6 +209,8 @@ try {
     projectDirectory: resolve('.'),
     databasePath: join(temporary, 'data', 'ariso.db'),
     errorsScript: pathToFileURL(resolve('e2e/browser-errors.mjs')).href,
+    identitySessionScript: pathToFileURL(resolve('e2e/identity-session.mjs'))
+      .href,
     recoveryScript: pathToFileURL(resolve('e2e/error-recovery.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
@@ -184,54 +219,104 @@ try {
     spaceId: process.env.EGO_TASK_SPACE
       ? Number(process.env.EGO_TASK_SPACE)
       : undefined,
-    keepSpace: process.env.EGO_KEEP_SPACE === '1',
+    keepSpace: true,
   };
   if (config.spaceId !== undefined)
     assert.ok(
       Number.isInteger(config.spaceId) && config.spaceId > 0,
       'Invalid EGO_TASK_SPACE',
     );
-  const source = await readFile(
-    new URL('../e2e/runtime.mjs', import.meta.url),
-    'utf8',
-  );
-  browser = spawn('ego-browser', ['nodejs'], {
-    detached: true,
-    stdio: ['pipe', 'pipe', 'pipe'],
-  });
-  let browserLogs = '';
-  browser.stdout.on('data', (chunk) => {
-    browserLogs += chunk;
-    process.stdout.write(chunk);
-  });
-  browser.stderr.on('data', (chunk) => {
-    browserLogs += chunk;
-    process.stderr.write(chunk);
-  });
-  const closed = once(browser, 'close', { signal: controller.signal });
-  browser.stdin.on('error', () => {
-    /* Process close/error below reports a failed CLI. */
-  });
-  browser.stdin.end(`const config = ${JSON.stringify(config)};\n${source}`);
-  const timeout = setTimeout(interrupt, 300000);
-  try {
-    const [code] = await closed;
-    assert.equal(code, 0, 'Ego browser verification failed');
-    report.status = 'passed';
-  } finally {
-    clearTimeout(timeout);
-    await writeFile(join(output, 'ego.log'), browserLogs);
+  async function runBrowser(script, browserConfig, logName) {
+    const source = await readFile(new URL(script, import.meta.url), 'utf8');
+    browser = spawn('ego-browser', ['nodejs'], {
+      detached: true,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    let browserLogs = '';
+    browser.stdout.on('data', (chunk) => {
+      browserLogs += chunk;
+    });
+    browser.stderr.on('data', (chunk) => {
+      browserLogs += chunk;
+    });
+    const closed = once(browser, 'close', { signal: controller.signal });
+    browser.stdin.on('error', () => {
+      /* Process close/error below reports a failed CLI. */
+    });
+    browser.stdin.end(
+      `const config = ${JSON.stringify(browserConfig)};\n${source}`,
+    );
+    const timeout = setTimeout(interrupt, 300000);
+    try {
+      const [code] = await closed;
+      assert.equal(code, 0, `Ego browser verification failed (${logName})`);
+    } finally {
+      clearTimeout(timeout);
+      const safeLogs = redact(browserLogs);
+      process.stdout.write(safeLogs);
+      await writeFile(join(output, logName), safeLogs);
+    }
   }
+  await runBrowser('../e2e/runtime.mjs', config, 'ego.log');
+  const runtimeReport = JSON.parse(
+    await readFile(join(output, 'browser.json'), 'utf8'),
+  );
+  report.taskSpaceId = runtimeReport.taskSpaceId;
+  report.identity = [];
+  await stop(server);
+  await stop(shellServer);
+  for (const width of [1440, 390]) {
+    const dataDirectory = join(temporary, `identity-${width}`);
+    const codes = await startProduction(dataDirectory);
+    assert.equal(codes.length, 1, 'Empty directory must issue one setup code');
+    secrets.push(codes[0]);
+    const credentials = {
+      email: `owner-${width}@example.test`,
+      password: randomBytes(18).toString('hex'),
+    };
+    secrets.push(credentials.password);
+    const identityConfig = {
+      ...config,
+      spaceId: report.taskSpaceId,
+      width,
+      code: codes[0],
+      credentials,
+      databasePath: join(dataDirectory, 'ariso.db'),
+    };
+    await runBrowser(
+      '../e2e/identity.mjs',
+      { ...identityConfig, phase: 'setup' },
+      `identity-${width}-setup.log`,
+    );
+    await stop(server);
+    assert.deepEqual(
+      await startProduction(dataDirectory),
+      [],
+      'Initialized restart must not issue another code',
+    );
+    await runBrowser(
+      '../e2e/identity.mjs',
+      {
+        ...identityConfig,
+        phase: 'restart',
+        keepSpace: width !== 390 || process.env.EGO_KEEP_SPACE === '1',
+      },
+      `identity-${width}-restart.log`,
+    );
+    report.identity.push({ width, setup: 'passed', restart: 'passed' });
+    await stop(server);
+  }
+  report.status = 'passed';
 } catch (error) {
-  report.error = error.stack ?? String(error);
+  report.error = redact(error.stack ?? String(error));
   process.exitCode = 1;
-  console.error(error);
+  console.error(report.error);
 } finally {
   await stop(browser);
   await stop(server);
   await stop(shellServer);
   await writeFile(join(output, 'shell-server.log'), shellLogs);
-  await writeFile(join(output, 'server.log'), logs);
+  await writeFile(join(output, 'server.log'), redact(logs));
   await rm(temporary, { recursive: true, force: true });
   report.finishedAt = new Date().toISOString();
   report.temporaryDirectoryRemoved = true;

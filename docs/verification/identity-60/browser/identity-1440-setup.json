@@ -1,0 +1,337 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "phase": "setup",
+  "checks": [
+    "A deliberately lost real setup response requires status verification before any retry",
+    "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [
+    {
+      "name": "setup",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "email",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示确认密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 462,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "email",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示确认密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 462,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "email",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示确认密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 462,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "email",
+          "width": 460,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 376,
+          "height": 36
+        },
+        {
+          "name": "显示确认密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 462,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 348,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 264,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 390,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 348,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 264,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 390,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 348,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 264,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 390,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 88,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 348,
+          "height": 36
+        },
+        {
+          "name": "password",
+          "width": 264,
+          "height": 36
+        },
+        {
+          "name": "显示密码",
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 390,
+          "height": 48
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
