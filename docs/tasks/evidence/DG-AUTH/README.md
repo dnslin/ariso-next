@@ -36,4 +36,4 @@
 
 ## 远端验证
 
-本分支将通过草稿 PR 触发现有 CI 和 Docker AMD64/ARM64 工作流；结果以该 PR 最新提交检查为准，检查结束前不标通过。工作流的 `release-checks` / `publish` 仅允许 release 事件，本次不发布镜像、不部署。没有合并、关闭 Issue 或清理分支/worktree。
+[PR #98](https://github.com/dnslin/ariso-next/pull/98) 已创建为草稿，提交 `37336c2` 触发 [CI](https://github.com/dnslin/ariso-next/actions/runs/35675471192) 和 [Docker AMD64/ARM64](https://github.com/dnslin/ariso-next/actions/runs/35675471402)。本记录提交时均在运行，不标通过；后续证据提交的最终结果、实际回归命令和限制统一记录在 [PR 描述与最新检查](https://github.com/dnslin/ariso-next/pull/98/checks)，避免把前一提交结果当成最新提交通过。实际跟进使用 `gh pr checks 98` 和 `gh run view <run-id> --json status,conclusion,jobs`。工作流的 `release-checks` / `publish` 仅允许 release 事件，本次不发布镜像、不部署。没有合并、关闭 Issue 或清理分支/worktree。HTTPS 推送两次连接超时后，使用现有 SSH 身份成功推送，仅对单次 Git 命令替换传输地址，没有修改仓库远端配置。
