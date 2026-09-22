@@ -27,7 +27,7 @@
 
 - `formats.ts` 经 ExifTool stdin 读取真实容器类型、原生尺寸、APNG 标记和 MPF 图像数量，不信扩展名、传入 MIME 或同名 EXIF 尺寸。当前仅处理静态 JPEG/PNG，单帧 APNG 和 MPO 也明确拒绝。
 - `process.ts` 复用 storage 读写流与 execa，执行方向校正、sRGB、按快照等比缩小、清理源附加信息和 WebP 编码。默认压缩质量 82；缩略图固定最长边 640、质量 80、不放大。透明 WebP 保留 alpha，原图不改写。
-- 每步 I/O 前登记最终及 partial 对象；工具成功结束后才允许存储完成。实际编码与尺寸从派生字节读取。每次发布和最终 ready 都复核任务、永久删除状态及存储启用；失败保留原图和已发布版本，未完成候选保留清理责任及可诊断错误。
+- 每步 I/O 前登记最终及 partial 对象；工具成功结束后才登记 stored 并发布可访问版本。实际编码与尺寸从派生字节读取。每次发布和最终 ready 都复核任务、永久删除状态及存储启用；失败保留原图和已发布版本，未完成候选保留清理责任及可诊断错误。
 - `queue.ts` 在 SQLite immediate 短事务领取 queued 任务，禁止同图 running 任务交错，事务外执行处理。默认串行、空闲 250ms 轮询，停止可取消并等待当前任务；数据库关闭后停止。Web 启动全局单例复用同一消费者，导入、prestart 和 Next 构建不启动消费。
 - 迁移 `0005_sharp_paper_doll.sql` 只增加任务 started_at/finished_at 可空时间列。启动从已有绝对 DATA_DIR 解析存储和临时目录，避免 Next 将运行时目录追踪为项目文件。
 
@@ -76,7 +76,9 @@ Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空�
 
 普通 `integration` project 不要求本机图片工具；`media-tools` project 包含两个实际工具测试，缺工具时失败、不跳过。`pnpm run test:integration` 同时运行两组。通用 CI 执行普通 integration；Docker 工作流在两个实际生产镜像内执行 media-tools，使用临时目录、关闭网络并导出 `media-process-amd64/arm64` XML。测试依赖从工作区挂载，不进入生产镜像。
 
-前置 `72078d0` 不含本次业务代码。业务提交的 CI、AMD64/ARM64 媒体处理和容器结果待补充，全部适用检查通过前保持草稿。
+业务提交 `fa20fd4` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35704396275) 已通过。[首轮双架构运行](https://github.com/dnslin/ariso-next/actions/runs/35704396667) 在新增工具组各有 21 项通过、1 项失败：旧版 ImageMagick 生成的测试底图在 IDAT 后附带文本，ExifTool 对单帧 APNG 样本发出警告。18 项处理测试全部通过；该失败阻止后续容器步骤，不能标整套通过。
+
+已在测试底图生成时增加 `-strip`，保留动画控制块、帧数、尺寸、警告和 MPF 提取等全部断言。该改动不修改业务逻辑；独立审计通过。`pnpm exec vitest run --project media-tools --reporter=default --reporter=junit --outputFile=test-results/media-63/media-tools-fixture-fix.xml` 本地复测 22 项通过。首轮 [AMD64](./remote-first-amd64.xml)、[ARM64](./remote-first-arm64.xml) XML 保留失败。修复后的双架构及完整容器结果待补充，通过前保持草稿。
 
 ## 审计及边界
 

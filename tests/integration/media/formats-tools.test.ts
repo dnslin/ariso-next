@@ -23,7 +23,7 @@ afterEach(async () => {
 async function raster(format: 'jpeg' | 'png', color = 'red') {
   const { stdout } = await execa(
     'magick',
-    ['-size', '16x12', `xc:${color}`, `${format}:-`],
+    ['-size', '16x12', `xc:${color}`, '-strip', `${format}:-`],
     { encoding: 'buffer' },
   );
   return Buffer.from(stdout);
