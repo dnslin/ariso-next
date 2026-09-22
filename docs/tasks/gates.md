@@ -191,6 +191,7 @@
 
 ### EV-COLLECTIONS-01 标签 Unicode 与唯一性验证
 
+- 实施证据：[固定 Unicode 数据与真实 SQLite 竞争实验](./evidence/EV-COLLECTIONS-01/README.md)。仅验证本工程前置，不代表 T-COL-01 业务已实现。
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[collections 名称与验收](../specs/SPEC-collections.md)
