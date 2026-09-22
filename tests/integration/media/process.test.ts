@@ -50,6 +50,7 @@ import {
 } from '../../../src/server/media/process.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import * as mediaTools from '../../../src/server/media/tools.ts';
+import { recoverMediaJobs } from '../../../src/server/media/recovery.ts';
 
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
@@ -490,6 +491,72 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
         )
         .get()!.status,
     ).toBe('stored');
+  });
+
+  it('rolls back failed job and image settlement when candidate cleanup registration fails, then recovers after reopening', async () => {
+    const accepted = await accept(
+      await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+    );
+    connection.db.$client.exec(`
+      CREATE TRIGGER fail_thumbnail BEFORE INSERT ON media_versions
+      WHEN NEW.kind = 'thumbnail'
+      BEGIN SELECT RAISE(ABORT, 'controlled thumbnail publication failure'); END;
+      CREATE TRIGGER fail_cleanup BEFORE UPDATE OF status ON media_objects
+      WHEN NEW.status = 'cleanup_pending'
+      BEGIN SELECT RAISE(ABORT, 'controlled candidate cleanup registration failure'); END;
+    `);
+    await expect(processNext()).rejects.toThrow(
+      'controlled candidate cleanup registration failure',
+    );
+    connection.close();
+    connection = openRuntimeDatabase(join(directory, 'ariso.db'));
+    runtime.db = connection.db;
+    const interrupted = state(accepted.imageId);
+    expect(interrupted.latestJob).toMatchObject({
+      status: 'running',
+      finishedAt: null,
+      retryCount: 0,
+    });
+    expect(interrupted.image.processingStatus).toBe('processing');
+    const compressedId = interrupted.versions.find(
+      (version) => version.kind === 'compressed',
+    )!.saved!.object.id;
+    const unfinished = connection.db
+      .select()
+      .from(mediaObjects)
+      .where(
+        and(
+          eq(mediaObjects.jobId, accepted.jobId),
+          eq(mediaObjects.status, 'writing'),
+        ),
+      )
+      .all();
+    expect(unfinished.map((object) => object.purpose).sort()).toEqual([
+      'temporary',
+      'thumbnail',
+    ]);
+    connection.db.$client.exec('DROP TRIGGER fail_thumbnail');
+    connection.db.$client.exec('DROP TRIGGER fail_cleanup');
+    recoverMediaJobs(connection.db);
+    await processNext();
+    const recovered = state(accepted.imageId);
+    expect(recovered.latestJob).toMatchObject({
+      status: 'succeeded',
+      retryCount: 0,
+      error: null,
+    });
+    expect(recovered.image.processingStatus).toBe('ready');
+    expect(
+      recovered.versions.find((version) => version.kind === 'compressed')!
+        .saved!.object.id,
+    ).toBe(compressedId);
+    expect(
+      recovered.versions.find((version) => version.kind === 'thumbnail')!.saved!
+        .object.id,
+    ).toBe(unfinished.find((object) => object.purpose === 'thumbnail')!.id);
+    expect(await versionBytes(accepted.imageId, 'original')).toEqual(
+      accepted.bytes,
+    );
   });
 
   it('does not start the next step after storage is disabled', async () => {

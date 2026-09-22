@@ -345,10 +345,18 @@ export async function processMediaJob(
       !toolCleanupFailed &&
       signal?.aborted &&
       (signal.reason as { code?: string })?.code === 'MEDIA_INTERRUPTED';
-    const diagnostic = interrupted
-      ? `${step}: ${describeProcessingError(signal.reason)}`
-      : settleMediaFailure(
-          db,
+    let diagnostic: string;
+    if (interrupted) {
+      diagnostic = `${step}: ${describeProcessingError(signal.reason)}`;
+      db.update(mediaJobs)
+        .set({ error: diagnostic, updatedAt: new Date() })
+        .where(and(eq(mediaJobs.id, jobId), eq(mediaJobs.status, 'running')))
+        .run();
+    } else {
+      // A terminal job and its remaining candidate cleanup must commit together.
+      diagnostic = db.transaction((tx) => {
+        const failure = settleMediaFailure(
+          tx,
           jobId,
           step,
           toolCleanupFailed
@@ -359,17 +367,15 @@ export async function processMediaJob(
                 ? budget.signal.reason
                 : error,
         );
-    if (plan && !interrupted)
-      markMediaCandidates(
-        db,
-        [plan.objectId, plan.temporaryObjectId],
-        diagnostic,
-      );
-    if (interrupted)
-      db.update(mediaJobs)
-        .set({ error: diagnostic, updatedAt: new Date() })
-        .where(and(eq(mediaJobs.id, jobId), eq(mediaJobs.status, 'running')))
-        .run();
+        if (plan)
+          markMediaCandidates(
+            tx,
+            [plan.objectId, plan.temporaryObjectId],
+            failure,
+          );
+        return failure;
+      });
+    }
     logger.error(
       { err: error, jobId, step, diagnostic },
       'Media processing interrupted or failed',

@@ -15,7 +15,7 @@ import { dirname, join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
 import { eq } from 'drizzle-orm';
 import { execa } from 'execa';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
@@ -44,6 +44,7 @@ import {
 } from '../../../src/server/media/queue.ts';
 import { planDerivedObject } from '../../../src/server/media/objects.ts';
 import type { MediaRuntime } from '../../../src/server/media/process.ts';
+import * as mediaTools from '../../../src/server/media/tools.ts';
 
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
@@ -227,8 +228,98 @@ async function completed(imageId: string) {
   expect(state(imageId).image.processingStatus).toBe('ready');
 }
 
-// No tool mocks: these cases require the installed ImageMagick and ExifTool.
+// These cases require real ImageMagick and ExifTool. A startup spy applies OS
+// signals where a test must keep a real tool active across a queue failure.
 describe('T-MED-04 actual processing recovery', () => {
+  it.each(['claim', 'settlement'] as const)(
+    'preserves healthy concurrent work for recovery after a queue %s failure',
+    async (failureSource) => {
+      connection.db.transaction((tx) =>
+        updateMediaSettings(tx, { ...initialMediaSettings, concurrency: 2 }),
+      );
+      const healthy = await accept();
+      const failing = await accept();
+      const waiting = await accept();
+      let occupiedPath: string | undefined;
+      let paused = false;
+      const actualStart = mediaTools.startMediaTool;
+      const controlledStart: typeof mediaTools.startMediaTool = (
+        command,
+        args,
+        options,
+      ) => {
+        const tool = actualStart(command, args, options);
+        if (
+          failureSource === 'settlement' &&
+          options.workspace.endsWith(`media-${healthy.jobId}`) &&
+          !paused
+        ) {
+          // Keep a real healthy tool active until the other job's settlement
+          // fails. The production cancellation path must terminate it.
+          tool.child.kill('SIGSTOP');
+          paused = true;
+        }
+        return tool;
+      };
+      const spy = vi
+        .spyOn(mediaTools, 'startMediaTool')
+        .mockImplementation(controlledStart);
+      try {
+        if (failureSource === 'settlement') {
+          occupiedPath = objectPath(
+            failing.storage,
+            `images/${failing.imageId}/compressed`,
+          );
+          await mkdir(dirname(occupiedPath), { recursive: true });
+          await writeFile(occupiedPath, 'prevent this job from writing');
+        }
+        connection.db.$client.exec(`
+          CREATE TRIGGER fail_queue_operation BEFORE UPDATE OF status ON media_jobs
+          WHEN NEW.id = '${failing.jobId}' AND NEW.status = '${failureSource === 'claim' ? 'running' : 'failed'}'
+          BEGIN SELECT RAISE(ABORT, 'controlled queue ${failureSource} failure'); END;
+        `);
+        queue = startMediaQueue(runtime);
+        await expect
+          .poll(() => state(healthy.imageId).latestJob?.error, {
+            timeout: 5000,
+            interval: 10,
+          })
+          .toContain('MEDIA_');
+        const stopped = queue.stop();
+        queue = undefined;
+        await expect(stopped).rejects.toThrow(
+          `controlled queue ${failureSource} failure`,
+        );
+        if (failureSource === 'settlement') expect(paused).toBe(true);
+        expect(state(healthy.imageId).latestJob).toMatchObject({
+          status: 'running',
+          error: expect.stringContaining('MEDIA_INTERRUPTED'),
+          retryCount: 0,
+          finishedAt: null,
+        });
+        expect(state(healthy.imageId).image.processingStatus).toBe(
+          'processing',
+        );
+        connection.db.$client.exec('DROP TRIGGER fail_queue_operation');
+        if (occupiedPath) await rm(occupiedPath);
+        connection.close();
+        connection = openRuntimeDatabase(join(directory, 'ariso.db'));
+        runtime.db = connection.db;
+        queue = startMediaQueue(runtime);
+        await Promise.all(
+          [healthy, failing, waiting].map((image) => completed(image.imageId)),
+        );
+        expect(state(healthy.imageId).latestJob?.retryCount).toBe(0);
+        expect(
+          await readFile(objectPath(healthy.storage, healthy.key)),
+        ).toEqual(healthy.bytes);
+      } finally {
+        spy.mockRestore();
+      }
+    },
+    20000,
+  );
+
   it('repeats interrupted terminal recovery cleanup without reopening the failed job or deleting unknown workspaces', async () => {
     const accepted = await accept();
     connection.db

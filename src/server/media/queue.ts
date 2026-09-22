@@ -99,7 +99,9 @@ export function startMediaQueue(runtime: MediaRuntime) {
                 { err, jobId: job.id },
                 'Media job settlement failed',
               );
-              controller.abort();
+              controller.abort(
+                mediaError('MEDIA_INTERRUPTED', 'Media queue failed', err),
+              );
             })
             .finally(() => active.delete(execution));
           active.add(execution);
@@ -114,7 +116,9 @@ export function startMediaQueue(runtime: MediaRuntime) {
       )) {
         failure ??= err;
         runtime.logger.error({ err }, 'Media queue stopped after an error');
-        controller.abort();
+        controller.abort(
+          mediaError('MEDIA_INTERRUPTED', 'Media queue failed', err),
+        );
       }
     } finally {
       await Promise.all(active);
