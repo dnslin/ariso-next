@@ -97,7 +97,7 @@ node tests/experiments/media-recovery/resources.ts /tmp/ariso-media-64-volume
 
 ## 远端与剩余边界
 
-`gh workflow list` 确认远端仅有 Release checks、Release images；仓库没有PR/push或workflow_dispatch验证入口。没有创建Release、发布镜像或部署来绕过这一约定。PR创建后核对实际checks与branch runs；按当前执行约定，日常PR的发布验证不适用。
+`gh workflow list` 确认远端仅有 Release checks、Release images；仓库没有PR/push或workflow_dispatch验证入口。没有创建Release、发布镜像或部署来绕过这一约定。已创建 [PR #106](https://github.com/dnslin/ariso-next/pull/106)。实际运行 `gh pr checks 106` 返回 no checks，`gh run list --branch codex/issue-64-media-recovery` 返回空列表，`gh pr view` 确认无检查、无合并冲突。按当前执行约定，日常PR的发布验证不适用；本地适用检查与审计全部通过，可进入正式评审。
 
 Linux procps、AMD64/ARM64镜像和Linux受限卷均留待Release验证，未标通过。当前孤儿恢复匹配带工作区标记的组长，适用于本期不调用外部delegate的JPEG/PNG/WebP与ExifTool；未来引入delegate格式需补组长消失后的后代恢复实测。上传传输持久记录、其他格式和完整业务页面仍属各后续任务。
 
