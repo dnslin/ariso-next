@@ -2,6 +2,8 @@
 
 对应 [Issue #64](https://github.com/dnslin/ariso-next/issues/64)。任务、需求编号与边界沿用 [T-MED-04](../../tasks/m1-m2.md#t-med-04-任务重启恢复与按需资源)，规则见 [media §7/10](../../specs/SPEC-media.md)。记录日期：2026-09-22。当前执行范围统一引用[适用检查](../../tasks/execution.md#适用检查)，不改冻结 PRD。
 
+最新的双 agent 复审修复与优化结果见[修订验证](./revision/README.md)。下列首轮证据保留原执行结果。
+
 ## 前置与范围
 
 已用 `gh issue view` 和原生 dependencies/blocked_by、dependencies/blocking 核对：#62、#63 均已关闭，无 Issue 评论；直接后置为 #69、#73。前置交付与实际验收见 [T-MED-03](../media-63/README.md) 和 [EV-MEDIA-01](../../tasks/evidence/EV-MEDIA-01/README.md)。当前工作区原为干净 main，从最新 `origin/main` 的 `dfc3d91` 创建 `codex/issue-64-media-recovery`。
@@ -93,7 +95,7 @@ node tests/experiments/media-recovery/resources.ts /tmp/ariso-media-64-volume
 
 [第二轮完整集成](./local-integration-second.xml) 为279通过、13失败，全部来自旧启动测试夹具遗漏媒体迁移。补入真实0002/0003/0005/0006迁移，保留SQL失败回滚、旧产物拒绝和正常143退出的原断言。修复后13项聚焦测试通过，最终整合结果见上表。
 
-最终审计无未解决的本次范围内阻塞项。修复后完整集成292项、单元293项及Ego Lite回归均通过；未用测试注入替代真实工具、磁盘或浏览器证据。
+首轮审计未发现剩余阻塞项，完整集成292项、单元293项及Ego Lite回归通过。随后独立双 agent 复审补充发现两项P2；其修复、先红后绿测试及结构优化记录在[修订验证](./revision/README.md)，不将首轮通过视为没有缺陷的证明。
 
 ## 远端与剩余边界
 

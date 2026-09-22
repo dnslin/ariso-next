@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="71" failures="0" errors="0" time="28.332342544">
+    <testsuite name="tests/integration/media/formats-tools.test.ts" timestamp="2026-09-22T15:08:58.968Z" hostname="dnslins-Mini.lan" tests="4" failures="0" errors="0" skipped="0" time="1.107707959">
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; jpeg dimensions come from raster headers rather than contradictory EXIF tags" time="0.318637334">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; png dimensions come from raster headers rather than contradictory EXIF tags" time="0.332081292">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; rejects a valid single-frame APNG instead of treating its one frame as static PNG" time="0.195916167">
+        </testcase>
+        <testcase classname="tests/integration/media/formats-tools.test.ts" name="native container identification through tool stdin &gt; reads the actual MPF image count from stdin and rejects two-image MPO" time="0.259664333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/process.test.ts" timestamp="2026-09-22T15:08:58.968Z" hostname="dnslins-Mini.lan" tests="22" failures="0" errors="0" skipped="0" time="9.551055875">
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=false)" time="0.303545042">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=true)" time="0.25936975">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original jpg bytes, fixes supplied type and saves both actual WebP versions" time="0.729197208">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; preserves original png bytes, fixes supplied type and saves both actual WebP versions" time="0.762241166">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 6 before resizing and strips metadata" time="0.907662958">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies png orientation 6 before resizing and strips metadata" time="0.969621375">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; applies jpg orientation 2 before resizing and strips metadata" time="0.899692208">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; retains alpha, uses the queued quality/maxEdge snapshot, and does not use later settings" time="0.667325416">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; compression off creates only a thumbnail" time="0.385501375">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; thumbnail publication failure retains the original and published compressed version, and records candidate responsibility" time="0.559744042">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rolls back failed job and image settlement when candidate cleanup registration fails, then recovers after reopening" time="0.911314333">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not start the next step after storage is disabled" time="0.361598542">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks disabled after asynchronous I/O and before publishing" time="0.234096875">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks deleting after asynchronous I/O and before publishing" time="0.233261542">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; rechecks cancelled after asynchronous I/O and before publishing" time="0.230227334">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;outputFormat&quot;:&quot;jpeg&quot;}" time="0.066707">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; reports unsupported settings rather than silently creating another version: {&quot;watermarkMode&quot;:&quot;text&quot;}" time="0.064240542">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; failed full decode retains the accepted truncated original and no incomplete version is published" time="0.249306125">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; actual storage write failure is bounded, retains bytes, and records the failed step" time="0.249730083">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; does not impose a fixed input dimension limit on a real 32769-pixel PNG" time="0.36552025">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; persists cancellation during real asynchronous processing without publishing a partial output" time="0.069169542">
+        </testcase>
+        <testcase classname="tests/integration/media/process.test.ts" name="T-MED-03 real JPEG/PNG processing &gt; the 600-second content deadline fails durably without spending an automatic retry" time="0.070527916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/recovery-tools.test.ts" timestamp="2026-09-22T15:08:58.969Z" hostname="dnslins-Mini.lan" tests="14" failures="0" errors="0" skipped="0" time="17.557389459">
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; preserves healthy concurrent work for recovery after a queue claim failure" time="1.443924791">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; preserves healthy concurrent work for recovery after a queue settlement failure" time="1.600184208">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; repeats interrupted terminal recovery cleanup without reopening the failed job or deleting unknown workspaces" time="0.174544709">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; jpg survives a real worker SIGKILL after compressed publication" time="1.430251417">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; png survives a real worker SIGKILL after compressed publication" time="1.434305583">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; png survives a real worker SIGTERM after compressed publication" time="1.399387792">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; cleans unfinished objects for an already stored step without replacing its published versions" time="0.867195583">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates complete-final bytes before claiming a writing object" time="0.664729208">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates truncated-final bytes before claiming a writing object" time="0.818272916">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; recovery validates partial-only bytes before claiming a writing object" time="0.692718458">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 1, and lowering to one preserves active work" time="1.741818666">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 2, and lowering to one preserves active work" time="1.714382209">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 3, and lowering to one preserves active work" time="1.739317458">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery-tools.test.ts" name="T-MED-04 actual processing recovery &gt; runs actual tools with concurrency 4, and lowering to one preserves active work" time="1.834967958">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/recovery.test.ts" timestamp="2026-09-22T15:08:58.970Z" hostname="dnslins-Mini.lan" tests="12" failures="0" errors="0" skipped="0" time="0.113087459">
+        <testcase classname="tests/integration/media/recovery.test.ts" name="retains the original snapshot, delay and one transient retry across reopen" time="0.030517125">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error ENOSPC" time="0.008393">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error EACCES" time="0.006073375">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error EPERM" time="0.006651167">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error MEDIA_FORMAT_UNSUPPORTED" time="0.007027667">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error MEDIA_PLAN_INVALID" time="0.004909416">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not retry permanent error INSUFFICIENT_DISK_SPACE" time="0.006552042">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="allows two no-progress recoveries, persists exhaustion, and does not spend the transient retry" time="0.010636083">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="only committed step progress resets the recovery budget" time="0.008263709">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="recovery exhaustion does not take a ready image offline" time="0.006123416">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="does not interleave another job for the same image during the retry delay" time="0.008242333">
+        </testcase>
+        <testcase classname="tests/integration/media/recovery.test.ts" name="recovery exhaustion preserves stored objects and records unfinished candidate cleanup" time="0.007992208">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/media/errors.test.ts" timestamp="2026-09-22T15:08:58.970Z" hostname="dnslins-Mini.lan" tests="19" failures="0" errors="0" skipped="0" time="0.003101792">
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.001094958">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.000193667">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.000073375">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.000068667">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.00007725">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.000055292">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: operation failed" time="0.000050167">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: tool timed out" time="0.000114791">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for AbortError: cancelled" time="0.000106042">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for Error: no space left on device" time="0.000104292">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="keeps diagnostics and retry policy for unexpected rejection" time="0.000071125">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000082333">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000025292">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000020167">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000023791">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000021084">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000020333">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: Error: operation failed" time="0.000018208">
+        </testcase>
+        <testcase classname="tests/unit/media/errors.test.ts" name="preserves recovery candidates for operational failures: SyntaxError: incomplete tool JSON" time="0.000034709">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,99 @@
+{
+  "name": "recovery validates complete-final bytes before claiming a writing object",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v24.18.1",
+  "samplingIntervalMs": 25,
+  "parentRssScope": "Vitest Node process; forked worker Node RSS is not included",
+  "toolRssScope": "Sampled live ImageMagick/ExifTool processes identified by this test workspace; ps RSS KiB converted to bytes",
+  "diskScope": "Actual allocated filesystem blocks in this test data directory, including SQLite/WAL, objects and scratch files",
+  "peakParentRssBytes": 268124160,
+  "toolProcessSamples": 1,
+  "peakToolRssBytes": 9224192,
+  "peakAllocatedBytes": 417792,
+  "remainingTools": [],
+  "samples": [
+    {
+      "time": 1790089952149,
+      "parentRssBytes": 265338880,
+      "toolRssBytes": 0,
+      "allocatedBytes": 229376,
+      "tools": []
+    },
+    {
+      "time": 1790089952226,
+      "parentRssBytes": 265748480,
+      "toolRssBytes": 0,
+      "allocatedBytes": 335872,
+      "tools": []
+    },
+    {
+      "time": 1790089952277,
+      "parentRssBytes": 265912320,
+      "toolRssBytes": 9224192,
+      "allocatedBytes": 335872,
+      "tools": [
+        {
+          "pid": 56200,
+          "state": "Rs"
+        }
+      ]
+    },
+    {
+      "time": 1790089952332,
+      "parentRssBytes": 266240000,
+      "toolRssBytes": 0,
+      "allocatedBytes": 352256,
+      "tools": []
+    },
+    {
+      "time": 1790089952405,
+      "parentRssBytes": 266469376,
+      "toolRssBytes": 0,
+      "allocatedBytes": 352256,
+      "tools": []
+    },
+    {
+      "time": 1790089952484,
+      "parentRssBytes": 266797056,
+      "toolRssBytes": 0,
+      "allocatedBytes": 352256,
+      "tools": []
+    },
+    {
+      "time": 1790089952560,
+      "parentRssBytes": 267649024,
+      "toolRssBytes": 0,
+      "allocatedBytes": 393216,
+      "tools": []
+    },
+    {
+      "time": 1790089952634,
+      "parentRssBytes": 267960320,
+      "toolRssBytes": 0,
+      "allocatedBytes": 393216,
+      "tools": []
+    },
+    {
+      "time": 1790089952731,
+      "parentRssBytes": 268124160,
+      "toolRssBytes": 0,
+      "allocatedBytes": 393216,
+      "tools": []
+    },
+    {
+      "time": 1790089952799,
+      "parentRssBytes": 262832128,
+      "toolRssBytes": 0,
+      "allocatedBytes": 417792,
+      "tools": []
+    },
+    {
+      "time": 1790089952848,
+      "parentRssBytes": 262979584,
+      "toolRssBytes": 0,
+      "allocatedBytes": 417792,
+      "tools": []
+    }
+  ]
+}
