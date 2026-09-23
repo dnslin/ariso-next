@@ -1,0 +1,2232 @@
+{
+  "experiment": "EV-LIBRARY-01 SQLite scale starting test",
+  "recordedAt": "2026-09-22T16:05:45.729Z",
+  "environment": {
+    "node": "v24.18.1",
+    "configuredPackageManager": "pnpm@11.19.0",
+    "betterSqlite3": "13.0.3",
+    "sqlite": "3.53.4",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": {
+      "model": "Apple M4",
+      "logicalCores": 10
+    },
+    "memory": {
+      "totalBytes": 17179869184,
+      "freeBytesAtStart": 398835712
+    },
+    "disk": {
+      "temporaryDatabasePath": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-library-scale-6hnKMD/library.db",
+      "filesystemType": 26,
+      "capacityBytes": 245107195904,
+      "availableBytes": 127839936512,
+      "medium": "Not detected; filesystem capacity is not a disk throughput measurement"
+    },
+    "sqlitePragmas": {
+      "journal_mode": "wal",
+      "page_size": 4096,
+      "cache_size": -16000,
+      "mmap_size": 0,
+      "synchronous": 1
+    }
+  },
+  "distribution": {
+    "images": {
+      "count": 100000
+    },
+    "states": [
+      {
+        "processing_status": "failed",
+        "count": 10004
+      },
+      {
+        "processing_status": "pending",
+        "count": 9997
+      },
+      {
+        "processing_status": "processing",
+        "count": 10001
+      },
+      {
+        "processing_status": "ready",
+        "count": 69998
+      }
+    ],
+    "storage": [
+      {
+        "storage_id": "storage-0",
+        "visibility": "private",
+        "count": 8334
+      },
+      {
+        "storage_id": "storage-0",
+        "visibility": "public",
+        "count": 16666
+      },
+      {
+        "storage_id": "storage-1",
+        "visibility": "private",
+        "count": 8333
+      },
+      {
+        "storage_id": "storage-1",
+        "visibility": "public",
+        "count": 16667
+      },
+      {
+        "storage_id": "storage-2",
+        "visibility": "private",
+        "count": 8333
+      },
+      {
+        "storage_id": "storage-2",
+        "visibility": "public",
+        "count": 16667
+      },
+      {
+        "storage_id": "storage-3",
+        "visibility": "private",
+        "count": 8334
+      },
+      {
+        "storage_id": "storage-3",
+        "visibility": "public",
+        "count": 16666
+      }
+    ],
+    "trash": [
+      {
+        "trashed": 0,
+        "count": 95000
+      },
+      {
+        "trashed": 1,
+        "count": 5000
+      }
+    ],
+    "albumMemberships": {
+      "count": 150000
+    },
+    "tagMemberships": {
+      "count": 249996
+    },
+    "topAlbums": [
+      {
+        "album_id": "album-0",
+        "count": 15000
+      },
+      {
+        "album_id": "album-1",
+        "count": 7500
+      },
+      {
+        "album_id": "album-13",
+        "count": 7500
+      },
+      {
+        "album_id": "album-17",
+        "count": 7500
+      },
+      {
+        "album_id": "album-21",
+        "count": 7500
+      },
+      {
+        "album_id": "album-29",
+        "count": 7500
+      },
+      {
+        "album_id": "album-33",
+        "count": 7500
+      },
+      {
+        "album_id": "album-37",
+        "count": 7500
+      }
+    ],
+    "topTags": [
+      {
+        "tag_id": "tag-1",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-3",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-5",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-7",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-2",
+        "count": 8334
+      },
+      {
+        "tag_id": "tag-0",
+        "count": 8333
+      },
+      {
+        "tag_id": "tag-4",
+        "count": 8333
+      },
+      {
+        "tag_id": "tag-6",
+        "count": 8333
+      }
+    ],
+    "ties": {
+      "uploadRowsPerTimestamp": 8,
+      "sizeBuckets": 2000,
+      "bytesRange": [1024, 2048000]
+    },
+    "generator": "fixtureImage(i), i=0..99999; 0–3 albums and 0–5 tags per image; hot album and tags; deterministic synthetic data, not measured user density"
+  },
+  "schemaBoundary": "Actual runtime migrations for media/storage. Candidate collections relation tables and candidate media indexes exist only in this disposable database. No production library API or migration.",
+  "candidateIndexes": [
+    "CREATE INDEX experiment_uploaded_desc ON media_images(trashed_at, created_at DESC, id ASC)",
+    "CREATE INDEX experiment_uploaded_asc ON media_images(trashed_at, created_at ASC, id ASC)",
+    "CREATE INDEX experiment_size_desc ON media_images(trashed_at, byte_size DESC, id ASC)",
+    "CREATE INDEX experiment_size_asc ON media_images(trashed_at, byte_size ASC, id ASC)"
+  ],
+  "measurementMethod": {
+    "rows": 100000,
+    "warmRuns": 25,
+    "includes": "Prepare statements, items, total count, and short read transaction per request; cursor preparation is outside timed samples",
+    "firstRead": "First query on a fresh SQLite connection; SQLite page cache is new, but fixture generation and previous scenarios warm the OS filesystem cache. NOT an OS cold-cache benchmark.",
+    "p95": "Nearest rank ceil(25 × .95), warm samples in milliseconds",
+    "targetMeaning": "Engineering targets are comparisons, not predetermined pass results. Local and CI host results do not establish container or deployment latency.",
+    "limitations": [
+      "Synthetic metadata and relationship distribution; no media bytes or S3",
+      "Projection covers sort/filter metadata and storage state; no production version/job summary aggregation",
+      "Sequential single-process reads; no concurrent writes or OS cache eviction",
+      "No HTTP/network/browser latency in these measurements"
+    ]
+  },
+  "measurements": [
+    {
+      "mode": "existing-media-indexes",
+      "name": "uploaded_desc",
+      "query": {
+        "sort": "uploaded_desc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-099992",
+      "lastId": "image-099953",
+      "firstNewConnectionMs": 40.210166999999956,
+      "warmP95Ms": 33.821750000000065,
+      "warmSamplesMs": [
+        33.821750000000065, 33.47516699999983, 33.069541999999956,
+        33.34662500000013, 33.197374999999965, 33.7449160000001,
+        33.564124999999876, 33.218667000000096, 34.11608299999989,
+        32.717375000000175, 33.08979100000033, 32.872749999999996,
+        33.033750000000055, 33.177415999999994, 33.063500000000204,
+        33.33783399999993, 33.00995899999998, 33.267292, 33.41079200000013,
+        33.08020799999986, 32.88149999999996, 32.999667000000045,
+        32.86541699999998, 33.45699999999988, 33.27662499999997
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "uploaded_asc",
+      "query": {
+        "sort": "uploaded_asc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-000042",
+      "firstNewConnectionMs": 17.783792000000176,
+      "warmP95Ms": 13.678583000000344,
+      "warmSamplesMs": [
+        13.028541000000132, 12.697125000000142, 13.190416999999798,
+        12.940666999999848, 13.16229199999998, 12.916207999999642,
+        12.906833000000006, 13.03333399999974, 12.622084000000086,
+        13.5168749999998, 13.043166999999812, 13.047125000000051,
+        13.24841699999979, 12.998250000000098, 13.185582999999951,
+        13.250958999999966, 12.889750000000276, 12.83462499999996,
+        12.948542000000089, 12.634083999999802, 12.51949999999988,
+        12.78924999999981, 13.247208999999657, 14.538624999999683,
+        13.678583000000344
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at ASC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "size_desc",
+      "query": {
+        "sort": "size_desc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-001999",
+      "lastId": "image-079999",
+      "firstNewConnectionMs": 17.953083999999762,
+      "warmP95Ms": 16.499374999999873,
+      "warmSamplesMs": [
+        13.011625000000095, 15.23416700000007, 14.590957999999773,
+        15.423707999999806, 16.499374999999873, 18.779541999999765,
+        15.099333000000115, 15.043291999999838, 14.181125000000065,
+        13.606792000000041, 13.650041999999758, 13.637291999999889,
+        14.384499999999662, 13.865249999999833, 14.111374999999953,
+        13.796666999999616, 14.285875000000033, 14.252916999999798,
+        14.04729099999986, 13.562249999999949, 14.002250000000004,
+        13.632207999999991, 13.980082999999922, 13.710958000000119,
+        16.055499999999938
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.byte_size DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "size_asc",
+      "query": {
+        "sort": "size_asc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-078001",
+      "firstNewConnectionMs": 21.096750000000156,
+      "warmP95Ms": 17.583916000000045,
+      "warmSamplesMs": [
+        14.908832999999959, 15.112250000000131, 13.77475000000004,
+        15.069124999999985, 16.848999999999705, 21.624250000000302,
+        15.588124999999764, 17.583916000000045, 14.48779099999956,
+        14.162874999999985, 12.877790999999888, 14.473291999999674,
+        13.732542000000194, 13.717040999999881, 13.453165999999783,
+        12.530624999999873, 12.847875000000386, 13.022292000000107,
+        12.620499999999993, 12.156375000000025, 13.001416000000063,
+        13.094874999999774, 13.10024999999996, 12.983834000000115,
+        12.50525000000016
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.byte_size ASC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "deep-offset-2000",
+      "query": {},
+      "options": {
+        "page": 2000
+      },
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 115.01383299999998,
+      "warmP95Ms": 131.144542,
+      "warmSamplesMs": [
+        86.02312499999971, 73.12154099999998, 71.38716700000032,
+        69.27741700000024, 71.48616700000002, 68.88187500000004,
+        73.78829099999984, 70.42241699999977, 70.27574999999979,
+        68.79804199999944, 71.18866600000001, 69.84487499999977,
+        72.34762500000033, 75.61370800000077, 76.28341699999964,
+        73.47762500000044, 85.13537499999984, 98.66200000000026,
+        88.80404199999975, 92.19379200000003, 616.5855829999991, 131.144542,
+        83.84658300000046, 76.23775000000023, 78.53799999999956
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 79960],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "deep-cursor-2000",
+      "query": {},
+      "options": {
+        "cursor": "eyJxdWVyeSI6IntcInNjb3BlXCI6XCJsaWJyYXJ5XCIsXCJhbGJ1bUlkXCI6bnVsbCxcInRhZ0lkc1wiOltdLFwicVwiOm51bGwsXCJ1cGxvYWRlZEZyb21cIjpudWxsLFwidXBsb2FkZWRCZWZvcmVcIjpudWxsLFwiZm9ybWF0XCI6bnVsbCxcInN0b3JhZ2VJZFwiOm51bGwsXCJ2aXNpYmlsaXR5XCI6bnVsbCxcInN0YXR1c1wiOm51bGwsXCJzb3J0XCI6XCJ1cGxvYWRlZF9kZXNjXCIsXCJwYWdlU2l6ZVwiOjQwfSIsInZhbHVlIjoxNzY3MjI3NTc5MDAwLCJpZCI6ImltYWdlLTAxNTgzOSJ9"
+      },
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 21.16083400000025,
+      "warmP95Ms": 16.789832999999817,
+      "warmSamplesMs": [
+        15.027417000000241, 14.677749999999833, 14.620582999999897,
+        15.04083300000002, 15.820291999999426, 14.75670799999989,
+        14.739667000000736, 14.764624999999796, 14.424083999999311,
+        13.924208000000363, 13.718207999999322, 14.553417000000081,
+        14.28845900000033, 15.16924999999992, 15.426040999999714,
+        14.723041999999623, 14.284166999999798, 14.903916999999637,
+        15.477832999999919, 14.202874999999949, 14.509833000000071,
+        14.22008299999925, 14.784625000000233, 16.789832999999817,
+        17.87525000000005
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.created_at < ? OR (i.created_at = ? AND i.id > ?))\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [1767227579000, 1767227579000, "image-015839", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 21,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 44,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "single-album",
+      "query": {
+        "albumId": "album-0"
+      },
+      "options": {},
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 78.57974999999988,
+      "warmP95Ms": 120.3145829999994,
+      "warmSamplesMs": [
+        62.103125000000546, 83.82933400000002, 70.13787500000035, 60.007791,
+        61.484582999999475, 62.420874999999796, 64.30041700000038,
+        80.78699999999935, 105.3682090000002, 83.02804099999958,
+        167.08854100000008, 94.32504199999948, 63, 66.207042, 86.88737499999934,
+        78.77412499999991, 73.04320899999948, 116.35554199999933,
+        120.3145829999994, 89.96441700000105, 76.16929100000016,
+        75.4944170000017, 77.59520899999916, 110.0229589999999,
+        118.32008300000052
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?)\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["album-0", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?)",
+      "countParameters": ["album-0"],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 16,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 20,
+          "parent": 16,
+          "notused": 39,
+          "detail": "SEARCH a USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 54,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 42,
+          "detail": "SEARCH a EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "album-fixed-order",
+      "query": {
+        "scope": "album",
+        "albumId": "album-0"
+      },
+      "options": {},
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 40.32562499999949,
+      "warmP95Ms": 33.01016600000003,
+      "warmSamplesMs": [
+        15.316499999998996, 26.99920799999927, 33.01016600000003,
+        16.439417000001413, 35.90216599999985, 21.288750000001528,
+        32.22195799999827, 23.493125000000873, 25.525832999999693,
+        24.65741700000035, 16.052999999999884, 16.948749999999563,
+        17.1960420000014, 15.246749999998428, 14.731042000001253,
+        15.494458000001032, 16.57404200000019, 15.348374999999578,
+        14.502457999999024, 13.705416999999215, 13.450124999999389,
+        18.74854100000084, 16.514790999999605, 15.111417000000074,
+        17.61712499999885
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, a.added_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id JOIN experiment_image_albums a ON a.image_id = i.id WHERE i.trashed_at IS NULL AND a.album_id = ?\n    ORDER BY a.added_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["album-0", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id JOIN experiment_image_albums a ON a.image_id = i.id WHERE i.trashed_at IS NULL AND a.album_id = ?",
+      "countParameters": ["album-0"],
+      "listPlan": [
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 154,
+          "detail": "SEARCH a USING COVERING INDEX experiment_album_order (album_id=?)"
+        },
+        {
+          "id": 20,
+          "parent": 0,
+          "notused": 44,
+          "detail": "SEARCH i USING INDEX sqlite_autoindex_media_images_1 (id=?)"
+        },
+        {
+          "id": 27,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 58,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 154,
+          "detail": "SEARCH a USING COVERING INDEX experiment_album_order (album_id=?)"
+        },
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 44,
+          "detail": "SEARCH i USING INDEX media_images_storage_identity (id=?)"
+        },
+        {
+          "id": 19,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "any-tags",
+      "query": {
+        "tagIds": ["tag-1", "tag-14", "tag-27"]
+      },
+      "options": {},
+      "total": 13333,
+      "returned": 40,
+      "firstId": "image-099993",
+      "lastId": "image-099705",
+      "firstNewConnectionMs": 118.37629200000083,
+      "warmP95Ms": 165.4069580000014,
+      "warmSamplesMs": [
+        142.614540999999, 109.06179200000042, 97.14008300000023,
+        116.09399999999914, 121.05070800000067, 92.76529200000004,
+        118.70966599999883, 95.5987499999992, 112.83366699999897,
+        115.80637500000012, 133.47108299999854, 297.4432080000006,
+        165.4069580000014, 127.80341600000065, 111.5640000000003,
+        100.75662499999999, 102.88929199999984, 85.05595899999935,
+        83.58499999999913, 83.69733300000007, 85.24562499999956,
+        82.6815000000006, 82.78108299999985, 80.76000000000022,
+        83.33662499999991
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?))\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["tag-1", "tag-14", "tag-27", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?))",
+      "countParameters": ["tag-1", "tag-14", "tag-27"],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 16,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 20,
+          "parent": 16,
+          "notused": 60,
+          "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 48,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 71,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 60,
+          "detail": "SEARCH t EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 34,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "failed-disabled-storage",
+      "query": {
+        "status": "failed",
+        "storageId": "storage-3"
+      },
+      "options": {},
+      "total": 3001,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-098807",
+      "firstNewConnectionMs": 15.156999999999243,
+      "warmP95Ms": 11.378457999999227,
+      "warmSamplesMs": [
+        9.88958300000013, 9.55237500000112, 10.712292000000161,
+        9.207166000000143, 10.707249999999476, 10.282583000000159,
+        9.995291000001089, 10.312916999999288, 10.45850000000064,
+        10.33195799999885, 10.245582999999897, 10.046958999999333,
+        11.378457999999227, 10.119417000001704, 10.383332999999766,
+        10.654084000001603, 9.623541999999361, 10.263291999999637,
+        10.186540999999124, 11.837292000000161, 11.327124999999796,
+        10.00829099999828, 9.766292000000249, 11.081374999999753,
+        10.696207999999388
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND i.storage_id = ? AND i.processing_status = ?\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["storage-3", "failed", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND i.storage_id = ? AND i.processing_status = ?",
+      "countParameters": ["storage-3", "failed"],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 43,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 9,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "literal-substring",
+      "query": {
+        "q": "100%_真实"
+      },
+      "options": {},
+      "total": 941,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-095849",
+      "firstNewConnectionMs": 24.49316700000054,
+      "warmP95Ms": 20.514874999998938,
+      "warmSamplesMs": [
+        18.193583000000217, 20.514874999998938, 17.06812499999978,
+        16.93879200000083, 16.35120900000038, 17.444041000000652,
+        20.030290999999124, 16.809957999999824, 17.123959000000468,
+        16.84612500000003, 17.63604200000009, 17.788666999998895,
+        18.284499999999753, 24.018082999999024, 19.964749999999185,
+        16.686125000000175, 17.669291000000158, 16.605750000000626,
+        16.1021669999991, 16.63416700000016, 16.461750000000393,
+        17.056291999999303, 16.586833999999726, 16.81550000000061,
+        16.402084000001196
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.display_name LIKE ? ESCAPE '\\' OR i.original_name LIKE ? ESCAPE '\\')\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["%100\\%\\_真实%", "%100\\%\\_真实%", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.display_name LIKE ? ESCAPE '\\' OR i.original_name LIKE ? ESCAPE '\\')",
+      "countParameters": ["%100\\%\\_真实%", "%100\\%\\_真实%"],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 21,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 44,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "complex-filters",
+      "query": {
+        "albumId": "album-0",
+        "tagIds": ["tag-3", "tag-5", "tag-7"],
+        "storageId": "storage-3",
+        "visibility": "private",
+        "status": "ready",
+        "format": "avif",
+        "uploadedFrom": 1767225700000,
+        "uploadedBefore": 1767237600000,
+        "sort": "size_desc"
+      },
+      "options": {},
+      "total": 1079,
+      "returned": 40,
+      "firstId": "image-001995",
+      "lastId": "image-055935",
+      "firstNewConnectionMs": 44.34424999999828,
+      "warmP95Ms": 42.12445800000023,
+      "warmSamplesMs": [
+        34.61200000000099, 36.46033299999908, 30.79712500000096,
+        38.99024999999892, 32.611666999999215, 34.80329199999869,
+        33.6909169999999, 31.980458, 32.47008300000016, 30.45770799999991,
+        33.8252080000002, 34.752542000000176, 32.74800000000141,
+        36.09904100000131, 38.46570799999972, 46.435083000000304,
+        33.8604579999992, 35.69145899999967, 34.90995800000019,
+        42.12445800000023, 40.42000000000007, 35.3052919999991,
+        34.23979200000031, 33.40779100000145, 32.537084000001414
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?) AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?)) AND i.format = ? AND i.storage_id = ? AND i.visibility = ? AND i.processing_status = ? AND i.created_at >= ? AND i.created_at < ?\n    ORDER BY i.byte_size DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [
+        "album-0",
+        "tag-3",
+        "tag-5",
+        "tag-7",
+        "avif",
+        "storage-3",
+        "private",
+        "ready",
+        1767225700000,
+        1767237600000,
+        41,
+        0
+      ],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?) AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?)) AND i.format = ? AND i.storage_id = ? AND i.visibility = ? AND i.processing_status = ? AND i.created_at >= ? AND i.created_at < ?",
+      "countParameters": [
+        "album-0",
+        "tag-3",
+        "tag-5",
+        "tag-7",
+        "avif",
+        "storage-3",
+        "private",
+        "ready",
+        1767225700000,
+        1767237600000
+      ],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 34,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 38,
+          "parent": 34,
+          "notused": 39,
+          "detail": "SEARCH a USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 50,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 2"
+        },
+        {
+          "id": 54,
+          "parent": 50,
+          "notused": 60,
+          "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 100,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 42,
+          "detail": "SEARCH a EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 33,
+          "parent": 0,
+          "notused": 60,
+          "detail": "SEARCH t EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 58,
+          "parent": 0,
+          "notused": 0,
+          "detail": "BLOOM FILTER ON s (id=?)"
+        },
+        {
+          "id": 70,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "existing-media-indexes",
+      "name": "trash",
+      "query": {
+        "scope": "trash"
+      },
+      "options": {},
+      "total": 5000,
+      "returned": 40,
+      "firstId": "image-099980",
+      "lastId": "image-099200",
+      "firstNewConnectionMs": 16.173000000000684,
+      "warmP95Ms": 9.18999999999869,
+      "warmSamplesMs": [
+        8.361500000000888, 7.344667000001209, 8.400290999999925,
+        7.617915999999241, 9.498499999999694, 7.8605420000003505,
+        7.941332999998849, 7.267416999999114, 7.9777500000000146,
+        7.0518749999992, 8.428667000000132, 7.090040999999474,
+        8.270541999998386, 7.0277919999989535, 7.997334000001501,
+        6.900416999998924, 7.319375000000946, 7.461332999999286,
+        9.18999999999869, 8.279749999999694, 7.697165999999925,
+        8.156708000000435, 7.289542000000438, 8.270958999999493,
+        7.21887500000048
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 61579264,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.trashed_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NOT NULL\n    ORDER BY i.trashed_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NOT NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 15,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 38,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "uploaded_desc",
+      "query": {
+        "sort": "uploaded_desc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-099992",
+      "lastId": "image-099953",
+      "firstNewConnectionMs": 10.134915999999066,
+      "warmP95Ms": 8.478499999999258,
+      "warmSamplesMs": [
+        6.642791000000216, 5.897750000000087, 5.232125000000451,
+        6.264290999999503, 6.024874999999156, 9.536000000000058,
+        8.478499999999258, 6.471332999999504, 5.711666999999579,
+        5.291833000001134, 5.514999999999418, 5.860583000001498,
+        5.423375000000306, 5.572540999999546, 5.47662500000115,
+        5.102375000000393, 5.339167000000089, 5.813249999999243,
+        4.998207999999067, 5.292749999998705, 5.479792000000089,
+        5.1912499999998545, 5.339041999999608, 5.569584000000759,
+        5.297124999999141
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "uploaded_asc",
+      "query": {
+        "sort": "uploaded_asc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-000042",
+      "firstNewConnectionMs": 10.09679099999994,
+      "warmP95Ms": 5.748750000000655,
+      "warmSamplesMs": [
+        5.663249999999607, 5.1768749999992, 5.49237500000163, 5.623792000000321,
+        5.2040410000008706, 5.464375000001382, 4.660541999999623,
+        4.697417000001224, 6.108874999999898, 5.20129100000122,
+        4.7977090000003955, 5.6426249999985885, 5.433250000000044,
+        4.692915999999968, 5.461959000000206, 5.613957999999911,
+        5.227582999999868, 5.748750000000655, 5.474500000000262,
+        4.9614999999994325, 5.227415999999721, 5.673790999999255,
+        4.939041999999972, 5.360457999999198, 5.689915999999357
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at ASC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_asc (trashed_at=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "size_desc",
+      "query": {
+        "sort": "size_desc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-001999",
+      "lastId": "image-079999",
+      "firstNewConnectionMs": 9.925084000000425,
+      "warmP95Ms": 5.749959000000672,
+      "warmSamplesMs": [
+        5.749416000000565, 5.067583000000013, 5.383207999999286,
+        5.749959000000672, 5.0865410000005795, 5.200124999999389,
+        5.601083999999901, 5.347541999999521, 5.154915999999503,
+        5.510792000000947, 5.002791999999317, 4.9647079999995185,
+        5.751207999999679, 5.053125000000364, 4.850416999999652,
+        5.440375000000131, 5.6817080000000715, 4.987499999999272,
+        5.450749999999971, 5.586665999999241, 4.923500000000786,
+        5.714625000000524, 5.594167000001107, 4.805499999998574,
+        5.368249999999534
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.byte_size DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_size_desc (trashed_at=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "size_asc",
+      "query": {
+        "sort": "size_asc"
+      },
+      "options": {},
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-078001",
+      "firstNewConnectionMs": 9.502542000000176,
+      "warmP95Ms": 5.9380830000009155,
+      "warmSamplesMs": [
+        6.183499999999185, 5.703499999999622, 5.1183340000006865,
+        5.9380830000009155, 5.453750000000582, 5.023917000000438,
+        5.3550409999988915, 5.936083000000508, 5.0720409999994445,
+        5.476208000000042, 5.634582999999111, 4.81262500000048,
+        4.894458999999188, 5.526541000001089, 4.641916000000492,
+        5.112457999999606, 5.7532910000009, 5.039166000000478,
+        5.076624999999694, 5.808582999999999, 5.336416000000099,
+        4.932084000000032, 5.757458000000042, 5.3116250000002765,
+        4.675499999999374
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.byte_size ASC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_size_asc (trashed_at=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "deep-offset-2000",
+      "query": {},
+      "options": {
+        "page": 2000
+      },
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 17.563500000000204,
+      "warmP95Ms": 12.226666000000478,
+      "warmSamplesMs": [
+        11.859416000001147, 12.274499999999534, 11.987374999998792,
+        11.982374999999593, 11.79583300000013, 11.99304200000006,
+        11.754457999999431, 11.728167000001122, 11.962916999998924,
+        11.809499999999389, 11.46679099999892, 11.472625000000335,
+        11.971959000000425, 11.75354199999856, 11.583957999999257,
+        11.742667000000438, 12.176832999999533, 11.918292000000292,
+        12.099833000000217, 12.19104200000038, 11.598625000000538,
+        11.543124999998327, 12.226666000000478, 11.968375000000378,
+        12.108541999999943
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 79960],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "deep-cursor-2000",
+      "query": {},
+      "options": {
+        "cursor": "eyJxdWVyeSI6IntcInNjb3BlXCI6XCJsaWJyYXJ5XCIsXCJhbGJ1bUlkXCI6bnVsbCxcInRhZ0lkc1wiOltdLFwicVwiOm51bGwsXCJ1cGxvYWRlZEZyb21cIjpudWxsLFwidXBsb2FkZWRCZWZvcmVcIjpudWxsLFwiZm9ybWF0XCI6bnVsbCxcInN0b3JhZ2VJZFwiOm51bGwsXCJ2aXNpYmlsaXR5XCI6bnVsbCxcInN0YXR1c1wiOm51bGwsXCJzb3J0XCI6XCJ1cGxvYWRlZF9kZXNjXCIsXCJwYWdlU2l6ZVwiOjQwfSIsInZhbHVlIjoxNzY3MjI3NTc5MDAwLCJpZCI6ImltYWdlLTAxNTgzOSJ9"
+      },
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 15.695417000000816,
+      "warmP95Ms": 14.566208000000188,
+      "warmSamplesMs": [
+        10.679333000000042, 10.11279099999956, 10.335375000000568,
+        10.93054200000006, 10.738541999999143, 10.246499999999287,
+        10.834209000000556, 10.244458000001032, 10.50420899999881,
+        10.805000000000291, 10.816083000001527, 10.67095800000061,
+        10.38366700000006, 10.239541000000827, 10.886666000000332,
+        10.23949999999968, 10.460332999999082, 10.788040999999794,
+        16.30762499999946, 11.118875000000116, 11.456707999999708,
+        14.566208000000188, 10.777291999998852, 10.088459000000512,
+        13.959875000000466
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.created_at < ? OR (i.created_at = ? AND i.id > ?))\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [1767227579000, 1767227579000, "image-015839", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 34,
+          "detail": "SCAN s"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 0,
+          "detail": "MULTI-INDEX OR"
+        },
+        {
+          "id": 15,
+          "parent": 14,
+          "notused": 0,
+          "detail": "INDEX 1"
+        },
+        {
+          "id": 27,
+          "parent": 15,
+          "notused": 160,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=? AND created_at<?)"
+        },
+        {
+          "id": 32,
+          "parent": 14,
+          "notused": 0,
+          "detail": "INDEX 2"
+        },
+        {
+          "id": 46,
+          "parent": 32,
+          "notused": 52,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_asc (trashed_at=? AND created_at=? AND id>?)"
+        },
+        {
+          "id": 76,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "single-album",
+      "query": {
+        "albumId": "album-0"
+      },
+      "options": {},
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 25.301958000000013,
+      "warmP95Ms": 25.125083000000814,
+      "warmSamplesMs": [
+        24.99354200000016, 24.93237500000032, 24.035083000000668,
+        24.942832999999155, 24.05975000000035, 25.125083000000814,
+        23.81708299999991, 24.586583000000246, 24.393207999999504,
+        24.443750000000364, 24.521624999999403, 23.543542000001253,
+        24.990250000000742, 25.09441599999991, 24.62908299999799,
+        23.884249999999156, 23.38658299999952, 24.408332999999402,
+        25.445166000001336, 24.178125000002183, 24.505582999998296,
+        23.406167000001005, 24.990709000001516, 24.33612500000163,
+        24.390415999998368
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?)\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["album-0", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?)",
+      "countParameters": ["album-0"],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        },
+        {
+          "id": 19,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 23,
+          "parent": 19,
+          "notused": 39,
+          "detail": "SEARCH a USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 34,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 42,
+          "detail": "SEARCH a EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "album-fixed-order",
+      "query": {
+        "scope": "album",
+        "albumId": "album-0"
+      },
+      "options": {},
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 11.491083000000799,
+      "warmP95Ms": 13.851875000000291,
+      "warmSamplesMs": [
+        12.410292000000481, 15.133042000001296, 13.82325000000128,
+        13.851875000000291, 13.106332999999722, 12.627042000000074,
+        12.903666999998677, 12.584500000000844, 11.48987500000294,
+        11.992000000002008, 12.943708999999217, 12.698207999997976,
+        11.608166999998502, 12.357916999997542, 12.700166999999055,
+        12.674707999998645, 11.918957999998383, 10.953208999999333,
+        12.205500000000029, 12.352833000000828, 11.586166000000958,
+        12.761834000000817, 12.235749999999825, 12.077000000001135,
+        12.182250000001659
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, a.added_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id JOIN experiment_image_albums a ON a.image_id = i.id WHERE i.trashed_at IS NULL AND a.album_id = ?\n    ORDER BY a.added_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["album-0", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id JOIN experiment_image_albums a ON a.image_id = i.id WHERE i.trashed_at IS NULL AND a.album_id = ?",
+      "countParameters": ["album-0"],
+      "listPlan": [
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 154,
+          "detail": "SEARCH a USING COVERING INDEX experiment_album_order (album_id=?)"
+        },
+        {
+          "id": 20,
+          "parent": 0,
+          "notused": 44,
+          "detail": "SEARCH i USING INDEX sqlite_autoindex_media_images_1 (id=?)"
+        },
+        {
+          "id": 27,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 58,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 154,
+          "detail": "SEARCH a USING COVERING INDEX experiment_album_order (album_id=?)"
+        },
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 44,
+          "detail": "SEARCH i USING INDEX media_images_storage_identity (id=?)"
+        },
+        {
+          "id": 19,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "any-tags",
+      "query": {
+        "tagIds": ["tag-1", "tag-14", "tag-27"]
+      },
+      "options": {},
+      "total": 13333,
+      "returned": 40,
+      "firstId": "image-099993",
+      "lastId": "image-099705",
+      "firstNewConnectionMs": 35.726166000000376,
+      "warmP95Ms": 36.467083999999886,
+      "warmSamplesMs": [
+        36.21074999999837, 35.711208000000624, 35.00304200000028,
+        35.59549999999945, 35.8503329999985, 35.91804100000081,
+        35.876124999998865, 36.170750000001135, 35.37987500000236,
+        36.03558400000111, 36.160374999999476, 34.63558399999965,
+        35.64783399999942, 35.658041999999114, 37.03645800000231,
+        36.467083999999886, 36.183499999999185, 35.23054199999751,
+        36.06312500000058, 35.88304199999766, 36.08150000000023,
+        36.027125000000524, 35.82204199999978, 36.03349999999773,
+        34.881625000001804
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?))\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["tag-1", "tag-14", "tag-27", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?))",
+      "countParameters": ["tag-1", "tag-14", "tag-27"],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        },
+        {
+          "id": 19,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 23,
+          "parent": 19,
+          "notused": 60,
+          "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 51,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 6,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 60,
+          "detail": "SEARCH t EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 34,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "failed-disabled-storage",
+      "query": {
+        "status": "failed",
+        "storageId": "storage-3"
+      },
+      "options": {},
+      "total": 3001,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-098807",
+      "firstNewConnectionMs": 9.506333999997878,
+      "warmP95Ms": 5.8119169999990845,
+      "warmSamplesMs": [
+        4.426041999999143, 5.3559170000007725, 5.007959000002302,
+        4.63470800000141, 5.8119169999990845, 7.1174580000006245,
+        4.792415999996592, 4.779875000000175, 4.941125000001193,
+        4.027874999999767, 3.8805000000029395, 4.7369999999973516,
+        4.872083000002021, 4.571416999999201, 4.489459000000352,
+        4.675500000001193, 3.912624999997206, 4.121624999999767,
+        4.548291999999492, 4.90166699999827, 4.346583000002283,
+        4.27691699999923, 4.78229199999987, 4.950665999997, 4.27612500000032
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND i.storage_id = ? AND i.processing_status = ?\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["storage-3", "failed", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND i.storage_id = ? AND i.processing_status = ?",
+      "countParameters": ["storage-3", "failed"],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 9,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "literal-substring",
+      "query": {
+        "q": "100%_真实"
+      },
+      "options": {},
+      "total": 941,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-095849",
+      "firstNewConnectionMs": 13.03837499999645,
+      "warmP95Ms": 8.244417000001704,
+      "warmSamplesMs": [
+        8.014374999998836, 7.879874999998719, 7.7534579999992275,
+        7.826375000000553, 7.732124999998632, 8.122999999999593,
+        7.610749999999825, 8.10541700000249, 7.383624999998574,
+        7.997874999997293, 7.649958999998489, 7.915541000002122,
+        7.998416999998881, 8.033457999998063, 8.038582999997743,
+        7.799666999999317, 8.26024999999936, 8.244417000001704,
+        7.849041000001307, 7.482250000000931, 7.7230840000011085,
+        7.9654580000024, 7.933042000000569, 7.791791999999987, 8.178374999999505
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.created_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.display_name LIKE ? ESCAPE '\\' OR i.original_name LIKE ? ESCAPE '\\')\n    ORDER BY i.created_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": ["%100\\%\\_真实%", "%100\\%\\_真实%", 41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND (i.display_name LIKE ? ESCAPE '\\' OR i.original_name LIKE ? ESCAPE '\\')",
+      "countParameters": ["%100\\%\\_真实%", "%100\\%\\_真实%"],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_uploaded_desc (trashed_at=?)"
+        },
+        {
+          "id": 24,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 4,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "complex-filters",
+      "query": {
+        "albumId": "album-0",
+        "tagIds": ["tag-3", "tag-5", "tag-7"],
+        "storageId": "storage-3",
+        "visibility": "private",
+        "status": "ready",
+        "format": "avif",
+        "uploadedFrom": 1767225700000,
+        "uploadedBefore": 1767237600000,
+        "sort": "size_desc"
+      },
+      "options": {},
+      "total": 1079,
+      "returned": 40,
+      "firstId": "image-001995",
+      "lastId": "image-055935",
+      "firstNewConnectionMs": 16.120833000000857,
+      "warmP95Ms": 16.821374999999534,
+      "warmSamplesMs": [
+        15.768041999999696, 16.173750000001746, 15.969708000000537,
+        15.76075000000128, 15.418249999998807, 16.084249999999884,
+        15.75762499999837, 15.997041999999055, 15.849500000000262,
+        16.821374999999534, 17.072167000002082, 16.316917000000103,
+        15.940999999998894, 16.063458000000537, 15.85200000000259,
+        16.206624999998894, 15.346707999997307, 14.69591699999728,
+        15.840041999999812, 15.855374999999185, 16.376458000002458,
+        16.205540999999357, 15.819500000001426, 16.064833000000363,
+        16.678499999998166
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.byte_size AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?) AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?)) AND i.format = ? AND i.storage_id = ? AND i.visibility = ? AND i.processing_status = ? AND i.created_at >= ? AND i.created_at < ?\n    ORDER BY i.byte_size DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [
+        "album-0",
+        "tag-3",
+        "tag-5",
+        "tag-7",
+        "avif",
+        "storage-3",
+        "private",
+        "ready",
+        1767225700000,
+        1767237600000,
+        41,
+        0
+      ],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NULL AND EXISTS (SELECT 1 FROM experiment_image_albums a WHERE a.image_id = i.id AND a.album_id = ?) AND EXISTS (SELECT 1 FROM experiment_image_tags t WHERE t.image_id = i.id AND t.tag_id IN (?, ?, ?)) AND i.format = ? AND i.storage_id = ? AND i.visibility = ? AND i.processing_status = ? AND i.created_at >= ? AND i.created_at < ?",
+      "countParameters": [
+        "album-0",
+        "tag-3",
+        "tag-5",
+        "tag-7",
+        "avif",
+        "storage-3",
+        "private",
+        "ready",
+        1767225700000,
+        1767237600000
+      ],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 188,
+          "detail": "SEARCH i USING INDEX experiment_size_desc (trashed_at=?)"
+        },
+        {
+          "id": 37,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 1"
+        },
+        {
+          "id": 41,
+          "parent": 37,
+          "notused": 39,
+          "detail": "SEARCH a USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 53,
+          "parent": 0,
+          "notused": 0,
+          "detail": "CORRELATED SCALAR SUBQUERY 2"
+        },
+        {
+          "id": 57,
+          "parent": 53,
+          "notused": 60,
+          "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 180,
+          "detail": "SCAN i"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 42,
+          "detail": "SEARCH a EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_albums_1 (image_id=? AND album_id=?)"
+        },
+        {
+          "id": 33,
+          "parent": 0,
+          "notused": 60,
+          "detail": "SEARCH t EXISTS USING COVERING INDEX sqlite_autoindex_experiment_image_tags_1 (image_id=? AND tag_id=?)"
+        },
+        {
+          "id": 58,
+          "parent": 0,
+          "notused": 0,
+          "detail": "BLOOM FILTER ON s (id=?)"
+        },
+        {
+          "id": 70,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    },
+    {
+      "mode": "candidate-media-indexes",
+      "name": "trash",
+      "query": {
+        "scope": "trash"
+      },
+      "options": {},
+      "total": 5000,
+      "returned": 40,
+      "firstId": "image-099980",
+      "lastId": "image-099200",
+      "firstNewConnectionMs": 6.773582999998325,
+      "warmP95Ms": 3.755750000000262,
+      "warmSamplesMs": [
+        4.111541000002035, 3.728000000002794, 3.0635829999991984,
+        2.3481659999997646, 3.291292000001704, 3.022292000001471,
+        3.016916000000492, 2.22308300000077, 1.8843750000014552,
+        1.3637920000001031, 1.2116249999999127, 1.4366249999984575,
+        3.1072090000016033, 3.755750000000262, 2.5674160000016855,
+        1.5619170000027225, 1.1990420000001905, 1.7434169999978621,
+        1.7626250000030268, 2.3506669999987935, 3.0659169999998994,
+        3.2818330000009155, 1.8859159999992698, 1.6711249999971187,
+        1.2730420000007143
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "databaseBytes": 72675328,
+      "sql": "SELECT i.id, i.display_name, i.original_name, i.byte_size, i.created_at,\n    i.processing_status, i.visibility, i.storage_id, s.enabled, i.trashed_at AS sort_value\n    FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NOT NULL\n    ORDER BY i.trashed_at DESC, i.id ASC LIMIT ? OFFSET ?",
+      "parameters": [41, 0],
+      "countSql": "SELECT count(*) AS total FROM media_images i JOIN storage_configs s ON s.id = i.storage_id  WHERE i.trashed_at IS NOT NULL",
+      "countParameters": [],
+      "listPlan": [
+        {
+          "id": 12,
+          "parent": 0,
+          "notused": 145,
+          "detail": "SEARCH i USING INDEX experiment_size_asc (trashed_at>?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 29,
+          "detail": "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        },
+        {
+          "id": 49,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        }
+      ],
+      "countPlan": [
+        {
+          "id": 5,
+          "parent": 0,
+          "notused": 145,
+          "detail": "SEARCH i USING INDEX experiment_size_asc (trashed_at>?)"
+        },
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 21,
+          "detail": "SEARCH s USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "wallMs": 18422.846791,
+    "cpuMicroseconds": {
+      "user": 13722672,
+      "system": 3007649
+    },
+    "processMemoryBytes": {
+      "rss": 188661760,
+      "heapTotal": 158400512,
+      "heapUsed": 44919256,
+      "external": 9317294,
+      "arrayBuffers": 405779
+    },
+    "maxRssBytes": 334708736
+  },
+  "correctness": {
+    "baselineAndCandidateResultsIdentical": true,
+    "deepCursorMatchesOffset": true,
+    "duplicateIdsAbsentInMeasuredWindows": true
+  }
+}

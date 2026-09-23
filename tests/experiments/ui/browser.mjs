@@ -172,6 +172,8 @@ try {
     'Desktop Chromium emulation is not physical touch/soft keyboard/safe-area validation',
     'No business UI, Firefox, Safari or Edge acceptance',
   ];
+  const { verifyLibrary } = await import(config.libraryScript);
+  await verifyLibrary(page, config);
   report.status = 'passed';
 } catch (error) {
   report.error = error.stack ?? String(error);
