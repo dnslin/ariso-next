@@ -36,7 +36,7 @@ storage 提供配置、路径与对象访问、S3 测试/签名/CORS 检测和�
 
 官方资料：[SDK v3 的流与签名](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrate-s3.html)、[client-s3 发布包](https://registry.npmjs.org/@aws-sdk/client-s3/3.1134.0)、[presigner 发布包](https://registry.npmjs.org/@aws-sdk/s3-request-presigner/3.1134.0)。资料与类型核对不等于三服务已经通过测试。
 
-所有大文件使用流，正常结束、失败和取消均关闭流并释放连接。服务器上传本地临时文件时提供已知 ContentLength。单 PUT/Copy 的服务限制必须纳入后续 upload/media 的实际大小上限，不能允许界面选择一个底层必然无法接收的大小；本稿不凭空改变 PRD 的 50 MiB 默认值，也不提前扩展多段直传协议。
+所有大文件使用流，正常结束、失败和取消均关闭流并释放连接。服务器上传本地临时文件时提供已知 ContentLength。按站点配置核对实际文件大小，保留存储服务明确拒绝的错误；不要求探测服务技术极限并据此推导统一上限。本稿不凭空改变 PRD 的 50 MiB 默认值，也不提前扩展多段直传协议。
 
 ## 3. 数据模型与状态
 
