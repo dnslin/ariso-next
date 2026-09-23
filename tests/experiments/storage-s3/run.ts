@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rename, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { configSchema, services } from './config.ts';
@@ -23,7 +23,9 @@ assert.equal(
   configs.length,
   'Supply at most one target per service',
 );
-const output = resolve(values.output);
+const outputRoot = resolve(values.output);
+await mkdir(outputRoot, { recursive: true });
+const output = await mkdtemp(`${outputRoot}/run-`);
 const spaceId = Number(process.env.EGO_TASK_SPACE);
 let complete = true;
 for (const service of services) {

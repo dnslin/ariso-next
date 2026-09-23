@@ -69,7 +69,7 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
   --config .data/storage-s3.json --output test-results/storage-s3
 ```
 
-每服务生成独立 `report.json` 与浏览器证据。任何失败、缺服务/浏览器或最终清理证据不完整均返回退出码 1。缺少 `--config` 时不访问默认 AWS 凭据链、不发送远端请求。报告保留 Endpoint、Bucket、Key、请求 ID 和非秘密签名参数，排除完整签名、Access Key 与 Session Token。中断后保留已落盘的 Key 记录，先完成这些对象的清理，不以重新启动生成的新 Key 覆盖旧责任；每轮使用新的 output 目录保留历史。
+每轮自动在 `--output` 根目录下创建独立 `run-<随机后缀>` 目录，每服务的 `report.json` 与浏览器证据保存在该轮目录下；终端打印报告的绝对路径。任何失败、缺服务/浏览器或最终清理证据不完整均返回退出码 1。缺少 `--config` 时不访问默认 AWS 凭据链、不发送远端请求。报告保留 Endpoint、Bucket、Key、请求 ID 和非秘密签名参数，排除完整签名、Access Key 与 Session Token。中断后保留已落盘的 Key 记录，先完成这些对象的清理，不以重新启动生成的新 Key 覆盖旧责任；重复使用相同 `--output` 不会覆盖以往运行或旧目录布局中的报告。
 
 `CopyObject` 的 HTTP 200 内嵌错误无法要求真实服务稳定产生，因此使用实际 SDK + localhost 故障 HTTP 响应回归。该结果单列，不能宣称三服务均已真实产生这种故障。
 
@@ -101,3 +101,15 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 仍需三种真实服务分别提供普通 Bucket 能力、私有读取、条件复制、签名覆盖、真实 CORS/附件及最终清理证据。R2 还须提供整个 Bucket 无锁规则、关闭公共域名/其他公开旁路的实际所有者确认。此 PR 保持草稿，不能将报告模板和本地回归等同 Issue 验收。
 
 远端规则按[执行约定](../../execution.md#适用检查)：当前 `.github/workflows/ci.yml` 仅 workflow_call，images.yml 仅 release.published，没有 PR、push 或 workflow_dispatch 验证入口。本次不创建 Release、不推送镜像、不部署；AMD64/ARM64 容器检查未执行，不标通过。已用 `gh pr view 109 --json isDraft,statusCheckRollup`、`gh pr checks 109` 和 `gh run list --branch codex/70-storage-protocol` 回读：草稿为 true，检查列表及 Actions 运行列表为空；checks 命令报告 no checks，不记作 CI 通过。
+
+## 2026-09-23 重复运行覆盖修复
+
+双角度审计发现相同 `--output` 会覆盖旧报告中的待清理 Key。现使用 Node `mkdtemp` 为每轮创建独立目录，保留服务内的临时文件加 rename 写入方式，没有新增依赖。历史 `results/<service>` 原始证据保持不变。
+
+在上述 Node/pnpm 环境新增 `s3-runner.test.ts`，实际启动 CLI 两次，检查旧 Key 报告逐字节保留、两轮路径不同、首轮报告不变，以及缺配置仍返回 1/incomplete。修复前该用例因旧 Key 被覆盖而失败；修复后运行 `pnpm exec vitest run --project integration tests/integration/storage/s3-runner.test.ts tests/integration/storage/s3-protocol.test.ts`，20/20 通过。
+
+本轮 `pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run test:unit --maxWorkers=1`（315/315）通过。类型与构建首次检查发现本 PR 协议测试回调的返回类型推断错误，补上已有 `Reply` 类型声明后，`pnpm run typecheck` 和 `pnpm run build` 重跑通过；构建仍输出上述可选 Debug 绑定诊断。按 `code-review-and-quality` 复核修复与回归测试，无新增阻断问题。未修改浏览器或服务协议，本轮未重跑 Ego，也未取得三服务真实验收或发布容器证据。
+
+`pnpm run format:check`、`node docs/tasks/check.mjs`（120 任务/298 需求）、`node docs/tasks/check.mjs --self-test`（5 项）通过。构建后运行 `pnpm run test:integration --maxWorkers=1`，39 文件/315 测试中 314 通过、1 失败（退出 1，282.30 秒）：已有 `identity/setup-dev.test.ts` 临时 Next 项目缺少 `@swc/helpers/_/_interop_require_default`，健康检查返回失败。未修改该范围外测试，不称全量通过。
+
+随后单独运行 `pnpm exec vitest run --project integration tests/integration/identity/setup-dev.test.ts --maxWorkers=1`，1/1 通过（26.22 秒）；复查通过不替代上述全量失败记录。`git diff --check` 通过。

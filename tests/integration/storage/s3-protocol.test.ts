@@ -279,7 +279,7 @@ it('对象写入前保存明确 Key，匿名检测失败后仍删除全部 Key �
   const writesWereRegistered: boolean[] = [];
   const deleted: string[] = [];
   await withEndpoint(
-    ({ method, url, headers, body }) => {
+    ({ method, url, headers, body }): Reply => {
       const parsed = new URL(url, 'http://fixture');
       if (parsed.searchParams.has('versioning'))
         return { status: 200, body: '<VersioningConfiguration/>' };
