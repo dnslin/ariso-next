@@ -2,6 +2,8 @@
 
 日期：2026-09-23。关联 [Issue #67](https://github.com/dnslin/ariso-next/issues/67)，范围以 [T-MED-05](../../tasks/m1-m2.md#t-med-05-回收与恢复服务契约) 为准。保留 R-18.1-01/02、R-18.2-01/02、A-26.11-01–05 的现有模块归属；本记录不表示回收站界面或稳定外链已交付。
 
+交付 [PR #110](https://github.com/dnslin/ariso-next/pull/110)，实现提交 `b43be19`。推送后通过 `gh pr view 110 --json headRefOid,isDraft,statusCheckRollup,mergeStateStatus`、`gh run list --branch codex/67-media-trash` 及 commit check-runs/status API 回读：无运行、无检查项、无提交状态（total_count 均 0），PR 为 CLEAN。提交状态 API 的聚合 pending 没有对应运行，不视为正在执行或通过。只有上述本地验证取得本轮证据，未触发 Release 工作流。
+
 ## 前置与工作区
 
 使用 `gh issue view 67 --json number,title,body,comments,state,url` 读取正文和评论（无评论），使用 `gh api repos/dnslin/ariso-next/issues/67/dependencies/blocked_by` 和 `blocking` 回读原生依赖。#50、#53、#66 均 closed；后置为 #69、#79。
