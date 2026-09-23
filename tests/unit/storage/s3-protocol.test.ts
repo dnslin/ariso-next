@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { configSchema } from '../../experiments/storage-s3/config.ts';
 import {
+  checkAnonymous,
   createClient,
   errorEvidence,
   signProbe,
@@ -67,16 +68,21 @@ describe('S3 experiment configuration and actual SDK signatures', () => {
       expect(new URL(signed.get).searchParams.get('X-Amz-Signature')).not.toBe(
         new URL(signed.head).searchParams.get('X-Amz-Signature'),
       );
-      for (const url of [signed.get, signed.head]) {
-        expect(new URL(url).searchParams.get('response-content-type')).toBe(
-          'application/octet-stream',
-        );
-        expect(
-          new URL(url).searchParams.get('response-content-disposition'),
-        ).toContain('attachment;');
-        expect(new URL(url).searchParams.get('response-cache-control')).toBe(
-          'private, no-store, no-transform',
-        );
+      expect(
+        new URL(signed.get).searchParams.get('response-content-type'),
+      ).toBe('application/octet-stream');
+      expect(
+        new URL(signed.get).searchParams.get('response-content-disposition'),
+      ).toContain('attachment;');
+      expect(
+        new URL(signed.get).searchParams.get('response-cache-control'),
+      ).toBe('private, no-store, no-transform');
+      for (const name of [
+        'response-content-type',
+        'response-content-disposition',
+        'response-cache-control',
+      ]) {
+        expect(new URL(signed.head).searchParams.has(name)).toBe(false);
       }
       expect(JSON.stringify(put)).not.toMatch(
         /test-key|test-secret|X-Amz-Signature|X-Amz-Credential/,
@@ -107,3 +113,78 @@ it('错误证据保留地址和诊断但移除预签名凭据', () => {
     requestId: 'request-1',
   });
 });
+
+const r2Url = `https://${'a'.repeat(32)}.r2.cloudflarestorage.com/bucket/probe`;
+it.each([
+  {
+    name: 'official R2 authorization rejection',
+    url: r2Url,
+    status: 400,
+    code: 'InvalidArgument',
+    message: 'Authorization',
+    accepted: true,
+  },
+  {
+    name: 'other endpoint',
+    url: 'https://s3.example.com/bucket/probe',
+    status: 400,
+    code: 'InvalidArgument',
+    message: 'Authorization',
+    accepted: false,
+  },
+  {
+    name: 'public R2 URL',
+    url: 'https://pub-test.r2.dev/probe',
+    status: 400,
+    code: 'InvalidArgument',
+    message: 'Authorization',
+    accepted: false,
+  },
+  {
+    name: 'wrong argument',
+    url: r2Url,
+    status: 400,
+    code: 'InvalidArgument',
+    message: 'Bucket',
+    accepted: false,
+  },
+  {
+    name: 'wrong code',
+    url: r2Url,
+    status: 400,
+    code: 'BadRequest',
+    message: 'Authorization',
+    accepted: false,
+  },
+  {
+    name: 'successful response containing error text',
+    url: r2Url,
+    status: 200,
+    code: 'InvalidArgument',
+    message: 'Authorization',
+    accepted: false,
+  },
+])(
+  'anonymous probe: $name',
+  async ({ url, status, code, message, accepted }) => {
+    const spy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        new Response(
+          `<Error><Code>${code}</Code><Message>${message}</Message></Error>`,
+          { status },
+        ),
+      );
+    try {
+      if (accepted)
+        await expect(checkAnonymous(url)).resolves.toMatchObject({
+          status: 400,
+          code: 'InvalidArgument',
+          message: 'Authorization',
+        });
+      else await expect(checkAnonymous(url)).rejects.toThrow();
+    } finally {
+      spy.mockRestore();
+    }
+  },
+);

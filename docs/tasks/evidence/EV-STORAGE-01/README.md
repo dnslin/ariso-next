@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 最新复测已通过 CORS 与浏览器上传下载，仍有匿名错误码和 HEAD 响应覆盖两项失败；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 最新复测已通过 CORS 与浏览器上传下载，历史严格规则下的匿名错误码和 HEAD 覆盖失败已获得协议解释；当前按下方经所有者确认的验收调整复验；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -14,7 +14,7 @@
 
 - [SDK 数据完整性设置](https://docs.aws.amazon.com/sdkref/latest/guide/feature-dataintegrity.html)、[SDK v3 S3 示例](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_s3_code_examples.html)。
 - [CopyObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html)：成功 HTTP 外壳可能包含错误，使用实际 SDK 解码。
-- [HeadObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html)：GET 与 HEAD 分别签名，分别验证类型、附件和缓存覆盖。
+- [HeadObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html)：GET 与 HEAD 分别签名；GET 验证类型、附件和缓存覆盖，HEAD 验证原始对象元数据。
 - [R2 S3 能力表](https://developers.cloudflare.com/r2/api/s3/api/)、[R2 Bucket locks](https://developers.cloudflare.com/r2/buckets/bucket-locks/)：不以未实现的配置 API 推断无锁，不要求 Cloudflare 管理 Token。
 
 ## 已实现的实验路径
@@ -24,7 +24,7 @@
 | 普通 Bucket  | AWS/SeaweedFS 读取版本状态，Enabled/Suspended 拒绝；仅明确 404 ObjectLockConfigurationNotFoundError 接受无锁。权限不足、未实现、未知空响应与已开启锁均失败。                                            |
 | R2           | 仅官方 S3 endpoint 可走能力说明与所有者声明路径。整个 Bucket 无锁规则、关闭公共旁路的确认绑定本次配置 revision，并分别记录为声明依据，不宣称自动检测。                                                  |
 | 流与条件复制 | 实际 Node 流 PUT，小样本完整读回；HEAD ETag→IfMatch GET→同 ETag 的 CopySourceIfMatch。中文、空格、加号、百分号、问号 Key；改写源后旧 ETag 的 GET/Copy 都须 412，目标原字节保持不变。                    |
-| 匿名读取     | SDK 地址解析器构造同一 endpoint/bucket/key 的无签名 URL；无 Authorization/Cookie，不跟随跳转，仅 403 AccessDenied 通过。                                                                                |
+| 匿名读取     | SDK 地址解析器构造同一 endpoint/bucket/key 的无签名 URL；无 Authorization/Cookie，不跟随跳转；按 SPEC-storage 接受 403 AccessDenied 或官方 R2 的精确 400 InvalidArgument / Authorization 组合。         |
 | 签名与附件   | PUT 900 秒且签入 content-type；GET/HEAD 各 300 秒；交叉使用方法均应 403。SVG 保持原字节，以 application/octet-stream、attachment 和中文 `.svg` 文件名下载，缓存覆盖为 private, no-store, no-transform。 |
 | 浏览器       | Ego Lite 从固定站点 origin 实际跨域 PUT，读取非 opaque 成功响应，记录 CDP 中实际 PUT 头，再由服务器 HEAD/GET 核对大小与完整内容；浏览器下载事件验证中文名称、落盘字节。                                 |
 | 清理         | 写入前持久化随机命名空间的全部明确 Key。失败也尝试逐个鉴权删除和 HEAD 404 验证，错误保留阶段、服务码和 requestId；不扫描或删除其他对象。                                                                |
@@ -165,3 +165,17 @@ OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏�
 [Cloudflare 官方兼容表](https://developers.cloudflare.com/r2/api/s3/api/) 列出 HeadObject/GetObject 支持，但没有明确列出 HEAD 的 response-* 覆盖参数，也没有承诺此匿名请求必须返回 403；不能把文档未列出解释成官方明确承诺不支持。本轮结论依据实际对照响应，保留现有失败，不调整产品契约或削弱断言。原始证据：[R2](./live/comparison-OH5ASB/r2.json)、[SeaweedFS](./live/comparison-OH5ASB/seaweedfs.json)。
 
 本轮只新增观测记录和文档。执行格式检查、`node docs/tasks/check.mjs`、`git diff --check` 并扫描报告不含提供的凭据或预签名查询；未修改实现，未重跑全量测试和构建。
+
+## 2026-09-23 根据实测调整验收边界
+
+所有者认可调整后，同步 SPEC-storage §6 的匿名判定与 SPEC-delivery §6.2 的 HEAD 用途，没有改写冻结 PRD。官方 HTTPS R2 S3 API 的匿名 400 仅在 Code=InvalidArgument 且 Message=Authorization 时接受；其他 Endpoint、r2.dev、其他错误码或 Message、2xx 均不接受。403 AccessDenied 规则保留。HEAD 独立签名且不携带 GET 覆盖参数，验证 200、无正文、大小、原始类型和与 GET 一致的 ETag；GET 仍严格验证附件、安全类型和缓存覆盖。
+
+新增回归先出现两个预期失败，实施后执行 `pnpm exec vitest run --project unit --project integration tests/unit/storage/s3-protocol.test.ts tests/integration/storage/s3-protocol.test.ts tests/integration/storage/s3-runner.test.ts`，30/30 通过。历史原始响应及按旧规则记录的失败不改写；新规则依据前述实测和明确的服务边界，并非把所有 400 或任意 HEAD 响应视为通过。
+
+新规则真实复测：`node .data/rules-verify.mjs` 调用本次修改后的 `checkAnonymous`、`signReads` 和 GET 响应检查函数，SeaweedFS/R2 各 5 项（匿名拒绝、GET 覆盖、HEAD 元数据、方法隔离、清理）全部通过，退出 0。只新建并清理两个小对象，均 HEAD 404；未签发 PUT URL，不重写历史报告。证据：[SeaweedFS](./live/accepted-rules-SiAovj/seaweedfs.json)、[R2](./live/accepted-rules-SiAovj/r2.json)。本次没有重跑浏览器，既有真实 CORS/下载通过证据仍有效，GET 签名与浏览器实现未改。
+
+本轮 `pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check`、`pnpm run build` 通过；构建仍有已记录的可选 Debug 绑定诊断。`pnpm run test:unit --maxWorkers=1` 为 322/322 通过。
+
+独立子代理按 `code-review-and-quality` 只读审计本次 diff，未发现阻断问题；确认 R2 精确例外、GET 安全要求、HEAD 元数据断言、负向测试及规格一致。文档任务检查与新证据凭据扫描通过。
+
+本轮构建后执行 `pnpm run test:integration --maxWorkers=1`，39 文件/315 测试全部通过（252.89 秒，退出 0），包括此前间歇失败的 setup-dev。该结果属于本轮，不覆盖前述历史失败记录。

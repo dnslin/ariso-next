@@ -1,0 +1,99 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "key": "ariso/ev-storage-01/218966fc-6666-44c6-a04e-23497d46ee36/rules.svg",
+  "date": "2026-09-23T02:45:07.875Z",
+  "checks": [
+    {
+      "name": "anonymous-denial",
+      "status": "passed",
+      "evidence": {
+        "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ev-storage-01/218966fc-6666-44c6-a04e-23497d46ee36/rules.svg",
+        "status": 400,
+        "code": "InvalidArgument",
+        "message": "Authorization",
+        "requestId": null
+      }
+    },
+    {
+      "name": "get-attachment-overrides",
+      "status": "passed",
+      "evidence": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cache-control": "private, no-store, no-transform",
+          "cf-ray": "a3f636314b579ab6-LAX",
+          "connection": "keep-alive",
+          "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "content-length": "110",
+          "content-type": "application/octet-stream",
+          "date": "Wed, 23 Sep 2026 02:45:10 GMT",
+          "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "last-modified": "Wed, 23 Sep 2026 02:45:09 GMT",
+          "server": "cloudflare"
+        },
+        "signature": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ev-storage-01/218966fc-6666-44c6-a04e-23497d46ee36/rules.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T024509Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host",
+            "response-cache-control": "private, no-store, no-transform",
+            "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "response-content-type": "application/octet-stream",
+            "x-id": "GetObject"
+          }
+        },
+        "bytesVerified": true
+      }
+    },
+    {
+      "name": "head-original-metadata",
+      "status": "passed",
+      "evidence": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cf-ray": "a3f63637fe209ab6-LAX",
+          "connection": "close",
+          "content-length": "110",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:45:11 GMT",
+          "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "last-modified": "Wed, 23 Sep 2026 02:45:09 GMT",
+          "server": "cloudflare"
+        },
+        "signature": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ev-storage-01/218966fc-6666-44c6-a04e-23497d46ee36/rules.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T024509Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host"
+          }
+        }
+      }
+    },
+    {
+      "name": "method-isolation",
+      "status": "passed",
+      "evidence": [403, 403]
+    },
+    {
+      "name": "cleanup",
+      "status": "passed",
+      "evidence": {
+        "headStatus": 404
+      }
+    }
+  ]
+}

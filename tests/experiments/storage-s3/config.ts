@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+export function isR2ApiUrl(value: string) {
+  const url = new URL(value);
+  return (
+    url.protocol === 'https:' &&
+    !url.port &&
+    /^[a-f0-9]{32}(?:\.(?:eu|fedramp))?\.r2\.cloudflarestorage\.com$/.test(
+      url.hostname,
+    )
+  );
+}
+
 export const services = ['aws', 'r2', 'seaweedfs'] as const;
 export type Service = (typeof services)[number];
 export const configSchema = z
@@ -40,14 +51,7 @@ export const configSchema = z
         message: 'Owner confirmation must refer to this configuration revision',
       });
     if (config.service === 'r2') {
-      const url = new URL(config.endpoint);
-      if (
-        url.protocol !== 'https:' ||
-        url.port ||
-        !/^[a-f0-9]{32}(?:\.(?:eu|fedramp))?\.r2\.cloudflarestorage\.com$/.test(
-          url.hostname,
-        )
-      )
+      if (!isR2ApiUrl(config.endpoint))
         context.addIssue({
           code: 'custom',
           message: 'R2 capability exception requires its official S3 endpoint',

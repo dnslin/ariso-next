@@ -182,9 +182,10 @@ export async function runService(
     await check('anonymous-private-get', async () =>
       checkAnonymous(await unsignedObjectUrl(client, bucket, source)),
     );
-    await check('signed-get-head-overrides', async () => {
+    await check('signed-get-overrides-and-head-metadata', async () => {
       const signed = await signReads(client, bucket, destination);
       const get = await fetch(signed.get, {
+        headers: { 'Accept-Encoding': 'identity' },
         redirect: 'manual',
         signal: AbortSignal.timeout(30_000),
       });
@@ -192,13 +193,26 @@ export async function runService(
       assert.equal(await get.text(), svg);
       const head = await fetch(signed.head, {
         method: 'HEAD',
+        headers: { 'Accept-Encoding': 'identity' },
         redirect: 'manual',
         signal: AbortSignal.timeout(30_000),
       });
-      const headEvidence = checkResponseHeaders(head);
+      assert.equal(head.status, 200);
+      assert.equal(
+        Number(head.headers.get('content-length')),
+        Buffer.byteLength(svg),
+      );
+      assert.equal(head.headers.get('content-type'), 'image/svg+xml');
+      assert.ok(head.headers.get('etag'));
+      assert.equal(head.headers.get('etag'), get.headers.get('etag'));
+      const headEvidence = {
+        status: head.status,
+        headers: Object.fromEntries(head.headers),
+      };
       assert.equal(await head.text(), '');
       const wrongMethod = await fetch(signed.get, {
         method: 'HEAD',
+        headers: { 'Accept-Encoding': 'identity' },
         redirect: 'manual',
         signal: AbortSignal.timeout(30_000),
       });

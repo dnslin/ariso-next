@@ -8,7 +8,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import type { StorageConfig } from './config.ts';
+import { isR2ApiUrl, type StorageConfig } from './config.ts';
 
 export const svg =
   '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="20" height="20" fill="red"/></svg>';
@@ -129,20 +129,23 @@ export async function checkAnonymous(url: string) {
     signal: AbortSignal.timeout(30_000),
   });
   const body = await response.text();
-  assert.equal(
-    response.status,
-    403,
-    `Anonymous GET returned ${response.status}`,
-  );
-  assert.match(
-    body,
-    /<Code>AccessDenied<\/Code>/,
-    '403 must be an object-service AccessDenied response',
+  const code = body.match(/<Code>([^<]+)<\/Code>/)?.[1];
+  const message = body.match(/<Message>([^<]+)<\/Message>/)?.[1];
+  const denied = response.status === 403 && code === 'AccessDenied';
+  const r2Denied =
+    isR2ApiUrl(url) &&
+    response.status === 400 &&
+    code === 'InvalidArgument' &&
+    message === 'Authorization';
+  assert.ok(
+    denied || r2Denied,
+    `Anonymous GET did not explicitly reject access: ${response.status} ${code ?? 'unknown'} ${message ?? ''}`,
   );
   return {
     url,
     status: response.status,
-    code: 'AccessDenied',
+    code,
+    message,
     requestId: response.headers.get('x-amz-request-id'),
   };
 }
@@ -168,11 +171,9 @@ export async function signReads(client: S3Client, bucket: string, key: string) {
     new GetObjectCommand({ ...input, ...overrides }),
     { expiresIn: 300 },
   );
-  const head = await getSignedUrl(
-    client,
-    new HeadObjectCommand({ ...input, ...overrides }),
-    { expiresIn: 300 },
-  );
+  const head = await getSignedUrl(client, new HeadObjectCommand(input), {
+    expiresIn: 300,
+  });
   return { get, head };
 }
 

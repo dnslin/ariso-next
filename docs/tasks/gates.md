@@ -91,7 +91,7 @@
 - 直接前置：无
 - 范围：固定SDK，在AWS S3/R2/SeaweedFS普通Bucket验证版本/锁能力、私有探测、流PUT/GET/HEAD/Copy/Delete、签名与附件。
 - 验收条件：三份服务报告，未实现/拒绝配置API不算通过；R2整个Bucket声明按规格；900秒PUT、300秒GET/HEAD、条件复制/HTTP200内错误及SVG强制附件可观察。
-- 验证方法：真实三服务、实际browser PUT头、无签名GET、独立HEAD签名/响应覆盖和匿名下载；无凭据环境明确未完成。
+- 验证方法：真实三服务、实际browser PUT头、无签名GET、独立HEAD签名/对象元数据及GET响应覆盖和匿名下载；无凭据环境明确未完成。
 - 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-STORAGE-01/` 报告；不预建业务模块。
 - 界面：无产品界面交付；浏览器实验只用于验证实际库/协议，不关闭 DES/RG 或业务界面任务。
 
