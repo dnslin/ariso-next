@@ -1,6 +1,6 @@
 # UPLOAD-V02 共同容量与传输超时
 
-2026-09-23，关联 [Issue #71](https://github.com/dnslin/ariso-next/issues/71)。**当前未完成验收，PR 保持草稿。** 本次交付独立实验与真实证据，不预建 upload 业务模块，不修改冻结 PRD，不解除 #73 的本项前置。
+2026-09-23，关联 [Issue #71](https://github.com/dnslin/ariso-next/issues/71)、[草稿 PR #111](https://github.com/dnslin/ariso-next/pull/111)。**当前未完成验收，PR 保持草稿。** 本次交付独立实验与真实证据，不预建 upload 业务模块，不修改冻结 PRD，不解除 #73 的本项前置。
 
 范围与验收以[任务卡](../../gates.md#upload-v02-共同容量与传输超时)、[upload §3/6/10/13](../../../specs/SPEC-upload.md)为准。直接前置 #70 已关闭，R2/SeaweedFS 小样本证据可用；#70 的 AWS 免等待决定不等于本任务已验证 AWS 容量。没有产品界面变更，Figma、主题、响应式与设备触控验收不适用。浏览器仅验证实际 HTTP 行为。
 
@@ -84,3 +84,5 @@ git diff --check
 未完成项：三服务共同最大成功/首个拒绝字节、AWS 真实环境、实际部署代理、基于真实业务媒体任务的等待流程。共同容量未定，尚不能向后续前后端交付已验证的最大 MiB；本任务不预建设置业务模块。超时或中断的远端 PUT 可能在 DELETE 后迟到完成，必须保留明确 Key 并在写入结束后收尾；本实验不代替 UPLOAD-V01 的通用迟到 PUT 生命周期协议。
 
 远端检查按[执行约定](../../execution.md#适用检查)：`ci.yml` 仅 workflow_call，`images.yml` 仅 release.published，没有 PR/push/workflow_dispatch 验证入口。本次不发布 Release、不构建或发布镜像、不部署。AMD64/ARM64 发布验证未执行，不写通过。最终 PR 保持草稿，不合并、不关闭 Issue、不删除分支或 worktree。
+
+远端实际核对：`gh pr checks 111 --repo dnslin/ariso-next` 返回退出 1 / no checks reported；`gh run list --repo dnslin/ariso-next --branch codex/71-upload-boundaries --limit 10 --json databaseId,workflowName,status,conclusion,url` 返回空数组；`gh pr view 111 --repo dnslin/ariso-next --json url,isDraft,state,headRefName,statusCheckRollup` 确认 OPEN / isDraft=true / 检查列表为空。没有把“无远端检查”记为 CI 通过。分支为 `codex/71-upload-boundaries`。
