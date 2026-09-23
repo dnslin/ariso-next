@@ -206,7 +206,7 @@
 
 - 任务组：`UPLOAD-QUEUE`
 - 里程碑：M3
-- 范围：补全submission拆批、统一设置/关系/素材引用、快速创建、下一提交编辑、传输取消和结果操作；本地流程完整交付，S3共享调度在T-UP-04联验。交付 GET/PATCH /api/settings/upload：默认50 MiB/20/500，大小以正整数MiB且不超UPLOAD-V02实测上界，批次1–200、队列100–2000且批次不大于队列；上传限制界面由站点设置任务接入。
+- 范围：补全submission拆批、统一设置/关系/素材引用、快速创建、下一提交编辑、传输取消和结果操作；本地流程完整交付，S3共享调度在T-UP-04联验。交付 GET/PATCH /api/settings/upload：默认50 MiB/20/500，大小以正整数MiB保存，前后端使用同一配置字节值，批次1–200、队列100–2000且批次不大于队列；上传限制界面由站点设置任务接入。
 - 规格与预计文件：SPEC-upload §4/5/8/9、UP-04–06/12/14–16/21；`src/server/upload/settings.ts`、`src/app/api/settings/upload/route.ts`、`src/server/upload/submissions.ts`、会话交接与`src/app/upload/`、队列集成/浏览器测试。
 - 直接前置：`T-UP-02`、`T-UP-07`、`T-COL-01`、`T-MED-10`、`T-MED-13`、`T-LIB-02`、`UPLOAD-V02`、`UPLOAD-V03`、`DG-UPLOAD`
 - 验收条件：45项20/20/5同一快照，跨提交传输总并发3；集合/素材删除与交接同事务核对。修改限制仅影响新submission，旧提交沿用已核验快照，服务端独立拒绝非法范围；队列含终态结果占名额，清空只清页面；无存储禁用，缺默认要求选。交接前取消与完成只一方成功，交接后不可取消；关闭页面不恢复浏览器队列、已交接后台继续。区分无资产失败与处理失败；终态释放File/Blob/Uppy引用，重传重新选文件；同ID重处理、回收、默认/固定版复制和真实详情返回可用。
@@ -342,6 +342,6 @@
 - 规格与预计文件：[upload §3/9](../specs/SPEC-upload.md)、[site 保存边界](../specs/SPEC-site.md)；`src/components/upload/settings.tsx`、`src/app/settings/general/`、相应浏览器测试。
 - 直接前置：`T-UP-03`、`T-UI-01`、`UPLOAD-V02`、`DG-SITE`
 - 范围：在基础设置页组合 upload 自有 GET/PATCH，单独保存文件大小、批次和队列上限；不把字段塞入 site PATCH。
-- 验收条件：默认50MiB/20/500，批次1–200、队列100–2000且批次不大于队列；文件大小正整数MiB上界显示UPLOAD-V02真实结论；只影响新提交，固定并发3不可配置；字段错误/服务失败保留输入，无其他模块假成功。
+- 验收条件：默认50MiB/20/500，批次1–200、队列100–2000且批次不大于队列；文件大小以正整数MiB保存并显示当前配置值，前后端使用同一字节限制；只影响新提交，固定并发3不可配置；字段错误/服务失败保留输入，无其他模块假成功。
 - 验证方法：新增设置浏览器用例并接入 `pnpm run test:browser`，测试边界/保存失败/重启读取，以及旧submission与新submission限制差异；适用工程检查按执行约定。
 - 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、短视口不裁底栏，通用控件按HeroUI统一，无业务差异。
