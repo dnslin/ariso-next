@@ -2,6 +2,8 @@
 
 日期：2026-09-23。对应 [Issue #69](https://github.com/dnslin/ariso-next/issues/69)，范围沿用 [T-DEL-01](../../tasks/m1-m2.md#t-del-01-本地稳定图片访问与下载) 和 [delivery 规格](../../specs/SPEC-delivery.md)。保留 R-14.2-01、R-14.3-01、R-14.5-01、R-14.6-01/02、R-14.7-01、R-14.8-01、R-14.9-01、R-14.10-01/02、A-26.6-01/02 的既有编号与模块边界，不改冻结 PRD。
 
+最新评审修订及复跑结果见[三项问题修订记录](./revision/README.md)。下文保留首次交付的历史证据。
+
 ## 前置与实现
 
 通过 `gh issue view 69 --json title,body,comments,state,url` 及原生 `issues/69/dependencies/blocked_by`、`blocking` 核对：无评论，#47、#53、#49、#64、#67、#68 均 closed；原生后置为 #73、#76、#83。前置证据见 [site](../site-47/README.md)、[identity](../identity-53/README.md)、[storage](../storage-49/README.md)、[media 恢复](../media-64/README.md)、[回收恢复](../media-67/README.md)、[本地流实验](../../tasks/evidence/EV-DELIVERY-01/README.md)。历史规格中的“未实现”不覆盖已经交付的模块契约。

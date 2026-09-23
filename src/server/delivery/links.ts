@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { getImageAccessState } from '../media/images.ts';
 import { versionKinds, type VersionKind } from '../media/schema.ts';
 import { buildSiteUrl } from '../site/urls.ts';
+import { deliveryError } from './errors.ts';
 
 const versionSchema = z.enum(versionKinds);
 const imageIdSchema = z
@@ -25,10 +26,7 @@ export function parseImageRequest(
     downloads.length > 1 ||
     (downloads.length === 1 && downloads[0] !== '1')
   ) {
-    throw Object.assign(new Error('图片访问参数无效'), {
-      status: 400,
-      code: 'INVALID_IMAGE_REQUEST',
-    });
+    throw deliveryError('INVALID_IMAGE_REQUEST');
   }
   return {
     imageId,
@@ -66,10 +64,7 @@ export function resolveImageVersion(
     target = state.versions.find(({ kind }) => kind === actualVersion);
   }
   if (!target?.saved) {
-    throw Object.assign(new Error('请求的图片版本不可用'), {
-      status: 404,
-      code: 'VERSION_UNAVAILABLE',
-    });
+    throw deliveryError('VERSION_UNAVAILABLE');
   }
   return { actualVersion, ...target.saved };
 }

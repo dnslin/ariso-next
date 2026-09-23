@@ -5,7 +5,13 @@ import type { Logger } from 'pino';
 import type { VersionKind } from '../media/schema.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { readObject } from '../storage/local.ts';
-import { deliveryError, selectImageDelivery } from './access.ts';
+import { selectImageDelivery } from './access.ts';
+import {
+  deliveryErrors,
+  deliveryError,
+  isDeliveryErrorCode,
+  type DeliveryErrorCode,
+} from './errors.ts';
 import { makeHeaders, preconditionStatus } from './headers.ts';
 import { parseImageRequest } from './links.ts';
 import { responseStream } from './stream.ts';
@@ -28,22 +34,8 @@ export const deliveryHeaders = {
   'Cache-Control': 'private, no-store, no-transform',
   'X-Content-Type-Options': 'nosniff',
 };
-const errors = {
-  INVALID_IMAGE_REQUEST: [400, '图片请求参数无效'],
-  OWNER_LOGIN_REQUIRED: [401, '请登录后访问私有图片'],
-  IMAGE_NOT_FOUND: [404, '图片不存在'],
-  IMAGE_UNAVAILABLE: [404, '图片已回收或正在删除'],
-  VERSION_UNAVAILABLE: [404, '请求的图片版本不可用'],
-  IMAGE_NOT_READY: [409, '图片尚未处理完成'],
-  STORAGE_DISABLED: [409, '图片所属存储已停用'],
-  IMAGE_CHANGED: [409, '图片版本发生变化，请重试'],
-  STORAGE_OBJECT_MISSING: [404, '图片文件不存在'],
-  PRECONDITION_FAILED: [412, '图片请求前提条件不满足'],
-  DELIVERY_FAILED: [500, '图片读取失败，请稍后重试'],
-} as const;
-
-export function imageFailure(request: Request, code: keyof typeof errors) {
-  const [status, message] = errors[code];
+export function imageFailure(request: Request, code: DeliveryErrorCode) {
+  const [status, message] = deliveryErrors[code];
   return new Response(
     request.method === 'HEAD' ? null : JSON.stringify({ code, message }),
     {
@@ -90,13 +82,16 @@ export async function prepareImageDelivery(
           request.signal,
         );
       } catch (error) {
-        if ((error as { code?: string }).code !== 'STORAGE_OBJECT_MISSING')
+        if (!(
+          error instanceof Error &&
+          'code' in error &&
+          error.code === 'STORAGE_OBJECT_MISSING'
+        ))
           throw error;
         // Old published objects can be removed after media atomically replaces a version.
         const current = select(await options.readOwner());
         if (sameTarget(selected, current)) throw error;
-        if (attempt === 1)
-          throw deliveryError(409, 'IMAGE_CHANGED', '图片版本连续变化');
+        if (attempt === 1) throw deliveryError('IMAGE_CHANGED');
         continue;
       }
       source = opened.stream;
@@ -119,8 +114,7 @@ export async function prepareImageDelivery(
       if (!sameTarget(selected, current)) {
         await close(source);
         source = undefined;
-        if (attempt === 1)
-          throw deliveryError(409, 'IMAGE_CHANGED', '图片版本连续变化');
+        if (attempt === 1) throw deliveryError('IMAGE_CHANGED');
         continue;
       }
       const headers = makeHeaders({
@@ -170,18 +164,10 @@ export async function prepareImageDelivery(
     throw new Error('Image selection exhausted');
   } catch (err) {
     if (source) await close(source);
-    const code = (err as { code?: string } | null)?.code;
-    if (
-      !code ||
-      !Object.hasOwn(errors, code) ||
-      code === 'STORAGE_OBJECT_MISSING'
-    )
+    const code = err instanceof Error && 'code' in err ? err.code : undefined;
+    const recognized = isDeliveryErrorCode(code);
+    if (!recognized || code === 'STORAGE_OBJECT_MISSING')
       logger.error({ err, imageId }, 'Image delivery failed');
-    return imageFailure(
-      request,
-      code && Object.hasOwn(errors, code)
-        ? (code as keyof typeof errors)
-        : 'DELIVERY_FAILED',
-    );
+    return imageFailure(request, recognized ? code : 'DELIVERY_FAILED');
   }
 }

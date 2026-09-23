@@ -1,7 +1,9 @@
 import type { ReadStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
 
-/** No Web queue: constructing a Response must not start delivery or counting. */
+/** No Web queue: constructing a Response must not start delivery or counting.
+ * The caller logs source errors; onError reports only adapter/consumer failures.
+ */
 export function responseStream(
   source: ReadStream,
   signal: AbortSignal,
@@ -11,9 +13,9 @@ export function responseStream(
   const iterator = source[Symbol.asyncIterator]();
   let started = false;
   let cancelled = false;
-  const closed = finished(source, { cleanup: true }).catch((error: unknown) => {
-    if (!cancelled) onError(error);
-  });
+  // Source errors propagate through the iterator and its error event. This promise
+  // only waits for disposal, so it must not report the same failure again.
+  const closed = finished(source, { cleanup: true }).catch(() => undefined);
   const abort = () => {
     cancelled = true;
     source.destroy();
@@ -41,7 +43,7 @@ export function responseStream(
           }
         } catch (error) {
           source.destroy();
-          if (!cancelled) onError(error);
+          if (!cancelled && error !== source.errored) onError(error);
           controller.error(error);
         }
       },

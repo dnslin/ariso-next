@@ -57,12 +57,20 @@ describe('delivery parameters and stable links', () => {
     expect(() =>
       parseImageRequest('image-1', new URLSearchParams(query)),
     ).toThrow(
-      expect.objectContaining({ status: 400, code: 'INVALID_IMAGE_REQUEST' }),
+      expect.objectContaining({
+        status: 400,
+        code: 'INVALID_IMAGE_REQUEST',
+        message: '图片请求参数无效',
+      }),
     );
   });
   it.each(['', 'a/b', 'a\\b', 'a\n'])('rejects invalid image ID %j', (id) => {
     expect(() => parseImageRequest(id, new URLSearchParams())).toThrow(
-      expect.objectContaining({ status: 400 }),
+      expect.objectContaining({
+        status: 400,
+        code: 'INVALID_IMAGE_REQUEST',
+        message: '图片请求参数无效',
+      }),
     );
   });
   it('uses the current configured public origin and encodes image identifiers', () => {
@@ -124,7 +132,11 @@ describe('delivery current version selection', () => {
           'watermark',
         ),
       ).toThrow(
-        expect.objectContaining({ status: 404, code: 'VERSION_UNAVAILABLE' }),
+        expect.objectContaining({
+          status: 404,
+          code: 'VERSION_UNAVAILABLE',
+          message: '请求的图片版本不可用',
+        }),
       );
     },
   );

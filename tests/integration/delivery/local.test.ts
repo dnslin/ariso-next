@@ -400,7 +400,19 @@ describe('delivery with SQLite and local objects', () => {
     await expect(response.arrayBuffer()).rejects.toThrow();
     expect(streams[0]!.destroyed).toBe(true);
     expect(onAccess).not.toHaveBeenCalled();
-    expect(logger.error).toHaveBeenCalled();
+    expect(logger.error).toHaveBeenCalledTimes(1);
+  });
+
+  it('logs a file error once even when nobody consumes the response', async () => {
+    interceptOpened(() => undefined);
+    const response = await request();
+    streams[0]!.destroy(new Error('injected unconsumed file failure'));
+    await finished(streams[0]!).catch(() => undefined);
+    expect(logger.error).toHaveBeenCalledTimes(1);
+    expect(streams[0]!.closed).toBe(true);
+    expect(onAccess).not.toHaveBeenCalled();
+    await response.body!.cancel();
+    expect(logger.error).toHaveBeenCalledTimes(1);
   });
 
   it.each(['cancel', 'error'] as const)(
@@ -416,7 +428,7 @@ describe('delivery with SQLite and local objects', () => {
       else {
         streams[0]!.destroy(new Error('injected mid-stream failure'));
         await expect(reader.read()).rejects.toThrow();
-        expect(logger.error).toHaveBeenCalled();
+        expect(logger.error).toHaveBeenCalledTimes(1);
       }
       expect(streams[0]!.destroyed).toBe(true);
       expect(onAccess).toHaveBeenCalledTimes(1);
@@ -498,6 +510,6 @@ describe('delivery with SQLite and local objects', () => {
     });
     expect(Buffer.from(await (await request()).arrayBuffer())).toEqual(bytes);
     expect(onAccess).toHaveBeenCalledTimes(1);
-    expect(logger.error).toHaveBeenCalled();
+    expect(logger.error).toHaveBeenCalledTimes(1);
   });
 });
