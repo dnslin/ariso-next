@@ -41,6 +41,7 @@
 - [相册标签模型与上传关联事务验证](./verification/collections-66/README.md)
 - [回收与恢复服务契约验证](./verification/media-67/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
+- [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
 
