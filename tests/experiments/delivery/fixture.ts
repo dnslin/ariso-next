@@ -2,7 +2,10 @@ import { readObject } from '../../../src/server/storage/local.ts';
 import { finished } from 'node:stream/promises';
 import type { ReadStream } from 'node:fs';
 import { responseStream } from './stream.ts';
-import { makeHeaders, preconditionStatus } from './headers.ts';
+import {
+  makeHeaders,
+  preconditionStatus,
+} from '../../../src/server/delivery/headers.ts';
 
 // These states and gates are test controls, not a media model or production API.
 export type Scenario = {

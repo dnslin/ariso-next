@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="vitest tests" tests="46" failures="0" errors="0" time="15.232867417">
+    <testsuite name="tests/integration/delivery/http.test.ts" timestamp="2026-09-23T06:15:13.729Z" hostname="dnslins-Mini.lan" tests="12" failures="0" errors="0" skipped="0" time="11.560253917">
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real Next GET returns complete bytes, ignores Range, and records one start" time="0.0934125">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="HEAD/304/412 close files without body delivery; dates are ignored without Last-Modified" time="0.162880375">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="final async authorization rejects private, unavailable, disabled and not-ready states before conditions" time="0.283690542">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real owner Cookie permits private access, revoked Cookie is rechecked and public access then counts" time="0.416975542">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="one version reselection succeeds; a second conflict returns IMAGE_CHANGED and releases both handles" time="0.191083542">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="read failures run through Next HTTP: first read never counts, midstream disconnect keeps one count" time="0.032424292">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="real client cancellation before headers and after first network chunk releases file handles" time="0.072900334">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="thumbnail is excluded, attachments count normally, and counter failure does not truncate bytes" time="0.063932875">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="missing and inconsistent physical files cannot return 304 or emit an event" time="0.0153355">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="current owner remains authorized after public becomes private during open" time="0.162289917">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="an already started stream finishes after permission changes; the next request is rejected" time="1.585695459">
+        </testcase>
+        <testcase classname="tests/integration/delivery/http.test.ts" name="HTTP filename and cache matrix uses the supplied format metadata and UTF-8 names" time="0.3856365">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/delivery/local-http.test.ts" timestamp="2026-09-23T06:15:13.731Z" hostname="dnslins-Mini.lan" tests="4" failures="0" errors="0" skipped="0" time="3.279813375">
+        <testcase classname="tests/integration/delivery/local-http.test.ts" name="delivers exact bytes and real HEAD, conditions, Range and attachment responses" time="0.913649584">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local-http.test.ts" name="reads current default, rejects missing versions and never exposes private state to other credentials" time="0.860960959">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local-http.test.ts" name="rechecks lifecycle, storage and actual files before evaluating conditions" time="0.768952333">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local-http.test.ts" name="returns explicit no-store method and parameter errors through Next HTTP" time="0.735544292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/delivery/local.test.ts" timestamp="2026-09-23T06:15:13.731Z" hostname="dnslins-Mini.lan" tests="30" failures="0" errors="0" skipped="0" time="0.392800125">
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; streams exact original bytes and counts only on the first consumed block" time="0.055384042">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; follows default changes while explicit original remains fixed and missing applicable versions fail" time="0.021761959">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; falls back only for an inapplicable default and counts actual original" time="0.009009584">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; checks private permission before exposing disabled storage or missing versions" time="0.008392458">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; allows only owner to read saved original in pending state" time="0.0170795">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; allows only owner to read saved original in processing state" time="0.015192083">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; allows only owner to read saved original in failed state" time="0.015849">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rejects unavailable records even for owner: {&quot;trashedAt&quot;:&quot;2026-09-23T06:15:02.060Z&quot;}" time="0.007388">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rejects unavailable records even for owner: {&quot;deletionStatus&quot;:&quot;deleting&quot;}" time="0.008673125">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rejects unavailable records even for owner: {&quot;deletionStatus&quot;:&quot;cleanup_failed&quot;}" time="0.006241542">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; excludes owner and thumbnail accesses but counts anonymous attachment once" time="0.013365791">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; HEAD, conditional requests and Range retain access checks without partial responses" time="0.023103167">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; forces local SVG attachment with verified type and Chinese display name" time="0.014560209">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rechecks private change after opening and closes rejected object" time="0.009736459">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rechecks trash change after opening and closes rejected object" time="0.007355958">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rechecks disabled change after opening and closes rejected object" time="0.009290833">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rechecks revoked owner after opening a private object" time="0.011549541">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; reselects a newly published version after open without returning old bytes" time="0.010428">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; reselects once when the selected object was deleted before it could open" time="0.01074375">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rejects repeated version changes after a bounded reselect" time="0.010224917">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; first read failure closes the real file stream without counting" time="0.010272458">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; after first block, cancel closes the real stream and retains exactly one count" time="0.009970667">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; after first block, error closes the real stream and retains exactly one count" time="0.009635375">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; does not count a response cancelled before its first read and closes the handle" time="0.010034708">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; propagates request abortion to the actual file stream" time="0.007784375">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; counts a public image after owner session is revoked during open" time="0.013406916">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; does not turn authentication infrastructure failure into anonymous access" time="0.005645541">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; requires a real readable object before honoring conditional requests" time="0.008879792">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; rejects physical size mismatch and closes the opened file" time="0.014432375">
+        </testcase>
+        <testcase classname="tests/integration/delivery/local.test.ts" name="delivery with SQLite and local objects &gt; logs aggregation failure without interrupting allowed bytes or retrying count" time="0.01642275">
+        </testcase>
+    </testsuite>
+</testsuites>

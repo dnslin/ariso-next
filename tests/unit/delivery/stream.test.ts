@@ -3,7 +3,7 @@ import { open, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, it, vi } from 'vitest';
-import { responseStream } from '../../experiments/delivery/stream.ts';
+import { responseStream } from '../../../src/server/delivery/stream.ts';
 
 it('opening, Node prefetch and constructing Response do not count before a consumer reads', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'delivery-stream-'));
