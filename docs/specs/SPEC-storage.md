@@ -121,7 +121,7 @@ R2 的接口差异适配仅用于其官方 S3 Endpoint，不凭客户端随意�
 
 1. 校验第 5 节支持范围，使用当前 revision 凭据 PutObject。
 2. 使用凭据 GetObject，完整读取并确认与写入字节一致，不仅检查 200。
-3. 对同一对象的规范 API URL 发起**真正无签名、无 Authorization/Cookie**的 GET。2xx 表示匿名可读，测试失败；来自对象服务的明确 403 AccessDenied 才计为通过。网络失败、TLS 错误、3xx、5xx、未知 404 不能当私有证据；禁止自动跟随重定向，报告 Endpoint 问题。URL 必须来自相同 Endpoint/Bucket/Key 的地址规则，不能从签名 URL 粗暴删掉签名参数推测。
+3. 对同一对象的规范 API URL 发起**真正无签名、无 Authorization/Cookie**的 GET。2xx 表示匿名可读，测试失败；来自对象服务的明确 403 AccessDenied 计为通过；官方 HTTPS R2 S3 API 地址还接受实测确定的 400、XML Code=InvalidArgument 且 Message=Authorization 组合，三项必须同时匹配。该例外不适用于其他 Endpoint、r2.dev 公共地址或其他 400 响应。仍须先鉴权读取同一已写入对象，并核对公共访问旁路；拒绝 API 匿名读取不等于所有别名均私有。网络失败、TLS 错误、3xx、5xx、未知 404 不能当私有证据；禁止自动跟随重定向，报告 Endpoint 问题。URL 必须来自相同 Endpoint/Bucket/Key 的地址规则，不能从签名 URL 粗暴删掉签名参数推测。
 4. 无论前面成功或失败，都尝试鉴权删除 probe；删除失败则整次测试失败，保留可重试清理记录。删除成功或确认对象不存在后才解除 probe 的对象引用。
 
 只有四步及支持范围检查成功，且当前 revision 仍相同，才保存 passed。如果配置已改变，返回检测已失效，不能覆盖新状态。失败记录区分写入、鉴权读取、匿名读取、删除与配置检查，日志保留服务错误码、requestId、storageId 和阶段。

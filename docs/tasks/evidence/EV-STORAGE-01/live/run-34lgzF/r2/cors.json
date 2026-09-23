@@ -1,0 +1,22 @@
+{
+  "bucketCors": {
+    "name": "AccessDenied",
+    "message": "Access Denied",
+    "httpStatusCode": 403,
+    "attempts": 1,
+    "totalRetryDelay": 0
+  },
+  "preflight": {
+    "status": 403,
+    "headers": {
+      "cf-ray": "a3f5e6a488c6e6d4-LAX",
+      "connection": "keep-alive",
+      "content-encoding": "gzip",
+      "content-type": "application/xml",
+      "date": "Wed, 23 Sep 2026 01:50:51 GMT",
+      "server": "cloudflare",
+      "transfer-encoding": "chunked"
+    },
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Error><Code>Unauthorized</Code><Message>CORS not configured for this bucket</Message></Error>"
+  }
+}

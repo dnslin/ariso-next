@@ -116,7 +116,7 @@ storage 根据受控对象引用打开文件；先取得可读句柄和实际大
 
 正常 GET 不额外 HEAD 每个对象；以 media 的已保存版本记录选对象。签名成功不证明远端此刻能够完整下载，外部误删对象或签发后的权限/网络变化可能让 S3 最终返回错误，Ariso 无法改写已发出的 302。这与“统计签发次数”的 PRD 口径一致，不能把签名成功标成远端下载成功。
 
-storage 的 300 秒签名只能用于其签名的方法。HEAD 不复用 GET 签名：本地检查文件后返回对应状态/头、无正文；S3 同样返回 302，但 Location 是单独签名的 HeadObject 地址，有效期最多 300 秒，只能用于 HEAD、不计访问量。该最小 `signInspect` 能力由 storage 提供，不另建签名实现。HeadObject 支持类型、附件与缓存覆盖，沿用本次 GET 所需的对应值并单独签名；三服务分别实测，不把 AWS 能力当作 R2/MinIO 已验证。本地及 Ariso HEAD 均无正文。官方方法依据：[HeadObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html)。
+storage 的 300 秒签名只能用于其签名的方法。HEAD 不复用 GET 签名：本地检查文件后返回对应状态/头、无正文；S3 同样返回 302，但 Location 是单独签名的 HeadObject 地址，有效期最多 300 秒，只能用于 HEAD、不计访问量。该最小 `signInspect` 能力由 storage 提供，不另建签名实现。HeadObject 只签名对象地址，不附加 GET 的类型、附件与缓存覆盖参数；验证状态、无正文、对象大小、类型和 ETag。最终对象 HEAD 返回原始元数据，不承诺与下载 GET 的响应头相同；实测 R2 忽略这些覆盖参数。强制附件、安全内容类型及最终下载缓存策略由实际 GET 验证，Ariso 自身的 HEAD/302 仍保留下述禁止缓存要求。本地及 Ariso HEAD 均无正文。官方方法依据：[HeadObject](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html)。
 
 无需公开 Bucket。S3 CORS 检测失败影响浏览器上传直传，不影响普通 `<img>` 跳转展示或顶层附件下载；跨域 JavaScript 读取响应是另一项能力，首版不承诺第三方 canvas/fetch 可读全部资源。
 
@@ -189,15 +189,15 @@ S3 GET/HEAD 在 Ariso 层本应返回 302，按 HTTP 规则不在该层评估条
 
 错误以简体中文可读 message 和稳定 code 返回 JSON，Content-Type 明确、no-store、nosniff；不返回假图片和 200。HEAD 保持对应状态/头但无正文。底层路径/Key、cause 和服务错误代码进入服务端日志与适当的所有者诊断，不暴露给匿名响应；不得记录 Cookie、Authorization 或完整签名 URL。
 
-| 内部契约                                                       | 提供方与使用方                                                                                     |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `resolveImageVersion(image, requestedType, defaultType)`       | delivery 纯规则；区分 default/explicit、适用性与已存版本                                           |
-| `buildImageUrl(publicUrl, imageId, selectedVersion, download)` | delivery；默认 selectedVersion 为空，不写 type；明确选版才固定，不生成存储地址                     |
-| `prepareImageDelivery(request)`                                | delivery；组合身份、媒体状态、版本和存储传输准备，返回流/302/错误                                  |
-| 可选所有者会话读取                                             | identity 提供库的同一会话验证；没有 Cookie 可直接匿名，有效性异常不能吞掉                          |
-| `getImageAccessState`、当前默认版本                            | media 提供；须返回实际对象身份与当前状态，不仅返回前端布尔值                                       |
-| `readObject` / `inspectObject` / `signRead` / `signInspect`    | storage 提供；GET/HEAD 签名支持响应缓存、类型和附件参数，方法分别签名；本地可读句柄/关闭语义需配套 |
-| 开始访问结果                                                   | delivery 提供给入口的 analytics 组合；实际聚合不能反向改变授权                                     |
+| 内部契约                                                       | 提供方与使用方                                                                                               |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `resolveImageVersion(image, requestedType, defaultType)`       | delivery 纯规则；区分 default/explicit、适用性与已存版本                                                     |
+| `buildImageUrl(publicUrl, imageId, selectedVersion, download)` | delivery；默认 selectedVersion 为空，不写 type；明确选版才固定，不生成存储地址                               |
+| `prepareImageDelivery(request)`                                | delivery；组合身份、媒体状态、版本和存储传输准备，返回流/302/错误                                            |
+| 可选所有者会话读取                                             | identity 提供库的同一会话验证；没有 Cookie 可直接匿名，有效性异常不能吞掉                                    |
+| `getImageAccessState`、当前默认版本                            | media 提供；须返回实际对象身份与当前状态，不仅返回前端布尔值                                                 |
+| `readObject` / `inspectObject` / `signRead` / `signInspect`    | storage 提供；GET 签名支持响应缓存、类型和附件参数；HEAD 独立签名读取原始元数据；本地可读句柄/关闭语义需配套 |
+| 开始访问结果                                                   | delivery 提供给入口的 analytics 组合；实际聚合不能反向改变授权                                               |
 
 接口名称为提议；所有 I/O 在同步 SQLite 短事务之外。提供方已有能力优先复用，只在跨模块集成任务补齐必要字段，不另建一份会话校验、文件访问或对象签名实现。
 

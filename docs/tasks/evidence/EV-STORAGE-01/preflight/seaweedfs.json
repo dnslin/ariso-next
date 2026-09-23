@@ -1,0 +1,23 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-23T01:36:59.143Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "operation": "HeadBucketCommand",
+      "status": 200
+    },
+    {
+      "operation": "GetBucketVersioningCommand",
+      "status": 200
+    },
+    {
+      "operation": "GetObjectLockConfigurationCommand",
+      "error": "ObjectLockConfigurationNotFoundError",
+      "status": 404,
+      "message": "Object Lock configuration does not exist for this bucket"
+    }
+  ]
+}

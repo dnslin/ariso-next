@@ -1,0 +1,108 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "key": "ariso/ev-storage-01/fe4de615-0135-4f6d-8a80-12cdbac77fa8/rules.svg",
+  "date": "2026-09-23T02:45:06.197Z",
+  "checks": [
+    {
+      "name": "anonymous-denial",
+      "status": "passed",
+      "evidence": {
+        "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/fe4de615-0135-4f6d-8a80-12cdbac77fa8/rules.svg",
+        "status": 403,
+        "code": "AccessDenied",
+        "message": "Access Denied.",
+        "requestId": "18D7D31F0AB9F071A719CF24"
+      }
+    },
+    {
+      "name": "get-attachment-overrides",
+      "status": "passed",
+      "evidence": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "cache-control": "private, no-store, no-transform",
+          "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "content-length": "110",
+          "content-type": "application/octet-stream",
+          "date": "Wed, 23 Sep 2026 02:45:06 GMT",
+          "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "last-modified": "Wed, 23 Sep 2026 02:45:06 GMT",
+          "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D31EF7981E30DF635A35"
+        },
+        "signature": {
+          "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/fe4de615-0135-4f6d-8a80-12cdbac77fa8/rules.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T024506Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host",
+            "response-cache-control": "private, no-store, no-transform",
+            "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "response-content-type": "application/octet-stream",
+            "x-id": "GetObject"
+          }
+        },
+        "bytesVerified": true
+      }
+    },
+    {
+      "name": "head-original-metadata",
+      "status": "passed",
+      "evidence": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "connection": "close",
+          "content-length": "110",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:45:07 GMT",
+          "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "last-modified": "Wed, 23 Sep 2026 02:45:06 GMT",
+          "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D31F10AF7912747553CB"
+        },
+        "signature": {
+          "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/fe4de615-0135-4f6d-8a80-12cdbac77fa8/rules.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T024506Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host"
+          }
+        }
+      }
+    },
+    {
+      "name": "method-isolation",
+      "status": "passed",
+      "evidence": [403, 403]
+    },
+    {
+      "name": "cleanup",
+      "status": "passed",
+      "evidence": {
+        "headStatus": 404
+      }
+    }
+  ]
+}

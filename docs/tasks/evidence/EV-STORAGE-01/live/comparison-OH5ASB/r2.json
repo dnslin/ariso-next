@@ -1,0 +1,219 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "key": "ariso/ev-storage-01/fbf31dcf-2536-4bf2-ac14-53a438d7af71/comparison.svg",
+  "startedAt": "2026-09-23T02:34:02.196Z",
+  "observations": [
+    {
+      "name": "anonymous-existing",
+      "result": {
+        "status": 400,
+        "headers": {
+          "cf-ray": "a3f625f0bf1cf7cd-LAX",
+          "connection": "keep-alive",
+          "content-length": "113",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:04 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 113,
+        "markerReturned": false,
+        "errorCode": "InvalidArgument",
+        "errorMessage": "Authorization"
+      }
+    },
+    {
+      "name": "anonymous-missing",
+      "result": {
+        "status": 400,
+        "headers": {
+          "cf-ray": "a3f625f1ebdef7cd-LAX",
+          "connection": "keep-alive",
+          "content-length": "113",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:04 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 113,
+        "markerReturned": false,
+        "errorCode": "InvalidArgument",
+        "errorMessage": "Authorization"
+      }
+    },
+    {
+      "name": "presigned-GET-baseline",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cache-control": "max-age=60",
+          "cf-ray": "a3f625f31852f7cd-LAX",
+          "connection": "keep-alive",
+          "content-disposition": "inline",
+          "content-length": "89",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:34:05 GMT",
+          "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:03 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 89,
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "sdk-GET-baseline",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "image/svg+xml",
+        "contentDisposition": "inline",
+        "cacheControl": "max-age=60",
+        "contentLength": 89,
+        "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "presigned-HEAD-baseline",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cache-control": "max-age=60",
+          "cf-ray": "a3f625f97945f7cd-LAX",
+          "connection": "close",
+          "content-disposition": "inline",
+          "content-length": "89",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:34:06 GMT",
+          "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:03 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 0,
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "sdk-HEAD-baseline",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "image/svg+xml",
+        "contentDisposition": "inline",
+        "cacheControl": "max-age=60",
+        "contentLength": 89,
+        "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "presigned-GET-overrides",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cache-control": "private, no-store, no-transform",
+          "cf-ray": "a3f626020bf02d61-LAX",
+          "connection": "keep-alive",
+          "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "content-length": "89",
+          "content-type": "application/octet-stream",
+          "date": "Wed, 23 Sep 2026 02:34:07 GMT",
+          "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:03 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 89,
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "sdk-GET-overrides",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "application/octet-stream",
+        "contentDisposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "cacheControl": "private, no-store, no-transform",
+        "contentLength": 89,
+        "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "presigned-HEAD-overrides",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "cache-control": "max-age=60",
+          "cf-ray": "a3f62606fc892d61-LAX",
+          "connection": "close",
+          "content-disposition": "inline",
+          "content-length": "89",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:34:08 GMT",
+          "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:03 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 0,
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "sdk-HEAD-overrides",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "image/svg+xml",
+        "contentDisposition": "inline",
+        "cacheControl": "max-age=60",
+        "contentLength": 89,
+        "etag": "\"19fb86b00370aaa36202aebeb6ae78ec\"",
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "invalid-signature",
+      "result": {
+        "status": 403,
+        "headers": {
+          "cf-ray": "a3f6260e09aaf7a3-LAX",
+          "connection": "keep-alive",
+          "content-length": "2674",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:09 GMT",
+          "server": "cloudflare"
+        },
+        "bodyLength": 2674,
+        "markerReturned": false,
+        "errorCode": "SignatureDoesNotMatch",
+        "errorMessage": "The request signature we calculated does not match the signature you provided. Check your secret access key and signing method."
+      }
+    },
+    {
+      "name": "cleanup",
+      "result": {
+        "deleteStatus": 204,
+        "headStatus": 404
+      }
+    }
+  ],
+  "finishedAt": "2026-09-23T02:34:09.847Z"
+}
