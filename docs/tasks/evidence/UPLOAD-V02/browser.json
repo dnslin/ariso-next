@@ -1,0 +1,32 @@
+{
+  "limits": {
+    "maxBytes": 52428800,
+    "idleMs": 120000,
+    "totalMs": 1800000,
+    "waitMs": 1500
+  },
+  "exact": {
+    "status": 201,
+    "body": {
+      "code": "RECEIVED",
+      "bytes": 52428800
+    }
+  },
+  "over": {
+    "status": 413,
+    "body": {
+      "code": "UPLOAD_TOO_LARGE",
+      "bytes": 0
+    }
+  },
+  "shortXhrTimeout": "timeout",
+  "wait": {
+    "status": 504,
+    "body": {
+      "imageId": "image-one",
+      "status": "processing",
+      "code": "UPLOAD_WAIT_TIMEOUT"
+    }
+  },
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+}

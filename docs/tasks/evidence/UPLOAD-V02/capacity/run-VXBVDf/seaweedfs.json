@@ -1,0 +1,90 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-23T03:08:02.634Z",
+  "status": "incomplete",
+  "samples": [
+    {
+      "bytes": 52428800,
+      "put": "passed",
+      "copy": "passed",
+      "operations": [
+        {
+          "stage": "single-put",
+          "milliseconds": 23945.327542,
+          "status": "passed",
+          "evidence": {
+            "metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D7D45F5DAE6761E41D1413",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            },
+            "etag": "\"34461231816b5db55cc2d6cef577a226\""
+          }
+        },
+        {
+          "stage": "single-copy",
+          "milliseconds": 137.5870419999992,
+          "status": "passed",
+          "evidence": {
+            "metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D7D464FC5307FC032CB6E0",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            },
+            "etag": "34461231816b5db55cc2d6cef577a226"
+          }
+        },
+        {
+          "stage": "copied-bytes",
+          "milliseconds": 3788.652291999999,
+          "status": "passed",
+          "evidence": {
+            "bytes": 52428800,
+            "sha256": "4f0e9c6a1a9a90f35b884d0f0e7343459c21060eefec6c0f2fa9dc1118dbe5be",
+            "metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D7D46504369DF9EC7695EC",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        }
+      ],
+      "keys": [
+        "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/source",
+        "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/copy"
+      ],
+      "cleanup": [
+        {
+          "key": "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/source",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D7D465E5D703BE1266B868",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        {
+          "key": "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/copy",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D7D465EC1211A5B3F0828B",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      ]
+    }
+  ],
+  "boundary": {
+    "maximumSuccessfulBytes": 52428800,
+    "firstRejectedBytes": null,
+    "exactBytes": null
+  }
+}

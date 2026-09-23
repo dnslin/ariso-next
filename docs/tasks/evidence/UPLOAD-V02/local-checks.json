@@ -1,0 +1,112 @@
+{
+  "environment": {
+    "node": "v24.19.0",
+    "pnpm": "11.19.0",
+    "os": "macOS 26.6.2",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "memoryBytes": 17179869184
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "note": "Initial check found two generated JSON formatting differences; formatted and reran successfully. Final evidence is checked again before commit."
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "files": 22,
+      "tests": 354
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "note": "Existing optional better-sqlite3 Debug binding tracing diagnostics; Release binding usable."
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0,
+      "files": 47,
+      "tests": 366
+    },
+    {
+      "command": "EGO_TASK_SPACE=16 node tests/experiments/upload-transport/run-browser.ts",
+      "exitCode": 0,
+      "evidence": "browser.json"
+    },
+    {
+      "command": "node tests/experiments/upload-transport/run.ts --smoke",
+      "exitCode": 0,
+      "evidence": "transport-smoke.json"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "rejectionCases": 5
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node tests/experiments/upload-transport/run.ts --real-time",
+      "exitCode": 0,
+      "evidence": "transport-real-time.json"
+    },
+    {
+      "command": "node .data/upload-v02-cleanup.mjs",
+      "exitCode": 0,
+      "objects": 8,
+      "evidence": "reconciliation.json"
+    },
+    {
+      "command": "node tests/experiments/upload-capacity/run.ts --config .data/upload-v02.json --output docs/tasks/evidence/UPLOAD-V02/capacity --timeout-ms 180000",
+      "exitCode": 1,
+      "note": "50 MiB R2/SeaweedFS samples passed; no AWS and no exact common boundary"
+    },
+    {
+      "command": "node tests/experiments/upload-capacity/run.ts --config .data/upload-v02-r2.json --bytes 5363466241 --output docs/tasks/evidence/UPLOAD-V02/capacity --timeout-ms 1800000",
+      "exitCode": 1,
+      "note": "Client TimeoutError, not a service size rejection"
+    },
+    {
+      "command": "node tests/experiments/upload-capacity/run.ts --config .data/upload-v02-seaweedfs.json --bytes 5363466240 --output docs/tasks/evidence/UPLOAD-V02/capacity --timeout-ms 1800000",
+      "exitCode": 1,
+      "note": "Client TimeoutError, not a service size rejection"
+    },
+    {
+      "command": "node tests/experiments/upload-capacity/run.ts --output docs/tasks/evidence/UPLOAD-V02/missing-environment",
+      "exitCode": 1,
+      "note": "Expected incomplete status; no remote operations"
+    }
+  ],
+  "audit": {
+    "skill": "code-review-and-quality",
+    "independentReview": "passed after fixes",
+    "acceptanceComplete": false
+  },
+  "notRun": [
+    "Product-wide test:browser (no product interface change; dedicated Ego protocol experiment executed)",
+    "AMD64/ARM64 release image validation",
+    "AWS real-service capacity test"
+  ]
+}

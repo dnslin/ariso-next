@@ -109,6 +109,8 @@
 
 ### UPLOAD-V02 共同容量与传输超时
 
+独立实验、实际证据与未完成项见[UPLOAD-V02 报告](./evidence/UPLOAD-V02/README.md)；实验交付不等于共同容量已验收。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[upload §3/6/10/13](../specs/SPEC-upload.md)

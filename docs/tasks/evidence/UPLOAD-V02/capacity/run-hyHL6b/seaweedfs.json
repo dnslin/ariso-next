@@ -1,0 +1,56 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-23T03:10:01.716Z",
+  "status": "incomplete",
+  "samples": [
+    {
+      "bytes": 5363466240,
+      "put": "failed",
+      "copy": "not-run",
+      "operations": [
+        {
+          "stage": "single-put",
+          "milliseconds": 1800019.718583,
+          "status": "failed",
+          "evidence": {
+            "name": "TimeoutError",
+            "message": "@smithy/node-http-handler - [ERROR] a request has exceeded the configured 1800000 ms requestTimeout."
+          }
+        }
+      ],
+      "keys": [
+        "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/source",
+        "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/copy"
+      ],
+      "cleanup": [
+        {
+          "key": "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/source",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D7D61E4FF1D5F9AB138E03",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        {
+          "key": "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/copy",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D7D61E555F9C21FF1FD47C",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      ]
+    }
+  ],
+  "boundary": {
+    "maximumSuccessfulBytes": null,
+    "firstRejectedBytes": null,
+    "exactBytes": null
+  }
+}
