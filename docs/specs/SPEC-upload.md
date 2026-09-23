@@ -26,7 +26,7 @@ upload 拥有队列、提交设置、上传会话、接收前文件、S3 临时�
 - multipart 需要流式解析。[Busboy](https://github.com/mscdex/busboy)提供文件/字段限制及截断信号，可作为候选；实施前核对维护状态、类型及 Node 24 兼容性，必要时选同类成熟实现。不能用无限 `request.formData()` 将整个大文件放进内存。
 - 已有 [Zod JSON Schema](https://zod.dev/json-schema)支持 OpenAPI 目标和文件结构，先复用其转换能力，再组装 OpenAPI paths/security/encoding；无需默认新增另一套 schema 转换库。流式运行时校验不要求先构造完整 File。
 
-本轮为工程及官方资料核对，不代表上述依赖已集成或真实传输已测试。
+以上是规格编写时的依赖基线。UPLOAD-V03 已在独立实验目录固定 Uppy/Busboy 版本并完成双链路、释放引用和流式解析的本地验证，见[证据报告](../tasks/evidence/UPLOAD-V03/README.md)；尚未安装到生产应用或实现上传业务。
 
 ## 3. 设置、限制与文件输入
 

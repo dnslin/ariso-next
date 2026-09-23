@@ -1,0 +1,340 @@
+{
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "parser": "busboy@1.6.0",
+  "maximum": 52428800,
+  "fieldBudget": 262144,
+  "cases": [
+    {
+      "name": "file-position-0",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 901120,
+      "durationMs": 6
+    },
+    {
+      "name": "file-position-1",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "file-position-2",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 2
+    },
+    {
+      "name": "file-position-3",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "file-position-4",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "file-position-5",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "file-position-6",
+      "code": "OK",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "second-file",
+      "code": "SECOND_FILE",
+      "bytes": 32,
+      "diskBytes": 0,
+      "fields": {},
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "truncated",
+      "code": "TRUNCATED",
+      "bytes": 34,
+      "diskBytes": 0,
+      "fields": {},
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "unknown-field",
+      "code": "UNKNOWN_FIELD",
+      "bytes": 32,
+      "diskBytes": 0,
+      "fields": {},
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "duplicate-storageId",
+      "code": "DUPLICATE_SCALAR",
+      "bytes": 32,
+      "diskBytes": 0,
+      "fields": {
+        "storageId": ["a", "b"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "duplicate-visibility",
+      "code": "DUPLICATE_SCALAR",
+      "bytes": 32,
+      "diskBytes": 0,
+      "fields": {
+        "visibility": ["a", "b"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "single-field-limit",
+      "code": "FIELDS_TOO_LARGE",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {},
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 1,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "aggregate-field-limit",
+      "code": "FIELDS_TOO_LARGE",
+      "bytes": 32,
+      "diskBytes": 32,
+      "fields": {
+        "tag": ["[131072 bytes]"]
+      },
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 2,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "empty-file",
+      "code": "EMPTY_FILE",
+      "bytes": 0,
+      "diskBytes": 0,
+      "fields": {},
+      "peakBuffered": 0,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "missing-file",
+      "code": "MISSING_FILE",
+      "bytes": 0,
+      "diskBytes": 0,
+      "fields": {
+        "storageId": ["store"],
+        "albumId": ["one", "two"],
+        "tag": ["旅行", "a,b"],
+        "visibility": ["private"]
+      },
+      "peakBuffered": 0,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "unknown-file-field",
+      "code": "UNKNOWN_FILE_FIELD",
+      "bytes": 32,
+      "diskBytes": 0,
+      "fields": {},
+      "peakBuffered": 32,
+      "cleaned": true,
+      "clientDrainCount": 0,
+      "rssDelta": 0,
+      "durationMs": 1
+    },
+    {
+      "name": "50MiB-unknown-length-slow",
+      "code": "OK",
+      "bytes": 52428800,
+      "diskBytes": 52428800,
+      "fields": {},
+      "peakBuffered": 196269,
+      "cleaned": true,
+      "clientDrainCount": 800,
+      "rssDelta": 23511040,
+      "durationMs": 3813
+    },
+    {
+      "name": "50MiB-known-length",
+      "code": "OK",
+      "bytes": 52428800,
+      "diskBytes": 52428800,
+      "fields": {},
+      "peakBuffered": 196306,
+      "cleaned": true,
+      "clientDrainCount": 800,
+      "rssDelta": 4194304,
+      "durationMs": 107
+    },
+    {
+      "name": "50MiB-plus-one",
+      "code": "FILE_TOO_LARGE",
+      "bytes": 52428801,
+      "diskBytes": 52363264,
+      "fields": {},
+      "peakBuffered": 269634,
+      "cleaned": true,
+      "clientDrainCount": 800,
+      "rssDelta": 589824,
+      "durationMs": 114
+    },
+    {
+      "name": "disconnect",
+      "code": "DISCONNECTED",
+      "bytes": 131072,
+      "diskBytes": 131072,
+      "fields": {},
+      "peakBuffered": 195948,
+      "cleaned": true,
+      "clientDrainCount": 2,
+      "rssDelta": 32768,
+      "durationMs": 22
+    }
+  ],
+  "serverMemory": [
+    {
+      "fileBytes": 52428800,
+      "clientDrainCount": 800,
+      "baselineRss": 87654400,
+      "peakRss": 110297088,
+      "rssGrowth": 22642688,
+      "result": {
+        "code": "OK",
+        "bytes": 52428800,
+        "diskBytes": 52428800,
+        "fields": {},
+        "peakBuffered": 202854,
+        "cleaned": true
+      }
+    },
+    {
+      "fileBytes": 209715200,
+      "clientDrainCount": 3200,
+      "baselineRss": 87769088,
+      "peakRss": 149897216,
+      "rssGrowth": 62128128,
+      "result": {
+        "code": "OK",
+        "bytes": 209715200,
+        "diskBytes": 209715200,
+        "fields": {},
+        "peakBuffered": 217200,
+        "cleaned": true
+      }
+    }
+  ]
+}

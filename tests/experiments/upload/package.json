@@ -1,0 +1,29 @@
+{
+  "name": "ariso-upload-v03",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "build": "esbuild browser.ts --bundle --format=esm --outfile=../../../test-results/upload-fixture/browser.js",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test multipart.test.ts",
+    "serve": "node browser-server.mjs",
+    "test:browser": "node run-browser.mjs"
+  },
+  "dependencies": {
+    "@uppy/aws-s3": "5.1.0",
+    "@uppy/core": "5.2.0",
+    "@uppy/utils": "7.2.0",
+    "@uppy/xhr-upload": "5.2.0",
+    "busboy": "1.6.0"
+  },
+  "devDependencies": {
+    "@types/busboy": "1.5.4",
+    "@types/node": "24.13.4",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "date": "2026-09-23",
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "os": "macOS 26.6.2",
+    "arch": "arm64",
+    "memoryBytes": 17179869184,
+    "browser": "Ego Lite Chromium 152",
+    "pathPrefix": "$HOME/.nvm/versions/node/v24.18.1/bin"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "根锁文件可复现"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "独立实验锁文件可复现"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "现有UI回归依赖"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload run typecheck",
+      "exitCode": 0,
+      "result": "独立实验严格类型检查；审计者另行复跑"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload run build",
+      "exitCode": 0,
+      "result": "浏览器ESM bundle，约183KiB未压缩"
+    },
+    {
+      "command": "UPLOAD_MULTIPART_REPORT=/tmp/ariso-upload-multipart.json node --test tests/experiments/upload/multipart.test.ts",
+      "exitCode": 0,
+      "result": "1个Node测试，内部21个真实HTTP场景及两档独立服务端RSS"
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 pnpm --dir tests/experiments/upload run test:browser",
+      "exitCode": 0,
+      "result": "18项混合、12项取消、2000项大队列及三份实际堆快照"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload audit --json",
+      "exitCode": 0,
+      "result": "0已知漏洞；结果另存dependency-audit.json"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "result": "修复生成物输出目录后通过；首次扫描嵌套dist失败"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "result": "应用与runtime通过；独立实验另行检查"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "result": "21 files / 351 tests passed"
+    },
+    {
+      "command": "pnpm rebuild better-sqlite3",
+      "exitCode": 0,
+      "result": "确认本地Node24原生依赖；sqlite真实内存连接查询成功"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "Next生产构建与standalone打包通过；依赖跟踪报告可选Debug/better_sqlite3.node缺失，Release实际数据库查询和构建回归通过"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "exitCode": 0,
+      "result": "最终46 files / 360 tests passed，含真实图片工具；首次359通过1失败，为独立实验依赖误入干净构建，已修复后全量复跑"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/build.test.ts",
+      "exitCode": 0,
+      "result": "1 passed；无部署密钥/无数据库的干净构建"
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 pnpm run test:browser",
+      "exitCode": 0,
+      "result": "现有runtime/shell/身份/UI/library完整Ego回归通过，最后关闭TaskSpace1"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks / 298 requirements，引用完整且无环"
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "result": "5 rejection cases passed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "最终全仓格式检查通过"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "无空白错误"
+    }
+  ],
+  "notRun": [
+    "Release images workflow / AMD64 and ARM64 containers",
+    "Real S3 provider signing/CORS/late PUT",
+    "Product upload UI or physical mobile device acceptance"
+  ],
+  "audit": {
+    "skill": "code-review-and-quality",
+    "reviewer": "independent audit subagent",
+    "verdict": "approve",
+    "unresolvedRequired": 0,
+    "unresolvedCritical": 0,
+    "independentVerification": [
+      "Node24 isolated typecheck",
+      "gzip heap snapshots decompressed, SHA256 matched, native File/Blob recounted"
+    ]
+  }
+}

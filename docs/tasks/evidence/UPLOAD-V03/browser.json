@@ -1,0 +1,643 @@
+{
+  "startedAt": "2026-09-23T06:08:48.001Z",
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "status": "passed",
+  "phases": [
+    {
+      "name": "mixed-success-failure",
+      "state": {
+        "pending": 0,
+        "active": 0,
+        "peak": 3,
+        "results": [
+          {
+            "id": "99662254-1e88-4f0a-807c-56c48b645921",
+            "route": "xhr",
+            "status": "failed"
+          },
+          {
+            "id": "32000f5b-0181-4b35-aee5-39936f58b3ba",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "7bfc1371-91b8-4663-bddc-e9e378f91068",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "37c7c215-9b8d-45e8-aa5f-0d0fe39e5996",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "3321eb6a-a206-4be0-996d-702f0b418381",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "ef2a8e8e-5544-4628-866c-87843adc5907",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "695d09f6-a19e-4214-bd4f-a6225c8f29a0",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "2b3a7959-1e9d-4cf0-b0eb-dd1b691eeae1",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "95599c74-8b22-496c-9b9f-7e1c09aaee71",
+            "route": "s3",
+            "status": "failed"
+          },
+          {
+            "id": "66470358-57d9-4910-bdae-f3791151615a",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "df486ae0-5944-430c-8560-3a5fd986cbed",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "b57a5bb0-29a7-4102-8cbf-4fb17709ecc9",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "da2b8cea-88a8-4dd3-9b06-d2d30d02a1dc",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "09780df2-65b4-449d-a2dd-ae8f33caf3db",
+            "route": "xhr",
+            "status": "failed"
+          },
+          {
+            "id": "f27383d2-8511-4dab-a963-82b6055c89a1",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "21c9d777-388f-4592-a13d-a6f19934a89e",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "d7c3f8b1-e63d-4d51-9578-622732bd7f14",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "2f2b9e2b-ea28-446c-84c1-aa82e31aa93a",
+            "route": "s3",
+            "status": "success"
+          }
+        ],
+        "revoked": 18
+      },
+      "wire": {
+        "active": 0,
+        "peak": 3,
+        "records": [
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "99662254-1e88-4f0a-807c-56c48b645921",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 440.668375,
+            "end": 564.251458,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 503
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "32000f5b-0181-4b35-aee5-39936f58b3ba",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 443.473958,
+            "end": 564.350416,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "7bfc1371-91b8-4663-bddc-e9e378f91068",
+            "at": 444.069166,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "7bfc1371-91b8-4663-bddc-e9e378f91068",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 446.201,
+            "end": 566.756541,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "3321eb6a-a206-4be0-996d-702f0b418381",
+            "at": 570.981041,
+            "active": 0
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "37c7c215-9b8d-45e8-aa5f-0d0fe39e5996",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 571.246125,
+            "end": 693.189208,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "ef2a8e8e-5544-4628-866c-87843adc5907",
+            "at": 572.66,
+            "active": 1
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "3321eb6a-a206-4be0-996d-702f0b418381",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 576.335041,
+            "end": 697.862916,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "ef2a8e8e-5544-4628-866c-87843adc5907",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 580.18225,
+            "end": 701.486291,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "695d09f6-a19e-4214-bd4f-a6225c8f29a0",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 701.12375,
+            "end": 822.576375,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "95599c74-8b22-496c-9b9f-7e1c09aaee71",
+            "at": 704.469333,
+            "active": 1
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "2b3a7959-1e9d-4cf0-b0eb-dd1b691eeae1",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 705.439583,
+            "end": 825.939,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "95599c74-8b22-496c-9b9f-7e1c09aaee71",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 708.738833,
+            "end": 829.737208,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 503
+          },
+          {
+            "kind": "sign",
+            "id": "df486ae0-5944-430c-8560-3a5fd986cbed",
+            "at": 825.435208,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "66470358-57d9-4910-bdae-f3791151615a",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 829.302,
+            "end": 949.73675,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "df486ae0-5944-430c-8560-3a5fd986cbed",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 832.971041,
+            "end": 954.40725,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "b57a5bb0-29a7-4102-8cbf-4fb17709ecc9",
+            "at": 834.605916,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "b57a5bb0-29a7-4102-8cbf-4fb17709ecc9",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 837.843208,
+            "end": 959.024791,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "da2b8cea-88a8-4dd3-9b06-d2d30d02a1dc",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 954.200458,
+            "end": 1075.506083,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "f27383d2-8511-4dab-a963-82b6055c89a1",
+            "at": 957.577333,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "09780df2-65b4-449d-a2dd-ae8f33caf3db",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 962.227916,
+            "end": 1082.526541,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 503
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "f27383d2-8511-4dab-a963-82b6055c89a1",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 967.502083,
+            "end": 1088.020791,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "21c9d777-388f-4592-a13d-a6f19934a89e",
+            "at": 1078.732416,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "21c9d777-388f-4592-a13d-a6f19934a89e",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1084.0455,
+            "end": 1204.842875,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "d7c3f8b1-e63d-4d51-9578-622732bd7f14",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 1091.044083,
+            "end": 1213.060791,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "2f2b9e2b-ea28-446c-84c1-aa82e31aa93a",
+            "at": 1092.914458,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "2f2b9e2b-ea28-446c-84c1-aa82e31aa93a",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1098.689791,
+            "end": 1218.716166,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "active-and-queued-cancellation",
+      "state": {
+        "pending": 0,
+        "active": 0,
+        "peak": 3,
+        "results": [
+          {
+            "id": "830a410b-bade-4834-b033-e38bbacc4cde",
+            "route": "xhr",
+            "status": "cancelled"
+          },
+          {
+            "id": "c5364cde-1b65-474e-996c-f16d116fb265",
+            "route": "s3",
+            "status": "cancelled"
+          },
+          {
+            "id": "cdca97a2-effc-4553-b4de-6ef5d9c9b780",
+            "route": "xhr",
+            "status": "cancelled"
+          },
+          {
+            "id": "9310c48a-b05a-4d2f-8ce7-de2d5d5bcadf",
+            "route": "s3",
+            "status": "cancelled"
+          },
+          {
+            "id": "4ac91673-afc1-4d22-99c1-2c225eb54772",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "2443d4d0-8b01-4454-9de2-169bf9ba2684",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "37e8ec1e-2288-4ef9-9ed1-a2d36e8d03bc",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "8ac5fc9b-cde2-4f09-88d0-bf0cf4cba9db",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "f55b878b-7992-4a64-970d-bd54916f88e1",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "209a641d-15a0-4658-8886-3ee41a2cb251",
+            "route": "s3",
+            "status": "success"
+          },
+          {
+            "id": "2d4b75c1-ff45-4db4-8843-a202620f20e0",
+            "route": "xhr",
+            "status": "success"
+          },
+          {
+            "id": "26f4009a-ec90-4d4a-94fb-1a63136dfba1",
+            "route": "s3",
+            "status": "success"
+          }
+        ],
+        "revoked": 12
+      },
+      "wire": {
+        "active": 0,
+        "peak": 3,
+        "records": [
+          {
+            "kind": "sign",
+            "id": "c5364cde-1b65-474e-996c-f16d116fb265",
+            "at": 1322.608416,
+            "active": 0
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "830a410b-bade-4834-b033-e38bbacc4cde",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 1322.896833,
+            "end": 1438.580791,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "4ac91673-afc1-4d22-99c1-2c225eb54772",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 1323.53675,
+            "end": 1824.82075,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "c5364cde-1b65-474e-996c-f16d116fb265",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1325.328625,
+            "end": 1438.522041,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "37e8ec1e-2288-4ef9-9ed1-a2d36e8d03bc",
+            "at": 1438.65725,
+            "active": 1
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "2443d4d0-8b01-4454-9de2-169bf9ba2684",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 1439.3165,
+            "end": 1941.087916,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "37e8ec1e-2288-4ef9-9ed1-a2d36e8d03bc",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1442.217041,
+            "end": 1942.267625,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "8ac5fc9b-cde2-4f09-88d0-bf0cf4cba9db",
+            "at": 1827.627333,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "8ac5fc9b-cde2-4f09-88d0-bf0cf4cba9db",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1831.645958,
+            "end": 2332.931416,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "f55b878b-7992-4a64-970d-bd54916f88e1",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 1944.073375,
+            "end": 2445.976666,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "209a641d-15a0-4658-8886-3ee41a2cb251",
+            "at": 1945.015291,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "209a641d-15a0-4658-8886-3ee41a2cb251",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 1955.680541,
+            "end": 2455.88975,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "upload",
+            "route": "xhr",
+            "id": "2d4b75c1-ff45-4db4-8843-a202620f20e0",
+            "method": "POST",
+            "bytes": 65536,
+            "start": 2336.982,
+            "end": 2838.280375,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          },
+          {
+            "kind": "sign",
+            "id": "26f4009a-ec90-4d4a-94fb-1a63136dfba1",
+            "at": 2453.042125,
+            "active": 2
+          },
+          {
+            "kind": "upload",
+            "route": "s3",
+            "id": "26f4009a-ec90-4d4a-94fb-1a63136dfba1",
+            "method": "PUT",
+            "bytes": 65536,
+            "start": 2456.983458,
+            "end": 2958.420208,
+            "hash": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "baseline",
+      "usage": {
+        "usedSize": 7649876,
+        "totalSize": 8912896,
+        "embedderHeapUsedSize": 692792,
+        "backingStorageSize": 1240393
+      },
+      "counts": {
+        "File": 0,
+        "Blob": 0
+      },
+      "snapshotBytes": 22970356,
+      "sha256": "97adf0d4f06175b515ed4edcf9aaf752293476efd986cb245c39a1c83c06cd1a"
+    },
+    {
+      "name": "queued-2000",
+      "usage": {
+        "usedSize": 7905868,
+        "totalSize": 8388608,
+        "embedderHeapUsedSize": 1141056,
+        "backingStorageSize": 1440393
+      },
+      "counts": {
+        "File": 2000,
+        "Blob": 0
+      },
+      "snapshotBytes": 24315910,
+      "sha256": "3f284da60e8ef6ae8d5bc5d15cb687d3768d10611a8e8a62c5eddcc817a3e063"
+    },
+    {
+      "name": "settled-2000",
+      "usage": {
+        "usedSize": 15164088,
+        "totalSize": 16252928,
+        "embedderHeapUsedSize": 3014008,
+        "backingStorageSize": 1440557
+      },
+      "counts": {
+        "File": 0,
+        "Blob": 0
+      },
+      "snapshotBytes": 43615692,
+      "sha256": "02f49aa0e27556f926bc99988bbaeb9ec81e6af74ba6a1596cf6da8acb8e3468",
+      "results": {
+        "success": 1714,
+        "failed": 286,
+        "revoked": 2000
+      },
+      "wirePeak": 3,
+      "requests": 3000
+    }
+  ],
+  "duplicate": {
+    "ids": [
+      "1e813805-cf19-4d57-bf6e-6dfbbd814ed1",
+      "5dfcd098-a81f-4ec6-b7bd-7a158c176771"
+    ],
+    "count": 2
+  },
+  "finishedAt": "2026-09-23T06:09:08.178Z"
+}
