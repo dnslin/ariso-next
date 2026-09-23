@@ -1,6 +1,6 @@
 # UPLOAD-V03：Uppy 与流式解析固定版本
 
-2026-09-23，关联 [Issue #72](https://github.com/dnslin/ariso-next/issues/72)。本地技术实验四项验收已有真实证据，等待 PR 评审；不代表上传业务、Figma 界面或真实 S3 服务已交付。Issue 无原生 blocked-by，原生 blocking 为 #73、#81。
+2026-09-23，关联 [Issue #72](https://github.com/dnslin/ariso-next/issues/72)、[PR #113](https://github.com/dnslin/ariso-next/pull/113)。本地技术实验四项验收已有真实证据，等待 PR 评审；不代表上传业务、Figma 界面或真实 S3 服务已交付。Issue 无原生 blocked-by，原生 blocking 为 #73、#81。
 
 ## 结论与版本
 
@@ -55,3 +55,5 @@
 没有产品界面修改，Figma、主题、触控、软键盘和安全区不属于本实验验收。已有产品浏览器回归单独执行，不据此关闭上传 DES/RG。
 
 没有执行 AWS S3 / R2 / SeaweedFS 的真实签名、跨域或迟到写入验收；它们属于 UPLOAD-V01/后续业务任务。没有 Linux Docker、AMD64/ARM64 镜像证据。现有 `.github/workflows/ci.yml` 仅 `workflow_call`，`images.yml` 仅 `release.published`，没有 PR/push/手动验证入口；不为本任务触发 Release、发布镜像或部署。按[当前执行约定](../../execution.md#适用检查)，这些发布验证留待发布阶段，不冒充本轮通过。
+
+远端回读：`gh pr checks 113 --repo dnslin/ariso-next` 返回 `no checks reported`，`gh run list --repo dnslin/ariso-next --branch codex/72-upload-v03` 为空，PR 的 `statusCheckRollup` 为空、合并状态 CLEAN。没有等待中的适用 CI；这是未配置检查，不是 CI 通过。PR 提交正式评审，不合并、不关闭 Issue。
