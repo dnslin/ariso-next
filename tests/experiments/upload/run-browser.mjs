@@ -4,17 +4,31 @@ import { once } from 'node:events';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-assert.equal(process.versions.node.split('.')[0], '24');
 const output = resolve(
   process.env.BROWSER_REPORT_DIR ?? '../../../test-results/upload',
 );
 await mkdir(output, { recursive: true });
-const server = spawn(process.execPath, ['browser-server.mjs'], {
-  env: { ...process.env, PORT: '0' },
-  stdio: ['ignore', 'pipe', 'inherit'],
-});
+const reportPath = resolve(output, 'browser.json');
+await writeFile(
+  reportPath,
+  `${JSON.stringify(
+    {
+      startedAt: new Date().toISOString(),
+      status: 'running',
+      phases: [],
+    },
+    null,
+    2,
+  )}\n`,
+);
+let server;
 let browser;
 try {
+  assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
+  server = spawn(process.execPath, ['browser-server.mjs'], {
+    env: { ...process.env, PORT: '0' },
+    stdio: ['ignore', 'pipe', 'inherit'],
+  });
   const origin = await new Promise((resolve, reject) => {
     server.once('error', reject);
     server.once('exit', (code) => reject(new Error(`Fixture exited: ${code}`)));
@@ -52,9 +66,27 @@ try {
   } finally {
     clearTimeout(timeout);
   }
+} catch (error) {
+  const report = JSON.parse(await readFile(reportPath, 'utf8'));
+  await writeFile(
+    reportPath,
+    `${JSON.stringify(
+      {
+        ...report,
+        status: 'failed',
+        finishedAt: new Date().toISOString(),
+        error: report.error ?? error.stack ?? String(error),
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  throw error;
 } finally {
   if (browser && browser.exitCode === null) browser.kill('SIGTERM');
-  const closed = once(server, 'close');
-  server.kill('SIGTERM');
-  await closed;
+  if (server && server.exitCode === null && server.signalCode === null) {
+    const closed = once(server, 'close');
+    server.kill('SIGTERM');
+    await closed;
+  }
 }

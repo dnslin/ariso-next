@@ -1,0 +1,112 @@
+{
+  "date": "2026-09-23",
+  "node": "v24.18.1",
+  "changes": [
+    "Large-queue totals derive from actual terminal results; assert success=1714, failed=286, cancelled=0",
+    "Runner writes running before initialization and failed on startup errors; previous passed report is replaced"
+  ],
+  "browser": {
+    "startedAt": "2026-09-23T06:28:47.509Z",
+    "finishedAt": "2026-09-23T06:29:08.249Z",
+    "status": "passed",
+    "phases": [
+      {
+        "name": "mixed-success-failure",
+        "counts": null,
+        "results": null,
+        "wirePeak": null
+      },
+      {
+        "name": "active-and-queued-cancellation",
+        "counts": null,
+        "results": null,
+        "wirePeak": null
+      },
+      {
+        "name": "baseline",
+        "counts": {
+          "File": 0,
+          "Blob": 0
+        },
+        "results": null,
+        "wirePeak": null
+      },
+      {
+        "name": "queued-2000",
+        "counts": {
+          "File": 2000,
+          "Blob": 0
+        },
+        "results": null,
+        "wirePeak": null
+      },
+      {
+        "name": "settled-2000",
+        "counts": {
+          "File": 0,
+          "Blob": 0
+        },
+        "results": {
+          "success": 1714,
+          "failed": 286,
+          "cancelled": 0,
+          "revoked": 2000
+        },
+        "wirePeak": 3
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload install --frozen-lockfile",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload run typecheck",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/upload test",
+      "result": "3 tests passed: 21 multipart scenarios, independent RSS and 2 runner failure regressions"
+    },
+    {
+      "command": "node --test tests/experiments/upload/runner.test.mjs",
+      "result": "2 passed after final initialization adjustment"
+    },
+    {
+      "command": "BROWSER_REPORT_DIR=/Volumes/data/project/ariso-issue-72/test-results/upload-review pnpm --dir tests/experiments/upload run test:browser",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "passed"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "scope": "No production code or build input changes. Root full test/build/browser results remain the previous delivery evidence; not rerun for this follow-up.",
+  "review": {
+    "skill": "code-review-and-quality",
+    "verdict": "approve",
+    "unresolvedFindings": 0,
+    "scope": "Independent read-only review of follow-up diff; reviewer did not rerun tests."
+  }
+}

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "esbuild browser.ts --bundle --format=esm --outfile=../../../test-results/upload-fixture/browser.js",
     "typecheck": "tsc --noEmit",
-    "test": "node --test multipart.test.ts",
+    "test": "node --test multipart.test.ts runner.test.mjs",
     "serve": "node browser-server.mjs",
     "test:browser": "node run-browser.mjs"
   },

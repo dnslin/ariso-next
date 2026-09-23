@@ -193,17 +193,20 @@ try {
     largeWire.records.filter((item) => item.kind === 'upload').length,
     2000,
   );
-  assert.equal(
-    large.results.filter((item) => item.status === 'failed').length,
-    286,
-  );
+  const totals = {
+    success: large.results.filter((item) => item.status === 'success').length,
+    failed: large.results.filter((item) => item.status === 'failed').length,
+    cancelled: large.results.filter((item) => item.status === 'cancelled')
+      .length,
+  };
+  assert.deepEqual(totals, { success: 1714, failed: 286, cancelled: 0 });
   const settled = await snapshot('settled-2000');
   assert.equal(await page.evaluate(() => window.uploadProbe.liveFiles()), 0);
   assert.equal(settled.counts.File, 0);
   assert.equal(settled.counts.Blob, 0);
   report.phases.push({
     ...settled,
-    results: { success: 1714, failed: 286, revoked: large.revoked },
+    results: { ...totals, revoked: large.revoked },
     wirePeak: largeWire.peak,
     requests: largeWire.records.length,
   });

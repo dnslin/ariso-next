@@ -13,7 +13,7 @@ UPLOAD_MULTIPART_REPORT=/tmp/upload-multipart.json pnpm --dir tests/experiments/
 pnpm --dir tests/experiments/upload run test:browser
 ```
 
-浏览器命令使用已有 Ego Lite，不安装浏览器。运行器启动随机本地端口，结束后关闭接收进程。默认建立一个 TaskSpace，并在成功后关闭；已有本任务空间时设置 `EGO_TASK_SPACE=<id>`，还需后续验证时设置 `EGO_KEEP_SPACE=1`，由最终调用者关闭。失败保留浏览器现场。报告和三份 gzip 压缩的原始堆快照默认位于根目录 `test-results/upload/`，可用绝对路径 `BROWSER_REPORT_DIR` 改输出目录。解压后的 `.heapsnapshot` 可在 Chromium DevTools 的 Memory 面板加载。
+浏览器命令使用已有 Ego Lite，不安装浏览器。运行器启动随机本地端口，结束后关闭接收进程。默认建立一个 TaskSpace，并在成功后关闭；已有本任务空间时设置 `EGO_TASK_SPACE=<id>`，还需后续验证时设置 `EGO_KEEP_SPACE=1`，由最终调用者关闭。失败保留浏览器现场。运行开始即用 `running` 报告替换旧结果，启动或执行失败写入 `failed` 与原因。报告和三份 gzip 压缩的原始堆快照默认位于根目录 `test-results/upload/`，可用绝对路径 `BROWSER_REPORT_DIR` 改输出目录。解压后的 `.heapsnapshot` 可在 Chromium DevTools 的 Memory 面板加载。
 
 ## 实验组织
 
@@ -21,6 +21,7 @@ pnpm --dir tests/experiments/upload run test:browser
 - `browser-server.mjs`：真实 loopback HTTP，XHR 用 multipart POST，S3 插件用单 PUT；记录请求起止时间、原始字节 SHA-256、失败次数与全局在途峰值。`/sign` 返回的是本地实验地址，不是真实预签名 URL，不证明 AWS/R2/SeaweedFS 的签名、CORS 或迟到 PUT 行为。
 - `browser-check.mjs`：同一个 File 两次添加产生独立 ID；入队不自动启动；18 项混合成功/503、12 项在途/排队取消、2000 项各 64 KiB 的队列。断言总并发 3、链路实际重叠、请求字节一致、不重试、每项唯一终态、URL 撤销、WeakRef 归零，以及堆快照原生 File/Blob 对象数量。2000 项中预置每 7 项失败一个，因此预期 1714 成功、286 失败；结果数量来自真实传输，不是伪造成功。
 - `parser.ts`、`multipart.test.ts`：Busboy 流式写真实临时文件，覆盖 21 个 HTTP 场景。文件放在六个字段前后共七个位置；重复数组值保持顺序，不声称验证全部 7! 排列。完整表单解析后才报告成功。第二文件、未知字段、重复单值、截断、空文件、字段预算超限均返回明确失败并删除本次暂存文件。
+- `runner.test.mjs`：用真实子进程触发接收服务和浏览器 CLI 启动失败，确认旧成功报告被替换，运行状态和失败日志正确；不替代真实 Ego 实验。
 - `multipart-memory.ts`：50 MiB 和 200 MiB 各启动全新的接收子进程，客户端不计入服务端 RSS。慢写入产生真实背压，同时测量流缓冲、RSS 与落盘字节数。200 MiB 是实验文件大小，不是产品上限。内存断言是这个本地夹具的回归检查，不是生产容量承诺。
 
 独立 `package.json` 和锁文件只固定实验依赖；根应用不新增 Uppy/Busboy 生产依赖。根 `tsconfig.json` 与已有 UI/shell 实验一样排除这个独立项目，类型检查由上述独立命令负责，避免无部署密钥构建回归复制源码时误要求实验依赖。

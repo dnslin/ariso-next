@@ -57,3 +57,9 @@
 没有执行 AWS S3 / R2 / SeaweedFS 的真实签名、跨域或迟到写入验收；它们属于 UPLOAD-V01/后续业务任务。没有 Linux Docker、AMD64/ARM64 镜像证据。现有 `.github/workflows/ci.yml` 仅 `workflow_call`，`images.yml` 仅 `release.published`，没有 PR/push/手动验证入口；不为本任务触发 Release、发布镜像或部署。按[当前执行约定](../../execution.md#适用检查)，这些发布验证留待发布阶段，不冒充本轮通过。
 
 远端回读：`gh pr checks 113 --repo dnslin/ariso-next` 返回 `no checks reported`，`gh run list --repo dnslin/ariso-next --branch codex/72-upload-v03` 为空，PR 的 `statusCheckRollup` 为空、合并状态 CLEAN。没有等待中的适用 CI；这是未配置检查，不是 CI 通过。PR 提交正式评审，不合并、不关闭 Issue。
+
+## 评审建议跟进
+
+两项可选建议已落实：2000 项终态汇总从实际结果计算，并明确断言成功 1714、失败 286、取消 0；运行器在初始化前写入 `running`，初始化或浏览器失败时更新为 `failed`，不再留下旧的成功报告。新增两条真实子进程回归测试分别触发接收服务和浏览器 CLI 启动失败，检查旧报告被替换、失败原因与日志可追溯。CLI 故障夹具仅验证运行器错误路径，不冒充浏览器验收。
+
+[本轮记录](./review-followup.json)：独立测试共 3 项通过（原 multipart/RSS 与新增两项），实际 Ego 大队列复验通过，File 仍为 0 → 2000 → 0。新堆快照保留于本地 `test-results/upload-review/`；本目录原三份快照继续对应原始交付记录，不改写历史证据。本轮仅实验脚本和文档变更，根应用全量构建/测试/浏览器沿用前次交付记录，不声称重新执行。
