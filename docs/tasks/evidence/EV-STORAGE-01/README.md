@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶的只读连通性预检通过；公共访问关闭情况尚待确认，AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 有匿名错误码、HEAD 响应覆盖和 CORS 三项失败；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -98,7 +98,7 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 
 按 `code-review-and-quality` 核对需求覆盖、错误分支、模块职责、测试有效性与秘密日志。已修复交叉方法验证缺项、最终清理未证明却可能标 passed 的问题、测试类型收窄和模拟服务未读取真实 PUT 请求体的问题；另补齐 AWS ListBucket 权限说明，接受明确 false 的 DeleteMarker 响应，保留 true/意外 VersionId 的拒绝。新增依赖只供实验，锁文件没有替换已有依赖版本。既有 esbuild 告警仅报告：[GHSA-67mh-4wv8-2f99](https://github.com/advisories/GHSA-67mh-4wv8-2f99)。
 
-仍需三种真实服务分别提供普通 Bucket 能力、私有读取、条件复制、签名覆盖、真实 CORS/附件及最终清理证据。R2 还须提供整个 Bucket 无锁规则、关闭公共域名/其他公开旁路的实际所有者确认。此 PR 保持草稿，不能将报告模板和本地回归等同 Issue 验收。
+仍需完成全部三种服务的验收；最新两个真实服务的结果见下方实测记录，历史缺失说明不代表后续未测试。R2 还须提供整个 Bucket 无锁规则、关闭公共域名/其他公开旁路的实际所有者确认。此 PR 保持草稿，不能将报告模板和本地回归等同 Issue 验收。
 
 远端规则按[执行约定](../../execution.md#适用检查)：当前 `.github/workflows/ci.yml` 仅 workflow_call，images.yml 仅 release.published，没有 PR、push 或 workflow_dispatch 验证入口。本次不创建 Release、不推送镜像、不部署；AMD64/ARM64 容器检查未执行，不标通过。已用 `gh pr view 109 --json isDraft,statusCheckRollup`、`gh pr checks 109` 和 `gh run list --branch codex/70-storage-protocol` 回读：草稿为 true，检查列表及 Actions 运行列表为空；checks 命令报告 no checks，不记作 CI 通过。
 
@@ -121,3 +121,26 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 使用 Node 24.18.1、SDK 3.1136.0 运行本地只读脚本 `node .data/seaweed-preflight.mjs` 和 `node .data/r2-preflight.mjs`：SeaweedFS HeadBucket 200、版本查询 200 且无启用状态、锁查询明确 404 ObjectLockConfigurationNotFoundError；R2 HeadBucket 200，版本和锁查询均 403 AccessDenied，不记为能力检测通过。R2 仍按既有官方能力加所有者声明规则验收。见脱敏原始记录 [SeaweedFS](./preflight/seaweedfs.json) 和 [R2](./preflight/r2.json)。这些检查没有写入、读取现有对象或修改桶配置。
 
 替换目标的回归先失败后通过。本轮执行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build` 均退出 0（构建仍有上述可选 Debug 绑定诊断）；`pnpm run test:unit --maxWorkers=1` 为 316/316 通过；`pnpm exec vitest run --project unit --project integration tests/unit/storage/s3-protocol.test.ts tests/integration/storage/s3-protocol.test.ts tests/integration/storage/s3-runner.test.ts` 为 24/24 通过；`node docs/tasks/check.mjs` 与 `git diff --check` 通过。审计确认没有把 SeaweedFS 标为 MinIO，没有更改 R2 能力例外或虚构私有性声明。本轮未重跑全量集成和浏览器；前述全量失败记录仍保留。
+
+## 2026-09-23 两个用户 API 实际读写与浏览器测试
+
+用户明确要求使用已提供 API 直接测试，因此本轮作为诊断执行，不将事先确认私有桶作为开始条件，也不伪造 `ownerConfirmation`。没有修改桶策略、CORS 或已有对象。使用本地 `.data/real-api-test.mjs` 调用仓库现有 SDK、签名和浏览器辅助函数，对各检查独立记录失败后继续；该脚本退出 0 仅表示执行结束，不能解释为全部通过。命令为 Node 24.18.1 下 `node .data/real-api-test.mjs`，浏览器使用 `ego-browser nodejs` 创建和复用 TaskSpace 14，结束后已关闭。
+
+| 项目                                      | SeaweedFS / images                                  | R2 / image                                                                 |
+| ----------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------- |
+| 流式 PUT、GET、HEAD 与字节一致            | 通过                                                | 通过                                                                       |
+| 条件复制、旧 ETag 读取/复制拒绝且目标不变 | 通过                                                | 通过                                                                       |
+| 无签名 API GET                            | 403 AccessDenied，通过                              | 400 InvalidArgument / Authorization；未泄露内容，但不满足当前严格 403 验收 |
+| 300 秒签名 GET / HEAD 响应覆盖            | 均通过                                              | GET 通过；HEAD 200 但仍返回 image/svg+xml，未返回指定的附件与缓存头        |
+| GET/HEAD 签名不能交叉使用                 | 通过                                                | 通过                                                                       |
+| 900 秒签名 PUT（服务器发送）              | 通过                                                | 通过                                                                       |
+| 实际浏览器 PUT / 中文 SVG 附件下载        | 通过，实际请求无 Authorization/Cookie，文件字节一致 | PUT 失败，下载未执行                                                       |
+| 本轮 3 个精确 Key 删除及 HEAD 404         | 全部通过                                            | 全部通过                                                                   |
+
+R2 的已提供 `r2.dev` 公共入口实测返回 401，不能读取本轮对象；不推断所有其他入口已关闭。`node .data/r2-cors-check.mjs` 的 OPTIONS 复查返回 403，服务正文明确 `CORS not configured for this bucket`，解释浏览器上传失败；GetBucketCors 返回 AccessDenied，未修改配置。需要针对实验 origin `http://127.0.0.1:47070` 配置允许 PUT 和 content-type 的 CORS 后再测。R2 匿名 400 和 HEAD 覆盖属于实际协议差异，不放宽断言掩盖，后续须评估规格与服务支持边界。
+
+实测证据：[SeaweedFS 报告](./live/run-34lgzF/seaweedfs/report.json)、[浏览器请求与下载](./live/run-34lgzF/seaweedfs/browser.json)、[R2 报告](./live/run-34lgzF/r2/report.json)、[R2 CORS](./live/run-34lgzF/r2/cors.json)。SeaweedFS 响应 Server 标识为 4.47。报告保留精确 Key、请求 ID、状态和响应头；已脱敏 HTTP/2 `:path` 中的预签名参数及服务错误正文回显的凭据标识。
+
+两个服务各创建 3 个小测试对象，所有受控 SDK/浏览器写入结束后删除，6 个 Key 均鉴权 HEAD 404，未修改已有文件。签名地址未分发，不再复用；这证明本轮受控实验清理，不代表 UPLOAD-V01 通用迟到 PUT 协议已完成。AWS 未测试，未知公开别名未验证，PR 保持草稿。
+
+本轮只新增实测证据和文档；执行 `pnpm exec prettier docs/tasks/evidence/EV-STORAGE-01/README.md docs/tasks/evidence/EV-STORAGE-01/live --check`、`node docs/tasks/check.mjs`、`git diff --check` 均通过，并检查证据中不包含提供的密钥或完整预签名查询。未修改实现，未重跑应用构建或全量测试。

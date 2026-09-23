@@ -1,0 +1,487 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-23T01:49:09.470Z",
+  "scope": "Live diagnostics; no owner privacy declaration inferred",
+  "keys": [
+    "ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg",
+    "ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+    "ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/browser.svg"
+  ],
+  "checks": [
+    {
+      "name": "stream-put-get-head",
+      "status": "passed",
+      "evidence": {
+        "put": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D0119DA0570207BB0641",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "AcceptRanges": "bytes",
+          "LastModified": "2026-09-23T01:49:11.000Z",
+          "ContentLength": 110,
+          "ETag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "ContentType": "image/svg+xml",
+          "Metadata": {},
+          "$metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D7D011B0824C02D61DA04C",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "bytesVerified": true
+      }
+    },
+    {
+      "name": "conditional-copy",
+      "status": "passed",
+      "evidence": {
+        "CopyObjectResult": {
+          "ETag": "90347d2b9c5363b59f8a2b5aea1f860c",
+          "LastModified": "2026-09-23T01:49:11.521Z"
+        },
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D011BDD63993D12A633F",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "stale-read-and-copy-rejected",
+      "status": "passed",
+      "evidence": [
+        {
+          "operation": "GetObjectCommand",
+          "name": "PreconditionFailed",
+          "message": "At least one of the pre-conditions you specified did not hold",
+          "httpStatusCode": 412,
+          "requestId": "18D7D011D2387719772DDF86",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        {
+          "operation": "CopyObjectCommand",
+          "name": "PreconditionFailed",
+          "message": "At least one of the pre-conditions you specified did not hold",
+          "httpStatusCode": 412,
+          "requestId": "18D7D011D7E5080DB0D14854",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      ]
+    },
+    {
+      "name": "anonymous-api-read",
+      "status": "passed",
+      "evidence": {
+        "status": 403,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "content-length": "372",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D011EE6DE7F520BADF9C"
+        },
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>AccessDenied</Code><Message>Access Denied.</Message><Resource>/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg</Resource><RequestId>18D7D011EE6DE7F520BADF9C</RequestId><Key>ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg</Key><BucketName>images</BucketName></Error>"
+      }
+    },
+    {
+      "name": "signed-get-head-overrides",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "GET",
+          "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T014911Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host",
+            "response-cache-control": "private, no-store, no-transform",
+            "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "response-content-type": "application/octet-stream",
+            "x-id": "GetObject"
+          },
+          "status": 200,
+          "headers": {
+            "accept-ranges": "bytes",
+            "alt-svc": "h3=\":443\"; ma=2592000",
+            "cache-control": "private, no-store, no-transform",
+            "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "content-length": "110",
+            "content-type": "application/octet-stream",
+            "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+            "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+            "last-modified": "Wed, 23 Sep 2026 01:49:11 GMT",
+            "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+            "seaweed-x-amz-owner": "admin",
+            "server": "SeaweedFS 30GB 4.47",
+            "vary": "Origin",
+            "via": "1.1 Caddy",
+            "x-amz-request-id": "18D7D011F48ADB0DD594DE6D"
+          },
+          "body": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\"><rect width=\"20\" height=\"20\" fill=\"red\"/></svg>"
+        },
+        {
+          "method": "HEAD",
+          "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+          "expires": "300",
+          "signedHeaders": "host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260923T014911Z",
+            "X-Amz-Expires": "300",
+            "X-Amz-SignedHeaders": "host",
+            "response-cache-control": "private, no-store, no-transform",
+            "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "response-content-type": "application/octet-stream"
+          },
+          "status": 200,
+          "headers": {
+            "accept-ranges": "bytes",
+            "alt-svc": "h3=\":443\"; ma=2592000",
+            "cache-control": "private, no-store, no-transform",
+            "connection": "close",
+            "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+            "content-length": "110",
+            "content-type": "application/octet-stream",
+            "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+            "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+            "last-modified": "Wed, 23 Sep 2026 01:49:11 GMT",
+            "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+            "seaweed-x-amz-owner": "admin",
+            "server": "SeaweedFS 30GB 4.47",
+            "vary": "Origin",
+            "via": "1.1 Caddy",
+            "x-amz-request-id": "18D7D012070C356AB25AD1F6"
+          },
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "signature-method-isolation",
+      "status": "passed",
+      "evidence": {
+        "getSignatureAsHead": {
+          "status": 403,
+          "headers": {
+            "accept-ranges": "bytes",
+            "alt-svc": "h3=\":443\"; ma=2592000",
+            "connection": "close",
+            "content-length": "468",
+            "content-type": "application/xml",
+            "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+            "server": "SeaweedFS 30GB 4.47",
+            "vary": "Origin",
+            "via": "1.1 Caddy",
+            "x-amz-request-id": "18D7D0120CF6F175A570E858"
+          },
+          "body": ""
+        },
+        "headSignatureAsGet": {
+          "status": 403,
+          "headers": {
+            "accept-ranges": "bytes",
+            "alt-svc": "h3=\":443\"; ma=2592000",
+            "content-length": "468",
+            "content-type": "application/xml",
+            "date": "Wed, 23 Sep 2026 01:49:13 GMT",
+            "server": "SeaweedFS 30GB 4.47",
+            "vary": "Origin",
+            "via": "1.1 Caddy",
+            "x-amz-request-id": "18D7D01221127C33A3B34430"
+          },
+          "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message><Resource>/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg</Resource><RequestId>18D7D01221127C33A3B34430</RequestId><Key>ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg</Key><BucketName>images</BucketName></Error>"
+        }
+      }
+    },
+    {
+      "name": "signed-put",
+      "status": "passed",
+      "evidence": {
+        "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/browser.svg",
+        "expires": "900",
+        "signedHeaders": "content-type;host",
+        "query": {
+          "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+          "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+          "X-Amz-Date": "20260923T014912Z",
+          "X-Amz-Expires": "900",
+          "X-Amz-SignedHeaders": "content-type;host",
+          "x-id": "PutObject"
+        },
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "content-length": "0",
+          "date": "Wed, 23 Sep 2026 01:49:13 GMT",
+          "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D01231A84696688AA97C"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "browser-put-and-download",
+      "status": "passed",
+      "evidence": {
+        "date": "2026-09-23T01:49:14.448Z",
+        "origin": "http://127.0.0.1:47070",
+        "put": {
+          "status": 200,
+          "type": "cors",
+          "headers": {
+            "content-length": "0",
+            "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+            "x-amz-request-id": "18D7D0126EACD08BC619837B"
+          },
+          "body": "",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+        },
+        "actualPutHeaders": [
+          {
+            ":authority": "fs.447654.xyz",
+            ":method": "PUT",
+            ":path": "/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/browser.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=[redacted]&X-Amz-Date=20260923T014912Z&X-Amz-Expires=900&X-Amz-Signature=[redacted]&X-Amz-SignedHeaders=content-type%3Bhost&x-id=PutObject",
+            ":scheme": "https",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "zh-CN,zh;q=0.9",
+            "content-length": "110",
+            "content-type": "image/svg+xml",
+            "origin": "http://127.0.0.1:47070",
+            "priority": "u=1, i",
+            "referer": "http://127.0.0.1:47070/",
+            "sec-ch-ua": "\"Not?A_Brand\";v=\"24\", \"Chromium\";v=\"152\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+          }
+        ],
+        "download": {
+          "filename": "旅行.svg",
+          "completed": true
+        }
+      }
+    },
+    {
+      "name": "cleanup:ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg",
+      "status": "passed",
+      "evidence": {
+        "delete": {
+          "httpStatusCode": 204,
+          "requestId": "18D7D0129F5CD1DC47CA8733",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "headStatus": 404,
+        "writerFinishedAt": "2026-09-23T01:49:14.462Z",
+        "note": "All controlled writers returned; signatures remain reusable until expiry, no further writes will be made"
+      }
+    },
+    {
+      "name": "cleanup:ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+      "status": "passed",
+      "evidence": {
+        "delete": {
+          "httpStatusCode": 204,
+          "requestId": "18D7D012ACCBE2CE3D53705A",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "headStatus": 404,
+        "writerFinishedAt": "2026-09-23T01:49:14.462Z",
+        "note": "All controlled writers returned; signatures remain reusable until expiry, no further writes will be made"
+      }
+    },
+    {
+      "name": "cleanup:ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/browser.svg",
+      "status": "passed",
+      "evidence": {
+        "delete": {
+          "httpStatusCode": 204,
+          "requestId": "18D7D012BA26AE9CD7EB3B70",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "headStatus": 404,
+        "writerFinishedAt": "2026-09-23T01:49:14.462Z",
+        "note": "All controlled writers returned; signatures remain reusable until expiry, no further writes will be made"
+      }
+    }
+  ],
+  "staleConditions": [
+    {
+      "operation": "GetObjectCommand",
+      "name": "PreconditionFailed",
+      "message": "At least one of the pre-conditions you specified did not hold",
+      "httpStatusCode": 412,
+      "requestId": "18D7D011D2387719772DDF86",
+      "attempts": 1,
+      "totalRetryDelay": 0
+    },
+    {
+      "operation": "CopyObjectCommand",
+      "name": "PreconditionFailed",
+      "message": "At least one of the pre-conditions you specified did not hold",
+      "httpStatusCode": 412,
+      "requestId": "18D7D011D7E5080DB0D14854",
+      "attempts": 1,
+      "totalRetryDelay": 0
+    }
+  ],
+  "anonymousApi": {
+    "status": 403,
+    "headers": {
+      "accept-ranges": "bytes",
+      "alt-svc": "h3=\":443\"; ma=2592000",
+      "content-length": "372",
+      "content-type": "application/xml",
+      "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+      "server": "SeaweedFS 30GB 4.47",
+      "vary": "Origin",
+      "via": "1.1 Caddy",
+      "x-amz-request-id": "18D7D011EE6DE7F520BADF9C"
+    },
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>AccessDenied</Code><Message>Access Denied.</Message><Resource>/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg</Resource><RequestId>18D7D011EE6DE7F520BADF9C</RequestId><Key>ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/临时 +%?.svg</Key><BucketName>images</BucketName></Error>"
+  },
+  "signedReads": [
+    {
+      "method": "GET",
+      "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+      "expires": "300",
+      "signedHeaders": "host",
+      "query": {
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+        "X-Amz-Date": "20260923T014911Z",
+        "X-Amz-Expires": "300",
+        "X-Amz-SignedHeaders": "host",
+        "response-cache-control": "private, no-store, no-transform",
+        "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "response-content-type": "application/octet-stream",
+        "x-id": "GetObject"
+      },
+      "status": 200,
+      "headers": {
+        "accept-ranges": "bytes",
+        "alt-svc": "h3=\":443\"; ma=2592000",
+        "cache-control": "private, no-store, no-transform",
+        "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "content-length": "110",
+        "content-type": "application/octet-stream",
+        "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+        "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+        "last-modified": "Wed, 23 Sep 2026 01:49:11 GMT",
+        "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+        "seaweed-x-amz-owner": "admin",
+        "server": "SeaweedFS 30GB 4.47",
+        "vary": "Origin",
+        "via": "1.1 Caddy",
+        "x-amz-request-id": "18D7D011F48ADB0DD594DE6D"
+      },
+      "body": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\"><rect width=\"20\" height=\"20\" fill=\"red\"/></svg>"
+    },
+    {
+      "method": "HEAD",
+      "url": "https://fs.447654.xyz/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg",
+      "expires": "300",
+      "signedHeaders": "host",
+      "query": {
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+        "X-Amz-Date": "20260923T014911Z",
+        "X-Amz-Expires": "300",
+        "X-Amz-SignedHeaders": "host",
+        "response-cache-control": "private, no-store, no-transform",
+        "response-content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "response-content-type": "application/octet-stream"
+      },
+      "status": 200,
+      "headers": {
+        "accept-ranges": "bytes",
+        "alt-svc": "h3=\":443\"; ma=2592000",
+        "cache-control": "private, no-store, no-transform",
+        "connection": "close",
+        "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "content-length": "110",
+        "content-type": "application/octet-stream",
+        "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+        "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\"",
+        "last-modified": "Wed, 23 Sep 2026 01:49:11 GMT",
+        "seaweed-x-amz-etag": "90347d2b9c5363b59f8a2b5aea1f860c",
+        "seaweed-x-amz-owner": "admin",
+        "server": "SeaweedFS 30GB 4.47",
+        "vary": "Origin",
+        "via": "1.1 Caddy",
+        "x-amz-request-id": "18D7D012070C356AB25AD1F6"
+      },
+      "body": ""
+    }
+  ],
+  "crossMethods": {
+    "getSignatureAsHead": {
+      "status": 403,
+      "headers": {
+        "accept-ranges": "bytes",
+        "alt-svc": "h3=\":443\"; ma=2592000",
+        "connection": "close",
+        "content-length": "468",
+        "content-type": "application/xml",
+        "date": "Wed, 23 Sep 2026 01:49:12 GMT",
+        "server": "SeaweedFS 30GB 4.47",
+        "vary": "Origin",
+        "via": "1.1 Caddy",
+        "x-amz-request-id": "18D7D0120CF6F175A570E858"
+      },
+      "body": ""
+    },
+    "headSignatureAsGet": {
+      "status": 403,
+      "headers": {
+        "accept-ranges": "bytes",
+        "alt-svc": "h3=\":443\"; ma=2592000",
+        "content-length": "468",
+        "content-type": "application/xml",
+        "date": "Wed, 23 Sep 2026 01:49:13 GMT",
+        "server": "SeaweedFS 30GB 4.47",
+        "vary": "Origin",
+        "via": "1.1 Caddy",
+        "x-amz-request-id": "18D7D01221127C33A3B34430"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message><Resource>/images/ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg</Resource><RequestId>18D7D01221127C33A3B34430</RequestId><Key>ariso/ev-storage-01/ba3ef336-fa2f-4778-bc14-638f8761ec2d/copy.svg</Key><BucketName>images</BucketName></Error>"
+    }
+  },
+  "putValidUntil": "2026-09-23T02:04:12.738Z",
+  "writerFinishedAt": "2026-09-23T01:49:14.462Z",
+  "finishedAt": "2026-09-23T01:49:15.132Z",
+  "status": "passed",
+  "limitations": [
+    "No AWS target tested",
+    "No general late-PUT lifecycle proof",
+    "No declaration covering unknown public aliases"
+  ]
+}
