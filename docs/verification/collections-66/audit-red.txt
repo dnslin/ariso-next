@@ -1,0 +1,57 @@
+Already up to date
+Done in 345ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-66
+
+ ❯ |integration| tests/integration/collections/model.test.ts (8 tests | 2 failed) 564ms
+   ❯ T-COL-01 records and memberships (8)
+     × returns per-image results and rolls back all targets when any target is missing 31ms
+     × reports a middle database failure with its cause while committing other images independently 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/collections/model.test.ts > T-COL-01 records and memberships > returns per-image results and rolls back all targets when any target is missing
+SqliteError: disk-like failure
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ src/server/collections/memberships.ts:110:8
+    108|       .values({ imageId, tagId })
+    109|       .onConflictDoNothing({ target: [imageTags.imageId, imageTags.tag…
+    110|       .run().changes
+       |        ^
+    111|       ? ('added' as const)
+    112|       : ('existing' as const),
+ ❯ insertMemberships src/server/collections/memberships.ts:104:53
+ ❯ src/server/collections/memberships.ts:164:12
+ ❯ sqliteTransaction.db.transaction.behavior src/server/collections/memberships.ts:138:45
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/collections/model.test.ts > T-COL-01 records and memberships > reports a middle database failure with its cause while committing other images independently
+SqliteError: specific failure
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ src/server/collections/memberships.ts:110:8
+    108|       .values({ imageId, tagId })
+    109|       .onConflictDoNothing({ target: [imageTags.imageId, imageTags.tag…
+    110|       .run().changes
+       |        ^
+    111|       ? ('added' as const)
+    112|       : ('existing' as const),
+ ❯ insertMemberships src/server/collections/memberships.ts:104:53
+ ❯ src/server/collections/memberships.ts:164:12
+ ❯ sqliteTransaction.db.transaction.behavior src/server/collections/memberships.ts:138:45
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  00:12:37
+   Duration  2.40s (import 50%, tests 31%, transform 19%, worker 1%)
