@@ -174,7 +174,9 @@ it('read failures run through Next HTTP: first read never counts, midstream disc
       })(),
     ).rejects.toThrow();
     await settled(key, fault === 'first-read' ? 0 : 1);
-    expect((await app.probe(key)).errors.join(' ')).toContain('EIO');
+    const errors = (await app.probe(key)).errors;
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain('EIO');
   }
 });
 

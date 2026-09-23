@@ -1,8 +1,11 @@
 import { readObject } from '../../../src/server/storage/local.ts';
 import { finished } from 'node:stream/promises';
 import type { ReadStream } from 'node:fs';
-import { responseStream } from './stream.ts';
-import { makeHeaders, preconditionStatus } from './headers.ts';
+import { responseStream } from '../../../src/server/delivery/stream.ts';
+import {
+  makeHeaders,
+  preconditionStatus,
+} from '../../../src/server/delivery/headers.ts';
 
 // These states and gates are test controls, not a media model or production API.
 export type Scenario = {
@@ -145,6 +148,28 @@ export async function deliver(
         return new Response(null, { status, headers });
       }
       const stream = source;
+      // Keep fault injection in the experiment; all HTTP transfer behavior uses
+      // the production adapter, including backpressure, counting and cancellation.
+      const iterator = stream[Symbol.asyncIterator]();
+      const readNext = iterator.next.bind(iterator);
+      let chunks = 0;
+      iterator.next = async () => {
+        if (
+          current.fault === 'first-read' ||
+          (current.fault === 'mid-read' && chunks === 1)
+        ) {
+          stream.destroy(
+            Object.assign(new Error(`Injected EIO: ${current.objectId}`), {
+              code: 'EIO',
+            }),
+          );
+        }
+        if (chunks > 0) await new Promise((resolve) => setTimeout(resolve, 5));
+        const next = await readNext();
+        if (!next.done) chunks++;
+        return next;
+      };
+      stream[Symbol.asyncIterator] = () => iterator;
       const body = responseStream(
         stream,
         request.signal,
@@ -165,21 +190,6 @@ export async function deliver(
           }
         },
         (error) => probe.errors.push(String(error)),
-        async (chunks) => {
-          if (
-            current.fault === 'first-read' ||
-            (current.fault === 'mid-read' && chunks === 1)
-          ) {
-            // Inject a disk read failure into a REAL file stream; network remains real Next HTTP.
-            stream.destroy(
-              Object.assign(new Error(`Injected EIO: ${current.objectId}`), {
-                code: 'EIO',
-              }),
-            );
-          }
-          if (chunks > 0)
-            await new Promise((resolve) => setTimeout(resolve, 5));
-        },
       );
       return new Response(body, { headers });
     }

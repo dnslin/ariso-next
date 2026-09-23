@@ -1,6 +1,6 @@
 import { create as contentDisposition } from 'content-disposition';
 
-type HeaderInput = {
+export type HeaderInput = {
   objectId: string;
   size: number;
   contentType: string;
@@ -11,7 +11,9 @@ type HeaderInput = {
   actualVersion: string;
 };
 
-function downloadName(input: HeaderInput) {
+export function downloadName(
+  input: Pick<HeaderInput, 'extension' | 'displayName' | 'imageId'>,
+) {
   const extension = input.extension.replace(/^\./, '').toLowerCase();
   const actualExtension = extension === 'jpeg' ? 'jpg' : extension;
   let body = input.displayName

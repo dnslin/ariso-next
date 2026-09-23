@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="vitest tests" tests="59" failures="0" errors="0" time="0.034957">
+    <testsuite name="tests/unit/delivery/headers.test.ts" timestamp="2026-09-23T06:14:27.828Z" hostname="dnslins-Mini.lan" tests="35" failures="0" errors="0" skipped="0" time="0.01512775">
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; uses actual object metadata and does not invent Last-Modified" time="0.0117565">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; download=false and image/webp uses inline" time="0.000159542">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; download=true and image/webp uses attachment" time="0.000114125">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; download=false and image/svg+xml uses attachment" time="0.000091542">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; download=true and image/svg+xml uses attachment" time="0.000097917">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.final using actual webp as 旅行.final.webp" time="0.000089208">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.webp using actual webp as 旅行.webp" time="0.000065167">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.jpg using actual webp as 旅行.jpg.webp" time="0.000065917">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.webp.webp using actual webp as 旅行.webp.webp" time="0.000075125">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.JPEG using actual jpg as 旅行.jpg" time="0.000086167">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.jpg using actual jpeg as 旅行.jpg" time="0.000054583">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans 旅行.JPG using actual .jpg as 旅行.jpg" time="0.000042542">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans  ..a/\b &lt;&gt;:&quot;|?*..  using actual webp as ab.webp" time="0.000121708">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans  . /\   using actual webp as image-1.webp" time="0.000042375">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; cleans .webp using actual webp as webp.webp" time="0.00004425">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; truncates the body to 180 UTF-8 bytes without splitting a character" time="0.000115542">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; encodes 旅行 with an ASCII fallback" time="0.000114625">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; encodes café with an ASCII fallback" time="0.00004975">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery response headers &gt; encodes 😀 with an ASCII fallback" time="0.000036791">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {} as 200 for GET and HEAD" time="0.000456958">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;*&quot;} as 200 for GET and HEAD" time="0.000101458">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;\&quot;other\&quot;, \&quot;object-1\&quot;&quot;} as 200 for GET and HEAD" time="0.000118041">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;W/\&quot;object-1\&quot;&quot;} as 412 for GET and HEAD" time="0.000050084">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;\&quot;other\&quot;&quot;} as 412 for GET and HEAD" time="0.000075459">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-none-match&quot;:&quot;*&quot;} as 304 for GET and HEAD" time="0.000049459">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-none-match&quot;:&quot;\&quot;other\&quot;, W/\&quot;object-1\&quot;&quot;} as 304 for GET and HEAD" time="0.000056">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-none-match&quot;:&quot;\&quot;object-1\&quot;&quot;} as 304 for GET and HEAD" time="0.0000385">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-none-match&quot;:&quot;\&quot;other\&quot;&quot;} as 200 for GET and HEAD" time="0.000035375">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;\&quot;other\&quot;&quot;,&quot;if-none-match&quot;:&quot;*&quot;} as 412 for GET and HEAD" time="0.000032541">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-match&quot;:&quot;*&quot;,&quot;if-none-match&quot;:&quot;*&quot;} as 304 for GET and HEAD" time="0.000033209">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-modified-since&quot;:&quot;Tue, 01 Jan 2030 00:00:00 GMT&quot;} as 200 for GET and HEAD" time="0.000036291">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-unmodified-since&quot;:&quot;Tue, 01 Jan 1980 00:00:00 GMT&quot;} as 200 for GET and HEAD" time="0.000030333">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; evaluates {&quot;if-none-match&quot;:&quot;\&quot;other\&quot;&quot;,&quot;if-modified-since&quot;:&quot;Tue, 01 Jan 2030 00:00:00 GMT&quot;} as 200 for GET and HEAD" time="0.000033042">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; returns 412 rather than 304 for a non-safe method" time="0.000033292">
+        </testcase>
+        <testcase classname="tests/unit/delivery/headers.test.ts" name="delivery preconditions after authorization and opening &gt; keeps commas inside an opaque entity tag" time="0.000037333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/delivery/resolve.test.ts" timestamp="2026-09-23T06:14:27.830Z" hostname="dnslins-Mini.lan" tests="23" failures="0" errors="0" skipped="0" time="0.003327">
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; accepts default and explicit requests and ignores unrelated parameters" time="0.001037959">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query type=" time="0.000200042">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query type=other" time="0.000070667">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query type=original&amp;type=original" time="0.000051416">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query download=" time="0.000055959">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query download=0" time="0.000054709">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query download=true" time="0.000049083">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid query download=1&amp;download=1" time="0.000053625">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid image ID &quot;&quot;" time="0.00009775">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid image ID &quot;a/b&quot;" time="0.000081875">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid image ID &quot;a\\b&quot;" time="0.000170875">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; rejects invalid image ID &quot;a\n&quot;" time="0.000050334">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; uses the current configured public origin and encodes image identifiers" time="0.000172291">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery parameters and stable links &gt; generates default URLs without freezing the resolved version" time="0.000078459">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; selects saved explicit original regardless of current switches" time="0.000094917">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; selects saved explicit compressed regardless of current switches" time="0.000035334">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; selects saved explicit thumbnail regardless of current switches" time="0.000023">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; selects saved explicit watermark regardless of current switches" time="0.00002325">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; re-evaluates the current default without changing the default URL" time="0.000219583">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; uses original only when the default is known to be inapplicable" time="0.000050125">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; does not silently fall back for applicable=true and missing historical or failed versions" time="0.000029459">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; does not silently fall back for applicable=null and missing historical or failed versions" time="0.000020125">
+        </testcase>
+        <testcase classname="tests/unit/delivery/resolve.test.ts" name="delivery current version selection &gt; does not return a thumbnail in place of a missing original" time="0.000026833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/delivery/stream.test.ts" timestamp="2026-09-23T06:14:27.831Z" hostname="dnslins-Mini.lan" tests="1" failures="0" errors="0" skipped="0" time="0.01650225">
+        <testcase classname="tests/unit/delivery/stream.test.ts" name="opening, Node prefetch and constructing Response do not count before a consumer reads" time="0.015995458">
+        </testcase>
+    </testsuite>
+</testsuites>

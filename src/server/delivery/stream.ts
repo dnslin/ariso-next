@@ -1,20 +1,21 @@
 import type { ReadStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
 
-/** Experiment adapter: no Web queue means constructing Response cannot start delivery. */
+/** No Web queue: constructing a Response must not start delivery or counting.
+ * The caller logs source errors; onError reports only adapter/consumer failures.
+ */
 export function responseStream(
   source: ReadStream,
   signal: AbortSignal,
   onStart: () => void,
   onError: (error: unknown) => void,
-  beforeRead: (chunks: number) => Promise<void> = async () => {},
 ) {
   const iterator = source[Symbol.asyncIterator]();
-  let chunks = 0;
+  let started = false;
   let cancelled = false;
-  const closed = finished(source, { cleanup: true }).catch((error: unknown) => {
-    if (!cancelled) onError(error);
-  });
+  // Source errors propagate through the iterator and its error event. This promise
+  // only waits for disposal, so it must not report the same failure again.
+  const closed = finished(source, { cleanup: true }).catch(() => undefined);
   const abort = () => {
     cancelled = true;
     source.destroy();
@@ -26,14 +27,13 @@ export function responseStream(
     {
       async pull(controller) {
         try {
-          await beforeRead(chunks);
           signal.throwIfAborted();
           const next = await iterator.next();
-          if (next.done) {
-            controller.close();
-          } else {
+          if (next.done) controller.close();
+          else {
             controller.enqueue(next.value);
-            if (chunks++ === 0) {
+            if (!started) {
+              started = true;
               try {
                 onStart();
               } catch (error) {
@@ -43,7 +43,7 @@ export function responseStream(
           }
         } catch (error) {
           source.destroy();
-          if (!cancelled) onError(error);
+          if (!cancelled && error !== source.errored) onError(error);
           controller.error(error);
         }
       },

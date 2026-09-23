@@ -1,5 +1,18 @@
 import { getAuth } from './auth.ts';
 
+/** Public content optionally recognizes the same real owner Cookie; Bearer/share credentials do not qualify. */
+export async function readOptionalOwner(request: Request) {
+  if (!request.headers.has('cookie')) return null;
+  const auth = getAuth();
+  const session =
+    auth &&
+    (await auth.api.getSession({
+      headers: request.headers,
+      query: { disableRefresh: true },
+    }));
+  return session?.user ?? null;
+}
+
 /** 每次读取真实 Cookie 会话；管理写入还必须来自当前保存的站点 origin。 */
 export async function requireOwner(request: Request) {
   const auth = getAuth();

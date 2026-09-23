@@ -1,7 +1,7 @@
 # Spec: delivery — 图片访问、稳定链接与下载
 
 - 模块 ID：`delivery`。
-- 状态：已通过评审；用户于 2026-09-17 确认，并将默认链接改为随全站默认版本变化。未实现，未新增依赖。
+- 状态：已通过评审；用户于 2026-09-17 确认，并将默认链接改为随全站默认版本变化。本地入口的实施与验证见 [T-DEL-01](../verification/delivery-69/README.md)；S3 传输、统计聚合和页面集成仍由后续任务交付。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)的产品契约已确认；media 按本轮反馈采用文件大小限制和按需资源使用。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.4、13.4、14、18、19.2、20、26.4–26.8、26.11；[覆盖表](../tasks/coverage.md)。

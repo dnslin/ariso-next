@@ -3,7 +3,7 @@ import { parse } from 'content-disposition';
 import {
   makeHeaders,
   preconditionStatus,
-} from '../../experiments/delivery/headers.ts';
+} from '../../../src/server/delivery/headers.ts';
 
 const input = {
   objectId: 'object-1',
