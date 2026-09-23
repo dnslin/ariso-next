@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 有匿名错误码、HEAD 响应覆盖和 CORS 三项失败；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 最新复测已通过 CORS 与浏览器上传下载，仍有匿名错误码和 HEAD 响应覆盖两项失败；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -144,3 +144,11 @@ R2 的已提供 `r2.dev` 公共入口实测返回 401，不能读取本轮对象
 两个服务各创建 3 个小测试对象，所有受控 SDK/浏览器写入结束后删除，6 个 Key 均鉴权 HEAD 404，未修改已有文件。签名地址未分发，不再复用；这证明本轮受控实验清理，不代表 UPLOAD-V01 通用迟到 PUT 协议已完成。AWS 未测试，未知公开别名未验证，PR 保持草稿。
 
 本轮只新增实测证据和文档；执行 `pnpm exec prettier docs/tasks/evidence/EV-STORAGE-01/README.md docs/tasks/evidence/EV-STORAGE-01/live --check`、`node docs/tasks/check.mjs`、`git diff --check` 均通过，并检查证据中不包含提供的密钥或完整预签名查询。未修改实现，未重跑应用构建或全量测试。
+
+## 2026-09-23 R2 CORS 配置后复测
+
+用户更新 CORS 后，Node 24.18.1 下执行 `node .data/r2-retest.mjs`，复用既有 SDK/浏览器辅助函数，Ego Lite TaskSpace 15 完成后关闭。新一轮独立报告：[R2](./live/run-C4ORic/r2/report.json)、[浏览器请求与下载](./live/run-C4ORic/r2/browser.json)。旧失败报告保持原样。
+
+OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏览器 PUT 成功，响应可跨域读取，实际请求无 Authorization/Cookie；下载文件名为 `旅行.svg` 且字节一致。基础流读写、条件复制、旧 ETag 拒绝、签名 PUT 与 GET/HEAD 方法隔离复测通过。匿名 API 仍返回 400 InvalidArgument / Authorization；签名 GET 响应覆盖通过，签名 HEAD 仍返回原始 image/svg+xml 且缺少指定附件/缓存头。这两项继续标为失败，未修改或放宽断言。
+
+本轮 3 个新 Key 在受控写入全部结束后均已删除并鉴权 HEAD 404；无既有对象变更。凭据、完整预签名查询和错误正文回显已脱敏。CORS 问题已解决，其余协议差异和未测试 AWS 的限制保留，PR 继续草稿。仅新增实测证据与文档，没有修改应用代码，未重跑应用构建或全量测试。
