@@ -26,7 +26,7 @@ it('preserves cleanup evidence across repeated runs using the same output root',
       const lines = result.stdout.trim().split('\n');
       expect(lines).toHaveLength(3);
       return lines.map((line) => {
-        expect(line).toMatch(/^(aws|minio|r2): incomplete; /);
+        expect(line).toMatch(/^(aws|seaweedfs|r2): incomplete; /);
         return line.split('; ')[1];
       });
     };

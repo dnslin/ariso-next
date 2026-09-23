@@ -9,7 +9,7 @@ import {
 } from '../../experiments/storage-s3/protocol.ts';
 
 const base = {
-  service: 'minio' as const,
+  service: 'seaweedfs' as const,
   endpoint: 'http://127.0.0.1:9000',
   region: 'us-east-1',
   bucket: 'probe',
@@ -24,6 +24,12 @@ const base = {
   },
 };
 describe('S3 experiment configuration and actual SDK signatures', () => {
+  it('accepts SeaweedFS as the replacement target and rejects the removed MinIO target', () => {
+    expect(configSchema.safeParse(base).success).toBe(true);
+    expect(configSchema.safeParse({ ...base, service: 'minio' }).success).toBe(
+      false,
+    );
+  });
   it('requires an entire-bucket R2 confirmation tied to this revision and official endpoint', () => {
     expect(configSchema.safeParse({ ...base, service: 'r2' }).success).toBe(
       false,

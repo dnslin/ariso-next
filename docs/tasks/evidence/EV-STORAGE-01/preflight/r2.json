@@ -1,0 +1,25 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "startedAt": "2026-09-23T01:40:18.792Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "operation": "HeadBucketCommand",
+      "status": 200
+    },
+    {
+      "operation": "GetBucketVersioningCommand",
+      "error": "AccessDenied",
+      "status": 403,
+      "message": "Access Denied"
+    },
+    {
+      "operation": "GetObjectLockConfigurationCommand",
+      "error": "AccessDenied",
+      "status": 403,
+      "message": "Access Denied"
+    }
+  ]
+}

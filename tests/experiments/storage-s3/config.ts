@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const services = ['aws', 'r2', 'minio'] as const;
+export const services = ['aws', 'r2', 'seaweedfs'] as const;
 export type Service = (typeof services)[number];
 export const configSchema = z
   .object({

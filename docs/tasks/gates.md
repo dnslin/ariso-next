@@ -89,7 +89,7 @@
 - 里程碑：按消费任务提前执行
 - 规格：[storage §5–9](../specs/SPEC-storage.md)、[delivery §6–8](../specs/SPEC-delivery.md)
 - 直接前置：无
-- 范围：固定SDK，在AWS S3/R2/MinIO普通Bucket验证版本/锁能力、私有探测、流PUT/GET/HEAD/Copy/Delete、签名与附件。
+- 范围：固定SDK，在AWS S3/R2/SeaweedFS普通Bucket验证版本/锁能力、私有探测、流PUT/GET/HEAD/Copy/Delete、签名与附件。
 - 验收条件：三份服务报告，未实现/拒绝配置API不算通过；R2整个Bucket声明按规格；900秒PUT、300秒GET/HEAD、条件复制/HTTP200内错误及SVG强制附件可观察。
 - 验证方法：真实三服务、实际browser PUT头、无签名GET、独立HEAD签名/响应覆盖和匿名下载；无凭据环境明确未完成。
 - 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-STORAGE-01/` 报告；不预建业务模块。
@@ -101,7 +101,7 @@
 - 里程碑：按消费任务提前执行
 - 规格：[upload §7.3/13](../specs/SPEC-upload.md)
 - 直接前置：`EV-STORAGE-01`
-- 范围：对AWS/R2/MinIO验证到期前开始、到期后结束、取消及重复旧签名写入；同时覆盖storage CORS probe与服务端远端写入结算。
+- 范围：对AWS/R2/SeaweedFS验证到期前开始、到期后结束、取消及重复旧签名写入；同时覆盖storage CORS probe与服务端远端写入结算。
 - 验收条件：可证明最终不再写入后才释放引用；不能只靠固定宽限、HEAD404或无限保留；若必须改变协议/部署，先修订所属规格再解锁。
 - 验证方法：限速真实PUT/取消/重启/到期后复查实验，逐服务记录请求时序、对象与责任最终释放依据；可复现步骤和失败证据。
 - 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/UPLOAD-V01/` 报告；不预建业务模块。

@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；AWS S3、R2、MinIO 均未提供测试 Bucket/凭据，三份报告均为 `incomplete`。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶的只读连通性预检通过；公共访问关闭情况尚待确认，AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -21,7 +21,7 @@
 
 | 项目         | 实验行为                                                                                                                                                                                                |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 普通 Bucket  | AWS/MinIO 读取版本状态，Enabled/Suspended 拒绝；仅明确 404 ObjectLockConfigurationNotFoundError 接受无锁。权限不足、未实现、未知空响应与已开启锁均失败。                                                |
+| 普通 Bucket  | AWS/SeaweedFS 读取版本状态，Enabled/Suspended 拒绝；仅明确 404 ObjectLockConfigurationNotFoundError 接受无锁。权限不足、未实现、未知空响应与已开启锁均失败。                                            |
 | R2           | 仅官方 S3 endpoint 可走能力说明与所有者声明路径。整个 Bucket 无锁规则、关闭公共旁路的确认绑定本次配置 revision，并分别记录为声明依据，不宣称自动检测。                                                  |
 | 流与条件复制 | 实际 Node 流 PUT，小样本完整读回；HEAD ETag→IfMatch GET→同 ETag 的 CopySourceIfMatch。中文、空格、加号、百分号、问号 Key；改写源后旧 ETag 的 GET/Copy 都须 412，目标原字节保持不变。                    |
 | 匿名读取     | SDK 地址解析器构造同一 endpoint/bucket/key 的无签名 URL；无 Authorization/Cookie，不跟随跳转，仅 403 AccessDenied 通过。                                                                                |
@@ -38,8 +38,8 @@
 ```json
 [
   {
-    "service": "minio",
-    "endpoint": "https://minio.example.com",
+    "service": "seaweedfs",
+    "endpoint": "https://seaweedfs.example.com",
     "region": "us-east-1",
     "bucket": "ariso-protocol-test",
     "forcePathStyle": true,
@@ -47,7 +47,7 @@
       "accessKeyId": "REPLACE_LOCALLY",
       "secretAccessKey": "REPLACE_LOCALLY"
     },
-    "serviceVersion": "填写实际 MinIO RELEASE 版本",
+    "serviceVersion": "填写实际 SeaweedFS 版本",
     "revision": "填写本次位置与凭据配置版本",
     "ownerConfirmation": {
       "revision": "必须与上方一致",
@@ -113,3 +113,11 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 `pnpm run format:check`、`node docs/tasks/check.mjs`（120 任务/298 需求）、`node docs/tasks/check.mjs --self-test`（5 项）通过。构建后运行 `pnpm run test:integration --maxWorkers=1`，39 文件/315 测试中 314 通过、1 失败（退出 1，282.30 秒）：已有 `identity/setup-dev.test.ts` 临时 Next 项目缺少 `@swc/helpers/_/_interop_require_default`，健康检查返回失败。未修改该范围外测试，不称全量通过。
 
 随后单独运行 `pnpm exec vitest run --project integration tests/integration/identity/setup-dev.test.ts --maxWorkers=1`，1/1 通过（26.22 秒）；复查通过不替代上述全量失败记录。`git diff --check` 通过。
+
+## 2026-09-23 服务目标与只读预检
+
+按所有者要求使用 SeaweedFS 替代 MinIO。SeaweedFS 桶为 `images`，R2 桶为 `image`，R2 使用不含桶路径的官方 S3 API Endpoint 和 `auto` 区域。凭据只保存在 Git 忽略的本地 `.data`，未提交。所有者确认 R2 没有对象锁规则，但最后提供的公开状态仍是开启；未收到关闭确认，未生成虚假的私有桶声明，也未运行写入实验。SeaweedFS 的公共入口状态与实际版本仍待确认。
+
+使用 Node 24.18.1、SDK 3.1136.0 运行本地只读脚本 `node .data/seaweed-preflight.mjs` 和 `node .data/r2-preflight.mjs`：SeaweedFS HeadBucket 200、版本查询 200 且无启用状态、锁查询明确 404 ObjectLockConfigurationNotFoundError；R2 HeadBucket 200，版本和锁查询均 403 AccessDenied，不记为能力检测通过。R2 仍按既有官方能力加所有者声明规则验收。见脱敏原始记录 [SeaweedFS](./preflight/seaweedfs.json) 和 [R2](./preflight/r2.json)。这些检查没有写入、读取现有对象或修改桶配置。
+
+替换目标的回归先失败后通过。本轮执行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build` 均退出 0（构建仍有上述可选 Debug 绑定诊断）；`pnpm run test:unit --maxWorkers=1` 为 316/316 通过；`pnpm exec vitest run --project unit --project integration tests/unit/storage/s3-protocol.test.ts tests/integration/storage/s3-protocol.test.ts tests/integration/storage/s3-runner.test.ts` 为 24/24 通过；`node docs/tasks/check.mjs` 与 `git diff --check` 通过。审计确认没有把 SeaweedFS 标为 MinIO，没有更改 R2 能力例外或虚构私有性声明。本轮未重跑全量集成和浏览器；前述全量失败记录仍保留。
