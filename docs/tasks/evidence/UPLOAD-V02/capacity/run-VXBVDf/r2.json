@@ -1,0 +1,85 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "startedAt": "2026-09-23T03:06:49.723Z",
+  "status": "incomplete",
+  "samples": [
+    {
+      "bytes": 52428800,
+      "put": "passed",
+      "copy": "passed",
+      "operations": [
+        {
+          "stage": "single-put",
+          "milliseconds": 63135.484583000005,
+          "status": "passed",
+          "evidence": {
+            "metadata": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            },
+            "etag": "\"34461231816b5db55cc2d6cef577a226\""
+          }
+        },
+        {
+          "stage": "single-copy",
+          "milliseconds": 4195.945709,
+          "status": "passed",
+          "evidence": {
+            "metadata": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            },
+            "etag": "\"34461231816b5db55cc2d6cef577a226\""
+          }
+        },
+        {
+          "stage": "copied-bytes",
+          "milliseconds": 3964.2493749999994,
+          "status": "passed",
+          "evidence": {
+            "bytes": 52428800,
+            "sha256": "4f0e9c6a1a9a90f35b884d0f0e7343459c21060eefec6c0f2fa9dc1118dbe5be",
+            "metadata": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        }
+      ],
+      "keys": [
+        "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/source",
+        "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/copy"
+      ],
+      "cleanup": [
+        {
+          "key": "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/source",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        {
+          "key": "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/copy",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      ]
+    }
+  ],
+  "boundary": {
+    "maximumSuccessfulBytes": 52428800,
+    "firstRejectedBytes": null,
+    "exactBytes": null
+  }
+}

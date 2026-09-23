@@ -40,6 +40,7 @@
 - [媒体任务恢复与按需资源实施验证](./verification/media-64/README.md)
 - [相册标签模型与上传关联事务验证](./verification/collections-66/README.md)
 - [回收与恢复服务契约验证](./verification/media-67/README.md)
+- [上传共同容量与传输超时实验（未完成验收）](./tasks/evidence/UPLOAD-V02/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
 

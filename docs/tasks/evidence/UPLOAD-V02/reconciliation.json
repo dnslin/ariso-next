@@ -1,0 +1,150 @@
+{
+  "date": "2026-09-23T03:40:26.286Z",
+  "scope": "Exact-key reconciliation after this experiment clients exited; no generic guarantee about remote late writes",
+  "operations": [
+    {
+      "service": "r2",
+      "bucket": "image",
+      "key": "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/source",
+      "delete": {
+        "httpStatusCode": 204,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "r2",
+      "bucket": "image",
+      "key": "ariso/upload-v02/d5b3c531-d13f-4746-ad78-965f53bbcb7f/52428800/copy",
+      "delete": {
+        "httpStatusCode": 204,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "seaweedfs",
+      "bucket": "images",
+      "key": "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/source",
+      "delete": {
+        "httpStatusCode": 204,
+        "requestId": "18D7D6249067EC1A0C54EE73",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D7D62496C3778E8BF37501",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "seaweedfs",
+      "bucket": "images",
+      "key": "ariso/upload-v02/b20613b6-a65e-4edf-9876-69a5248bfb72/52428800/copy",
+      "delete": {
+        "httpStatusCode": 204,
+        "requestId": "18D7D6249D041CE0A4A5C0D8",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D7D624A3A1CDA7E472D863",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "r2",
+      "bucket": "image",
+      "key": "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/source",
+      "delete": {
+        "httpStatusCode": 204,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "r2",
+      "bucket": "image",
+      "key": "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/copy",
+      "delete": {
+        "httpStatusCode": 204,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "seaweedfs",
+      "bucket": "images",
+      "key": "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/source",
+      "delete": {
+        "httpStatusCode": 204,
+        "requestId": "18D7D6254D4C141614508BAE",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D7D62552EBC592686392D6",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "service": "seaweedfs",
+      "bucket": "images",
+      "key": "ariso/upload-v02/bf022c7c-1b54-4655-ac31-46a2355dc8e2/5363466240/copy",
+      "delete": {
+        "httpStatusCode": 204,
+        "requestId": "18D7D6255893280C502C216B",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "head": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D7D6255E3D650A4ED56A36",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ]
+}

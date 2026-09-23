@@ -1,0 +1,54 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "startedAt": "2026-09-23T03:09:47.157Z",
+  "status": "incomplete",
+  "samples": [
+    {
+      "bytes": 5363466241,
+      "put": "failed",
+      "copy": "not-run",
+      "operations": [
+        {
+          "stage": "single-put",
+          "milliseconds": 1800020.659083,
+          "status": "failed",
+          "evidence": {
+            "name": "TimeoutError",
+            "message": "@smithy/node-http-handler - [ERROR] a request has exceeded the configured 1800000 ms requestTimeout."
+          }
+        }
+      ],
+      "keys": [
+        "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/source",
+        "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/copy"
+      ],
+      "cleanup": [
+        {
+          "key": "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/source",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        {
+          "key": "ariso/upload-v02/737c0d51-80b5-430a-9d6b-aee8b8f7cb22/5363466241/copy",
+          "status": "deleted",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      ]
+    }
+  ],
+  "boundary": {
+    "maximumSuccessfulBytes": null,
+    "firstRejectedBytes": null,
+    "exactBytes": null
+  }
+}

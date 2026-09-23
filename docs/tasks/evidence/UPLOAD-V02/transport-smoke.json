@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-09-23T03:16:09.631Z",
+  "completedAt": "2026-09-23T03:16:11.453Z",
+  "node": "v24.19.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "mode": "--smoke",
+  "budgets": {
+    "idleMs": 120,
+    "totalMs": 1800,
+    "waitMs": 900
+  },
+  "scope": "Isolated Node HTTP streaming reverse proxy and in-memory job fixture; not production Next/media or deployment proxy acceptance.",
+  "results": [
+    {
+      "scenario": "idle",
+      "status": 408,
+      "body": {
+        "code": "UPLOAD_IDLE_TIMEOUT",
+        "bytes": 1
+      },
+      "elapsedMs": 130.764917,
+      "reception": {
+        "code": "UPLOAD_IDLE_TIMEOUT",
+        "bytes": 1,
+        "elapsedMs": 122.11704200000001
+      },
+      "partialRemoved": true
+    },
+    {
+      "scenario": "total-with-progress",
+      "status": 408,
+      "body": {
+        "code": "UPLOAD_TOTAL_TIMEOUT",
+        "bytes": 58
+      },
+      "elapsedMs": 1808.9520420000001,
+      "reception": {
+        "code": "UPLOAD_TOTAL_TIMEOUT",
+        "bytes": 58,
+        "elapsedMs": 1801.5572499999998
+      },
+      "partialRemoved": true
+    },
+    {
+      "scenario": "api-wait",
+      "status": 504,
+      "body": {
+        "imageId": "image-one",
+        "status": "processing",
+        "code": "UPLOAD_WAIT_TIMEOUT"
+      },
+      "elapsedMs": 913.843875,
+      "jobAfterTimeout": "processing"
+    }
+  ]
+}
