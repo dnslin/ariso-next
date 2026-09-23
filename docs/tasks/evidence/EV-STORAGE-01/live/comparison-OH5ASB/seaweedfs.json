@@ -1,0 +1,250 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "key": "ariso/ev-storage-01/bd1380e1-b6a8-418c-8f6c-ffd93d4a45f9/comparison.svg",
+  "startedAt": "2026-09-23T02:33:59.427Z",
+  "observations": [
+    {
+      "name": "anonymous-existing",
+      "result": {
+        "status": 403,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "content-length": "372",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D283D5856672F1441C66"
+        },
+        "bodyLength": 372,
+        "markerReturned": false,
+        "errorCode": "AccessDenied",
+        "errorMessage": "Access Denied."
+      }
+    },
+    {
+      "name": "anonymous-missing",
+      "result": {
+        "status": 403,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "content-length": "388",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D283DB5FC8E4DAA673DC"
+        },
+        "bodyLength": 388,
+        "markerReturned": false,
+        "errorCode": "AccessDenied",
+        "errorMessage": "Access Denied."
+      }
+    },
+    {
+      "name": "presigned-GET-baseline",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "cache-control": "max-age=60",
+          "content-disposition": "inline",
+          "content-length": "89",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "seaweed-x-amz-etag": "89cd867dc3b9cc6dd8b65a4701bec3d0",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D283E11C7E782D43F005"
+        },
+        "bodyLength": 89,
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "sdk-GET-baseline",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D283E8076423377F5EC4",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "image/svg+xml",
+        "contentDisposition": "inline",
+        "cacheControl": "max-age=60",
+        "contentLength": 89,
+        "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "presigned-HEAD-baseline",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "cache-control": "max-age=60",
+          "connection": "close",
+          "content-disposition": "inline",
+          "content-length": "89",
+          "content-type": "image/svg+xml",
+          "date": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "seaweed-x-amz-etag": "89cd867dc3b9cc6dd8b65a4701bec3d0",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D283ED74DFD83336F1B3"
+        },
+        "bodyLength": 0,
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "sdk-HEAD-baseline",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D283F444702A5F8A1710",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "image/svg+xml",
+        "contentDisposition": "inline",
+        "cacheControl": "max-age=60",
+        "contentLength": 89,
+        "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "presigned-GET-overrides",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "cache-control": "private, no-store, no-transform",
+          "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "content-length": "89",
+          "content-type": "application/octet-stream",
+          "date": "Wed, 23 Sep 2026 02:34:01 GMT",
+          "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "seaweed-x-amz-etag": "89cd867dc3b9cc6dd8b65a4701bec3d0",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D284046C41BA3F34FE6E"
+        },
+        "bodyLength": 89,
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "sdk-GET-overrides",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D2840B4DCCBF5E327418",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "application/octet-stream",
+        "contentDisposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "cacheControl": "private, no-store, no-transform",
+        "contentLength": 89,
+        "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+        "markerReturned": true
+      }
+    },
+    {
+      "name": "presigned-HEAD-overrides",
+      "result": {
+        "status": 200,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "cache-control": "private, no-store, no-transform",
+          "connection": "close",
+          "content-disposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "content-length": "89",
+          "content-type": "application/octet-stream",
+          "date": "Wed, 23 Sep 2026 02:34:01 GMT",
+          "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+          "last-modified": "Wed, 23 Sep 2026 02:34:00 GMT",
+          "seaweed-x-amz-etag": "89cd867dc3b9cc6dd8b65a4701bec3d0",
+          "seaweed-x-amz-owner": "admin",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D28410970A484A82AB5F"
+        },
+        "bodyLength": 0,
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "sdk-HEAD-overrides",
+      "result": {
+        "metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D7D28416D5D7F4BDB4681B",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "contentType": "application/octet-stream",
+        "contentDisposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+        "cacheControl": "private, no-store, no-transform",
+        "contentLength": 89,
+        "etag": "\"89cd867dc3b9cc6dd8b65a4701bec3d0\"",
+        "markerReturned": false
+      }
+    },
+    {
+      "name": "invalid-signature",
+      "result": {
+        "status": 403,
+        "headers": {
+          "accept-ranges": "bytes",
+          "alt-svc": "h3=\":443\"; ma=2592000",
+          "content-length": "480",
+          "content-type": "application/xml",
+          "date": "Wed, 23 Sep 2026 02:34:01 GMT",
+          "server": "SeaweedFS 30GB 4.47",
+          "vary": "Origin",
+          "via": "1.1 Caddy",
+          "x-amz-request-id": "18D7D2842AA60521D9A237E4"
+        },
+        "bodyLength": 480,
+        "markerReturned": false,
+        "errorCode": "SignatureDoesNotMatch",
+        "errorMessage": "The request signature we calculated does not match the signature you provided. Check your key and signing method."
+      }
+    },
+    {
+      "name": "cleanup",
+      "result": {
+        "deleteStatus": 204,
+        "headStatus": 404
+      }
+    }
+  ],
+  "finishedAt": "2026-09-23T02:34:02.195Z"
+}

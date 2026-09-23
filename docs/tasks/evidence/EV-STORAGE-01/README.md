@@ -152,3 +152,16 @@ R2 的已提供 `r2.dev` 公共入口实测返回 401，不能读取本轮对象
 OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏览器 PUT 成功，响应可跨域读取，实际请求无 Authorization/Cookie；下载文件名为 `旅行.svg` 且字节一致。基础流读写、条件复制、旧 ETag 拒绝、签名 PUT 与 GET/HEAD 方法隔离复测通过。匿名 API 仍返回 400 InvalidArgument / Authorization；签名 GET 响应覆盖通过，签名 HEAD 仍返回原始 image/svg+xml 且缺少指定附件/缓存头。这两项继续标为失败，未修改或放宽断言。
 
 本轮 3 个新 Key 在受控写入全部结束后均已删除并鉴权 HEAD 404；无既有对象变更。凭据、完整预签名查询和错误正文回显已脱敏。CORS 问题已解决，其余协议差异和未测试 AWS 的限制保留，PR 继续草稿。仅新增实测证据与文档，没有修改应用代码，未重跑应用构建或全量测试。
+
+## 2026-09-23 匿名错误码与 HEAD 覆盖对照实验
+
+命令：Node 24.18.1 下 `node .data/s3-difference-test.mjs`，退出 0。每个服务新建一个 ASCII Key 的 SVG，元数据固定为 `image/svg+xml`、`inline`、`max-age=60`；使用 `Accept-Encoding: identity` 排除前轮 HEAD 压缩表现的干扰。对比有效签名与错误签名、存在与不存在对象、GET 与 HEAD、默认元数据与覆盖参数，并分别使用预签名 fetch 和 SDK Authorization 请求。各服务 12 项观测均获得结果，无执行异常；这是协议观测，不表示原验收全部通过。
+
+- R2：无签名读取存在/不存在的对象均 400 InvalidArgument，Message 为 Authorization，没有返回测试内容；人为错误签名为 403 SignatureDoesNotMatch。有效签名 GET 返回完整测试内容。说明当前 API 入口拒绝匿名请求，但其状态码不符合现有严格 403 规则，不能据 400 判定对象公开，也不能推断未知公共入口安全。
+- R2：GET 的三项响应覆盖在预签名和 SDK 调用中均生效；HEAD 在两种认证方式中均保留原始对象元数据，覆盖参数没有生效。因此差异可在无浏览器/CORS 的请求中稳定复现，不能靠继续修改 CORS 解决。
+- SeaweedFS：同一矩阵中匿名存在/不存在对象均 403 AccessDenied，错误签名 403；GET/HEAD 覆盖在两种认证方式中均生效。
+- 两个新测试对象均 DELETE 204 后鉴权 HEAD 404；没有修改已有对象或桶配置，没有签发 PUT URL。
+
+[Cloudflare 官方兼容表](https://developers.cloudflare.com/r2/api/s3/api/) 列出 HeadObject/GetObject 支持，但没有明确列出 HEAD 的 response-* 覆盖参数，也没有承诺此匿名请求必须返回 403；不能把文档未列出解释成官方明确承诺不支持。本轮结论依据实际对照响应，保留现有失败，不调整产品契约或削弱断言。原始证据：[R2](./live/comparison-OH5ASB/r2.json)、[SeaweedFS](./live/comparison-OH5ASB/seaweedfs.json)。
+
+本轮只新增观测记录和文档。执行格式检查、`node docs/tasks/check.mjs`、`git diff --check` 并扫描报告不含提供的凭据或预签名查询；未修改实现，未重跑全量测试和构建。
