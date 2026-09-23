@@ -83,14 +83,14 @@
 
 ### EV-STORAGE-01 三服务对象与私有性协议验证
 
-实验实现、实际验证和环境阻塞见[协议实验报告](./evidence/EV-STORAGE-01/README.md)；三服务真实证据未齐，不解除下游前置。
+实验实现和实际验证见[协议实验报告](./evidence/EV-STORAGE-01/README.md)。按[所有者调整](./execution.md#对象存储验证目标调整)，本前置以 R2 与 SeaweedFS 实测证据完成；AWS S3 未验证不再阻塞本任务，后续任务仍执行自身验收。
 
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[storage §5–9](../specs/SPEC-storage.md)、[delivery §6–8](../specs/SPEC-delivery.md)
 - 直接前置：无
 - 范围：固定SDK，在AWS S3/R2/SeaweedFS普通Bucket验证版本/锁能力、私有探测、流PUT/GET/HEAD/Copy/Delete、签名与附件。
-- 验收条件：三份服务报告，未实现/拒绝配置API不算通过；R2整个Bucket声明按规格；900秒PUT、300秒GET/HEAD、条件复制/HTTP200内错误及SVG强制附件可观察。
+- 验收条件：按所有者调整提供 R2 与 SeaweedFS 两份真实服务证据，AWS 记录未验证；未实现/拒绝配置API不算自动检测通过；R2整个Bucket声明按规格；900秒PUT、300秒GET/HEAD、条件复制/HTTP200内错误及SVG强制附件可观察。
 - 验证方法：真实三服务、实际browser PUT头、无签名GET、独立HEAD签名/对象元数据及GET响应覆盖和匿名下载；无凭据环境明确未完成。
 - 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-STORAGE-01/` 报告；不预建业务模块。
 - 界面：无产品界面交付；浏览器实验只用于验证实际库/协议，不关闭 DES/RG 或业务界面任务。

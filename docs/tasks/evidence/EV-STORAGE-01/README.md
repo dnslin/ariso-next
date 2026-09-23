@@ -1,6 +1,6 @@
 # EV-STORAGE-01 三服务对象与私有性协议验证
 
-2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[草稿 PR #109](https://github.com/dnslin/ariso-next/pull/109)，分支 `codex/70-storage-protocol`。**状态：未完成，真实服务环境阻塞。** 本次交付可运行的协议实验与回归测试；当前验证矩阵按[目标调整](../../execution.md#对象存储验证目标调整)为 AWS S3、R2、SeaweedFS。已提供 SeaweedFS `images` 和 R2 `image` 桶，两个桶已执行实际读写与浏览器测试：SeaweedFS 本轮通过，R2 最新复测已通过 CORS 与浏览器上传下载，历史严格规则下的匿名错误码和 HEAD 覆盖失败已获得协议解释；当前按下方经所有者确认的验收调整复验；AWS S3 环境仍未提供。历史三份报告均为 `incomplete`，不表示新环境已验收。不解除 #71 / UPLOAD-V02 或其他消费任务的真实服务前置。
+2026-09-23，关联 [Issue #70](https://github.com/dnslin/ariso-next/issues/70)、[PR #109](https://github.com/dnslin/ariso-next/pull/109)。**状态：按所有者调整后的范围完成并获准合并。** SeaweedFS `images` 与 R2 `image` 已完成真实 API、浏览器上传/下载及新规则复验，测试对象均已清理。所有者明确本次不再等待 AWS S3，AWS 保留未验证状态；历史未完成/失败报告不改写。本次解除 EV-STORAGE-01 前置，后续任务仍须完成自身验收，特别是 UPLOAD-V01 通用迟到 PUT 生命周期。未知公开别名未验证的边界继续保留。
 
 范围依据 [storage §5–9](../../../specs/SPEC-storage.md#5-s3-配置与已确认支持范围)、[delivery §6–8](../../../specs/SPEC-delivery.md#6-本地与-s3-传输) 和 [任务卡](../../gates.md#ev-storage-01-三服务对象与私有性协议验证)。不修改冻结 PRD，不交付业务存储模块或产品界面；无适用 Figma 节点、主题/响应式/触控验收。
 
@@ -179,3 +179,7 @@ OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏�
 独立子代理按 `code-review-and-quality` 只读审计本次 diff，未发现阻断问题；确认 R2 精确例外、GET 安全要求、HEAD 元数据断言、负向测试及规格一致。文档任务检查与新证据凭据扫描通过。
 
 本轮构建后执行 `pnpm run test:integration --maxWorkers=1`，39 文件/315 测试全部通过（252.89 秒，退出 0），包括此前间歇失败的 setup-dev。该结果属于本轮，不覆盖前述历史失败记录。
+
+## 2026-09-23 所有者最终交付决定
+
+所有者明确要求不再等待 AWS S3，合并 PR、关闭 Issue 并清理分支/worktree。本任务按两服务实测证据完成；AWS 未测不是通过。上述草稿/阻塞叙述是当时的历史状态，以本文开头与本节为当前结论。本次只更新范围和交付状态，未修改实现或原始实测结果。执行格式、任务文档及差异检查，不重复应用测试或发布验证。
