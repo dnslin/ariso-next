@@ -48,3 +48,17 @@ DES-06-LIBRARY、DES-05/07、RG-02/06/07 继续开放。完整筛选/选择、�
 ## 远端验证边界
 
 已读取 `.github/workflows/ci.yml` 与 `images.yml`：CI 只供 workflow_call，镜像只接受 release.published，没有 PR/push 或 workflow_dispatch 验证入口。按现行执行约定，日常文档 PR 无需等待不存在的检查；AMD64/ARM64 容器留待发布验证，未执行不标通过。本任务不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue、不删除分支或 worktree。推送后回读并记录实际 PR/Actions 状态。
+
+## PR 与远端回读
+
+实施提交 `c24d55539f99d84959c2f33b554c7618e99d6622` 已推送并创建 [PR #115](https://github.com/dnslin/ariso-next/pull/115)。实际执行：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 115 --repo dnslin/ariso-next --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --repo dnslin/ariso-next --branch codex/74-library-design-check --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/c24d555/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/c24d555/status --jq '{state,total_count}'
+```
+
+回读时 PR 为草稿、CLEAN；Actions 运行列表为空，check-runs 与提交状态数量均为 0。状态 API 的聚合 pending 没有对应检查，不算验证运行中或通过。本地适用检查及独立审计通过，无本 Issue 范围内剩余阻塞；证据提交推送后复查最终提交，随后转为正式待评审，不等待不存在的日常远端检查。
