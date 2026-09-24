@@ -14,7 +14,7 @@
 
 - [x] 三项回归测试均曾失败，修复后通过。
 - [x] 冻结安装、格式、lint、类型、单元、构建和全量集成通过。
-- [ ] 按项目约定运行已有 Ego 浏览器回归；不据此声称上传 UI 已交付。
+- [x] 按项目约定运行已有 Ego 浏览器回归；不据此声称上传 UI 已交付。
 - [x] `code-review-and-quality` 审计通过，更新证据。
 
 镜像与双架构验证仍按发布阶段执行，本轮不发布、不部署、不合并。
@@ -41,3 +41,5 @@
 | `node docs/tasks/check.mjs --self-test`                                                                                       | 5 项拒绝场景通过                                                                                                                                                                                         |
 
 独立 agent 按 `code-review-and-quality` 复审本轮全部实现和测试差异，未发现新的必修问题。其复审是静态审阅；上述测试由实施 agent 实际执行。新增回归共 18 项，没有删除、跳过或削弱已有断言。错误注入证明分类及事务行为，不等同于真实挂载盘故障或生产容量测试。
+
+浏览器重跑：所有者确认上次测试期间误关 Ego，并授权新建任务空间。执行 `BROWSER_REPORT_DIR=/tmp/ariso-116-browser-rerun pnpm run test:browser`，退出码 0，完整回归通过（含 runtime/shell、1440/390 两端初始化与重启登录、组件交互）。本次报告见 [review-browser.json](./review-browser.json)。上次中断报告保留，不改写为成功。本次仅更新验证证据，未修改应用代码。
