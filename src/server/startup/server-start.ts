@@ -3,6 +3,7 @@ import { openRuntimeDatabase } from '../runtime/db.ts';
 import { parseRuntimeEnv } from '../runtime/env.ts';
 import { createSetupState } from '../identity/setup.ts';
 import { requireInitialSettings } from './initial-settings.ts';
+import { startUploadRuntime } from '../upload/runtime.ts';
 import { startMediaQueue } from '../media/queue.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 
@@ -32,18 +33,25 @@ function initializeServerRuntime() {
       temporaryRoot: resolve(config.dataDir, 'tmp'),
       logger: createRuntimeLogger('media.queue', config.logLevel),
     });
+    const uploads = startUploadRuntime({
+      db: connection.db,
+      storageRoot: resolve(config.dataDir, 'storage'),
+      logger: createRuntimeLogger('upload', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
       connection,
       setup,
       mediaQueue,
+      uploads,
       get stopping() {
         return stopping !== undefined;
       },
       stop() {
-        return (stopping ??= mediaQueue
+        return (stopping ??= uploads
           .stop()
+          .finally(() => mediaQueue.stop())
           .finally(() => connection.close()));
       },
     };

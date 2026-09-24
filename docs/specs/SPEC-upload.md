@@ -1,12 +1,14 @@
 # Spec: upload — Web 队列、文件接收与通用上传 API
 
 - 模块 ID：`upload`。
-- 状态：产品行为已确认；用户于 2026-09-17 确认三项新增选择。未实现，未安装依赖。第 13 节技术验证项尚未关闭，特别是 S3 迟到写入的最终收尾。
+- 状态：产品行为已确认；用户于 2026-09-17 确认三项新增选择。本地单文件路径已有实现，见下方实施记录；其余能力仍为计划。S3 迟到写入等前置继续按各任务验收。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)已确认产品契约；media 工程参数仍需实测。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 6.5、7–8、9、11.2、11.8、21、22、23.4、26.2–26.7；[覆盖表](../tasks/coverage.md)。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。
+
+实施进度：T-UP-01 已接通本地单文件提交、流式接收与事务交接，见[实施与验证记录](../verification/upload-73/README.md)。本文其他计划能力仍以各任务验收为准，不因本次接通而标记全量完成。
 
 ## 1. 目标与职责
 
@@ -18,7 +20,7 @@ upload 拥有队列、提交设置、上传会话、接收前文件、S3 临时�
 
 ## 2. 现有工程与依赖依据
 
-当前仅 runtime；没有上传入口或表。沿用 Node 24、Next Route Handler、Drizzle/better-sqlite3、Zod 4 和 Pino。传输入口使用 Node runtime，业务数据库与恢复调度接入现有 Web 进程单例，事务内不 await。当前包清单未安装 Uppy、S3 SDK 或流式 multipart 解析器。
+规格编写时仅 runtime，没有上传入口或表。实施沿用 Node 24、Next Route Handler、Drizzle/better-sqlite3、Zod 4 和 Pino。传输入口使用 Node runtime，业务数据库与恢复调度接入现有 Web 进程单例，事务内不 await。下述为规格编写时的选型依据；当前依赖与交付范围以实施记录为准。
 
 - [Uppy core](https://uppy.io/docs/uppy/)提供队列和文件状态，使用 `autoProceed: false`，按 Figma 组合界面；不启用 Golden Retriever。文件 MIME 仅供初筛，终态移除 Uppy 中的文件数据，轻量结果另存。
 - [Uppy AWS S3](https://uppy.io/docs/aws-s3/)支持单 PUT；显式关闭自动多段上传，服务端签名，不把凭据交给浏览器。固定实际发布版本后核对签名回调类型，不能混用旧版示例。
@@ -26,7 +28,7 @@ upload 拥有队列、提交设置、上传会话、接收前文件、S3 临时�
 - multipart 需要流式解析。[Busboy](https://github.com/mscdex/busboy)提供文件/字段限制及截断信号，可作为候选；实施前核对维护状态、类型及 Node 24 兼容性，必要时选同类成熟实现。不能用无限 `request.formData()` 将整个大文件放进内存。
 - 已有 [Zod JSON Schema](https://zod.dev/json-schema)支持 OpenAPI 目标和文件结构，先复用其转换能力，再组装 OpenAPI paths/security/encoding；无需默认新增另一套 schema 转换库。流式运行时校验不要求先构造完整 File。
 
-以上是规格编写时的依赖基线。UPLOAD-V03 已在独立实验目录固定 Uppy/Busboy 版本并完成双链路、释放引用和流式解析的本地验证，见[证据报告](../tasks/evidence/UPLOAD-V03/README.md)；尚未安装到生产应用或实现上传业务。
+以上是规格编写时的依赖基线。UPLOAD-V03 已在独立实验目录固定 Uppy/Busboy 版本并完成双链路、释放引用和流式解析的本地验证，见[证据报告](../tasks/evidence/UPLOAD-V03/README.md)；Busboy 已随 T-UP-01 接入生产单文件路径；Uppy 仍未接入业务页面。
 
 ## 3. 设置、限制与文件输入
 

@@ -51,7 +51,35 @@ export async function inspectImage(
   };
   const tool = startMediaTool('exiftool', args, { ...options, workspace });
   const error = await tool.settled;
-  if (error) throw error;
+  if (error) {
+    // ExifTool reports unrecognized bytes as structured JSON with exit code 1.
+    // Keep missing binaries, cancellation and tool failures as operational errors.
+    if (
+      !signal?.aborted &&
+      'exitCode' in error &&
+      error.exitCode === 1 &&
+      'stdout' in error &&
+      typeof error.stdout === 'string'
+    ) {
+      let output: unknown;
+      try {
+        output = JSON.parse(error.stdout);
+      } catch {
+        throw error;
+      }
+      const rejected = z
+        .array(z.object({ 'ExifTool:Error': z.string() }))
+        .length(1)
+        .safeParse(output);
+      if (rejected.success)
+        throw mediaError(
+          'MEDIA_IDENTIFICATION_FAILED',
+          rejected.data[0]['ExifTool:Error'],
+          error,
+        );
+    }
+    throw error;
+  }
   const { stdout } = await tool.child;
   const [facts] = z.array(factsSchema).length(1).parse(JSON.parse(stdout));
   if (facts['ExifTool:Error'])

@@ -64,6 +64,9 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'storage_configs' },
         { name: 'storage_settings' },
         { name: 'tags' },
+        { name: 'upload_sessions' },
+        { name: 'upload_settings' },
+        { name: 'upload_submissions' },
         { name: 'user' },
         { name: 'verification' },
       ]);
@@ -96,9 +99,18 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         'media_objects',
         'media_settings',
         'media_versions',
+        'upload_sessions',
+        'upload_submissions',
       ]) {
         expect(db.prepare(`SELECT * FROM ${table}`).all()).toEqual([]);
       }
+      expect(
+        db
+          .prepare(
+            'SELECT max_file_bytes, batch_size, queue_limit FROM upload_settings WHERE id = 1',
+          )
+          .get(),
+      ).toEqual({ max_file_bytes: 52428800, batch_size: 20, queue_limit: 500 });
     } finally {
       db.close();
     }

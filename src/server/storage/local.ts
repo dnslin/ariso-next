@@ -108,6 +108,32 @@ function operationError(
   );
 }
 
+/** Upload registers the key before obtaining a writable path. */
+export function prepareLocalObjectPath(
+  root: string,
+  storage: LocalStorage,
+  key: string,
+) {
+  requireEnabled(storage);
+  return objectPath(namespace(root, storage, true), key, true);
+}
+
+/** Publish an already validated upload on the same filesystem without copying bytes. */
+export async function publishLocalObject(
+  root: string,
+  storage: LocalStorage,
+  temporaryKey: string,
+  key: string,
+) {
+  const source = prepareLocalObjectPath(root, storage, temporaryKey);
+  const target = prepareLocalObjectPath(root, storage, key);
+  try {
+    await rename(source, target);
+  } catch (cause) {
+    throw operationError(cause, storage, key, 'publish', target);
+  }
+}
+
 /** The caller must durably register the plan before passing a stream. Never reuse a write plan. */
 export async function writeObject(
   root: string,
