@@ -54,6 +54,7 @@ function writeMigrations(
       '0003_wealthy_hydra',
       '0005_sharp_paper_doll',
       '0006_material_joseph',
+      '0008_numerous_nick_fury',
     ].map((tag, index) => ({
       tag,
       when: index + 3,
@@ -309,6 +310,7 @@ describe('完整生产入口的失败与恢复', () => {
       { created_at: 4 },
       { created_at: 5 },
       { created_at: 6 },
+      { created_at: 7 },
       { created_at: 1000 },
     ]);
     writeMigrations(folder, [

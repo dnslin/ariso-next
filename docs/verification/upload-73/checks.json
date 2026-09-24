@@ -1,0 +1,194 @@
+{
+  "date": "2026-09-24",
+  "issue": "https://github.com/dnslin/ariso-next/issues/73",
+  "branch": "codex/73-local-upload",
+  "environment": {
+    "os": "macOS 26.6.2",
+    "arch": "arm64",
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "imageMagick": "7.1.2-31",
+    "exiftool": "13.55",
+    "browser": "Ego Lite Chromium 152"
+  },
+  "prerequisites": {
+    "blockedBy": [
+      {
+        "issue": 53,
+        "state": "closed"
+      },
+      {
+        "issue": 54,
+        "state": "closed"
+      },
+      {
+        "issue": 66,
+        "state": "closed"
+      },
+      {
+        "issue": 64,
+        "state": "closed"
+      },
+      {
+        "issue": 69,
+        "state": "closed"
+      },
+      {
+        "issue": 71,
+        "state": "closed"
+      },
+      {
+        "issue": 72,
+        "state": "closed"
+      }
+    ],
+    "blocking": [81],
+    "comments": 0
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0,
+      "result": "0008_numerous_nick_fury.sql; reviewed three upload tables, references/indexes and singleton initial values"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "files": 24,
+      "tests": 392
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "notes": "Next standalone build passed. Existing optional better-sqlite3 Debug binary tracing warnings remain; production HTTP tests exercise the actual binary."
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:browser",
+      "exitCode": 0,
+      "evidence": "browser.json",
+      "scope": "Existing full browser regression; no new product UI in this issue"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "cases": 5
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/upload/local-http.test.ts",
+      "exitCode": 0,
+      "tests": 4,
+      "independentReview": true
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/startup.test.ts",
+      "exitCode": 0,
+      "tests": 13
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/secret-preflight.test.ts",
+      "exitCode": 0,
+      "tests": 4
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/media/tools.test.ts",
+      "exitCode": 0,
+      "tests": 8
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0,
+      "files": 52,
+      "tests": 438,
+      "durationSeconds": 270.14
+    },
+    {
+      "command": "pnpm exec vitest run --project media-tools tests/integration/upload/local.test.ts tests/integration/upload/local-http.test.ts",
+      "exitCode": 0,
+      "files": 2,
+      "tests": 14,
+      "note": "After moving these tool-dependent tests to the existing image-tool project; no tests removed from full integration command"
+    }
+  ],
+  "review": {
+    "skill": "code-review-and-quality",
+    "independent": true,
+    "status": "passed",
+    "unresolvedRequiredFindings": 0,
+    "fixed": [
+      "Await pending filesystem writes before cancellation cleanup",
+      "Return 415 for ExifTool structured unknown-file rejection",
+      "Use Node 24 erasable TypeScript syntax",
+      "Update real migration fixtures and assert upload-before-media-before-database shutdown",
+      "Run tool-dependent upload tests in the existing media-tools release-image project"
+    ]
+  },
+  "earlierFailures": [
+    {
+      "check": "typecheck",
+      "reason": "Missing logger argument and overloaded FileHandle mock signature",
+      "resolution": "fixed; complete typecheck passed"
+    },
+    {
+      "check": "HTTP upload",
+      "reason": "Test subprocess did not include ExifTool PATH; retry assertion expected accepted instead of conflict",
+      "resolution": "fixed fixture and checked contract; four real HTTP tests passed"
+    },
+    {
+      "check": "first full integration",
+      "exitCode": 130,
+      "reason": "Node strip-mode parameter properties and missing upload migrations in isolated startup fixtures; interrupted after failures to rebuild",
+      "resolution": "replaced error constructors and added real upload migration to fixtures"
+    },
+    {
+      "check": "second full integration --maxWorkers=4",
+      "exitCode": 1,
+      "passed": 424,
+      "failed": 14,
+      "reason": "13 startup fixtures missing upload migration; one pre-existing media child-process readiness timing failure under concurrent browser load",
+      "resolution": "startup 13/13 and media tools 8/8 passed independently; full serial rerun recorded separately"
+    },
+    {
+      "check": "first browser regression",
+      "exitCode": 1,
+      "reason": "Independent UI experiment dependencies were not installed",
+      "resolution": "frozen install then full Ego browser regression passed"
+    }
+  ],
+  "notRun": [
+    "Linux Docker / AMD64 / ARM64 release validation",
+    "Image publishing",
+    "Deployment"
+  ],
+  "limits": [
+    "Only local static JPEG/PNG single-file path; no Uppy product page, S3 or public Bearer upload API",
+    "Reception timeout tests use controlled clocks; full elapsed-budget evidence belongs to UPLOAD-V02",
+    "ENOSPC/delayed writes use explicit fault injection; not a real disk-exhaustion claim",
+    "No new physical-device UI validation because no product interface changes"
+  ]
+}

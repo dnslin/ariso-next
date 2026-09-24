@@ -184,13 +184,24 @@ describe('Web shutdown ownership', () => {
         await originalStop();
         await new Promise(resolve => { finish = resolve; });
       };
+      const originalUploadStop = state.uploads.stop.bind(state.uploads);
+      let finishUploads;
+      state.uploads.stop = async () => {
+        await originalUploadStop();
+        await new Promise(resolve => { finishUploads = resolve; });
+      };
       const stopping = state.stop();
       assert.strictEqual(state.stop(), stopping);
-      assert.equal(calls, 1);
+      assert.equal(calls, 0);
       assert.equal(state.connection.db.$client.open, true);
       assert.throws(getServerRuntime, /stopping/);
       assert.equal(GET().status, 503);
       await new Promise(resolve => setImmediate(resolve));
+      assert.equal(calls, 0);
+      assert.equal(state.connection.db.$client.open, true);
+      finishUploads();
+      await new Promise(resolve => setImmediate(resolve));
+      assert.equal(calls, 1);
       finish();
       await stopping;
       assert.equal(state.connection.db.$client.open, false);

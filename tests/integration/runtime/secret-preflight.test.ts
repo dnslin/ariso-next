@@ -25,6 +25,11 @@ function writeMigrations(
   return writeRuntimeMigrations(folder, [
     storageMigration,
     identityMigration,
+    {
+      tag: '0002_upload',
+      when: 3,
+      sql: readFileSync(resolve('drizzle/0008_numerous_nick_fury.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -126,12 +131,15 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_settings' },
+      { name: 'upload_sessions' },
+      { name: 'upload_settings' },
+      { name: 'upload_submissions' },
       { name: 'user' },
       { name: 'verification' },
     ]);
     expect(
       db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
-    ).toEqual([{ created_at: 1 }, { created_at: 2 }]);
+    ).toEqual([{ created_at: 1 }, { created_at: 2 }, { created_at: 3 }]);
   } finally {
     db.close();
   }
@@ -230,12 +238,16 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { name: 'session' },
         { name: 'storage_configs' },
         { name: 'storage_settings' },
+        { name: 'upload_sessions' },
+        { name: 'upload_settings' },
+        { name: 'upload_submissions' },
         { name: 'user' },
         { name: 'verification' },
       ],
       migrations: [
         { created_at: 1 },
         { created_at: 2 },
+        { created_at: 3 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],
