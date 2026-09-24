@@ -47,6 +47,22 @@ export async function receiveMultipart(
       message,
       cause === undefined ? undefined : { cause },
     );
+  const diskFailure = (cause: Error) => {
+    if (cause instanceof MultipartReceiveError) return cause;
+    return (cause as NodeJS.ErrnoException).code === 'ENOSPC'
+      ? error(
+          'UPLOAD_INSUFFICIENT_SPACE',
+          507,
+          `Disk full at ${options.path}`,
+          cause,
+        )
+      : error(
+          'UPLOAD_RECEIVE_FAILED',
+          500,
+          `File reception failed at ${options.path}: ${cause.message}`,
+          cause,
+        );
+  };
   if (!request.body)
     throw error('UPLOAD_MISSING_FILE', 400, 'Missing upload body');
   if (
@@ -204,7 +220,9 @@ export async function receiveMultipart(
                 byteSize += chunk.length;
                 idle.refresh();
                 options.onProgress?.(byteSize);
-              })();
+              })().catch((cause: Error) => {
+                throw diskFailure(cause);
+              });
               void pendingWrite.then(
                 () => callback(),
                 (cause: Error) => callback(cause),
@@ -230,7 +248,7 @@ export async function receiveMultipart(
         }
       }
     })().catch((cause: Error) => {
-      fail(cause);
+      fail(diskFailure(cause));
     });
     writers.push(writer);
   });
@@ -272,13 +290,6 @@ export async function receiveMultipart(
     return { byteSize };
   } catch (cause) {
     if (cause instanceof MultipartReceiveError) throw cause;
-    if ((cause as NodeJS.ErrnoException).code === 'ENOSPC')
-      throw error(
-        'UPLOAD_INSUFFICIENT_SPACE',
-        507,
-        `Disk full at ${options.path}`,
-        cause,
-      );
     throw error(
       'UPLOAD_RECEIVE_FAILED',
       400,

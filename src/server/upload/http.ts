@@ -60,11 +60,17 @@ export async function uploadResponse(
       typeof detail?.code === 'string' ? detail.code : 'UPLOAD_INTERNAL_ERROR';
     const status =
       detail?.status ??
-      (error instanceof SyntaxError
+      (error instanceof SyntaxError || code === 'COLLECTION_INVALID_INPUT'
         ? 400
-        : code.startsWith('COLLECTION_') ||
-            code.startsWith('STORAGE_') ||
-            code.startsWith('DEFAULT_STORAGE_')
+        : [
+              'COLLECTION_TARGET_NOT_FOUND',
+              'COLLECTION_TARGET_REMOVED',
+              'COLLECTION_IMAGE_UNAVAILABLE',
+              'STORAGE_NOT_FOUND',
+              'STORAGE_DISABLED',
+              'DEFAULT_STORAGE_UNSET',
+              'DEFAULT_STORAGE_DISABLED',
+            ].includes(code)
           ? 409
           : code === 'MEDIA_FORMAT_UNSUPPORTED' ||
               code === 'MEDIA_IDENTIFICATION_FAILED'

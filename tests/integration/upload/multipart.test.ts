@@ -165,6 +165,53 @@ describe('production multipart reception', () => {
       cause: { code: 'ENOSPC' },
     });
   });
+  it.each(['open', 'write', 'stat', 'close'] as const)(
+    'reports %s disk failures as server errors with their cause',
+    async (operation) => {
+      const cause = Object.assign(new Error(`injected ${operation} failure`), {
+        code: operation === 'open' ? 'EACCES' : 'EIO',
+      });
+      const { open: originalOpen } =
+        await vi.importActual<typeof import('node:fs/promises')>(
+          'node:fs/promises',
+        );
+      vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+        if (operation === 'open') throw cause;
+        const handle = await originalOpen(...args);
+        if (operation === 'close') {
+          const close = handle.close.bind(handle);
+          vi.spyOn(handle, 'close').mockImplementationOnce(async () => {
+            await close();
+            throw cause;
+          });
+        } else vi.spyOn(handle, operation).mockRejectedValueOnce(cause);
+        return handle;
+      });
+      await expect(receive(request(body('image')))).rejects.toMatchObject({
+        code: 'UPLOAD_RECEIVE_FAILED',
+        status: 500,
+        cause,
+      });
+    },
+  );
+  it('reports server progress persistence failures without blaming the client', async () => {
+    const cause = new Error('progress database write failed');
+    await expect(
+      receiveMultipart(request(body('image')), {
+        path: join(directory, 'original'),
+        declaredSize: 5,
+        maxBytes: 5,
+        signal: new AbortController().signal,
+        onProgress() {
+          throw cause;
+        },
+      }),
+    ).rejects.toMatchObject({
+      code: 'UPLOAD_RECEIVE_FAILED',
+      status: 500,
+      cause,
+    });
+  });
   it('awaits a pending file write before cancellation resolves', async () => {
     const { open: originalOpen } =
       await vi.importActual<typeof import('node:fs/promises')>(
@@ -273,7 +320,7 @@ describe('production multipart reception', () => {
   it('rejects truncated multipart', async () => {
     await expect(
       receive(request(body('image').subarray(0, -5)), 100, 100),
-    ).rejects.toMatchObject({ code: 'UPLOAD_RECEIVE_FAILED' });
+    ).rejects.toMatchObject({ code: 'UPLOAD_RECEIVE_FAILED', status: 400 });
   });
   it('settles oversize reception and cancels the incoming stream early', async () => {
     let sent = 0;
