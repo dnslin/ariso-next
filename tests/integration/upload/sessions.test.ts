@@ -1,6 +1,8 @@
 import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { collectionFixture } from '../collections/helpers.ts';
+import { expireQueuedSessions } from '../../../src/server/upload/cleanup.ts';
 import {
   createSubmission,
   cancelSession,
@@ -11,6 +13,7 @@ import {
   uploadSessions,
   uploadSettings,
   uploadSubmissions,
+  sessionStates,
 } from '../../../src/server/upload/schema.ts';
 import {
   mediaSettings,
@@ -41,6 +44,80 @@ const input = (requestId = 'request', count = 1, size = 10) => ({
 });
 
 describe('persisted upload submissions', () => {
+  it('expires only idle queued sessions with constant SQL count despite completed history', () => {
+    const { db } = fixture;
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 3_600_000);
+    const expected = new Map<string, string>();
+    db.transaction((tx) => {
+      for (const state of sessionStates) {
+        const submission = createSubmission(tx, input(state));
+        tx.update(uploadSubmissions)
+          .set({ lastActivityAt: cutoff })
+          .where(eq(uploadSubmissions.id, submission.id))
+          .run();
+        tx.update(uploadSessions)
+          .set({ state })
+          .where(eq(uploadSessions.id, submission.sessions[0].id))
+          .run();
+        expected.set(
+          submission.sessions[0].id,
+          state === 'queued' ? 'expired' : state,
+        );
+      }
+      const recent = createSubmission(tx, input('recent'));
+      tx.update(uploadSubmissions)
+        .set({ lastActivityAt: new Date(cutoff.getTime() + 1) })
+        .where(eq(uploadSubmissions.id, recent.id))
+        .run();
+      expected.set(recent.sessions[0].id, 'queued');
+    });
+    const queries: string[] = [];
+    const observed = drizzle(db.$client, {
+      logger: {
+        logQuery(query) {
+          queries.push(query);
+        },
+      },
+    });
+    expireQueuedSessions(observed, now);
+    expect(
+      new Map(
+        db
+          .select()
+          .from(uploadSessions)
+          .all()
+          .map((s) => [s.id, s.state]),
+      ),
+    ).toEqual(expected);
+    const firstQueryCount = queries.length;
+    const before = db.select().from(uploadSessions).all();
+    db.transaction((tx) => {
+      for (let i = 0; i < 200; i++) {
+        const history = createSubmission(tx, input(`history-${i}`));
+        tx.update(uploadSubmissions)
+          .set({ lastActivityAt: cutoff })
+          .where(eq(uploadSubmissions.id, history.id))
+          .run();
+        tx.update(uploadSessions)
+          .set({ state: 'accepted' })
+          .where(eq(uploadSessions.id, history.sessions[0].id))
+          .run();
+      }
+    });
+    queries.length = 0;
+    expireQueuedSessions(observed, now);
+    // Bound database round trips, not machine-dependent execution time.
+    expect(queries).toHaveLength(firstQueryCount);
+    const after = db.select().from(uploadSessions).all();
+    expect(after.filter((s) => expected.has(s.id))).toEqual(before);
+    expect(
+      after
+        .filter((s) => !expected.has(s.id))
+        .every((s) => s.state === 'accepted'),
+    ).toBe(true);
+  });
+
   it('freezes settings and only new submissions see changes', () => {
     const { db } = fixture;
     const first = createSubmission(db, input('first'));

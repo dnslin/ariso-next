@@ -82,24 +82,21 @@ export function expireQueuedSessions(
         uploadSubmissions.lastActivityAt,
         new Date(now.getTime() - 3_600_000),
       ),
+    );
+  db.update(uploadSessions)
+    .set({
+      state: 'expired',
+      errorCode: 'UPLOAD_EXPIRED',
+      error: '提交一小时内无上传活动',
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(uploadSessions.state, 'queued'),
+        inArray(uploadSessions.submissionId, expired),
+      ),
     )
-    .all();
-  for (const submission of expired) {
-    db.update(uploadSessions)
-      .set({
-        state: 'expired',
-        errorCode: 'UPLOAD_EXPIRED',
-        error: '提交一小时内无上传活动',
-        updatedAt: now,
-      })
-      .where(
-        and(
-          eq(uploadSessions.submissionId, submission.id),
-          eq(uploadSessions.state, 'queued'),
-        ),
-      )
-      .run();
-  }
+    .run();
 }
 
 export function pendingCleanups(db: BetterSQLite3Database) {
