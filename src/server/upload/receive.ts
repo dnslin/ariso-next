@@ -106,12 +106,7 @@ export async function receiveSession(
       finalKey,
     );
     signal.throwIfAborted();
-    const accepted = acceptSession(db, id, facts);
-    db.update(uploadSubmissions)
-      .set({ lastActivityAt: new Date() })
-      .where(eq(uploadSubmissions.id, session.submissionId))
-      .run();
-    return accepted;
+    return acceptSession(db, id, facts);
   } catch (error) {
     const current = getSession(db, id);
     if (current.state !== 'accepted') {

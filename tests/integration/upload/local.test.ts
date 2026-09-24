@@ -277,6 +277,33 @@ describe('real local upload reception and ownership', () => {
     });
   });
 
+  it('rolls back acceptance when recording the final submission activity fails', async () => {
+    const album = fixture.db.transaction((tx) =>
+      createAlbum(tx, { name: 'selected' }),
+    );
+    const session = submission('r', [album.id]).sessions[0];
+    fixture.db.run(
+      sql.raw(
+        "CREATE TRIGGER reject_final_activity BEFORE UPDATE OF last_activity_at ON upload_submissions WHEN EXISTS (SELECT 1 FROM upload_sessions WHERE submission_id = NEW.id AND state = 'accepted') BEGIN SELECT RAISE(ABORT, 'injected activity failure'); END",
+      ),
+    );
+    await expect(receive(session.id)).rejects.toThrow(
+      'injected activity failure',
+    );
+    assertNoAssets();
+    expect(getSession(fixture.db, session.id)).toMatchObject({
+      state: 'failed',
+      imageId: null,
+      jobId: null,
+      temporaryKey: null,
+      finalKey: null,
+      cleanupStatus: 'none',
+    });
+    await expect(
+      stat(filePath(`original/${session.candidateImageId}.png`)),
+    ).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
   it('settles an active writer before cancellation cleanup and rejects cancellation after acceptance', async () => {
     const runtime = startUploadRuntime({
       ...fixture,

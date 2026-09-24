@@ -63,6 +63,10 @@ export function acceptSession(
         })
         .where(eq(uploadSessions.id, id))
         .run();
+      tx.update(uploadSubmissions)
+        .set({ lastActivityAt: new Date() })
+        .where(eq(uploadSubmissions.id, session.submissionId))
+        .run();
       return getSession(tx, id);
     },
     { behavior: 'immediate' },
