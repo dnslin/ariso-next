@@ -6,6 +6,8 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
+import { DetailReadError, readDetail } from './read-detail';
+import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
 import {
@@ -14,40 +16,6 @@ import {
   stepLabels,
   versionLabels,
 } from './detail-labels';
-
-class DetailReadError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-  ) {
-    super(message);
-  }
-}
-async function readDetail(
-  imageId: string,
-  signal: AbortSignal,
-): Promise<Detail> {
-  let response: Response;
-  try {
-    response = await fetch(`/api/images/${encodeURIComponent(imageId)}`, {
-      signal,
-      cache: 'no-store',
-    });
-  } catch (error) {
-    if (signal.aborted) throw error;
-    throw new Error('连接中断，无法读取图片详情，请检查网络后重试。', {
-      cause: error,
-    });
-  }
-  if (!response.ok) {
-    const result = await response.json();
-    throw new DetailReadError(
-      `${result.message}（HTTP ${response.status}）`,
-      response.status,
-    );
-  }
-  return response.json();
-}
 
 function DetailContent({
   detail,
@@ -247,12 +215,16 @@ export function LibraryDetail({
   client,
   onClose,
   dialogRef,
+  onTrashed,
 }: {
   imageId: string;
   client: QueryClient;
   onClose: () => void;
   dialogRef: RefCallback<HTMLElement>;
+  onTrashed: (detail: Detail) => void;
 }) {
+  const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
+  const [mutationPending, setMutationPending] = useState(false);
   const [copyOpen, setCopyOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [previewRevision, setPreviewRevision] = useState(0);
@@ -260,6 +232,7 @@ export function LibraryDetail({
     {
       queryKey: ['library-detail', imageId],
       queryFn: ({ signal }) => readDetail(imageId, signal),
+      enabled: !mutationPending,
       retry: false,
       networkMode: 'always',
       staleTime: 0,
@@ -273,7 +246,8 @@ export function LibraryDetail({
     if (result.isSuccess) setPreviewRevision((value) => value + 1);
   }
   const expired =
-    query.error instanceof DetailReadError && query.error.status === 401;
+    unavailable === 401 ||
+    (query.error instanceof DetailReadError && query.error.status === 401);
   useEffect(() => {
     if (!expired) return;
     client.clear();
@@ -312,7 +286,7 @@ export function LibraryDetail({
               <Button
                 variant="tertiary"
                 className="min-h-11 rounded-lg"
-                isDisabled={query.isFetching}
+                isDisabled={query.isFetching || mutationPending}
                 onPress={() => {
                   void refreshDetail();
                 }}
@@ -328,6 +302,11 @@ export function LibraryDetail({
               </Button>
             </div>
           </Modal.Header>
+          {unavailable === 404 ? (
+            <p role="alert" className="py-6">
+              图片记录已不存在，无法回收。请返回图库。
+            </p>
+          ) : null}
           {query.isPending ? (
             <Modal.Body>
               <p role="status" className="py-12">
@@ -346,7 +325,27 @@ export function LibraryDetail({
               </Alert.Content>
             </Alert>
           ) : null}
-          {query.data && !query.isError && !expired ? (
+          {query.data && !query.isError && !expired && !unavailable ? (
+            <TrashAction
+              record={query.data}
+              operation="trash"
+              onPending={setMutationPending}
+              onUnavailable={(status) => {
+                setUnavailable(status);
+                if (status === 404)
+                  void client.invalidateQueries({ queryKey: ['library'] });
+              }}
+              onVerified={(record) =>
+                client.setQueryData(['library-detail', imageId], record)
+              }
+              onComplete={onTrashed}
+            />
+          ) : null}
+          {query.data &&
+          !query.isError &&
+          !expired &&
+          !unavailable &&
+          !mutationPending ? (
             <DetailContent
               detail={query.data}
               selected={selected ?? initialPreview(query.data)}

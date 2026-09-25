@@ -33,3 +33,9 @@ it('preserves the query and fragment of the delivered protected page', () => {
     '/admin?view=account#main-content',
   );
 });
+it('returns to the delivered trash record after authentication', () => {
+  expect(loginDestination('/trash')).toBe('/trash');
+  expect(loginDestination('/trash?image=photo-1')).toBe('/trash?image=photo-1');
+  expect(loginDestination('/trash/unknown')).toBe('/admin');
+  expect(loginDestination('https://evil.test/trash')).toBe('/admin');
+});

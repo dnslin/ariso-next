@@ -14,6 +14,7 @@ export default async function AdminPage() {
       navigation={[
         { href: '/admin', label: '工作空间' },
         { href: '/library', label: '图库' },
+        { href: '/trash', label: '回收站' },
       ]}
       user={<span>{owner.email}</span>}
     >
