@@ -12,6 +12,15 @@ const statuses = {
   failed: '处理失败',
 };
 
+const stepLabels: Record<string, string> = {
+  identify: '识别图片',
+  original: '保存原图',
+  compressed: '生成压缩图',
+  thumbnail: '生成缩略图',
+  watermark: '生成水印图',
+  complete: '处理完成',
+};
+
 export function LibraryCard({ item }: { item: LibraryItem }) {
   const [failed, setFailed] = useState(false);
   const placeholder = !item.storage.enabled
@@ -62,12 +71,13 @@ export function LibraryCard({ item }: { item: LibraryItem }) {
           <p className="text-[11px] xl:text-xs">
             当前任务：
             {item.activeJob.status === 'queued' ? '等待执行' : '执行中'} ·{' '}
-            {item.activeJob.step}
+            {stepLabels[item.activeJob.step] ?? item.activeJob.step}
           </p>
         ) : null}
         {item.latestFailedJob ? (
           <p className="text-[11px] text-danger xl:text-xs">
-            最近任务失败 · {item.latestFailedJob.step}
+            最近任务失败 ·{' '}
+            {stepLabels[item.latestFailedJob.step] ?? item.latestFailedJob.step}
           </p>
         ) : null}
       </Card.Content>

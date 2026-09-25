@@ -251,8 +251,8 @@ try {
       ).textContent;
       return (
         text.includes('处理中') &&
-        text.includes('当前任务：执行中') &&
-        text.includes('最近任务失败')
+        text.includes('当前任务：执行中 · 生成缩略图') &&
+        text.includes('最近任务失败 · 生成缩略图')
       );
     }),
     true,
