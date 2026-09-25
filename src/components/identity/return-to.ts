@@ -13,7 +13,8 @@ export function loginDestination(value: string | string[] | undefined) {
   } catch {
     return '/admin';
   }
-  return url.origin === 'https://ariso.invalid' && url.pathname === '/admin'
+  return url.origin === 'https://ariso.invalid' &&
+    ['/admin', '/library'].includes(url.pathname)
     ? `${url.pathname}${url.search}${url.hash}`
     : '/admin';
 }
