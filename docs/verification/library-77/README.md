@@ -50,4 +50,4 @@
 
 完整元数据编辑、Lightbox、筛选选择、批量复制、回收恢复界面、重新处理仍归原后续任务。S3 下载和全格式处理未在本切片验证。真实手机触控、物理软键盘、非零安全区及其他浏览器未实测；浏览器响应式与短视口证据不能冒充真实设备结果。
 
-当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。推送后回读实际 PR、Actions、check-runs 和状态，未执行的远端检查不记通过。
+当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。已推送实现提交 `f744031` 并创建[草稿 PR #122](https://github.com/dnslin/ariso-next/pull/122)。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/draft、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器恢复并完成全流程前不转为正式 PR。
