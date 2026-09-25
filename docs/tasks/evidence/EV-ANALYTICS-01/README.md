@@ -1,6 +1,6 @@
 # EV-ANALYTICS-01 统计关停、批写与缓冲实验
 
-2026-09-25；[Issue #82](https://github.com/dnslin/ariso-next/issues/82)。依据 [analytics §3–5](../../../specs/SPEC-analytics.md#3-唯一计数入口)及[任务卡](../../gates.md#ev-analytics-01-统计关停批写与缓冲实验)。本实验提供 AN-03/04/05 的技术证据，不代表生产 ANALYTICS-COUNT、报表或日期保留业务已经实现。
+2026-09-25；[PR #119](https://github.com/dnslin/ariso-next/pull/119)；[Issue #82](https://github.com/dnslin/ariso-next/issues/82)。依据 [analytics §3–5](../../../specs/SPEC-analytics.md#3-唯一计数入口)及[任务卡](../../gates.md#ev-analytics-01-统计关停批写与缓冲实验)。本实验提供 AN-03/04/05 的技术证据，不代表生产 ANALYTICS-COUNT、报表或日期保留业务已经实现。
 
 ## 前置与范围
 
@@ -47,12 +47,12 @@ Next 子进程场景包含 SIGTERM/SIGINT 在途传输、已提交前缀后的 S
 
 | Next 场景     | 退出耗时（ms） | 已接收但丢失 | 数据库三表计数        |
 | ------------- | -------------- | ------------ | --------------------- |
-| SIGTERM       | 985.44         | 0            | [18, 18, 18]          |
-| SIGINT        | 989.25         | 0            | [18, 18, 18]          |
-| SIGKILL       | 4.12           | 17           | [1000, 1000, 1000]    |
-| write-failure | 5.52           | 17           | [0, 0, 0]             |
-| full-buffer   | 6.96           | 20000        | [0, 0, 0]             |
-| full-drain    | 95.55          | 0            | [20000, 20000, 20000] |
+| SIGTERM       | 993.10         | 0            | [18, 18, 18]          |
+| SIGINT        | 993.50         | 0            | [18, 18, 18]          |
+| SIGKILL       | 4.56           | 17           | [1000, 1000, 1000]    |
+| write-failure | 5.57           | 17           | [0, 0, 0]             |
+| full-buffer   | 8.43           | 20000        | [0, 0, 0]             |
+| full-drain    | 87.91          | 0            | [20000, 20000, 20000] |
 
 ## 实际命令与检查状态
 
@@ -78,7 +78,7 @@ node docs/tasks/check.mjs --self-test
 git diff --check
 ```
 
-已完成：冻结安装、聚合器 5 项定向单测、真实压力脚本、第一版 5 场景 Next 测试、lint、类型检查、397 项单测和生产构建。降低并发后完整集成 457/457（54 文件）通过；新增六场景关停、Ego Lite 浏览器、格式和文档检查均通过。浏览器见[运行摘要](./browser.json)。
+已完成：冻结安装、聚合器 5 项定向单测、真实压力脚本、六场景 Next 测试（补录进程内环境后定向复跑通过）、lint、类型检查、397 项单测和生产构建。降低并发后完整集成 457/457（54 文件）通过；新增六场景关停、Ego Lite 浏览器、格式和文档检查均通过。浏览器见[运行摘要](./browser.json)。
 
 首次全套集成 456/457 通过，既有 `media/tools.test.ts` 等待 ExifTool 子进程 ready 超过原有 3 秒限制；当时同机另一任务也在跑完整套件。原断言定向复跑 8/8 通过，随后全套 `--maxWorkers=2` 457/457 通过（199.58 秒）。未修改测试、放宽超时或跳过检查。
 
@@ -86,6 +86,15 @@ git diff --check
 
 ## 审计与远端验证
 
-使用 `code-review-and-quality` 先读测试、再按正确性/可读性/模块边界/安全/性能检查，并由独立代理复核。已修复超时监控未覆盖等待传输、Docker 构建上下文路径、压力报告上传目录，以及满缓冲退出证据缺少开始状态断言。独立审计最终结论通过，无未解决的本次范围内阻断问题；远端结果待补。
+使用 `code-review-and-quality` 先读测试、再按正确性/可读性/模块边界/安全/性能检查，并由独立代理复核。已修复超时监控未覆盖等待传输、Docker 构建上下文路径、压力报告上传目录，以及满缓冲退出证据缺少开始状态断言。独立审计最终结论通过，无未解决的本次范围内阻断问题。后续仅补录实际进程内 Node/平台/架构并断言，已重新完成 lint、类型、格式及六场景定向验证。
 
-本次用户明确要求远端双架构验证，新增 `Analytics experiment` PR 工作流，只构建临时验证镜像并运行实验，不登录镜像仓库、不推送镜像、不部署。生产发布工作流保持原状。AMD64/ARM64 的压力、standalone 与 Docker trace 将分别保留为 Actions artifact；尚未运行时不标通过。
+本次用户明确要求远端双架构验证，新增 `Analytics experiment` PR 工作流，只构建临时验证镜像并运行实验，不登录镜像仓库、不推送镜像、不部署。生产发布工作流保持原状。首轮及补录环境后的最终轮次均通过。[最终运行 36137834544](https://github.com/dnslin/ariso-next/actions/runs/36137834544) 验证代码提交 `360bbc9d953f37a791f169f1b0db93b87f218dea`。后续证据归档提交仅含文档/JSON，没有修改运行代码。报告顶层 `node` 是测试运行器版本，实际 Next/容器环境以 trace 的 `initialized` 为准；两个容器均实际运行 Node 24.21.0，PID 1，Linux x64/arm64。
+
+| 平台  | 真实压力                      | standalone                     | Docker 六场景               | SIGTERM 耗时      | 退出时刷完 20000 键     |
+| ----- | ----------------------------- | ------------------------------ | --------------------------- | ----------------- | ----------------------- |
+| AMD64 | [通过](./amd64/pressure.json) | [通过](./amd64/lifecycle.json) | [通过](./amd64/docker.json) | 1095.44ms，零损失 | 315.37ms，20 批，零损失 |
+| ARM64 | [通过](./arm64/pressure.json) | [通过](./arm64/lifecycle.json) | [通过](./arm64/docker.json) | 1076.23ms，零损失 | 302.41ms，20 批，零损失 |
+
+两架构 SIGKILL 均保留已提交 1000 次并丢失未提交 17 次；持续写失败保留错误并在退出丢失待写 17 次/满缓冲 20000 次，额外拒绝新键单独记为 dropped。证据同时保留实际内存曲线采样、硬件/文件系统与每批时延，不能把不同环境耗时相互替代。
+
+远端实际命令由工作流保存：冻结安装、5 项聚合器单测、`node tests/experiments/analytics/pressure.ts test-results/analytics/pressure.json`、`node tests/experiments/analytics/run.ts`、以独立 standalone 为上下文的 `docker build`，以及设置 `ANALYTICS_SKIP_BUILD=1 ANALYTICS_IMAGE=analytics-experiment:<arch> ANALYTICS_REPORT=test-results/analytics/docker.json` 再运行 `run.ts`。两项检查均 success。最终 PR 为待评审；未合并、未关闭 Issue、未发布或部署。
