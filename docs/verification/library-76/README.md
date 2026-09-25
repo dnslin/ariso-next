@@ -66,3 +66,29 @@
 提交 `1aaeac6` 推送并创建 PR #120 后，实际执行 `gh pr view 120 --json isDraft,mergeable,mergeStateStatus,headRefOid,statusCheckRollup`、`gh run list --branch codex/issue-76-library-base`，并回读该提交的 `check-runs` 与 `status` API。结果：分支可合并、无冲突；运行列表、check runs 和 statuses 均为空。空 status API 返回的 `pending` 不代表存在正在运行的检查，计数为 0；远端检查未执行。新出现的 Analytics experiment 工作流不在本分支及默认分支文件中，也不适用于图库交付，未触发。
 
 本切片未交付完整筛选、20/80 分页、瀑布流、选择、大图或详情，也没有声称十万图片完整查询及浏览器内存目标已经验收。真实手机触控、物理软键盘、非零安全区和其他浏览器未实测，范围沿用[共用验收](../../tasks/execution.md#前端共用验收)。
+
+## PR 评审建议优化
+
+本轮先按[优化计划](./optimization-plan.md)落实三个建议，不扩展 Issue #76 的产品范围：
+
+- 卡片把已知任务步骤显示为中文，后端 step 不变；未知步骤保留原值用于诊断。渲染测试覆盖六个已知步骤及未知步骤，真实浏览器断言活动与失败任务显示“生成缩略图”。
+- `identity/owner-page.ts` 统一服务端页面鉴权和跳转，admin/library 复用；保留原 Cookie 识别、returnTo、reason=expired 和非鉴权异常传播。
+- `delivery/links.ts` 提供同源 `buildImagePath`；图库直接使用相对路径，`buildImageUrl` 复用它构造当前公开域名的绝对地址。路径编码和版本/下载参数只有一个实现。
+
+按 Node 24.18.1、pnpm 11.19.0 执行。鉴权测试先因缺少入口失败，实现后 8 项通过；卡片中文渲染测试先 6 项失败，实现后通过，并增加未知步骤回归；delivery 新增 2 项先失败，实现后 25 项通过。独立只读复核无必改问题，未知步骤建议已补测试。
+
+本轮实际执行结果：
+
+| 命令                                                                                                               | 结果                                                    |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                   | 通过，锁文件不变                                        |
+| `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`                                                     | 通过                                                    |
+| `pnpm run test:unit`                                                                                               | 26 文件、412 项通过                                     |
+| `pnpm run build`                                                                                                   | 退出码 0；既有 Debug 二进制追踪诊断仍在，未修改打包规则 |
+| `pnpm run test:integration --maxWorkers=4`                                                                         | 54 文件、461 项通过，包含真实工具测试                   |
+| `EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-120-optimization pnpm run test:browser` | 完整运行退出码 0；两端身份、图库及既有 UI 实验通过      |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check`                           | 通过；120 任务、298 需求和 5 项自测                     |
+
+见[本轮运行器](./optimization-runner.json)、[图库行为与 40 组布局](./optimization-library.json)、[桌面中文状态](./optimization-dark-1440.png)、[手机截图](./optimization-light-390.png)。本轮采用已有 Ego Lite，没有下载浏览器。真实手机、安全区及发布容器验证边界维持上文说明。
+
+三项代码改动分别提交为 `d31d001`（路径）、`d92206d`（鉴权）、`c4af70f`（中文步骤）；独立复核与未知步骤补测记录见[本轮审计](./optimization-audit.json)。
