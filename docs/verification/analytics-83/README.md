@@ -1,6 +1,6 @@
 # T-ANA-01 本地公开访问内存聚合
 
-日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)、[草稿 PR #121](https://github.com/dnslin/ariso-next/pull/121)，范围以 [T-ANA-01 任务卡](../../tasks/m1-m2.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
+日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)、[PR #121](https://github.com/dnslin/ariso-next/pull/121)，范围以 [T-ANA-01 任务卡](../../tasks/m1-m2.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
 
 ## 前置与实现
 
@@ -11,7 +11,7 @@
 - 进程内单例在开发热更新时复用。缓冲上限沿用实验的 20000 个不同键，满时仍接收旧键增量；新键拒绝、累计 dropped/incomplete 并记录诊断。snapshot 返回副本，调用者不能改写历史增量。
 - 本次不创建无人消费的数据库表或迁移。批写、批次确认、定时器、365 天保留与关停协调由 [T-ANA-02 / #84](../../tasks/m1-m2.md#t-ana-02-统计批写保留与退出刷库) 实施。#82 报告中“#83 接入时统一关停”的归属与任务卡不一致；按执行约定的任务卡唯一范围处理。本次不声称关停无损，进程退出仍丢失全部内存计数，缓冲尚不会自动释放。
 
-无产品 UI 改动，不涉及 Figma、主题或布局交接差异。现有浏览器流程仅作为回归；服务端计数使用下列单元/集成证据。
+统计功能本身无产品 UI 改动。后续按用户授权修复登录错误提示焦点，并完善浏览器场景；见 [回归修复与最终验证](./review/README.md)。沿用 HeroUI，无 Figma、主题或布局交接差异；服务端计数使用下列单元/集成证据。
 
 ## 行为证据
 
@@ -45,6 +45,8 @@ macOS/Darwin arm64，Node 24.18.1、pnpm 11.19.0、ICU 78.3、ImageMagick 7.1.2-
 
 `pnpm run format:check` 通过。
 
+以下两轮为修复前历史记录，后续结果见 [回归修复报告](./review/README.md)。
+
 浏览器实际执行 `pnpm --dir tests/experiments/ui install --frozen-lockfile`（通过）及 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 pnpm run test:browser`。首次在手机 390px 重启后的登录故障注入流程超时：提示“尚未确认登录会话，请重试。”已显示，实际焦点为 BODY，未满足既有错误提示聚焦断言。该步骤尚未访问 `/i/`。保留 [首次运行摘要](./browser-first/runner.json) 和 [失败场景](./browser-first/identity-390-restart.json)，不把部分场景通过写成整体通过。
 
 在同一 Ego Lite TaskSpace 6 检查页面状态后，原代码、断言和超时不变，使用已构建产物执行 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry node scripts/verify-browser.mjs` 复核。第二次仍失败，这次在手机重启后的身份流程等待 `#email` 超时；见 [复核摘要](./browser-retry/runner.json) 和 [失败场景](./browser-retry/identity-390-restart.json)。不把两次不同失败归结为已证明的同一根因。身份/登录代码及浏览器断言未修改，浏览器全套保持未完成，图库后续步骤未运行；PR 保留草稿，等待该范围外问题另行处理。Ego 空间因失败保留，没有新建空间绕过问题。
@@ -59,4 +61,6 @@ macOS/Darwin arm64，Node 24.18.1、pnpm 11.19.0、ICU 78.3、ImageMagick 7.1.2-
 
 当前 `.github/workflows/ci.yml` 只供 workflow_call，`images.yml` 只在 Release published 触发；仓库内没有 PR/推送验证工作流或手动 Docker 入口。GitHub 列表仍可见历史 Analytics experiment 名称，但对应文件已由 #82 删除。本次不触发 Release、镜像发布或部署，Docker/AMD64/ARM64 没有作为本轮已通过证据。
 
-已提交并推送实现提交 `4b2d291`，创建草稿 PR #121。实际执行 `gh pr view 121 --json url,isDraft,mergeStateStatus,statusCheckRollup,headRefOid`、`gh run list --branch codex/issue-83-local-access-count --json databaseId,status,conclusion,workflowName` 及提交 check-runs/status API：PR 为 CLEAN，isDraft=true，Actions、check-runs、提交状态数量均为 0。status API 的聚合 pending 没有对应检查，不算运行中或通过。浏览器回归未通过，草稿是当前交付状态，不声明任务全部验收完成。本次不合并、不关闭 Issue、不删除分支或 worktree。
+初次交付已提交并推送实现提交 `4b2d291`，创建草稿 PR #121。实际执行 `gh pr view 121 --json url,isDraft,mergeStateStatus,statusCheckRollup,headRefOid`、`gh run list --branch codex/issue-83-local-access-count --json databaseId,status,conclusion,workflowName` 及提交 check-runs/status API：PR 为 CLEAN，isDraft=true，Actions、check-runs、提交状态数量均为 0。status API 的聚合 pending 没有对应检查，不算运行中或通过。浏览器回归未通过，草稿是当时交付状态，不声明任务全部验收完成。本次不合并、不关闭 Issue、不删除分支或 worktree。
+
+2026-09-26 后续：用户授权先规划修复上述浏览器问题，并明确开发阶段不测 Docker。登录焦点与测试场景修复后，本地全部适用检查和整轮浏览器通过，审计无必须修复项；PR #121 更新为待评审。详见 [最终回归报告](./review/README.md)，以上草稿/失败叙述保留为历史。

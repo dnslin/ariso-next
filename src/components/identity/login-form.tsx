@@ -21,7 +21,9 @@ export function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [message, setMessage] = useState(notice);
+  const [feedback, setFeedback] = useState<{ message: string } | null>(null);
+  const message = feedback?.message ?? notice;
+  const setMessage = (message: string) => setFeedback({ message });
   const [setupRequired, setSetupRequired] = useState(!initialized);
   const [busy, setBusy] = useState(false);
   const [retryAt, setRetryAt] = useState(0);
@@ -36,6 +38,11 @@ export function LoginForm({
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, [retryAt]);
+
+  // Focus only after React has committed this attempt's feedback to the DOM.
+  useEffect(() => {
+    if (feedback?.message && !busy) alertRef.current?.focus();
+  }, [feedback, busy]);
 
   async function submit() {
     if (inFlight.current || Date.now() < retryAt || setupRequired) return;
@@ -120,7 +127,6 @@ export function LoginForm({
     } finally {
       inFlight.current = false;
       setBusy(false);
-      requestAnimationFrame(() => alertRef.current?.focus());
     }
   }
 

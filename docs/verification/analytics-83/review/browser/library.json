@@ -1,0 +1,1516 @@
+{
+  "status": "passed",
+  "checks": [
+    "Library login honors the real preceding HTTP 429 retry window.",
+    "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+    "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+    "Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.",
+    "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+    "Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login."
+  ],
+  "layouts": [
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": 3,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": 4,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": 3,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": 4,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "加载更多",
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 118
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 86
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "工作空间",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "height": 44,
+          "width": 191
+        },
+        {
+          "name": "退出登录",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "刷新图库",
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "height": 44,
+          "width": 144
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+  ]
+}

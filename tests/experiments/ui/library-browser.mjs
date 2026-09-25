@@ -7,7 +7,7 @@ export async function verifyLibrary(page, config) {
   const state = () =>
     page.evaluate(() => ({
       url: location.search,
-      history: history.length,
+      history: window.__libraryHistoryPushes,
       scroll: scrollY,
       selection: document.querySelector('#library-selection').textContent,
       focus: document.activeElement.id,
@@ -29,33 +29,51 @@ export async function verifyLibrary(page, config) {
       userAgent: navigator.userAgent,
       fullscreenEnabled: document.fullscreenEnabled,
     }));
-    const initial = await state();
-    const initialRequests = await requests();
-    await page.fill('#library-search', '海');
-    await page.keyboard.type('边');
-    assert.equal((await state()).url, initial.url);
-    assert.equal((await state()).history, initial.history);
-    assert.equal(await requests(), initialRequests);
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(
-      () => new URLSearchParams(location.search).get('q') === '海边',
-    );
-    await page.waitForFunction(
-      () =>
-        document.querySelector('#library-state').textContent ===
-        '共 60 张 · 第 1 页',
-    );
-    assert.equal((await state()).history, initial.history + 1);
-    await page.evaluate(() => history.back());
-    await page.waitForFunction(
-      () =>
-        !new URLSearchParams(location.search).has('q') &&
-        document.querySelector('#library-search').value === '',
-    );
-    await page.evaluate(() => history.forward());
-    await page.waitForFunction(
-      () => document.querySelector('#library-search').value === '海边',
-    );
+    // A reused Chromium tab can evict old entries at its history limit.
+    // Observe successful pushes, then verify their actual Back/Forward behavior.
+    await page.evaluate(() => {
+      const pushState = history.pushState;
+      window.__libraryHistoryPushes = 0;
+      history.pushState = function (...args) {
+        const result = pushState.apply(this, args);
+        window.__libraryHistoryPushes++;
+        return result;
+      };
+      window.__restoreLibraryHistory = () => {
+        history.pushState = pushState;
+      };
+    });
+    try {
+      const initial = await state();
+      const initialRequests = await requests();
+      await page.fill('#library-search', '海');
+      await page.keyboard.type('边');
+      assert.equal((await state()).url, initial.url);
+      assert.equal((await state()).history, initial.history);
+      assert.equal(await requests(), initialRequests);
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(
+        () => new URLSearchParams(location.search).get('q') === '海边',
+      );
+      await page.waitForFunction(
+        () =>
+          document.querySelector('#library-state').textContent ===
+          '共 60 张 · 第 1 页',
+      );
+      assert.equal((await state()).history, initial.history + 1);
+      await page.evaluate(() => history.back());
+      await page.waitForFunction(
+        () =>
+          !new URLSearchParams(location.search).has('q') &&
+          document.querySelector('#library-search').value === '',
+      );
+      await page.evaluate(() => history.forward());
+      await page.waitForFunction(
+        () => document.querySelector('#library-search').value === '海边',
+      );
+    } finally {
+      await page.evaluate(() => window.__restoreLibraryHistory());
+    }
     report.checks.push(
       'Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input',
     );
