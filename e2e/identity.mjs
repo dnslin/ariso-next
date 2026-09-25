@@ -131,6 +131,7 @@ async function noPersistedSecrets() {
   );
 }
 async function loginAndLogout() {
+  report.activeCheck = 'anonymous-admin-redirect';
   await page.goto(`${config.origin}/admin`);
   await page.waitForSelector('#email');
   assert.equal(new URL(await page.url()).pathname, '/login');
@@ -154,6 +155,7 @@ async function loginAndLogout() {
       'Owner session does not authenticate the second hostname browser page',
     );
   }
+  report.activeCheck = 'credential-logout';
   await page.focus('loc=role:button[name="退出登录"]');
   await page.keyboard.press('Enter');
   await page.waitForSelector('#email');
@@ -661,10 +663,15 @@ try {
       'Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login',
     );
   }
+  report.activeCheck = 'login-and-logout';
   await loginAndLogout();
   if (config.phase === 'restart') {
-    report.sessionChecks = await verifyIdentitySession(page, config);
-    report.loginFailureChecks = await verifyLoginFailures(page, config);
+    report.activeCheck = 'session';
+    report.sessionChecks = [];
+    await verifyIdentitySession(page, config, report.sessionChecks);
+    report.activeCheck = 'login-failures';
+    report.loginFailureChecks = [];
+    await verifyLoginFailures(page, config, report.loginFailureChecks);
   }
   await noPersistedSecrets();
   report.health.push(await health());
@@ -677,6 +684,17 @@ try {
   report.error = String(error.stack ?? error)
     .replaceAll(config.code, '[redacted]')
     .replaceAll(config.credentials.password, '[redacted]');
+  try {
+    report.page = await page.evaluate(() => ({
+      pathname: location.pathname,
+      heading: document.querySelector('h1')?.textContent,
+      alert: document.querySelector('[role="alert"]')?.textContent,
+      activeTag: document.activeElement?.tagName,
+      activeId: document.activeElement?.id,
+    }));
+  } catch (diagnosticError) {
+    report.pageError = String(diagnosticError);
+  }
   throw new Error(report.error);
 } finally {
   await writeFile(

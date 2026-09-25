@@ -1,0 +1,18 @@
+{
+  "scenario": "Deferred React commit and repeated identical login feedback",
+  "injection": "browser fetch boundary and controlled MessagePort scheduling",
+  "attempts": [
+    {
+      "attempt": 1,
+      "queuedCommits": 1,
+      "alertPresent": false,
+      "focusedAfterCommit": true
+    },
+    {
+      "attempt": 2,
+      "queuedCommits": 1,
+      "alertPresent": false,
+      "focusedAfterCommit": true
+    }
+  ]
+}

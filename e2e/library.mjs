@@ -137,15 +137,17 @@ try {
         .querySelector('[role="alert"]')
         ?.textContent.includes('HTTP 429'),
   );
-  // The preceding identity suite deliberately exercises the real sign-in limit.
-  // Respect its UI retry window before this suite's one explicit retry.
-  if (new URL(await page.url()).pathname !== '/library') {
+  if (new URL(await page.url()).pathname === '/login') {
+    // Identity scenarios share this real server and can exhaust its login window.
     await page.waitForFunction(
       () => !document.querySelector('button[type="submit"]').disabled,
       undefined,
       { timeout: 15000 },
     );
     await page.click('loc=role:button[name="登录"]');
+    report.checks.push(
+      'Library login honors the real preceding HTTP 429 retry window.',
+    );
   }
   await page.waitForURL(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-empty"]');

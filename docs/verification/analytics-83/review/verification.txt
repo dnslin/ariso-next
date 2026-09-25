@@ -1,0 +1,40 @@
+review-install.log
+Already up to date
+Done in 40ms using pnpm v11.19.0
+
+review-lint-final.log
+Already up to date
+Done in 61ms using pnpm v11.19.0
+$ eslint . --max-warnings=0
+
+review-types-final.log
+Already up to date
+Done in 168ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+
+review-format-final.log
+Already up to date
+Done in 41ms using pnpm v11.19.0
+$ prettier . --check
+Checking formatting...
+All matched files use Prettier code style!
+
+review-unit.log
+$ vitest run --project unit --reporter=default --reporter=junit --outputFile=test-results/analytics-83/review-unit.xml
+ Test Files  27 passed (27)
+      Tests  428 passed (428)
+   Start at  00:33:13
+   Duration  2.00s (tests 47%, import 36%, transform 16%, worker 1%)
+
+review-integration-final.log
+$ vitest run --project integration --project media-tools --maxWorkers=2
+ Test Files  56 passed (56)
+      Tests  475 passed (475)
+   Start at  00:44:48
+   Duration  198.44s (tests 97%, import 3%)
+
+review-docs.log
+PASS: 120 tasks, 298 requirements, no missing IDs or cycles.
+Self-test: 5 rejection cases passed.

@@ -62,3 +62,9 @@
 完整元数据编辑、Lightbox、筛选选择、批量复制、回收恢复界面、重新处理仍归原后续任务。S3 下载和全格式处理未在本切片验证。真实手机触控、物理软键盘、非零安全区及其他浏览器未实测；浏览器响应式与短视口证据不能冒充真实设备结果。
 
 当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。实现提交 `f744031`、验证收尾提交 `370f32e` 已推送，[PR #122](https://github.com/dnslin/ariso-next/pull/122) 已转为正式待评审。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/ready、无合并冲突、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器全流程、后续短视口补充检查与独立审计均已完成；未合并 PR、关闭 Issue 或删除分支。
+
+## 合并前同步 main
+
+按用户合并指令纳入 `4d65cd4`（PR #121）。唯一文本冲突是图库浏览器测试中的 429 重试，两边行为相同，采用 main 版本并保留详情验证入口。独立 UI 验证沿用 main 的成功 `pushState` 计数及真实 Back/Forward 检查，删除本分支重复的导航历史重置；前面的验证记录保留当时实际执行方式。独立复核确认登录焦点调整与详情 returnTo 不冲突，未手工修改产品代码。
+
+合并后实际执行冻结安装、lint、typecheck、format:check、文档检查，以及三个受影响浏览器脚本的 `node --check`；全部通过。`pnpm run test:unit` 为 28 个文件、433 项通过。本次冲突解决未重新执行全套构建、集成和浏览器运行，不把此前结果冒充合并后的重跑。
