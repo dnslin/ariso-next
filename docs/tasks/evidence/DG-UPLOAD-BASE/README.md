@@ -41,3 +41,17 @@ M2 适用的两端输入、保存、处理、取消、两类失败与结果操�
 ## 远端验证边界
 
 已读取 `.github/workflows/ci.yml` 和 `images.yml`：只有 workflow_call 与 release.published，无 PR/push/workflow_dispatch 验证入口。本次不创建 Release、不发布镜像或部署，AMD64/ARM64 容器验证未执行，保留发布阶段责任。推送后回读实际 PR/Actions 状态；不以不存在的检查阻塞本次文档 PR，也不将空检查列表称作 CI 通过。
+
+## PR 与远端回读
+
+实施提交 `4c814dac86de83ffc6524f96b26eeb6a06f0c621` 已推送并创建 [PR #118](https://github.com/dnslin/ariso-next/pull/118)。实际执行：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 118 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --branch codex/80-upload-design-check --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/4c814da/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/4c814da/status --jq '{state,total_count}'
+```
+
+回读时 PR 为草稿、CLEAN，Actions 列表为空，check-runs 和提交状态数量均为 0。聚合状态 pending 没有对应检查，不视为运行中或通过。`gh api repos/dnslin/ariso-next/branches/main/protection` 返回 404 / Branch not protected，与当前无必需检查的约定一致。本 Issue 范围内适用检查及独立审计通过，无剩余阻塞；本证据提交推送后复查最终提交，再转为正式待评审。未合并 PR、关闭 Issue、发布或删除分支/worktree。
