@@ -1,3 +1,4 @@
+import { verifyLoginFeedbackFocus } from './login-focus.mjs';
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -21,8 +22,7 @@ export async function identitySql(config, statement) {
 
 // Faults are injected at the browser's fetch boundary. Session checks follow
 // real successful sign-ins and verify/clean up the actual cookie afterward.
-export async function verifyLoginFailures(page, config) {
-  const checks = [];
+export async function verifyLoginFailures(page, config, checks = []) {
   const networkMessage = '连接中断，无法确认登录结果，请检查网络后重试。';
   const failures = [
     { name: 'HTML gateway error', status: 502, body: '<h1>Bad Gateway</h1>' },
@@ -206,11 +206,11 @@ export async function verifyLoginFailures(page, config) {
       loginStatuses,
     });
   }
+  checks.push(await verifyLoginFeedbackFocus(page, config));
   return checks;
 }
 
-export async function verifyIdentitySession(page, config) {
-  const checks = [];
+export async function verifyIdentitySession(page, config, checks = []) {
   const sql = (statement) => identitySql(config, statement);
   const signIn = async () => {
     await page.fill('#email', config.credentials.email);
