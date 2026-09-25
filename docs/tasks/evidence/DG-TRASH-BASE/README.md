@@ -42,3 +42,19 @@ DES-06-TRASH、DES-05/07、RG-02/07 保持开放；#79 承接 M2 真实交互，
 已读取 `.github/workflows/ci.yml` 与 `images.yml`：分别仅接受 workflow_call、release.published，没有 PR/push 或 workflow_dispatch 验证入口。当前没有可独立触发的非发布 Docker 工作流；AMD64/ARM64 容器留待发布验证，本次未执行。按项目现行约定，日常纯文档 PR 以本地适用检查为准，无须等待不存在的远端检查。
 
 提交后创建关联 #78 的 PR，再回读 PR、Actions 和提交检查状态。不会发布 Release/镜像、部署、合并、主动关闭 Issue，或删除分支/worktree。
+
+## PR 与远端回读
+
+已推送实施提交 `2f9d95a33bbf6411a6c062e83d39b9bac4f7033d` 并创建 [PR #117](https://github.com/dnslin/ariso-next/pull/117)。实际执行：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 117 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --branch codex/issue-78-trash-design --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/2f9d95a/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/2f9d95a/status --jq '{state,total_count}'
+```
+
+回读时草稿 PR 为 CLEAN，Actions 运行为空，check-runs 和提交状态数量均为 0。聚合状态 pending 没有对应运行，不表示检查进行中或通过。独立审计额外运行 Node 24 任务检查与 `git diff --check` 通过；设备实测措辞调整后全仓格式、任务检查和 5 项自测再次通过。
+
+本 Issue 范围内无剩余阻塞。本证据推送后回读最终提交，再转为正式待评审；不等待不存在的 PR Actions。真实界面、实时 Figma/播放器和双架构发布验证仍未完成，不计入本次文档交付。
