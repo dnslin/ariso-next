@@ -35,6 +35,10 @@ export async function runLifecycle(reportPath: string, image?: string) {
     'full-buffer',
     'full-drain',
   ] as const) {
+    const fullBuffer = scenario === 'full-buffer' || scenario === 'full-drain';
+    const recordCount = fullBuffer ? 20001 : 17;
+    const pendingEvents = fullBuffer ? 20000 : 17;
+    const dropped = recordCount - pendingEvents;
     const app = await launchExperiment(image);
     try {
       // Establish an independently observed committed prefix before the crash case.
@@ -47,27 +51,15 @@ export async function runLifecycle(reportPath: string, image?: string) {
         );
         assert.deepEqual(readCounts(app.database), [1000, 1000, 1000]);
       }
-      if (
-        scenario === 'write-failure' ||
-        scenario === 'full-buffer' ||
-        scenario === 'full-drain'
-      ) {
+      if (scenario === 'write-failure' || fullBuffer) {
         await (await app.request('?action=fault&enabled=1')).json();
       }
       await (
-        await app.request(
-          `?action=record&count=${scenario === 'full-buffer' || scenario === 'full-drain' ? 20001 : 17}&prefix=pending`,
-        )
+        await app.request(`?action=record&count=${recordCount}&prefix=pending`)
       ).json();
       const before = await (await app.request()).json();
-      assert.equal(
-        before.pendingEvents,
-        scenario === 'full-buffer' || scenario === 'full-drain' ? 20000 : 17,
-      );
-      assert.equal(
-        before.dropped,
-        scenario === 'full-buffer' || scenario === 'full-drain' ? 1 : 0,
-      );
+      assert.equal(before.pendingEvents, pendingEvents);
+      assert.equal(before.dropped, dropped);
       assert.deepEqual(
         readCounts(app.database),
         scenario === 'SIGKILL' ? [1000, 1000, 1000] : [0, 0, 0],
@@ -83,6 +75,8 @@ export async function runLifecycle(reportPath: string, image?: string) {
         await until(async () =>
           (await app.trace()).some((event) => event.event === 'request-start'),
         );
+        // Regress the old 500ms assumption: the sender may be scheduled late.
+        await new Promise((resolve) => setTimeout(resolve, 700));
       }
       const start = performance.now();
       const signal =

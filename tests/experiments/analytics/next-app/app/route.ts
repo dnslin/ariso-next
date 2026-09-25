@@ -23,8 +23,8 @@ export async function GET(request: Request) {
     }
     case 'stream': {
       experiment.log('request-start');
-      // A real pending HTTP request whose first bytes arrive after SIGTERM.
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Keep this real HTTP request pending until the signal is observed.
+      await experiment.signalReceived;
       return new Response(
         new ReadableStream({
           start(controller) {

@@ -20,8 +20,13 @@ function initialize() {
     platform: process.platform,
     architecture: process.arch,
   });
-  process.on('SIGTERM', () => log('signal', { signal: 'SIGTERM' }));
-  process.on('SIGINT', () => log('signal', { signal: 'SIGINT' }));
+  const signalReceived = Promise.withResolvers<void>();
+  for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+    process.on(signal, () => {
+      log('signal', { signal });
+      signalReceived.resolve();
+    });
+  }
   // Next alone owns signal shutdown and waits for HTTP + after() work.
   // Node exit listeners can only do synchronous work. The bounded buffer is
   // drained using synchronous SQLite transactions before closing this connection.
@@ -35,6 +40,7 @@ function initialize() {
   return {
     database,
     collector,
+    signalReceived: signalReceived.promise,
     log,
     record(imageId: string) {
       collector.record({
