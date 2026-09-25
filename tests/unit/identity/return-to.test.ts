@@ -21,6 +21,9 @@ it.each([
 });
 it('returns to the delivered library after authentication', () => {
   expect(loginDestination('/library')).toBe('/library');
+  expect(loginDestination('/library?image=photo-1')).toBe(
+    '/library?image=photo-1',
+  );
   expect(loginDestination('/library#main-content')).toBe(
     '/library#main-content',
   );

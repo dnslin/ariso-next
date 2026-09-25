@@ -3,6 +3,9 @@ const { default: assert } = await import('node:assert/strict');
 const { mkdir, readFile, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
+const { seedLibraryDetail, verifyLibraryDetail } = await import(
+  config.libraryDetailScript
+);
 const task = await taskSpace(config.spaceId);
 const page = task.page('p1');
 const report = {
@@ -229,6 +232,7 @@ try {
   await sql(
     `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,trashed_at,created_at,updated_at) VALUES ('library-trashed','${storage.id}','trashed.png','不应出现的回收图片','private','png','image/png',1,'ready',${created},${created + 1},${created})`,
   );
+  await seedLibraryDetail(config, sql, directory, storage.id);
   await intercept('hold');
   await page.click('loc=role:button[name="刷新图库"]');
   await page.waitForSelector('[data-testid="library-loading"]');
@@ -258,10 +262,20 @@ try {
   );
   await layouts('populated');
   for (const id of ['library-002', 'library-003']) {
-    await page.waitForFunction((id) => {
-      const img = document.querySelector(`[data-image-id="${id}"] img`);
-      return img?.complete && img.naturalWidth > 0;
-    }, id);
+    try {
+      await page.waitForFunction((id) => {
+        const img = document.querySelector(`[data-image-id="${id}"] img`);
+        return img?.complete && img.naturalWidth > 0;
+      }, id);
+    } catch (error) {
+      const response = await page.fetch(`/i/${id}?type=thumbnail`);
+      report.thumbnailFailure = {
+        id,
+        status: response.status,
+        body: response.ok ? 'readable bytes' : response.body,
+      };
+      throw error;
+    }
   }
   assert.equal(
     await page.evaluate(() => {
@@ -401,6 +415,7 @@ try {
   await layouts('error');
   await page.click('loc=role:button[name="重试加载"]');
   await count(40);
+  await verifyLibraryDetail({ page, task, config, sql, report });
   await sql(`UPDATE session SET expires_at = ${Date.now() - 1}`);
   await page.click('loc=role:button[name="刷新图库"]');
   await page.waitForSelector('#email');
