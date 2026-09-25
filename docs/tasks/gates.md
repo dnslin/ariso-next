@@ -175,6 +175,8 @@
 
 ### EV-ANALYTICS-01 统计关停、批写与缓冲实验
 
+实验实现、退出顺序及测量结果见[实施证据](./evidence/EV-ANALYTICS-01/README.md)。生产接入仍归后续计数任务。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[analytics §3–5](../specs/SPEC-analytics.md)

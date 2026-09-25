@@ -1,0 +1,476 @@
+{
+  "status": "passed",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "image": null,
+  "results": [
+    {
+      "scenario": "SIGTERM",
+      "before": {
+        "accepted": 17,
+        "flushed": 0,
+        "dropped": 0,
+        "pendingKeys": 17,
+        "pendingEvents": 17,
+        "incomplete": false,
+        "flushAttempts": 0,
+        "committedBatches": 0,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": null,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 0
+      },
+      "counts": [18, 18, 18],
+      "lostAccepted": 0,
+      "shutdownMs": 993.1049999999996,
+      "exit": [143, null],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340922469,
+          "pid": 15472,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        },
+        {
+          "event": "request-start",
+          "time": 1790340922492
+        },
+        {
+          "event": "signal",
+          "time": 1790340922518,
+          "signal": "SIGTERM"
+        },
+        {
+          "event": "first-byte",
+          "time": 1790340922995
+        },
+        {
+          "event": "stream-complete",
+          "time": 1790340923498
+        },
+        {
+          "event": "exit-flush-start",
+          "time": 1790340923499,
+          "code": 143,
+          "health": {
+            "accepted": 18,
+            "flushed": 0,
+            "dropped": 0,
+            "pendingKeys": 18,
+            "pendingEvents": 18,
+            "incomplete": false,
+            "flushAttempts": 0,
+            "committedBatches": 0,
+            "failedBatches": 0,
+            "lastError": null,
+            "lastFlushedAt": null,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 0
+          }
+        },
+        {
+          "event": "exit-flush-end",
+          "time": 1790340923500,
+          "complete": true,
+          "health": {
+            "accepted": 18,
+            "flushed": 18,
+            "dropped": 0,
+            "pendingKeys": 0,
+            "pendingEvents": 0,
+            "incomplete": false,
+            "flushAttempts": 1,
+            "committedBatches": 1,
+            "failedBatches": 0,
+            "lastError": null,
+            "lastFlushedAt": 1790340923500,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 0.4800829999999223
+          }
+        },
+        {
+          "event": "database-closed",
+          "time": 1790340923501
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60657\n- Network:       http://127.0.0.1:60657\n✓ Ready in 0ms\n✓ Running next.config took 3ms\n"
+    },
+    {
+      "scenario": "SIGINT",
+      "before": {
+        "accepted": 17,
+        "flushed": 0,
+        "dropped": 0,
+        "pendingKeys": 17,
+        "pendingEvents": 17,
+        "incomplete": false,
+        "flushAttempts": 0,
+        "committedBatches": 0,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": null,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 0
+      },
+      "counts": [18, 18, 18],
+      "lostAccepted": 0,
+      "shutdownMs": 993.5016670000005,
+      "exit": [130, null],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340923735,
+          "pid": 15473,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        },
+        {
+          "event": "request-start",
+          "time": 1790340923747
+        },
+        {
+          "event": "signal",
+          "time": 1790340923772,
+          "signal": "SIGINT"
+        },
+        {
+          "event": "first-byte",
+          "time": 1790340924248
+        },
+        {
+          "event": "stream-complete",
+          "time": 1790340924752
+        },
+        {
+          "event": "exit-flush-start",
+          "time": 1790340924754,
+          "code": 130,
+          "health": {
+            "accepted": 18,
+            "flushed": 0,
+            "dropped": 0,
+            "pendingKeys": 18,
+            "pendingEvents": 18,
+            "incomplete": false,
+            "flushAttempts": 0,
+            "committedBatches": 0,
+            "failedBatches": 0,
+            "lastError": null,
+            "lastFlushedAt": null,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 0
+          }
+        },
+        {
+          "event": "exit-flush-end",
+          "time": 1790340924756,
+          "complete": true,
+          "health": {
+            "accepted": 18,
+            "flushed": 18,
+            "dropped": 0,
+            "pendingKeys": 0,
+            "pendingEvents": 0,
+            "incomplete": false,
+            "flushAttempts": 1,
+            "committedBatches": 1,
+            "failedBatches": 0,
+            "lastError": null,
+            "lastFlushedAt": 1790340924755,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 0.8025830000001406
+          }
+        },
+        {
+          "event": "database-closed",
+          "time": 1790340924758
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60666\n- Network:       http://127.0.0.1:60666\n✓ Ready in 0ms\n✓ Running next.config took 3ms\n"
+    },
+    {
+      "scenario": "SIGKILL",
+      "before": {
+        "accepted": 1017,
+        "flushed": 1000,
+        "dropped": 0,
+        "pendingKeys": 17,
+        "pendingEvents": 17,
+        "incomplete": false,
+        "flushAttempts": 1,
+        "committedBatches": 1,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": 1790340924997,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 3.769959
+      },
+      "counts": [1000, 1000, 1000],
+      "lostAccepted": 17,
+      "shutdownMs": 4.55974999999853,
+      "exit": [null, "SIGKILL"],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340924985,
+          "pid": 15474,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60675\n- Network:       http://127.0.0.1:60675\n✓ Ready in 0ms\n✓ Running next.config took 2ms\n"
+    },
+    {
+      "scenario": "write-failure",
+      "before": {
+        "accepted": 17,
+        "flushed": 0,
+        "dropped": 0,
+        "pendingKeys": 17,
+        "pendingEvents": 17,
+        "incomplete": false,
+        "flushAttempts": 0,
+        "committedBatches": 0,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": null,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 0
+      },
+      "counts": [0, 0, 0],
+      "lostAccepted": 17,
+      "shutdownMs": 5.570415999998659,
+      "exit": [143, null],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340925219,
+          "pid": 15475,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        },
+        {
+          "event": "signal",
+          "time": 1790340925234,
+          "signal": "SIGTERM"
+        },
+        {
+          "event": "exit-flush-start",
+          "time": 1790340925234,
+          "code": 143,
+          "health": {
+            "accepted": 17,
+            "flushed": 0,
+            "dropped": 0,
+            "pendingKeys": 17,
+            "pendingEvents": 17,
+            "incomplete": false,
+            "flushAttempts": 0,
+            "committedBatches": 0,
+            "failedBatches": 0,
+            "lastError": null,
+            "lastFlushedAt": null,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 0
+          }
+        },
+        {
+          "event": "exit-flush-end",
+          "time": 1790340925234,
+          "complete": false,
+          "health": {
+            "accepted": 17,
+            "flushed": 0,
+            "dropped": 0,
+            "pendingKeys": 17,
+            "pendingEvents": 17,
+            "incomplete": false,
+            "flushAttempts": 1,
+            "committedBatches": 0,
+            "failedBatches": 1,
+            "lastError": "attempt to write a readonly database",
+            "lastFlushedAt": null,
+            "nextRetryAt": 1790340955234,
+            "maxBatchDurationMs": 0.16137500000002092
+          }
+        },
+        {
+          "event": "database-closed",
+          "time": 1790340925235
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60684\n- Network:       http://127.0.0.1:60684\n✓ Ready in 0ms\n✓ Running next.config took 2ms\n"
+    },
+    {
+      "scenario": "full-buffer",
+      "before": {
+        "accepted": 20000,
+        "flushed": 0,
+        "dropped": 1,
+        "pendingKeys": 20000,
+        "pendingEvents": 20000,
+        "incomplete": true,
+        "flushAttempts": 1,
+        "committedBatches": 0,
+        "failedBatches": 1,
+        "lastError": "attempt to write a readonly database",
+        "lastFlushedAt": null,
+        "nextRetryAt": 1790340955468,
+        "maxBatchDurationMs": 0.3883750000000248
+      },
+      "counts": [0, 0, 0],
+      "lostAccepted": 20000,
+      "shutdownMs": 8.43145800000093,
+      "exit": [143, null],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340925450,
+          "pid": 15476,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        },
+        {
+          "event": "signal",
+          "time": 1790340925474,
+          "signal": "SIGTERM"
+        },
+        {
+          "event": "exit-flush-start",
+          "time": 1790340925475,
+          "code": 143,
+          "health": {
+            "accepted": 20000,
+            "flushed": 0,
+            "dropped": 1,
+            "pendingKeys": 20000,
+            "pendingEvents": 20000,
+            "incomplete": true,
+            "flushAttempts": 1,
+            "committedBatches": 0,
+            "failedBatches": 1,
+            "lastError": "attempt to write a readonly database",
+            "lastFlushedAt": null,
+            "nextRetryAt": 1790340955468,
+            "maxBatchDurationMs": 0.3883750000000248
+          }
+        },
+        {
+          "event": "exit-flush-end",
+          "time": 1790340925475,
+          "complete": false,
+          "health": {
+            "accepted": 20000,
+            "flushed": 0,
+            "dropped": 1,
+            "pendingKeys": 20000,
+            "pendingEvents": 20000,
+            "incomplete": true,
+            "flushAttempts": 2,
+            "committedBatches": 0,
+            "failedBatches": 2,
+            "lastError": "attempt to write a readonly database",
+            "lastFlushedAt": null,
+            "nextRetryAt": 1790340955475,
+            "maxBatchDurationMs": 0.3883750000000248
+          }
+        },
+        {
+          "event": "database-closed",
+          "time": 1790340925476
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60692\n- Network:       http://127.0.0.1:60692\n✓ Ready in 0ms\n✓ Running next.config took 2ms\n"
+    },
+    {
+      "scenario": "full-drain",
+      "before": {
+        "accepted": 20000,
+        "flushed": 0,
+        "dropped": 1,
+        "pendingKeys": 20000,
+        "pendingEvents": 20000,
+        "incomplete": true,
+        "flushAttempts": 1,
+        "committedBatches": 0,
+        "failedBatches": 1,
+        "lastError": "attempt to write a readonly database",
+        "lastFlushedAt": null,
+        "nextRetryAt": 1790340955714,
+        "maxBatchDurationMs": 0.3222499999999968
+      },
+      "counts": [20000, 20000, 20000],
+      "lostAccepted": 0,
+      "shutdownMs": 87.91229200000089,
+      "exit": [143, null],
+      "trace": [
+        {
+          "event": "initialized",
+          "time": 1790340925695,
+          "pid": 15477,
+          "node": "v24.18.1",
+          "platform": "darwin",
+          "architecture": "arm64"
+        },
+        {
+          "event": "signal",
+          "time": 1790340925722,
+          "signal": "SIGTERM"
+        },
+        {
+          "event": "exit-flush-start",
+          "time": 1790340925722,
+          "code": 143,
+          "health": {
+            "accepted": 20000,
+            "flushed": 0,
+            "dropped": 1,
+            "pendingKeys": 20000,
+            "pendingEvents": 20000,
+            "incomplete": true,
+            "flushAttempts": 1,
+            "committedBatches": 0,
+            "failedBatches": 1,
+            "lastError": "attempt to write a readonly database",
+            "lastFlushedAt": null,
+            "nextRetryAt": 1790340955714,
+            "maxBatchDurationMs": 0.3222499999999968
+          }
+        },
+        {
+          "event": "exit-flush-end",
+          "time": 1790340925804,
+          "complete": true,
+          "health": {
+            "accepted": 20000,
+            "flushed": 20000,
+            "dropped": 1,
+            "pendingKeys": 0,
+            "pendingEvents": 0,
+            "incomplete": true,
+            "flushAttempts": 21,
+            "committedBatches": 20,
+            "failedBatches": 1,
+            "lastError": null,
+            "lastFlushedAt": 1790340925804,
+            "nextRetryAt": 0,
+            "maxBatchDurationMs": 7.912458000000015
+          }
+        },
+        {
+          "event": "database-closed",
+          "time": 1790340925804
+        }
+      ],
+      "logs": "▲ Next.js 16.3.5\n- Local:         http://127.0.0.1:60700\n- Network:       http://127.0.0.1:60700\n✓ Ready in 0ms\n✓ Running next.config took 2ms\n"
+    }
+  ]
+}
