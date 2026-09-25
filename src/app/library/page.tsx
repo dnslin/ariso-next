@@ -1,17 +1,16 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { AdminShell } from '../../components/shell/admin-shell';
-import { SessionControls } from '../../components/identity/session-controls';
 import { requireOwner } from '../../server/identity/owner';
 import { requireSiteSettings } from '../../server/site/settings';
 import { getServerRuntime } from '../../server/startup/server-start';
+import { LibraryScreen } from './library-screen';
 
-export default async function AdminPage() {
+export default async function LibraryPage() {
   const requestHeaders = await headers();
   let owner;
   try {
     owner = await requireOwner(
-      new Request('http://ariso.internal/admin', { headers: requestHeaders }),
+      new Request('http://ariso.internal/library', { headers: requestHeaders }),
     );
   } catch (error) {
     if (
@@ -23,24 +22,14 @@ export default async function AdminPage() {
     const hadCookie = /(?:^|;\s*)(?:__Secure-)?ariso\.session_token=/.test(
       requestHeaders.get('cookie') ?? '',
     );
-    redirect(`/login?returnTo=%2Fadmin${hadCookie ? '&reason=expired' : ''}`);
+    redirect(`/login?returnTo=%2Flibrary${hadCookie ? '&reason=expired' : ''}`);
   }
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
-    <AdminShell
+    <LibraryScreen
       name={settings.name}
       description={settings.description}
-      navigation={[
-        { href: '/admin', label: '工作空间' },
-        { href: '/library', label: '图库' },
-      ]}
-      user={<span>{owner.email}</span>}
-    >
-      <section className="grid max-w-xl gap-6">
-        <h1>工作空间</h1>
-        <p>已使用 {owner.email} 登录。</p>
-        <SessionControls returnTo="/admin" />
-      </section>
-    </AdminShell>
+      email={owner.email}
+    />
   );
 }

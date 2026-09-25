@@ -18,6 +18,7 @@ for (const name of [
   'browser.json',
   'shell-browser.json',
   'error-recovery.json',
+  'library.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
   ),
@@ -282,6 +283,7 @@ try {
       code: codes[0],
       credentials,
       databasePath: join(dataDirectory, 'ariso.db'),
+      dataDirectory,
     };
     await runBrowser(
       '../e2e/identity.mjs',
@@ -304,6 +306,10 @@ try {
       `identity-${width}-restart.log`,
     );
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
+    if (width === 390) {
+      await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+      report.library = 'passed';
+    }
     await stop(server);
   }
   // Reuse the same Ego space for isolated UI/library checks and let its runner

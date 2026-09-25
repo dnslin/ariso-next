@@ -41,6 +41,7 @@
 - [相册标签模型与上传关联事务验证](./verification/collections-66/README.md)
 - [回收与恢复服务契约验证](./verification/media-67/README.md)
 - [本地稳定图片访问与下载验证](./verification/delivery-69/README.md)
+- [基础图库读取与手机网格验证](./verification/library-76/README.md)
 - [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
 - [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
