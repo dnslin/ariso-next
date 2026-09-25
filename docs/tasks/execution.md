@@ -15,6 +15,8 @@
 
 2026-09-22 所有者调整执行策略：日常开发、PR 和 main 推送统一在本地执行适用检查，不自动运行 GitHub Actions，也不以每个 PR 的双架构镜像结果作为完成条件。只有发布 GitHub Release（`release.published`）才执行发布检查、AMD64/ARM64 镜像构建、实际容器验证和镜像发布；单独推送 tag 不触发，未保留手动运行入口。
 
+2026-09-25 所有者在 Issue #82 实施要求中明确授权本实验通过 GitHub Actions 验证 Docker 与双架构；其独立 `Analytics experiment` 工作流只执行验证，不发布镜像或部署。[结果及适用边界](./evidence/EV-ANALYTICS-01/README.md#审计与远端验证)。其余任务继续遵守本节的日常本地检查约定。
+
 下列命令从仓库根目录、Node 24 和项目锁定 pnpm 运行。真实图片测试要求 PATH 中已有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）；不要求本机 Docker，不下载浏览器。命令清单是执行约定，不代表某次任务已通过。
 
 | 检查           | 命令与执行条件                                                                                                                                                                          |

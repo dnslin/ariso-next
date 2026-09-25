@@ -1,0 +1,1186 @@
+{
+  "generatedAt": "2026-09-25T12:40:16.043Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "architecture": "arm64",
+    "cpuModel": "Apple M4",
+    "logicalCpus": 10,
+    "totalMemoryBytes": 17179869184,
+    "freeMemoryBytes": 3479715840,
+    "databaseDirectory": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-analytics-pressure-yQBmom",
+    "filesystem": {
+      "type": 26,
+      "blockSize": 4096,
+      "blocks": 59840624,
+      "availableBlocks": 32388052
+    },
+    "sqliteVersion": {
+      "version": "3.53.4"
+    }
+  },
+  "elapsedMs": 35830.92025,
+  "parameters": {
+    "batchSize": 1000,
+    "bufferCapacity": 20000,
+    "flushIntervalMs": 5000,
+    "retryIntervalMs": 30000
+  },
+  "scenarios": {
+    "timer": {
+      "elapsedMs": 5025.572041,
+      "counts": {
+        "daily": 1,
+        "imageDaily": 1,
+        "totals": 1
+      },
+      "health": {
+        "accepted": 1,
+        "flushed": 1,
+        "dropped": 0,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "incomplete": false,
+        "flushAttempts": 1,
+        "committedBatches": 1,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": 1790339985242,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 0.29112500000064756
+      }
+    },
+    "threshold": {
+      "elapsedMs": 5.858750000000327,
+      "recordSqlAttempts": 0,
+      "counts": {
+        "daily": 1000,
+        "imageDaily": 1000,
+        "totals": 1000
+      },
+      "health": {
+        "accepted": 1000,
+        "flushed": 1000,
+        "dropped": 0,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "incomplete": false,
+        "flushAttempts": 1,
+        "committedBatches": 1,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": 1790339985250,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 4.500999999999294
+      }
+    },
+    "failureRecovery": {
+      "elapsedMs": 30121.430291,
+      "retryWaitMs": 29943.196375,
+      "recoveryMs": 94.27208300000348,
+      "maxBatchDurationMs": 9.777666000001773,
+      "batchCount": 20,
+      "beforeRecovery": {
+        "accepted": 120000,
+        "flushed": 0,
+        "dropped": 100000,
+        "pendingKeys": 20000,
+        "pendingEvents": 120000,
+        "incomplete": true,
+        "flushAttempts": 2,
+        "committedBatches": 0,
+        "failedBatches": 2,
+        "lastError": "attempt to write a readonly database",
+        "lastFlushedAt": null,
+        "nextRetryAt": 1790340045279,
+        "maxBatchDurationMs": 0.7101249999977881
+      },
+      "counts": {
+        "daily": 120000,
+        "imageDaily": 120000,
+        "totals": 120000
+      },
+      "health": {
+        "accepted": 120000,
+        "flushed": 120000,
+        "dropped": 100000,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "incomplete": true,
+        "flushAttempts": 22,
+        "committedBatches": 20,
+        "failedBatches": 2,
+        "lastError": null,
+        "lastFlushedAt": 1790340015371,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 8.699166999998852
+      }
+    },
+    "hot-million": {
+      "events": 1000000,
+      "distinctKeys": 100,
+      "elapsedMs": 236.86166700000467,
+      "counts": {
+        "daily": 1000000,
+        "imageDaily": 1000000,
+        "totals": 1000000
+      },
+      "health": {
+        "accepted": 1000000,
+        "flushed": 1000000,
+        "dropped": 0,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "incomplete": false,
+        "flushAttempts": 1,
+        "committedBatches": 1,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": 1790340015613,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 0.5557500000068103
+      }
+    },
+    "long-tail": {
+      "events": 100000,
+      "distinctKeys": 100000,
+      "elapsedMs": 420.9400830000013,
+      "counts": {
+        "daily": 100000,
+        "imageDaily": 100000,
+        "totals": 100000
+      },
+      "health": {
+        "accepted": 100000,
+        "flushed": 100000,
+        "dropped": 0,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "incomplete": false,
+        "flushAttempts": 100,
+        "committedBatches": 100,
+        "failedBatches": 0,
+        "lastError": null,
+        "lastFlushedAt": 1790340016035,
+        "nextRetryAt": 0,
+        "maxBatchDurationMs": 10.747542000004614
+      }
+    }
+  },
+  "memory": {
+    "interpretation": "Observed RSS/heap samples only. The asserted bound is 20,000 aggregation keys, not a hard byte/RSS limit. GC and SQLite allocations remain runtime-dependent.",
+    "peakSampleRssBytes": 122241024,
+    "peakSampleHeapUsedBytes": 23669256,
+    "samples": [
+      {
+        "scenario": "failed-buffer",
+        "events": 0,
+        "pendingKeys": 0,
+        "rssBytes": 87654400,
+        "heapUsedBytes": 10872352
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 1000,
+        "pendingKeys": 1000,
+        "rssBytes": 88227840,
+        "heapUsedBytes": 9983728
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 2000,
+        "pendingKeys": 2000,
+        "rssBytes": 88653824,
+        "heapUsedBytes": 10033688
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 3000,
+        "pendingKeys": 3000,
+        "rssBytes": 88735744,
+        "heapUsedBytes": 10231792
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 4000,
+        "pendingKeys": 4000,
+        "rssBytes": 88735744,
+        "heapUsedBytes": 10746184
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 5000,
+        "pendingKeys": 5000,
+        "rssBytes": 88997888,
+        "heapUsedBytes": 11489600
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 6000,
+        "pendingKeys": 6000,
+        "rssBytes": 89473024,
+        "heapUsedBytes": 11044080
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 7000,
+        "pendingKeys": 7000,
+        "rssBytes": 89636864,
+        "heapUsedBytes": 11558416
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 8000,
+        "pendingKeys": 8000,
+        "rssBytes": 91095040,
+        "heapUsedBytes": 11542640
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 9000,
+        "pendingKeys": 9000,
+        "rssBytes": 91799552,
+        "heapUsedBytes": 12515944
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 10000,
+        "pendingKeys": 10000,
+        "rssBytes": 91832320,
+        "heapUsedBytes": 13029848
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 11000,
+        "pendingKeys": 11000,
+        "rssBytes": 91947008,
+        "heapUsedBytes": 13544056
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 12000,
+        "pendingKeys": 12000,
+        "rssBytes": 92962816,
+        "heapUsedBytes": 14057960
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 13000,
+        "pendingKeys": 13000,
+        "rssBytes": 96681984,
+        "heapUsedBytes": 12999008
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 14000,
+        "pendingKeys": 14000,
+        "rssBytes": 96747520,
+        "heapUsedBytes": 13416984
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 15000,
+        "pendingKeys": 15000,
+        "rssBytes": 96763904,
+        "heapUsedBytes": 13841248
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 16000,
+        "pendingKeys": 16000,
+        "rssBytes": 96763904,
+        "heapUsedBytes": 14259096
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 17000,
+        "pendingKeys": 17000,
+        "rssBytes": 97779712,
+        "heapUsedBytes": 15625832
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 18000,
+        "pendingKeys": 18000,
+        "rssBytes": 98123776,
+        "heapUsedBytes": 16076032
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 19000,
+        "pendingKeys": 19000,
+        "rssBytes": 98566144,
+        "heapUsedBytes": 16525872
+      },
+      {
+        "scenario": "failed-buffer",
+        "events": 20000,
+        "pendingKeys": 20000,
+        "rssBytes": 98975744,
+        "heapUsedBytes": 16975760
+      },
+      {
+        "scenario": "failed-full",
+        "events": 10000,
+        "pendingKeys": 20000,
+        "rssBytes": 103809024,
+        "heapUsedBytes": 17344200
+      },
+      {
+        "scenario": "failed-full",
+        "events": 20000,
+        "pendingKeys": 20000,
+        "rssBytes": 106414080,
+        "heapUsedBytes": 22544296
+      },
+      {
+        "scenario": "failed-full",
+        "events": 30000,
+        "pendingKeys": 20000,
+        "rssBytes": 107757568,
+        "heapUsedBytes": 19783184
+      },
+      {
+        "scenario": "failed-full",
+        "events": 40000,
+        "pendingKeys": 20000,
+        "rssBytes": 111738880,
+        "heapUsedBytes": 17199776
+      },
+      {
+        "scenario": "failed-full",
+        "events": 50000,
+        "pendingKeys": 20000,
+        "rssBytes": 111919104,
+        "heapUsedBytes": 23105888
+      },
+      {
+        "scenario": "failed-full",
+        "events": 60000,
+        "pendingKeys": 20000,
+        "rssBytes": 111984640,
+        "heapUsedBytes": 20426584
+      },
+      {
+        "scenario": "failed-full",
+        "events": 70000,
+        "pendingKeys": 20000,
+        "rssBytes": 112066560,
+        "heapUsedBytes": 17747376
+      },
+      {
+        "scenario": "failed-full",
+        "events": 80000,
+        "pendingKeys": 20000,
+        "rssBytes": 112066560,
+        "heapUsedBytes": 23028592
+      },
+      {
+        "scenario": "failed-full",
+        "events": 90000,
+        "pendingKeys": 20000,
+        "rssBytes": 112099328,
+        "heapUsedBytes": 20348072
+      },
+      {
+        "scenario": "failed-full",
+        "events": 100000,
+        "pendingKeys": 20000,
+        "rssBytes": 112132096,
+        "heapUsedBytes": 17667536
+      },
+      {
+        "scenario": "recovered",
+        "events": 120000,
+        "pendingKeys": 0,
+        "rssBytes": 89423872,
+        "heapUsedBytes": 21581832
+      },
+      {
+        "scenario": "hot-million",
+        "events": 0,
+        "pendingKeys": 0,
+        "rssBytes": 89440256,
+        "heapUsedBytes": 21628624
+      },
+      {
+        "scenario": "hot-million",
+        "events": 10000,
+        "pendingKeys": 100,
+        "rssBytes": 88178688,
+        "heapUsedBytes": 11750864
+      },
+      {
+        "scenario": "hot-million",
+        "events": 20000,
+        "pendingKeys": 100,
+        "rssBytes": 88178688,
+        "heapUsedBytes": 14082576
+      },
+      {
+        "scenario": "hot-million",
+        "events": 30000,
+        "pendingKeys": 100,
+        "rssBytes": 88211456,
+        "heapUsedBytes": 9653312
+      },
+      {
+        "scenario": "hot-million",
+        "events": 40000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 12297096
+      },
+      {
+        "scenario": "hot-million",
+        "events": 50000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 14948656
+      },
+      {
+        "scenario": "hot-million",
+        "events": 60000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 10898784
+      },
+      {
+        "scenario": "hot-million",
+        "events": 70000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 13550344
+      },
+      {
+        "scenario": "hot-million",
+        "events": 80000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 16206120
+      },
+      {
+        "scenario": "hot-million",
+        "events": 90000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 12164664
+      },
+      {
+        "scenario": "hot-million",
+        "events": 100000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 14816208
+      },
+      {
+        "scenario": "hot-million",
+        "events": 110000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 10574296
+      },
+      {
+        "scenario": "hot-million",
+        "events": 120000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 13226520
+      },
+      {
+        "scenario": "hot-million",
+        "events": 130000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 15878104
+      },
+      {
+        "scenario": "hot-million",
+        "events": 140000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 11634880
+      },
+      {
+        "scenario": "hot-million",
+        "events": 150000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 14286488
+      },
+      {
+        "scenario": "hot-million",
+        "events": 160000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 10045272
+      },
+      {
+        "scenario": "hot-million",
+        "events": 170000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 12696816
+      },
+      {
+        "scenario": "hot-million",
+        "events": 180000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 15348400
+      },
+      {
+        "scenario": "hot-million",
+        "events": 190000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 11073464
+      },
+      {
+        "scenario": "hot-million",
+        "events": 200000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 13725024
+      },
+      {
+        "scenario": "hot-million",
+        "events": 210000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 16376568
+      },
+      {
+        "scenario": "hot-million",
+        "events": 220000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 12134144
+      },
+      {
+        "scenario": "hot-million",
+        "events": 230000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 14785704
+      },
+      {
+        "scenario": "hot-million",
+        "events": 240000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 10543744
+      },
+      {
+        "scenario": "hot-million",
+        "events": 250000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 13195352
+      },
+      {
+        "scenario": "hot-million",
+        "events": 260000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 15856792
+      },
+      {
+        "scenario": "hot-million",
+        "events": 270000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 11646680
+      },
+      {
+        "scenario": "hot-million",
+        "events": 280000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 14297608
+      },
+      {
+        "scenario": "hot-million",
+        "events": 290000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 10057128
+      },
+      {
+        "scenario": "hot-million",
+        "events": 300000,
+        "pendingKeys": 100,
+        "rssBytes": 88358912,
+        "heapUsedBytes": 12708072
+      },
+      {
+        "scenario": "hot-million",
+        "events": 310000,
+        "pendingKeys": 100,
+        "rssBytes": 89079808,
+        "heapUsedBytes": 15359000
+      },
+      {
+        "scenario": "hot-million",
+        "events": 320000,
+        "pendingKeys": 100,
+        "rssBytes": 89407488,
+        "heapUsedBytes": 11117544
+      },
+      {
+        "scenario": "hot-million",
+        "events": 330000,
+        "pendingKeys": 100,
+        "rssBytes": 90882048,
+        "heapUsedBytes": 13768472
+      },
+      {
+        "scenario": "hot-million",
+        "events": 340000,
+        "pendingKeys": 100,
+        "rssBytes": 91439104,
+        "heapUsedBytes": 16419408
+      },
+      {
+        "scenario": "hot-million",
+        "events": 350000,
+        "pendingKeys": 100,
+        "rssBytes": 91439104,
+        "heapUsedBytes": 12145304
+      },
+      {
+        "scenario": "hot-million",
+        "events": 360000,
+        "pendingKeys": 100,
+        "rssBytes": 95256576,
+        "heapUsedBytes": 14796240
+      },
+      {
+        "scenario": "hot-million",
+        "events": 370000,
+        "pendingKeys": 100,
+        "rssBytes": 96567296,
+        "heapUsedBytes": 10555248
+      },
+      {
+        "scenario": "hot-million",
+        "events": 380000,
+        "pendingKeys": 100,
+        "rssBytes": 96600064,
+        "heapUsedBytes": 13206168
+      },
+      {
+        "scenario": "hot-million",
+        "events": 390000,
+        "pendingKeys": 100,
+        "rssBytes": 97157120,
+        "heapUsedBytes": 15857096
+      },
+      {
+        "scenario": "hot-million",
+        "events": 400000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 11477888
+      },
+      {
+        "scenario": "hot-million",
+        "events": 410000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 13808968
+      },
+      {
+        "scenario": "hot-million",
+        "events": 420000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 16140224
+      },
+      {
+        "scenario": "hot-million",
+        "events": 430000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 11711248
+      },
+      {
+        "scenario": "hot-million",
+        "events": 440000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 14042328
+      },
+      {
+        "scenario": "hot-million",
+        "events": 450000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 16373368
+      },
+      {
+        "scenario": "hot-million",
+        "events": 460000,
+        "pendingKeys": 100,
+        "rssBytes": 97353728,
+        "heapUsedBytes": 11944584
+      },
+      {
+        "scenario": "hot-million",
+        "events": 470000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 14284656
+      },
+      {
+        "scenario": "hot-million",
+        "events": 480000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 9962936
+      },
+      {
+        "scenario": "hot-million",
+        "events": 490000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 12294128
+      },
+      {
+        "scenario": "hot-million",
+        "events": 500000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 14625280
+      },
+      {
+        "scenario": "hot-million",
+        "events": 510000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 10134632
+      },
+      {
+        "scenario": "hot-million",
+        "events": 520000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 12465696
+      },
+      {
+        "scenario": "hot-million",
+        "events": 530000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 14796768
+      },
+      {
+        "scenario": "hot-million",
+        "events": 540000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 10367664
+      },
+      {
+        "scenario": "hot-million",
+        "events": 550000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 12698752
+      },
+      {
+        "scenario": "hot-million",
+        "events": 560000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 15029832
+      },
+      {
+        "scenario": "hot-million",
+        "events": 570000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 10600992
+      },
+      {
+        "scenario": "hot-million",
+        "events": 580000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 12932016
+      },
+      {
+        "scenario": "hot-million",
+        "events": 590000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 15263096
+      },
+      {
+        "scenario": "hot-million",
+        "events": 600000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 10801872
+      },
+      {
+        "scenario": "hot-million",
+        "events": 610000,
+        "pendingKeys": 100,
+        "rssBytes": 97386496,
+        "heapUsedBytes": 13132952
+      },
+      {
+        "scenario": "hot-million",
+        "events": 620000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 15713296
+      },
+      {
+        "scenario": "hot-million",
+        "events": 630000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 11612176
+      },
+      {
+        "scenario": "hot-million",
+        "events": 640000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 14263104
+      },
+      {
+        "scenario": "hot-million",
+        "events": 650000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 10024472
+      },
+      {
+        "scenario": "hot-million",
+        "events": 660000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 12675400
+      },
+      {
+        "scenario": "hot-million",
+        "events": 670000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 15326328
+      },
+      {
+        "scenario": "hot-million",
+        "events": 680000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 11052664
+      },
+      {
+        "scenario": "hot-million",
+        "events": 690000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 13703592
+      },
+      {
+        "scenario": "hot-million",
+        "events": 700000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 16354528
+      },
+      {
+        "scenario": "hot-million",
+        "events": 710000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 12080424
+      },
+      {
+        "scenario": "hot-million",
+        "events": 720000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 14731360
+      },
+      {
+        "scenario": "hot-million",
+        "events": 730000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 10490368
+      },
+      {
+        "scenario": "hot-million",
+        "events": 740000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 13141288
+      },
+      {
+        "scenario": "hot-million",
+        "events": 750000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 15792216
+      },
+      {
+        "scenario": "hot-million",
+        "events": 760000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 11550840
+      },
+      {
+        "scenario": "hot-million",
+        "events": 770000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 14201776
+      },
+      {
+        "scenario": "hot-million",
+        "events": 780000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 9960784
+      },
+      {
+        "scenario": "hot-million",
+        "events": 790000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 12611704
+      },
+      {
+        "scenario": "hot-million",
+        "events": 800000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 15262632
+      },
+      {
+        "scenario": "hot-million",
+        "events": 810000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 11021256
+      },
+      {
+        "scenario": "hot-million",
+        "events": 820000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 13672192
+      },
+      {
+        "scenario": "hot-million",
+        "events": 830000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 16323136
+      },
+      {
+        "scenario": "hot-million",
+        "events": 840000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 12146536
+      },
+      {
+        "scenario": "hot-million",
+        "events": 850000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 14797464
+      },
+      {
+        "scenario": "hot-million",
+        "events": 860000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 10491616
+      },
+      {
+        "scenario": "hot-million",
+        "events": 870000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 13142536
+      },
+      {
+        "scenario": "hot-million",
+        "events": 880000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 15793464
+      },
+      {
+        "scenario": "hot-million",
+        "events": 890000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 11552088
+      },
+      {
+        "scenario": "hot-million",
+        "events": 900000,
+        "pendingKeys": 100,
+        "rssBytes": 97468416,
+        "heapUsedBytes": 14203024
+      },
+      {
+        "scenario": "hot-million",
+        "events": 910000,
+        "pendingKeys": 100,
+        "rssBytes": 97484800,
+        "heapUsedBytes": 9962032
+      },
+      {
+        "scenario": "hot-million",
+        "events": 920000,
+        "pendingKeys": 100,
+        "rssBytes": 97484800,
+        "heapUsedBytes": 12612952
+      },
+      {
+        "scenario": "hot-million",
+        "events": 930000,
+        "pendingKeys": 100,
+        "rssBytes": 97484800,
+        "heapUsedBytes": 15263880
+      },
+      {
+        "scenario": "hot-million",
+        "events": 940000,
+        "pendingKeys": 100,
+        "rssBytes": 97583104,
+        "heapUsedBytes": 11022504
+      },
+      {
+        "scenario": "hot-million",
+        "events": 950000,
+        "pendingKeys": 100,
+        "rssBytes": 98222080,
+        "heapUsedBytes": 13673440
+      },
+      {
+        "scenario": "hot-million",
+        "events": 960000,
+        "pendingKeys": 100,
+        "rssBytes": 98254848,
+        "heapUsedBytes": 16324384
+      },
+      {
+        "scenario": "hot-million",
+        "events": 970000,
+        "pendingKeys": 100,
+        "rssBytes": 98254848,
+        "heapUsedBytes": 12082920
+      },
+      {
+        "scenario": "hot-million",
+        "events": 980000,
+        "pendingKeys": 100,
+        "rssBytes": 98566144,
+        "heapUsedBytes": 14733856
+      },
+      {
+        "scenario": "hot-million",
+        "events": 990000,
+        "pendingKeys": 100,
+        "rssBytes": 98664448,
+        "heapUsedBytes": 10285416
+      },
+      {
+        "scenario": "hot-million",
+        "events": 1000000,
+        "pendingKeys": 100,
+        "rssBytes": 98664448,
+        "heapUsedBytes": 12616480
+      },
+      {
+        "scenario": "long-tail",
+        "events": 0,
+        "pendingKeys": 0,
+        "rssBytes": 98697216,
+        "heapUsedBytes": 12737760
+      },
+      {
+        "scenario": "long-tail",
+        "events": 10000,
+        "pendingKeys": 0,
+        "rssBytes": 99172352,
+        "heapUsedBytes": 16791232
+      },
+      {
+        "scenario": "long-tail",
+        "events": 20000,
+        "pendingKeys": 0,
+        "rssBytes": 99303424,
+        "heapUsedBytes": 13253816
+      },
+      {
+        "scenario": "long-tail",
+        "events": 30000,
+        "pendingKeys": 0,
+        "rssBytes": 100597760,
+        "heapUsedBytes": 16254408
+      },
+      {
+        "scenario": "long-tail",
+        "events": 40000,
+        "pendingKeys": 0,
+        "rssBytes": 102416384,
+        "heapUsedBytes": 12815616
+      },
+      {
+        "scenario": "long-tail",
+        "events": 50000,
+        "pendingKeys": 0,
+        "rssBytes": 104284160,
+        "heapUsedBytes": 15814936
+      },
+      {
+        "scenario": "long-tail",
+        "events": 60000,
+        "pendingKeys": 0,
+        "rssBytes": 106250240,
+        "heapUsedBytes": 12376016
+      },
+      {
+        "scenario": "long-tail",
+        "events": 70000,
+        "pendingKeys": 0,
+        "rssBytes": 108085248,
+        "heapUsedBytes": 15376456
+      },
+      {
+        "scenario": "long-tail",
+        "events": 80000,
+        "pendingKeys": 0,
+        "rssBytes": 111378432,
+        "heapUsedBytes": 14547168
+      },
+      {
+        "scenario": "long-tail",
+        "events": 90000,
+        "pendingKeys": 0,
+        "rssBytes": 117407744,
+        "heapUsedBytes": 23669256
+      },
+      {
+        "scenario": "long-tail",
+        "events": 100000,
+        "pendingKeys": 0,
+        "rssBytes": 122241024,
+        "heapUsedBytes": 21662440
+      }
+    ]
+  }
+}

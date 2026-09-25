@@ -43,6 +43,7 @@
 - [本地稳定图片访问与下载验证](./verification/delivery-69/README.md)
 - [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
+- [统计关停、批写与缓冲实验](./tasks/evidence/EV-ANALYTICS-01/README.md)
 - [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
 
 部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。

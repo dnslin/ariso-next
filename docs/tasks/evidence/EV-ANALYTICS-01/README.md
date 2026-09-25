@@ -1,0 +1,91 @@
+# EV-ANALYTICS-01 统计关停、批写与缓冲实验
+
+2026-09-25；[Issue #82](https://github.com/dnslin/ariso-next/issues/82)。依据 [analytics §3–5](../../../specs/SPEC-analytics.md#3-唯一计数入口)及[任务卡](../../gates.md#ev-analytics-01-统计关停批写与缓冲实验)。本实验提供 AN-03/04/05 的技术证据，不代表生产 ANALYTICS-COUNT、报表或日期保留业务已经实现。
+
+## 前置与范围
+
+`gh issue view 82 --json number,title,body,comments,state,url` 回读无评论。原生 `issues/82/dependencies/blocked_by` 为已完成的 #68，`blocking` 为 #83；已阅读 [EV-DELIVERY-01](../EV-DELIVERY-01/README.md) 的真实 HTTP、开始计数及双架构证据。
+
+从 `origin/main` 的 `9ecff7d` 建立 `codex/issue-82-analytics-experiment`。主目录正在被 #76 使用，实验独立位于 `/Volumes/data/project/ariso-issue-82`，没有混入主目录修改。
+
+实现只包含实验 collector、SQLite 临时三表、独立 Next standalone 应用、测试和不发布镜像的验证工作流。日期与已获准的访问事件为受控输入，沿用 delivery 的责任边界；未新增生产路由、迁移或统计模块。无产品界面/Figma 修改，主题、响应式、触控及安全区域不适用；浏览器回归仅验证已有应用。
+
+## 结论和下游接入约束
+
+- `record` 只改内存。1000 个不同键触发下一轮事件循环写入；每批最多 1000 个键，成功事务和内存扣除间没有 `await`。三表任一句失败整批回滚，原增量保留，重试不重复。
+- 定时器 5 秒、批次 1000 键、容量 20000 键仍是工程起始值。失败后 30 秒才自动重试；满缓冲仍接受已有键的增量，拒绝新键并累计漏计。成功恢复不清除已发生漏计标记。
+- 默认 Next 16.3.5 信号处理先停止接收连接并等待在途 HTTP，再关闭 Next、执行 `after` 工作，最后调用框架自己的 `process.exit`。实验仅用同步 `exit` 回调有界刷库和关闭 SQLite，不替换信号处理、不自行调用 `process.exit`、不在 `exit` 中安排异步任务。
+- **当前生产入口不是上述方案。** `docker/entrypoint.sh` 设置 `NEXT_MANUAL_SIG_HANDLE=1`，`server-start.ts` 停止 upload/media 后自行退出，没有等待 HTTP drain。规格中“当前由 Next 退出”已落后于现有实现。#83 接入时必须统一现有队列关停、HTTP 停止接收/在途请求及最终刷库顺序；不能只把本实验回调拼到现有流程便声称满足正常退出保证。本 Issue 按修改边界不修改生产协调器。
+- 框架等待未结束 HTTP 并没有应用层绝对时限。这里测量的是能在约 1 秒结束的真实在途传输和有界刷库；部署仍需给正常传输与同步批写足够的停止宽限。超出宽限被 SIGKILL 的进程不属于无损正常关停。
+- SIGKILL 不运行退出回调，已提交前缀保留，内存增量丢失。持续写失败退出同样丢失剩余内存增量，错误及数量保留在实验 trace。**20000 是不同键上限，不是丢失访问次数上限**；热点同键能累计任意多事件。5 秒也不是故障积压下的最大丢失时间窗口。
+
+同步退出刷库只适用于已固定的同步 SQLite 驱动。它会暂时阻塞退出，不能推广成异步数据库的退出方案。实验退出码保留 Next 的 SIGTERM=143/SIGINT=130；刷库失败通过 trace 的 `complete:false`、`lastError`、`pendingEvents` 表示，不把框架退出码当写入成功证据。
+
+实现依据：[Next 自托管关停说明](https://nextjs.org/docs/app/guides/self-hosting#graceful-shutdown)、安装版本 `next/dist/server/lib/start-server.js` 的 cleanup 顺序、[Node exit 仅能同步执行](https://nodejs.org/docs/latest-v24.x/api/process.html#event-exit)、[SQLite 事务](https://www.sqlite.org/lang_transaction.html)和 [UPSERT](https://www.sqlite.org/lang_upsert.html)。复用现有 better-sqlite3 13.0.3，无新增依赖。
+
+## 测量与证据
+
+本地 macOS arm64、Apple M4、16 GiB RAM，Node 24.18.1、pnpm 11.19.0、Next 16.3.5、SQLite 3.53.4。文件系统块大小、总量及可用空间均记录于 [压力原始报告](./local-pressure.json)。测试使用真实磁盘 SQLite WAL，`busy_timeout=100ms`；持续写失败通过 SQLite `query_only` 注入，不声称制造物理磁盘故障。
+
+| 场景                      | 本地实测                                                                                           |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| 单事件定时刷新            | 5025.57ms；刷新前数据库为零，之后三表为 1                                                          |
+| 1000 键阈值               | 5.86ms；记录函数返回时没有 SQL 写尝试，随后一批写入                                                |
+| 持续写失败与满缓冲        | 20000 键保留；真实等待 30 秒发生第二次失败；再接收 100000 旧键事件、拒绝 100000 新键               |
+| 故障恢复                  | 20 批、94.27ms，三表均为 120000；重复 flush 不增加计数，漏计标记保留                               |
+| 1000000 次/100 个热点键   | 236.86ms                                                                                           |
+| 100000 次/100000 个长尾键 | 420.94ms，100 批                                                                                   |
+| 内存采样                  | 144 点，RSS 峰值 122241024 字节，heap 峰值 23669256 字节；是此数据分布下的采样峰值，不是硬字节上限 |
+
+![本地实际内存和待写键采样曲线](./local-memory.svg)
+
+本实验不是十万图片一年报表查询压测，未验证排行/保留任务。事件键长度及分布也会影响实际内存，不将这些耗时作为产品 SLA。
+
+Next 子进程场景包含 SIGTERM/SIGINT 在途传输、已提交前缀后的 SIGKILL、持续写失败、满缓冲失败退出及退出时刷完 20000 键。正常场景在收到信号后才交付首块，断言完整响应、最终三表一致和刷库先于数据库关闭；满缓冲正常退出额外断言进入退出回调前仍有全部 20000 个待写键。
+
+[六场景真实退出 trace](./local-lifecycle.json)记录收到信号、首块、传输完成、刷库开始/结束及数据库关闭的顺序。
+
+| Next 场景     | 退出耗时（ms） | 已接收但丢失 | 数据库三表计数        |
+| ------------- | -------------- | ------------ | --------------------- |
+| SIGTERM       | 985.44         | 0            | [18, 18, 18]          |
+| SIGINT        | 989.25         | 0            | [18, 18, 18]          |
+| SIGKILL       | 4.12           | 17           | [1000, 1000, 1000]    |
+| write-failure | 5.52           | 17           | [0, 0, 0]             |
+| full-buffer   | 6.96           | 20000        | [0, 0, 0]             |
+| full-drain    | 95.55          | 0            | [20000, 20000, 20000] |
+
+## 实际命令与检查状态
+
+全部命令在独立 worktree 使用 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`。
+
+```sh
+pnpm install --frozen-lockfile
+pnpm exec vitest run --project unit tests/unit/analytics/collector.test.ts
+node tests/experiments/analytics/pressure.ts /tmp/ariso-pressure.json
+pnpm exec vitest run --project integration tests/integration/analytics/lifecycle.test.ts
+pnpm run format:check
+pnpm run lint
+pnpm run typecheck
+pnpm run test:unit
+pnpm run build
+pnpm run test:integration --maxWorkers=4
+pnpm exec vitest run --project integration tests/integration/media/tools.test.ts
+pnpm run test:integration --maxWorkers=2
+pnpm --dir tests/experiments/ui install --frozen-lockfile
+EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 pnpm run test:browser
+node docs/tasks/check.mjs
+node docs/tasks/check.mjs --self-test
+git diff --check
+```
+
+已完成：冻结安装、聚合器 5 项定向单测、真实压力脚本、第一版 5 场景 Next 测试、lint、类型检查、397 项单测和生产构建。降低并发后完整集成 457/457（54 文件）通过；新增六场景关停、Ego Lite 浏览器、格式和文档检查均通过。浏览器见[运行摘要](./browser.json)。
+
+首次全套集成 456/457 通过，既有 `media/tools.test.ts` 等待 ExifTool 子进程 ready 超过原有 3 秒限制；当时同机另一任务也在跑完整套件。原断言定向复跑 8/8 通过，随后全套 `--maxWorkers=2` 457/457 通过（199.58 秒）。未修改测试、放宽超时或跳过检查。
+
+初次 Next standalone 启动因继承根 `type:module` 而报 `require is not defined`，在独立应用声明 `type:commonjs` 后原测试通过。初次类型检查指出环境对象类型过窄，改为 Node 的 ProcessEnv 后通过。生产构建仍输出既有 SQLite Debug 二进制追踪诊断，退出码为 0；未隐藏该日志，实际 Release 驱动由集成测试验证。
+
+## 审计与远端验证
+
+使用 `code-review-and-quality` 先读测试、再按正确性/可读性/模块边界/安全/性能检查，并由独立代理复核。已修复超时监控未覆盖等待传输、Docker 构建上下文路径、压力报告上传目录，以及满缓冲退出证据缺少开始状态断言。独立审计最终结论通过，无未解决的本次范围内阻断问题；远端结果待补。
+
+本次用户明确要求远端双架构验证，新增 `Analytics experiment` PR 工作流，只构建临时验证镜像并运行实验，不登录镜像仓库、不推送镜像、不部署。生产发布工作流保持原状。AMD64/ARM64 的压力、standalone 与 Docker trace 将分别保留为 Actions artifact；尚未运行时不标通过。
