@@ -66,3 +66,11 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 双架构容器只在 Release 工作流执行，当前仓库无本任务可用的 PR/push/手动非发布验证入口；不触发 Release、镜像发布或部署。真实手机触控、物理软键盘及非零安全区设备实测范围按[执行约定](../../tasks/execution.md#前端共用验收)，浏览器宽度/键盘/短视口检查不冒充设备实测。
 
 完整筛选、批量恢复/永久删除、关系与封面全量联验及跨浏览器矩阵保留原任务责任；本切片不关闭整个 DES/RG 家族。
+
+## PR 与远端回读
+
+交付 PR：[\#124](https://github.com/dnslin/ariso-next/pull/124)，分支 `codex/issue-79-trash-ui`，正式待评审。实现提交 `4a81b88`；后续只补本文交付回读。
+
+实际执行 `gh pr view 124 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/issue-79-trash-ui` 及提交的 `check-runs`/`status` API：PR 非草稿、可合并状态 CLEAN、运行列表为空、check runs 和 commit statuses 数量均为 0。空 statuses 的聚合字段 `pending` 不代表存在正在运行的工作流，也不记为 CI 通过。`gh workflow list --all` 仅有与本任务无关的 Analytics experiment，以及 Release checks / Release images；按执行约定无需等待不存在的 PR 检查。
+
+初次 Git 直连推送超时，改用本机现有系统代理的单次命令 `git -c http.proxy=http://127.0.0.1:7897 push -u origin codex/issue-79-trash-ui` 后成功，没有改全局配置。未合并 PR、关闭 Issue、发布镜像、部署或删除分支/worktree。
