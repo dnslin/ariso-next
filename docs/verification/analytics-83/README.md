@@ -1,6 +1,6 @@
 # T-ANA-01 本地公开访问内存聚合
 
-日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)，范围以 [T-ANA-01 任务卡](../../tasks/m1-m2.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
+日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)、[草稿 PR #121](https://github.com/dnslin/ariso-next/pull/121)，范围以 [T-ANA-01 任务卡](../../tasks/m1-m2.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
 
 ## 前置与实现
 
@@ -59,4 +59,4 @@ macOS/Darwin arm64，Node 24.18.1、pnpm 11.19.0、ICU 78.3、ImageMagick 7.1.2-
 
 当前 `.github/workflows/ci.yml` 只供 workflow_call，`images.yml` 只在 Release published 触发；仓库内没有 PR/推送验证工作流或手动 Docker 入口。GitHub 列表仍可见历史 Analytics experiment 名称，但对应文件已由 #82 删除。本次不触发 Release、镜像发布或部署，Docker/AMD64/ARM64 没有作为本轮已通过证据。
 
-PR 与提交检查状态待推送后回读。浏览器回归未通过，草稿是当前交付状态，不声明任务全部验收完成。本次不合并、不关闭 Issue、不删除分支或 worktree。
+已提交并推送实现提交 `4b2d291`，创建草稿 PR #121。实际执行 `gh pr view 121 --json url,isDraft,mergeStateStatus,statusCheckRollup,headRefOid`、`gh run list --branch codex/issue-83-local-access-count --json databaseId,status,conclusion,workflowName` 及提交 check-runs/status API：PR 为 CLEAN，isDraft=true，Actions、check-runs、提交状态数量均为 0。status API 的聚合 pending 没有对应检查，不算运行中或通过。浏览器回归未通过，草稿是当前交付状态，不声明任务全部验收完成。本次不合并、不关闭 Issue、不删除分支或 worktree。
