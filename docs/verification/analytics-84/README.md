@@ -1,6 +1,6 @@
 # T-ANA-02 统计批写、保留与退出刷库
 
-2026-09-26；[Issue #84](https://github.com/dnslin/ariso-next/issues/84)。依据 [analytics §4–5/8](../../specs/SPEC-analytics.md#4-统计表与批量写入)和[任务卡](../../tasks/m1-m2.md#t-ana-02-统计批写保留与退出刷库)。本次实现 ANALYTICS-COUNT 的持久化部分，不代表报表、S3 计数或完整 M2 冒烟已交付。
+2026-09-26；[PR #123](https://github.com/dnslin/ariso-next/pull/123)；[Issue #84](https://github.com/dnslin/ariso-next/issues/84)。依据 [analytics §4–5/8](../../specs/SPEC-analytics.md#4-统计表与批量写入)和[任务卡](../../tasks/m1-m2.md#t-ana-02-统计批写保留与退出刷库)。本次实现 ANALYTICS-COUNT 的持久化部分，不代表报表、S3 计数或完整 M2 冒烟已交付。
 
 ## 前置与实现
 
@@ -52,4 +52,10 @@ SIGKILL 不执行清理，未提交的内存访问会丢失。持续写入失败
 
 框架等待在途 HTTP 没有应用层绝对截止时间；部署的停止宽限须涵盖传输和批写，超限后 SIGKILL 属于异常退出。当前部署示例保留 30 秒停止宽限。开发入口也接入同一 preload；本轮未单独验证开发模式的信号关停，生产 standalone 已实测。
 
-本地检查不替代 Linux、Docker、AMD64/ARM64 结果。仓库 `ci.yml` 仅供 workflow_call，`images.yml` 仅由 Release published 触发；历史 Analytics experiment 文件已删除。此次不触发 Release、镜像发布或部署，远端可用检查在 PR 创建后回读记录。
+本地检查不替代 Linux、Docker、AMD64/ARM64 结果。仓库 `ci.yml` 仅供 workflow_call，`images.yml` 仅由 Release published 触发；历史 Analytics experiment 文件已删除。此次不触发 Release、镜像发布或部署，适用检查按[执行约定](../../tasks/execution.md#适用检查)以本地结果完成，未运行发布验证不作为功能 PR 阻塞。
+
+## 提交与远端核验
+
+实现提交 `4ed156f` 已推送，创建草稿 [PR #123](https://github.com/dnslin/ariso-next/pull/123)。实际执行 `gh pr view 123 --json url,isDraft,mergeStateStatus,statusCheckRollup,headRefOid`、`gh run list --branch codex/issue-84-analytics-persistence --json databaseId,status,conclusion,workflowName` 及提交 check-runs/status API：无冲突（CLEAN），Actions、check-runs、提交状态数量均为 0。status API 的聚合 pending 没有对应检查，不代表有工作流正在运行或已经通过。
+
+本地适用检查与审计完成后转为正式待评审。没有合并、关闭 Issue、发布镜像、部署或删除分支。分支 `codex/issue-84-analytics-persistence` 保留供评审。
