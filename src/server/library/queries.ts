@@ -13,6 +13,7 @@ import {
 } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { z } from 'zod';
+import { buildImagePath } from '../delivery/links.ts';
 import {
   mediaImages,
   mediaJobs,
@@ -173,7 +174,7 @@ export function readLibraryPage(
         versions,
         thumbnailUrl:
           row.storage.enabled && versions.thumbnail
-            ? `/i/${encodeURIComponent(row.id)}?type=thumbnail`
+            ? buildImagePath(row.id, 'thumbnail')
             : null,
         activeJob: summary(false),
         latestFailedJob: summary(true),

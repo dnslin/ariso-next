@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildImagePath,
   buildImageUrl,
   parseImageRequest,
   resolveImageVersion,
@@ -28,6 +29,35 @@ function state(saved: VersionKind[], applicable: boolean | null = true) {
 }
 
 describe('delivery parameters and stable links', () => {
+  it('builds same-origin image paths with encoded identifiers and explicit options', () => {
+    expect(buildImagePath('旅行 ?#%&')).toBe(
+      '/i/%E6%97%85%E8%A1%8C%20%3F%23%25%26',
+    );
+    expect(buildImagePath('image 1', undefined, true)).toBe(
+      '/i/image%201?download=1',
+    );
+    for (const kind of versionKinds) {
+      expect(buildImagePath('image-1', kind)).toBe(`/i/image-1?type=${kind}`);
+      expect(buildImagePath('image-1', kind, true)).toBe(
+        `/i/image-1?type=${kind}&download=1`,
+      );
+    }
+  });
+  it('keeps the thumbnail path on the current origin when the public origin changes', () => {
+    const path = buildImagePath('旅行 ?#', 'thumbnail');
+    expect(path).toBe('/i/%E6%97%85%E8%A1%8C%20%3F%23?type=thumbnail');
+    for (const publicUrl of [
+      'https://old.example',
+      'https://new.example:8443/',
+    ]) {
+      const url = new URL(buildImageUrl(publicUrl, '旅行 ?#', 'thumbnail'));
+      expect(`${url.pathname}${url.search}`).toBe(path);
+      expect(url.origin).toBe(new URL(publicUrl).origin);
+      expect(new URL(path, 'https://admin.example').origin).toBe(
+        'https://admin.example',
+      );
+    }
+  });
   it('accepts default and explicit requests and ignores unrelated parameters', () => {
     expect(
       parseImageRequest('image-1', new URLSearchParams('width=100')),

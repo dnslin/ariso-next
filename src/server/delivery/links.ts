@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import type { getImageAccessState } from '../media/images.ts';
 import { versionKinds, type VersionKind } from '../media/schema.ts';
-import { buildSiteUrl } from '../site/urls.ts';
 import { deliveryError } from './errors.ts';
 
 const versionSchema = z.enum(versionKinds);
@@ -35,8 +34,7 @@ export function parseImageRequest(
   };
 }
 
-export function buildImageUrl(
-  publicUrl: string,
+export function buildImagePath(
   imageId: string,
   selectedVersion?: VersionKind,
   download = false,
@@ -44,11 +42,18 @@ export function buildImageUrl(
   const query = new URLSearchParams();
   if (selectedVersion !== undefined) query.set('type', selectedVersion);
   if (download) query.set('download', '1');
-  return buildSiteUrl(
-    { publicUrl },
-    `/i/${encodeURIComponent(imageId)}`,
-    query,
-  );
+  const path = `/i/${encodeURIComponent(imageId)}`;
+  return query.size ? `${path}?${query}` : path;
+}
+
+export function buildImageUrl(
+  publicUrl: string,
+  imageId: string,
+  selectedVersion?: VersionKind,
+  download = false,
+) {
+  return new URL(buildImagePath(imageId, selectedVersion, download), publicUrl)
+    .href;
 }
 
 export function resolveImageVersion(
