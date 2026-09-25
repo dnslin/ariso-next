@@ -90,7 +90,8 @@ function owner(
     )
       .trim()
       .split('\n')
-      .at(-1)!,
+      .find((line) => line.startsWith('AUTH_RESULT '))!
+      .slice('AUTH_RESULT '.length),
   );
 }
 beforeEach(async () => {

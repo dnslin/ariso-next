@@ -30,6 +30,11 @@ function writeMigrations(
       when: 3,
       sql: readFileSync(resolve('drizzle/0008_numerous_nick_fury.sql'), 'utf8'),
     },
+    {
+      tag: '0003_analytics',
+      when: 4,
+      sql: readFileSync(resolve('drizzle/0009_wide_scarlet_witch.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -128,6 +133,9 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
     ).toEqual([
       { name: '__drizzle_migrations' },
       { name: 'account' },
+      { name: 'analytics_daily' },
+      { name: 'analytics_image_daily' },
+      { name: 'analytics_image_totals' },
       { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_settings' },
@@ -139,7 +147,12 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
     ]);
     expect(
       db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
-    ).toEqual([{ created_at: 1 }, { created_at: 2 }, { created_at: 3 }]);
+    ).toEqual([
+      { created_at: 1 },
+      { created_at: 2 },
+      { created_at: 3 },
+      { created_at: 4 },
+    ]);
   } finally {
     db.close();
   }
@@ -234,6 +247,9 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
       tables: [
         { name: '__drizzle_migrations' },
         { name: 'account' },
+        { name: 'analytics_daily' },
+        { name: 'analytics_image_daily' },
+        { name: 'analytics_image_totals' },
         { name: 'secret_sample' },
         { name: 'session' },
         { name: 'storage_configs' },
@@ -248,6 +264,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { created_at: 1 },
         { created_at: 2 },
         { created_at: 3 },
+        { created_at: 4 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

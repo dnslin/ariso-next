@@ -133,6 +133,8 @@ export async function launchLocalDelivery() {
       seed,
       close,
       logs: server.logs,
+      child: server.child,
+      closed: server.closed,
     };
   } catch (error) {
     await close();

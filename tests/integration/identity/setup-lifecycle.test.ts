@@ -62,8 +62,8 @@ beforeEach(() => {
   };
   hashing.hash.mockReset();
 });
-afterEach(() => {
-  runtime?.connection.close();
+afterEach(async () => {
+  await runtime?.stop();
   runtime = undefined;
   delete state.arisoServerRuntime;
   vi.unstubAllEnvs();

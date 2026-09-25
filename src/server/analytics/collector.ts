@@ -14,6 +14,8 @@ export function createAccessCollector() {
   const pending = new Map<string, AccessIncrement>();
   let dropped = 0;
   let accepted = 0;
+  let flushed = 0;
+  let onRecord: (() => void) | undefined;
   // Only the latest formatter is cached: changing site settings cannot grow this cache.
   let formatter: Intl.DateTimeFormat | undefined;
   let formatterTimezone: string | undefined;
@@ -56,7 +58,49 @@ export function createAccessCollector() {
         return false;
       }
       accepted++;
+      onRecord?.();
       return true;
+    },
+    onRecord(callback: (() => void) | undefined) {
+      onRecord = callback;
+    },
+    get pendingKeys() {
+      return pending.size;
+    },
+    get pendingEvents() {
+      return accepted - flushed;
+    },
+    health() {
+      return {
+        accepted,
+        flushed,
+        dropped,
+        incomplete: dropped > 0,
+        pendingKeys: pending.size,
+        pendingEvents: accepted - flushed,
+      };
+    },
+    nextBatch(limit: number) {
+      const batch: AccessIncrement[] = [];
+      for (const increment of pending.values()) {
+        batch.push({ ...increment });
+        if (batch.length === limit) break;
+      }
+      return batch;
+    },
+    acknowledge(batch: AccessIncrement[]) {
+      for (const increment of batch) {
+        const key = JSON.stringify([
+          increment.imageId,
+          increment.date,
+          increment.timezone,
+          increment.version,
+        ]);
+        const current = pending.get(key)!;
+        current.count -= increment.count;
+        if (current.count === 0) pending.delete(key);
+        flushed += increment.count;
+      }
     },
     snapshot() {
       return {
