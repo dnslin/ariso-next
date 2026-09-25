@@ -42,6 +42,7 @@
 - [回收与恢复服务契约验证](./verification/media-67/README.md)
 - [本地稳定图片访问与下载验证](./verification/delivery-69/README.md)
 - [基础图库读取与手机网格验证](./verification/library-76/README.md)
+- [基础详情与链接复制下载验证](./verification/library-77/README.md)
 - [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
 - [统计关停、批写与缓冲实验](./tasks/evidence/EV-ANALYTICS-01/README.md)

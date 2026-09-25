@@ -213,6 +213,7 @@ try {
     identitySessionScript: pathToFileURL(resolve('e2e/identity-session.mjs'))
       .href,
     recoveryScript: pathToFileURL(resolve('e2e/error-recovery.mjs')).href,
+    libraryDetailScript: pathToFileURL(resolve('e2e/library-detail.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
     origin,

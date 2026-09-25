@@ -1,27 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { ImageOff } from 'lucide-react';
 import type { LibraryItem } from '../../server/library/types';
 
-const statuses = {
-  pending: '等待处理',
-  processing: '处理中',
-  ready: '已就绪',
-  failed: '处理失败',
-};
+import {
+  processingLabels as statuses,
+  stepLabels,
+} from '../../components/library/detail-labels';
 
-const stepLabels: Record<string, string> = {
-  identify: '识别图片',
-  original: '保存原图',
-  compressed: '生成压缩图',
-  thumbnail: '生成缩略图',
-  watermark: '生成水印图',
-  complete: '处理完成',
-};
-
-export function LibraryCard({ item }: { item: LibraryItem }) {
+export function LibraryCard({
+  item,
+  onOpen,
+}: {
+  item: LibraryItem;
+  onOpen?: (id: string, element: HTMLElement) => void;
+}) {
   const [failed, setFailed] = useState(false);
   const placeholder = !item.storage.enabled
     ? '存储已停用'
@@ -56,7 +52,17 @@ export function LibraryCard({ item }: { item: LibraryItem }) {
         )}
       </div>
       <Card.Content className="grid content-start gap-1.5 p-2.5 text-xs xl:p-3.5 xl:text-sm">
-        <p>{item.displayName}</p>
+        <Button
+          variant="ghost"
+          className="h-auto min-h-11 w-full justify-start whitespace-normal rounded-lg px-0 text-left text-inherit"
+          aria-label={`查看图片：${item.displayName}`}
+          onPress={(event) => {
+            if (event.target instanceof HTMLElement)
+              onOpen?.(item.id, event.target);
+          }}
+        >
+          {item.displayName}
+        </Button>
         <p className="text-[11px] xl:text-xs">
           {item.visibility === 'private' ? '私有' : '公开'} ·{' '}
           {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}

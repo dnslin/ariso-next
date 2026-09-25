@@ -10,6 +10,8 @@ import { SessionControls } from '../../components/identity/session-controls';
 import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
 import { LibraryCard } from './library-card';
+import { useDetailNavigation } from './use-detail-navigation';
+import { LibraryDetail } from '../../components/library/detail';
 
 class ListReadError extends Error {
   constructor(
@@ -54,6 +56,7 @@ export function LibraryScreen({
   description: string;
   email: string;
 }) {
+  const detail = useDetailNavigation();
   // 管理数据只活在当前图库页面；离开或失效后不保留私有卡片缓存。
   const [client] = useState(() => new QueryClient());
   const query = useInfiniteQuery(
@@ -134,7 +137,7 @@ export function LibraryScreen({
       >
         <p className="hidden text-sm md:block">工作空间 / 图库</p>
         <div className="grid gap-1.5">
-          <h1 id="library-title" className="text-3xl font-medium">
+          <h1 id="library-title" tabIndex={-1} className="text-3xl font-medium">
             图库
           </h1>
           <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
@@ -190,7 +193,7 @@ export function LibraryScreen({
                     key={item.id}
                     className="min-w-0 [content-visibility:auto] [contain-intrinsic-size:auto_300px]"
                   >
-                    <LibraryCard item={item} />
+                    <LibraryCard item={item} onOpen={detail.open} />
                   </li>
                 ))}
               </ul>
@@ -232,6 +235,15 @@ export function LibraryScreen({
           </>
         )}
       </section>
+      {detail.imageId ? (
+        <LibraryDetail
+          key={detail.imageId}
+          imageId={detail.imageId}
+          client={client}
+          onClose={detail.close}
+          dialogRef={detail.dialogRef}
+        />
+      ) : null}
     </AdminShell>
   );
 }
