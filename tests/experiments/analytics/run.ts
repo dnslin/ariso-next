@@ -133,6 +133,10 @@ export async function runLifecycle(reportPath: string, image?: string) {
         trace.filter((event) => event.event === 'initialized').length,
         1,
       );
+      const initialized = trace.find((event) => event.event === 'initialized');
+      assert.match(initialized.node, /^v24\./);
+      assert.equal(initialized.architecture, arch());
+      assert.equal(initialized.platform, image ? 'linux' : platform());
       const counts = readCounts(app.database);
       if (scenario === 'SIGKILL') {
         assert.deepEqual(counts, [1000, 1000, 1000]);

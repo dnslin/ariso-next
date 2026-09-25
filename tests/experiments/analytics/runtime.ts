@@ -14,7 +14,12 @@ function initialize() {
   };
   const collector = createAnalyticsCollector(database);
   collector.start();
-  log('initialized', { pid: process.pid });
+  log('initialized', {
+    pid: process.pid,
+    node: process.version,
+    platform: process.platform,
+    architecture: process.arch,
+  });
   process.on('SIGTERM', () => log('signal', { signal: 'SIGTERM' }));
   process.on('SIGINT', () => log('signal', { signal: 'SIGINT' }));
   // Next alone owns signal shutdown and waits for HTTP + after() work.
