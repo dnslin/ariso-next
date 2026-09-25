@@ -27,27 +27,38 @@
 
 环境：Node 24.18.1、pnpm 11.19.0，macOS arm64，现有 Ego Lite（本任务唯一空间 5）。命令前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`。
 
-| 实际命令                                                                              | 结果                                                                                        |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `pnpm install --frozen-lockfile`                                                      | 通过，锁文件未变化                                                                          |
-| `pnpm run format:check`                                                               | 通过（修正本记录格式后重跑）                                                                |
-| `pnpm run typecheck`                                                                  | 通过                                                                                        |
-| `pnpm run lint`                                                                       | 通过                                                                                        |
-| `pnpm run test:unit`                                                                  | 28 个文件、422 项通过                                                                       |
-| `pnpm run build`                                                                      | 通过；保留既有 better-sqlite3 Debug 候选路径追踪警告，实际 Release 绑定及生产 HTTP 测试正常 |
-| `pnpm run test:integration --maxWorkers=4`                                            | integration 与 media-tools 两组共 56 个文件、468 项通过                                     |
-| `pnpm exec vitest run --project integration tests/integration/library/detail.test.ts` | 最后一次后端修改后，6 项通过                                                                |
-| `node docs/tasks/check.mjs`                                                           | 120 项任务、298 项需求通过                                                                  |
-| `node docs/tasks/check.mjs --self-test`                                               | 5 个拒绝场景通过                                                                            |
+| 实际命令                                                                                                                                                  | 结果                                                                                                                                        |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                          | 通过，锁文件未变化                                                                                                                          |
+| `pnpm run format:check`                                                                                                                                   | 通过（修正本记录格式后重跑）                                                                                                                |
+| `pnpm run typecheck`                                                                                                                                      | 通过                                                                                                                                        |
+| `pnpm run lint`                                                                                                                                           | 通过                                                                                                                                        |
+| `pnpm run test:unit`                                                                                                                                      | 28 个文件、422 项通过                                                                                                                       |
+| `pnpm run build`                                                                                                                                          | 通过；保留既有 better-sqlite3 Debug 候选路径追踪警告，实际 Release 绑定及生产 HTTP 测试正常                                                 |
+| `pnpm run test:integration --maxWorkers=4`                                                                                                                | integration 与 media-tools 两组共 56 个文件、468 项通过                                                                                     |
+| `pnpm exec vitest run --project integration tests/integration/library/detail.test.ts`                                                                     | 最后一次后端修改后，6 项通过                                                                                                                |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck`、`pnpm --dir tests/experiments/ui run build` | 通过，历史夹具修正后执行                                                                                                                    |
+| `EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-77-pass pnpm run test:browser`                                                 | 完整运行通过，退出码 0；身份、外壳、图库/详情及独立 UI 全部通过                                                                             |
+| `node test-results/debug77.ts`                                                                                                                            | 临时 Node 24 驱动启动新的生产服务和真实 SQLite，再运行仓库 `e2e/library.mjs`；补充短视口实际点击后重跑，退出码 0，120 组布局、13 项行为通过 |
+| `node docs/tasks/check.mjs`                                                                                                                               | 120 项任务、298 项需求通过                                                                                                                  |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                   | 5 个拒绝场景通过                                                                                                                            |
 
-浏览器尚在验证中。首轮完整运行在既有列表缩略图解码等待处失败；独立生产环境重跑未复现。详情已验证加载/错误恢复、键盘打开、关闭焦点/滚动和浅深色布局。Ego 不支持 `Browser.setPermission`，验证脚本已改为真实 HTTP Permissions-Policy 拒绝 Clipboard，但尚未运行；随后浏览器由用户接管，按技能暂停，尚未完成全流程重跑。以上不记为浏览器通过。保留[部分测量](./browser-partial.json)、[手机浅色](./detail-ready-light-390.png)、[桌面深色](./detail-ready-dark-1440.png)与[复制弹窗](./detail-copy-light-390.png)。
+完整浏览器运行器已通过，图库及详情共有 120 组布局测量；真实 Clipboard 成功/拒绝、中文下载文件名及字节核对、默认版本切换、缺失文件修复后刷新、关闭焦点和滚动均通过。短视口实际点击与截图复核也已通过。此前失败与修正：
+
+- 首轮完整运行在列表缩略图解码等待失败；恢复时又观察到 Cookie 消失，但真实数据库会话未过期。本机另一任务也运行 `127.0.0.1` 下的 Ariso，端口不能隔离同名 Cookie。验证运行器改用按端口区分的 `.localhost` 域名，生产服务和 Node 健康检查仍绑定 loopback。产品鉴权没有变化。
+- Ego 不支持 `Browser.setPermission`。拒绝场景改为临时反向代理添加 `Permissions-Policy: clipboard-write=()`；页面、数据和 Clipboard 调用均真实。恢复后已观察到拒绝和全选文本；Select 的真实可访问名称含当前选项，修正测试定位为包含“复制版本”。
+- 焦点恢复发生在下一帧，测试改为等待实际来源按钮获得焦点，不削弱焦点或滚动断言。短视口检查也改为等待视口和固定底栏完成重排，再断言按钮完全可见；此前即时断言失败后回读实际矩形为 top=340、bottom=384、viewport=400。
+- 登录验证紧接图库验证时实际触发 HTTP 429。图库测试遵守页面给出的等待时间，再显式重试一次；不绕过服务限流。
+- 同一 Ego 标签页的 50 条历史上限已在 #76 证据中确认。独立 UI 夹具开始时重置本测试页导航历史，再执行全部原有历史断言，避免跨套件累积影响结果。
+
+最终[浏览器报告](./browser.json)汇总真实运行器状态、13 项行为检查和各状态布局测量。截图：[手机浅色](./detail-ready-light-390.png)、[桌面深色](./detail-ready-dark-1440.png)、[复制弹窗](./detail-copy-light-390.png)、[真实复制拒绝](./detail-clipboard-denied-light-390.png)、[390×400 短视口](./detail-short-viewport.png)。原始运行目录为 `test-results/browser-77-pass` 与 `test-results/browser-77-short-final`；临时驱动及配置不作为产品代码提交。Ego 空间 5 已正常结束。
 
 ## 审计
 
-使用 `code-review-and-quality` 独立只读审计，先审测试、再核对实现和边界。发现预览读取失败后刷新无法重试同一图片；已通过手动刷新成功后的预览重试标识修复，保持查看选择，轮询不反复下载。补充真实文件丢失、修复文件后刷新恢复且不回退版本的 Ego 回归。另补 HTML alt 换行编码与四版本三格式测试。最终独立复核未发现新的必须修复项。真实权限策略验证脚本也已只读复核；审计结论不替代尚未完成的浏览器执行。
+使用 `code-review-and-quality` 独立只读审计，先审测试、再核对实现和边界。发现预览读取失败后刷新无法重试同一图片；已通过手动刷新成功后的预览重试标识修复，保持查看选择，轮询不反复下载。补充真实文件丢失、修复文件后刷新恢复且不回退版本的 Ego 回归。另补 HTML alt 换行编码与四版本三格式测试。最终独立复核未发现新的必须修复项。真实权限策略、测试 Cookie 隔离、429 等待重试和历史基准重置也已只读复核。没有通过修改产品鉴权、跳过检查或削弱断言来消除测试失败。
 
 ## 保留边界
 
 完整元数据编辑、Lightbox、筛选选择、批量复制、回收恢复界面、重新处理仍归原后续任务。S3 下载和全格式处理未在本切片验证。真实手机触控、物理软键盘、非零安全区及其他浏览器未实测；浏览器响应式与短视口证据不能冒充真实设备结果。
 
-当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。已推送实现提交 `f744031` 并创建[草稿 PR #122](https://github.com/dnslin/ariso-next/pull/122)。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/draft、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器恢复并完成全流程前不转为正式 PR。
+当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。已推送实现提交 `f744031` 并创建[草稿 PR #122](https://github.com/dnslin/ariso-next/pull/122)。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/draft、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器全流程与后续短视口补充检查均已完成；最终验证脚本和证据推送后转为正式待评审。

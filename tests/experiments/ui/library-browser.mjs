@@ -24,6 +24,9 @@ export async function verifyLibrary(page, config) {
     });
     await page.goto(`${config.origin}/library`);
     await page.waitForSelector('#open-image-001');
+    // Isolate navigation assertions from earlier suites in this reused page:
+    // Chromium caps session history at 50 entries.
+    await page.cdp('Page.resetNavigationHistory');
     console.log(await page.snapshot());
     report.environment = await page.evaluate(() => ({
       userAgent: navigator.userAgent,

@@ -11,7 +11,7 @@ async function clipboardDeniedProxy(origin) {
   const errors = [];
   const server = createServer((incoming, outgoing) => {
     const forwarded = request(
-      new URL(incoming.url, upstream),
+      new URL(incoming.url, `http://127.0.0.1:${upstream.port}`),
       {
         method: incoming.method,
         headers: { ...incoming.headers, host: upstream.host },
@@ -31,7 +31,7 @@ async function clipboardDeniedProxy(origin) {
     });
     incoming.pipe(forwarded);
   });
-  server.listen(0, upstream.hostname);
+  server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   return {
     origin: `http://${upstream.hostname}:${server.address().port}`,
@@ -299,7 +299,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     assert.equal(manual.focused, true);
     await layouts('clipboard-denied');
     await page.click(button('返回复制选项'));
-    await page.click('loc=role:button[name="复制版本"]');
+    await page.click('loc=role:button[name*="复制版本"]');
     await page.waitForSelector('loc=role:option[name="原图"]');
     await page.click('loc=role:option[name="原图"]');
     await page.click(button('复制 Markdown'));
@@ -503,6 +503,18 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     deviceScaleFactor: 1,
     mobile: true,
   });
+  await page.waitForFunction(() => {
+    const button = [
+      ...document.querySelectorAll('[data-testid="library-detail"] button'),
+    ].find((node) => node.textContent.includes('复制链接'));
+    const rect = button?.getBoundingClientRect();
+    return (
+      innerWidth === 390 &&
+      innerHeight === 400 &&
+      rect?.top >= 0 &&
+      rect.bottom <= innerHeight
+    );
+  });
   await page.evaluate(() => {
     const body = document.querySelector('[data-testid="detail-body"]');
     body.scrollTop = body.scrollHeight;
@@ -517,11 +529,23 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     }),
     true,
   );
+  await page.click(button('复制链接'));
+  await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
+  await page.click(button('返回详情'));
+  await page.waitForFunction(
+    () => !document.querySelector('[role="dialog"][aria-label="复制图片链接"]'),
+  );
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
   await page.screenshot({
     path: join(config.output, 'detail-short-viewport.png'),
   });
   await close();
   report.checks.push(
-    'Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport retains reachable copy action.',
+    'Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport copy action opens the real copy dialog.',
   );
 }

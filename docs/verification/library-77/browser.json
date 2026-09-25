@@ -1,0 +1,212 @@
+{
+  "command": "EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-77-pass pnpm run test:browser",
+  "runner": {
+    "startedAt": "2026-09-25T16:49:20.033Z",
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.18.1",
+    "status": "passed",
+    "origin": "http://ariso-54024.localhost:54024",
+    "taskSpaceId": 5,
+    "identity": [
+      {
+        "width": 1440,
+        "setup": "passed",
+        "restart": "passed"
+      },
+      {
+        "width": 390,
+        "setup": "passed",
+        "restart": "passed"
+      }
+    ],
+    "library": "passed",
+    "finishedAt": "2026-09-25T16:53:57.050Z",
+    "temporaryDirectoryRemoved": true
+  },
+  "library": {
+    "status": "passed",
+    "checks": [
+      "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+      "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+      "Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.",
+      "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+      "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+      "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position.",
+      "Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.",
+      "Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.",
+      "Changing the real default setting is reflected when copy reopens while the compressed preview stays selected; default URLs omit type; unsaved explicit watermark returns 404.",
+      "Missing thumbnail download HEAD returns 404 and displays the explicit download error without requesting another version.",
+      "After a real thumbnail file read failure, restoring the fixture file and manually refreshing decodes that same thumbnail without an original fallback.",
+      "Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport retains reachable copy action.",
+      "Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login."
+    ],
+    "layouts": [
+      {
+        "state": "empty",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 60,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "loading",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 60,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "populated",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 60,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "error",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 60,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-loading",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 88,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-error",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 88,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-ready",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 79,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-copy",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 92.421875,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-clipboard-denied",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 278,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-failed-private",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 79,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-disabled",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 79,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      },
+      {
+        "state": "detail-pending",
+        "samples": 10,
+        "widths": [360, 390, 430, 768, 1440],
+        "themes": ["dark", "light"],
+        "minimumTargetWidth": 79,
+        "minimumTargetHeight": 44,
+        "horizontalOverflow": false
+      }
+    ],
+    "totalLayoutSamples": 120,
+    "limitations": [
+      "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+    ]
+  },
+  "otherSuites": {
+    "browser.json": {
+      "status": "passed"
+    },
+    "shell-browser.json": {
+      "status": "passed"
+    },
+    "error-recovery.json": {
+      "status": "passed"
+    },
+    "identity-1440-setup.json": {
+      "status": "passed"
+    },
+    "identity-1440-restart.json": {
+      "status": "passed"
+    },
+    "identity-390-setup.json": {
+      "status": "passed"
+    },
+    "identity-390-restart.json": {
+      "status": "passed"
+    },
+    "ui/runner.json": {
+      "status": "passed"
+    },
+    "ui/browser.json": {
+      "status": "passed"
+    },
+    "ui/library.json": {
+      "status": "passed"
+    }
+  },
+  "focusedProductionRerun": {
+    "command": "node test-results/debug77.ts",
+    "driver": "Temporary Node 24 driver starts built standalone production with disposable SQLite, then runs committed e2e/library.mjs in Ego space 5.",
+    "status": "passed",
+    "layoutSamples": 120,
+    "checks": [
+      "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+      "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+      "Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.",
+      "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+      "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+      "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position.",
+      "Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.",
+      "Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.",
+      "Changing the real default setting is reflected when copy reopens while the compressed preview stays selected; default URLs omit type; unsaved explicit watermark returns 404.",
+      "Missing thumbnail download HEAD returns 404 and displays the explicit download error without requesting another version.",
+      "After a real thumbnail file read failure, restoring the fixture file and manually refreshing decodes that same thumbnail without an original fallback.",
+      "Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport copy action opens the real copy dialog.",
+      "Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login."
+    ]
+  }
+}

@@ -130,6 +130,23 @@ try {
   await page.fill('#email', config.credentials.email);
   await page.fill('#password', config.credentials.password);
   await page.click('loc=role:button[name="登录"]');
+  await page.waitForFunction(
+    () =>
+      location.pathname === '/library' ||
+      document
+        .querySelector('[role="alert"]')
+        ?.textContent.includes('HTTP 429'),
+  );
+  // The preceding identity suite deliberately exercises the real sign-in limit.
+  // Respect its UI retry window before this suite's one explicit retry.
+  if (new URL(await page.url()).pathname !== '/library') {
+    await page.waitForFunction(
+      () => !document.querySelector('button[type="submit"]').disabled,
+      undefined,
+      { timeout: 15000 },
+    );
+    await page.click('loc=role:button[name="登录"]');
+  }
   await page.waitForURL(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-empty"]');
   await layouts('empty');

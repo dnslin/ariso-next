@@ -151,7 +151,7 @@ async function loginAndLogout() {
       'The second hostname has an independent browser cookie jar',
     );
     report.checks.push(
-      'Owner session on 127.0.0.1 does not authenticate the localhost browser page',
+      'Owner session does not authenticate the second hostname browser page',
     );
   }
   await page.focus('loc=role:button[name="退出登录"]');
@@ -444,7 +444,9 @@ try {
     // Separate hostnames keep cookie jars independent without a second Ego TaskSpace.
     // Both pages use the same real server; this is not a second browser-engine claim.
     secondPage = await task.newPage();
-    const secondOrigin = config.origin.replace('127.0.0.1', 'localhost');
+    const secondUrl = new URL(config.origin);
+    secondUrl.hostname = `second-${secondUrl.port}.localhost`;
+    const secondOrigin = secondUrl.origin;
     await secondPage.goto(`${secondOrigin}/setup`);
     await secondPage.waitForSelector('#code');
     await secondPage.fill('#code', config.code);

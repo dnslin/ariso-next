@@ -99,7 +99,8 @@ try {
   await new Promise((resolve, reject) =>
     socket.close((error) => (error ? reject(error) : resolve())),
   );
-  const origin = `http://127.0.0.1:${port}`;
+  // Chromium resolves *.localhost to loopback; unique hosts isolate test cookies.
+  const origin = `http://ariso-${port}.localhost:${port}`;
   report.origin = origin;
   const productionEnv = {
     PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
@@ -138,7 +139,7 @@ try {
         `Production server exited: ${redact(logs)}`,
       );
       try {
-        const response = await fetch(`${origin}/api/health`, {
+        const response = await fetch(`http://127.0.0.1:${port}/api/health`, {
           signal: AbortSignal.timeout(1000),
         });
         if (response.status === 200) break;
