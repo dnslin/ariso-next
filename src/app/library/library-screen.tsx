@@ -140,6 +140,7 @@ export function LibraryScreen({
       description={description}
       navigation={[
         { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
+        { href: '/upload', label: '上传图片' },
         { href: '/library', label: '图库', icon: <Images /> },
         { href: '/trash', label: '回收站', icon: <Trash2 /> },
       ]}
@@ -264,6 +265,8 @@ export function LibraryScreen({
         <LibraryDetail
           key={detail.imageId}
           imageId={detail.imageId}
+          returnTo={`/library?${new URLSearchParams({ image: detail.imageId })}`}
+          closeLabel="返回图库"
           client={client}
           onClose={detail.close}
           onTrashed={onTrashed}

@@ -138,6 +138,7 @@ export function TrashScreen({
       description={description}
       navigation={[
         { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
+        { href: '/upload', label: '上传图片' },
         { href: '/library', label: '图库', icon: <Images /> },
         { href: '/trash', label: '回收站', icon: <Trash2 /> },
       ]}

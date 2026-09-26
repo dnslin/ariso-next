@@ -44,6 +44,7 @@
 - [基础图库读取与手机网格验证](./verification/library-76/README.md)
 - [基础详情与链接复制下载验证](./verification/library-77/README.md)
 - [单图回收恢复界面验证](./verification/library-79/README.md)
+- [手动上传单图与结果界面验证](./verification/upload-81/README.md)
 - [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
 - [本地公开访问内存聚合验证](./verification/analytics-83/README.md)

@@ -39,3 +39,9 @@ it('returns to the delivered trash record after authentication', () => {
   expect(loginDestination('/trash/unknown')).toBe('/admin');
   expect(loginDestination('https://evil.test/trash')).toBe('/admin');
 });
+
+it('returns to the delivered upload page after authentication', () => {
+  expect(loginDestination('/upload')).toBe('/upload');
+  expect(loginDestination('/upload/unknown')).toBe('/admin');
+  expect(loginDestination('https://evil.test/upload')).toBe('/admin');
+});

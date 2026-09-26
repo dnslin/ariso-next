@@ -13,6 +13,7 @@ export default async function AdminPage() {
       description={settings.description}
       navigation={[
         { href: '/admin', label: '工作空间' },
+        { href: '/upload', label: '上传图片' },
         { href: '/library', label: '图库' },
         { href: '/trash', label: '回收站' },
       ]}

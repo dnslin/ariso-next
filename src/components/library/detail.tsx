@@ -222,8 +222,12 @@ export function LibraryDetail({
   onClose,
   dialogRef,
   onTrashed,
+  returnTo,
+  closeLabel,
 }: {
   imageId: string;
+  returnTo: string;
+  closeLabel: string;
   client: QueryClient;
   onClose: () => void;
   dialogRef: RefCallback<HTMLElement>;
@@ -269,9 +273,9 @@ export function LibraryDetail({
     if (!expired) return;
     client.clear();
     window.location.replace(
-      `/login?reason=expired&returnTo=${encodeURIComponent(`/library?${new URLSearchParams({ image: imageId })}`)}`,
+      `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
-  }, [client, expired, imageId]);
+  }, [client, expired, returnTo]);
   useEffect(
     () => () => {
       client.removeQueries({ queryKey: ['library-detail', imageId] });
@@ -315,7 +319,7 @@ export function LibraryDetail({
                 className="min-h-11 rounded-lg"
                 onPress={onClose}
               >
-                返回图库
+                {closeLabel}
               </Button>
             </div>
           </Modal.Header>
@@ -378,6 +382,7 @@ export function LibraryDetail({
           {copyOpen && query.data && !expired ? (
             <DetailCopy
               detail={query.data}
+              closeLabel="返回详情"
               pending={query.isFetching}
               error={query.error?.message ?? null}
               onClose={() => setCopyOpen(false)}

@@ -20,12 +20,14 @@ export function DetailCopy({
   error,
   onClose,
   onRetry,
+  closeLabel,
 }: {
   detail: LibraryDetail;
   pending: boolean;
   error: string | null;
   onClose: () => void;
   onRetry: () => void;
+  closeLabel: string;
 }) {
   const [mode, setMode] = useState('default');
   const [manual, setManual] = useState<string | null>(null);
@@ -186,7 +188,7 @@ export function DetailCopy({
               className="w-full"
               onPress={() => (manual !== null ? setManual(null) : onClose())}
             >
-              {manual !== null ? '返回复制选项' : '返回详情'}
+              {manual !== null ? '返回复制选项' : closeLabel}
             </Button>
           </Modal.Footer>
         </Modal.Dialog>

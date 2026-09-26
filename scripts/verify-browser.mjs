@@ -19,6 +19,7 @@ for (const name of [
   'shell-browser.json',
   'error-recovery.json',
   'library.json',
+  'upload.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
   ),
@@ -103,7 +104,7 @@ try {
   const origin = `http://ariso-${port}.localhost:${port}`;
   report.origin = origin;
   const productionEnv = {
-    PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,
+    PATH: `${dirname(process.execPath)}:${process.env.PATH ?? '/usr/bin:/bin'}`,
     NODE_ENV: 'production',
     HOST: '127.0.0.1',
     PORT: String(port),
@@ -310,6 +311,8 @@ try {
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
     if (width === 390) {
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+      await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
+      report.upload = 'passed';
       report.library = 'passed';
     }
     await stop(server);
