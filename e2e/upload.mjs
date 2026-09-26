@@ -290,8 +290,27 @@ try {
   assert.equal(saved.processing_status, 'ready');
   await released();
   await layouts('ready');
+  assert.deepEqual(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[data-testid="upload-item"] button')].map(
+        (node) => node.textContent.trim(),
+      ),
+    ),
+    ['查看详情'],
+    'Ready result only exposes the designed detail action',
+  );
+  await page.click(button('查看详情'));
+  await page.waitForSelector('[data-testid="detail-body"]');
   await page.click(button('复制链接'));
   await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
+  await page.evaluate(() => {
+    const write = navigator.clipboard.writeText.bind(navigator.clipboard);
+    navigator.clipboard.writeText = async (text) => {
+      await write(text);
+      window.__uploadCopiedURL = text;
+      navigator.clipboard.writeText = write;
+    };
+  });
   await page.click(button('复制 URL'));
   await page.waitForFunction(() =>
     document
@@ -335,19 +354,13 @@ try {
   report.checks.push(
     'Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.',
   );
-  await page.click(button('返回上传结果'));
-  const link = await page.evaluate(
-    () =>
-      [...document.querySelectorAll('a')].find(
-        (node) => node.textContent === '打开图片',
-      )?.href,
-  );
+  await page.click(button('返回详情'));
+  const link = await page.evaluate(() => window.__uploadCopiedURL);
   assert.ok(link.includes(successId), 'Result link uses real image ID');
   assert.equal((await page.fetch(link)).status, 200);
   report.checks.push(
     'Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.',
   );
-  await page.click(button('查看详情'));
   await page.waitForSelector(button('返回上传页'));
   await page.click(button('返回上传页'));
   await state('ready');
@@ -417,9 +430,11 @@ try {
     'Real invalid image bytes fail server inspection without imageId or detail action.',
   );
 
-  // Reject a real derivative record, after original acceptance has committed.
+  // Reject the real final ready transition after derivative versions have committed.
+  // The worker catches this database error and marks the actual job failed, while
+  // preserving the successfully generated thumbnail and original bytes.
   await sql(
-    "CREATE TRIGGER upload_browser_fail_version BEFORE INSERT ON media_versions WHEN NEW.kind != 'original' BEGIN SELECT RAISE(ABORT, 'upload browser derivative persistence failure'); END",
+    "CREATE TRIGGER upload_browser_fail_version BEFORE UPDATE OF processing_status ON media_images WHEN NEW.processing_status = 'ready' BEGIN SELECT RAISE(ABORT, 'upload browser final ready transition failure'); END",
   );
   try {
     await select();
@@ -440,6 +455,23 @@ try {
     );
     await released();
     await layouts('processing-failed');
+    assert.equal(
+      (
+        await sql(
+          `SELECT v.kind FROM media_versions v JOIN media_objects o ON o.id=v.object_id WHERE v.image_id='${failedId}' AND v.kind='thumbnail' AND o.status='stored'`,
+        )
+      ).length,
+      1,
+      'Failed finalization retains a real stored thumbnail',
+    );
+    await page.waitForFunction(() => {
+      const preview = document.querySelector('[data-testid="upload-item"] img');
+      return (
+        preview?.complete &&
+        preview.naturalWidth > 0 &&
+        preview.getClientRects().length > 0
+      );
+    });
     const originals = await sql(
       `SELECT o.id,o.key,o.storage_id,s.local_path FROM media_objects o JOIN storage_configs s ON s.id=o.storage_id WHERE o.image_id='${failedId}' AND o.purpose='original' AND o.status='stored'`,
     );
@@ -466,20 +498,80 @@ try {
     await page.waitForFunction(
       () => !document.querySelector('[role="dialog"]'),
     );
+    // React Aria restores the trigger in requestAnimationFrame after unmount.
+    await page.waitForFunction(
+      () => document.activeElement?.textContent === '处理选项',
+    );
     assert.equal(
       await page.evaluate(() => document.activeElement.textContent),
       '处理选项',
     );
     await page.click(button('处理选项'));
-    await page.click(button('查看详情'));
-    await page.waitForSelector('[data-testid="detail-body"]');
-    await page.click(button('回收图片'));
+    await page.click(button('移入回收站'));
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="library-detail"]'),
+      ),
+      false,
+      'Processing options opens trash confirmation directly without a detail detour',
+    );
     await page.waitForSelector('[data-testid="trash-confirm"]');
+    await page.evaluate((id) => {
+      const original = window.fetch;
+      let written = false;
+      let readLost = false;
+      window.__uploadRestoreTrashFetch = () => {
+        window.fetch = original;
+      };
+      window.__uploadTrashWrites = 0;
+      window.fetch = async (...args) => {
+        if (String(args[0]) === `/api/images/${id}/trash`) {
+          window.__uploadTrashWrites++;
+          await original(...args);
+          written = true;
+          throw new TypeError('Verification: trash response lost');
+        }
+        if (written && !readLost && String(args[0]) === `/api/images/${id}`) {
+          readLost = true;
+          throw new TypeError('Verification: reconciliation read unavailable');
+        }
+        return original(...args);
+      };
+    }, failedId);
     await page.click(button('确认回收'));
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-testid="trash-confirm"]')
+        ?.textContent.includes('结果待核对'),
+    );
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="upload-item"] img'),
+      ),
+      false,
+      'Unknown trash outcome hides the old upload preview',
+    );
+    await page.click(button('关闭'));
+    await page.keyboard.press('Escape');
+    assert.ok(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('[role="dialog"]')].some((node) =>
+          node.textContent.includes('原图已保存，图片处理失败'),
+        ),
+      ),
+      'Unknown mutation keeps processing options mounted for reconciliation',
+    );
+    await page.click(button('结果待核对'));
+    await page.click(button('重新核对'));
     await page.waitForFunction(
-      () => !document.querySelector('[data-testid="library-detail"]'),
+      () => !document.querySelector('[role="dialog"]'),
     );
     await state('processing-failed');
+    assert.equal(
+      await page.evaluate(() => window.__uploadTrashWrites),
+      1,
+      'Retry reconciliation never repeats the trash write',
+    );
     assert.equal(await imageId(), failedId);
     assert.ok(
       (
@@ -494,12 +586,16 @@ try {
       originals,
     );
     report.checks.push(
-      'Failed upload opens the actual image detail and confirms trash; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.',
+      'Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.',
     );
     report.checks.push(
-      'Actual SQLite derivative persistence failure retains imageId and failed job, distinct from reception failure.',
+      'Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure.',
     );
   } finally {
+    await page.evaluate(() => {
+      window.__uploadRestoreTrashFetch?.();
+      delete window.__uploadRestoreTrashFetch;
+    });
     await sql('DROP TRIGGER upload_browser_fail_version');
   }
   await clear();

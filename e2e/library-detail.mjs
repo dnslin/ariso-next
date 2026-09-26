@@ -71,6 +71,10 @@ export async function seedLibraryDetail(config, sql, directory, storageId) {
 export async function verifyLibraryDetail({ page, config, sql, report }) {
   const dialog = '[data-testid="library-detail"]';
   const button = (name) => `loc=role:button[name="${name}"]`;
+  const menuAction = async (name) => {
+    await page.click(button('更多操作'));
+    await page.click(`loc=role:menuitem[name="${name}"]`);
+  };
   const close = async () => {
     await page.click(button('返回图库'));
     await page.waitForFunction(
@@ -122,6 +126,66 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
               })),
           };
         });
+        if (state === 'ready') {
+          const heights = await page.evaluate(() =>
+            [
+              ...document.querySelectorAll(
+                '[data-testid="detail-actions"] button',
+              ),
+            ]
+              .filter((node) => node.getBoundingClientRect().width > 0)
+              .map((node) => node.getBoundingClientRect().height),
+          );
+          for (const height of heights)
+            assert.ok(
+              Math.abs(height - 48) <= 1,
+              'Detail footer actions retain the 48px design height',
+            );
+        }
+        if (state === 'ready' && width < 768) {
+          const actions = await page.evaluate(() => {
+            const row = document.querySelector(
+              '[data-testid="detail-actions"]',
+            );
+            return {
+              width: row.getBoundingClientRect().width,
+              buttons: [...row.querySelectorAll('button')]
+                .filter((node) => node.getBoundingClientRect().width > 0)
+                .map((node) => node.getBoundingClientRect().width),
+            };
+          });
+          assert.ok(
+            actions.width >= width - 34,
+            'Mobile action row fills the 16px page insets',
+          );
+          assert.equal(actions.buttons.length, 2);
+          for (const buttonWidth of actions.buttons)
+            assert.ok(
+              Math.abs(buttonWidth - (actions.width - 12) / 2) <= 2,
+              'Copy and More evenly fill the mobile footer',
+            );
+        }
+        if (state === 'ready' && width >= 768) {
+          const widths = await page.evaluate(() =>
+            [
+              ...document.querySelectorAll(
+                '[data-testid="detail-actions"] button',
+              ),
+            ]
+              .filter((node) => node.getBoundingClientRect().width > 0)
+              .map((node) => node.getBoundingClientRect().width),
+          );
+          assert.equal(
+            widths.length,
+            3,
+            'Desktop keeps Copy, Download and More',
+          );
+          for (const buttonWidth of widths)
+            assert.ok(
+              Math.abs(buttonWidth - 200) <= 2,
+              'Desktop actions retain the 200px design width',
+            );
+        }
         assert.equal(
           layout.overflow,
           false,
@@ -191,7 +255,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   await page.evaluate(() => window.__detailRelease());
   await page.waitForSelector('[data-testid="detail-body"]');
   await interceptDetail('fail');
-  await page.click(button('刷新详情'));
+  await menuAction('刷新详情');
   await page.waitForFunction(() =>
     document
       .querySelector('[data-testid="library-detail"]')
@@ -247,6 +311,39 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     return image?.complete && image.naturalWidth > 0;
   });
   await layouts('ready');
+  await page.focus(button('更多操作'));
+  await page.keyboard.press('ArrowDown');
+  await page.waitForFunction(() => {
+    const active = document.activeElement;
+    return (
+      active?.getAttribute('role') === 'menuitem' &&
+      active.textContent.trim() === '刷新详情' &&
+      active.getBoundingClientRect().height >= 44
+    );
+  });
+  assert.equal(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[role="menuitem"]')].some((node) =>
+        node.textContent.startsWith('下载'),
+      ),
+    ),
+    false,
+  );
+  await page.keyboard.press('ArrowDown');
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '回收图片',
+  );
+  await page.keyboard.press('ArrowDown');
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '刷新详情',
+  );
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '更多操作',
+  );
+  report.checks.push(
+    'Desktop keyboard opens More on the visible Refresh item; arrow navigation cycles only visible actions and Escape restores More.',
+  );
   await page.click('loc=role:tab[name="压缩图"]');
   await page.waitForFunction(() =>
     document
@@ -341,8 +438,15 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   }
   await direct('library-007');
   await page.click('loc=role:tab[name="压缩图"]');
+  await page.cdp('Emulation.setDeviceMetricsOverride', {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await page.waitForFunction(() => innerWidth === 390);
   const downloadPromise = page.waitForEvent('download', { timeout: 30000 });
-  await page.click(button('下载压缩图'));
+  await menuAction('下载压缩图');
   const download = await downloadPromise;
   assert.equal(download.suggestedFilename(), '中文下载样本.png');
   await download.saveAs(join(config.output, '中文下载样本.png'));
@@ -464,7 +568,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
     ),
   );
-  await page.click(button('刷新详情'));
+  await menuAction('刷新详情');
   await page.waitForFunction(() => {
     const image = document.querySelector('[data-testid="detail-preview"]');
     return (
@@ -515,6 +619,39 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       rect.bottom <= innerHeight
     );
   });
+  const footerActions = await page.evaluate(() =>
+    [...document.querySelectorAll('[data-testid="library-detail"] button')]
+      .filter((node) => node.getBoundingClientRect().width > 0)
+      .map((node) => node.textContent.trim()),
+  );
+  assert.ok(footerActions.includes('更多操作'));
+  assert.equal(
+    footerActions.some((name) => name.startsWith('下载')),
+    false,
+  );
+  assert.equal(footerActions.includes('回收图片'), false);
+  await page.click(button('更多操作'));
+  await page.waitForSelector('loc=role:menuitem[name="下载压缩图"]');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '更多操作',
+  );
+  await menuAction('回收图片');
+  await page.waitForSelector('[data-testid="trash-confirm"]');
+  assert.equal(
+    await page.evaluate(() => !!document.querySelector('[role="menu"]')),
+    false,
+  );
+  await page.click(button('取消'));
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="trash-confirm"]'),
+  );
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '更多操作',
+  );
+  report.checks.push(
+    'Mobile details keep Copy and More in the fixed footer; download, refresh and trash use the real menu; Escape and cancelling trash return focus to the persistent More button.',
+  );
   await page.evaluate(() => {
     const body = document.querySelector('[data-testid="detail-body"]');
     body.scrollTop = body.scrollHeight;

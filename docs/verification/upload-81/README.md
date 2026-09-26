@@ -2,7 +2,7 @@
 
 2026-09-26，关联 [Issue #81](https://github.com/dnslin/ariso-next/issues/81)。需求归属保持 R-7.4-01、R-7.4-02、R-7.4-03、R-7.5-01、R-7.5-03、R-7.5-04、A-26.2-06；仅交付 M2 单文件本地路径，不关闭完整 UPLOAD-QUEUE。
 
-当前新增[UI 还原整改](./ui-restoration.md)尚未完成，PR 已恢复草稿。下列原功能证据不代表设计一致性已验收。
+本轮[UI 还原整改与 PR 收尾](./ui-restoration.md#pr-收尾与后续-ui-安排2026-09-26)已完成当前 M2 范围的设计对照与最终复验。最新结果为单元 461 项、集成 507 项及完整浏览器套件通过。下列为原实施记录；全站首版 UI 尚未交付，不从本次范围扩大验收结论。
 
 ## 前置与实现
 
@@ -77,7 +77,7 @@
 
 `.github/workflows/ci.yml` 只有 workflow_call，`images.yml` 只有 release.published；无 PR/push/workflow_dispatch 验证入口。本次遵循 [执行约定](../../tasks/execution.md#适用检查)执行本地适用检查，不创建 Release、发布镜像或部署。AMD64/ARM64 容器与真实手机触控/软键盘/非零安全区未执行，保留各自责任，不标通过。
 
-PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-manual-upload`。实现及本地证据提交为 `06e8959`。先创建草稿，核对后已执行 `gh pr ready 125` 转为正式待评审。
+PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-manual-upload`。原实现及本地证据提交为 `06e8959`，当时曾转为待评审；后来发现 UI 差异后恢复草稿。最新收尾及最终验证见顶部链接，当前评审状态以 PR 为准。
 
 实际执行 `gh pr view 125 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/81-manual-upload`、提交的 `check-runs` / `status` API 及 `gh workflow list --all`。PR 状态 CLEAN；Actions 运行列表、check runs、commit statuses 均为空。空 statuses 的聚合 `pending` 不表示存在正在运行的检查，也未记为 CI 通过。现有发布工作流没有单独验证触发入口，按执行约定无需等待不存在的 PR 检查。Ego task space 1 已完成并关闭。
 

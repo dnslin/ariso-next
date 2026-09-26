@@ -6,12 +6,13 @@ import {
   useRef,
   useState,
   type RefCallback,
-  type ReactNode,
+  type ComponentProps,
 } from 'react';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
+import { DetailMoreActions } from './detail-more-actions';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
 import { TrashAction } from './trash-actions';
@@ -31,7 +32,8 @@ function DetailContent({
   selected,
   onSelect,
   revision,
-  actions,
+  trash,
+  onRefresh,
   mutationPending,
 }: {
   detail: Detail;
@@ -40,7 +42,8 @@ function DetailContent({
   selected: string;
   onSelect: (kind: string) => void;
   revision: number;
-  actions: ReactNode;
+  trash: ComponentProps<typeof TrashAction>;
+  onRefresh: () => void;
   mutationPending: boolean;
 }) {
   const [downloadMessage, setDownloadMessage] = useState('');
@@ -110,27 +113,34 @@ function DetailContent({
                 setDownloadMessage('');
               }}
             />
-            <div className="grid min-w-0 content-start gap-3 text-sm [overflow-wrap:anywhere]">
-              <h2 className="text-[22px] font-medium">{detail.displayName}</h2>
+            <div className="grid min-w-0 content-start gap-2.5 text-sm leading-[22px] [overflow-wrap:anywhere]">
+              <h2 className="text-[22px] leading-8 font-medium">
+                {detail.displayName}
+              </h2>
               <p>
                 {detail.visibility === 'private' ? '私有' : '公开'} ·{' '}
                 {processingLabels[detail.processingStatus]}
               </p>
-              <p>
-                {detail.width ?? '未知'} × {detail.height ?? '未知'} px · 原图{' '}
-                {detail.format.toUpperCase()} · {bytesLabel(detail.byteSize)}
-              </p>
-              <p>
-                {detail.storage.name}
-                {!detail.storage.enabled ? '（存储已停用）' : ''} ·{' '}
-                {new Date(detail.createdAt).toLocaleString('zh-CN')}
-              </p>
-              <p>原始名称：{detail.originalName}</p>
-              <p>图片 ID：{detail.id}</p>
-              <p>相册：{detail.albums.map((a) => a.name).join('、') || '无'}</p>
-              <p>
-                标签：{detail.tags.map((t) => t.displayName).join('、') || '无'}
-              </p>
+              <div>
+                <p>
+                  {detail.width ?? '未知'} × {detail.height ?? '未知'} px · 原图{' '}
+                  {detail.format.toUpperCase()} · {bytesLabel(detail.byteSize)}
+                </p>
+                <p>
+                  {detail.storage.name}
+                  {!detail.storage.enabled ? '（存储已停用）' : ''} ·{' '}
+                  {new Date(detail.createdAt).toLocaleString('zh-CN')}
+                </p>
+              </div>
+              <div>
+                <p>
+                  相册：{detail.albums.map((a) => a.name).join('、') || '无'}
+                </p>
+                <p>
+                  标签：
+                  {detail.tags.map((t) => t.displayName).join('、') || '无'}
+                </p>
+              </div>
               {detail.trashedAt || detail.deletionStatus ? (
                 <Alert status="warning">
                   <Alert.Content>
@@ -177,7 +187,7 @@ function DetailContent({
                   </Alert.Content>
                 </Alert>
               ) : null}
-              <div className="grid gap-2 rounded-lg bg-default p-3">
+              <div className="grid rounded-lg bg-default p-3 text-[13px] leading-normal">
                 <p>公开原图可能包含 GPS 和拍摄信息。</p>
                 <p>切换预览不会改变站点默认外链。</p>
                 {detail.visibility === 'private' ||
@@ -187,11 +197,15 @@ function DetailContent({
                   </p>
                 ) : null}
               </div>
+              <div className="text-xs text-muted">
+                <p>原始名称：{detail.originalName}</p>
+                <p>图片 ID：{detail.id}</p>
+              </div>
             </div>
           </div>
         </Modal.Body>
       ) : null}
-      <Modal.Footer className="grid shrink-0 gap-2 border-t border-border pt-3 pb-[max(0px,env(safe-area-inset-bottom))]">
+      <Modal.Footer className="grid shrink-0 grid-cols-1 gap-2 border-t border-border pt-3 pb-[max(0px,env(safe-area-inset-bottom))]">
         {downloadMessage && !mutationPending ? (
           <p
             role={downloadError ? 'alert' : 'status'}
@@ -200,11 +214,14 @@ function DetailContent({
             {downloadMessage}
           </p>
         ) : null}
-        <div className="grid grid-cols-2 gap-3 md:flex md:justify-end">
+        <div
+          data-testid="detail-actions"
+          className="grid w-full grid-cols-2 gap-3 md:flex md:justify-end"
+        >
           {!mutationPending ? (
             <>
               <Button
-                className="min-h-12 flex-1 rounded-lg md:max-w-50"
+                className="h-12 w-full flex-1 rounded-lg md:max-w-50"
                 isDisabled={
                   refreshing ||
                   !!detail.trashedAt ||
@@ -217,7 +234,7 @@ function DetailContent({
               </Button>
               <Button
                 variant="outline"
-                className="min-h-12 flex-1 rounded-lg md:max-w-50"
+                className="hidden h-12 w-full flex-1 rounded-lg md:flex md:max-w-50"
                 isDisabled={!version?.downloadPath || downloading || refreshing}
                 onPress={() => {
                   void download();
@@ -229,7 +246,22 @@ function DetailContent({
               </Button>
             </>
           ) : null}
-          {actions}
+          <div className="min-w-0 flex-1 md:max-w-50">
+            <DetailMoreActions
+              trash={trash}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              download={{
+                label: downloading
+                  ? '正在检查下载…'
+                  : `下载${version ? versionLabels[version.kind] : '当前版本'}`,
+                isDisabled: !version?.downloadPath || downloading || refreshing,
+                onDownload: () => {
+                  void download();
+                },
+              }}
+            />
+          </div>
         </div>
       </Modal.Footer>
     </>
@@ -374,38 +406,22 @@ export function LibraryDetail({
               revision={previewRevision}
               refreshing={query.isFetching || mutationPending}
               mutationPending={mutationPending}
-              actions={
-                <>
-                  <div className="min-w-0 md:w-36">
-                    <TrashAction
-                      record={query.data}
-                      operation="trash"
-                      onPending={onMutationPending}
-                      onUnavailable={(status) => {
-                        setUnavailable(status);
-                        if (status === 404)
-                          void client.invalidateQueries({
-                            queryKey: ['library'],
-                          });
-                      }}
-                      onVerified={(record) =>
-                        client.setQueryData(['library-detail', imageId], record)
-                      }
-                      onComplete={onTrashed}
-                    />
-                  </div>
-                  <Button
-                    variant="tertiary"
-                    className="min-h-12 rounded-lg md:w-36"
-                    isDisabled={query.isFetching || mutationPending}
-                    onPress={() => {
-                      void refreshDetail();
-                    }}
-                  >
-                    刷新详情
-                  </Button>
-                </>
-              }
+              trash={{
+                record: query.data,
+                operation: 'trash',
+                onPending: onMutationPending,
+                onUnavailable: (status) => {
+                  setUnavailable(status);
+                  if (status === 404)
+                    void client.invalidateQueries({ queryKey: ['library'] });
+                },
+                onVerified: (record) =>
+                  client.setQueryData(['library-detail', imageId], record),
+                onComplete: onTrashed,
+              }}
+              onRefresh={() => {
+                void refreshDetail();
+              }}
               onCopy={() => {
                 setCopyOpen(true);
                 void query.refetch();

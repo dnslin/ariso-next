@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
@@ -9,7 +9,8 @@ import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
 import { bytesLabel, stepLabels } from '../library/detail-labels';
-import { UploadResult } from './result';
+import { UploadResult, useUploadResult } from './result';
+import { TrashAction } from '../library/trash-actions';
 import type { UploadItem, UploadState } from './types';
 import type { UploadController } from './controller';
 
@@ -47,14 +48,31 @@ function UploadPreview({ url, name }: { url: string | null; name: string }) {
 function ProcessingOptions({
   item,
   onOpen,
+  query,
+  client,
+  mutationPending,
+  unavailable,
+  onPending,
+  onUnavailable,
 }: {
   item: UploadItem;
+  query: ReturnType<typeof useUploadResult>;
+  client: QueryClient;
+  mutationPending: boolean;
+  unavailable: boolean;
+  onPending: (pending: boolean) => void;
+  onUnavailable: (status: 401 | 404) => void;
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const [options, setOptions] = useState(false);
   const optionsTrigger = useRef<HTMLButtonElement | null>(null);
   return (
-    <Modal isOpen={options} onOpenChange={setOptions}>
+    <Modal
+      isOpen={options}
+      onOpenChange={(open) => {
+        if (!mutationPending) setOptions(open);
+      }}
+    >
       <Button
         ref={optionsTrigger}
         variant="outline"
@@ -62,7 +80,10 @@ function ProcessingOptions({
       >
         处理选项
       </Button>
-      <Modal.Backdrop>
+      <Modal.Backdrop
+        isDismissable={!mutationPending}
+        isKeyboardDismissDisabled={mutationPending}
+      >
         <Modal.Container placement="center" className="p-4">
           <Modal.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6">
             <Modal.Header>
@@ -85,13 +106,14 @@ function ProcessingOptions({
                 ) : null}
               </div>
               <p className="rounded-lg bg-default p-3 text-[13px]">
-                原图和已保存版本保留。可在图片详情中查看版本和移入回收站。
+                原图和已保存版本保留。移入回收站不会自动清理文件。
               </p>
             </Modal.Body>
             <Modal.Footer className="grid gap-4">
               <Button
                 variant="outline"
                 className="h-12 w-full rounded-lg text-sm font-normal"
+                isDisabled={mutationPending}
                 onPress={() => {
                   setOptions(false);
                   const trigger = optionsTrigger.current;
@@ -100,9 +122,34 @@ function ProcessingOptions({
               >
                 查看详情
               </Button>
+              {query.data && !query.isError && !unavailable ? (
+                <TrashAction
+                  record={query.data}
+                  operation="trash"
+                  triggerLabel="移入回收站"
+                  onPending={onPending}
+                  onUnavailable={onUnavailable}
+                  onVerified={(record) =>
+                    client.setQueryData(
+                      ['upload-result', item.imageId, item.state],
+                      record,
+                    )
+                  }
+                  onComplete={() => {
+                    setOptions(false);
+                    void client.invalidateQueries({ queryKey: ['library'] });
+                    void client.invalidateQueries({ queryKey: ['trash'] });
+                  }}
+                />
+              ) : unavailable ? (
+                <p role="alert">图片记录已不存在，无法回收。</p>
+              ) : (
+                <UploadResult query={query} />
+              )}
               <Button
                 variant="outline"
                 className="h-12 w-full rounded-lg text-sm font-normal"
+                isDisabled={mutationPending}
                 onPress={() => setOptions(false)}
               >
                 返回上传结果
@@ -129,7 +176,30 @@ export function UploadQueueItem({
   const [confirm, setConfirm] = useState(false);
   const queued = item.state === 'queued';
   const processingFailed = item.state === 'processing-failed';
-  const [serverPreview, setServerPreview] = useState<string | null>(null);
+  const [mutationPending, setMutationPending] = useState(false);
+  const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
+  const onPending = useCallback(
+    (pending: boolean) => {
+      if (pending)
+        void client.cancelQueries({
+          queryKey: ['upload-result', item.imageId, item.state],
+          exact: true,
+        });
+      setMutationPending(pending);
+    },
+    [client, item.imageId, item.state],
+  );
+  const query = useUploadResult(
+    item.imageId,
+    item.state,
+    client,
+    mutationPending || !!unavailable,
+  );
+  const serverPreview =
+    !mutationPending && !unavailable && !query.isError && !query.data?.trashedAt
+      ? (query.data?.versions.find((version) => version.kind === 'thumbnail')
+          ?.previewPath ?? null)
+      : null;
   const canCancel =
     !!item.sessionId &&
     !item.imageId &&
@@ -187,7 +257,25 @@ export function UploadQueueItem({
         >
           {item.imageId ? (
             processingFailed ? (
-              <ProcessingOptions item={item} onOpen={onOpen} />
+              <ProcessingOptions
+                item={item}
+                onOpen={onOpen}
+                query={query}
+                client={client}
+                mutationPending={mutationPending}
+                unavailable={!!unavailable}
+                onPending={onPending}
+                onUnavailable={(status) => {
+                  setUnavailable(status);
+                  setMutationPending(false);
+                  if (status === 401) {
+                    client.clear();
+                    window.location.replace(
+                      '/login?reason=expired&returnTo=%2Fupload',
+                    );
+                  }
+                }}
+              />
             ) : (
               <Button
                 variant="outline"
@@ -269,7 +357,8 @@ export function UploadQueueItem({
           已交给服务端处理，不能取消。关闭页面后处理仍会继续，可在图库查看。
         </p>
       ) : null}
-      {item.step && !processingFailed ? (
+      {item.step &&
+      (item.state === 'processing' || item.state === 'processing-queued') ? (
         <p className="text-sm">
           处理步骤：{stepLabels[item.step] ?? item.step}
         </p>
@@ -309,13 +398,12 @@ export function UploadQueueItem({
           清空结果不会中断清理。
         </p>
       ) : null}
-      {item.imageId ? (
-        <UploadResult
-          imageId={item.imageId}
-          state={item.state}
-          client={client}
-          onPreview={setServerPreview}
-        />
+      {unavailable === 404 ? (
+        <p role="alert" className="text-sm">
+          图片记录已不存在，无法回收。请在图库核对。
+        </p>
+      ) : item.imageId && !mutationPending ? (
+        <UploadResult query={query} />
       ) : null}
     </Card>
   );
