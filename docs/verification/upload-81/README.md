@@ -2,7 +2,7 @@
 
 2026-09-26，关联 [Issue #81](https://github.com/dnslin/ariso-next/issues/81)。需求归属保持 R-7.4-01、R-7.4-02、R-7.4-03、R-7.5-01、R-7.5-03、R-7.5-04、A-26.2-06；仅交付 M2 单文件本地路径，不关闭完整 UPLOAD-QUEUE。
 
-本轮[UI 还原整改与 PR 收尾](./ui-restoration.md#pr-收尾与后续-ui-安排2026-09-26)已完成当前 M2 范围的设计对照与最终复验。最新结果为单元 461 项、集成 507 项及完整浏览器套件通过。下列为原实施记录；全站首版 UI 尚未交付，不从本次范围扩大验收结论。
+本轮[UI 还原整改与 PR 收尾](./ui-restoration.md#pr-收尾与后续-ui-安排2026-09-26)已完成当前 M2 范围的设计对照与复验。随后独立审计发现上传自动查询停止的 P2，修复及新证据见[本页追加记录](#p2-上传自动核对修复2026-09-26)。下列为原实施记录；全站首版 UI 尚未交付，不从本次范围扩大验收结论。
 
 ## 前置与实现
 
@@ -82,3 +82,34 @@ PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-ma
 实际执行 `gh pr view 125 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/81-manual-upload`、提交的 `check-runs` / `status` API 及 `gh workflow list --all`。PR 状态 CLEAN；Actions 运行列表、check runs、commit statuses 均为空。空 statuses 的聚合 `pending` 不表示存在正在运行的检查，也未记为 CI 通过。现有发布工作流没有单独验证触发入口，按执行约定无需等待不存在的 PR 检查。Ego task space 1 已完成并关闭。
 
 未合并 PR、关闭 Issue、创建 Release、发布镜像、部署或删除分支/worktree。后续合并和清理由所有者决定。
+
+## P2 上传自动核对修复（2026-09-26）
+
+独立评审基于 `65f0484` 发现：保存阶段的状态 GET 尚未返回时，content 响应确认交接；该旧 GET 随后因版本过期被丢弃。原页面只在 item 变化时安排一次查询，若这次查询又因旧请求尚未结束而被去重跳过，就不再自动核对。服务器已 ready，页面仍可能停在“服务端排队”。原控制器单元测试末尾人工 `refresh()`，未覆盖页面能否自行继续查询。
+
+仅调整 `UploadScreen` 的轮询 effect：保存／排队／处理中持续调度，查询结束或被跳过后仍安排下一次，不依赖 item 快照变化。每轮沿用可见 2 秒、后台 10 秒间隔；离开轮询状态或卸载时清理定时器，并阻止在途查询结束后重新调度。控制器去重、迟到响应保护、本次 job 识别及未知结果的人工核对规则保持原样。未添加依赖，未改 UI 结构、样式、数据契约或可选的详情缓存建议。
+
+新增 `e2e/upload-polling.mjs` 并接入正式浏览器运行器。测试使用真实文件、服务、数据库和响应，只在浏览器边界延后 XHR 通知与状态 GET。旧 GET 持有超过前台查询间隔后释放，要求页面自动到达 ready 并核对数据库；还验证实际取消、清空后新文件遇到同类时序仍能自动完成。没有人工调用控制器、点击重试或刷新页面来救援。
+
+- [RED](./polling/red.json)：隔离复制的 `65f0484` 生产构建；旧 GET 释放后 8 秒仍为 processing-queued，只有 1 次状态 GET，预期 ready 断言失败。
+- [GREEN](./polling/green.json)：修复构建；两个场景均自动发出第 2 次状态 GET，页面和数据库均 ready。
+- 两次专项使用 Node 24.18.1、pnpm 11.19.0、macOS ARM64、现有 Ego Lite 的同一 TaskSpace 4。临时应用和数据与用户端口 3000 分离。运行命令为 `node /tmp/pr125-polling-browser-run.mjs <standalone目录> <报告目录>`；RED 输入是隔离的旧构建，GREEN 输入为 `.next/standalone`，报告分别为 `test-results/pr125-polling-red` / `test-results/pr125-polling-green`。该临时运行器只用于复现；可重复执行的正式入口为 `pnpm run test:browser`。
+
+本轮检查使用 Node 24.18.1 / pnpm 11.19.0：
+
+| 命令                                                                                                     | 结果                                                                       |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                         | 通过，无锁文件变化                                                         |
+| `pnpm run test:unit`                                                                                     | 30 文件、461 项通过                                                        |
+| `pnpm run typecheck`、`pnpm run lint`                                                                    | 通过                                                                       |
+| `pnpm run build`                                                                                         | 退出 0；已有可选依赖追踪警告仍存在                                         |
+| `pnpm run test:integration --maxWorkers=4`                                                               | 505 通过、2 项超时；均在未修改的 `analytics/count.test.ts`，未改超时或断言 |
+| `pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts`                   | 独立复核 13 项通过                                                         |
+| `pnpm run test:integration --maxWorkers=1`                                                               | 62 文件、507 项通过，退出 0；串行重跑期间无并行浏览器测试                  |
+| `pnpm run format:check`                                                                                  | 初查发现 screen 换行问题，格式化后完整复查通过                             |
+| `EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr125-p2-final pnpm run test:browser` | 退出 0；完整套件通过，包含两项轮询回归场景                                 |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check`                 | 120 任务、298 需求与 5 项拒绝夹具通过；差异检查通过                        |
+
+完整浏览器运行于 2026-09-26T11:53:30.508Z 至 12:02:42.714Z，见[运行报告](./polling/runner.json)、[轮询回归](./polling/full-upload-polling.json)、[上传行为与布局](./polling/upload.json)、[图库与详情](./polling/library.json)、[通用组件](./polling/ui-runner.json)。首次集成的两项超时保留[原始失败摘要](./polling/integration-first-failed.txt)；单项及完整串行复验均通过，没有跳过测试或放宽时限。
+
+代码审计核对持续调度、请求去重、终态／未知状态停止、卸载后的异步清理和 StrictMode 生命周期，未发现本次修复引入的新 Required 项。页面外观未变，沿用上方已确认设计对照；本轮证明自动恢复行为，不扩大视觉或设备验收范围。PR 修复期间保持草稿，适用检查完成后恢复待评审。未触发发布、部署或合并；双架构容器仍留待发布验证。

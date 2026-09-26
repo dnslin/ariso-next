@@ -95,21 +95,29 @@ export function UploadScreen(props: ScreenProps) {
       item.state,
     );
   const frozen = !!item && item.state !== 'queued';
+  const polling =
+    !!item &&
+    ['saving', 'processing-queued', 'processing'].includes(item.state);
   useEffect(() => {
-    if (
-      !controller ||
-      !item ||
-      !['saving', 'processing-queued', 'processing'].includes(item.state)
-    )
-      return;
-    const timer = setTimeout(
-      () => {
-        void controller.refresh();
-      },
-      document.hidden ? 10000 : 2000,
-    );
-    return () => clearTimeout(timer);
-  }, [controller, item]);
+    if (!controller || !polling) return;
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      timer = setTimeout(
+        async () => {
+          await controller.refresh();
+          // A skipped or stale read need not change the item; keep polling it.
+          if (!stopped) schedule();
+        },
+        document.hidden ? 10000 : 2000,
+      );
+    };
+    schedule();
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+    };
+  }, [controller, polling]);
   useEffect(() => {
     if (!item || terminal || item.imageId) return;
     const warn = (event: BeforeUnloadEvent) => {

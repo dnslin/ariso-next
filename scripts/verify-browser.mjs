@@ -20,6 +20,7 @@ for (const name of [
   'error-recovery.json',
   'library.json',
   'upload.json',
+  'upload-polling.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
   ),
@@ -312,6 +313,12 @@ try {
     if (width === 390) {
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
+      await runBrowser(
+        '../e2e/upload-polling.mjs',
+        identityConfig,
+        'upload-polling.log',
+      );
+      report.uploadPolling = 'passed';
       report.upload = 'passed';
       report.library = 'passed';
     }
