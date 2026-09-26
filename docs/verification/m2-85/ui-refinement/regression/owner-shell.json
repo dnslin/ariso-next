@@ -1,0 +1,1868 @@
+{
+  "status": "passed",
+  "checks": [
+    "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+    "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+    "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.",
+    "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+    "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+    "Fine-pointer hover moves only the upload cloud icon up 4px; reduced motion disables the displacement.",
+    "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+    "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+    "All real owner routes remove the workspace breadcrumb, paint the footer to workspace edges with responsive inner padding, and preserve keyboard focus without a pointer-triggered trash heading ring.",
+    "Upload/library/trash share all ten design menu entries; only the three implemented routes are links, and the remaining seven explain that they are not yet available.",
+    "Computed navigation text decoration is none, including hover; heading origins match across all three routes at desktop, phone and tablet widths.",
+    "Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.",
+    "Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu."
+  ],
+  "pages": [
+    {
+      "width": 1440,
+      "path": "/upload",
+      "heading": {
+        "x": 264,
+        "y": 28,
+        "width": 1144,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 1440,
+      "path": "/library",
+      "heading": {
+        "x": 264,
+        "y": 28,
+        "width": 1144,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 1440,
+      "path": "/trash",
+      "heading": {
+        "x": 264,
+        "y": 28,
+        "width": 90,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 390,
+      "path": "/upload",
+      "heading": {
+        "x": 16,
+        "y": 88,
+        "width": 358,
+        "height": 42
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 390,
+      "path": "/library",
+      "heading": {
+        "x": 16,
+        "y": 88,
+        "width": 358,
+        "height": 42
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 390,
+      "path": "/trash",
+      "heading": {
+        "x": 16,
+        "y": 89,
+        "width": 84,
+        "height": 42
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 768,
+      "path": "/upload",
+      "heading": {
+        "x": 16,
+        "y": 88,
+        "width": 736,
+        "height": 45
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 768,
+      "path": "/library",
+      "heading": {
+        "x": 16,
+        "y": 88,
+        "width": 736,
+        "height": 45
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "width": 768,
+      "path": "/trash",
+      "heading": {
+        "x": 16,
+        "y": 88,
+        "width": 90,
+        "height": 45
+      },
+      "headerHeight": 64,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": false
+        }
+      ],
+      "account": "OOwner站点所有者"
+    }
+  ],
+  "collapsed": [
+    {
+      "path": "/upload",
+      "heading": {
+        "x": 104,
+        "y": 28,
+        "width": 1200,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "path": "/library",
+      "heading": {
+        "x": 104,
+        "y": 28,
+        "width": 1304,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        }
+      ],
+      "account": "OOwner站点所有者"
+    },
+    {
+      "path": "/trash",
+      "heading": {
+        "x": 104,
+        "y": 28,
+        "width": 90,
+        "height": 45
+      },
+      "headerHeight": 0,
+      "entries": [
+        {
+          "href": null,
+          "label": "总览",
+          "accessibleName": "总览，尚未开放",
+          "description": "总览，尚未开放 总览尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/upload",
+          "label": "上传图片",
+          "accessibleName": "上传图片",
+          "description": "上传图片 上传图片",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/library",
+          "label": "图库",
+          "accessibleName": "图库",
+          "description": "图库 图库",
+          "icon": true,
+          "current": null,
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "相册",
+          "accessibleName": "相册，尚未开放",
+          "description": "相册，尚未开放 相册尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "标签",
+          "accessibleName": "标签，尚未开放",
+          "description": "标签，尚未开放 标签尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "分享管理",
+          "accessibleName": "分享管理，尚未开放",
+          "description": "分享管理，尚未开放 分享管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": "/trash",
+          "label": "回收站",
+          "accessibleName": "回收站",
+          "description": "回收站 回收站",
+          "icon": true,
+          "current": "page",
+          "disabled": false,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "访问统计",
+          "accessibleName": "访问统计，尚未开放",
+          "description": "访问统计，尚未开放 访问统计尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "存储管理",
+          "accessibleName": "存储管理，尚未开放",
+          "description": "存储管理，尚未开放 存储管理尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        },
+        {
+          "href": null,
+          "label": "站点设置",
+          "accessibleName": "站点设置，尚未开放",
+          "description": "站点设置，尚未开放 站点设置尚未开放",
+          "icon": true,
+          "current": null,
+          "disabled": true,
+          "decoration": "none",
+          "labelDecoration": "none",
+          "labelHidden": true
+        }
+      ],
+      "account": "OOwner站点所有者"
+    }
+  ],
+  "limitations": [
+    "Chromium viewport emulation does not constitute physical-device verification."
+  ],
+  "refinement": [
+    {
+      "width": 390,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 358,
+        "compositionWidth": 358,
+        "gap": 12,
+        "picker": {
+          "width": 358,
+          "height": 280,
+          "top": 176,
+          "bottom": 456
+        },
+        "settings": {
+          "width": 358,
+          "height": 294,
+          "top": 468
+        }
+      }
+    },
+    {
+      "width": 390,
+      "path": "/upload",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 390,
+      "path": "/library",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 390,
+      "path": "/trash",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 736,
+        "compositionWidth": 736,
+        "gap": 24,
+        "picker": {
+          "width": 352,
+          "height": 360,
+          "top": 183,
+          "bottom": 543
+        },
+        "settings": {
+          "width": 360,
+          "height": 360,
+          "top": 183
+        }
+      }
+    },
+    {
+      "width": 768,
+      "path": "/upload",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/library",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/trash",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 1144,
+        "compositionWidth": 1144,
+        "gap": 24,
+        "picker": {
+          "width": 760,
+          "height": 360,
+          "top": 123,
+          "bottom": 483
+        },
+        "settings": {
+          "width": 360,
+          "height": 360,
+          "top": 123
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/upload",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/library",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/trash",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 1200,
+        "compositionWidth": 1200,
+        "gap": 24,
+        "picker": {
+          "width": 816,
+          "height": 360,
+          "top": 123,
+          "bottom": 483
+        },
+        "settings": {
+          "width": 360,
+          "height": 360,
+          "top": 123
+        }
+      }
+    },
+    {
+      "width": 1920,
+      "path": "/upload",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/library",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/trash",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    }
+  ]
+}

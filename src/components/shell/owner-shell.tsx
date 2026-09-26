@@ -14,7 +14,6 @@ import {
   Tags,
   Trash2,
 } from 'lucide-react';
-import { Breadcrumbs } from '@heroui/react/breadcrumbs';
 import { AdminShell } from './admin-shell';
 import { SessionControls, useOwnerSession } from '../identity/session-controls';
 
@@ -88,25 +87,6 @@ export function OwnerShell({
       }
       footer={footer}
     >
-      <Breadcrumbs
-        aria-label="当前位置"
-        className="shell-breadcrumb mb-5 flex h-6 w-full items-center text-sm leading-5 text-muted md:mb-6 md:h-11"
-      >
-        <Breadcrumbs.Item>
-          {() => (
-            <span className="flex items-center gap-1.5">
-              工作空间<span aria-hidden="true">/</span>
-            </span>
-          )}
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>
-          {() => (
-            <span aria-current="page">
-              {navigation.find((item) => item.href === pathname)?.label}
-            </span>
-          )}
-        </Breadcrumbs.Item>
-      </Breadcrumbs>
       {children}
     </AdminShell>
   );

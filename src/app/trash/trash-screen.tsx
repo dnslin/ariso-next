@@ -24,6 +24,8 @@ import type { TrashPage } from '../../server/library/trash-types';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { TrashRecord } from './trash-record';
 import { TrashThumbnail } from './trash-thumbnail';
+import { AccessDisclosure } from '../../components/library/access-disclosure';
+import { ArrowLeft } from 'lucide-react';
 
 async function readPage(page: number, signal: AbortSignal): Promise<TrashPage> {
   const response = await fetch(`/api/trash?page=${page}`, {
@@ -72,7 +74,8 @@ export function TrashScreen({
     id: string;
     status: 401 | 404;
   } | null>(null);
-  const trigger = useRef<HTMLElement | null>(null);
+  const triggerId = useRef<string | null>(null);
+  const previousImageId = useRef(imageId);
   const list = useQuery(
     {
       queryKey: ['trash', page],
@@ -106,11 +109,13 @@ export function TrashScreen({
     );
   }, [client, expired]);
   useEffect(() => {
+    const returningFromRecord = previousImageId.current !== null && !imageId;
+    previousImageId.current = imageId;
+    if (!imageId && !returningFromRecord) return;
     const target = imageId
       ? document.getElementById('trash-record-title')
-      : trigger.current?.isConnected
-        ? trigger.current
-        : document.getElementById('trash-title');
+      : (document.getElementById(`trash-record-${triggerId.current}`) ??
+        document.getElementById('trash-title'));
     target?.focus({ preventScroll: true });
   }, [imageId, detail.isSuccess]);
 
@@ -150,13 +155,6 @@ export function TrashScreen({
       footer={
         imageId ? (
           <div className="flex w-full items-end gap-3 md:justify-end [&>div]:flex-1 md:[&>div]:max-w-60">
-            <Button
-              variant="outline"
-              className="min-h-12 flex-1 rounded-lg md:max-w-50"
-              onPress={closeRecord}
-            >
-              返回回收站
-            </Button>
             {record ? (
               <TrashAction
                 key={record.id}
@@ -206,6 +204,17 @@ export function TrashScreen({
     >
       {imageId ? (
         <>
+          {!record ? (
+            <Button
+              variant="outline"
+              className="mb-5 min-h-11 rounded-lg"
+              aria-label="返回回收站列表"
+              onPress={closeRecord}
+            >
+              <ArrowLeft size={16} aria-hidden />
+              返回
+            </Button>
+          ) : null}
           {missing ? (
             <p role="alert">图片记录已不存在，无法恢复。请返回回收站。</p>
           ) : null}
@@ -274,9 +283,10 @@ export function TrashScreen({
               </Alert.Content>
             </Alert>
           ) : null}
-          <p className="rounded-lg bg-default p-3 text-sm">
-            预览仅登录的管理员可见，原有外链仍不可访问。点击图片查看详情或恢复。
-          </p>
+          <AccessDisclosure label="仅管理员可见">
+            <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
+            <p>恢复后保留原 ID、可见性和仍存在的相册与标签关系。</p>
+          </AccessDisclosure>
           {list.isPending ? (
             <p role="status">
               <Spinner size="sm" />
@@ -292,9 +302,10 @@ export function TrashScreen({
                       <Button
                         variant="ghost"
                         data-testid={`trash-record-${item.id}`}
+                        id={`trash-record-${item.id}`}
                         className="grid h-auto min-h-20 w-full grid-cols-1 justify-items-start gap-1 whitespace-normal rounded-lg px-0 py-3 text-left text-sm font-normal [overflow-wrap:anywhere] md:min-h-18 md:grid-cols-3 md:items-center md:gap-4"
-                        onPress={(event) => {
-                          trigger.current = event.target as HTMLElement;
+                        onPress={() => {
+                          triggerId.current = item.id;
                           setResult(null);
                           const url = new URL(window.location.href);
                           url.searchParams.set('image', item.id);

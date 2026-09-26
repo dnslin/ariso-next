@@ -1,3 +1,7 @@
+import {
+  verifyAccessDisclosure,
+  verifyNaturalPreview,
+} from './ui-refinement.mjs';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -254,6 +258,12 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.evaluate(() => window.__detailRelease());
   await page.waitForSelector('[data-testid="detail-body"]');
+  await verifyAccessDisclosure(
+    page,
+    'loc=role:button[name*="查看访问说明"]',
+    report,
+  );
+  await verifyNaturalPreview(page, report);
   await interceptDetail('fail');
   await menuAction('刷新详情');
   await page.waitForFunction(() =>
@@ -285,6 +295,32 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   assert.equal(
     new URL(await page.url()).searchParams.get('image'),
     'library-007',
+  );
+  assert.equal(
+    await page.evaluate(() => {
+      const tab = [...document.querySelectorAll('[role="tab"]')].find(
+        (node) => node.textContent.trim() === '水印图',
+      );
+      return (
+        tab?.getAttribute('aria-disabled') === 'true' || tab?.disabled === true
+      );
+    }),
+    true,
+    'Unsaved watermark tab remains disabled',
+  );
+  await page.focus('loc=role:tab[name="原图"]');
+  await page.keyboard.press('Enter');
+  for (const label of ['压缩图', '缩略图', '原图']) {
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction((label) => {
+      const tab = document.querySelector('[role="tab"][aria-selected="true"]');
+      return (
+        tab?.textContent.trim() === label && document.activeElement === tab
+      );
+    }, label);
+  }
+  report.checks.push(
+    'Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.',
   );
   await page.keyboard.press('Escape');
   await page.waitForFunction(

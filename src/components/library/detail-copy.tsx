@@ -196,9 +196,10 @@ export function DetailCopy({
           <Modal.Footer>
             <Button
               className="w-full"
+              aria-label={manual !== null ? '返回复制选项' : closeLabel}
               onPress={() => (manual !== null ? setManual(null) : onClose())}
             >
-              {manual !== null ? '返回复制选项' : closeLabel}
+              返回
             </Button>
           </Modal.Footer>
         </Modal.Dialog>

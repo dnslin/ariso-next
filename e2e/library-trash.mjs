@@ -1,4 +1,8 @@
 import assert from 'node:assert/strict';
+import {
+  verifyAccessDisclosure,
+  verifyNaturalPreview,
+} from './ui-refinement.mjs';
 import { verifyLibraryTrashRace } from './library-trash-race.mjs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -302,6 +306,21 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     'A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.',
   );
   await layouts('list');
+  await page.focus('[data-testid="trash-record-library-007"]');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-testid="trash-detail"]');
+  await page.click(button('返回回收站列表'));
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="trash-detail"]'),
+  );
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="trash-record-library-007"]'),
+  );
+  report.checks.push(
+    'Opening a trash record and using its top return control restores focus to the original record.',
+  );
   await page.click('[data-testid="trash-record-library-007"]');
   await page.waitForSelector('[data-testid="trash-detail"]');
   await page.waitForFunction(() => {
@@ -316,6 +335,12 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     ).status,
     401,
   );
+  await verifyAccessDisclosure(
+    page,
+    'loc=role:button[name="仅管理员可见"]',
+    report,
+  );
+  await verifyNaturalPreview(page, report);
   await layouts('record');
   assert.equal(
     await page.evaluate(() =>
@@ -552,7 +577,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     ),
     true,
   );
-  await page.click(button('返回回收站'));
+  await page.click(button('返回回收站列表'));
   await page.waitForSelector('[data-testid="trash-record-library-007"]');
   await page.click('[data-testid="trash-record-library-007"]');
   await page.waitForFunction(() =>

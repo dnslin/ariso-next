@@ -1,5 +1,7 @@
 # T-CP-M2 本地图床核心冒烟关卡
 
+最新进展：用户批准的图库、回收站、上传与公共布局精简见 [2026-09-27 实施与证据](./ui-refinement/README.md)。下文保留此前轮次的实际结果；不将旧截图作为新设计验收。
+
 2026-09-26；[Issue #85](https://github.com/dnslin/ariso-next/issues/85)。范围继承[任务卡](../../tasks/acceptance-tasks.md#t-cp-m2-本地图床核心冒烟关卡)，执行边界继承[任务执行约定](../../tasks/execution.md)。本记录仅覆盖本地 JPEG/PNG 切片，不关闭全格式、S3、完整上传队列或全站设计验收。
 
 ## 前置与实施范围

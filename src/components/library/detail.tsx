@@ -18,6 +18,7 @@ import { DetailReadError, readDetail } from './read-detail';
 import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
+import { AccessDisclosure } from './access-disclosure';
 import {
   bytesLabel,
   processingLabels,
@@ -101,7 +102,7 @@ function DetailContent({
       {!mutationPending ? (
         <Modal.Body
           data-testid="detail-body"
-          className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 md:py-2"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 md:py-2 md:[container-type:size]"
         >
           <div className="grid min-w-0 gap-4 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-6">
             <DetailPreview
@@ -117,10 +118,21 @@ function DetailContent({
               <h2 className="text-[22px] leading-8 font-medium">
                 {detail.displayName}
               </h2>
-              <p>
-                {detail.visibility === 'private' ? '私有' : '公开'} ·{' '}
-                {processingLabels[detail.processingStatus]}
-              </p>
+              <AccessDisclosure
+                label={detail.visibility === 'private' ? '私有' : '公开'}
+              >
+                <p>
+                  公开原图可能包含 GPS
+                  和拍摄信息。复制或下载前请确认分享范围。切换预览不会改变站点默认外链。
+                </p>
+                {detail.visibility === 'private' ||
+                detail.processingStatus !== 'ready' ? (
+                  <p>
+                    原图和已保存版本仍可供所有者使用；外部访客无法访问私有或未就绪图片。
+                  </p>
+                ) : null}
+              </AccessDisclosure>
+              <p>{processingLabels[detail.processingStatus]}</p>
               <div>
                 <p>
                   {detail.width ?? '未知'} × {detail.height ?? '未知'} px · 原图{' '}
@@ -187,16 +199,6 @@ function DetailContent({
                   </Alert.Content>
                 </Alert>
               ) : null}
-              <div className="grid rounded-lg bg-default p-3 text-[13px] leading-normal">
-                <p>公开原图可能包含 GPS 和拍摄信息。</p>
-                <p>切换预览不会改变站点默认外链。</p>
-                {detail.visibility === 'private' ||
-                detail.processingStatus !== 'ready' ? (
-                  <p>
-                    原图和已保存版本仍可供所有者使用；外部访客无法访问私有或未就绪图片。
-                  </p>
-                ) : null}
-              </div>
               <div className="text-xs text-muted">
                 <p>原始名称：{detail.originalName}</p>
                 <p>图片 ID：{detail.id}</p>
@@ -205,7 +207,12 @@ function DetailContent({
           </div>
         </Modal.Body>
       ) : null}
-      <Modal.Footer className="grid shrink-0 grid-cols-1 gap-2 border-t border-border pt-3 pb-[max(0px,env(safe-area-inset-bottom))]">
+      <Modal.Footer className="-mx-4 -mb-4 grid shrink-0 grid-cols-1 gap-2 border-t border-border bg-background px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))] md:-mx-6 md:-mb-6 md:px-6 md:pb-6">
+        {selected === 'original' &&
+        version?.downloadPath &&
+        !mutationPending ? (
+          <p className="text-xs text-muted">原图可能包含 GPS 和拍摄信息。</p>
+        ) : null}
         {downloadMessage && !mutationPending ? (
           <p
             role={downloadError ? 'alert' : 'status'}
@@ -359,9 +366,10 @@ export function LibraryDetail({
               <Button
                 variant="outline"
                 className="min-h-11 rounded-lg"
+                aria-label={closeLabel}
                 onPress={onClose}
               >
-                {closeLabel}
+                返回
               </Button>
             </div>
           </Modal.Header>

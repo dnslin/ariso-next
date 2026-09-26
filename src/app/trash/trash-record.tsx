@@ -2,8 +2,8 @@
 
 import { Button } from '@heroui/react/button';
 import { ArrowLeft } from 'lucide-react';
-import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
+import { AccessDisclosure } from '../../components/library/access-disclosure';
 import {
   initialPreview,
   PreviewImage,
@@ -52,58 +52,57 @@ export function TrashRecord({
   return (
     <section
       data-testid="trash-detail"
-      className="grid min-w-0 gap-5 [overflow-wrap:anywhere]"
+      className="grid min-w-0 max-w-300 gap-5 [overflow-wrap:anywhere]"
     >
       <Button
-        variant="tertiary"
+        variant="outline"
         className="min-h-11 justify-self-start rounded-lg px-3 text-sm"
         aria-label="返回回收站列表"
         onPress={onBack}
       >
         <ArrowLeft size={16} aria-hidden />
-        返回回收站
+        返回
       </Button>
       <h1
         id="trash-record-title"
         tabIndex={-1}
-        className="text-3xl font-medium"
+        className="text-[28px] font-medium md:text-[30px]"
       >
         回收记录
       </h1>
       <p>
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>
-      <p className="rounded-lg bg-default p-3 text-sm">
-        预览仅登录的管理员可见，原有外链仍不可访问。恢复后保留原 ID 和链接。
-      </p>
-      {preview ? (
-        <PreviewImage
-          key={`${record.id}:${preview.previewPath}`}
-          version={preview}
-          name={record.displayName}
-        />
-      ) : null}
-      <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 md:py-4">
-        <Card.Content>
-          <dl>
-            {rows.map(([label, value, note]) => (
-              <div
-                key={label}
-                className="min-h-18 pb-4 text-sm md:grid md:min-h-0 md:grid-cols-3 md:gap-4 md:py-6"
-              >
-                <dt>{label}</dt>
-                <dd className="md:col-span-2 md:grid md:grid-cols-2 md:gap-4">
-                  <span>{value}</span>
-                  <span aria-hidden className="md:hidden">
-                    {' · '}
-                  </span>
-                  <span>{note}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Card.Content>
-      </Card>
+      <AccessDisclosure label="仅管理员可见">
+        <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
+        <p>
+          恢复后保留原 ID 和链接，内容访问遵循原可见性、处理结果和存储状态。
+        </p>
+      </AccessDisclosure>
+      <div className="grid min-w-0 items-start gap-6 md:grid-cols-[minmax(0,4fr)_minmax(0,3fr)]">
+        {preview ? (
+          <PreviewImage
+            key={`${record.id}:${preview.previewPath}`}
+            version={preview}
+            name={record.displayName}
+          />
+        ) : null}
+        <dl className="min-w-0 py-2">
+          {rows.map(([label, value, note]) => (
+            <div
+              key={label}
+              className="min-h-18 pb-4 text-sm md:flex md:items-start md:gap-2 md:py-5"
+            >
+              <dt className="shrink-0">{label}</dt>
+              <dd className="min-w-0">
+                <span>{value}</span>
+                <span aria-hidden>{' · '}</span>
+                <span>{note}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       {!record.storage.enabled ? (
         <Alert status="warning">
           <Alert.Content>

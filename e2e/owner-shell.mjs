@@ -1,3 +1,4 @@
+import { verifyUIRefinement } from './ui-refinement.mjs';
 import { assertNoBrowserErrors } from './browser-errors.mjs';
 
 // Call after owner login, before fault injection. Uses real application routes.
@@ -125,19 +126,19 @@ export async function verifyOwnerShell(page, config) {
       );
     }
   }
-  async function breadcrumb() {
-    await page.waitForSelector('.shell-breadcrumb');
+  async function contentPosition() {
+    await page.waitForSelector('main h1');
     return page.evaluate(() => {
-      const node = document.querySelector('.shell-breadcrumb');
+      const node = document.querySelector('main h1');
       const rect = node.getBoundingClientRect();
       return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
     });
   }
-  function sameBreadcrumb(actual, expected) {
-    for (const key of ['x', 'y', 'width', 'height'])
+  function sameContentPosition(actual, expected) {
+    for (const key of ['x', 'y'])
       assert.ok(
         Math.abs(actual[key] - expected[key]) <= 1,
-        `Shared breadcrumb ${key}: ${actual[key]} versus ${expected[key]}`,
+        `Shared heading origin ${key}: ${actual[key]} versus ${expected[key]}`,
       );
   }
   async function sidebarWidth(width) {
@@ -170,9 +171,9 @@ export async function verifyOwnerShell(page, config) {
         await page.waitForSelector(navigationDialog);
       };
       for (const path of routes) {
-        const position = await breadcrumb();
+        const position = await contentPosition();
         if (!baseline) baseline = position;
-        sameBreadcrumb(position, baseline);
+        sameContentPosition(position, baseline);
         await openNavigation();
         const actual = await readNavigation(scope);
         if (width < 1200)
@@ -256,7 +257,7 @@ export async function verifyOwnerShell(page, config) {
             `owner-shell-${path.slice(1)}-${width}.png`,
           ),
         });
-        report.pages.push({ width, path, breadcrumb: position, ...actual });
+        report.pages.push({ width, path, heading: position, ...actual });
         const next =
           path === '/upload'
             ? '/library'
@@ -314,16 +315,16 @@ export async function verifyOwnerShell(page, config) {
           await sidebarWidth(72);
           const actual = await readNavigation('.shell-navigation');
           verifyNavigation(actual, path, true);
-          const position = await breadcrumb();
+          const position = await contentPosition();
           if (!compactBaseline) compactBaseline = position;
-          sameBreadcrumb(position, compactBaseline);
+          sameContentPosition(position, compactBaseline);
           await page.screenshot({
             path: join(
               config.output,
               `owner-shell-collapsed-${path.slice(1)}.png`,
             ),
           });
-          report.collapsed.push({ path, breadcrumb: position, ...actual });
+          report.collapsed.push({ path, heading: position, ...actual });
           await page.reload();
           await sidebarWidth(72);
           await page.waitForSelector(button('展开侧栏'));
@@ -473,10 +474,11 @@ export async function verifyOwnerShell(page, config) {
     report.checks.push(
       'At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.',
     );
+    await verifyUIRefinement({ page, config, report });
     await assertNoBrowserErrors(page);
     report.checks.push(
       'Upload/library/trash share all ten design menu entries; only the three implemented routes are links, and the remaining seven explain that they are not yet available.',
-      'Computed navigation text decoration is none, including hover; breadcrumb rectangles match across all three routes at desktop, phone and tablet widths.',
+      'Computed navigation text decoration is none, including hover; heading origins match across all three routes at desktop, phone and tablet widths.',
       'Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.',
       'Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu.',
     );

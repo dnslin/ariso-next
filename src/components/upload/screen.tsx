@@ -11,7 +11,7 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
-import { CloudUpload } from 'lucide-react';
+import { CheckCircle2, CloudUpload } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
 import { DetailReadError } from '../library/read-detail';
@@ -225,7 +225,7 @@ export function UploadScreen(props: ScreenProps) {
       }
     >
       <section
-        className="grid min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg"
+        className="grid w-full min-w-0 max-w-300 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg"
         aria-labelledby="upload-title"
       >
         <div
@@ -234,13 +234,30 @@ export function UploadScreen(props: ScreenProps) {
           <h1
             id="upload-title"
             tabIndex={-1}
-            className="text-[28px] font-medium leading-normal md:text-[30px]"
+            className="flex items-center gap-3 text-[28px] font-medium leading-normal md:text-[30px]"
           >
             {terminal
               ? '本次上传结果'
               : item?.state === 'saving'
                 ? '正在核对上传结果'
                 : '上传图片'}
+            {item?.state === 'uploading' ? (
+              <span
+                aria-hidden
+                className="motion-safe:animate-pulse"
+                data-testid="upload-motion"
+              >
+                <CloudUpload size={28} />
+              </span>
+            ) : item?.state === 'ready' ? (
+              <span
+                aria-hidden
+                className="text-success transition-opacity duration-200 ease-(--ease-out) starting:opacity-0"
+                data-testid="upload-success-icon"
+              >
+                <CheckCircle2 size={28} />
+              </span>
+            ) : null}
           </h1>
           <p
             className={
@@ -269,9 +286,20 @@ export function UploadScreen(props: ScreenProps) {
           }}
         />
         {!frozen ? (
-          <div className="grid min-w-0 gap-3 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:gap-6">
-            <Card className="min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 md:p-6 text-center shadow-none md:min-h-70">
-              <CloudUpload size={40} aria-hidden />
+          <div
+            data-testid="upload-composition"
+            className="grid min-w-0 gap-3 md:grid-cols-[minmax(0,1fr)_360px] md:gap-6"
+          >
+            <Card
+              data-testid="upload-picker"
+              className="group/upload min-h-70 min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 md:p-6 text-center shadow-none md:min-h-90"
+            >
+              <span
+                aria-hidden
+                className="transition-transform duration-150 ease-(--ease-out) motion-reduce:transition-none motion-safe:[@media(hover:hover)_and_(pointer:fine)]:group-hover/upload:-translate-y-1"
+              >
+                <CloudUpload size={40} />
+              </span>
               <h2 className="text-[26px] font-medium">选择要上传的图片</h2>
               <p className="text-sm">
                 JPEG、PNG · 单文件最大 {bytesLabel(settings.maxFileBytes)}

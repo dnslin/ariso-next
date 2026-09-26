@@ -291,6 +291,25 @@ try {
   await released();
   await layouts('ready');
   assert.deepEqual(
+    await page.evaluate(() => {
+      const icon = document.querySelector(
+        '[data-testid="upload-success-icon"]',
+      );
+      const svg = icon?.querySelector('svg').getBoundingClientRect();
+      return {
+        count: document.querySelectorAll('[data-testid="upload-success-icon"]')
+          .length,
+        inTitle: !!icon?.closest('#upload-title'),
+        width: svg?.width,
+        height: svg?.height,
+        pulsing: !!document.querySelector('[data-testid="upload-motion"]'),
+      };
+    }),
+    { count: 1, inTitle: true, width: 28, height: 28, pulsing: false },
+    'Success decoration stays in the title and never retains the uploading pulse',
+  );
+
+  assert.deepEqual(
     await page.evaluate(() =>
       [...document.querySelectorAll('[data-testid="upload-item"] button')].map(
         (node) => node.textContent.trim(),
@@ -681,13 +700,46 @@ try {
         window.__uploadReleaseLoad = () => loaded.call(this, event);
       };
       XMLHttpRequest.prototype.send = send;
-      return send.call(this, body);
+      window.__uploadReleaseSend = () => {
+        delete window.__uploadReleaseSend;
+        send.call(this, body);
+      };
     };
   });
   await select();
   await page.click('loc=role:button[name*="可见性"]');
   await page.click('loc=role:option[name="私有"]');
   await page.click(button('开始上传'));
+  await page.waitForFunction(
+    () => typeof window.__uploadReleaseSend === 'function',
+  );
+  await state('uploading');
+  try {
+    for (const motion of ['no-preference', 'reduce']) {
+      await page.cdp('Emulation.setEmulatedMedia', {
+        features: [{ name: 'prefers-reduced-motion', value: motion }],
+      });
+      await page.waitForFunction((motion) => {
+        const icon = document.querySelector('[data-testid="upload-motion"]');
+        return (
+          icon &&
+          getComputedStyle(icon).animationName ===
+            (motion === 'reduce' ? 'none' : 'pulse')
+        );
+      }, motion);
+      assert.equal(
+        await page.evaluate(
+          () => !!document.querySelector('[data-testid="upload-success-icon"]'),
+        ),
+        false,
+      );
+    }
+    report.checks.push(
+      'Held real XHR dispatch exposes uploading: only the title icon pulses, reduced motion disables the pulse, and no success icon appears early.',
+    );
+  } finally {
+    await page.evaluate(() => window.__uploadReleaseSend?.());
+  }
   await page.waitForFunction(
     () => typeof window.__uploadReleaseLoad === 'function',
   );
