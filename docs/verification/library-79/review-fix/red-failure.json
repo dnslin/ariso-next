@@ -1,0 +1,17 @@
+{
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: normal: failure of the pre-write GET must not unmount the in-flight trash action\n\nfalse !== true\n\n    at verifyLibraryTrashRace (file:///Volumes/data/project/ariso-issue-79/e2e/library-trash-race.mjs:110:16)\n    at async verifyLibraryTrash (file:///Volumes/data/project/ariso-issue-79/e2e/library-trash.mjs:59:3)\n    at async file:////[eval2]:423:3",
+  "trashRaceFailure": {
+    "mode": "normal",
+    "url": "http://ariso-60855.localhost:60855/library?image=library-007",
+    "state": {
+      "reads": 1,
+      "writes": [200],
+      "oldReadSettled": true,
+      "oldReadAborted": false,
+      "confirmationPresent": false,
+      "text": "图片详情刷新详情返回图库图片详情读取失败连接中断，无法读取图片详情，请检查网络后重试。 暂不展示旧内容，请刷新详情。"
+    }
+  },
+  "source": "test-results/browser-race-red/library.json (failure fields extracted; preceding layout data omitted)"
+}

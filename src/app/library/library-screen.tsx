@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Images, LayoutDashboard } from 'lucide-react';
+import { Images, LayoutDashboard, Trash2 } from 'lucide-react';
 import { AdminShell } from '../../components/shell/admin-shell';
 import { SessionControls } from '../../components/identity/session-controls';
+import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
 import { LibraryCard } from './library-card';
@@ -57,6 +58,28 @@ export function LibraryScreen({
   email: string;
 }) {
   const detail = useDetailNavigation();
+  const [notice, setNotice] = useState('');
+  function onTrashed(record: Detail) {
+    void client.cancelQueries({ queryKey: ['library'] });
+    client.setQueriesData<{ pages: LibraryPage[]; pageParams: unknown[] }>(
+      { queryKey: ['library'] },
+      (data) =>
+        data
+          ? {
+              ...data,
+              pages: data.pages.map((page) => ({
+                ...page,
+                items: page.items.filter((item) => item.id !== record.id),
+              })),
+            }
+          : data,
+    );
+    setNotice(
+      `已将 ${record.displayName} 移入回收站。文件仍占用空间，不会自动清理。`,
+    );
+    detail.close();
+    void client.invalidateQueries({ queryKey: ['library'] });
+  }
   // 管理数据只活在当前图库页面；离开或失效后不保留私有卡片缓存。
   const [client] = useState(() => new QueryClient());
   const query = useInfiniteQuery(
@@ -118,6 +141,7 @@ export function LibraryScreen({
       navigation={[
         { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
         { href: '/library', label: '图库', icon: <Images /> },
+        { href: '/trash', label: '回收站', icon: <Trash2 /> },
       ]}
       user={
         <div className="grid gap-3 [&_.button]:min-h-11">
@@ -135,6 +159,7 @@ export function LibraryScreen({
         className="grid min-w-0 gap-5 xl:gap-6"
         aria-labelledby="library-title"
       >
+        {notice ? <p role="status">{notice}</p> : null}
         <p className="hidden text-sm md:block">工作空间 / 图库</p>
         <div className="grid gap-1.5">
           <h1 id="library-title" tabIndex={-1} className="text-3xl font-medium">
@@ -241,6 +266,7 @@ export function LibraryScreen({
           imageId={detail.imageId}
           client={client}
           onClose={detail.close}
+          onTrashed={onTrashed}
           dialogRef={detail.dialogRef}
         />
       ) : null}

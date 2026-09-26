@@ -6,6 +6,9 @@ const { identitySql } = await import(config.identitySessionScript);
 const { seedLibraryDetail, verifyLibraryDetail } = await import(
   config.libraryDetailScript
 );
+const { verifyLibraryTrash } = await import(
+  new URL('./library-trash.mjs', config.libraryDetailScript).href
+);
 const task = await taskSpace(config.spaceId);
 const page = task.page('p1');
 const report = {
@@ -416,9 +419,19 @@ try {
   await page.click('loc=role:button[name="重试加载"]');
   await count(40);
   await verifyLibraryDetail({ page, task, config, sql, report });
+  await verifyLibraryTrash({ page, config, sql, report });
   await sql(`UPDATE session SET expires_at = ${Date.now() - 1}`);
-  await page.click('loc=role:button[name="刷新图库"]');
+  try {
+    await page.click('loc=role:button[name="刷新图库"]');
+  } catch (error) {
+    // Ego may inspect the click receipt after the real 401 redirect destroys
+    // its old execution context. Validate the destination below; other input
+    // errors still fail the suite.
+    if (!String(error).includes('Cannot find context with specified id'))
+      throw error;
+  }
   await page.waitForSelector('#email');
+  assert.equal(new URL(await page.url()).pathname, '/login');
   assert.equal(new URL(await page.url()).searchParams.get('reason'), 'expired');
   report.checks.push(
     'Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login.',
