@@ -4,6 +4,28 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { setTimeout as delay } from 'node:timers/promises';
 
+/** Open the current account controls without toggling an already open popover. */
+export async function openIdentityAccountMenu(page) {
+  const opened = await page.evaluate(() => {
+    const dialog = document.querySelector(
+      '[role="dialog"][aria-label="当前账号"]',
+    );
+    return !!dialog?.getClientRects().length;
+  });
+  if (opened) return;
+  const needsNavigation = await page.evaluate(
+    () =>
+      innerWidth < 1200 &&
+      !document
+        .querySelector('[role="dialog"][aria-label="导航菜单"]')
+        ?.getClientRects().length,
+  );
+  if (needsNavigation) await page.click('loc=role:button[name="菜单"]');
+  await page.waitForSelector('loc=role:button[name="账号菜单"]');
+  await page.click('loc=role:button[name="账号菜单"]');
+  await page.waitForSelector('loc=role:button[name="退出登录"]');
+}
+
 // Mutations only affect the runner's disposable real database.
 export async function identitySql(config, statement) {
   const { stdout } = await promisify(execFile)(
@@ -218,7 +240,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
     await page.focus('loc=role:button[name="登录"]');
     await page.keyboard.press('Enter');
     await page.waitForURL(`${config.origin}/admin`);
-    await page.waitForSelector('loc=role:button[name="退出登录"]');
+    await openIdentityAccountMenu(page);
   };
   const post = (password) =>
     page.fetch('/api/auth/sign-in/email', {
@@ -333,11 +355,12 @@ export async function verifyIdentitySession(page, config, checks = []) {
     "CREATE TRIGGER reject_browser_logout BEFORE DELETE ON session BEGIN SELECT RAISE(ABORT, 'injected browser logout deletion failure'); END",
   );
   try {
+    await openIdentityAccountMenu(page);
     await page.focus('loc=role:button[name="退出登录"]');
     await page.keyboard.press('Enter');
     await page.waitForFunction(() =>
       document
-        .querySelector('[role="alert"]')
+        .querySelector('[role="dialog"][aria-label="当前账号"] [role="alert"]')
         ?.textContent.includes('退出失败（HTTP 500）'),
     );
     assert.equal(new URL(await page.url()).pathname, '/admin');
@@ -369,7 +392,10 @@ export async function verifyIdentitySession(page, config, checks = []) {
     assert.ok(
       (
         await page.evaluate(
-          () => document.querySelector('[role="alert"]')?.textContent,
+          () =>
+            document.querySelector(
+              '[role="dialog"][aria-label="当前账号"] [role="alert"]',
+            )?.textContent,
         )
       )?.includes('退出失败（HTTP 500）'),
       'A successful background session check must preserve the failed logout message',
@@ -418,6 +444,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
     window.dispatchEvent(new Event('focus'));
   });
   await page.waitForFunction(() => window.__identityBackgroundStarted);
+  await openIdentityAccountMenu(page);
   await page.focus('loc=role:button[name="退出登录"]');
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => window.__identityBackgroundSettled);

@@ -39,7 +39,7 @@ export function AdminShell({
 
   useEffect(() => {
     if (!open) return;
-    const desktop = window.matchMedia('(min-width: 768px)');
+    const desktop = window.matchMedia('(min-width: 1200px)');
     const closeOnResize = () => {
       if (desktop.matches) {
         setOpen(false);
@@ -53,7 +53,7 @@ export function AdminShell({
   const menuRef = useCallback((node: HTMLElement | null) => {
     if (node) return;
     requestAnimationFrame(() => {
-      if (window.matchMedia('(min-width: 768px)').matches) {
+      if (window.matchMedia('(min-width: 1200px)').matches) {
         document
           .querySelector<HTMLElement>(
             '.shell-navigation [aria-current="page"], .shell-navigation .shell-brand',
@@ -86,7 +86,7 @@ export function AdminShell({
       <Link href="#main-content" className="skip-link">
         跳到主要内容
       </Link>
-      <aside className="shell-navigation" aria-label="工作空间">
+      <aside className="shell-navigation" aria-label="后台侧栏">
         <Link href="/" className="shell-brand" aria-label={`${name} 首页`}>
           {name}
         </Link>
@@ -101,7 +101,9 @@ export function AdminShell({
           {name}
         </Link>
         <Modal isOpen={open} onOpenChange={setOpen}>
-          <Button variant="tertiary">菜单</Button>
+          <Button variant="tertiary" className="h-11 min-w-16 rounded-full">
+            菜单
+          </Button>
           <Modal.Backdrop>
             <Modal.Container size="full">
               <Modal.Dialog aria-label="导航菜单" className="shell-menu">

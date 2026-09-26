@@ -30,8 +30,17 @@ export function LibraryCard({
     <Card
       data-testid="library-card"
       data-image-id={item.id}
-      className="h-full min-w-0 gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0 shadow-none"
+      className="relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0 shadow-none"
     >
+      <Button
+        variant="ghost"
+        className="absolute inset-0 z-10 h-full w-full rounded-2xl bg-transparent p-0 hover:bg-transparent"
+        aria-label={`查看图片：${item.displayName}`}
+        onPress={(event) => {
+          if (event.target instanceof HTMLElement)
+            onOpen?.(item.id, event.target);
+        }}
+      />
       <div className="flex h-32.5 shrink-0 items-center justify-center bg-default xl:h-47.5">
         {item.thumbnailUrl && !failed ? (
           // 直接请求 delivery；优化代理无法转发所有者 Cookie，也不能替代访问控制。
@@ -52,17 +61,7 @@ export function LibraryCard({
         )}
       </div>
       <Card.Content className="grid content-start gap-1.5 p-2.5 text-xs xl:p-3.5 xl:text-sm">
-        <Button
-          variant="ghost"
-          className="h-auto min-h-11 w-full justify-start whitespace-normal rounded-lg px-0 text-left text-inherit"
-          aria-label={`查看图片：${item.displayName}`}
-          onPress={(event) => {
-            if (event.target instanceof HTMLElement)
-              onOpen?.(item.id, event.target);
-          }}
-        >
-          {item.displayName}
-        </Button>
+        <p className="break-words">{item.displayName}</p>
         <p className="text-[11px] xl:text-xs">
           {item.visibility === 'private' ? '私有' : '公开'} ·{' '}
           {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}

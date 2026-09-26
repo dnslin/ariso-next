@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@heroui/react/button';
+import { ArrowLeft } from 'lucide-react';
 import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
 import type { LibraryDetail } from '../../server/library/detail-types';
@@ -9,7 +11,13 @@ import {
   stepLabels,
 } from '../../components/library/detail-labels';
 
-export function TrashRecord({ record }: { record: LibraryDetail }) {
+export function TrashRecord({
+  record,
+  onBack,
+}: {
+  record: LibraryDetail;
+  onBack: () => void;
+}) {
   const rows = [
     ['文件记录', record.displayName, `原文件 ${bytesLabel(record.byteSize)}`],
     [
@@ -39,6 +47,15 @@ export function TrashRecord({ record }: { record: LibraryDetail }) {
       data-testid="trash-detail"
       className="grid min-w-0 gap-5 [overflow-wrap:anywhere]"
     >
+      <Button
+        variant="tertiary"
+        className="min-h-11 justify-self-start px-0 text-sm"
+        aria-label="返回回收站列表"
+        onPress={onBack}
+      >
+        <ArrowLeft size={16} aria-hidden />
+        返回回收站
+      </Button>
       <h1
         id="trash-record-title"
         tabIndex={-1}

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
 import { bytesLabel, stepLabels } from '../library/detail-labels';
@@ -16,12 +17,12 @@ export const uploadLabels: Record<UploadState, string> = {
   queued: '等待上传',
   submitting: '正在提交并检查设置',
   uploading: '正在上传',
-  saving: '传输完成，正在核验和保存',
+  saving: '正在核验和保存',
   'processing-queued': '服务端排队',
   processing: '图片处理中',
-  ready: '上传成功',
+  ready: '成功',
   'upload-failed': '上传失败 · 未创建图片',
-  'processing-failed': '原图已保存，图片处理失败',
+  'processing-failed': '处理失败 · 原图保留',
   cancelled: '已取消',
   unknown: '结果待核对',
 };
@@ -37,9 +38,80 @@ function UploadPreview({ url, name }: { url: string | null; name: string }) {
       className="size-14 rounded-lg object-cover md:size-16"
     />
   ) : (
-    <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-secondary text-xs md:size-16">
+    <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-default text-xs md:size-16">
       {name.split('.').at(-1)?.slice(0, 8).toUpperCase() || '图片'}
     </span>
+  );
+}
+
+function ProcessingOptions({
+  item,
+  onOpen,
+}: {
+  item: UploadItem;
+  onOpen: (id: string, element: HTMLElement) => void;
+}) {
+  const [options, setOptions] = useState(false);
+  const optionsTrigger = useRef<HTMLButtonElement | null>(null);
+  return (
+    <Modal isOpen={options} onOpenChange={setOptions}>
+      <Button
+        ref={optionsTrigger}
+        variant="outline"
+        className="h-11 w-full rounded-lg text-sm font-normal"
+      >
+        处理选项
+      </Button>
+      <Modal.Backdrop>
+        <Modal.Container placement="center" className="p-4">
+          <Modal.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6">
+            <Modal.Header>
+              <Modal.Heading className="text-xl font-medium leading-normal">
+                原图已保存，图片处理失败
+              </Modal.Heading>
+            </Modal.Header>
+            <Modal.Body className="grid gap-4 text-sm leading-normal [overflow-wrap:anywhere]">
+              <div>
+                <p>
+                  {item.name} · 图片 ID：{item.imageId}
+                </p>
+                {item.step ? (
+                  <p>失败步骤：{stepLabels[item.step] ?? item.step}</p>
+                ) : null}
+                {item.error ? (
+                  <p role="alert" className="whitespace-pre-wrap">
+                    原因：{item.error}
+                  </p>
+                ) : null}
+              </div>
+              <p className="rounded-lg bg-default p-3 text-[13px]">
+                原图和已保存版本保留。可在图片详情中查看版本和移入回收站。
+              </p>
+            </Modal.Body>
+            <Modal.Footer className="grid gap-4">
+              <Button
+                variant="outline"
+                className="h-12 w-full rounded-lg text-sm font-normal"
+                onPress={() => {
+                  setOptions(false);
+                  const trigger = optionsTrigger.current;
+                  if (item.imageId && trigger) onOpen(item.imageId, trigger);
+                }}
+              >
+                查看详情
+              </Button>
+              <Button
+                variant="outline"
+                className="h-12 w-full rounded-lg text-sm font-normal"
+                onPress={() => setOptions(false)}
+              >
+                返回上传结果
+              </Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
   );
 }
 
@@ -55,6 +127,8 @@ export function UploadQueueItem({
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const [confirm, setConfirm] = useState(false);
+  const queued = item.state === 'queued';
+  const processingFailed = item.state === 'processing-failed';
   const [serverPreview, setServerPreview] = useState<string | null>(null);
   const canCancel =
     !!item.sessionId &&
@@ -65,30 +139,71 @@ export function UploadQueueItem({
       data-testid="upload-item"
       data-state={item.state}
       data-image-id={item.imageId ?? ''}
-      className="min-w-0 gap-4 rounded-2xl border border-border bg-background p-4 shadow-none md:p-6"
+      className={`min-w-0 border border-border bg-background shadow-none ${queued ? 'gap-4 rounded-[20px] px-4 py-5 md:min-h-[430px] md:p-6' : 'gap-3 rounded-2xl px-3 py-4 md:px-5'}`}
     >
-      <h2 className="text-lg font-medium">上传队列 · 1 张</h2>
-      <div className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)] items-center gap-3 md:grid-cols-[64px_minmax(0,1fr)_100px_180px_140px] md:gap-4">
+      {queued ? (
+        <h2 className="text-lg font-medium leading-normal">
+          上传队列 · 待上传 1 张
+        </h2>
+      ) : null}
+      <div
+        data-testid="upload-file-row"
+        className={`grid min-w-0 items-center md:min-h-20 md:grid-cols-[64px_minmax(0,1fr)_140px] md:gap-4 ${queued ? 'grid-cols-[56px_minmax(0,1fr)_72px] gap-2' : 'grid-cols-[56px_minmax(0,1fr)] gap-x-3 gap-y-2'}`}
+      >
         <UploadPreview
           key={item.previewUrl ?? serverPreview}
           url={item.previewUrl ?? serverPreview}
           name={item.name}
         />
-        <p className="min-w-0 text-sm [overflow-wrap:anywhere]">{item.name}</p>
-        <p className="col-start-2 text-sm md:col-auto">
-          {bytesLabel(item.size)}
-        </p>
-        <p role="status" className="col-start-2 text-sm md:col-auto">
-          {uploadLabels[item.state]}
-          {item.visibility
-            ? ` · ${item.visibility === 'private' ? '私有' : '公开'}`
-            : ''}
-        </p>
-        <div className="col-span-2 min-h-11 md:col-auto">
+        <div className="grid min-w-0 gap-1 md:grid-cols-3 md:items-center md:gap-4">
+          <p className="min-w-0 text-sm leading-normal [overflow-wrap:anywhere]">
+            {item.name}
+          </p>
+          <p className="text-xs leading-normal md:hidden">
+            {bytesLabel(item.size)} · {uploadLabels[item.state]}
+            {item.visibility
+              ? ` · ${item.visibility === 'private' ? '私有' : '公开'}`
+              : ''}
+          </p>
+          <p className="hidden text-xs leading-normal md:block">
+            {bytesLabel(item.size)}
+          </p>
+          <p
+            role="status"
+            className="sr-only text-xs leading-normal md:not-sr-only md:text-xs"
+          >
+            {uploadLabels[item.state]}
+            {item.visibility
+              ? ` · ${item.visibility === 'private' ? '私有' : '公开'}`
+              : ''}
+          </p>
+        </div>
+        <div
+          className={
+            queued
+              ? 'w-18 md:w-35'
+              : 'col-span-2 w-[110px] md:col-span-1 md:w-35'
+          }
+        >
+          {item.imageId ? (
+            processingFailed ? (
+              <ProcessingOptions item={item} onOpen={onOpen} />
+            ) : (
+              <Button
+                variant="outline"
+                className="h-11 w-full rounded-lg text-sm font-normal"
+                onPress={(event) =>
+                  onOpen(item.imageId!, event.target as HTMLElement)
+                }
+              >
+                查看详情
+              </Button>
+            )
+          ) : null}
           {item.state === 'queued' ? (
             <Button
               variant="outline"
-              className="w-full"
+              className="h-11 w-full rounded-lg text-sm font-normal"
               onPress={() => controller.remove()}
             >
               移除
@@ -98,7 +213,7 @@ export function UploadQueueItem({
             <AlertDialog isOpen={confirm} onOpenChange={setConfirm}>
               <Button
                 variant="outline"
-                className="w-full"
+                className="h-11 w-full rounded-lg text-sm font-normal"
                 isDisabled={item.cancelling}
                 onPress={() => setConfirm(true)}
               >
@@ -138,13 +253,6 @@ export function UploadQueueItem({
               </AlertDialog.Backdrop>
             </AlertDialog>
           ) : null}
-          {item.imageId &&
-          (item.state === 'processing' ||
-            item.state === 'processing-queued') ? (
-            <Button className="w-full" variant="outline" isDisabled>
-              不能取消
-            </Button>
-          ) : null}
         </div>
       </div>
       {item.state === 'uploading' ? (
@@ -155,23 +263,18 @@ export function UploadQueueItem({
           </ProgressBar.Track>
         </ProgressBar>
       ) : null}
-      {item.state === 'saving' ? (
-        <p className="rounded-lg bg-secondary p-3 text-sm">
-          文件已传输 100%，尚未确认图片处理成功。
-        </p>
-      ) : null}
       {item.imageId &&
       (item.state === 'processing' || item.state === 'processing-queued') ? (
         <p className="text-sm">
           已交给服务端处理，不能取消。关闭页面后处理仍会继续，可在图库查看。
         </p>
       ) : null}
-      {item.step ? (
+      {item.step && !processingFailed ? (
         <p className="text-sm">
           处理步骤：{stepLabels[item.step] ?? item.step}
         </p>
       ) : null}
-      {item.error ? (
+      {item.error && !processingFailed ? (
         <Alert
           status={item.state === 'unknown' ? 'warning' : 'danger'}
           role="alert"
@@ -212,7 +315,6 @@ export function UploadQueueItem({
           state={item.state}
           client={client}
           onPreview={setServerPreview}
-          onOpen={(element) => onOpen(item.imageId!, element)}
         />
       ) : null}
     </Card>

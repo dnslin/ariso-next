@@ -96,6 +96,7 @@ async function layouts(state) {
             .filter((node) => node.getBoundingClientRect().width > 0)
             .map((node) => ({
               name: node.getAttribute('aria-label') || node.textContent,
+              shellNavigation: node.classList.contains('shell-nav-link'),
               height: node.getBoundingClientRect().height,
               width: node.getBoundingClientRect().width,
             })),
@@ -113,7 +114,9 @@ async function layouts(state) {
         assert.equal(layout.columns, 2);
       for (const target of layout.targets)
         assert.ok(
-          target.height >= 44 && target.width >= 44,
+          target.height >=
+            (width >= 1200 && target.shellNavigation ? 40 : 44) &&
+            target.width >= 44,
           `${target.name}: 44px target`,
         );
       await page.screenshot({

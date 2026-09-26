@@ -11,6 +11,7 @@ export default async function UploadPage() {
       name={settings.name}
       description={settings.description}
       email={owner.email}
+      ownerName={owner.name}
     />
   );
 }

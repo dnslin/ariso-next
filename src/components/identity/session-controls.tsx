@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
+import { Popover } from '@heroui/react/popover';
 
 /** 服务端已鉴权；浏览器会话请求负责接收续期 Cookie，并观察失效。 */
-export function SessionControls({ returnTo }: { returnTo: string }) {
+export function useOwnerSession(returnTo: string) {
   const [sessionError, setSessionError] = useState('');
   const [signOutError, setSignOutError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -79,8 +80,17 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
       setBusy(false);
     }
   }
-  const message = signOutError || sessionError;
-  return (
+  return { message: signOutError || sessionError, busy, signOut };
+}
+
+export function SessionControls({
+  session: { message, busy, signOut },
+  account,
+}: {
+  session: ReturnType<typeof useOwnerSession>;
+  account: { name: string; email: string };
+}) {
+  const controls = (
     <div className="grid gap-3">
       {message ? (
         <Alert status="warning" role="alert">
@@ -90,7 +100,7 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
         </Alert>
       ) : null}
       <Button
-        className="rounded-xl"
+        className="min-h-11 rounded-lg"
         variant="outline"
         isDisabled={busy}
         onPress={() => void signOut()}
@@ -98,6 +108,42 @@ export function SessionControls({ returnTo }: { returnTo: string }) {
         {busy ? <Spinner size="sm" /> : null}
         {busy ? '正在退出…' : '退出登录'}
       </Button>
+    </div>
+  );
+  return (
+    <div className="grid w-full gap-2">
+      {message ? (
+        <p role="alert" className="text-xs text-danger">
+          {message}
+        </p>
+      ) : null}
+      <Popover>
+        <Button
+          variant="ghost"
+          className="h-auto min-h-14 w-full justify-start gap-3 rounded-lg px-1 py-2 text-left"
+          aria-label="账号菜单"
+        >
+          <span
+            aria-hidden="true"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-default text-sm"
+          >
+            {account.name.slice(0, 1).toUpperCase()}
+          </span>
+          <span className="grid min-w-0 gap-0.5">
+            <span className="truncate text-sm font-normal">{account.name}</span>
+            <span className="text-xs font-normal">站点所有者</span>
+          </span>
+        </Button>
+        <Popover.Content
+          placement="top start"
+          className="max-w-[calc(100vw-32px)] rounded-xl border border-border bg-surface p-4"
+        >
+          <Popover.Dialog aria-label="当前账号" className="grid gap-3">
+            <p className="break-all text-sm">{account.email}</p>
+            {controls}
+          </Popover.Dialog>
+        </Popover.Content>
+      </Popover>
     </div>
   );
 }

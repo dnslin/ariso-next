@@ -21,9 +21,15 @@ export function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [feedback, setFeedback] = useState<{ message: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    message: string;
+    status: 'danger' | 'warning';
+  } | null>(null);
   const message = feedback?.message ?? notice;
-  const setMessage = (message: string) => setFeedback({ message });
+  const setMessage = (
+    message: string,
+    status: 'danger' | 'warning' = 'danger',
+  ) => setFeedback({ message, status });
   const [setupRequired, setSetupRequired] = useState(!initialized);
   const [busy, setBusy] = useState(false);
   const [retryAt, setRetryAt] = useState(0);
@@ -98,7 +104,10 @@ export function LoginForm({
           setRemaining(Math.ceil(seconds));
           setRetryAt(Date.now() + seconds * 1000);
         }
-        setMessage('登录请求过于频繁，请等待服务允许后重试。（HTTP 429）');
+        setMessage(
+          '登录请求过于频繁，请等待服务允许后重试。（HTTP 429）',
+          'warning',
+        );
       } else {
         const failure = '登录失败，请稍后重试或检查服务日志。';
         let code: unknown;
@@ -111,7 +120,7 @@ export function LoginForm({
         }
         if (code === 'SETUP_REQUIRED') {
           setSetupRequired(true);
-          setMessage('站点尚未初始化，请先完成初始化。');
+          setMessage('站点尚未初始化，请先完成初始化。', 'warning');
         } else if (
           code === 'INVALID_EMAIL_OR_PASSWORD' ||
           code === 'INVALID_PASSWORD'
@@ -132,20 +141,30 @@ export function LoginForm({
 
   return (
     <section
-      className="grid w-full max-w-md gap-4 rounded-3xl border border-dashed border-border bg-surface px-4 py-6 shadow-sm md:px-7"
+      className="grid w-full max-w-md gap-4 rounded-3xl border border-dashed border-border bg-surface px-4 py-5 shadow-sm dark:border-solid min-[1200px]:p-6"
       aria-labelledby="login-heading"
     >
-      <header className="grid gap-2">
-        <h1 id="login-heading" className="text-2xl font-medium">
+      <header className="grid gap-1">
+        <h1 id="login-heading" className="text-2xl leading-[1.5] font-medium">
           登录
         </h1>
-        <p className="text-sm">轻装简从 · 欢迎回来</p>
+        <p className="text-sm leading-[1.5]">轻装简从 · 欢迎回来</p>
       </header>
       {message || setupRequired ? (
         <div ref={alertRef} tabIndex={-1}>
-          <Alert status="warning" role="alert">
+          <Alert
+            status={feedback?.status ?? 'warning'}
+            role="alert"
+            className="rounded-none bg-transparent p-0 shadow-none"
+          >
             <Alert.Content>
-              <Alert.Description>
+              <Alert.Description
+                className={
+                  feedback?.status === 'danger'
+                    ? 'text-danger leading-[1.5]'
+                    : 'text-foreground leading-[1.5]'
+                }
+              >
                 {message || '站点尚未初始化，请先完成初始化。'}
                 {remaining > 0 ? ` ${remaining} 秒后可重试。` : ''}
               </Alert.Description>
@@ -157,7 +176,7 @@ export function LoginForm({
         <Link href="/setup">开始初始化</Link>
       ) : (
         <Form
-          className="grid min-w-0 gap-4"
+          className="grid min-w-0 gap-3"
           validationBehavior="aria"
           onSubmit={(event) => {
             event.preventDefault();
@@ -175,6 +194,8 @@ export function LoginForm({
             error={errors.email}
             autoComplete="username"
             icon="email"
+            layout="login"
+            placeholder="name@example.com"
           />
           <IdentityField
             name="password"
@@ -188,9 +209,11 @@ export function LoginForm({
             secret
             autoComplete="current-password"
             icon="password"
+            layout="login"
+            placeholder="请输入密码"
           />
           <Button
-            className="min-h-12 w-full rounded-xl"
+            className="h-11 min-h-11 w-full rounded-lg text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9"
             type="submit"
             isDisabled={busy || remaining > 0}
           >

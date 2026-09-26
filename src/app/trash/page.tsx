@@ -20,6 +20,7 @@ export default async function TrashPage({
       name={settings.name}
       description={settings.description}
       email={owner.email}
+      ownerName={owner.name}
     />
   );
 }

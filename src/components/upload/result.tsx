@@ -7,19 +7,16 @@ import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { DetailCopy } from '../library/detail-copy';
 import { DetailReadError, readDetail } from '../library/read-detail';
-import { versionLabels } from '../library/detail-labels';
 
 export function UploadResult({
   imageId,
   state,
   client,
-  onOpen,
   onPreview,
 }: {
   imageId: string;
   state: string;
   client: QueryClient;
-  onOpen: (element: HTMLElement) => void;
   onPreview: (url: string | null) => void;
 }) {
   const [copy, setCopy] = useState(false);
@@ -50,8 +47,7 @@ export function UploadResult({
     }
   }, [client, query.error]);
   return (
-    <div className="grid min-w-0 gap-3 text-sm [overflow-wrap:anywhere]">
-      <p>图片 ID：{imageId}</p>
+    <div className="grid min-w-0 gap-2 text-xs leading-normal [overflow-wrap:anywhere]">
       {query.isPending ? <p role="status">正在读取已保存版本与链接…</p> : null}
       {query.isError ? (
         <Alert status="danger" role="alert">
@@ -63,13 +59,6 @@ export function UploadResult({
       ) : null}
       {detail && !query.isError ? (
         <>
-          <p>
-            已保存版本：
-            {detail.versions
-              .filter((v) => v.saved)
-              .map((v) => versionLabels[v.kind])
-              .join('、') || '暂无'}
-          </p>
           {detail.defaultLink.unavailableReason ? (
             <p role="status">
               默认链接暂不可用：{detail.defaultLink.unavailableReason}
@@ -81,13 +70,7 @@ export function UploadResult({
           {detail.trashedAt ? <p>图片已移入回收站，文件仍占用空间。</p> : null}
         </>
       ) : null}
-      <div className="flex flex-wrap gap-3">
-        <Button
-          variant="outline"
-          onPress={(event) => onOpen(event.target as HTMLElement)}
-        >
-          查看详情
-        </Button>
+      <div className="flex flex-wrap gap-2 [&_.button]:h-11 [&_.button]:rounded-lg [&_.button]:text-sm [&_.button]:font-normal">
         {query.isError ? (
           <Button
             variant="outline"

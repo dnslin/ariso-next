@@ -60,7 +60,9 @@ describe('后台壳层导航', () => {
 describe('公共壳层', () => {
   it('子页面提供返回首页的真实链接', () => {
     const html = renderToStaticMarkup(jsx(PublicShell, { children: '子页面' }));
-    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>返回首页<\/a>/);
+    expect(html).toMatch(
+      /<a[^>]*href="\/"[^>]*><svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>返回首页<\/a>/,
+    );
     expect(html).toContain('子页面');
   });
 
@@ -79,7 +81,9 @@ describe('公共错误页面', () => {
     expect(html).toContain('role="alert"');
     expect(html).toContain('页面加载失败');
     expect(html).toMatch(/<button[^>]*>重试<\/button>/);
-    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>返回首页<\/a>/);
+    expect(html).toMatch(
+      /<a[^>]*href="\/"[^>]*><svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>返回首页<\/a>/,
+    );
     expect(html).not.toContain('轻装简从');
   });
 });

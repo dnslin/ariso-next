@@ -30,7 +30,7 @@ export function UploadSettingsFields({
   const available = settings.storages.some((s) => s.enabled);
   const selected = settings.storages.find((s) => s.id === storageId);
   return (
-    <Card className="min-w-0 gap-4 rounded-2xl border border-border bg-background p-4 shadow-none md:p-6">
+    <Card className="min-w-0 gap-4 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none md:p-6">
       <h2 className="text-lg font-medium">本次上传设置</h2>
       <Select
         value={storageId}
@@ -40,7 +40,7 @@ export function UploadSettingsFields({
         }}
       >
         <Label>存储位置</Label>
-        <Select.Trigger className="min-h-11">
+        <Select.Trigger className="min-h-11 rounded-lg">
           <Select.Value />
           <Select.Indicator />
         </Select.Trigger>
@@ -79,7 +79,7 @@ export function UploadSettingsFields({
         }}
       >
         <Label>可见性</Label>
-        <Select.Trigger className="min-h-11">
+        <Select.Trigger className="min-h-11 rounded-lg">
           <Select.Value />
           <Select.Indicator />
         </Select.Trigger>

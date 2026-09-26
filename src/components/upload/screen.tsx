@@ -11,9 +11,8 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
-import { Images, LayoutDashboard, Trash2, Upload } from 'lucide-react';
-import { AdminShell } from '../shell/admin-shell';
-import { SessionControls } from '../identity/session-controls';
+import { CloudUpload } from 'lucide-react';
+import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
 import { DetailReadError } from '../library/read-detail';
 import { bytesLabel } from '../library/detail-labels';
@@ -21,7 +20,12 @@ import { UploadController } from './controller';
 import { UploadSettingsFields, type UploadSettings } from './settings';
 import { UploadQueueItem } from './item';
 
-type ScreenProps = { name: string; description: string; email: string };
+type ScreenProps = {
+  name: string;
+  description: string;
+  email: string;
+  ownerName: string;
+};
 async function readSettings(signal: AbortSignal): Promise<UploadSettings> {
   const response = await fetch('/upload/settings', {
     signal,
@@ -36,13 +40,6 @@ async function readSettings(signal: AbortSignal): Promise<UploadSettings> {
   }
   return response.json();
 }
-
-const navigation = [
-  { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
-  { href: '/upload', label: '上传图片', icon: <Upload /> },
-  { href: '/library', label: '图库', icon: <Images /> },
-  { href: '/trash', label: '回收站', icon: <Trash2 /> },
-];
 
 export function UploadScreen(props: ScreenProps) {
   const [client] = useState(() => new QueryClient());
@@ -64,15 +61,7 @@ export function UploadScreen(props: ScreenProps) {
   }, [query.error]);
   if (!query.data)
     return (
-      <AdminShell
-        {...props}
-        navigation={navigation}
-        user={
-          <div className="[&_.button]:min-h-11">
-            <SessionControls returnTo="/upload" />
-          </div>
-        }
-      >
+      <OwnerShell {...props}>
         <h1 className="mb-5 text-3xl font-medium">上传图片</h1>
         {query.isPending ? (
           <p role="status">正在读取上传设置…</p>
@@ -94,7 +83,7 @@ export function UploadScreen(props: ScreenProps) {
             </Button>
           </div>
         )}
-      </AdminShell>
+      </OwnerShell>
     );
   return <UploadWorkspace {...props} settings={query.data} client={client} />;
 }
@@ -188,17 +177,10 @@ function UploadForm({
     input.current?.click();
   }
   return (
-    <AdminShell
+    <OwnerShell
       {...props}
-      navigation={navigation}
-      user={
-        <div className="grid gap-3 [&_.button]:min-h-11">
-          <p>{props.email}</p>
-          <SessionControls returnTo="/upload" />
-        </div>
-      }
       footer={
-        <div className="flex w-full gap-3 md:justify-end [&_.button]:min-h-12">
+        <div className="flex w-full gap-3 md:justify-end [&_.button]:min-h-12 [&_.button]:rounded-lg">
           {terminal ? (
             <>
               <Button
@@ -234,22 +216,40 @@ function UploadForm({
       }
     >
       <section
-        className="grid min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11"
+        className="grid min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg"
         aria-labelledby="upload-title"
       >
-        <p className="text-xs text-muted md:text-sm">工作空间 / 上传图片</p>
-        <div className="grid gap-1.5">
+        <p
+          className={`${frozen ? '' : 'hidden md:flex md:min-h-11 md:items-center'} text-xs text-muted md:text-sm`}
+        >
+          工作空间 / 上传图片
+        </p>
+        <div
+          className={`grid ${terminal || item?.state === 'saving' ? 'gap-5' : 'gap-1.5'}`}
+        >
           <h1
             id="upload-title"
             tabIndex={-1}
-            className="text-[28px] font-medium md:text-3xl"
+            className="text-[28px] font-medium leading-normal md:text-[30px]"
           >
-            {terminal ? '本次上传结果' : '上传图片'}
-          </h1>
-          <p className="text-sm">
             {terminal
-              ? '清空结果不会删除图片，也不会中断服务器清理。'
-              : '选择图片，确认本次设置后开始上传。'}
+              ? '本次上传结果'
+              : item?.state === 'saving'
+                ? '正在核对上传结果'
+                : '上传图片'}
+          </h1>
+          <p
+            className={
+              terminal || item?.state === 'saving'
+                ? 'rounded-lg bg-default p-3 text-[13px] leading-normal'
+                : 'text-sm'
+            }
+          >
+            {terminal
+              ? `${item?.state === 'ready' ? '成功 1 张' : item?.state === 'processing-failed' ? '处理失败 1 张 · 原图保留' : item?.state === 'cancelled' ? '已取消 1 张' : '上传失败 1 张 · 未创建图片'}。清空结果不会删除图片，也不会中断服务器清理。`
+              : item?.state === 'saving'
+                ? `${item.progress === 100 ? '文件已传输 100%。' : ''}尚未确认保存与处理结果，请稍候。`
+                : '选择图片，确认本次设置后开始上传。'}
           </p>
         </div>
         <input
@@ -266,9 +266,9 @@ function UploadForm({
         />
         {!frozen ? (
           <div className="grid min-w-0 gap-3 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:gap-6">
-            <Card className="min-h-60 min-w-0 items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-background p-6 text-center shadow-none md:min-h-70">
-              <Upload size={40} aria-hidden />
-              <h2 className="text-2xl font-medium">选择要上传的图片</h2>
+            <Card className="min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 md:p-6 text-center shadow-none md:min-h-70">
+              <CloudUpload size={40} aria-hidden />
+              <h2 className="text-[26px] font-medium">选择要上传的图片</h2>
               <p className="text-sm">
                 JPEG、PNG · 单文件最大 {bytesLabel(settings.maxFileBytes)}
               </p>
@@ -332,6 +332,6 @@ function UploadForm({
           }}
         />
       ) : null}
-    </AdminShell>
+    </OwnerShell>
   );
 }

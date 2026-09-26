@@ -2,6 +2,8 @@
 
 2026-09-26，关联 [Issue #81](https://github.com/dnslin/ariso-next/issues/81)。需求归属保持 R-7.4-01、R-7.4-02、R-7.4-03、R-7.5-01、R-7.5-03、R-7.5-04、A-26.2-06；仅交付 M2 单文件本地路径，不关闭完整 UPLOAD-QUEUE。
 
+当前新增[UI 还原整改](./ui-restoration.md)尚未完成，PR 已恢复草稿。下列原功能证据不代表设计一致性已验收。
+
 ## 前置与实现
 
 实际通过 `gh issue view 81 --json number,title,body,state,comments,url` 及 `gh api repos/dnslin/ariso-next/issues/81/dependencies/blocked_by`、`blocking` 核对：六项前置 #73、#77、#79、#57、#72、#80 均 CLOSED，#81 无评论，下游 #85 OPEN。消费现有接收/原子交接、详情/回收、外壳与 Uppy 实验证据，没有重新审计冻结产品选择。

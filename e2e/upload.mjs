@@ -22,7 +22,7 @@ const source = join(
   config.projectDirectory,
   'tests/fixtures/runtime/images/sample.png',
 );
-async function resize(width, height = 844) {
+async function resize(width, height = width >= 1200 ? 1080 : 844) {
   await page.cdp('Emulation.setDeviceMetricsOverride', {
     width,
     height,
@@ -45,9 +45,51 @@ async function layouts(name) {
     );
     for (const width of [360, 390, 430, 768, 1440]) {
       await resize(width);
+      if (
+        [
+          'ready',
+          'saving',
+          'processing-failed',
+          'upload-failed',
+          'cancelled',
+        ].includes(name)
+      ) {
+        const background = await page.evaluate(
+          () =>
+            getComputedStyle(
+              document.querySelector(
+                'section[aria-labelledby="upload-title"] > div > p',
+              ),
+            ).backgroundColor,
+        );
+        assert.equal(
+          background,
+          theme === 'light' ? 'rgb(227, 246, 245)' : 'rgb(37, 61, 64)',
+          'Status summary uses the actual Ariso information color',
+        );
+      }
       const result = await page.evaluate(() => ({
         width: innerWidth,
         scrollWidth: document.documentElement.scrollWidth,
+        queue: (() => {
+          const card = document.querySelector('[data-testid="upload-item"]');
+          const row = document.querySelector('[data-testid="upload-file-row"]');
+          if (!card || !row) return null;
+          const styles = getComputedStyle(card);
+          const preview = row.firstElementChild.getBoundingClientRect();
+          const action = row.querySelector('button')?.getBoundingClientRect();
+          return {
+            state: card.dataset.state,
+            radius: Number.parseFloat(styles.borderRadius),
+            padding: Number.parseFloat(styles.paddingLeft),
+            preview: {
+              width: preview.width,
+              height: preview.height,
+              bottom: preview.bottom,
+            },
+            action: action ? { top: action.top, width: action.width } : null,
+          };
+        })(),
         targets: [...document.querySelectorAll('button,a')]
           .filter((node) => {
             const r = node.getBoundingClientRect();
@@ -55,6 +97,7 @@ async function layouts(name) {
           })
           .map((node) => ({
             name: node.getAttribute('aria-label') || node.textContent,
+            shellNavigation: node.classList.contains('shell-nav-link'),
             width: node.getBoundingClientRect().width,
             height: node.getBoundingClientRect().height,
           })),
@@ -63,9 +106,32 @@ async function layouts(name) {
         result.scrollWidth <= width,
         `${name}/${theme}/${width}: no horizontal overflow`,
       );
+      if (result.queue) {
+        const { state, radius, padding, preview, action } = result.queue;
+        assert.equal(
+          radius,
+          state === 'queued' ? 20 : 16,
+          'Queue card matches its design state',
+        );
+        assert.equal(
+          padding,
+          state === 'queued' ? (width < 768 ? 16 : 24) : width < 768 ? 12 : 20,
+        );
+        assert.equal(preview.width, width < 768 ? 56 : 64);
+        assert.equal(preview.height, width < 768 ? 56 : 64);
+        if (action && width < 768 && state !== 'queued') {
+          assert.ok(
+            action.top >= preview.bottom,
+            'Mobile result action follows the file information',
+          );
+          assert.equal(action.width, 110);
+        }
+      }
       for (const target of result.targets)
         assert.ok(
-          target.width >= 44 && target.height >= 44,
+          target.width >= 44 &&
+            target.height >=
+              (width >= 1200 && target.shellNavigation ? 40 : 44),
           `${target.name}: minimum 44px target`,
         );
       await page.screenshot({
@@ -142,6 +208,10 @@ try {
   await page.fill('#password', config.credentials.password);
   await page.click(button('登录'));
   await page.waitForSelector('input[type=file]', { state: 'attached' });
+  const { verifyOwnerShell } = await import(
+    new URL('./owner-shell.mjs', config.libraryDetailScript).href
+  );
+  await verifyOwnerShell(page, config);
   // Exercise the production controller with the browser's native fetch before
   // installing any fault harness: a wrapper must not hide receiver errors.
   assert.equal(
@@ -384,6 +454,23 @@ try {
       original.key,
     );
     const originalBytes = await readFile(originalPath);
+    await page.click(button('处理选项'));
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('[role="dialog"]')].some(
+        (node) =>
+          node.textContent.includes('失败步骤：') &&
+          node.textContent.includes('原因：'),
+      ),
+    );
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(
+      () => !document.querySelector('[role="dialog"]'),
+    );
+    assert.equal(
+      await page.evaluate(() => document.activeElement.textContent),
+      '处理选项',
+    );
+    await page.click(button('处理选项'));
     await page.click(button('查看详情'));
     await page.waitForSelector('[data-testid="detail-body"]');
     await page.click(button('回收图片'));
@@ -509,6 +596,18 @@ try {
     () => typeof window.__uploadReleaseLoad === 'function',
   );
   await state('saving');
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('#upload-title').textContent,
+    ),
+    '正在核对上传结果',
+  );
+  assert.equal(
+    await page.evaluate(() =>
+      document.querySelector('main').textContent.includes('尚未进入图片处理'),
+    ),
+    false,
+  );
   await layouts('saving');
   await page.click(button('请求取消'));
   await page.click(button('确认取消'));

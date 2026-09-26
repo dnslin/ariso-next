@@ -4,9 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Images, LayoutDashboard, Trash2 } from 'lucide-react';
-import { AdminShell } from '../../components/shell/admin-shell';
-import { SessionControls } from '../../components/identity/session-controls';
+import { OwnerShell } from '../../components/shell/owner-shell';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
@@ -52,10 +50,12 @@ export function LibraryScreen({
   name,
   description,
   email,
+  ownerName,
 }: {
   name: string;
   description: string;
   email: string;
+  ownerName: string;
 }) {
   const detail = useDetailNavigation();
   const [notice, setNotice] = useState('');
@@ -135,21 +135,11 @@ export function LibraryScreen({
   }
 
   return (
-    <AdminShell
+    <OwnerShell
       name={name}
       description={description}
-      navigation={[
-        { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
-        { href: '/upload', label: '上传图片' },
-        { href: '/library', label: '图库', icon: <Images /> },
-        { href: '/trash', label: '回收站', icon: <Trash2 /> },
-      ]}
-      user={
-        <div className="grid gap-3 [&_.button]:min-h-11">
-          <p>{email}</p>
-          <SessionControls returnTo="/library" />
-        </div>
-      }
+      email={email}
+      ownerName={ownerName}
       footer={
         <p data-testid="library-count" role="status" className="w-full text-sm">
           {expired ? '登录已失效' : count}
@@ -273,6 +263,6 @@ export function LibraryScreen({
           dialogRef={detail.dialogRef}
         />
       ) : null}
-    </AdminShell>
+    </OwnerShell>
   );
 }
