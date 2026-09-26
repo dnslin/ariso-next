@@ -201,7 +201,9 @@ describe('isolated production directory', () => {
         run.child.kill(requestedSignal);
         const [code, signal] = await run.closed;
         expect(code, run.logs()).toBe(status);
-        expect(run.logs()).toContain('Media queue stopped and database closed');
+        expect(run.logs()).toContain(
+          'Upload and media queues stopped, analytics flushed, database closed',
+        );
         expect(signal).toBeNull();
         await expect(
           fetch(`http://127.0.0.1:${run.port}/api/health`),

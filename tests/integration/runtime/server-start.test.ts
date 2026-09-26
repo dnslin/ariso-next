@@ -125,7 +125,7 @@ describe('Web startup and real health handler', () => {
         assert.equal(response.status, 200);
         assert.equal(response.headers.get('cache-control'), 'no-store');
         assert.deepEqual(await response.json(), { status: 'ok' });
-      } finally { await state.mediaQueue.stop(); state.connection.close(); }
+      } finally { await state.stop(); }
     `,
       { NEXT_RUNTIME: 'nodejs' },
     );
@@ -164,7 +164,7 @@ describe('Web startup and real health handler', () => {
       process.env.BETTER_AUTH_SECRET = secret;
       await prepare();
       await register();
-      getServerRuntime().connection.close();
+      await getServerRuntime().stop();
     `,
       { NEXT_RUNTIME: 'nodejs' },
     );
@@ -190,6 +190,13 @@ describe('Web shutdown ownership', () => {
         await originalUploadStop();
         await new Promise(resolve => { finishUploads = resolve; });
       };
+      let flushCalls = 0;
+      const analyticsStop = state.analytics.stop.bind(state.analytics);
+      state.analytics.stop = () => {
+        flushCalls += 1;
+        assert.equal(state.connection.db.$client.open, true);
+        return analyticsStop();
+      };
       const stopping = state.stop();
       assert.strictEqual(state.stop(), stopping);
       assert.equal(calls, 0);
@@ -202,80 +209,91 @@ describe('Web shutdown ownership', () => {
       finishUploads();
       await new Promise(resolve => setImmediate(resolve));
       assert.equal(calls, 1);
+      assert.equal(flushCalls, 0);
       finish();
       await stopping;
+      assert.equal(flushCalls, 1);
       assert.equal(state.connection.db.$client.open, false);
     `);
   });
 
-  it.each([
-    { signal: 'SIGINT', status: 130 },
-    { signal: 'SIGTERM', status: 143 },
-  ])(
-    '$signal 等待队列再关闭数据库，重复信号不重复停止',
-    ({ signal, status }) => {
-      const result = run(
-        `
+  it('Next close hook waits for framework cleanup, preserves this, and stops the application once', () => {
+    run(`
       await prepare();
       const state = startServer();
-      const originalStop = state.mediaQueue.stop.bind(state.mediaQueue);
-      let completed = false;
-      let calls = 0;
-      state.mediaQueue.stop = async () => {
-        calls += 1;
-        await originalStop();
-        await new Promise(resolve => setTimeout(resolve, 40));
-        assert.equal(state.connection.db.$client.open, true);
-        completed = true;
+      const { createRequire } = await import('node:module');
+      const require = createRequire(startupUrl);
+      const NextServer = require('next/dist/server/next-server.js').default;
+      const instance = Object.create(NextServer.prototype);
+      let finishFramework;
+      NextServer.prototype.close = async function () {
+        assert.strictEqual(this, instance);
+        await new Promise(resolve => { finishFramework = resolve; });
       };
-      process.on('exit', () => {
-        assert.equal(completed, true);
-        assert.equal(calls, 1);
-        assert.equal(state.connection.db.$client.open, false);
-      });
-      setInterval(() => {}, 1000);
-      process.kill(process.pid, '${signal}');
-      setTimeout(() => process.kill(process.pid, '${signal}'), 10);
-    `,
-        { NEXT_MANUAL_SIG_HANDLE: '1' },
-        status,
-      );
-      expect(result.stdout).toContain(
-        'Media queue stopped and database closed',
-      );
-    },
-  );
-
-  it('队列停止失败保留错误并非零退出', () => {
-    const result = run(
-      `
-      await prepare();
-      const state = startServer();
-      state.mediaQueue.stop = async () => { throw new Error('stop failure evidence'); };
-      setInterval(() => {}, 1000);
-      process.kill(process.pid, 'SIGTERM');
-    `,
-      { NEXT_MANUAL_SIG_HANDLE: '1' },
-      1,
-    );
-    expect(result.stdout).toContain('Web shutdown failed');
-    expect(result.stdout).toContain('stop failure evidence');
+      const before = ['SIGTERM', 'SIGINT'].map(signal => process.listenerCount(signal));
+      await import(${JSON.stringify(new URL('../../../src/cli/shutdown.ts', import.meta.url).href)});
+      assert.deepEqual(['SIGTERM', 'SIGINT'].map(signal => process.listenerCount(signal)), before);
+      const stopping = instance.close();
+      await new Promise(resolve => setTimeout(resolve, 40));
+      assert.equal(state.stopping, false);
+      assert.equal(state.connection.db.$client.open, true);
+      let flushed = false;
+      const analyticsStop = state.analytics.stop.bind(state.analytics);
+      state.analytics.stop = () => {
+        assert.equal(state.connection.db.$client.open, true);
+        flushed = true;
+        return analyticsStop();
+      };
+      finishFramework();
+      await stopping;
+      assert.equal(flushed, true);
+      assert.equal(state.connection.db.$client.open, false);
+      assert.strictEqual(state.stop(), state.stop());
+    `);
   });
 
-  it('停止超过有界预算时保留诊断并非零退出', () => {
-    const result = run(
-      `
+  it('框架与应用同时清理失败时仍记录框架原因', () => {
+    const result = run(`
       await prepare();
       const state = startServer();
-      state.mediaQueue.stop = () => new Promise(() => {});
-      setInterval(() => {}, 1000);
-      process.kill(process.pid, 'SIGTERM');
-    `,
-      { NEXT_MANUAL_SIG_HANDLE: '1' },
-      1,
-    );
-    expect(result.stdout).toContain(
-      'Web shutdown exceeded the 5000ms deadline',
-    );
-  }, 10000);
+      const { createRequire } = await import('node:module');
+      const require = createRequire(startupUrl);
+      const NextServer = require('next/dist/server/next-server.js').default;
+      NextServer.prototype.close = async () => { throw new Error('framework close failure'); };
+      await import(${JSON.stringify(new URL('../../../src/cli/shutdown.ts', import.meta.url).href)});
+      const originalStop = state.stop.bind(state);
+      state.stop = async () => { await originalStop(); throw new Error('application close failure'); };
+      await assert.rejects(Object.create(NextServer.prototype).close(), /application close failure/);
+      assert.equal(state.connection.db.$client.open, false);
+    `);
+    expect(result.stderr).toContain('framework close failure');
+  });
+
+  it('队列停止失败仍清理统计和数据库，并保留原始错误', () => {
+    const result = run(`
+      await prepare();
+      const state = startServer();
+      const stop = state.mediaQueue.stop.bind(state.mediaQueue);
+      state.mediaQueue.stop = async () => { await stop(); throw new Error('stop failure evidence'); };
+      let flushed = false;
+      const analyticsStop = state.analytics.stop.bind(state.analytics);
+      state.analytics.stop = () => { flushed = true; return analyticsStop(); };
+      await assert.rejects(state.stop(), /stop failure evidence/);
+      assert.equal(flushed, true);
+      assert.equal(state.connection.db.$client.open, false);
+    `);
+    expect(result.stdout).not.toContain('analytics flushed, database closed');
+  });
+
+  it('统计刷写失败仍关闭数据库，不报告成功', () => {
+    const result = run(`
+      await prepare();
+      const state = startServer();
+      const analyticsStop = state.analytics.stop.bind(state.analytics);
+      state.analytics.stop = () => { analyticsStop(); return false; };
+      await assert.rejects(state.stop(), /Analytics shutdown flush did not complete/);
+      assert.equal(state.connection.db.$client.open, false);
+    `);
+    expect(result.stdout).not.toContain('analytics flushed, database closed');
+  });
 });

@@ -53,6 +53,9 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'account' },
         { name: 'album_images' },
         { name: 'albums' },
+        { name: 'analytics_daily' },
+        { name: 'analytics_image_daily' },
+        { name: 'analytics_image_totals' },
         { name: 'image_tags' },
         { name: 'media_images' },
         { name: 'media_jobs' },
@@ -87,6 +90,9 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
       for (const table of [
         'account',
+        'analytics_daily',
+        'analytics_image_daily',
+        'analytics_image_totals',
         'albums',
         'album_images',
         'tags',

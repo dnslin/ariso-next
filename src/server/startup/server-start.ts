@@ -6,6 +6,7 @@ import { requireInitialSettings } from './initial-settings.ts';
 import { startUploadRuntime } from '../upload/runtime.ts';
 import { startMediaQueue } from '../media/queue.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
+import { startAnalyticsRuntime } from '../analytics/runtime.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -38,6 +39,10 @@ function initializeServerRuntime() {
       storageRoot: resolve(config.dataDir, 'storage'),
       logger: createRuntimeLogger('upload', config.logLevel),
     });
+    const analytics = startAnalyticsRuntime({
+      db: connection.db.$client,
+      logger: createRuntimeLogger('analytics', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -45,6 +50,7 @@ function initializeServerRuntime() {
       setup,
       mediaQueue,
       uploads,
+      analytics,
       get stopping() {
         return stopping !== undefined;
       },
@@ -52,37 +58,22 @@ function initializeServerRuntime() {
         return (stopping ??= uploads
           .stop()
           .finally(() => mediaQueue.stop())
-          .finally(() => connection.close()));
+          .finally(() => {
+            try {
+              if (!analytics.stop()) {
+                throw new Error('Analytics shutdown flush did not complete');
+              }
+            } finally {
+              connection.close();
+            }
+          })
+          .then(() => {
+            createRuntimeLogger('runtime.shutdown', config.logLevel).info(
+              'Upload and media queues stopped, analytics flushed, database closed',
+            );
+          }));
       },
     };
-    // Next's signal handler calls process.exit without awaiting application work.
-    // The standard entrypoint opts into Next's manual signal handling instead.
-    if (process.env.NEXT_MANUAL_SIG_HANDLE) {
-      const logger = createRuntimeLogger('runtime.shutdown', config.logLevel);
-      let signalReceived = false;
-      const shutdown = (signal: NodeJS.Signals) => {
-        if (signalReceived) return;
-        signalReceived = true;
-        const timeout = setTimeout(() => {
-          logger.error({ signal }, 'Web shutdown exceeded the 5000ms deadline');
-          process.exit(1);
-        }, 5000);
-        runtime.stop().then(
-          () => {
-            clearTimeout(timeout);
-            logger.info({ signal }, 'Media queue stopped and database closed');
-            process.exit(signal === 'SIGINT' ? 130 : 143);
-          },
-          (err: unknown) => {
-            clearTimeout(timeout);
-            logger.error({ err, signal }, 'Web shutdown failed');
-            process.exit(1);
-          },
-        );
-      };
-      process.on('SIGINT', shutdown);
-      process.on('SIGTERM', shutdown);
-    }
     return runtime;
   } catch (error) {
     connection.close();

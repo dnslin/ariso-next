@@ -46,6 +46,7 @@
 - [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
 - [本地公开访问内存聚合验证](./verification/analytics-83/README.md)
+- [统计批写、保留与退出刷库验证](./verification/analytics-84/README.md)
 - [统计关停、批写与缓冲实验](./tasks/evidence/EV-ANALYTICS-01/README.md)
 - [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
 
