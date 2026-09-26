@@ -1,0 +1,134 @@
+{
+  "taskSpaceId": 5,
+  "status": "passed",
+  "layouts": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "headingVisible": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "headingVisible": true
+    }
+  ],
+  "errorCollectorSelfTest": {
+    "status": "passed",
+    "expectedError": {
+      "url": "http://ariso-57242.localhost:57242/",
+      "kind": "console.error",
+      "message": "Ariso error collector self-test 1790427552460"
+    }
+  },
+  "page": {
+    "title": "Ariso",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "lang": "zh-CN",
+    "text": "Ariso\n\n轻装简从\n\n首次使用，请完成站点初始化。\n\n开始初始化\n\n开源 · 极简 · 图片托管",
+    "images": []
+  },
+  "homeStatus": 200,
+  "privateFixtures": [
+    {
+      "path": "/verification/fixtures/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/verification/fixtures/sample.png",
+      "status": 404
+    },
+    {
+      "path": "/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/sample.png",
+      "status": 404
+    }
+  ],
+  "health": {
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": "{\"status\":\"ok\"}"
+  },
+  "resources": [
+    {
+      "url": "/runtime.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/38x439qogchg2.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/1poku3zp44i9f.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/2s0ozmc335-2g.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/1i0vy07i79pgm.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/turbopack-37cu5ufv4derg.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/1arqct2ny-uxv.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/11e5r4h09lw9e.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/0sm0oubbdu6_j.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/0co-hnw9zg97s.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/1g9owsmmzoop8.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-57242.localhost:57242/_next/static/chunks/0umfxyrbmf9lg.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    }
+  ],
+  "errors": [],
+  "recovery": {
+    "status": "passed",
+    "expectedErrors": [
+      {
+        "url": "http://ariso-57242.localhost:57242/",
+        "kind": "console.error",
+        "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      }
+    ],
+    "check": "Database read failure → restore database → click retry → home recovered without reload"
+  }
+}

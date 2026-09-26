@@ -101,7 +101,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       for (const width of [360, 390, 430, 768, 1440]) {
         await page.cdp('Emulation.setDeviceMetricsOverride', {
           width,
-          height: 844,
+          height: width >= 1200 ? 1080 : 844,
           deviceScaleFactor: 1,
           mobile: width < 768,
         });

@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "browsers": [
+    "Ego Lite / Chromium 152 authenticated owner",
+    "Google Chrome 154.0.8037.57 native macOS window, anonymous"
+  ],
+  "origin": "http://127.0.0.1:56157",
+  "imageId": "57fa93d4-d920-4480-bc11-bc25716dc7ea",
+  "privateId": "1599356a-8ca8-4636-ad92-159199a3ccea",
+  "baselineOriginalCount": 2,
+  "chromeSuccessfulReads": 2,
+  "totals": {
+    "image_id": "57fa93d4-d920-4480-bc11-bc25716dc7ea",
+    "original_count": 4,
+    "compressed_count": 0,
+    "watermark_count": 0
+  },
+  "daily": [
+    {
+      "image_id": "57fa93d4-d920-4480-bc11-bc25716dc7ea",
+      "date": "2026-09-26",
+      "timezone": "Asia/Shanghai",
+      "count": 4
+    }
+  ],
+  "site": [
+    {
+      "date": "2026-09-26",
+      "timezone": "Asia/Shanghai",
+      "version": "original",
+      "count": 10
+    }
+  ],
+  "checks": [
+    "Chrome /api/images shows UNAUTHORIZED at the same origin used by the signed-in Ego owner",
+    "Chrome renders uploaded JPEG 64x48; private original shows OWNER_LOGIN_REQUIRED",
+    "Ego UI trash makes Chrome same original URL show IMAGE_UNAVAILABLE",
+    "Ego UI restore lets Chrome reload the unchanged URL and render the same JPEG",
+    "Exact persisted totals include 2 original core anonymous reads plus 2 Chrome reads; private/owner/trashed requests add zero"
+  ],
+  "limitations": [
+    "Same Chromium family, not a cross-engine or recent-two-major-version compatibility matrix",
+    "Disposable server uses existing owner-seeding fixture; full empty-directory setup is covered separately by the main runner"
+  ]
+}
