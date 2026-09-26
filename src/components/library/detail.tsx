@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type RefCallback } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type RefCallback,
+} from 'react';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -225,6 +231,17 @@ export function LibraryDetail({
 }) {
   const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
   const [mutationPending, setMutationPending] = useState(false);
+  const onMutationPending = useCallback(
+    (pending: boolean) => {
+      if (pending)
+        void client.cancelQueries({
+          queryKey: ['library-detail', imageId],
+          exact: true,
+        });
+      setMutationPending(pending);
+    },
+    [client, imageId],
+  );
   const [copyOpen, setCopyOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [previewRevision, setPreviewRevision] = useState(0);
@@ -329,7 +346,7 @@ export function LibraryDetail({
             <TrashAction
               record={query.data}
               operation="trash"
-              onPending={setMutationPending}
+              onPending={onMutationPending}
               onUnavailable={(status) => {
                 setUnavailable(status);
                 if (status === 404)

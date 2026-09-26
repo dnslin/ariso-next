@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { verifyLibraryTrashRace } from './library-trash-race.mjs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
@@ -55,6 +56,7 @@ async function transport(
 }
 
 export async function verifyLibraryTrash({ page, config, sql, report }) {
+  await verifyLibraryTrashRace({ page, config, sql, report });
   const button = (name) => `loc=role:button[name="${name}"]`;
   const detail = async (id, area = 'library') => {
     await page.goto(`${config.origin}/${area}?image=${id}`);
@@ -462,9 +464,42 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     ),
     true,
   );
+  await page.click(button('返回回收站'));
+  await page.waitForSelector('[data-testid="trash-record-library-007"]');
+  await page.click('[data-testid="trash-record-library-007"]');
+  await page.waitForFunction(() =>
+    document
+      .querySelector('[data-testid="trash-detail"]')
+      ?.textContent.includes('记录已在图库'),
+  );
+  assert.ok(
+    await page.evaluate(
+      (baseline) =>
+        window.__trashTransport.startedReads.filter(
+          (path) => path === '/api/images/library-007',
+        ).length > baseline,
+      oldReads,
+    ),
+    'Returning to the original record must resume a real current-detail query',
+  );
+  assert.equal(
+    await page.evaluate(
+      () =>
+        [...document.querySelectorAll('button')].find(
+          (node) => node.textContent === '恢复图片',
+        )?.disabled,
+    ),
+    true,
+  );
+  assert.deepEqual(
+    await page.evaluate(() =>
+      window.__trashTransport.writes.map((item) => item.status),
+    ),
+    [200],
+  );
   await page.evaluate(() => window.__restoreTrashTransport());
   report.checks.push(
-    'Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record.',
+    'Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record; reopening the original record resumes a real read and shows its already-restored state without another write.',
   );
 
   await detail('library-trashed', 'trash');

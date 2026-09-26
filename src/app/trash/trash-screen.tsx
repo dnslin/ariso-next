@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
@@ -50,6 +50,18 @@ export function TrashScreen({
   const imageId = params.get('image');
   const [page, setPage] = useState(1);
   const [client] = useState(() => new QueryClient());
+  const [mutationPending, setMutationPending] = useState(false);
+  const onMutationPending = useCallback(
+    (pending: boolean) => {
+      if (pending)
+        void client.cancelQueries({
+          queryKey: ['trash-detail', imageId],
+          exact: true,
+        });
+      setMutationPending(pending);
+    },
+    [client, imageId],
+  );
   const [result, setResult] = useState<LibraryDetail | null>(null);
   const [unavailable, setUnavailable] = useState<{
     id: string;
@@ -69,7 +81,7 @@ export function TrashScreen({
     {
       queryKey: ['trash-detail', imageId],
       queryFn: ({ signal }) => readDetail(imageId!, signal),
-      enabled: !!imageId && unavailable?.id !== imageId,
+      enabled: !!imageId && unavailable?.id !== imageId && !mutationPending,
       retry: false,
       networkMode: 'always',
     },
@@ -156,6 +168,7 @@ export function TrashScreen({
                 key={record.id}
                 record={record}
                 operation="restore"
+                onPending={onMutationPending}
                 onVerified={(current) =>
                   client.setQueryData(['trash-detail', imageId], current)
                 }

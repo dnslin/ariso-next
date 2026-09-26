@@ -19,7 +19,7 @@ export function TrashAction({
 }: {
   record: LibraryDetail;
   operation: 'trash' | 'restore';
-  onPending?: (pending: boolean) => void;
+  onPending: (pending: boolean) => void;
   onVerified: (record: LibraryDetail) => void;
   onComplete: (record: LibraryDetail) => void;
   onUnavailable: (status: 401 | 404) => void;
@@ -37,8 +37,10 @@ export function TrashAction({
     return () => {
       mounted.current = false;
       readRequest.current?.abort();
+      // Release this view's pending state; the server write may still complete.
+      onPending(false);
     };
-  }, []);
+  }, [onPending]);
   const restoring = operation === 'restore';
   const disabled =
     !!record.deletionStatus ||
@@ -51,7 +53,7 @@ export function TrashAction({
       const current = await readDetail(record.id, controller.signal);
       if (!mounted.current) return;
       onVerified(current);
-      onPending?.(false);
+      onPending(false);
       setUnknown(false);
       if (
         !current.deletionStatus &&
@@ -84,7 +86,7 @@ export function TrashAction({
     if (running.current) return;
     running.current = true;
     setBusy(true);
-    onPending?.(true);
+    onPending(true);
     setMessage(write ? '正在提交并核对记录…' : '正在核对当前记录…');
     try {
       if (write) {

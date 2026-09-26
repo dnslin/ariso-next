@@ -74,3 +74,17 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 实际执行 `gh pr view 124 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/issue-79-trash-ui` 及提交的 `check-runs`/`status` API：PR 非草稿、可合并状态 CLEAN、运行列表为空、check runs 和 commit statuses 数量均为 0。空 statuses 的聚合字段 `pending` 不代表存在正在运行的工作流，也不记为 CI 通过。`gh workflow list --all` 仅有与本任务无关的 Analytics experiment，以及 Release checks / Release images；按执行约定无需等待不存在的 PR 检查。
 
 初次 Git 直连推送超时，改用本机现有系统代理的单次命令 `git -c http.proxy=http://127.0.0.1:7897 push -u origin codex/issue-79-trash-ui` 后成功，没有改全局配置。未合并 PR、关闭 Issue、发布镜像、部署或删除分支/worktree。
+
+## 双角度评审后的竞态修复
+
+正确性与结构评审发现同一根因：禁用普通详情查询不会取消已发出的 GET；旧 GET 失败会卸载仍负责 POST 及写后核对的动作组件，使页面等待状态无法结束。先按[修复计划](../../../tasks/plan.md)补浏览器回归，再修改实现。
+
+旧构建真实复现失败：[错误数据](./review-fix/red-failure.json)、[失败截图](./review-fix/red-failure.png)。POST 已返回 200，真实数据库 `trashed_at` 已写入；释放旧 GET 的失败响应后，确认框消失，详情只有读取错误，核对请求没有发出。测试不是伪造业务成功，延迟或丢弃的均为真实服务响应。
+
+修复限定三个组件：两处父组件在操作开始时同步取消精确图片查询，并暂停普通读取；`onPending` 必需且保持稳定，卸载时释放页面的等待状态。原有离页迟到保护保留，不宣称服务器写入被取消。没有新增依赖、接口、数据契约或状态机。
+
+新增独立浏览器回归覆盖旧 GET 失败后的正常回收、写入及首次核对响应丢失后的手动核对、旧成功响应迟到；原离页测试增加重开原记录后真实重读与单次写入断言。两位 agent 分别完成正确性和严格结构复审，均无未解决 Required。
+
+本轮 Node 24.18.1 / pnpm 11.19.0 已执行冻结安装、类型、lint、格式、构建、434 项单元、文档检查及 5 项自检；通过。构建仍有前述可选 Debug 路径追踪警告。`pnpm run test:integration --maxWorkers=4` 随后通过，共 58 文件、485 项。完整浏览器命令 `BROWSER_REPORT_DIR=test-results/browser-race-green EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 pnpm run test:browser` 通过，退出 0，UTC 2026-09-26 05:42:01–05:47:58；共 27 组行为、220 个布局检查。三个竞态均观察到旧读取的 AbortSignal 中止，最终业务结果正确且没有重复 POST。隔离 UI 套件也通过，任务空间 9 已结束。
+
+修复后证据：[完整运行](./review-fix/runner.json)、[业务与竞态断言](./review-fix/library.json)、[隔离 UI](./review-fix/ui-runner.json)。本轮没有修改样式或布局；原视觉证据保留，浏览器仍重新执行所有布局断言。修复期间 PR 暂转草稿，所有适用检查与复审通过后恢复待评审。
