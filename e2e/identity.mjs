@@ -225,11 +225,15 @@ async function loginAndLogout() {
   await page.goto(`${config.origin}/admin`);
   await page.waitForSelector('#email');
   assert.equal(new URL(await page.url()).pathname, '/login');
+  assert.equal(
+    new URL(await page.url()).searchParams.get('returnTo'),
+    '/admin',
+  );
   await page.fill('#email', config.credentials.email);
   await page.fill('#password', config.credentials.password);
   await page.focus('loc=role:button[name="登录"]');
   await page.keyboard.press('Enter');
-  await page.waitForURL(`${config.origin}/admin`);
+  await page.waitForURL(`${config.origin}/upload`);
   await openIdentityAccountMenu(page);
   assert.equal(
     JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,

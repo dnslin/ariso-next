@@ -120,7 +120,7 @@ export function SessionControls({
       <Popover>
         <Button
           variant="ghost"
-          className="h-auto min-h-14 w-full justify-start gap-3 rounded-lg px-1 py-2 text-left"
+          className="h-auto min-h-14 w-full min-w-0 justify-start gap-3 rounded-lg px-1 py-2 text-left group-data-[collapsed=true]/sidebar:justify-center group-data-[collapsed=true]/sidebar:px-0"
           aria-label="账号菜单"
         >
           <span
@@ -129,7 +129,7 @@ export function SessionControls({
           >
             {account.name.slice(0, 1).toUpperCase()}
           </span>
-          <span className="grid min-w-0 gap-0.5">
+          <span className="grid min-w-0 gap-0.5 group-data-[collapsed=true]/sidebar:hidden">
             <span className="truncate text-sm font-normal">{account.name}</span>
             <span className="text-xs font-normal">站点所有者</span>
           </span>

@@ -41,11 +41,13 @@ export function TrashScreen({
   description,
   email,
   ownerName,
+  initialSidebarCollapsed,
 }: {
   name: string;
   description: string;
   email: string;
   ownerName: string;
+  initialSidebarCollapsed: boolean;
 }) {
   const params = useSearchParams();
   const imageId = params.get('image');
@@ -139,6 +141,7 @@ export function TrashScreen({
       description={description}
       email={email}
       ownerName={ownerName}
+      initialSidebarCollapsed={initialSidebarCollapsed}
       returnTo={
         imageId ? `/trash?${new URLSearchParams({ image: imageId })}` : '/trash'
       }
@@ -214,8 +217,11 @@ export function TrashScreen({
         </>
       ) : (
         <section className="grid min-w-0 gap-5">
-          <p className="text-sm">工作空间 / 回收站</p>
-          <h1 id="trash-title" tabIndex={-1} className="text-3xl font-medium">
+          <h1
+            id="trash-title"
+            tabIndex={-1}
+            className="text-[28px] font-medium leading-normal md:text-[30px]"
+          >
             回收站
           </h1>
           <p className="text-sm">

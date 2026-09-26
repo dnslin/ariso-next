@@ -40,6 +40,22 @@ describe('后台壳层导航', () => {
     expect(html).not.toMatch(/href="\/(login|upload|images|setup)"/);
   });
 
+  it('未开放入口没有 href，不成为当前项，并明确说明状态', () => {
+    route.pathname = '/future';
+    const html = renderToStaticMarkup(
+      jsx(AdminShell, {
+        name: '测试站点',
+        navigation: [{ href: '/future', label: '未来页面', unavailable: true }],
+        user: '当前用户',
+        children: '主要内容',
+      }),
+    );
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain('未来页面，尚未开放');
+    expect(html).not.toContain('href="/future"');
+    expect(html).not.toContain('aria-current="page"');
+  });
+
   it.each([
     ['/settings/media/detail', '/settings/media'],
     ['/settings/media', '/settings/media'],

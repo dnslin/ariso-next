@@ -1,18 +1,29 @@
 'use client';
 
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+  type ReactNode,
+} from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
+import { Tooltip } from '@heroui/react/tooltip';
+import { ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 export type ShellNavigationItem = {
   href: string;
   label: string;
   icon?: ReactNode;
+  unavailable?: boolean;
+  section?: string;
 };
 
-/** 路由组合方仅传入已经实现且当前用户可访问的入口；鉴权仍在服务端执行。 */
+/** 未开放入口不提供链接；真实入口的鉴权仍在服务端执行。 */
 export function AdminShell({
   name,
   description,
@@ -20,6 +31,7 @@ export function AdminShell({
   user,
   children,
   footer,
+  initialSidebarCollapsed = false,
 }: {
   name: string;
   description?: string;
@@ -27,13 +39,18 @@ export function AdminShell({
   user: ReactNode;
   children: ReactNode;
   footer?: ReactNode;
+  initialSidebarCollapsed?: boolean;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(initialSidebarCollapsed);
+  const navigationId = useId();
   const current = navigation
     .filter(
-      ({ href }) =>
-        pathname === href || (href !== '/' && pathname.startsWith(`${href}/`)),
+      ({ href, unavailable }) =>
+        !unavailable &&
+        (pathname === href ||
+          (href !== '/' && pathname.startsWith(`${href}/`))),
     )
     .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 
@@ -64,21 +81,20 @@ export function AdminShell({
   }, []);
 
   const links = (close?: () => void) =>
-    navigation.map(({ href, label, icon }) => (
-      <Link
-        key={href}
-        href={href}
-        aria-current={current === href ? 'page' : undefined}
-        className="shell-nav-link"
-        onPress={close}
-      >
-        {icon ? (
-          <span className="shell-nav-icon" aria-hidden="true">
-            {icon}
-          </span>
+    navigation.map((item) => (
+      <Fragment key={item.href}>
+        {item.section ? (
+          <p className="shell-nav-section text-[11px] leading-normal">
+            {item.section}
+          </p>
         ) : null}
-        {label}
-      </Link>
+        <NavigationLink
+          item={item}
+          current={current === item.href}
+          compact={collapsed && !close}
+          onNavigate={close}
+        />
+      </Fragment>
     ));
 
   return (
@@ -86,14 +102,50 @@ export function AdminShell({
       <Link href="#main-content" className="skip-link">
         跳到主要内容
       </Link>
-      <aside className="shell-navigation" aria-label="后台侧栏">
-        <Link href="/" className="shell-brand" aria-label={`${name} 首页`}>
-          {name}
-        </Link>
+      <aside
+        className="shell-navigation group/sidebar"
+        data-collapsed={collapsed}
+        aria-label="后台侧栏"
+      >
+        <div className="flex h-18 shrink-0 items-center gap-[31px] group-data-[collapsed=true]/sidebar:justify-center">
+          <Link
+            href="/"
+            className="shell-brand block min-w-0 truncate"
+            aria-label={`${name} 首页`}
+          >
+            {name}
+          </Link>
+          <Tooltip>
+            <Button
+              isIconOnly
+              variant="ghost"
+              className="size-11 shrink-0 rounded-lg p-0"
+              aria-label={collapsed ? '展开侧栏' : '收起侧栏'}
+              aria-expanded={!collapsed}
+              aria-controls={navigationId}
+              onPress={() => {
+                const next = !collapsed;
+                document.cookie = `ariso.sidebar-collapsed=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
+                setCollapsed(next);
+              }}
+            >
+              {collapsed ? (
+                <ChevronsRight size={18} aria-hidden />
+              ) : (
+                <ChevronsLeft size={18} aria-hidden />
+              )}
+            </Button>
+            <Tooltip.Content placement="right">
+              {collapsed ? '展开侧栏' : '收起侧栏'}
+            </Tooltip.Content>
+          </Tooltip>
+        </div>
         {description ? (
           <p className="shell-description">{description}</p>
         ) : null}
-        <nav aria-label="后台导航">{links()}</nav>
+        <nav id={navigationId} aria-label="后台导航">
+          {links()}
+        </nav>
         <div className="shell-user">{user}</div>
       </aside>
       <header className="shell-mobile-header">
@@ -134,5 +186,62 @@ export function AdminShell({
         {footer ? <footer className="shell-footer">{footer}</footer> : null}
       </div>
     </div>
+  );
+}
+
+function NavigationLink({
+  item: { href, label, icon, unavailable },
+  current,
+  compact,
+  onNavigate,
+}: {
+  item: ShellNavigationItem;
+  current: boolean;
+  compact: boolean;
+  onNavigate?: () => void;
+}) {
+  const name = unavailable ? `${label}，尚未开放` : label;
+  const linkProps = {
+    href: unavailable ? undefined : href,
+    isDisabled: unavailable,
+    'aria-label': name,
+    'aria-current': current ? ('page' as const) : undefined,
+    onPress: onNavigate,
+  };
+  const content = (
+    <>
+      {icon ? (
+        <span className="shell-nav-icon" aria-hidden="true">
+          {icon}
+        </span>
+      ) : null}
+      <span className="shell-nav-label whitespace-nowrap">{label}</span>
+      {unavailable ? (
+        <span className="shell-nav-unavailable ml-auto whitespace-nowrap text-[10px]">
+          尚未开放
+        </span>
+      ) : null}
+    </>
+  );
+  return (
+    <Tooltip isDisabled={!compact}>
+      {unavailable ? (
+        <Tooltip.Trigger
+          className="block w-full rounded-xl"
+          role="group"
+          tabIndex={compact ? 0 : -1}
+          aria-label={name}
+        >
+          <Link {...linkProps} className="shell-nav-link">
+            {content}
+          </Link>
+        </Tooltip.Trigger>
+      ) : (
+        <Link {...linkProps} className="shell-nav-link">
+          {content}
+        </Link>
+      )}
+      <Tooltip.Content placement="right">{name}</Tooltip.Content>
+    </Tooltip>
   );
 }

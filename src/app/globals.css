@@ -272,6 +272,12 @@ input {
   gap: 12px;
   justify-content: flex-start;
   overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.shell-nav-link[aria-disabled='true'] {
+  opacity: 0.6;
+  pointer-events: auto;
+  cursor: default;
 }
 .shell-nav-link[aria-current='page'] {
   background: var(--ariso-current);
@@ -351,7 +357,7 @@ input {
     border-bottom: 0;
     overflow: auto;
   }
-  .shell-navigation > .shell-brand {
+  .shell-navigation .shell-brand {
     font-size: 48px;
   }
   .shell-navigation > .shell-description {
@@ -361,6 +367,24 @@ input {
     min-height: 40px;
     font-size: 14px;
     width: 100%;
+  }
+  .shell-navigation[data-collapsed='true'] {
+    width: 72px;
+    flex-basis: 72px;
+    padding-inline: 12px;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-brand,
+  .shell-navigation[data-collapsed='true'] .shell-description,
+  .shell-navigation[data-collapsed='true'] .shell-nav-label,
+  .shell-navigation[data-collapsed='true'] .shell-nav-unavailable {
+    display: none;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-nav-link {
+    justify-content: center;
+    padding-inline: 0;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-nav-section {
+    text-align: center;
   }
   .shell-navigation nav {
     flex-direction: column;

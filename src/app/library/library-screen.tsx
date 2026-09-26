@@ -51,11 +51,13 @@ export function LibraryScreen({
   description,
   email,
   ownerName,
+  initialSidebarCollapsed,
 }: {
   name: string;
   description: string;
   email: string;
   ownerName: string;
+  initialSidebarCollapsed: boolean;
 }) {
   const detail = useDetailNavigation();
   const [notice, setNotice] = useState('');
@@ -140,6 +142,7 @@ export function LibraryScreen({
       description={description}
       email={email}
       ownerName={ownerName}
+      initialSidebarCollapsed={initialSidebarCollapsed}
       footer={
         <p data-testid="library-count" role="status" className="w-full text-sm">
           {expired ? '登录已失效' : count}
@@ -151,9 +154,12 @@ export function LibraryScreen({
         aria-labelledby="library-title"
       >
         {notice ? <p role="status">{notice}</p> : null}
-        <p className="hidden text-sm md:block">工作空间 / 图库</p>
         <div className="grid gap-1.5">
-          <h1 id="library-title" tabIndex={-1} className="text-3xl font-medium">
+          <h1
+            id="library-title"
+            tabIndex={-1}
+            className="text-[28px] font-medium leading-normal md:text-[30px]"
+          >
             图库
           </h1>
           <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>

@@ -5,7 +5,7 @@
 ## 根因与本轮处理
 
 - `AdminShell` 原来只共用容器，`/admin`、上传、图库、回收站分别传入自己的导航和账号 JSX。导航遗漏图标、账号区位置不同都由此产生。实际页面改用 `OwnerShell`，共享导航配置及账号展示；会话核对与退出状态只创建一份。
-- `/admin` 是早期身份验证占位，正文和“工作空间”导航没有对应完整的总览设计。**目前仍待退出占位，不能视为已还原。**
+- `/admin` 是早期身份验证占位，正文和“工作空间”导航没有对应完整的总览设计。后续修正已移除占位：保留受保护入口并在鉴权成功后跳转 `/upload`，不把占位改名冒充总览。
 - 外壳旧验证针对夹具，检查尺寸、功能及焦点，没有证明真实页面之间一致，也没有逐节点设计对照。新增 `e2e/owner-shell.mjs` 通过真实上传、图库、回收站导航检查公共区域。
 - 设计交付表将两个手机节点并列，容易误读为桌面／手机。现明确桌面侧栏 `30:98`、手机导航 `106:1494`，设置分类 `113:1499` 单独说明。
 - 完成标准集中更新在 `docs/design/handoff.md` 与 `docs/tasks/execution.md`，AGENTS 仅引用。要求具体节点、同尺寸截图、差异处理、真实跨页验证，区分功能通过和设计通过。
@@ -14,7 +14,7 @@
 
 | 区域     | Figma 节点                                                       | 已修改                                                                                | 剩余范围                                                                                                              |
 | -------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 公共后台 | 30:98 / 106:1494                                                 | 统一导航图标、账号区；768–1199 使用顶部菜单；1200 起常驻侧栏；手机头部 64px、页脚留白 | 完整菜单显隐政策待用户选择；工作空间占位待退出；折叠入口未实现                                                        |
+| 公共后台 | 30:98 / 106:1494                                                 | 统一导航图标、账号区；768–1199 使用顶部菜单；1200 起常驻侧栏；手机头部 64px、页脚留白 | 完整菜单及占位退出已按用户确认实施；收起态与统一面包屑的补充约定、验证见后续修正节                                    |
 | 登录     | 200:2295 / 200:2561；错误 200:2105 / 200:2371；平板深色 268:3718 | 手机／平板／桌面顶部 150／210／230px；8px 控件圆角、设计控件高度及深色层级            | 完整逐状态视觉验收仍待完成；OAuth、密码恢复及主题入口不是本轮新增能力                                                 |
 | 初始化   | 184:764 / 184:1774、184:767 / 184:1777、184:772 / 184:1782       | 手机 24px 边距、72px 品牌行高；未知结果紧凑卡，保留真实结果核对和字段                 | 完整逐状态视觉验收仍待完成                                                                                            |
 | 上传     | 30:97 / 101:1014；结果 317:4074 / 317:4225；保存 316:4802        | CloudUpload 图标、选择与设置容器、按钮圆角、标题提示、紧凑队列／结果行和处理失败弹窗  | 成功结果保留复制／打开辅助区；失败回收经详情进入；这些差异未获批准。M2 单文件边界仍存在，不能用假相册／标签／多选填充 |
@@ -50,6 +50,37 @@ Figma 文件：[Ariso](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b)。�
 
 证据：[上传](./ui-restoration/upload.json)、[真实跨页导航](./ui-restoration/owner-shell.json)、[图库／详情／回收](./ui-restoration/library.json)、[第一次失败记录](./ui-restoration/first-run-failed.json)、[第二次失败记录](./ui-restoration/second-run-failed.json)。
 
-对照截图：[1440×1080 上传结果](./ui-restoration/upload-ready-light-1440.png)、[390×844 手机菜单](./ui-restoration/owner-shell-upload-390.png)、[手机待上传](./ui-restoration/upload-queued-light-390.png)、[手机登录](./ui-restoration/identity-login-light-390.png)。截图显示公共图标与账号区已统一，但菜单仍为当前四项，不能作为完整 Figma 导航验收；详情截图仍显示手机 2×2 操作，后续应改为复制与更多操作，并保持回收确认流程在菜单关闭后继续挂载。
+对照截图：[1440×1080 上传结果](./ui-restoration/upload-ready-light-1440.png)、[390×844 手机菜单](./ui-restoration/owner-shell-upload-390.png)、[手机待上传](./ui-restoration/upload-queued-light-390.png)、[手机登录](./ui-restoration/identity-login-light-390.png)。截图显示公共图标与账号区已统一，但该批历史截图菜单仍为四项，完整菜单的后续修正另见下节；详情截图仍显示手机 2×2 操作，后续应改为复制与更多操作，并保持回收确认流程在菜单关闭后继续挂载。
 
 视觉验收状态：**未通过／未完成**。当前 PR 保留草稿，不以 PR 存在或局部功能通过代替完整交付。
+
+## 公共导航、面包屑与收放后续修正（2026-09-26）
+
+用户确认按 Figma 保留完整菜单，未实现项目标注“尚未开放”并禁用。`OwnerShell` 统一维护十项顺序及图标：总览、上传图片、图库、相册、标签、分享管理、回收站、管理分组下的访问统计、存储管理、站点设置。当前只有上传、图库、回收站提供链接；未来入口不存在虚假可用页面。替换历史隐藏策略的规则只在[交接](../../design/handoff.md#公共界面复用与占位退出)维护。
+
+面包屑使用 HeroUI Breadcrumbs，始终位于共享内容区顶部。“工作空间”保留为设计稿中的分区名称，不再是一个占位菜单。桌面内容起点 x=264、y=28，面包屑行高 44px；手机起点 x=16、y=88，行高 24px。手机统一显示以及各上传状态统一行高，遵守本次用户要求，取代原先逐页面、逐状态不同的显隐和高度。它随正文正常滚动，不使用覆盖内容的固定定位。导航局部覆盖 HeroUI Link 默认 hover/pressed 下划线，保留键盘焦点。
+
+桌面采用 Figma 30:98 的 232px 展开态与双箭头，手机采用 106:1494 的全屏菜单。Figma 元数据中未找到独立收起态画板，72px 图标栏为已说明的实施补充，不能标成原稿尺寸。HeroUI Button/Tooltip 提供收放与图标名称提示；偏好 Cookie 由服务端读取，避免跨页先展开再收起，不写业务数据库。页面共享全部公共区域，手机与平板不使用桌面收起形态。
+
+代码审计修复两项：上传设置加载成功会重建外壳、重置侧栏并丢失焦点；固定品牌行中的长名称会侵入后续导航。现在上传所有状态保持同一外壳，长品牌单行省略但保留完整可访问名称，收放按钮有 44px 点击区。未新增依赖、修改 Figma 或冻结 PRD。
+
+第一轮类型检查指出 HeroUI Link 不支持 `title`，改用现有 Tooltip 后通过。第一轮浏览器已通过九组真实跨页和三组收起态；上传布局检查发现收放按钮只有 40px，改为 44px 后重跑，未放宽断言。图标提示检查另因键盘后鼠标直接跳到图标而超时：实测和 React Aria 源码确认 `pointerenter` 先于更新输入方式的 `pointermove`，库仍按键盘方式处理。验证改为先经过正文区再进入图标，保留实际提示、键盘与 Escape 断言；最终实现沿用库原有 Tooltip，不增加自制提示状态。专项复验已通过七组公共外壳检查（九个真实页面组合、三个收起态、慢加载与短视口）以及上传 14 组行为、130 组布局。完整浏览器套件随后退出码 0，初始化／重启／登录／退出、外壳夹具、图库／详情／回收、上传及通用组件检查均通过。
+
+专项证据：[真实跨页、收放与焦点](./sidebar-followup/owner-shell.json)、[上传行为与两种主题布局](./sidebar-followup/upload.json)、[按钮尺寸首次失败](./sidebar-followup/sidebar-first-run-failed.json)、[提示测试鼠标路径失败](./sidebar-followup/sidebar-tooltip-failed.json)。
+
+当前截图：[桌面展开](./sidebar-followup/owner-shell-upload-1440.png)、[手机完整菜单](./sidebar-followup/owner-shell-upload-390.png)、[图库收起态](./sidebar-followup/owner-shell-collapsed-library.png)、[慢加载后保持收起](./sidebar-followup/owner-shell-settings-loading-collapse.png)、[390×400 菜单末项与账号](./sidebar-followup/owner-shell-short-phone-menu.png)、[长站点名外壳夹具](./sidebar-followup/shell-long-name.png)。
+
+本次实际检查（Node 24.18.1 / pnpm 11.19.0）：
+
+| 命令                                                                              | 实际结果                                                                    |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `pnpm run typecheck`、`pnpm run lint`                                             | 最终代码通过；中间 Tooltip 组合尝试的类型错误已撤回，不进入最终实现         |
+| `pnpm run test:unit`                                                              | 30 文件、461 项通过                                                         |
+| `pnpm run build`                                                                  | 最终退出码 0；保留已有可选依赖文件追踪诊断，Standalone 由实际浏览器流程验证 |
+| `pnpm exec vitest run --project integration --project media-tools --maxWorkers=4` | 62 文件、507 项通过，包含 `/admin` 鉴权与跳转验证                           |
+| `node test-results/ui-focused/run.mjs`                                            | 最终退出码 0；上传 14 / 130、公共外壳 7 组通过；只使用临时真实数据库        |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`              | 120 任务、298 需求一致；5 个拒绝用例通过                                    |
+
+完整浏览器命令：`EGO_TASK_SPACE=2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sidebar-complete pnpm run test:browser`，最终退出码 0。[全套结果](./sidebar-followup/runner.json)、[外壳夹具](./sidebar-followup/shell-browser.json)、[图库／详情／回收](./sidebar-followup/library.json)。
+
+最终五轴代码复核未发现尚存 Critical / Required。上述通过仅覆盖实际运行范围，不代表其他页面的逐节点视觉差异已经解决。Docker/AMD64/ARM64、物理触控、软键盘及非零安全区仍未执行；仓库工作流只允许 Release 验证，没有触发发布或部署。

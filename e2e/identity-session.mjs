@@ -239,7 +239,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
     await page.fill('#password', config.credentials.password);
     await page.focus('loc=role:button[name="登录"]');
     await page.keyboard.press('Enter');
-    await page.waitForURL(`${config.origin}/admin`);
+    await page.waitForURL(`${config.origin}/upload`);
     await openIdentityAccountMenu(page);
   };
   const post = (password) =>
@@ -347,7 +347,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
   );
   checks.push({
     check:
-      'Expired real session redirects from the visible admin page to the expiry notice',
+      'Expired real session redirects from the visible upload page to the expiry notice',
   });
   await signIn();
 
@@ -363,7 +363,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
         .querySelector('[role="dialog"][aria-label="当前账号"] [role="alert"]')
         ?.textContent.includes('退出失败（HTTP 500）'),
     );
-    assert.equal(new URL(await page.url()).pathname, '/admin');
+    assert.equal(new URL(await page.url()).pathname, '/upload');
     assert.equal(
       JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,
       config.credentials.email,
@@ -454,7 +454,7 @@ export async function verifyIdentitySession(page, config, checks = []) {
   );
   assert.equal(
     new URL(await page.url()).pathname,
-    '/admin',
+    '/upload',
     'A background empty session must not redirect while explicit logout is pending',
   );
   await page.evaluate(() => window.__identityReleaseSignOut());

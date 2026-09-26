@@ -25,6 +25,7 @@ type ScreenProps = {
   description: string;
   email: string;
   ownerName: string;
+  initialSidebarCollapsed: boolean;
 };
 async function readSettings(signal: AbortSignal): Promise<UploadSettings> {
   const response = await fetch('/upload/settings', {
@@ -40,6 +41,9 @@ async function readSettings(signal: AbortSignal): Promise<UploadSettings> {
   }
   return response.json();
 }
+
+const emptySubscribe = () => () => {};
+const emptySnapshot = () => null;
 
 export function UploadScreen(props: ScreenProps) {
   const [client] = useState(() => new QueryClient());
@@ -59,73 +63,28 @@ export function UploadScreen(props: ScreenProps) {
     if (query.error instanceof DetailReadError && query.error.status === 401)
       window.location.replace('/login?reason=expired&returnTo=%2Fupload');
   }, [query.error]);
-  if (!query.data)
-    return (
-      <OwnerShell {...props}>
-        <h1 className="mb-5 text-3xl font-medium">上传图片</h1>
-        {query.isPending ? (
-          <p role="status">正在读取上传设置…</p>
-        ) : (
-          <div className="grid gap-4">
-            <Alert status="danger" role="alert">
-              <Alert.Content>
-                <Alert.Title>上传设置读取失败</Alert.Title>
-                <Alert.Description>{query.error?.message}</Alert.Description>
-              </Alert.Content>
-            </Alert>
-            <Button
-              className="min-h-11"
-              onPress={() => {
-                void query.refetch();
-              }}
-            >
-              重试读取设置
-            </Button>
-          </div>
-        )}
-      </OwnerShell>
-    );
-  return <UploadWorkspace {...props} settings={query.data} client={client} />;
-}
-
-type WorkspaceProps = ScreenProps & {
-  settings: UploadSettings;
-  client: QueryClient;
-};
-
-function UploadWorkspace(props: WorkspaceProps) {
+  const settings = query.data;
+  const maxFileBytes = settings?.maxFileBytes;
   const [controller, setController] = useState<UploadController | null>(null);
   useEffect(() => {
+    if (maxFileBytes === undefined) return;
     const instance = new UploadController({
-      maxFileBytes: props.settings.maxFileBytes,
+      maxFileBytes,
       onUnauthorized: () =>
         window.location.replace('/login?reason=expired&returnTo=%2Fupload'),
     });
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Publish the newly owned external store; each effect setup owns its own cleanup, including StrictMode.
     setController(instance);
     return () => instance.destroy();
-  }, [props.settings.maxFileBytes]);
-  return controller ? (
-    <UploadForm {...props} controller={controller} />
-  ) : (
-    <p role="status">正在准备上传队列…</p>
-  );
-}
-
-function UploadForm({
-  settings,
-  client,
-  controller,
-  ...props
-}: WorkspaceProps & { controller: UploadController }) {
+  }, [maxFileBytes]);
   const item = useSyncExternalStore(
-    controller.subscribe,
-    controller.getSnapshot,
-    controller.getSnapshot,
+    controller?.subscribe ?? emptySubscribe,
+    controller?.getSnapshot ?? emptySnapshot,
+    controller?.getSnapshot ?? emptySnapshot,
   );
-  const [storageId, setStorageId] = useState(settings.defaultStorageId);
-  const [storageSelected, setStorageSelected] = useState(false);
-  const [visibility, setVisibility] = useState(settings.defaultVisibility);
+  const [chosenStorageId, setStorageId] = useState<string>();
+  const [chosenVisibility, setVisibility] =
+    useState<UploadSettings['defaultVisibility']>();
   const [error, setError] = useState('');
   const [detailId, setDetailId] = useState<string | null>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -136,11 +95,9 @@ function UploadForm({
       item.state,
     );
   const frozen = !!item && item.state !== 'queued';
-  const selectedStorage = settings.storages.find(
-    (s) => s.id === storageId && s.enabled,
-  );
   useEffect(() => {
     if (
+      !controller ||
       !item ||
       !['saving', 'processing-queued', 'processing'].includes(item.state)
     )
@@ -171,8 +128,50 @@ function UploadForm({
         )?.focus({ preventScroll: true }),
       );
   }, []);
+  if (!settings)
+    return (
+      <OwnerShell {...props}>
+        <h1 className="mb-5 text-[28px] font-medium leading-normal md:text-[30px]">
+          上传图片
+        </h1>
+        {query.isPending ? (
+          <p role="status">正在读取上传设置…</p>
+        ) : (
+          <div className="grid gap-4">
+            <Alert status="danger" role="alert">
+              <Alert.Content>
+                <Alert.Title>上传设置读取失败</Alert.Title>
+                <Alert.Description>{query.error?.message}</Alert.Description>
+              </Alert.Content>
+            </Alert>
+            <Button
+              className="min-h-11"
+              onPress={() => {
+                void query.refetch();
+              }}
+            >
+              重试读取设置
+            </Button>
+          </div>
+        )}
+      </OwnerShell>
+    );
+  if (!controller)
+    return (
+      <OwnerShell {...props}>
+        <h1 className="mb-5 text-[28px] font-medium leading-normal md:text-[30px]">
+          上传图片
+        </h1>
+        <p role="status">正在准备上传队列…</p>
+      </OwnerShell>
+    );
+  const storageId = chosenStorageId ?? settings.defaultStorageId;
+  const visibility = chosenVisibility ?? settings.defaultVisibility;
+  const selectedStorage = settings.storages.find(
+    (s) => s.id === storageId && s.enabled,
+  );
   function choose() {
-    if (terminal) controller.clearCompleted();
+    if (terminal) controller?.clearCompleted();
     setError('');
     input.current?.click();
   }
@@ -205,7 +204,9 @@ function UploadForm({
                 if (selectedStorage)
                   void controller.start(
                     visibility,
-                    storageSelected ? selectedStorage.id : undefined,
+                    chosenStorageId !== undefined
+                      ? selectedStorage.id
+                      : undefined,
                   );
               }}
             >
@@ -219,11 +220,6 @@ function UploadForm({
         className="grid min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg"
         aria-labelledby="upload-title"
       >
-        <p
-          className={`${frozen ? '' : 'hidden md:flex md:min-h-11 md:items-center'} text-xs text-muted md:text-sm`}
-        >
-          工作空间 / 上传图片
-        </p>
         <div
           className={`grid ${terminal || item?.state === 'saving' ? 'gap-5' : 'gap-1.5'}`}
         >
@@ -287,7 +283,6 @@ function UploadForm({
               disabled={frozen}
               onStorage={(id) => {
                 setStorageId(id);
-                setStorageSelected(true);
               }}
               onVisibility={setVisibility}
             />

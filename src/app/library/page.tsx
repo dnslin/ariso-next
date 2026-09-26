@@ -1,3 +1,4 @@
+import { readSidebarCollapsed } from '../../components/shell/sidebar-preference';
 import { requirePageOwner } from '../../server/identity/owner-page';
 import { requireSiteSettings } from '../../server/site/settings';
 import { getServerRuntime } from '../../server/startup/server-start';
@@ -17,6 +18,7 @@ export default async function LibraryPage({
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
     <LibraryScreen
+      initialSidebarCollapsed={await readSidebarCollapsed()}
       name={settings.name}
       description={settings.description}
       email={owner.email}
