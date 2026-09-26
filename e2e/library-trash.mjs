@@ -66,11 +66,16 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
         : '[data-testid="trash-detail"]',
     );
     await page.waitForSelector(
-      button(area === 'library' ? '回收图片' : '恢复图片'),
+      button(area === 'library' ? '更多操作' : '恢复图片'),
     );
   };
   const confirm = async (action) => {
-    await page.click(button(`${action}图片`));
+    if (action === '回收') {
+      await page.click(button('更多操作'));
+      await page.click('loc=role:menuitem[name="回收图片"]');
+    } else {
+      await page.click(button(`${action}图片`));
+    }
     await page.waitForSelector('[data-testid="trash-confirm"]');
   };
   const submitted = async () => {
@@ -126,6 +131,47 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
             target.width >= 44 && target.height >= 44,
             `${target.name}: 44px target`,
           );
+        if (state === 'record') {
+          const row = await page.evaluate(() => {
+            const item = [
+              ...document.querySelectorAll(
+                '[data-testid="trash-detail"] dl > div',
+              ),
+            ].find(
+              (node) => node.querySelector('dt').textContent === '原位置与权限',
+            );
+            const label = item.querySelector('dt').getBoundingClientRect();
+            const spans = item.querySelectorAll('dd > span');
+            const value = spans[0].getBoundingClientRect();
+            const note = spans[2].getBoundingClientRect();
+            return {
+              labelTop: label.top,
+              labelBottom: label.bottom,
+              valueTop: value.top,
+              valueRight: value.right,
+              noteTop: note.top,
+              noteLeft: note.left,
+            };
+          });
+          assert.ok(
+            Math.abs(row.valueTop - row.noteTop) < 2,
+            'Record value and note share a line',
+          );
+          assert.ok(
+            row.noteLeft > row.valueRight,
+            'Record note follows its value',
+          );
+          if (width < 768)
+            assert.ok(
+              row.valueTop >= row.labelBottom - 2,
+              'Phone record places label above value and note',
+            );
+          else
+            assert.ok(
+              Math.abs(row.labelTop - row.valueTop) < 2,
+              'Desktop record keeps three columns',
+            );
+        }
         if ([390, 1440].includes(width))
           await page.screenshot({
             path: join(config.output, `trash-${state}-${theme}-${width}.png`),
@@ -145,7 +191,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.click(button('取消'));
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('回收图片'),
+    document.activeElement?.textContent.includes('更多操作'),
   );
   assert.deepEqual(
     await page.evaluate(() => window.__trashTransport.writes),
@@ -155,7 +201,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.keyboard.press('Escape');
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('回收图片'),
+    document.activeElement?.textContent.includes('更多操作'),
   );
   await page.evaluate(() => window.__restoreTrashTransport());
   await transport(page, { hold: true });

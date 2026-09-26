@@ -27,7 +27,7 @@ export default async function LoginPage({
           ? '已退出登录。'
           : '';
   return (
-    <PublicShell>
+    <PublicShell layout="login">
       <LoginForm
         initialized={initialized}
         returnTo={loginDestination(query.returnTo)}

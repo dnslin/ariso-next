@@ -1,8 +1,12 @@
 /* global taskSpace, config */
 const { default: assert } = await import('node:assert/strict');
 const { readFile, writeFile } = await import('node:fs/promises');
-const { identitySql, verifyIdentitySession, verifyLoginFailures } =
-  await import(config.identitySessionScript);
+const {
+  identitySql,
+  verifyIdentitySession,
+  verifyLoginFailures,
+  openIdentityAccountMenu,
+} = await import(config.identitySessionScript);
 const { join } = await import('node:path');
 const { installBrowserErrors, assertNoBrowserErrors } = await import(
   config.errorsScript
@@ -100,7 +104,93 @@ async function layouts(name) {
           ),
           JSON.stringify(layout.targets),
         );
-      report.layouts.push({ name, theme, ...layout });
+      const geometry = await page.evaluate(() => {
+        const card = document.querySelector('section[aria-labelledby]');
+        const rect = card.getBoundingClientRect();
+        const group = card.parentElement.getBoundingClientRect();
+        const brand = document.querySelector(
+          '.public-content--setup > div > p',
+        );
+        return {
+          path: location.pathname,
+          card: {
+            left: rect.left,
+            top: rect.top + scrollY,
+            width: rect.width,
+            radius: getComputedStyle(card).borderRadius,
+          },
+          group: { top: group.top + scrollY, height: group.height },
+          brand: brand
+            ? {
+                top: brand.getBoundingClientRect().top + scrollY,
+                height: brand.getBoundingClientRect().height,
+              }
+            : null,
+          fields: [...card.querySelectorAll('[data-slot="input-group"]')].map(
+            (node) => ({
+              height: node.getBoundingClientRect().height,
+              radius: getComputedStyle(node).borderRadius,
+            }),
+          ),
+        };
+      });
+      const close = (actual, expected, label) =>
+        assert.ok(
+          Math.abs(actual - expected) <= 1,
+          `${label}: ${actual} instead of ${expected}`,
+        );
+      assert.equal(geometry.card.radius, '24px');
+      if (geometry.path === '/login') {
+        close(
+          geometry.card.width,
+          Math.min(448, width - 32),
+          'Login card width',
+        );
+        close(
+          geometry.card.left,
+          (width - geometry.card.width) / 2,
+          'Login card centered horizontally',
+        );
+        close(
+          geometry.card.top,
+          width < 768 ? 150 : width < 1200 ? 210 : 230,
+          'Login card design offset',
+        );
+        for (const field of geometry.fields)
+          close(
+            field.height,
+            width < 1200 ? 44 : 36,
+            'Login field design height',
+          );
+      } else {
+        close(
+          geometry.card.width,
+          Math.min(520, width - (width < 768 ? 48 : 96)),
+          'Setup card width',
+        );
+        close(
+          geometry.card.left,
+          (width - geometry.card.width) / 2,
+          'Setup card centered horizontally',
+        );
+        close(geometry.brand.height, 72, 'Setup wordmark line height');
+        if (width < 768) {
+          close(geometry.brand.top, 76, 'Setup wordmark top');
+          close(geometry.card.top, 168, 'Setup card top');
+        } else
+          close(
+            geometry.group.top,
+            Math.max(40, (844 - geometry.group.height) / 2),
+            'Setup desktop group centered vertically',
+          );
+        for (const field of geometry.fields)
+          close(field.height, 48, 'Setup field design height');
+      }
+      assert.ok(
+        geometry.fields.every((field) => field.radius === '8px'),
+        'Identity inputs retain the design corner radius',
+      );
+      report.layouts.push({ name, theme, ...layout, geometry });
       const snapshot = await page.snapshot();
       if (snapshot.includes('保存登录')) {
         await page.click('loc=role:button[name="关闭"]');
@@ -135,12 +225,16 @@ async function loginAndLogout() {
   await page.goto(`${config.origin}/admin`);
   await page.waitForSelector('#email');
   assert.equal(new URL(await page.url()).pathname, '/login');
+  assert.equal(
+    new URL(await page.url()).searchParams.get('returnTo'),
+    '/admin',
+  );
   await page.fill('#email', config.credentials.email);
   await page.fill('#password', config.credentials.password);
   await page.focus('loc=role:button[name="登录"]');
   await page.keyboard.press('Enter');
-  await page.waitForURL(`${config.origin}/admin`);
-  await page.waitForSelector('loc=role:button[name="退出登录"]');
+  await page.waitForURL(`${config.origin}/upload`);
+  await openIdentityAccountMenu(page);
   assert.equal(
     JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,
     config.credentials.email,
@@ -156,6 +250,7 @@ async function loginAndLogout() {
     );
   }
   report.activeCheck = 'credential-logout';
+  await openIdentityAccountMenu(page);
   await page.focus('loc=role:button[name="退出登录"]');
   await page.keyboard.press('Enter');
   await page.waitForSelector('#email');
@@ -289,7 +384,7 @@ try {
       'HeroUI retains the group focus ring',
     );
     report.focusStyles = focusStyles;
-    assert.equal(focusStyles.buttonRadius, '12px');
+    assert.equal(focusStyles.buttonRadius, '8px');
     await page.focus('loc=role:button[name="下一步：设置站点"]');
     await page.keyboard.press('Enter');
     await page.waitForSelector('#publicUrl');
@@ -393,6 +488,25 @@ try {
       await page.click('loc=role:button[name="完成初始化"]');
       await page.waitForSelector('loc=role:button[name="核对初始化结果"]');
       await layouts('unknown');
+      assert.equal(
+        await page.evaluate(() => document.querySelector('#publicUrl')),
+        null,
+        'Unknown result uses the compact result card',
+      );
+      await page.click('loc=role:button[name="返回检查设置"]');
+      await page.waitForSelector('#publicUrl');
+      assert.equal(
+        await page.evaluate(() => document.querySelector('#publicUrl').value),
+        config.origin,
+        'Review returns to the preserved settings',
+      );
+      assert.equal(
+        await page.evaluate(
+          () => !!document.querySelector('button[type="submit"]'),
+        ),
+        false,
+        'Reviewing settings cannot bypass the unknown-result check',
+      );
       await page.evaluate(() => {
         const original = window.fetch;
         window.fetch = async (...args) => {

@@ -134,7 +134,10 @@ it('M1: empty directory → setup → login → logout → real restart preserve
         headers: { cookie },
       });
       expect((await session.json()).user).toMatchObject(owner!);
-      expect((await request('/admin', { headers: { cookie } })).status).toBe(
+      const admin = await request('/admin', { headers: { cookie } });
+      expect(admin.status).toBe(307);
+      expect(admin.headers.get('location')).toBe('/upload');
+      expect((await request('/upload', { headers: { cookie } })).status).toBe(
         200,
       );
       return cookie;

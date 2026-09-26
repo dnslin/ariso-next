@@ -20,12 +20,14 @@ export function DetailCopy({
   error,
   onClose,
   onRetry,
+  closeLabel,
 }: {
   detail: LibraryDetail;
   pending: boolean;
   error: string | null;
   onClose: () => void;
   onRetry: () => void;
+  closeLabel: string;
 }) {
   const [mode, setMode] = useState('default');
   const [manual, setManual] = useState<string | null>(null);
@@ -82,19 +84,27 @@ export function DetailCopy({
             {manual !== null ? (
               <>
                 <p>请选中下面的文本，手动复制。</p>
-                <TextArea
-                  aria-label="手动复制文本"
-                  value={manual}
-                  readOnly
-                  autoFocus
-                  onFocus={(e) => e.currentTarget.select()}
-                  className="min-h-28 w-full resize-y bg-secondary p-3 text-sm"
-                />
+                <div className="grid gap-3 rounded-lg bg-default p-3">
+                  <TextArea
+                    aria-label="手动复制文本"
+                    value={manual}
+                    readOnly
+                    autoFocus
+                    onFocus={(e) => e.currentTarget.select()}
+                    className="min-h-16 w-full resize-y bg-transparent text-sm"
+                  />
+                  {restricted ? (
+                    <p className="text-sm">
+                      私有或未就绪图片仍需所有者登录后访问。复制链接不会授予公开权限。
+                    </p>
+                  ) : null}
+                  <p className="text-sm">公开原图可能包含 GPS 和拍摄信息。</p>
+                </div>
               </>
             ) : (
               <>
                 <p className="break-all">{detail.displayName}</p>
-                <p className="rounded-lg bg-secondary p-3 text-sm">
+                <p className="rounded-lg bg-default p-3 text-sm">
                   默认链接跟随站点设置。当前预览版本不会自动改变复制模式。
                 </p>
                 <Select
@@ -174,19 +184,21 @@ export function DetailCopy({
                 {message ? <p role="status">{message}</p> : null}
               </>
             )}
-            {restricted ? (
-              <p className="rounded-lg bg-secondary p-3 text-sm">
+            {restricted && manual === null ? (
+              <p className="rounded-lg bg-default p-3 text-sm">
                 私有或未就绪图片仍需所有者登录后访问。复制链接不会授予公开权限。
               </p>
             ) : null}
-            <p className="text-sm">公开原图可能包含 GPS 和拍摄信息。</p>
+            {manual === null ? (
+              <p className="text-sm">公开原图可能包含 GPS 和拍摄信息。</p>
+            ) : null}
           </Modal.Body>
           <Modal.Footer>
             <Button
               className="w-full"
               onPress={() => (manual !== null ? setManual(null) : onClose())}
             >
-              {manual !== null ? '返回复制选项' : '返回详情'}
+              {manual !== null ? '返回复制选项' : closeLabel}
             </Button>
           </Modal.Footer>
         </Modal.Dialog>

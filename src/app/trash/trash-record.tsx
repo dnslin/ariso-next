@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@heroui/react/button';
+import { ArrowLeft } from 'lucide-react';
 import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
 import type { LibraryDetail } from '../../server/library/detail-types';
@@ -9,7 +11,13 @@ import {
   stepLabels,
 } from '../../components/library/detail-labels';
 
-export function TrashRecord({ record }: { record: LibraryDetail }) {
+export function TrashRecord({
+  record,
+  onBack,
+}: {
+  record: LibraryDetail;
+  onBack: () => void;
+}) {
   const rows = [
     ['文件记录', record.displayName, `原文件 ${bytesLabel(record.byteSize)}`],
     [
@@ -39,6 +47,15 @@ export function TrashRecord({ record }: { record: LibraryDetail }) {
       data-testid="trash-detail"
       className="grid min-w-0 gap-5 [overflow-wrap:anywhere]"
     >
+      <Button
+        variant="tertiary"
+        className="min-h-11 justify-self-start px-0 text-sm"
+        aria-label="返回回收站列表"
+        onPress={onBack}
+      >
+        <ArrowLeft size={16} aria-hidden />
+        返回回收站
+      </Button>
       <h1
         id="trash-record-title"
         tabIndex={-1}
@@ -52,17 +69,22 @@ export function TrashRecord({ record }: { record: LibraryDetail }) {
       <p className="rounded-lg bg-default p-3 text-sm">
         回收站不显示图片内容。仅保留记录，恢复后能否访问仍取决于权限、处理结果和存储状态。
       </p>
-      <Card className="gap-0 rounded-2xl border border-border bg-background p-4 shadow-none md:px-5">
+      <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 md:py-4">
         <Card.Content>
           <dl>
             {rows.map(([label, value, note]) => (
               <div
                 key={label}
-                className="grid gap-1 py-4 text-sm md:grid-cols-3 md:gap-4 md:py-6"
+                className="min-h-18 pb-4 text-sm md:grid md:min-h-0 md:grid-cols-3 md:gap-4 md:py-6"
               >
                 <dt>{label}</dt>
-                <dd>{value}</dd>
-                <dd>{note}</dd>
+                <dd className="md:col-span-2 md:grid md:grid-cols-2 md:gap-4">
+                  <span>{value}</span>
+                  <span aria-hidden className="md:hidden">
+                    {' · '}
+                  </span>
+                  <span>{note}</span>
+                </dd>
               </div>
             ))}
           </dl>

@@ -11,7 +11,7 @@ export default async function SetupPage() {
   if (readSetupOwner(runtime.connection.db, runtime.setup.databasePath))
     redirect('/login');
   return (
-    <PublicShell>
+    <PublicShell layout="setup">
       <SetupForm />
     </PublicShell>
   );

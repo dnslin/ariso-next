@@ -76,11 +76,13 @@ export async function verifyLibraryTrashRace({ page, config, sql, report }) {
     await page.waitForSelector('[data-testid="detail-body"]');
     await holdConcurrentReads(page, mode);
     try {
-      await page.click(button('刷新详情'));
+      await page.click(button('更多操作'));
+      await page.click('loc=role:menuitem[name="刷新详情"]');
       await page.waitForFunction(
         () => typeof window.__trashRace.releaseOld === 'function',
       );
-      await page.click(button('回收图片'));
+      await page.click(button('更多操作'));
+      await page.click('loc=role:menuitem[name="回收图片"]');
       await page.waitForSelector('[data-testid="trash-confirm"]');
       await page.click(button('确认回收'));
       await page.waitForFunction(

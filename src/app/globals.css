@@ -115,6 +115,27 @@ input {
   padding: 88px max(16px, env(safe-area-inset-right))
     max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
 }
+.public-content--login {
+  align-items: start;
+  padding-top: 210px;
+}
+.public-content--setup {
+  padding: 40px 48px;
+}
+.public-content--setup input {
+  font-size: 14px;
+}
+.public-content--login input {
+  font-size: 16px;
+}
+@media (width >= 1200px) {
+  .public-content--login {
+    padding-top: 230px;
+  }
+  .public-content--login input {
+    font-size: 14px;
+  }
+}
 .home-brand {
   width: min(100%, 600px);
   display: flex;
@@ -157,6 +178,16 @@ input {
     background-image:
       url('/shell/glow-mobile.svg'),
       radial-gradient(var(--border) 0.6px, transparent 0.6px);
+  }
+  .public-content--login {
+    padding-top: max(150px, env(safe-area-inset-top));
+  }
+  .public-content--setup {
+    align-items: start;
+    padding: max(76px, env(safe-area-inset-top))
+      max(24px, env(safe-area-inset-right))
+      max(24px, env(safe-area-inset-bottom))
+      max(24px, env(safe-area-inset-left));
   }
   .home-brand {
     gap: 20px;
@@ -241,6 +272,12 @@ input {
   gap: 12px;
   justify-content: flex-start;
   overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.shell-nav-link[aria-disabled='true'] {
+  opacity: 0.6;
+  pointer-events: auto;
+  cursor: default;
 }
 .shell-nav-link[aria-current='page'] {
   background: var(--ariso-current);
@@ -274,7 +311,7 @@ input {
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: 32px;
+  padding: 28px 32px;
   scroll-padding: 24px;
 }
 .shell-footer {
@@ -284,7 +321,8 @@ input {
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 16px 32px max(16px, env(safe-area-inset-bottom));
+  margin-inline: 32px;
+  padding: 12px 0 max(20px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
@@ -319,14 +357,34 @@ input {
     border-bottom: 0;
     overflow: auto;
   }
-  .shell-navigation > .shell-brand {
+  .shell-navigation .shell-brand {
     font-size: 48px;
   }
   .shell-navigation > .shell-description {
     display: block;
   }
   .shell-navigation .shell-nav-link {
+    min-height: 40px;
+    font-size: 14px;
     width: 100%;
+  }
+  .shell-navigation[data-collapsed='true'] {
+    width: 72px;
+    flex-basis: 72px;
+    padding-inline: 12px;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-brand,
+  .shell-navigation[data-collapsed='true'] .shell-description,
+  .shell-navigation[data-collapsed='true'] .shell-nav-label,
+  .shell-navigation[data-collapsed='true'] .shell-nav-unavailable {
+    display: none;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-nav-link {
+    justify-content: center;
+    padding-inline: 0;
+  }
+  .shell-navigation[data-collapsed='true'] .shell-nav-section {
+    text-align: center;
   }
   .shell-navigation nav {
     flex-direction: column;
@@ -337,7 +395,7 @@ input {
     padding-top: 16px;
   }
 }
-@media (width < 768px) {
+@media (width < 1200px) {
   .shell-navigation {
     display: none;
   }
@@ -346,10 +404,11 @@ input {
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: max(12px, env(safe-area-inset-top))
-      max(16px, env(safe-area-inset-right)) 12px
+    min-height: calc(64px + env(safe-area-inset-top));
+    flex: none;
+    padding: max(5px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right)) 5px
       max(16px, env(safe-area-inset-left));
-    border-bottom: 1px solid var(--border);
   }
   .shell-mobile-header .shell-brand {
     min-width: 0;
@@ -359,9 +418,9 @@ input {
       max(16px, env(safe-area-inset-left));
   }
   .shell-footer {
-    padding: 12px max(16px, env(safe-area-inset-right))
-      max(12px, env(safe-area-inset-bottom))
-      max(16px, env(safe-area-inset-left));
+    margin-inline: max(16px, env(safe-area-inset-left))
+      max(16px, env(safe-area-inset-right));
+    padding: 12px 0 max(20px, env(safe-area-inset-bottom));
   }
   .settings-desktop {
     display: none;

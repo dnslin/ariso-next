@@ -40,6 +40,22 @@ describe('后台壳层导航', () => {
     expect(html).not.toMatch(/href="\/(login|upload|images|setup)"/);
   });
 
+  it('未开放入口没有 href，不成为当前项，并明确说明状态', () => {
+    route.pathname = '/future';
+    const html = renderToStaticMarkup(
+      jsx(AdminShell, {
+        name: '测试站点',
+        navigation: [{ href: '/future', label: '未来页面', unavailable: true }],
+        user: '当前用户',
+        children: '主要内容',
+      }),
+    );
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain('未来页面，尚未开放');
+    expect(html).not.toContain('href="/future"');
+    expect(html).not.toContain('aria-current="page"');
+  });
+
   it.each([
     ['/settings/media/detail', '/settings/media'],
     ['/settings/media', '/settings/media'],
@@ -60,7 +76,9 @@ describe('后台壳层导航', () => {
 describe('公共壳层', () => {
   it('子页面提供返回首页的真实链接', () => {
     const html = renderToStaticMarkup(jsx(PublicShell, { children: '子页面' }));
-    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>返回首页<\/a>/);
+    expect(html).toMatch(
+      /<a[^>]*href="\/"[^>]*><svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>返回首页<\/a>/,
+    );
     expect(html).toContain('子页面');
   });
 
@@ -79,7 +97,9 @@ describe('公共错误页面', () => {
     expect(html).toContain('role="alert"');
     expect(html).toContain('页面加载失败');
     expect(html).toMatch(/<button[^>]*>重试<\/button>/);
-    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>返回首页<\/a>/);
+    expect(html).toMatch(
+      /<a[^>]*href="\/"[^>]*><svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>返回首页<\/a>/,
+    );
     expect(html).not.toContain('轻装简从');
   });
 });

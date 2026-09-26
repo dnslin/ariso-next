@@ -20,7 +20,7 @@
 
 ## Frontend Implementation
 
-- 前端实现与代码评审必须遵守[设计交付规范中的前端实现约束](docs/design/handoff.md#前端实现约束)。图标来源、Tailwind CSS 使用和 HeroUI 复用规则统一在该文档维护。
+- 前端实现与代码评审必须遵守完整的[设计交付规范](docs/design/handoff.md)。设计还原、公共界面一致性、图标来源、Tailwind CSS 和 HeroUI 复用规则统一在该文档维护；交付证据与完成条件遵守[前端共用验收](docs/tasks/execution.md#前端共用验收)。
 
 ## Working Method
 

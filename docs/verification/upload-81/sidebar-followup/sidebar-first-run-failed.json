@@ -1,0 +1,218 @@
+{
+  "status": "failed",
+  "checks": [
+    "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image."
+  ],
+  "layouts": [
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium device emulation is not physical touch, soft keyboard or safe-area hardware evidence.",
+    "Transport failures and timing holds are controlled browser-boundary faults; processing failure uses a disposable SQLite trigger."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: 收起侧栏: minimum 44px target\n    at layouts (file:////[eval2]:132:16)\n    at async file:////[eval2]:253:3",
+  "page": "[p1 \"Ariso\" | space \"Ariso production browser smoke\"(2): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=252, url=http://ariso-64457.localhost:64457/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=253, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        button \"总览，尚未开放\" [ref=254, loc=role:button[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传图片\" [ref=255, loc=css:a[aria-label=\"上传图片\"], url=http://ariso-64457.localhost:64457/upload]\n          svg_root\n          text \"上传图片\"\n        anchor \"图库\" [ref=256, loc=css:a[aria-label=\"图库\"], url=http://ariso-64457.localhost:64457/library]\n          svg_root\n          text \"图库\"\n        button \"相册，尚未开放\" [ref=257, loc=role:button[name=\"相册，尚未开放\"]]\n          link \"相册，尚未开放\"\n            svg_root\n            text \"相册\"\n            text \"尚未开放\"\n        button \"标签，尚未开放\" [ref=258, loc=role:button[name=\"标签，尚未开放\"]]\n          link \"标签，尚未开放\"\n            svg_root\n            text \"标签\"\n            text \"尚未开放\"\n        button \"分享管理，尚未开放\" [ref=259, loc=role:button[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=260, loc=css:a[aria-label=\"回收站\"], url=http://ariso-64457.localhost:64457/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        button \"访问统计，尚未开放\" [ref=261, loc=role:button[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        button \"存储管理，尚未开放\" [ref=262, loc=role:button[name=\"存储管理，尚未开放\"]]\n          link \"存储管理，尚未开放\"\n            svg_root\n            text \"存储管理\"\n            text \"尚未开放\"\n        button \"站点设置，尚未开放\" [ref=263, loc=role:button[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=264, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=265]\n        ordered_list \"当前位置\"\n          list_item\n            text \"工作空间\"\n            text \"/\"\n          list_item\n            text \"上传图片\"\n        container \"上传图片\"\n          container\n            heading [ref=266]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              svg_root\n              heading\n                text \"选择要上传的图片\"\n              paragraph\n                text \"JPEG、PNG · 单文件最大\"\n                text \"50.0 MiB\"\n              button [ref=267]\n                text \"选择图片\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"默认本地存储 存储位置\" [ref=268]\n                  text \"默认本地存储\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=269]\n                  text \"公开\"\n                  svg_root\n              paragraph\n                text \"开始上传时固定本次设置。当前支持单张 JPEG、PNG 图片。\"\n          paragraph\n            text \"尚未选择图片，文件不会自动上传。\"\n      button [ref=270]\n        text \"开始上传\"\n"
+}

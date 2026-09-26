@@ -164,9 +164,16 @@ describe('initialized production auth', () => {
     expect(componentBody).not.toContain(email);
     const cookie = cookies(await login());
     const allowed = await page({ cookie });
-    expect(allowed.status).toBe(200);
+    expect(allowed.status).toBe(307);
+    expect(allowed.headers.get('location')).toBe('/upload');
     expect(allowed.headers.get('cache-control')).toContain('no-store');
-    expect(await allowed.text()).toContain(email);
+    const upload = await fetch(`${origin}/upload`, {
+      headers: { cookie },
+      redirect: 'manual',
+    });
+    expect(upload.status).toBe(200);
+    expect(upload.headers.get('cache-control')).toContain('no-store');
+    expect(await upload.text()).toContain(email);
     connection.db
       .update(session)
       .set({ expiresAt: new Date(Date.now() - 1000) })

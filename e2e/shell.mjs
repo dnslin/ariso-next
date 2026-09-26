@@ -147,8 +147,8 @@ export async function verifyShell(page, config) {
           mainTop: main.top,
         };
       });
-      assert.equal(boundary.headerWidth > 0, width < 768);
-      assert.equal(boundary.navigationWidth > 0, width >= 768);
+      assert.equal(boundary.headerWidth > 0, width < 1200);
+      assert.equal(boundary.navigationWidth > 0, width >= 1200);
       if (width >= 1200) {
         assert.equal(boundary.navigationWidth, 232);
         assert.equal(boundary.mainLeft, 232);
@@ -173,6 +173,8 @@ export async function verifyShell(page, config) {
     await page.click('loc=role:button[name="菜单"]');
     await page.waitForSelector('[role="dialog"]');
     await resize(768);
+    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await resize(1200);
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
     await page.waitForFunction(() =>
       document.activeElement.matches('.shell-navigation a'),
@@ -183,7 +185,7 @@ export async function verifyShell(page, config) {
       ),
     );
     report.checks.push(
-      'Open mobile menu closes on tablet breakpoint and restores focus to visible navigation',
+      'Open mobile menu stays open on tablet and closes on desktop breakpoint and restores focus to visible navigation',
     );
     await resize(390);
     console.log(await page.snapshot());

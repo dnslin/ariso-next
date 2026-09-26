@@ -1,0 +1,25 @@
+{
+  "status": "failed",
+  "checks": [
+    {
+      "name": "Content acceptance invalidates an outstanding automatic read",
+      "overlap": {
+        "reads": 1,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": true
+      }
+    }
+  ],
+  "limitations": [
+    "Browser-boundary holds delay real responses without changing their payloads; no controller methods are called."
+  ],
+  "error": "Error: page.waitForSelector timed out after 8000ms: [data-testid=\"upload-item\"][data-state=\"ready\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "trace": {
+    "reads": 1,
+    "heldPastDeadline": true,
+    "accepted": true,
+    "held": false
+  },
+  "page": "[p1 \"Ariso\" | space \"PR125 上传轮询回归\"(4): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=18, url=http://ariso-61102.localhost:61102/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=19, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=20, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传图片\" [ref=21, loc=css:a[aria-label=\"上传图片\"], url=http://ariso-61102.localhost:61102/upload]\n          svg_root\n          text \"上传图片\"\n        anchor \"图库\" [ref=22, loc=css:a[aria-label=\"图库\"], url=http://ariso-61102.localhost:61102/library]\n          svg_root\n          text \"图库\"\n        group \"相册，尚未开放\" [ref=23, loc=role:group[name=\"相册，尚未开放\"]]\n          link \"相册，尚未开放\"\n            svg_root\n            text \"相册\"\n            text \"尚未开放\"\n        group \"标签，尚未开放\" [ref=24, loc=role:group[name=\"标签，尚未开放\"]]\n          link \"标签，尚未开放\"\n            svg_root\n            text \"标签\"\n            text \"尚未开放\"\n        group \"分享管理，尚未开放\" [ref=25, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=26, loc=css:a[aria-label=\"回收站\"], url=http://ariso-61102.localhost:61102/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=27, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        group \"存储管理，尚未开放\" [ref=28, loc=role:group[name=\"存储管理，尚未开放\"]]\n          link \"存储管理，尚未开放\"\n            svg_root\n            text \"存储管理\"\n            text \"尚未开放\"\n        group \"站点设置，尚未开放\" [ref=29, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=30, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=31]\n        ordered_list \"当前位置\"\n          list_item\n            text \"工作空间\"\n            text \"/\"\n          list_item\n            text \"上传图片\"\n        container \"上传图片\"\n          container\n            heading [ref=32]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              image\n              container\n                paragraph\n                  text \"sample.png\"\n                paragraph\n                  text \"6.5 KiB\"\n                status\n                  text \"服务端排队\"\n                  text \"· 公开\"\n              button [ref=33]\n                text \"查看详情\"\n            paragraph\n              text \"已交给服务端处理，不能取消。关闭页面后处理仍会继续，可在图库查看。\"\n      button [ref=34]\n        text \"开始上传\"\n"
+}

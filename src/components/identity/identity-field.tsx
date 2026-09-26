@@ -20,6 +20,8 @@ export function IdentityField({
   secret = false,
   autoComplete = 'off',
   icon,
+  placeholder,
+  layout = 'setup',
 }: {
   name: string;
   label: string;
@@ -30,10 +32,13 @@ export function IdentityField({
   secret?: boolean;
   autoComplete?: string;
   icon?: 'email' | 'password';
+  placeholder?: string;
+  layout?: 'login' | 'setup';
 }) {
   const [visible, setVisible] = useState(false);
   return (
     <TextField
+      className={layout === 'login' ? 'gap-1' : 'gap-1.5'}
       name={name}
       value={value}
       onChange={onChange}
@@ -41,10 +46,14 @@ export function IdentityField({
       validationBehavior="aria"
       isRequired
     >
-      <Label>{label}</Label>
-      <InputGroup className="min-h-12 w-full rounded-xl border shadow-none">
+      <Label className="text-sm leading-[1.5] font-normal after:content-none">
+        {label}
+      </Label>
+      <InputGroup
+        className={`w-full rounded-lg border bg-background shadow-none ${layout === 'login' ? 'h-11 min-h-11 min-[1200px]:h-9 min-[1200px]:min-h-9' : 'h-12 min-h-12'}`}
+      >
         {icon ? (
-          <InputGroup.Prefix>
+          <InputGroup.Prefix className="border-0 pr-2 text-foreground">
             {icon === 'email' ? (
               <Mail className="size-4" aria-hidden="true" />
             ) : (
@@ -53,7 +62,8 @@ export function IdentityField({
           </InputGroup.Prefix>
         ) : null}
         <InputGroup.Input
-          className="min-w-0"
+          className="h-full min-w-0 py-0 leading-[1.5] placeholder:text-foreground"
+          placeholder={placeholder}
           id={name}
           type={secret && !visible ? 'password' : 'text'}
           autoComplete={autoComplete}
@@ -74,7 +84,7 @@ export function IdentityField({
                 type="button"
                 variant="ghost"
                 isIconOnly
-                className="size-11 min-w-11 rounded-lg text-muted"
+                className={`size-11 min-w-11 rounded-lg text-muted ${layout === 'login' ? 'min-[1200px]:size-8 min-[1200px]:min-w-8' : ''}`}
                 aria-label={`${visible ? '隐藏' : '显示'}${label}`}
                 aria-pressed={visible}
                 onPress={() => setVisible(!visible)}
@@ -93,7 +103,9 @@ export function IdentityField({
           </InputGroup.Suffix>
         ) : null}
       </InputGroup>
-      {description ? <Description>{description}</Description> : null}
+      {description ? (
+        <Description className="leading-[1.5]">{description}</Description>
+      ) : null}
       <FieldError>{error}</FieldError>
     </TextField>
   );

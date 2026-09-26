@@ -8,9 +8,8 @@ import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
-import { FileImage, Images, LayoutDashboard, Trash2 } from 'lucide-react';
-import { AdminShell } from '../../components/shell/admin-shell';
-import { SessionControls } from '../../components/identity/session-controls';
+import { FileImage, Trash2 } from 'lucide-react';
+import { OwnerShell } from '../../components/shell/owner-shell';
 import { TrashAction } from '../../components/library/trash-actions';
 import {
   DetailReadError,
@@ -41,10 +40,14 @@ export function TrashScreen({
   name,
   description,
   email,
+  ownerName,
+  initialSidebarCollapsed,
 }: {
   name: string;
   description: string;
   email: string;
+  ownerName: string;
+  initialSidebarCollapsed: boolean;
 }) {
   const params = useSearchParams();
   const imageId = params.get('image');
@@ -133,25 +136,14 @@ export function TrashScreen({
   const data = !expired ? list.data : undefined;
   const pages = data ? Math.max(1, Math.ceil(data.total / 40)) : null;
   return (
-    <AdminShell
+    <OwnerShell
       name={name}
       description={description}
-      navigation={[
-        { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
-        { href: '/library', label: '图库', icon: <Images /> },
-        { href: '/trash', label: '回收站', icon: <Trash2 /> },
-      ]}
-      user={
-        <div className="grid gap-3 [&_.button]:min-h-11">
-          <p>{email}</p>
-          <SessionControls
-            returnTo={
-              imageId
-                ? `/trash?${new URLSearchParams({ image: imageId })}`
-                : '/trash'
-            }
-          />
-        </div>
+      email={email}
+      ownerName={ownerName}
+      initialSidebarCollapsed={initialSidebarCollapsed}
+      returnTo={
+        imageId ? `/trash?${new URLSearchParams({ image: imageId })}` : '/trash'
       }
       footer={
         imageId ? (
@@ -221,12 +213,15 @@ export function TrashScreen({
               正在读取回收记录…
             </p>
           ) : null}
-          {record ? <TrashRecord record={record} /> : null}
+          {record ? <TrashRecord record={record} onBack={closeRecord} /> : null}
         </>
       ) : (
         <section className="grid min-w-0 gap-5">
-          <p className="text-sm">工作空间 / 回收站</p>
-          <h1 id="trash-title" tabIndex={-1} className="text-3xl font-medium">
+          <h1
+            id="trash-title"
+            tabIndex={-1}
+            className="text-[28px] font-medium leading-normal md:text-[30px]"
+          >
             回收站
           </h1>
           <p className="text-sm">
@@ -288,7 +283,7 @@ export function TrashScreen({
                       <Button
                         variant="ghost"
                         data-testid={`trash-record-${item.id}`}
-                        className="grid h-auto min-h-20 w-full grid-cols-1 justify-items-start gap-1 whitespace-normal rounded-lg px-0 py-3 text-left text-sm font-normal [overflow-wrap:anywhere] md:grid-cols-3 md:items-center md:gap-4"
+                        className="grid h-auto min-h-20 w-full grid-cols-1 justify-items-start gap-1 whitespace-normal rounded-lg px-0 py-3 text-left text-sm font-normal [overflow-wrap:anywhere] md:min-h-18 md:grid-cols-3 md:items-center md:gap-4"
                         onPress={(event) => {
                           trigger.current = event.target as HTMLElement;
                           setResult(null);
@@ -364,6 +359,6 @@ export function TrashScreen({
           </Alert.Content>
         </Alert>
       ) : null}
-    </AdminShell>
+    </OwnerShell>
   );
 }

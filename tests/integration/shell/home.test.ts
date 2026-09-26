@@ -92,6 +92,8 @@ describe('生产首页与公共壳层', () => {
     expect(response.status).toBe(404);
     const html = await response.text();
     expect(html).toContain('页面不存在');
-    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>返回首页<\/a>/);
+    expect(html).toMatch(
+      /<a[^>]*href="\/"[^>]*><svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>返回首页<\/a>/,
+    );
   });
 });

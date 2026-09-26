@@ -72,3 +72,12 @@ it('keeps an unrecognized stored step visible for diagnosis', () => {
   expect(html).toContain('最近任务失败 · unexpected-stage');
   expect(html).not.toContain('处理完成');
 });
+
+it('offers one named full-card action while retaining readable image diagnostics', () => {
+  const html = renderToStaticMarkup(jsx(LibraryCard, { item }));
+  expect(html.match(/<button\b/g)).toHaveLength(1);
+  expect(html).toContain('aria-label="查看图片：旅行"');
+  expect(html).toContain('旅行</p>');
+  expect(html).toContain('本地存储');
+  expect(html).toContain('处理中');
+});

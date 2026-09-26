@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
@@ -16,7 +16,15 @@ export function TrashAction({
   onVerified,
   onComplete,
   onUnavailable,
+  triggerLabel,
+  renderTrigger,
 }: {
+  triggerLabel?: string;
+  renderTrigger?: (trigger: {
+    open: () => void;
+    isDisabled: boolean;
+    label: string;
+  }) => ReactNode;
   record: LibraryDetail;
   operation: 'trash' | 'restore';
   onPending: (pending: boolean) => void;
@@ -117,22 +125,32 @@ export function TrashAction({
     }
   }
 
+  const label = unknown
+    ? '结果待核对'
+    : (triggerLabel ?? (restoring ? '恢复图片' : '回收图片'));
   return (
     <div className="grid gap-2">
+      {renderTrigger?.({
+        open: () => setOpen(true),
+        isDisabled: disabled && !unknown,
+        label,
+      })}
       <AlertDialog
         isOpen={open}
         onOpenChange={(value) => {
           if (!busy) setOpen(value);
         }}
       >
-        <Button
-          variant={restoring ? 'primary' : 'outline'}
-          className="min-h-12 w-full rounded-lg"
-          isDisabled={disabled && !unknown}
-          onPress={() => setOpen(true)}
-        >
-          {unknown ? '结果待核对' : restoring ? '恢复图片' : '回收图片'}
-        </Button>
+        {!renderTrigger ? (
+          <Button
+            variant={restoring ? 'primary' : 'outline'}
+            className="min-h-12 w-full rounded-lg"
+            isDisabled={disabled && !unknown}
+            onPress={() => setOpen(true)}
+          >
+            {label}
+          </Button>
+        ) : null}
         <AlertDialog.Backdrop isKeyboardDismissDisabled={busy}>
           <AlertDialog.Container placement="center" className="p-4">
             <AlertDialog.Dialog

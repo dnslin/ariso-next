@@ -4,9 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Images, LayoutDashboard, Trash2 } from 'lucide-react';
-import { AdminShell } from '../../components/shell/admin-shell';
-import { SessionControls } from '../../components/identity/session-controls';
+import { OwnerShell } from '../../components/shell/owner-shell';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
@@ -52,10 +50,14 @@ export function LibraryScreen({
   name,
   description,
   email,
+  ownerName,
+  initialSidebarCollapsed,
 }: {
   name: string;
   description: string;
   email: string;
+  ownerName: string;
+  initialSidebarCollapsed: boolean;
 }) {
   const detail = useDetailNavigation();
   const [notice, setNotice] = useState('');
@@ -135,20 +137,12 @@ export function LibraryScreen({
   }
 
   return (
-    <AdminShell
+    <OwnerShell
       name={name}
       description={description}
-      navigation={[
-        { href: '/admin', label: '工作空间', icon: <LayoutDashboard /> },
-        { href: '/library', label: '图库', icon: <Images /> },
-        { href: '/trash', label: '回收站', icon: <Trash2 /> },
-      ]}
-      user={
-        <div className="grid gap-3 [&_.button]:min-h-11">
-          <p>{email}</p>
-          <SessionControls returnTo="/library" />
-        </div>
-      }
+      email={email}
+      ownerName={ownerName}
+      initialSidebarCollapsed={initialSidebarCollapsed}
       footer={
         <p data-testid="library-count" role="status" className="w-full text-sm">
           {expired ? '登录已失效' : count}
@@ -160,9 +154,12 @@ export function LibraryScreen({
         aria-labelledby="library-title"
       >
         {notice ? <p role="status">{notice}</p> : null}
-        <p className="hidden text-sm md:block">工作空间 / 图库</p>
         <div className="grid gap-1.5">
-          <h1 id="library-title" tabIndex={-1} className="text-3xl font-medium">
+          <h1
+            id="library-title"
+            tabIndex={-1}
+            className="text-[28px] font-medium leading-normal md:text-[30px]"
+          >
             图库
           </h1>
           <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
@@ -264,12 +261,14 @@ export function LibraryScreen({
         <LibraryDetail
           key={detail.imageId}
           imageId={detail.imageId}
+          returnTo={`/library?${new URLSearchParams({ image: detail.imageId })}`}
+          closeLabel="返回图库"
           client={client}
           onClose={detail.close}
           onTrashed={onTrashed}
           dialogRef={detail.dialogRef}
         />
       ) : null}
-    </AdminShell>
+    </OwnerShell>
   );
 }
