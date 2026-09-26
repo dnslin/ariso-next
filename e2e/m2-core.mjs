@@ -229,7 +229,7 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
         assert.equal(new URL(url).pathname, `/i/${id}`);
         assert.equal(new URL(url).searchParams.get('type'), 'original');
         image.url = url;
-        await page.click(button('返回详情'));
+        await page.click(button('关闭复制链接'));
         const pendingDownload = page.waitForEvent('download', {
           timeout: 30000,
         });

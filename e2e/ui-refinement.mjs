@@ -166,17 +166,14 @@ export async function verifyNaturalPreview(page, report) {
       );
   }
 
-  assert.ok(
-    Math.abs(
-      preview.width / preview.height -
-        preview.naturalWidth / preview.naturalHeight,
-    ) < 0.02,
-    'Preview element preserves the decoded image aspect ratio',
-  );
-  assert.notEqual(
+  assert.equal(
     preview.fit,
-    'cover',
-    'Full image remains visible without cropping',
+    'contain',
+    'Decoded image fits fully inside the fixed preview stage without cropping',
+  );
+  assert.ok(
+    preview.naturalWidth > 0 && preview.naturalHeight > 0,
+    'The real preview decoded successfully',
   );
   assert.equal(
     preview.background,
@@ -341,6 +338,15 @@ export async function verifyUIRefinement({ page, config, report }) {
               .getBoundingClientRect();
             return {
               sectionWidth: section.getBoundingClientRect().width,
+              availableWidth: (() => {
+                const main = document.querySelector('main');
+                const style = getComputedStyle(main);
+                return (
+                  main.clientWidth -
+                  parseFloat(style.paddingLeft) -
+                  parseFloat(style.paddingRight)
+                );
+              })(),
               compositionWidth: composition.getBoundingClientRect().width,
               gap: parseFloat(getComputedStyle(composition).columnGap),
               picker: {
@@ -356,8 +362,10 @@ export async function verifyUIRefinement({ page, config, report }) {
               },
             };
           });
-          assert.ok(upload.sectionWidth <= 1200);
-          if (width === 1920) assert.equal(upload.sectionWidth, 1200);
+          assert.ok(
+            Math.abs(upload.sectionWidth - upload.availableWidth) <= 1,
+            'Upload fills the workspace content width',
+          );
           assert.ok(
             Math.abs(upload.compositionWidth - upload.sectionWidth) <= 1,
           );
@@ -395,48 +403,38 @@ export async function verifyUIRefinement({ page, config, report }) {
                 () =>
                   getComputedStyle(
                     document.querySelector(
-                      '[data-testid="upload-picker"] span[aria-hidden]',
+                      '[data-testid="upload-idle-motion"]',
                     ),
-                  ).translate === 'none',
+                  ).animationName === 'upload-float',
               );
               const y = await page.evaluate(
                 () =>
                   document
-                    .querySelector(
-                      '[data-testid="upload-picker"] span[aria-hidden]',
-                    )
+                    .querySelector('[data-testid="upload-idle-motion"]')
                     .getBoundingClientRect().y,
               );
-              await page.hover('[data-testid="upload-picker"]');
               await page.waitForFunction(
                 (y) =>
                   Math.abs(
                     document
-                      .querySelector(
-                        '[data-testid="upload-picker"] span[aria-hidden]',
-                      )
-                      .getBoundingClientRect().y -
-                      y +
-                      4,
-                  ) < 0.2,
+                      .querySelector('[data-testid="upload-idle-motion"]')
+                      .getBoundingClientRect().y - y,
+                  ) > 1,
                 y,
               );
               await page.cdp('Emulation.setEmulatedMedia', {
                 features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
               });
               await page.waitForFunction(
-                (y) =>
-                  Math.abs(
-                    document
-                      .querySelector(
-                        '[data-testid="upload-picker"] span[aria-hidden]',
-                      )
-                      .getBoundingClientRect().y - y,
-                  ) < 0.2,
-                y,
+                () =>
+                  getComputedStyle(
+                    document.querySelector(
+                      '[data-testid="upload-idle-motion"]',
+                    ),
+                  ).animationName === 'none',
               );
               report.checks.push(
-                'Fine-pointer hover moves only the upload cloud icon up 4px; reduced motion disables the displacement.',
+                'Idle upload cloud moves continuously without hover; reduced motion disables the animation.',
               );
             } finally {
               await page.cdp('Emulation.setEmulatedMedia', {

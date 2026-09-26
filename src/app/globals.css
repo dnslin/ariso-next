@@ -464,3 +464,13 @@ input {
 .shell-menu-body .shell-nav-link {
   width: 100%;
 }
+
+@keyframes upload-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}

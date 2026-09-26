@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
+import { toast } from '@heroui/react/toast';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
@@ -126,6 +127,8 @@ export function TrashScreen({
   }
   function restored(record: LibraryDetail) {
     setResult(record);
+    if (record.storage.enabled)
+      toast.success('记录已恢复', { description: record.displayName });
     client.setQueriesData<TrashPage>({ queryKey: ['trash'] }, (data) =>
       data
         ? {
@@ -256,7 +259,7 @@ export function TrashScreen({
             {data ? `${data.total} 条记录 · ` : ''}
             文件仍占用空间，不会自动清理。
           </p>
-          {result ? (
+          {result && !result.storage.enabled ? (
             <Alert
               data-testid="trash-result"
               status={result.storage.enabled ? 'success' : 'warning'}

@@ -23,6 +23,8 @@ for (const name of [
   'upload-polling.json',
   'm2-1440.json',
   'm2-390.json',
+  'interaction-polish-1440.json',
+  'interaction-polish-390.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
   ),
@@ -337,6 +339,12 @@ try {
       `m2-${width}-after.log`,
     );
     report[`m2-${width}`] = 'passed';
+    await runBrowser(
+      '../e2e/interaction-polish.mjs',
+      identityConfig,
+      `interaction-polish-${width}.log`,
+    );
+    report[`interaction-polish-${width}`] = 'passed';
     await stop(server);
   }
   // Reuse the same Ego space for isolated UI/library checks and let its runner

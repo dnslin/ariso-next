@@ -7,6 +7,8 @@ import type {
 
 const queued: UploadSessionResult = {
   id: 'session',
+  queueItemId: 'queue-item',
+  groupIndex: 0,
   state: 'queued',
   imageId: null,
   jobId: null,
@@ -67,14 +69,21 @@ function setup(onUnauthorized?: () => void) {
   const createTransport = vi.fn(() => transport);
   const controller = new UploadController({
     maxFileBytes: 20,
+    queueLimit: 500,
     request,
     createTransport,
     onUnauthorized,
   });
   controllers.push(controller);
   const file = new File(['image'], 'same.png', { type: 'image/png' });
-  const respond = (value: unknown, status = 200) =>
+  const respond = (value: unknown, status = 200) => {
+    if (value && typeof value === 'object' && 'sessions' in value) {
+      (value as UploadSubmissionResult).sessions.forEach((session) => {
+        session.queueItemId = controller.snapshot[0]!.id;
+      });
+    }
     request.mockResolvedValueOnce(Response.json(value, { status }));
+  };
   return {
     controller,
     file,
@@ -95,19 +104,25 @@ async function untilTransfer(context: ReturnType<typeof setup>) {
 describe('manual upload controller', () => {
   it('binds the default global fetch receiver for browser-native invocation', async () => {
     const receivers: unknown[] = [];
+    let queueItemId = '';
     const request = vi.spyOn(globalThis, 'fetch').mockImplementation(function (
       this: unknown,
       url,
+      init,
     ) {
       receivers.push(this);
       if (this !== globalThis) throw new TypeError('Illegal invocation');
+      if (init?.body)
+        queueItemId = JSON.parse(init.body as string).files[0].queueItemId;
+      const result =
+        url === '/api/uploads/submissions'
+          ? submission()
+          : accepted('succeeded');
+      result.sessions[0].queueItemId = queueItemId;
       return Promise.resolve(
-        Response.json(
-          url === '/api/uploads/submissions'
-            ? submission()
-            : accepted('succeeded'),
-          { status: url === '/api/uploads/submissions' ? 201 : 200 },
-        ),
+        Response.json(result, {
+          status: url === '/api/uploads/submissions' ? 201 : 200,
+        }),
       );
     });
     const transport = {
@@ -121,6 +136,7 @@ describe('manual upload controller', () => {
     };
     const controller = new UploadController({
       maxFileBytes: 20,
+      queueLimit: 500,
       createTransport: () => transport,
     });
     controllers.push(controller);
@@ -128,7 +144,7 @@ describe('manual upload controller', () => {
       controller.add(new File(['image'], 'photo.png', { type: 'image/png' })),
     ).toBeNull();
     await controller.start('private');
-    expect(controller.snapshot).toMatchObject({
+    expect(controller.snapshot[0]).toMatchObject({
       state: 'ready',
       imageId: 'real-image',
       previewUrl: null,
@@ -149,15 +165,47 @@ describe('manual upload controller', () => {
       c.controller.add(new File(['x'], 'image.gif', { type: 'image/gif' })),
     ).toContain('JPEG');
     expect(c.controller.add(c.file)).toBeNull();
-    const first = c.controller.snapshot!;
+    const first = c.controller.snapshot[0]!;
     expect(c.request).not.toHaveBeenCalled();
     expect(c.transport.upload).not.toHaveBeenCalled();
-    expect(c.controller.add(c.file)).toContain('移除');
-    c.controller.remove();
+    expect(c.controller.add(c.file)).toBeNull();
+    expect(c.controller.snapshot).toHaveLength(2);
+    c.controller.remove(first.id);
     expect(revoke).toHaveBeenCalledWith(first.previewUrl);
     expect(c.transport.destroy).toHaveBeenCalledOnce();
     c.controller.add(c.file);
-    expect(c.controller.snapshot!.id).not.toBe(first.id);
+    expect(c.controller.snapshot[0]!.id).not.toBe(first.id);
+  });
+  it('keeps live transfer progress after queued polling and temporary read failure, then marks an unconfirmed ended transfer unknown', async () => {
+    const c = setup();
+    c.controller.add(c.file);
+    c.respond(submission(), 201);
+    const started = c.controller.start('private');
+    await untilTransfer(c);
+    c.progress(30);
+    c.respond(submission());
+    await c.controller.refresh();
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'uploading',
+      progress: 30,
+    });
+    c.progress(45);
+    c.request.mockRejectedValueOnce(new Error('poll unavailable'));
+    await c.controller.refresh();
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'uploading',
+      progress: 45,
+    });
+    c.progress(70);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'uploading',
+      progress: 70,
+    });
+    c.respond(submission());
+    c.transfer.reject(new Error('content disconnected'));
+    await started;
+    expect(c.controller.snapshot[0].state).toBe('unknown');
+    expect(c.transport.upload).toHaveBeenCalledOnce();
   });
   it('freezes settings and only reports ready after this job succeeds, not 201 or transfer 100%', async () => {
     const c = setup();
@@ -165,14 +213,14 @@ describe('manual upload controller', () => {
     c.respond(submission(), 201);
     const started = c.controller.start('private', 'local');
     await untilTransfer(c);
-    expect(c.controller.snapshot!.state).toBe('uploading');
+    expect(c.controller.snapshot[0]!.state).toBe('uploading');
     await c.controller.start('public', 'other');
     expect(c.request).toHaveBeenCalledTimes(1);
     expect(
       JSON.parse(c.request.mock.calls[0][1]!.body as string),
     ).toMatchObject({ visibility: 'private', storageId: 'local' });
     c.progress(100);
-    expect(c.controller.snapshot!.state).toBe('saving');
+    expect(c.controller.snapshot[0]!.state).toBe('saving');
     c.respond(accepted('queued'));
     c.transfer.resolve({
       ...queued,
@@ -181,7 +229,7 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'processing-queued',
       imageId: 'real-image',
       jobId: 'this-job',
@@ -190,13 +238,13 @@ describe('manual upload controller', () => {
     expect(c.transport.destroy).toHaveBeenCalledOnce();
     c.respond(accepted('running'));
     await c.controller.refresh();
-    expect(c.controller.snapshot!.state).toBe('processing');
+    expect(c.controller.snapshot[0]!.state).toBe('processing');
     c.respond(accepted('succeeded'));
     await c.controller.refresh();
-    expect(c.controller.snapshot!.state).toBe('ready');
+    expect(c.controller.snapshot[0]!.state).toBe('ready');
     const count = c.request.mock.calls.length;
     c.controller.clearCompleted();
-    expect(c.controller.snapshot).toBeNull();
+    expect(c.controller.snapshot).toEqual([]);
     expect(c.request).toHaveBeenCalledTimes(count);
   });
   it('keeps a lost submission response unknown and recovers immutable metadata without retransferring content', async () => {
@@ -204,21 +252,21 @@ describe('manual upload controller', () => {
     c.controller.add(c.file);
     c.request.mockRejectedValueOnce(new Error('offline'));
     await c.controller.start('public');
-    expect(c.controller.snapshot!.state).toBe('unknown');
-    expect(c.controller.snapshot!.error).toContain('offline');
+    expect(c.controller.snapshot[0]!.state).toBe('unknown');
+    expect(c.controller.snapshot[0]!.error).toContain('offline');
     c.respond(submission());
     await c.controller.refresh();
     expect(c.request.mock.calls[0][1]!.body).toBe(
       c.request.mock.calls[1][1]!.body,
     );
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'unknown',
       sessionId: 'session',
     });
     expect(c.transport.upload).not.toHaveBeenCalled();
     c.respond({ ...queued, state: 'cancelled' });
-    await c.controller.cancel();
-    expect(c.controller.snapshot!.state).toBe('cancelled');
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
+    expect(c.controller.snapshot[0]!.state).toBe('cancelled');
   });
   it('distinguishes uncreated upload failure and saved image processing failure', async () => {
     const c = setup();
@@ -233,7 +281,7 @@ describe('manual upload controller', () => {
       cleanupStatus: 'pending',
     });
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'upload-failed',
       imageId: undefined,
       error: '识别失败',
@@ -244,7 +292,7 @@ describe('manual upload controller', () => {
     c.controller.add(c.file);
     c.respond(accepted('failed'), 201);
     await c.controller.start('private');
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'processing-failed',
       imageId: 'real-image',
       step: 'compress',
@@ -265,13 +313,13 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'unknown',
       sessionId: 'session',
     });
     c.respond(accepted('succeeded'));
     await c.controller.refresh();
-    expect(c.controller.snapshot!.state).toBe('ready');
+    expect(c.controller.snapshot[0]!.state).toBe('ready');
     expect(c.transport.upload).toHaveBeenCalledOnce();
   });
   it('queries the original submission after a content disconnect and never retransmits', async () => {
@@ -283,7 +331,7 @@ describe('manual upload controller', () => {
     c.respond(submission({ state: 'failed', error: '接收已断开' }));
     c.transfer.reject(new Error('XHR disconnected'));
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'upload-failed',
       imageId: undefined,
       previewUrl: null,
@@ -310,7 +358,7 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'unknown',
       imageId: 'real-image',
       jobId: 'this-job',
@@ -318,7 +366,7 @@ describe('manual upload controller', () => {
     });
     expect(c.transport.destroy).toHaveBeenCalledOnce();
     const count = c.request.mock.calls.length;
-    await c.controller.cancel();
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
     expect(c.request).toHaveBeenCalledTimes(count);
   });
   it('cancel 409 preserves the real image ID and reads the winning processing result', async () => {
@@ -329,8 +377,8 @@ describe('manual upload controller', () => {
     await untilTransfer(c);
     c.respond({ message: '已交接', imageId: 'real-image' }, 409);
     c.respond(accepted('running'));
-    await c.controller.cancel();
-    expect(c.controller.snapshot).toMatchObject({
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'processing',
       imageId: 'real-image',
       cancelling: false,
@@ -344,9 +392,9 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot!.state).not.toBe('cancelled');
+    expect(c.controller.snapshot[0]!.state).not.toBe('cancelled');
     const count = c.request.mock.calls.length;
-    await c.controller.cancel();
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
     expect(c.request).toHaveBeenCalledTimes(count);
   });
   it('cancel winning during transfer prevents its late completion from changing the cancelled result', async () => {
@@ -356,7 +404,7 @@ describe('manual upload controller', () => {
     const started = c.controller.start('private');
     await untilTransfer(c);
     c.respond({ ...queued, state: 'cancelled', cleanupStatus: 'pending' });
-    await c.controller.cancel();
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
     c.progress(100);
     c.transfer.resolve({
       ...queued,
@@ -365,7 +413,7 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'cancelled',
       cleanupStatus: 'pending',
       previewUrl: null,
@@ -385,12 +433,15 @@ describe('manual upload controller', () => {
         await c.controller.refresh();
       } else {
         c.respond({ ...queued, state: 'cancelled' });
-        await c.controller.cancel();
+        await c.controller.cancel(c.controller.snapshot[0]!.id);
       }
       const calls = c.request.mock.calls.length;
       c.transfer.reject(new Error('destroy aborted old XHR'));
       await started;
-      expect(c.controller.snapshot).toMatchObject({ state, error: undefined });
+      expect(c.controller.snapshot[0]).toMatchObject({
+        state,
+        error: undefined,
+      });
       expect(c.request).toHaveBeenCalledTimes(calls);
     },
   );
@@ -413,14 +464,18 @@ describe('manual upload controller', () => {
         jobId: 'this-job',
       });
       await started;
-      expect(c.controller.snapshot).toMatchObject({
+      expect(c.controller.snapshot[0]).toMatchObject({
         state: 'processing-queued',
         imageId: 'real-image',
         previewUrl: null,
       });
-      staleRead.resolve(Response.json(submission({ state })));
+      staleRead.resolve(
+        Response.json(
+          submission({ state, queueItemId: c.controller.snapshot[0]!.id }),
+        ),
+      );
       await refreshing;
-      expect(c.controller.snapshot).toMatchObject({
+      expect(c.controller.snapshot[0]).toMatchObject({
         state: 'processing-queued',
         imageId: 'real-image',
         jobId: 'this-job',
@@ -428,7 +483,7 @@ describe('manual upload controller', () => {
       });
       c.respond(accepted('succeeded'));
       await c.controller.refresh();
-      expect(c.controller.snapshot!.state).toBe('ready');
+      expect(c.controller.snapshot[0]!.state).toBe('ready');
     },
   );
   it('does not regress a running job when the earlier content acknowledgement arrives late', async () => {
@@ -448,11 +503,13 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await vi.waitFor(() => expect(c.request).toHaveBeenCalledTimes(3));
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'processing',
       imageId: 'real-image',
     });
-    nextRead.resolve(Response.json(accepted('running')));
+    const running = accepted('running');
+    running.sessions[0].queueItemId = c.controller.snapshot[0]!.id;
+    nextRead.resolve(Response.json(running));
     await started;
   });
   it('does not let a read started before cancellation override the confirmed cancelled result', async () => {
@@ -465,8 +522,15 @@ describe('manual upload controller', () => {
     c.request.mockReturnValueOnce(staleRead.promise);
     const refreshing = c.controller.refresh();
     c.respond({ ...queued, state: 'cancelled' });
-    await c.controller.cancel();
-    staleRead.resolve(Response.json(submission({ state: 'receiving' })));
+    await c.controller.cancel(c.controller.snapshot[0]!.id);
+    staleRead.resolve(
+      Response.json(
+        submission({
+          state: 'receiving',
+          queueItemId: c.controller.snapshot[0]!.id,
+        }),
+      ),
+    );
     await refreshing;
     c.transfer.resolve({
       ...queued,
@@ -475,14 +539,14 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot!.state).toBe('cancelled');
+    expect(c.controller.snapshot[0]!.state).toBe('cancelled');
   });
   it('releases files when metadata is rejected and requires a fresh selection', async () => {
     const c = setup();
     c.controller.add(c.file);
     c.respond({ message: '存储已停用' }, 409);
     await c.controller.start('public');
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'upload-failed',
       error: '存储已停用',
       previewUrl: null,
@@ -504,12 +568,12 @@ describe('manual upload controller', () => {
       201,
     );
     await c.controller.start('private');
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'unknown',
       imageId: 'real-image',
       previewUrl: null,
     });
-    expect(c.controller.snapshot!.error).toContain('本次处理任务');
+    expect(c.controller.snapshot[0]!.error).toContain('本次处理任务');
   });
   it('releases files when a recovered metadata request is explicitly rejected', async () => {
     const c = setup();
@@ -518,7 +582,7 @@ describe('manual upload controller', () => {
     await c.controller.start('private');
     c.respond({ message: '存储不可用' }, 409);
     await c.controller.refresh();
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'upload-failed',
       error: '存储不可用',
       previewUrl: null,
@@ -532,7 +596,7 @@ describe('manual upload controller', () => {
     c.respond({ message: '登录已过期' }, 401);
     await c.controller.start('private');
     expect(unauthorized).toHaveBeenCalledOnce();
-    expect(c.controller.snapshot).toMatchObject({
+    expect(c.controller.snapshot[0]).toMatchObject({
       state: 'upload-failed',
       error: '登录已过期',
       previewUrl: null,
@@ -553,9 +617,9 @@ describe('manual upload controller', () => {
       jobId: 'this-job',
     });
     await started;
-    expect(c.controller.snapshot).toBeNull();
+    expect(c.controller.snapshot).toEqual([]);
     expect(c.transport.destroy).toHaveBeenCalledOnce();
     expect(c.request).toHaveBeenCalledTimes(1);
-    expect(setup().controller.snapshot).toBeNull();
+    expect(setup().controller.snapshot).toEqual([]);
   });
 });

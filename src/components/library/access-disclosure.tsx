@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { Button } from '@heroui/react/button';
 import { Popover } from '@heroui/react/popover';
+import { Chip } from '@heroui/react/chip';
 
 export function AccessDisclosure({
   label,
@@ -14,11 +15,16 @@ export function AccessDisclosure({
   return (
     <Popover>
       <Button
-        variant="outline"
+        variant="ghost"
         aria-label={label === '仅管理员可见' ? label : `${label}：查看访问说明`}
-        className="min-h-11 min-w-19 justify-self-start rounded-lg px-3 text-sm font-normal"
+        className="min-h-11 min-w-19 justify-self-start rounded-full p-0 text-sm font-normal"
       >
-        {label}
+        <Chip
+          variant="soft"
+          className="border border-border bg-transparent px-3 text-sm"
+        >
+          {label}
+        </Chip>
       </Button>
       <Popover.Content
         placement="bottom start"

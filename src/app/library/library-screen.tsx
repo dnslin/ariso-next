@@ -262,7 +262,6 @@ export function LibraryScreen({
           key={detail.imageId}
           imageId={detail.imageId}
           returnTo={`/library?${new URLSearchParams({ image: detail.imageId })}`}
-          closeLabel="返回图库"
           client={client}
           onClose={detail.close}
           onTrashed={onTrashed}

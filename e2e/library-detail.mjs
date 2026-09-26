@@ -80,7 +80,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     await page.click(`loc=role:menuitem[name="${name}"]`);
   };
   const close = async () => {
-    await page.click(button('返回图库'));
+    await page.click(button('关闭图片详情'));
     await page.waitForFunction(
       () => !document.querySelector('[data-testid="library-detail"]'),
     );
@@ -138,12 +138,15 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
               ),
             ]
               .filter((node) => node.getBoundingClientRect().width > 0)
-              .map((node) => node.getBoundingClientRect().height),
+              .map((node) => ({
+                height: node.getBoundingClientRect().height,
+                info: node.getAttribute('aria-label') === '下载说明',
+              })),
           );
-          for (const height of heights)
+          for (const { height, info } of heights)
             assert.ok(
-              Math.abs(height - 48) <= 1,
-              'Detail footer actions retain the 48px design height',
+              Math.abs(height - (info ? 44 : 48)) <= 1,
+              'Detail actions are 48px and the information trigger is 44px',
             );
         }
         if (state === 'ready' && width < 768) {
@@ -170,24 +173,38 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
             );
         }
         if (state === 'ready' && width >= 768) {
-          const widths = await page.evaluate(() =>
-            [
-              ...document.querySelectorAll(
-                '[data-testid="detail-actions"] button',
-              ),
-            ]
-              .filter((node) => node.getBoundingClientRect().width > 0)
-              .map((node) => node.getBoundingClientRect().width),
+          const measured = await page.evaluate(() => {
+            const row = document.querySelector(
+              '[data-testid="detail-actions"]',
+            );
+            return {
+              rowWidth: row.getBoundingClientRect().width,
+              buttons: [...row.querySelectorAll('button')]
+                .filter((node) => node.getBoundingClientRect().width > 0)
+                .map((node) => ({
+                  width: node.getBoundingClientRect().width,
+                  info: node.getAttribute('aria-label') === '下载说明',
+                })),
+            };
+          });
+          assert.equal(
+            measured.buttons.length,
+            4,
+            'Desktop keeps Copy, Download, download information and More',
           );
           assert.equal(
-            widths.length,
-            3,
-            'Desktop keeps Copy, Download and More',
+            measured.buttons.filter((button) => button.info).length,
+            1,
           );
-          for (const buttonWidth of widths)
+          for (const button of measured.buttons)
             assert.ok(
-              Math.abs(buttonWidth - 200) <= 2,
-              'Desktop actions retain the 200px design width',
+              Math.abs(
+                button.width -
+                  (button.info
+                    ? 44
+                    : Math.min(200, (measured.rowWidth - 44 - 36) / 3)),
+              ) <= 2,
+              'Action widths match the three flexible controls and 44px information trigger',
             );
         }
         assert.equal(
@@ -393,13 +410,13 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   await page.click(button('复制 URL'));
   await page.waitForFunction(() =>
     document
-      .querySelector('[role="dialog"][aria-label="复制图片链接"]')
+      .querySelector('[data-slot="toast"]')
       ?.textContent.includes('已复制到剪贴板'),
   );
   report.checks.push(
     'Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.',
   );
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   const deniedProxy = await clipboardDeniedProxy(config.origin);
   try {
     await page.goto(`${deniedProxy.origin}/library?image=library-007`);
@@ -455,7 +472,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       /^<img src=".*type=original"/,
     );
     await page.click(button('返回复制选项'));
-    await page.click(button('返回详情'));
+    await page.click(button('关闭复制链接'));
     assert.ok(
       await page.evaluate(() =>
         document
@@ -511,7 +528,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     new URL(updated.defaultLink.links.url).searchParams.has('type'),
     false,
   );
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   assert.ok(
     await page.evaluate(() =>
       document
@@ -704,7 +721,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.click(button('复制链接'));
   await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   await page.waitForFunction(
     () => !document.querySelector('[role="dialog"][aria-label="复制图片链接"]'),
   );

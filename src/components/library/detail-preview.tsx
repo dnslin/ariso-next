@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Tabs } from '@heroui/react/tabs';
+import { Skeleton } from '@heroui/react/skeleton';
 import { ImageOff } from 'lucide-react';
 import type {
   LibraryDetail,
@@ -23,13 +24,36 @@ export function initialPreview(detail: LibraryDetail) {
 export function PreviewImage({
   version,
   name,
+  width,
+  height,
 }: {
   version: LibraryDetailVersion;
   name: string;
+  width: number | null;
+  height: number | null;
 }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   return (
-    <div className="flex min-w-0 items-center justify-center">
+    <div
+      data-testid="preview-stage"
+      style={{
+        aspectRatio: width && height ? `${width} / ${height}` : undefined,
+      }}
+      className={`relative w-full min-w-0 max-h-[min(55dvh,420px)] overflow-hidden rounded-xl md:max-h-120 ${width && height ? '' : 'h-62.5'}`}
+    >
+      {version.previewPath && !failed && !loaded ? (
+        <>
+          <Skeleton
+            data-testid="preview-skeleton"
+            aria-hidden
+            className="absolute inset-0 size-full rounded-xl"
+          />
+          <span role="status" className="sr-only">
+            正在加载图片…
+          </span>
+        </>
+      ) : null}
       {version.previewPath && !failed ? (
         // The owner cookie and delivery access checks must reach the original route.
         // eslint-disable-next-line @next/next/no-img-element
@@ -37,12 +61,13 @@ export function PreviewImage({
           data-testid="detail-preview"
           src={version.previewPath}
           alt={name}
-          className="h-auto max-h-[min(55dvh,420px)] w-auto max-w-full rounded-xl object-contain md:max-h-120"
+          className={`absolute inset-0 size-full rounded-xl object-contain ${loaded ? '' : 'opacity-0'}`}
+          onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
         />
       ) : (
         <div
-          className="grid min-h-62.5 w-full content-center justify-items-center gap-3 rounded-xl bg-surface p-4 text-center"
+          className="absolute inset-0 grid content-center justify-items-center gap-3 rounded-xl bg-surface p-4 text-center"
           role="status"
         >
           <ImageOff aria-hidden="true" />
@@ -70,7 +95,7 @@ export function DetailPreview({
   onSelect: (kind: string) => void;
 }) {
   return (
-    <div className="grid min-w-0 content-start gap-3 md:[&_img]:max-h-[max(160px,min(480px,calc(100cqh-144px)))]">
+    <div className="grid min-w-0 content-start gap-3 md:[&_[data-testid=preview-stage]]:max-h-[max(160px,min(480px,calc(100cqh-144px)))]">
       <Tabs
         className="gap-0"
         selectedKey={selected}
@@ -103,6 +128,8 @@ export function DetailPreview({
               key={`${revision}:${version.previewPath}:${version.format}:${version.byteSize}`}
               version={version}
               name={detail.displayName}
+              width={detail.width}
+              height={detail.height}
             />
             <p data-testid="detail-current-version" className="text-sm">
               当前查看：{versionLabels[version.kind]}

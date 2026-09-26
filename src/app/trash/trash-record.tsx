@@ -85,6 +85,8 @@ export function TrashRecord({
             key={`${record.id}:${preview.previewPath}`}
             version={preview}
             name={record.displayName}
+            width={record.width}
+            height={record.height}
           />
         ) : null}
         <dl className="min-w-0 py-2">

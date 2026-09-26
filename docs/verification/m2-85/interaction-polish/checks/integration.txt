@@ -1,0 +1,18 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=1
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+{"time":"2026-09-26T18:43:47.913Z","level":"info","module":"identity.setup","event":"setup-code","code":"66OFtrqRED1ub6yliXsGkMHjmThII4w3","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-26T18:43:47.979Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-26T18:43:48.237Z","level":"info","module":"identity.setup","event":"setup-code","code":"Gdl4ecnEHygX252wlt_-nApBCJ3Myt0t","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-26T18:43:48.240Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso/tests/integration/identity/setup-lifecycle.test.ts:120:40\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-QrHckV/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-26T18:43:48.244Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-26T18:43:48.502Z","level":"info","module":"identity.setup","event":"setup-code","code":"ilp7ipzER9ef3V-df9u8f_yNk0uDylW7","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-26T18:43:48.559Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+
+ Test Files  62 passed (62)
+      Tests  514 passed (514)
+   Start at  02:40:15
+   Duration  313.60s (tests 97%, import 3%)
