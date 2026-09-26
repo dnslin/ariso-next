@@ -43,7 +43,7 @@ macOS 26.6.2 / ARM64，Node 24.18.1，pnpm 11.19.0，现有 Ego Lite / Chromium 
 
 [独立代码审计](./code-review.md)静态复审无阻断项；本轮批准范围的[独立设计复验](./design-review.md)通过。首轮实际查看 32 张，修正后重点重看 18 张，浮层与竖图两项已关闭。完整浏览器回归已通过；用户人工验收尚未完成，PR 保留草稿。本轮不把历史八类偏差或未逐图验收的状态统称为已解决；原记录保留，最新核对见独立设计报告。
 
-真实手机触控、物理软键盘、非零安全区未实测；AMD64/ARM64 镜像与容器验证留在既有 Release 流程，不发布镜像或部署。没有 schema 变更，不运行迁移生成。远端检查须在推送后实际核对，空列表不记为 CI 通过。
+真实手机触控、物理软键盘、非零安全区未实测；AMD64/ARM64 镜像与容器验证留在既有 Release 流程，不发布镜像或部署。没有 schema 变更，不运行迁移生成。实施提交 `5c2c6a1` 已推送至 `codex/85-core-smoke`。实际使用 `gh pr view 126 --json state,isDraft,headRefOid,statusCheckRollup`、`gh run list --branch codex/85-core-smoke` 及提交的 `check-runs` / `status` API 核对：PR 为 OPEN / draft，远端检查、工作流运行和 commit statuses 均为空。status API 的默认聚合状态虽为 pending，但 total_count 为 0，没有正在执行的检查；不记为 CI 通过，不等待不存在的工作流。
 
 人工预览服务已更新为本轮构建，地址为 `http://127.0.0.1:62948`，沿用原独立手动验收数据，未重置用户图片。
 
