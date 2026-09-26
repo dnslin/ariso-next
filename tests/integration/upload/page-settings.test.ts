@@ -18,7 +18,7 @@ afterEach(() => fixture.close());
 describe('upload page settings', () => {
   it('reads current defaults and exposes only local storage labels and availability', () => {
     const { db, storage } = fixture;
-    db.update(uploadSettings).set({ maxFileBytes: 12345 }).run();
+    db.update(uploadSettings).set({ maxFileBytes: 12345, queueLimit: 7 }).run();
     db.update(mediaSettings).set({ defaultVisibility: 'private' }).run();
     db.insert(storageConfigs)
       .values({
@@ -32,6 +32,7 @@ describe('upload page settings', () => {
     const result = readUploadPageSettings(db);
     expect(result).toEqual({
       maxFileBytes: 12345,
+      queueLimit: 7,
       defaultVisibility: 'private',
       defaultStorageId: storage.id,
       storages: expect.arrayContaining([

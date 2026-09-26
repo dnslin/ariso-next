@@ -5,6 +5,9 @@ import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { CloseButton } from '@heroui/react/close-button';
+import { Chip } from '@heroui/react/chip';
+import { Skeleton } from '@heroui/react/skeleton';
 import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
@@ -17,6 +20,7 @@ import type { UploadController } from './controller';
 export const uploadLabels: Record<UploadState, string> = {
   queued: '等待上传',
   submitting: '正在提交并检查设置',
+  'waiting-upload': '等待传输',
   uploading: '正在上传',
   saving: '正在核验和保存',
   'processing-queued': '服务端排队',
@@ -30,14 +34,21 @@ export const uploadLabels: Record<UploadState, string> = {
 
 function UploadPreview({ url, name }: { url: string | null; name: string }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   return url && !failed ? (
-    // eslint-disable-next-line @next/next/no-img-element -- Local Blob and authenticated thumbnail URLs must not use the image optimizer.
-    <img
-      src={url}
-      alt=""
-      onError={() => setFailed(true)}
-      className="size-14 rounded-lg object-cover md:size-16"
-    />
+    <span className="relative size-14 shrink-0 overflow-hidden rounded-lg md:size-16">
+      {!loaded ? (
+        <Skeleton aria-hidden className="absolute inset-0 size-full" />
+      ) : null}
+      {/* eslint-disable-next-line @next/next/no-img-element -- Local Blob and authenticated URLs bypass the optimizer. */}
+      <img
+        src={url}
+        alt=""
+        onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
+        className="size-14 rounded-lg object-cover md:size-16"
+      />
+    </span>
   ) : (
     <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-default text-xs md:size-16">
       {name.split('.').at(-1)?.slice(0, 8).toUpperCase() || '图片'}
@@ -86,10 +97,16 @@ function ProcessingOptions({
       >
         <Modal.Container placement="center" className="p-4">
           <Modal.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6">
-            <Modal.Header>
+            <Modal.Header className="flex flex-row items-center justify-between gap-3">
               <Modal.Heading className="text-xl font-medium leading-normal">
                 原图已保存，图片处理失败
               </Modal.Heading>
+              <CloseButton
+                aria-label="关闭处理选项"
+                className="size-11 shrink-0 rounded-lg border border-border"
+                isDisabled={mutationPending}
+                onPress={() => setOptions(false)}
+              />
             </Modal.Header>
             <Modal.Body className="grid gap-4 text-sm leading-normal [overflow-wrap:anywhere]">
               <div>
@@ -146,14 +163,6 @@ function ProcessingOptions({
               ) : (
                 <UploadResult query={query} />
               )}
-              <Button
-                variant="outline"
-                className="h-12 w-full rounded-lg text-sm font-normal"
-                isDisabled={mutationPending}
-                onPress={() => setOptions(false)}
-              >
-                返回上传结果
-              </Button>
             </Modal.Footer>
           </Modal.Dialog>
         </Modal.Container>
@@ -174,7 +183,6 @@ export function UploadQueueItem({
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const [confirm, setConfirm] = useState(false);
-  const queued = item.state === 'queued';
   const processingFailed = item.state === 'processing-failed';
   const [mutationPending, setMutationPending] = useState(false);
   const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
@@ -203,22 +211,17 @@ export function UploadQueueItem({
   const canCancel =
     !!item.sessionId &&
     !item.imageId &&
-    ['uploading', 'saving', 'unknown'].includes(item.state);
+    ['waiting-upload', 'uploading', 'saving', 'unknown'].includes(item.state);
   return (
     <Card
       data-testid="upload-item"
       data-state={item.state}
       data-image-id={item.imageId ?? ''}
-      className={`min-w-0 border border-border bg-background shadow-none ${queued ? 'gap-4 rounded-[20px] px-4 py-5 md:min-h-[430px] md:p-6' : 'gap-3 rounded-2xl px-3 py-4 md:px-5'}`}
+      className="min-w-0 gap-3 rounded-none border-0 bg-transparent p-0 py-2 shadow-none"
     >
-      {queued ? (
-        <h2 className="text-lg font-medium leading-normal">
-          上传队列 · 待上传 1 张
-        </h2>
-      ) : null}
       <div
         data-testid="upload-file-row"
-        className={`grid min-w-0 items-center md:min-h-20 md:grid-cols-[64px_minmax(0,1fr)_140px] md:gap-4 ${queued ? 'grid-cols-[56px_minmax(0,1fr)_72px] gap-2' : 'grid-cols-[56px_minmax(0,1fr)] gap-x-3 gap-y-2'}`}
+        className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)_88px] items-center gap-2 md:min-h-20 md:grid-cols-[64px_minmax(0,1fr)_140px] md:gap-4"
       >
         <UploadPreview
           key={item.previewUrl ?? serverPreview}
@@ -231,9 +234,11 @@ export function UploadQueueItem({
           </p>
           <p className="text-xs leading-normal md:hidden">
             {bytesLabel(item.size)} · {uploadLabels[item.state]}
-            {item.visibility
-              ? ` · ${item.visibility === 'private' ? '私有' : '公开'}`
-              : ''}
+            {item.visibility ? (
+              <Chip size="sm" variant="soft" className="ml-1">
+                {item.visibility === 'private' ? '私有' : '公开'}
+              </Chip>
+            ) : null}
           </p>
           <p className="hidden text-xs leading-normal md:block">
             {bytesLabel(item.size)}
@@ -243,18 +248,14 @@ export function UploadQueueItem({
             className="sr-only text-xs leading-normal md:not-sr-only md:text-xs"
           >
             {uploadLabels[item.state]}
-            {item.visibility
-              ? ` · ${item.visibility === 'private' ? '私有' : '公开'}`
-              : ''}
+            {item.visibility ? (
+              <Chip size="sm" variant="soft" className="ml-1">
+                {item.visibility === 'private' ? '私有' : '公开'}
+              </Chip>
+            ) : null}
           </p>
         </div>
-        <div
-          className={
-            queued
-              ? 'w-18 md:w-35'
-              : 'col-span-2 w-[110px] md:col-span-1 md:w-35'
-          }
-        >
+        <div className="w-22 md:w-35">
           {item.imageId ? (
             processingFailed ? (
               <ProcessingOptions
@@ -292,7 +293,7 @@ export function UploadQueueItem({
             <Button
               variant="outline"
               className="h-11 w-full rounded-lg text-sm font-normal"
-              onPress={() => controller.remove()}
+              onPress={() => controller.remove(item.id)}
             >
               移除
             </Button>
@@ -330,7 +331,7 @@ export function UploadQueueItem({
                       <Button
                         onPress={() => {
                           setConfirm(false);
-                          void controller.cancel();
+                          void controller.cancel(item.id);
                         }}
                       >
                         确认取消
@@ -379,7 +380,7 @@ export function UploadQueueItem({
         <Button
           variant="outline"
           onPress={() => {
-            void controller.refresh();
+            void controller.refresh(item.id);
           }}
         >
           重新核对

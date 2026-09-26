@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
+import { Chip } from '@heroui/react/chip';
+import { Skeleton } from '@heroui/react/skeleton';
 import { ImageOff } from 'lucide-react';
 import type { LibraryItem } from '../../server/library/types';
 
@@ -19,6 +21,7 @@ export function LibraryCard({
   onOpen?: (id: string, element: HTMLElement) => void;
 }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const placeholder = !item.storage.enabled
     ? '存储已停用'
     : failed
@@ -41,18 +44,24 @@ export function LibraryCard({
             onOpen?.(item.id, event.target);
         }}
       />
-      <div className="flex h-32.5 shrink-0 items-center justify-center bg-default xl:h-47.5">
+      <div className="relative flex h-32.5 shrink-0 items-center justify-center bg-default xl:h-47.5">
         {item.thumbnailUrl && !failed ? (
-          // 直接请求 delivery；优化代理无法转发所有者 Cookie，也不能替代访问控制。
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={item.thumbnailUrl}
-            alt={item.displayName}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-            onError={() => setFailed(true)}
-          />
+          <>
+            {!loaded ? (
+              <Skeleton aria-hidden className="absolute inset-0 size-full" />
+            ) : null}
+            {/* 直接请求 delivery，保留所有者 Cookie 和访问控制。 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.thumbnailUrl}
+              alt={item.displayName}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+              onLoad={() => setLoaded(true)}
+              onError={() => setFailed(true)}
+            />
+          </>
         ) : (
           <div className="grid justify-items-center gap-2 px-3 text-center text-xs">
             <ImageOff size={24} aria-hidden="true" />
@@ -62,11 +71,15 @@ export function LibraryCard({
       </div>
       <Card.Content className="grid content-start gap-1.5 p-2.5 text-xs xl:p-3.5 xl:text-sm">
         <p className="break-words">{item.displayName}</p>
-        <p className="text-[11px] xl:text-xs">
-          {item.visibility === 'private' ? '私有' : '公开'} ·{' '}
-          {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}
-          {statuses[item.processingStatus]}
-        </p>
+        <div className="flex flex-wrap items-center gap-1.5 text-[11px] xl:text-xs">
+          <Chip size="sm" variant="soft">
+            {item.visibility === 'private' ? '私有' : '公开'}
+          </Chip>
+          <span>
+            {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}
+            {statuses[item.processingStatus]}
+          </span>
+        </div>
         <p className="text-[11px] text-muted xl:text-xs">
           {item.format === 'unknown' ? '格式待识别' : item.format.toUpperCase()}{' '}
           · {item.storage.name}

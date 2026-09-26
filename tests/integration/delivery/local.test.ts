@@ -90,13 +90,18 @@ afterEach(async () => {
   connection.close();
   rmSync(directory, { recursive: true, force: true });
 });
-function request(query = '', init?: RequestInit) {
+function request(
+  query = '',
+  init?: RequestInit,
+  access: 'published' | 'trash-preview' = 'published',
+) {
   return prepareImageDelivery(
     new Request(`http://ariso.test/i/${imageId}${query}`, init),
     imageId,
     {
       db: connection.db,
       storageRoot,
+      access,
       readOwner: async () => owner,
       onAccess,
       logger,
@@ -511,5 +516,86 @@ describe('delivery with SQLite and local objects', () => {
     expect(Buffer.from(await (await request()).arrayBuffer())).toEqual(bytes);
     expect(onAccess).toHaveBeenCalledTimes(1);
     expect(logger.error).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('owner trash preview delivery', () => {
+  it('streams saved versions of a failed trashed image only through owner preview without access events', async () => {
+    owner = true;
+    patchImage({ trashedAt: new Date(), processingStatus: 'failed' });
+    for (const kind of ['compressed', 'thumbnail', 'watermark'] as const)
+      await saveVersion(kind);
+    for (const kind of ['original', 'compressed', 'thumbnail', 'watermark']) {
+      const response = await request(
+        `?type=${kind}`,
+        undefined,
+        'trash-preview',
+      );
+      expect(response.status).toBe(200);
+      expect(response.headers.get('cache-control')).toBe(
+        'private, no-store, no-transform',
+      );
+      expect(Buffer.from(await response.arrayBuffer())).toEqual(bytes);
+      expect(onAccess).not.toHaveBeenCalled();
+      await error(await request(`?type=${kind}`), 404, 'IMAGE_UNAVAILABLE');
+    }
+  });
+
+  it('rejects anonymous previews and refuses restored, deleting and disabled records before conditional responses', async () => {
+    patchImage({ trashedAt: new Date() });
+    await error(
+      await request('?type=original', undefined, 'trash-preview'),
+      401,
+      'OWNER_LOGIN_REQUIRED',
+    );
+    owner = true;
+    patchImage({ trashedAt: null });
+    await error(
+      await request('?type=original', undefined, 'trash-preview'),
+      404,
+      'IMAGE_UNAVAILABLE',
+    );
+    patchImage({ trashedAt: new Date() });
+    for (const deletionStatus of ['deleting', 'cleanup_failed'] as const) {
+      patchImage({ deletionStatus });
+      await error(
+        await request(
+          '?type=original',
+          { headers: { 'if-none-match': '*' } },
+          'trash-preview',
+        ),
+        404,
+        'IMAGE_UNAVAILABLE',
+      );
+    }
+    patchImage({ deletionStatus: null });
+    connection.db.update(storageConfigs).set({ enabled: false }).run();
+    await error(
+      await request('?type=original', undefined, 'trash-preview'),
+      409,
+      'STORAGE_DISABLED',
+    );
+  });
+
+  it('closes the opened stream if the owner session expires or the image is restored while opening', async () => {
+    owner = true;
+    patchImage({ trashedAt: new Date() });
+    interceptOpened(() => {
+      owner = false;
+    });
+    await error(
+      await request('?type=original', undefined, 'trash-preview'),
+      401,
+      'OWNER_LOGIN_REQUIRED',
+    );
+    expect(streams.at(-1)?.destroyed).toBe(true);
+    owner = true;
+    interceptOpened(() => patchImage({ trashedAt: null }));
+    await error(
+      await request('?type=original', undefined, 'trash-preview'),
+      404,
+      'IMAGE_UNAVAILABLE',
+    );
+    expect(streams.at(-1)?.destroyed).toBe(true);
   });
 });

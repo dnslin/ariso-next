@@ -7,6 +7,7 @@ import { Select } from '@heroui/react/select';
 
 export interface UploadSettings {
   maxFileBytes: number;
+  queueLimit: number;
   defaultVisibility: 'public' | 'private';
   defaultStorageId: string | null;
   storages: { id: string; name: string; enabled: boolean }[];
@@ -30,7 +31,10 @@ export function UploadSettingsFields({
   const available = settings.storages.some((s) => s.enabled);
   const selected = settings.storages.find((s) => s.id === storageId);
   return (
-    <Card className="min-w-0 gap-4 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none md:p-6">
+    <Card
+      data-testid="upload-settings"
+      className="min-w-0 gap-4 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none md:min-h-90 md:p-6"
+    >
       <h2 className="text-lg font-medium">本次上传设置</h2>
       <Select
         value={storageId}
@@ -103,7 +107,7 @@ export function UploadSettingsFields({
         </Select.Popover>
       </Select>
       <p className="text-sm text-muted">
-        开始上传时固定本次设置。当前支持单张 JPEG、PNG 图片。
+        开始上传时固定本次设置。之后添加的图片将在下次开始时使用当前设置。
       </p>
     </Card>
   );

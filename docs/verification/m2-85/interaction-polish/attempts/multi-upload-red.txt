@@ -1,0 +1,41 @@
+Already up to date
+Done in 50ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |integration| tests/integration/upload/sessions.test.ts (7 tests | 1 failed | 6 skipped) 14ms
+   ❯ persisted upload submissions (7)
+     × freezes one multi-file submission and assigns groups from its saved batch size 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/upload/sessions.test.ts > persisted upload submissions > freezes one multi-file submission and assigns groups from its saved batch size
+UploadError: [
+  {
+    "origin": "array",
+    "code": "too_big",
+    "maximum": 1,
+    "inclusive": true,
+    "exact": true,
+    "path": [
+      "files"
+    ],
+    "message": "Too big: expected array to have exactly 1 items"
+  }
+]
+ ❯ createSubmission src/server/upload/sessions.ts:78:11
+     76|   const parsed = submissionInputSchema.safeParse(input);
+     77|   if (!parsed.success)
+     78|     throw new UploadError('UPLOAD_INVALID_INPUT', parsed.error.message…
+       |           ^
+     79|   const data = {
+     80|     ...parsed.data,
+ ❯ tests/integration/upload/sessions.test.ts:50:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  02:21:53
+   Duration  406ms (import 75%, transform 21%, tests 4%, worker 1%)

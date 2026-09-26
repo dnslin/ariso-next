@@ -1,0 +1,107 @@
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function Skeleton() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] overflow-clip relative rounded-[24px] size-full" data-node-id="587:12008" data-name="图片详情 / 版本加载 Skeleton / 固定舞台">
+      <div className="absolute content-stretch flex gap-[12px] h-[44px] items-center left-[24px] overflow-clip top-[12px] w-[992px]" data-node-id="587:12009" data-name="详情页眉">
+        <p className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Medium'] font-medium leading-[22px] min-w-px relative text-[18px] text-[color:var(--foreground,#272343)]" data-node-id="587:12010">
+          图片详情
+        </p>
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex items-center justify-center relative rounded-[8px] shrink-0 size-[44px]" label="×" />
+      </div>
+      <div className="absolute h-[476px] left-[24px] overflow-x-clip overflow-y-auto top-[64px] w-[992px]" data-node-id="587:12012" data-name="详情内容滚动区">
+        <div className="absolute content-stretch flex gap-[24px] items-start left-0 overflow-clip top-0 w-[992px]" data-node-id="587:12013" data-name="详情内容">
+          <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-[552px]" data-node-id="587:12014" data-name="版本预览">
+            <div className="content-stretch flex gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="587:12015" data-name="版本切换">
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-[1_0_0] h-[44px] items-center justify-center min-w-px relative rounded-[8px]" label="原图" />
+              <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch flex flex-[1_0_0] h-[44px] items-center justify-center min-w-px relative rounded-[8px]" label="压缩图" />
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-[1_0_0] h-[44px] items-center justify-center min-w-px relative rounded-[8px]" label="缩略图" />
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-[1_0_0] h-[44px] items-center justify-center min-w-px relative rounded-[8px]" label="水印图" />
+            </div>
+            <div className="bg-[#e0e8e8] h-[310px] relative rounded-[12px] shrink-0 w-[552px]" data-node-id="587:12020" data-name="固定透明预览舞台 / 原始比例 / contain全版本" />
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="587:12021">
+              当前查看：压缩图 · WebP · 186 KiB
+            </p>
+          </div>
+          <div className="content-stretch flex flex-col gap-[10px] items-start overflow-clip relative shrink-0 w-[416px]" data-node-id="587:12022" data-name="图片资料">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[32px] min-w-full relative shrink-0 text-[22px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="587:12023">
+              forest-light.jpg
+            </p>
+            <div className="content-stretch flex h-[44px] items-center overflow-clip relative shrink-0 w-[76px]" data-node-id="590:5454" data-name="Popover.Trigger / 44px点击区">
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[28px] items-center justify-center relative rounded-[999px] shrink-0 w-[76px]" label="公开" />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="587:12025">
+              图片已就绪
+            </p>
+            <div className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="587:12026">
+              <p className="leading-[22px] mb-0">640 × 480 px · 原图 JPEG · 2.4 MiB</p>
+              <p className="leading-[22px]">本地存储 · 2026-09-18 10:24</p>
+            </div>
+            <div className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="587:12027">
+              <p className="leading-[22px] mb-0">相册：日常记录</p>
+              <p className="leading-[22px]">标签：旅行、灵感</p>
+            </div>
+            <div className="content-stretch flex gap-[12px] items-start overflow-clip relative shrink-0 w-full" data-node-id="587:12028" data-name="预览操作">
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-[1_0_0] h-[48px] items-center justify-center min-w-px relative rounded-[8px]" label="查看大图" />
+              <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-[1_0_0] h-[48px] items-center justify-center min-w-px relative rounded-[8px]" label="版本信息" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[var(--background,#fffffe)] border-[var(--accent,#bae8e8)] border-solid border-t content-stretch flex gap-[12px] h-[60px] items-center justify-end left-0 overflow-clip px-[24px] py-[12px] top-[564px] w-[1040px]" data-node-id="587:12033" data-name="固定详情操作栏">
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[200px]" label="复制链接" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[200px]" label="下载压缩图" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex items-center justify-center relative rounded-[8px] shrink-0 size-[44px]" label="ⓘ" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[200px]" label="更多操作" />
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

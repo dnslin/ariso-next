@@ -1,0 +1,25 @@
+export default function Component20260927() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col items-start p-[24px] relative size-full" data-node-id="587:12073" data-name="2026-09-27 本轮交互修正规范">
+      <div className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-[672px] whitespace-pre-wrap" data-node-id="587:12074">
+        <p className="leading-[26px] mb-0">本轮授权交互修正</p>
+        <p className="leading-[26px] mb-0">​</p>
+        <p className="leading-[26px] mb-0">上传：取消max1200，1440内容1144=760+24+360；1920内容1624=1240+24+360。空态360高选择区，不显示空队列；已选左队列、右设置。手机358宽队列上、设置下，56缩略图、96行；底部继续添加/开始上传。</p>
+        <p className="leading-[26px] mb-0">云40：idle持续2.8s ease-in-out，0→-4→0无限；reduced-motion静止。</p>
+        <p className="leading-[26px] mb-0">详情：以原始宽高固定透明stage；所有版本contain同一几何，缩略图也不收缩舞台。外框与底栏高度固定；加载Skeleton占同一舞台。</p>
+        <p className="leading-[26px] mb-0">弹窗右上44 CloseButton+Tooltip关闭；实际导航保留返回。权限Chip配Popover，交互区44。原图提示放下载旁Popover，不插入条件footer。手机GPS提醒由权限Chip的Popover承接，不在更多菜单重复增加入口，不挤主底栏。</p>
+        <p className="leading-[26px] mb-0">Toolbar/ButtonGroup组合队列操作。Toast用于复制成功/提交反馈，不替代可持续操作的错误信息。上述HeroUI组件复用现有token，不增加未来相册标签/永久删除等能力。</p>
+        <p className="leading-[26px]">权限Chip视觉高28、外层点击区44；Toast顶部居中覆盖显示、不占文档布局。</p>
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

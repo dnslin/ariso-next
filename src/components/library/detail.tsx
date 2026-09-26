@@ -12,12 +12,20 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
+import { CloseButton } from '@heroui/react/close-button';
+import { Popover } from '@heroui/react/popover';
+import { Skeleton } from '@heroui/react/skeleton';
+import { Toolbar } from '@heroui/react/toolbar';
+import { Tooltip } from '@heroui/react/tooltip';
+import { toast } from '@heroui/react/toast';
+import { Info } from 'lucide-react';
 import { DetailMoreActions } from './detail-more-actions';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
 import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
+import { AccessDisclosure } from './access-disclosure';
 import {
   bytesLabel,
   processingLabels,
@@ -47,7 +55,6 @@ function DetailContent({
   mutationPending: boolean;
 }) {
   const [downloadMessage, setDownloadMessage] = useState('');
-  const [downloadError, setDownloadError] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const downloadRequest = useRef<AbortController | null>(null);
   useEffect(() => () => downloadRequest.current?.abort(), []);
@@ -61,8 +68,7 @@ function DetailContent({
     const controller = new AbortController();
     downloadRequest.current = controller;
     setDownloading(true);
-    setDownloadError(false);
-    setDownloadMessage('正在检查下载…');
+    setDownloadMessage('');
     try {
       // HEAD checks current access without buffering the original or counting a view.
       const response = await fetch(version.downloadPath, {
@@ -81,13 +87,14 @@ function DetailContent({
       document.body.append(link);
       link.click();
       link.remove();
-      setDownloadMessage('已发起下载，请在浏览器下载列表查看结果。');
+      toast.success('已发起下载', {
+        description: '请在浏览器下载列表查看结果。',
+      });
     } catch (error) {
       if (controller.signal.aborted) {
         setDownloadMessage('');
         return;
       }
-      setDownloadError(true);
       setDownloadMessage(
         error instanceof Error ? error.message : '下载请求失败，请重试。',
       );
@@ -101,7 +108,7 @@ function DetailContent({
       {!mutationPending ? (
         <Modal.Body
           data-testid="detail-body"
-          className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 md:py-2"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 md:py-2 md:[container-type:size]"
         >
           <div className="grid min-w-0 gap-4 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-6">
             <DetailPreview
@@ -117,10 +124,21 @@ function DetailContent({
               <h2 className="text-[22px] leading-8 font-medium">
                 {detail.displayName}
               </h2>
-              <p>
-                {detail.visibility === 'private' ? '私有' : '公开'} ·{' '}
-                {processingLabels[detail.processingStatus]}
-              </p>
+              <AccessDisclosure
+                label={detail.visibility === 'private' ? '私有' : '公开'}
+              >
+                <p>
+                  公开原图可能包含 GPS
+                  和拍摄信息。复制或下载前请确认分享范围。切换预览不会改变站点默认外链。
+                </p>
+                {detail.visibility === 'private' ||
+                detail.processingStatus !== 'ready' ? (
+                  <p>
+                    原图和已保存版本仍可供所有者使用；外部访客无法访问私有或未就绪图片。
+                  </p>
+                ) : null}
+              </AccessDisclosure>
+              <p>{processingLabels[detail.processingStatus]}</p>
               <div>
                 <p>
                   {detail.width ?? '未知'} × {detail.height ?? '未知'} px · 原图{' '}
@@ -187,16 +205,6 @@ function DetailContent({
                   </Alert.Content>
                 </Alert>
               ) : null}
-              <div className="grid rounded-lg bg-default p-3 text-[13px] leading-normal">
-                <p>公开原图可能包含 GPS 和拍摄信息。</p>
-                <p>切换预览不会改变站点默认外链。</p>
-                {detail.visibility === 'private' ||
-                detail.processingStatus !== 'ready' ? (
-                  <p>
-                    原图和已保存版本仍可供所有者使用；外部访客无法访问私有或未就绪图片。
-                  </p>
-                ) : null}
-              </div>
               <div className="text-xs text-muted">
                 <p>原始名称：{detail.originalName}</p>
                 <p>图片 ID：{detail.id}</p>
@@ -205,18 +213,16 @@ function DetailContent({
           </div>
         </Modal.Body>
       ) : null}
-      <Modal.Footer className="grid shrink-0 grid-cols-1 gap-2 border-t border-border pt-3 pb-[max(0px,env(safe-area-inset-bottom))]">
+      <Modal.Footer className="-mx-4 -mb-4 grid shrink-0 grid-cols-1 gap-2 border-t border-border bg-background px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))] md:-mx-6 md:-mb-6 md:px-6 md:pb-6">
         {downloadMessage && !mutationPending ? (
-          <p
-            role={downloadError ? 'alert' : 'status'}
-            className={downloadError ? 'text-sm text-danger' : 'text-sm'}
-          >
+          <p role="alert" className="text-sm text-danger">
             {downloadMessage}
           </p>
         ) : null}
-        <div
+        <Toolbar
+          aria-label="图片操作"
           data-testid="detail-actions"
-          className="grid w-full grid-cols-2 gap-3 md:flex md:justify-end"
+          className="grid w-full grid-cols-2 items-center gap-3 md:grid-cols-[minmax(0,200px)_minmax(0,200px)_44px_minmax(0,200px)] md:justify-end"
         >
           {!mutationPending ? (
             <>
@@ -246,6 +252,21 @@ function DetailContent({
               </Button>
             </>
           ) : null}
+          <Popover>
+            <Button
+              variant="outline"
+              isIconOnly
+              aria-label="下载说明"
+              className="hidden size-11 shrink-0 rounded-lg md:flex"
+            >
+              <Info size={18} aria-hidden />
+            </Button>
+            <Popover.Content className="max-w-80 rounded-xl border border-border bg-surface p-0">
+              <Popover.Dialog aria-label="下载说明" className="p-4 text-sm">
+                原图可能包含 GPS 和拍摄信息。下载前请确认分享范围。
+              </Popover.Dialog>
+            </Popover.Content>
+          </Popover>
           <div className="min-w-0 flex-1 md:max-w-50">
             <DetailMoreActions
               trash={trash}
@@ -262,7 +283,7 @@ function DetailContent({
               }}
             />
           </div>
-        </div>
+        </Toolbar>
       </Modal.Footer>
     </>
   );
@@ -275,11 +296,9 @@ export function LibraryDetail({
   dialogRef,
   onTrashed,
   returnTo,
-  closeLabel,
 }: {
   imageId: string;
   returnTo: string;
-  closeLabel: string;
   client: QueryClient;
   onClose: () => void;
   dialogRef: RefCallback<HTMLElement>;
@@ -355,15 +374,14 @@ export function LibraryDetail({
             <div ref={dialogRef}>
               <Modal.Heading className="text-lg">图片详情</Modal.Heading>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                className="min-h-11 rounded-lg"
+            <Tooltip>
+              <CloseButton
+                aria-label="关闭图片详情"
+                className="size-11 rounded-lg border border-border"
                 onPress={onClose}
-              >
-                {closeLabel}
-              </Button>
-            </div>
+              />
+              <Tooltip.Content>关闭</Tooltip.Content>
+            </Tooltip>
           </Modal.Header>
           {unavailable === 404 ? (
             <p role="alert" className="py-6">
@@ -372,9 +390,19 @@ export function LibraryDetail({
           ) : null}
           {query.isPending ? (
             <Modal.Body>
-              <p role="status" className="py-12">
+              <span role="status" className="sr-only">
                 正在读取图片详情…
-              </p>
+              </span>
+              <div
+                aria-hidden
+                className="grid gap-6 py-4 md:grid-cols-[1.3fr_1fr]"
+              >
+                <Skeleton className="h-80 w-full rounded-xl" />
+                <div className="grid content-start gap-4">
+                  <Skeleton className="h-8 w-3/4 rounded-lg" />
+                  <Skeleton className="h-44 w-full rounded-lg" />
+                </div>
+              </div>
             </Modal.Body>
           ) : null}
           {query.isError ? (
@@ -431,7 +459,6 @@ export function LibraryDetail({
           {copyOpen && query.data && !expired ? (
             <DetailCopy
               detail={query.data}
-              closeLabel="返回详情"
               pending={query.isFetching}
               error={query.error?.message ?? null}
               onClose={() => setCopyOpen(false)}

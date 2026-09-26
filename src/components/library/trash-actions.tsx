@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
+import { CloseButton } from '@heroui/react/close-button';
+import { toast } from '@heroui/react/toast';
 import { Spinner } from '@heroui/react/spinner';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
@@ -68,6 +70,7 @@ export function TrashAction({
         (restoring ? current.trashedAt === null : current.trashedAt !== null)
       ) {
         setOpen(false);
+        if (!restoring) toast.success('已移入回收站');
         onComplete(current);
       } else {
         setMessage(
@@ -157,10 +160,16 @@ export function TrashAction({
               data-testid="trash-confirm"
               className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6 [overflow-wrap:anywhere]"
             >
-              <AlertDialog.Header>
+              <AlertDialog.Header className="flex flex-row items-center justify-between gap-3">
                 <AlertDialog.Heading>
                   {restoring ? '恢复这张图片？' : '将这张图片移入回收站？'}
                 </AlertDialog.Heading>
+                <CloseButton
+                  aria-label="关闭确认"
+                  className="size-11 shrink-0 rounded-lg border border-border"
+                  isDisabled={busy}
+                  onPress={() => setOpen(false)}
+                />
               </AlertDialog.Header>
               <AlertDialog.Body className="grid gap-4 text-sm">
                 <p>

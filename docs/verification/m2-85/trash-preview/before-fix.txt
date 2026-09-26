@@ -1,0 +1,103 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |integration| tests/integration/library/detail.test.ts (6 tests | 1 failed | 5 skipped) 19ms
+   × allows owner trash preview while suppressing copy/download, disabled, missing and candidate content 18ms
+ ❯ |integration| tests/integration/delivery/local.test.ts (34 tests | 3 failed | 30 skipped) 59ms
+   ❯ owner trash preview delivery (3)
+     × streams saved versions of a failed trashed image only through owner preview without access events 13ms
+     × rejects anonymous previews and refuses restored, deleting and disabled records before conditional responses 8ms
+     × closes the opened stream if the owner session expires or the image is restored while opening 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/delivery/local.test.ts > owner trash preview delivery > streams saved versions of a failed trashed image only through owner preview without access events
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/integration/delivery/local.test.ts:526:31
+    524|     for (const kind of ['original', 'compressed', 'thumbnail', 'waterm…
+    525|       const response = await request(`?type=${kind}`, undefined, 'tras…
+    526|       expect(response.status).toBe(200);
+       |                               ^
+    527|       expect(response.headers.get('cache-control')).toBe('private, no-…
+    528|       expect(Buffer.from(await response.arrayBuffer())).toEqual(bytes);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |integration| tests/integration/delivery/local.test.ts > owner trash preview delivery > rejects anonymous previews and refuses restored, deleting and disabled records before conditional responses
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ error tests/integration/delivery/local.test.ts:163:27
+    161| }
+    162| async function error(response: Response, status: number, code: string)…
+    163|   expect(response.status).toBe(status);
+       |                           ^
+    164|   expect(response.headers.get('cache-control')).toBe(
+    165|     'private, no-store, no-transform',
+ ❯ tests/integration/delivery/local.test.ts:536:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |integration| tests/integration/delivery/local.test.ts > owner trash preview delivery > closes the opened stream if the owner session expires or the image is restored while opening
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ error tests/integration/delivery/local.test.ts:163:27
+    161| }
+    162| async function error(response: Response, status: number, code: string)…
+    163|   expect(response.status).toBe(status);
+       |                           ^
+    164|   expect(response.headers.get('cache-control')).toBe(
+    165|     'private, no-store, no-transform',
+ ❯ tests/integration/delivery/local.test.ts:554:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > allows owner trash preview while suppressing copy/download, disabled, missing and candidate content
+AssertionError: expected { kind: 'original', …(11) } to match object { …(2) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "previewPath": "/api/trash/states/preview?type=original",
+-   "unavailableReason": null,
++   "previewPath": null,
++   "unavailableReason": "图片已回收或正在删除",
+  }
+
+ ❯ tests/integration/library/detail.test.ts:305:30
+    303|     detail.versions.every((v) => !v.links && !v.downloadPath),
+    304|   ).toBe(true);
+    305|   expect(detail.versions[0]).toMatchObject({
+       |                              ^
+    306|     previewPath: '/api/trash/states/preview?type=original',
+    307|     unavailableReason: null,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 1 passed | 35 skipped (40)
+   Start at  23:55:31
+   Duration  421ms (import 70%, transform 18%, tests 11%)

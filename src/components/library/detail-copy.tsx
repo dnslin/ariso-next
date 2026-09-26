@@ -3,6 +3,9 @@
 import { useRef, useState } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { ButtonGroup } from '@heroui/react/button-group';
+import { CloseButton } from '@heroui/react/close-button';
+import { toast } from '@heroui/react/toast';
 import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
 import { Modal } from '@heroui/react/modal';
@@ -20,18 +23,15 @@ export function DetailCopy({
   error,
   onClose,
   onRetry,
-  closeLabel,
 }: {
   detail: LibraryDetail;
   pending: boolean;
   error: string | null;
   onClose: () => void;
   onRetry: () => void;
-  closeLabel: string;
 }) {
   const [mode, setMode] = useState('default');
   const [manual, setManual] = useState<string | null>(null);
-  const [message, setMessage] = useState('');
   const [writing, setWriting] = useState(false);
   const busy = useRef(false);
   const selected =
@@ -47,10 +47,9 @@ export function DetailCopy({
     const text = selected.links[format];
     busy.current = true;
     setWriting(true);
-    setMessage('');
     try {
       await navigator.clipboard.writeText(text);
-      setMessage('已复制到剪贴板');
+      toast.success('已复制到剪贴板');
     } catch {
       setManual(text);
     } finally {
@@ -75,10 +74,15 @@ export function DetailCopy({
           aria-label="复制图片链接"
           className="gap-4 rounded-xl border border-border bg-background p-6 [&_.button]:min-h-12"
         >
-          <Modal.Header>
+          <Modal.Header className="flex flex-row items-center justify-between gap-3">
             <Modal.Heading>
               {manual !== null ? '浏览器未允许自动复制' : '复制图片链接'}
             </Modal.Heading>
+            <CloseButton
+              aria-label="关闭复制链接"
+              className="size-11 shrink-0 rounded-lg border border-border"
+              onPress={onClose}
+            />
           </Modal.Header>
           <Modal.Body className="grid min-w-0 gap-4">
             {manual !== null ? (
@@ -112,7 +116,6 @@ export function DetailCopy({
                   onChange={(key) => {
                     if (key !== null) {
                       setMode(String(key));
-                      setMessage('');
                     }
                   }}
                   isDisabled={pending || !!error || writing}
@@ -166,22 +169,31 @@ export function DetailCopy({
                         : `固定请求${versionLabels[mode as keyof typeof versionLabels]}`)}
                   </p>
                 )}
-                {(['url', 'markdown', 'html'] as const).map((format) => (
-                  <Button
-                    key={format}
-                    variant="outline"
-                    isDisabled={
-                      pending || !!error || !selected?.links || writing
-                    }
-                    onPress={() => {
-                      void copy(format);
-                    }}
-                  >
-                    复制{' '}
-                    {format === 'markdown' ? 'Markdown' : format.toUpperCase()}
-                  </Button>
-                ))}
-                {message ? <p role="status">{message}</p> : null}
+                <ButtonGroup
+                  aria-label="复制格式"
+                  orientation="vertical"
+                  fullWidth
+                  variant="outline"
+                  className="rounded-lg [&_.button]:rounded-lg"
+                >
+                  {(['url', 'markdown', 'html'] as const).map((format) => (
+                    <Button
+                      key={format}
+                      variant="outline"
+                      isDisabled={
+                        pending || !!error || !selected?.links || writing
+                      }
+                      onPress={() => {
+                        void copy(format);
+                      }}
+                    >
+                      复制{' '}
+                      {format === 'markdown'
+                        ? 'Markdown'
+                        : format.toUpperCase()}
+                    </Button>
+                  ))}
+                </ButtonGroup>
               </>
             )}
             {restricted && manual === null ? (
@@ -193,14 +205,17 @@ export function DetailCopy({
               <p className="text-sm">公开原图可能包含 GPS 和拍摄信息。</p>
             ) : null}
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              className="w-full"
-              onPress={() => (manual !== null ? setManual(null) : onClose())}
-            >
-              {manual !== null ? '返回复制选项' : closeLabel}
-            </Button>
-          </Modal.Footer>
+          {manual !== null ? (
+            <Modal.Footer>
+              <Button
+                className="w-full rounded-lg"
+                aria-label="返回复制选项"
+                onPress={() => setManual(null)}
+              >
+                返回
+              </Button>
+            </Modal.Footer>
+          ) : null}
         </Modal.Dialog>
       </Modal.Container>
     </Modal.Backdrop>

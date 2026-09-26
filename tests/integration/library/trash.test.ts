@@ -8,7 +8,11 @@ import {
   parseTrashQuery,
   readTrashPage,
 } from '../../../src/server/library/trash.ts';
-import { mediaImages } from '../../../src/server/media/schema.ts';
+import {
+  mediaImages,
+  mediaObjects,
+  mediaVersions,
+} from '../../../src/server/media/schema.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
@@ -90,6 +94,7 @@ it('reads current processing/storage/deletion facts without image content and ex
     const record = readTrashPage(connection.db).items[0];
     expect(record).toEqual({
       id: 'record',
+      thumbnailPath: null,
       displayName: 'record',
       originalName: 'record.png',
       format: 'PNG',
@@ -117,6 +122,54 @@ it('reads current processing/storage/deletion facts without image content and ex
     pageSize: 40,
     hasMore: false,
   });
+});
+
+it('exposes an owner thumbnail only for an available stored version, including failed images', () => {
+  seed('preview');
+  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  const storageId = resolveUploadStorage(connection.db).id;
+  connection.db
+    .insert(mediaObjects)
+    .values({
+      id: 'thumbnail-object',
+      imageId: 'preview',
+      storageId,
+      key: 'preview.webp',
+      purpose: 'thumbnail',
+      status: 'stored',
+      byteSize: 123,
+      format: 'webp',
+      mime: 'image/webp',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .run();
+  connection.db
+    .insert(mediaVersions)
+    .values({
+      imageId: 'preview',
+      kind: 'thumbnail',
+      objectId: 'thumbnail-object',
+      byteSize: 123,
+      format: 'webp',
+      mime: 'image/webp',
+      createdAt: new Date(),
+    })
+    .run();
+  expect(readTrashPage(connection.db).items[0]).toMatchObject({
+    processingStatus: 'failed',
+    thumbnailPath: '/api/trash/preview/preview?type=thumbnail',
+  });
+  connection.db.update(mediaObjects).set({ status: 'writing' }).run();
+  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  connection.db.update(mediaObjects).set({ status: 'stored' }).run();
+  connection.db.update(storageConfigs).set({ enabled: false }).run();
+  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  connection.db.update(storageConfigs).set({ enabled: true }).run();
+  for (const deletionStatus of ['deleting', 'cleanup_failed'] as const) {
+    connection.db.update(mediaImages).set({ deletionStatus }).run();
+    expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  }
 });
 
 it('accepts only one positive integral page within a safe offset', () => {

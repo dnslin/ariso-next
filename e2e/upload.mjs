@@ -54,18 +54,18 @@ async function layouts(name) {
           'cancelled',
         ].includes(name)
       ) {
-        const background = await page.evaluate(
+        const summary = await page.evaluate(
           () =>
-            getComputedStyle(
-              document.querySelector(
-                'section[aria-labelledby="upload-title"] > div > p',
-              ),
-            ).backgroundColor,
+            document.querySelector(
+              'section[aria-labelledby="upload-title"] > div > p',
+            ).textContent,
         );
-        assert.equal(
-          background,
-          theme === 'light' ? 'rgb(227, 246, 245)' : 'rgb(37, 61, 64)',
-          'Status summary uses the actual Ariso information color',
+        assert.match(
+          summary,
+          name === 'saving'
+            ? /正在核对保存与处理结果/
+            : /成功 \d+ 张 · 失败 \d+ 张 · 取消 \d+ 张/,
+          'Summary describes the real queue outcome',
         );
       }
       const result = await page.evaluate(() => ({
@@ -87,7 +87,9 @@ async function layouts(name) {
               height: preview.height,
               bottom: preview.bottom,
             },
-            action: action ? { top: action.top, width: action.width } : null,
+            action: action
+              ? { top: action.top, bottom: action.bottom, width: action.width }
+              : null,
           };
         })(),
         targets: [...document.querySelectorAll('button,a')]
@@ -108,23 +110,17 @@ async function layouts(name) {
       );
       if (result.queue) {
         const { state, radius, padding, preview, action } = result.queue;
-        assert.equal(
-          radius,
-          state === 'queued' ? 20 : 16,
-          'Queue card matches its design state',
-        );
-        assert.equal(
-          padding,
-          state === 'queued' ? (width < 768 ? 16 : 24) : width < 768 ? 12 : 20,
-        );
+        assert.equal(radius, 0, 'Queue row uses the shared enclosing card');
+        assert.equal(padding, 0);
         assert.equal(preview.width, width < 768 ? 56 : 64);
         assert.equal(preview.height, width < 768 ? 56 : 64);
         if (action && width < 768 && state !== 'queued') {
           assert.ok(
-            action.top >= preview.bottom,
-            'Mobile result action follows the file information',
+            action.top < preview.bottom &&
+              action.bottom > preview.bottom - preview.height,
+            'Mobile result action stays beside the file information',
           );
-          assert.equal(action.width, 110);
+          assert.equal(action.width, 88);
         }
       }
       for (const target of result.targets)
@@ -291,6 +287,25 @@ try {
   await released();
   await layouts('ready');
   assert.deepEqual(
+    await page.evaluate(() => {
+      const icon = document.querySelector(
+        '[data-testid="upload-success-icon"]',
+      );
+      const svg = icon?.querySelector('svg').getBoundingClientRect();
+      return {
+        count: document.querySelectorAll('[data-testid="upload-success-icon"]')
+          .length,
+        inTitle: !!icon?.closest('#upload-title'),
+        width: svg?.width,
+        height: svg?.height,
+        pulsing: !!document.querySelector('[data-testid="upload-motion"]'),
+      };
+    }),
+    { count: 1, inTitle: true, width: 28, height: 28, pulsing: false },
+    'Success decoration stays in the title and never retains the uploading pulse',
+  );
+
+  assert.deepEqual(
     await page.evaluate(() =>
       [...document.querySelectorAll('[data-testid="upload-item"] button')].map(
         (node) => node.textContent.trim(),
@@ -314,7 +329,7 @@ try {
   await page.click(button('复制 URL'));
   await page.waitForFunction(() =>
     document
-      .querySelector('[role="dialog"][aria-label="复制图片链接"]')
+      .querySelector('[data-slot="toast"]')
       ?.textContent.includes('已复制到剪贴板'),
   );
   for (const [label, pattern] of [
@@ -354,15 +369,15 @@ try {
   report.checks.push(
     'Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.',
   );
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   const link = await page.evaluate(() => window.__uploadCopiedURL);
   assert.ok(link.includes(successId), 'Result link uses real image ID');
   assert.equal((await page.fetch(link)).status, 200);
   report.checks.push(
     'Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.',
   );
-  await page.waitForSelector(button('返回上传页'));
-  await page.click(button('返回上传页'));
+  await page.waitForSelector(button('关闭图片详情'));
+  await page.click(button('关闭图片详情'));
   await state('ready');
   assert.equal(await imageId(), successId);
   await clear();
@@ -681,13 +696,46 @@ try {
         window.__uploadReleaseLoad = () => loaded.call(this, event);
       };
       XMLHttpRequest.prototype.send = send;
-      return send.call(this, body);
+      window.__uploadReleaseSend = () => {
+        delete window.__uploadReleaseSend;
+        send.call(this, body);
+      };
     };
   });
   await select();
   await page.click('loc=role:button[name*="可见性"]');
   await page.click('loc=role:option[name="私有"]');
   await page.click(button('开始上传'));
+  await page.waitForFunction(
+    () => typeof window.__uploadReleaseSend === 'function',
+  );
+  await state('uploading');
+  try {
+    for (const motion of ['no-preference', 'reduce']) {
+      await page.cdp('Emulation.setEmulatedMedia', {
+        features: [{ name: 'prefers-reduced-motion', value: motion }],
+      });
+      await page.waitForFunction((motion) => {
+        const icon = document.querySelector('[data-testid="upload-motion"]');
+        return (
+          icon &&
+          getComputedStyle(icon).animationName ===
+            (motion === 'reduce' ? 'none' : 'pulse')
+        );
+      }, motion);
+      assert.equal(
+        await page.evaluate(
+          () => !!document.querySelector('[data-testid="upload-success-icon"]'),
+        ),
+        false,
+      );
+    }
+    report.checks.push(
+      'Held real XHR dispatch exposes uploading: only the title icon pulses, reduced motion disables the pulse, and no success icon appears early.',
+    );
+  } finally {
+    await page.evaluate(() => window.__uploadReleaseSend?.());
+  }
   await page.waitForFunction(
     () => typeof window.__uploadReleaseLoad === 'function',
   );

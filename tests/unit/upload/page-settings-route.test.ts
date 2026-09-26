@@ -44,6 +44,7 @@ describe('GET /upload/settings', () => {
     } as ReturnType<typeof getServerRuntime>);
     const settings = {
       maxFileBytes: 123,
+      queueLimit: 7,
       defaultVisibility: 'private' as const,
       defaultStorageId: null,
       storages: [],

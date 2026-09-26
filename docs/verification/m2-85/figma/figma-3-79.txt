@@ -1,0 +1,151 @@
+const imgPublicSoftGlowDesktop = "https://www.figma.com/api/mcp/asset/877e25ae-bb92-472c-98cd-935f68b8eff0.svg";
+const img03 = "https://www.figma.com/api/mcp/asset/5b2aea05-fb69-4b78-8b60-e2cfcf7acec8.svg";
+const img = "https://www.figma.com/api/mcp/asset/8909a8c4-0af8-4f30-9793-ec80f01cc8b9.svg";
+const imgFrame = "https://www.figma.com/api/mcp/asset/47a5c4e6-a0c1-4df7-979e-f30436439249.svg";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/506f1eff-df6e-4522-a3d7-b076d47d365b.svg";
+
+type LinkProps = {
+  className?: string;
+  label?: string;
+};
+
+function Link({ className, label = "链接" }: LinkProps) {
+  return (
+    <div className={className || "content-stretch flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] w-[398px]"} data-node-id="3:29" data-name="Link">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:30">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function PublicSoftGlowDesktop({ className }: { className?: string }) {
+  return (
+    <div className={className || "h-[960px] relative w-[1920px]"} data-node-id="192:799" data-name="Public/Soft glow/Desktop">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPublicSoftGlowDesktop} />
+    </div>
+  );
+}
+
+export default function Component03() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="3:79" data-name="03 登录 · 必填错误">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={img03} />
+      <div className="absolute h-[960px] left-0 top-0 w-[1920px]" data-node-id="3:80" data-name="点阵底纹">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={img} />
+      </div>
+      <div className="absolute bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-dashed content-stretch flex flex-col gap-[16px] items-start left-[736px] overflow-clip p-[24px] rounded-[24px] shadow-[0px_2px_3px_0px_rgba(38,36,66,0.08)] top-[230px] w-[448px]" data-node-id="3:84" data-name="登录卡片">
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start leading-[1.5] overflow-clip relative shrink-0 text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:85" data-name="标题">
+          <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[24px]" data-node-id="3:86">
+            登录
+          </p>
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px]" data-node-id="3:87">
+            ariso · 欢迎回来
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0" data-node-id="3:88" data-name="表单">
+          <div className="content-stretch flex flex-col gap-[4px] items-start overflow-clip relative shrink-0" data-node-id="3:89" data-name="邮箱">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--destructive,#de3b3d)] whitespace-nowrap" data-node-id="3:90">
+              邮箱
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--destructive,#de3b3d)] border-solid content-stretch flex h-[36px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-[398px]" data-node-id="3:91" data-name="Input">
+              <p className="[word-break:break-word] font-['Inter:Light'] font-light leading-[1.5] not-italic relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I3:91;3:28">
+                name@example.com
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="3:92" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--destructive,#de3b3d)] whitespace-nowrap" data-node-id="11:21">
+              请输入邮箱
+            </p>
+          </div>
+          <div className="content-stretch flex flex-col gap-[4px] items-start overflow-clip relative shrink-0" data-node-id="3:95" data-name="密码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--destructive,#de3b3d)] whitespace-nowrap" data-node-id="3:96">
+              密码
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--destructive,#de3b3d)] border-solid content-stretch flex h-[36px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-[398px]" data-node-id="3:97" data-name="Input">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I3:97;3:28">
+                请输入密码
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="3:98" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame1} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--destructive,#de3b3d)] whitespace-nowrap" data-node-id="11:22">
+              请输入密码
+            </p>
+          </div>
+          <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch cursor-pointer flex h-[36px] items-center justify-center relative rounded-[8px] shrink-0 w-[398px]" label="登录" />
+          <Link className="content-stretch cursor-pointer flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] shrink-0 w-[398px]" label="忘记密码" />
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0" data-node-id="3:103" data-name="第三方登录">
+          <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="3:104" data-name="分隔线">
+            <div className="bg-[var(--accent,#bae8e8)] h-px relative shrink-0 w-[137px]" data-node-id="3:105" data-name="Rectangle" />
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:106">
+              或使用第三方登录
+            </p>
+            <div className="bg-[var(--accent,#bae8e8)] h-px relative shrink-0 w-[137px]" data-node-id="3:107" data-name="Rectangle" />
+          </div>
+          <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[36px] items-center justify-center relative rounded-[8px] shrink-0 w-[398px]" label="使用 GitHub 登录" />
+        </div>
+      </div>
+      <Link className="absolute content-stretch cursor-pointer flex h-[44px] items-center justify-center left-[20px] px-[12px] rounded-[8px] top-[14px] w-[112px]" label="← 返回首页" />
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Desktop
+**Node ID:** 192:799
+
+非后台页面共同背景。沿用首页右上淡黄与左下水绿径向柔光；装饰层置底，不接收交互。桌面可调整宽度，右上光晕右对齐，左下光晕左下对齐。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

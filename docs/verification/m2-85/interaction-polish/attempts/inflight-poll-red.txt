@@ -1,0 +1,39 @@
+Already up to date
+Done in 30ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |unit| tests/unit/upload/controller.test.ts (22 tests | 1 failed | 21 skipped) 66ms
+   ❯ manual upload controller (22)
+     × keeps live transfer progress after queued polling and temporary read failure, then marks an unconfirmed ended transfer unknown 66ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/controller.test.ts > manual upload controller > keeps live transfer progress after queued polling and temporary read failure, then marks an unconfirmed ended transfer unknown
+AssertionError: expected { …(15) } to match object { state: 'uploading', progress: 30 }
+(13 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "progress": 30,
+-   "state": "uploading",
++   "state": "unknown",
+  }
+
+ ❯ tests/unit/upload/controller.test.ts:188:38
+    186|     c.respond(submission());
+    187|     await c.controller.refresh();
+    188|     expect(c.controller.snapshot[0]).toMatchObject({ state: 'uploading…
+       |                                      ^
+    189|     c.progress(45);
+    190|     c.request.mockRejectedValueOnce(new Error('poll unavailable'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  02:32:06
+   Duration  159ms (tests 62%, transform 23%, import 14%, worker 1%)
