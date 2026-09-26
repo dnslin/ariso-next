@@ -88,3 +88,5 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 本轮 Node 24.18.1 / pnpm 11.19.0 已执行冻结安装、类型、lint、格式、构建、434 项单元、文档检查及 5 项自检；通过。构建仍有前述可选 Debug 路径追踪警告。`pnpm run test:integration --maxWorkers=4` 随后通过，共 58 文件、485 项。完整浏览器命令 `BROWSER_REPORT_DIR=test-results/browser-race-green EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 pnpm run test:browser` 通过，退出 0，UTC 2026-09-26 05:42:01–05:47:58；共 27 组行为、220 个布局检查。三个竞态均观察到旧读取的 AbortSignal 中止，最终业务结果正确且没有重复 POST。隔离 UI 套件也通过，任务空间 9 已结束。
 
 修复后证据：[完整运行](./review-fix/runner.json)、[业务与竞态断言](./review-fix/library.json)、[隔离 UI](./review-fix/ui-runner.json)。本轮没有修改样式或布局；原视觉证据保留，浏览器仍重新执行所有布局断言。修复期间 PR 暂转草稿，所有适用检查与复审通过后恢复待评审。
+
+修复提交 `6b15000` 已推送，PR #124 已恢复正式待评审。回读 PR 为非草稿、CLEAN，分支 Actions 运行及提交 check runs / statuses 数量均为 0；按仓库执行约定，无适用 PR 工作流可等待。未执行合并或发布。
