@@ -74,3 +74,9 @@
 ## 远端边界
 
 `.github/workflows/ci.yml` 只有 workflow_call，`images.yml` 只有 release.published；无 PR/push/workflow_dispatch 验证入口。本次遵循 [执行约定](../../tasks/execution.md#适用检查)执行本地适用检查，不创建 Release、发布镜像或部署。AMD64/ARM64 容器与真实手机触控/软键盘/非零安全区未执行，保留各自责任，不标通过。
+
+PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-manual-upload`。实现及本地证据提交为 `06e8959`。先创建草稿，核对后已执行 `gh pr ready 125` 转为正式待评审。
+
+实际执行 `gh pr view 125 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/81-manual-upload`、提交的 `check-runs` / `status` API 及 `gh workflow list --all`。PR 状态 CLEAN；Actions 运行列表、check runs、commit statuses 均为空。空 statuses 的聚合 `pending` 不表示存在正在运行的检查，也未记为 CI 通过。现有发布工作流没有单独验证触发入口，按执行约定无需等待不存在的 PR 检查。Ego task space 1 已完成并关闭。
+
+未合并 PR、关闭 Issue、创建 Release、发布镜像、部署或删除分支/worktree。后续合并和清理由所有者决定。
