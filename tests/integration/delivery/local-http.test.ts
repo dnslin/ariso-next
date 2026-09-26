@@ -1,6 +1,11 @@
 import { rm } from 'node:fs/promises';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
+import {
+  analyticsDaily,
+  analyticsImageDaily,
+  analyticsImageTotals,
+} from '../../../src/server/analytics/schema.ts';
 import { session } from '../../../src/server/identity/schema.ts';
 import {
   mediaImages,
@@ -166,4 +171,73 @@ it('returns explicit no-store method and parameter errors through Next HTTP', as
     expect(response.headers.get('allow')).toBe('GET, HEAD, OPTIONS');
   }
   expect((await request('?type=original', {}, 'missing')).status).toBe(404);
+});
+
+it('serves authenticated trash previews while public URLs and alternate credentials remain denied', async () => {
+  update({ trashedAt: new Date(), processingStatus: 'failed' });
+  const url = `${app.origin}/api/trash/${asset.imageId}/preview?type=original`;
+  for (const headers of [
+    {},
+    { authorization: `Bearer ${app.token}` },
+    { cookie: `ariso.share_token=${app.token}` },
+  ] as Record<string, string>[]) {
+    const response = await fetch(url, { headers });
+    expect(response.status).toBe(401);
+    expect(response.headers.get('cache-control')).toBe(
+      'private, no-store, no-transform',
+    );
+    expect(await response.json()).toMatchObject({
+      code: 'OWNER_LOGIN_REQUIRED',
+    });
+  }
+  const headers = { cookie: app.cookie };
+  const preview = await fetch(url, { headers });
+  expect(preview.status).toBe(200);
+  expect(preview.headers.get('cache-control')).toBe(
+    'private, no-store, no-transform',
+  );
+  expect(Buffer.from(await preview.arrayBuffer())).toEqual(asset.bytes);
+  const head = await fetch(url, { method: 'HEAD', headers });
+  expect(head.status).toBe(200);
+  expect(await head.text()).toBe('');
+  for (const query of [
+    '',
+    '?type=bad',
+    '?type=original&type=thumbnail',
+    '?type=original&download=1',
+    '?type=original&other=1',
+  ]) {
+    expect(
+      (
+        await fetch(
+          `${app.origin}/api/trash/${asset.imageId}/preview${query}`,
+          { headers },
+        )
+      ).status,
+    ).toBe(400);
+  }
+  for (const kind of ['original', 'compressed', 'thumbnail', 'watermark']) {
+    expect((await request(`?type=${kind}`, { headers })).status).toBe(404);
+    expect((await request(`?type=${kind}`)).status).toBe(409);
+  }
+  for (const deletionStatus of ['deleting', 'cleanup_failed'] as const) {
+    update({ deletionStatus });
+    expect((await fetch(url, { headers })).status).toBe(404);
+  }
+  update({ deletionStatus: null });
+  app.db.update(storageConfigs).set({ enabled: false }).run();
+  expect((await fetch(url, { headers })).status).toBe(409);
+  app.db.update(storageConfigs).set({ enabled: true }).run();
+  update({ trashedAt: null });
+  expect((await fetch(url, { headers })).status).toBe(404);
+  update({ trashedAt: new Date() });
+  app.db.delete(session).run();
+  expect((await fetch(url, { headers })).status).toBe(401);
+  // Graceful shutdown flushes all accepted events before checking absence.
+  // The fixture's finally close can safely observe the already exited process.
+  const { stop } = await import('../runtime/process-helpers.ts');
+  await stop(app.child, app.closed);
+  expect(app.db.select().from(analyticsDaily).all()).toEqual([]);
+  expect(app.db.select().from(analyticsImageDaily).all()).toEqual([]);
+  expect(app.db.select().from(analyticsImageTotals).all()).toEqual([]);
 });

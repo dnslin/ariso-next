@@ -20,7 +20,7 @@ export function initialPreview(detail: LibraryDetail) {
   );
 }
 
-function PreviewImage({
+export function PreviewImage({
   version,
   name,
 }: {

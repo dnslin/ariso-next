@@ -7,8 +7,9 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
+import { Tooltip } from '@heroui/react/tooltip';
 import { Spinner } from '@heroui/react/spinner';
-import { FileImage, Trash2 } from 'lucide-react';
+import { RefreshCw, Trash2 } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { TrashAction } from '../../components/library/trash-actions';
 import {
@@ -22,6 +23,7 @@ import {
 import type { TrashPage } from '../../server/library/trash-types';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { TrashRecord } from './trash-record';
+import { TrashThumbnail } from './trash-thumbnail';
 
 async function readPage(page: number, signal: AbortSignal): Promise<TrashPage> {
   const response = await fetch(`/api/trash?page=${page}`, {
@@ -217,13 +219,30 @@ export function TrashScreen({
         </>
       ) : (
         <section className="grid min-w-0 gap-5">
-          <h1
-            id="trash-title"
-            tabIndex={-1}
-            className="text-[28px] font-medium leading-normal md:text-[30px]"
-          >
-            回收站
-          </h1>
+          <div className="flex items-center justify-between gap-4">
+            <h1
+              id="trash-title"
+              tabIndex={-1}
+              className="text-[28px] font-medium leading-normal md:text-[30px]"
+            >
+              回收站
+            </h1>
+            <Tooltip>
+              <Button
+                isIconOnly
+                variant="outline"
+                aria-label="刷新回收站"
+                className="size-11 shrink-0 rounded-lg"
+                isDisabled={list.isFetching}
+                onPress={() => {
+                  void list.refetch();
+                }}
+              >
+                <RefreshCw size={18} aria-hidden />
+              </Button>
+              <Tooltip.Content>刷新回收站</Tooltip.Content>
+            </Tooltip>
+          </div>
           <p className="text-sm">
             {data ? `${data.total} 条记录 · ` : ''}
             文件仍占用空间，不会自动清理。
@@ -256,18 +275,8 @@ export function TrashScreen({
             </Alert>
           ) : null}
           <p className="rounded-lg bg-default p-3 text-sm">
-            不显示图片内容。点击记录查看原位置、权限与处理状态；恢复只保留仍存在的相册和标签关系。
+            预览仅登录的管理员可见，原有外链仍不可访问。点击图片查看详情或恢复。
           </p>
-          <Button
-            variant="outline"
-            className="min-h-11 justify-self-start rounded-lg"
-            isDisabled={list.isFetching}
-            onPress={() => {
-              void list.refetch();
-            }}
-          >
-            刷新回收站
-          </Button>
           {list.isPending ? (
             <p role="status">
               <Spinner size="sm" />
@@ -292,13 +301,14 @@ export function TrashScreen({
                           window.history.pushState(null, '', url);
                         }}
                       >
-                        <span className="flex min-w-0 gap-2">
-                          <FileImage
-                            size={18}
-                            className="shrink-0"
-                            aria-hidden="true"
+                        <span className="flex min-w-0 items-center gap-3">
+                          <TrashThumbnail
+                            key={`${item.thumbnailPath}:${list.dataUpdatedAt}`}
+                            item={item}
                           />
-                          {item.displayName}
+                          <span className="min-w-0 break-words">
+                            {item.displayName}
+                          </span>
                         </span>
                         <span>
                           原文件 {bytesLabel(item.byteSize)} ·{' '}

@@ -293,6 +293,23 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
         }
         await page.goto(`${config.origin}/trash?image=${id}`);
         await page.waitForSelector('[data-testid="trash-detail"]');
+        await page.waitForFunction(() => {
+          const image = document.querySelector(
+            '[data-testid="trash-detail"] img',
+          );
+          return image?.complete && image.naturalWidth > 0;
+        });
+        assert.equal(
+          (await anonymous.fetch(`/api/trash/${id}/preview?type=thumbnail`))
+            .status,
+          401,
+        );
+        await page.screenshot({
+          path: join(
+            config.output,
+            `m2-${config.width}-${visibility}-${format}-trash-preview.png`,
+          ),
+        });
         await page.click(button('恢复图片'));
         await page.waitForSelector('[data-testid="trash-confirm"]');
         await page.click(button('确认恢复'));

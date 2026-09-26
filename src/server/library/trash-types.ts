@@ -1,4 +1,5 @@
 export interface TrashItem {
+  thumbnailPath: string | null;
   id: string;
   displayName: string;
   originalName: string;

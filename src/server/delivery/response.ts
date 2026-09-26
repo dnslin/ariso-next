@@ -23,6 +23,7 @@ export type ImageAccessEvent = {
   occurredAt: Date;
 };
 type DeliveryOptions = {
+  access?: 'published' | 'trash-preview';
   db: BetterSQLite3Database;
   storageRoot: string;
   readOwner: () => Promise<boolean>;
@@ -68,7 +69,13 @@ export async function prepareImageDelivery(
   try {
     const input = parseImageRequest(imageId, new URL(request.url).searchParams);
     const select = (owner: boolean) =>
-      selectImageDelivery(options.db, imageId, input.selectedVersion, owner);
+      selectImageDelivery(
+        options.db,
+        imageId,
+        input.selectedVersion,
+        owner,
+        options.access,
+      );
     for (let attempt = 0; attempt < 2; attempt++) {
       request.signal.throwIfAborted();
       const selected = select(await options.readOwner());

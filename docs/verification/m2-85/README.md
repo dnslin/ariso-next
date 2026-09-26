@@ -6,7 +6,7 @@
 
 实际用 `gh issue view 85 --json title,body,comments,state,url`、原生 `dependencies/blocked_by` / `dependencies/blocking` 核对。直接前置 #61、#81、#79、#84 均 CLOSED，四项及 #85 均无评论；#85 原生 blocking 列表为空。已读取各自交付、验证及后续修复记录。规格中历史的“尚未实现”不覆盖已有实施证据；计划功能也不当作当前可用功能。
 
-原目录干净，只有 main 工作区；从最新 `origin/main` 的 `c7a85bc` 创建 `codex/85-core-smoke`。没有修改生产组件、业务接口、数据库结构、依赖、冻结 PRD 或 Figma。
+原目录干净，只有 main 工作区；从最新 `origin/main` 的 `c7a85bc` 创建 `codex/85-core-smoke`。初轮冒烟未修改生产组件、业务接口、数据库结构、依赖、冻结 PRD 或 Figma。随后用户人工验收明确要求改变回收站预览规则；该次生产实现及新验证见[管理员回收预览](./trash-preview/README.md)。
 
 - `e2e/m2-core.mjs`：每个桌面/手机环境执行真实 JPEG/PNG × 公开/私有四种组合，沿用现有上传、详情和回收操作。核对初始化默认值、原图磁盘字节、派生文件、真实剪贴板和浏览器下载、匿名权限、回收及原 ID/URL 恢复；真实 worker 结算失败保留版本；三张统计表精确核对。
 - `e2e/m2.mjs`：重启前后两个阶段，真实上传后通过一次性数据库触发器持有任务调度，停止并重启实际生产进程，再验证同一任务、快照、原图对象、版本及计数。调度持有是明确的故障夹具，不冒充真实工具中途崩溃；后者由既有 media 集成测试覆盖。

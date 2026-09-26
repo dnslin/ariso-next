@@ -271,9 +271,51 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await layouts('loading');
   await page.evaluate(() => window.__releaseInitialTrashRead());
   await page.waitForSelector('[data-testid="trash-record-library-007"]');
+  await page.waitForFunction(() => {
+    const image = document.querySelector(
+      '[data-testid="trash-record-library-007"] img',
+    );
+    return image?.complete && image.naturalWidth > 0;
+  });
+  await page.cdp('Network.enable');
+  await page.cdp('Network.setBlockedURLs', {
+    urls: ['*/api/trash/library-007/preview*'],
+  });
+  try {
+    await page.reload();
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-testid="trash-record-library-007"]')
+        ?.textContent.includes('预览读取失败'),
+    );
+  } finally {
+    await page.cdp('Network.setBlockedURLs', { urls: [] });
+  }
+  await page.click(button('刷新回收站'));
+  await page.waitForFunction(() => {
+    const image = document.querySelector(
+      '[data-testid="trash-record-library-007"] img',
+    );
+    return image?.complete && image.naturalWidth > 0;
+  });
+  report.checks.push(
+    'A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.',
+  );
   await layouts('list');
   await page.click('[data-testid="trash-record-library-007"]');
   await page.waitForSelector('[data-testid="trash-detail"]');
+  await page.waitForFunction(() => {
+    const image = document.querySelector('[data-testid="trash-detail"] img');
+    return image?.complete && image.naturalWidth > 0;
+  });
+  assert.equal(
+    (
+      await fetch(
+        `${config.origin}/api/trash/library-007/preview?type=thumbnail`,
+      )
+    ).status,
+    401,
+  );
   await layouts('record');
   assert.equal(
     await page.evaluate(() =>
@@ -282,7 +324,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
         .some((entry) => new URL(entry.name).pathname.startsWith('/i/')),
     ),
     false,
-    'Trash list and record request no image content',
+    'Trash previews use the owner-only management route, never a public /i link',
   );
   await confirm('恢复');
   await layouts('restore-confirm');
@@ -306,7 +348,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   assert.equal(after.status, 200);
   assert.deepEqual(Buffer.from(await after.arrayBuffer()), bytes);
   report.checks.push(
-    'Real trash records render without any /i content request; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.',
+    'Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.',
   );
 
   await sql(

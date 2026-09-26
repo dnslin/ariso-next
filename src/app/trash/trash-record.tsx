@@ -4,6 +4,10 @@ import { Button } from '@heroui/react/button';
 import { ArrowLeft } from 'lucide-react';
 import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
+import {
+  initialPreview,
+  PreviewImage,
+} from '../../components/library/detail-preview';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import {
   bytesLabel,
@@ -18,6 +22,9 @@ export function TrashRecord({
   record: LibraryDetail;
   onBack: () => void;
 }) {
+  const preview = record.versions.find(
+    (version) => version.kind === initialPreview(record),
+  );
   const rows = [
     ['文件记录', record.displayName, `原文件 ${bytesLabel(record.byteSize)}`],
     [
@@ -49,7 +56,7 @@ export function TrashRecord({
     >
       <Button
         variant="tertiary"
-        className="min-h-11 justify-self-start px-0 text-sm"
+        className="min-h-11 justify-self-start rounded-lg px-3 text-sm"
         aria-label="返回回收站列表"
         onPress={onBack}
       >
@@ -67,8 +74,15 @@ export function TrashRecord({
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>
       <p className="rounded-lg bg-default p-3 text-sm">
-        回收站不显示图片内容。仅保留记录，恢复后能否访问仍取决于权限、处理结果和存储状态。
+        预览仅登录的管理员可见，原有外链仍不可访问。恢复后保留原 ID 和链接。
       </p>
+      {preview ? (
+        <PreviewImage
+          key={`${record.id}:${preview.previewPath}`}
+          version={preview}
+          name={record.displayName}
+        />
+      ) : null}
       <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 md:py-4">
         <Card.Content>
           <dl>

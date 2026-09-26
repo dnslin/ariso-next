@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "origin": "http://127.0.0.1:62948",
+  "imageId": "3e7a77fc-1058-4f11-8fd4-f8c97275bb7b",
+  "fixture": "Real browser-uploaded sample.png; controlled SQLite storage/deletion states restored in finally; copied manual-test data only",
+  "checks": [
+    "disabled and cleanup-failed show no image in both themes and widths",
+    "storage/deletion state restored",
+    "same thumbnail decodes after restoration"
+  ]
+}
