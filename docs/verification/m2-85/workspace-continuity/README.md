@@ -70,3 +70,7 @@ AMD64／ARM64 镜像与容器验证留在既有 Release 流程，本轮未发布
 6. 桌面和窄窗口各查看一次，并切换系统浅深色；确认此次布局、动效与文案符合预期。主题当前仍跟随系统。
 
 尚未收到本轮人工通过结论，PR 保持草稿。
+
+## 提交与远端核对
+
+实现提交 `b2236e6` 已推送到 `codex/85-core-smoke`。PR #126 已更新且保持草稿，等待本轮人工验收。推送后实际执行 `gh pr view 126 --json isDraft,headRefOid,statusCheckRollup`、当前提交的 check-runs API 和 `gh run list --branch codex/85-core-smoke`：PR 为草稿，检查列表与工作流运行列表均为空。没有远端 CI 运行，不记为 CI 通过，也不等待不存在的工作流。未合并、关闭 Issue、发布镜像、部署或清理分支／worktree。
