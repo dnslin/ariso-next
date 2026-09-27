@@ -491,7 +491,7 @@ export async function verifyUIRefinement({ page, config, report }) {
         'Pointer navigation to trash has no heading focus ring',
       );
       await page.focus('loc=role:button[name="仅管理员可见"]');
-      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
       assert.equal(
         await page.evaluate(() => {
           const active = document.activeElement;
@@ -502,7 +502,19 @@ export async function verifyUIRefinement({ page, config, report }) {
           );
         }),
         true,
-        'Shift+Tab returns to the trash refresh control with visible keyboard focus',
+        'Tab reaches the trash refresh control after the inline access label with visible keyboard focus',
+      );
+      await page.keyboard.press('Shift+Tab');
+      assert.equal(
+        await page.evaluate(() => {
+          const active = document.activeElement;
+          return (
+            active?.getAttribute('aria-label') === '仅管理员可见' &&
+            active.matches(':focus-visible,[data-focus-visible="true"]')
+          );
+        }),
+        true,
+        'Shift+Tab restores visible keyboard focus to the inline access label',
       );
     }
     report.refinement = measurements;
@@ -513,4 +525,84 @@ export async function verifyUIRefinement({ page, config, report }) {
     await page.goto(initial);
     await page.waitForSelector('main h1');
   }
+}
+
+export async function verifyOriginalExplanation(page) {
+  const previous = await page.evaluate(() =>
+    document
+      .querySelector('[role="tab"][aria-selected="true"]')
+      .textContent.trim(),
+  );
+  await page.click('loc=role:tab[name="压缩图"]');
+  await page.waitForSelector('loc=role:button[name="原图说明"]', {
+    state: 'hidden',
+  });
+  await page.click('loc=role:tab[name="原图"]');
+  await page.waitForSelector('loc=role:button[name="原图说明"]');
+  const placement = await page.evaluate(() => {
+    const original = [...document.querySelectorAll('[role="tab"]')]
+      .find((node) => node.textContent.trim() === '原图')
+      .getBoundingClientRect();
+    const next = [...document.querySelectorAll('[role="tab"]')]
+      .find((node) => node.textContent.trim() === '压缩图')
+      .getBoundingClientRect();
+    const trigger = document
+      .querySelector('button[aria-label="原图说明"]')
+      .getBoundingClientRect();
+    return {
+      originalRight: original.right,
+      nextLeft: next.left,
+      top: original.top,
+      trigger: {
+        left: trigger.left,
+        right: trigger.right,
+        top: trigger.top,
+        width: trigger.width,
+        height: trigger.height,
+      },
+    };
+  });
+  assert.ok(placement.trigger.width >= 44 && placement.trigger.height >= 44);
+  assert.ok(
+    placement.trigger.left >= placement.originalRight - 1 &&
+      placement.trigger.right <= placement.nextLeft + 1 &&
+      Math.abs(placement.trigger.top - placement.top) <= 1,
+    'Original explanation sits beside the Original tab without overlap',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[role="dialog"][aria-label="原图说明"]'),
+    ),
+    false,
+  );
+  await page.focus('loc=role:button[name="原图说明"]');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('loc=role:dialog[name="原图说明"]');
+  assert.ok(
+    await page.evaluate(() =>
+      document
+        .querySelector('[role="dialog"][aria-label="原图说明"]')
+        .textContent.includes('GPS'),
+    ),
+  );
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('loc=role:dialog[name="原图说明"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute('aria-label') === '原图说明',
+    undefined,
+    { timeout: 3_000 },
+  );
+  assert.equal(
+    await page.evaluate(() =>
+      document.activeElement?.getAttribute('aria-label'),
+    ),
+    '原图说明',
+  );
+  await page.click(`loc=role:tab[name="${previous}"]`);
+  if (previous !== '原图')
+    await page.waitForSelector('loc=role:button[name="原图说明"]', {
+      state: 'hidden',
+    });
 }

@@ -393,8 +393,8 @@ try {
   await page.keyboard.press('ArrowRight');
   assert.equal(
     await page.evaluate(() => document.activeElement?.textContent.trim()),
-    width >= 768 ? '下载缩略图' : '更多操作',
-    'Horizontal Toolbar moves to the next visible action, skipping mobile-hidden buttons',
+    '下载缩略图',
+    'Horizontal Toolbar moves to the current-version download action on both viewports',
   );
   await page.keyboard.press('ArrowLeft');
   assert.equal(

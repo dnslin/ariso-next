@@ -25,7 +25,7 @@ const navigation = [
     icon: <LayoutDashboard />,
     unavailable: true,
   },
-  { href: '/upload', label: '上传图片', icon: <CloudUpload /> },
+  { href: '/upload', label: '上传', icon: <CloudUpload /> },
   { href: '/library', label: '图库', icon: <Images /> },
   { href: '/albums', label: '相册', icon: <Folder />, unavailable: true },
   { href: '/tags', label: '标签', icon: <Tags />, unavailable: true },

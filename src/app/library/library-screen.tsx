@@ -5,6 +5,7 @@ import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { OwnerShell } from '../../components/shell/owner-shell';
+import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
@@ -59,6 +60,7 @@ export function LibraryScreen({
   ownerName: string;
   initialSidebarCollapsed: boolean;
 }) {
+  const resetUpload = useResetUpload();
   const detail = useDetailNavigation();
   const [notice, setNotice] = useState('');
   function onTrashed(record: Detail) {
@@ -106,9 +108,10 @@ export function LibraryScreen({
   useEffect(() => () => client.clear(), [client]);
   useEffect(() => {
     if (!expired) return;
+    resetUpload();
     client.clear();
     window.location.replace('/login?reason=expired&returnTo=%2Flibrary');
-  }, [client, expired]);
+  }, [client, expired, resetUpload]);
 
   const pages = expired ? [] : (query.data?.pages ?? []);
   const items = [

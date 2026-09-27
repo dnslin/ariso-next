@@ -76,15 +76,38 @@ export async function verifyLibraryTrashRace({ page, config, sql, report }) {
     await page.waitForSelector('[data-testid="detail-body"]');
     await holdConcurrentReads(page, mode);
     try {
-      await page.click(button('更多操作'));
-      await page.click('loc=role:menuitem[name="刷新详情"]');
+      await page.click(button('复制链接'));
+      await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
       await page.waitForFunction(
         () => typeof window.__trashRace.releaseOld === 'function',
       );
-      await page.click(button('更多操作'));
-      await page.click('loc=role:menuitem[name="回收图片"]');
+      assert.equal(
+        await page.evaluate(() => {
+          const copy = document.querySelector(
+            '[role="dialog"][aria-label="复制图片链接"]',
+          );
+          const buttons = [...copy.querySelectorAll('button')].filter((node) =>
+            /^复制 (URL|Markdown|HTML)$/.test(node.textContent.trim()),
+          );
+          return (
+            copy.textContent.includes('正在核对当前版本与访问状态') &&
+            buttons.length === 3 &&
+            buttons.every(
+              (node) =>
+                node.disabled || node.getAttribute('aria-disabled') === 'true',
+            )
+          );
+        }),
+        true,
+        'Pending real detail read disables stale copy actions',
+      );
+      await page.click(button('关闭复制链接'));
+      await page.waitForSelector('loc=role:dialog[name="复制图片链接"]', {
+        state: 'hidden',
+      });
+      await page.click(button('删除图片'));
       await page.waitForSelector('[data-testid="trash-confirm"]');
-      await page.click(button('确认回收'));
+      await page.click(button('确认删除图片'));
       await page.waitForFunction(
         () => typeof window.__trashRace.releaseWrite === 'function',
       );

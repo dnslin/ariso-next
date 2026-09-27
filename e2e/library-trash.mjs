@@ -70,13 +70,12 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
         : '[data-testid="trash-detail"]',
     );
     await page.waitForSelector(
-      button(area === 'library' ? '更多操作' : '恢复图片'),
+      button(area === 'library' ? '删除图片' : '恢复图片'),
     );
   };
   const confirm = async (action) => {
     if (action === '回收') {
-      await page.click(button('更多操作'));
-      await page.click('loc=role:menuitem[name="回收图片"]');
+      await page.click(button('删除图片'));
     } else {
       await page.click(button(`${action}图片`));
     }
@@ -195,7 +194,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.click(button('取消'));
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('更多操作'),
+    document.activeElement?.textContent.includes('删除图片'),
   );
   assert.deepEqual(
     await page.evaluate(() => window.__trashTransport.writes),
@@ -205,12 +204,12 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.keyboard.press('Escape');
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('更多操作'),
+    document.activeElement?.textContent.includes('删除图片'),
   );
   await page.evaluate(() => window.__restoreTrashTransport());
   await transport(page, { hold: true });
   await confirm('回收');
-  await page.click(button('确认回收'));
+  await page.click(button('确认删除图片'));
   await page.waitForFunction(
     () => typeof window.__trashTransport.release === 'function',
   );
@@ -381,7 +380,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   );
   await detail('library-006');
   await confirm('回收');
-  await page.click(button('确认回收'));
+  await page.click(button('确认删除图片'));
   await submitted();
   await detail('library-006', 'trash');
   await confirm('恢复');

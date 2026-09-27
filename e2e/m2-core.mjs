@@ -92,10 +92,6 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
   };
   const waitState = (name) =>
     page.waitForSelector(`[data-testid="upload-item"][data-state="${name}"]`);
-  const menu = async (name) => {
-    await page.click(button('更多操作'));
-    await page.click(`loc=role:menuitem[name="${name}"]`);
-  };
   const upload = async (format, visibility, expectedState = 'ready') => {
     await page.goto(`${config.origin}/upload`);
     await page.waitForSelector('input[type=file]', { state: 'attached' });
@@ -233,8 +229,7 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
         const pendingDownload = page.waitForEvent('download', {
           timeout: 30000,
         });
-        if (config.width < 768) await menu('下载原图');
-        else await page.click(button('下载原图'));
+        await page.click(button('下载原图'));
         const download = await pendingDownload;
         const downloadPath = join(
           config.output,
@@ -274,9 +269,9 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
             `m2-${config.width}-${visibility}-${format}-detail.png`,
           ),
         });
-        await menu('回收图片');
+        await page.click(button('删除图片'));
         await page.waitForSelector('[data-testid="trash-confirm"]');
-        await page.click(button('确认回收'));
+        await page.click(button('确认删除图片'));
         await page.waitForFunction(
           () => !document.querySelector('[data-testid="trash-confirm"]'),
         );

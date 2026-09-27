@@ -13,13 +13,11 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import { CloseButton } from '@heroui/react/close-button';
-import { Popover } from '@heroui/react/popover';
 import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { Info } from 'lucide-react';
-import { DetailMoreActions } from './detail-more-actions';
+import { useResetUpload } from '../upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
 import { TrashAction } from './trash-actions';
@@ -115,6 +113,7 @@ function DetailContent({
               detail={detail}
               selected={selected}
               revision={revision}
+              onRetry={onRefresh}
               onSelect={(kind) => {
                 onSelect(kind);
                 setDownloadMessage('');
@@ -127,10 +126,7 @@ function DetailContent({
               <AccessDisclosure
                 label={detail.visibility === 'private' ? '私有' : '公开'}
               >
-                <p>
-                  公开原图可能包含 GPS
-                  和拍摄信息。复制或下载前请确认分享范围。切换预览不会改变站点默认外链。
-                </p>
+                <p>切换预览不会改变站点默认外链。</p>
                 {detail.visibility === 'private' ||
                 detail.processingStatus !== 'ready' ? (
                   <p>
@@ -215,14 +211,24 @@ function DetailContent({
       ) : null}
       <Modal.Footer className="-mx-4 -mb-4 grid shrink-0 grid-cols-1 gap-2 border-t border-border bg-background px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))] md:-mx-6 md:-mb-6 md:px-6 md:pb-6">
         {downloadMessage && !mutationPending ? (
-          <p role="alert" className="text-sm text-danger">
-            {downloadMessage}
-          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p role="alert" className="text-sm text-danger">
+              {downloadMessage}
+            </p>
+            <Button
+              variant="outline"
+              className="min-h-11 rounded-lg"
+              isDisabled={refreshing}
+              onPress={onRefresh}
+            >
+              刷新详情
+            </Button>
+          </div>
         ) : null}
         <Toolbar
           aria-label="图片操作"
           data-testid="detail-actions"
-          className="grid w-full grid-cols-2 items-center gap-3 md:grid-cols-[minmax(0,200px)_minmax(0,200px)_44px_minmax(0,200px)] md:justify-end"
+          className="grid w-full grid-cols-3 items-center gap-2 md:grid-cols-[repeat(3,minmax(0,200px))] md:gap-3 md:justify-end"
         >
           {!mutationPending ? (
             <>
@@ -240,7 +246,7 @@ function DetailContent({
               </Button>
               <Button
                 variant="outline"
-                className="hidden h-12 w-full flex-1 rounded-lg md:flex md:max-w-50"
+                className="h-12 w-full min-w-0 flex-1 rounded-lg px-2 text-sm leading-[18px] whitespace-normal md:max-w-50"
                 isDisabled={!version?.downloadPath || downloading || refreshing}
                 onPress={() => {
                   void download();
@@ -252,36 +258,8 @@ function DetailContent({
               </Button>
             </>
           ) : null}
-          <Popover>
-            <Button
-              variant="outline"
-              isIconOnly
-              aria-label="下载说明"
-              className="hidden size-11 shrink-0 rounded-lg md:flex"
-            >
-              <Info size={18} aria-hidden />
-            </Button>
-            <Popover.Content className="max-w-80 rounded-xl border border-border bg-surface p-0">
-              <Popover.Dialog aria-label="下载说明" className="p-4 text-sm">
-                原图可能包含 GPS 和拍摄信息。下载前请确认分享范围。
-              </Popover.Dialog>
-            </Popover.Content>
-          </Popover>
-          <div className="min-w-0 flex-1 md:max-w-50">
-            <DetailMoreActions
-              trash={trash}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              download={{
-                label: downloading
-                  ? '正在检查下载…'
-                  : `下载${version ? versionLabels[version.kind] : '当前版本'}`,
-                isDisabled: !version?.downloadPath || downloading || refreshing,
-                onDownload: () => {
-                  void download();
-                },
-              }}
-            />
+          <div className="col-start-3 min-w-0 md:max-w-50">
+            <TrashAction {...trash} />
           </div>
         </Toolbar>
       </Modal.Footer>
@@ -304,6 +282,7 @@ export function LibraryDetail({
   dialogRef: RefCallback<HTMLElement>;
   onTrashed: (detail: Detail) => void;
 }) {
+  const resetUpload = useResetUpload();
   const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
   const [mutationPending, setMutationPending] = useState(false);
   const onMutationPending = useCallback(
@@ -342,11 +321,12 @@ export function LibraryDetail({
     (query.error instanceof DetailReadError && query.error.status === 401);
   useEffect(() => {
     if (!expired) return;
+    resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
-  }, [client, expired, returnTo]);
+  }, [client, expired, resetUpload, returnTo]);
   useEffect(
     () => () => {
       client.removeQueries({ queryKey: ['library-detail', imageId] });

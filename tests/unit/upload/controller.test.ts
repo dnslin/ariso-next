@@ -602,6 +602,56 @@ describe('manual upload controller', () => {
       previewUrl: null,
     });
   });
+  it('continues receiving and querying results when the upload view unsubscribes, then exposes the same item on return', async () => {
+    const c = setup();
+    c.controller.add(c.file);
+    const id = c.controller.snapshot[0].id;
+    const previewUrl = c.controller.snapshot[0].previewUrl;
+    const departed = vi.fn();
+    const unsubscribe = c.controller.subscribe(departed);
+    c.respond(submission(), 201);
+    const started = c.controller.start('private');
+    await untilTransfer(c);
+    unsubscribe();
+    departed.mockClear();
+    c.progress(70);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      id,
+      progress: 70,
+      previewUrl,
+    });
+    expect(c.transport.destroy).not.toHaveBeenCalled();
+    c.respond(accepted('running'));
+    c.transfer.resolve({
+      ...queued,
+      state: 'accepted',
+      imageId: 'real-image',
+      jobId: 'this-job',
+    });
+    await started;
+    expect(departed).not.toHaveBeenCalled();
+    expect(c.controller.snapshot[0]).toMatchObject({
+      id,
+      imageId: 'real-image',
+      state: 'processing',
+      previewUrl: null,
+    });
+    const returned = vi.fn();
+    const stop = c.controller.subscribe(returned);
+    c.respond(accepted('succeeded'));
+    await c.controller.refresh();
+    expect(returned).toHaveBeenCalled();
+    expect(c.controller.snapshot[0]).toMatchObject({
+      id,
+      imageId: 'real-image',
+      state: 'ready',
+    });
+    expect(
+      c.request.mock.calls.filter(([, init]) => init?.method === 'POST'),
+    ).toHaveLength(1);
+    expect(c.transport.upload).toHaveBeenCalledOnce();
+    stop();
+  });
   it('closing destroys browser references without cancelling server work or restoring a queue', async () => {
     const c = setup();
     c.controller.add(c.file);

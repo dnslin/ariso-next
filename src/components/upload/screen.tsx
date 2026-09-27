@@ -1,26 +1,17 @@
 'use client';
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from 'react';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { useCallback, useRef, useState } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
-import type { UploadItem } from './types';
 import { CheckCircle2, CloudUpload } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
-import { DetailReadError } from '../library/read-detail';
 import { bytesLabel } from '../library/detail-labels';
-import { UploadController } from './controller';
-import { UploadSettingsFields, type UploadSettings } from './settings';
+import { UploadSettingsFields } from './settings';
+import { useUploadQueue, uploadTerminalStates } from './provider';
 import { UploadQueueItem } from './item';
 
 type ScreenProps = {
@@ -30,123 +21,31 @@ type ScreenProps = {
   ownerName: string;
   initialSidebarCollapsed: boolean;
 };
-async function readSettings(signal: AbortSignal): Promise<UploadSettings> {
-  const response = await fetch('/upload/settings', {
-    signal,
-    cache: 'no-store',
-  });
-  if (!response.ok) {
-    const body = await response.json();
-    throw new DetailReadError(
-      `${body.message}（HTTP ${response.status}）`,
-      response.status,
-    );
-  }
-  return response.json();
-}
-
-const emptySubscribe = () => () => {};
-const emptyItems: readonly UploadItem[] = [];
-const emptySnapshot = () => emptyItems;
-const terminalStates = new Set([
-  'ready',
-  'upload-failed',
-  'processing-failed',
-  'cancelled',
-]);
-
 export function UploadScreen(props: ScreenProps) {
-  const [client] = useState(() => new QueryClient());
-  const query = useQuery(
-    {
-      queryKey: ['upload-settings'],
-      queryFn: ({ signal }) => readSettings(signal),
-      retry: false,
-      networkMode: 'always',
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-    },
+  const {
     client,
-  );
-  useEffect(() => () => client.clear(), [client]);
-  useEffect(() => {
-    if (query.error instanceof DetailReadError && query.error.status === 401)
-      window.location.replace('/login?reason=expired&returnTo=%2Fupload');
-  }, [query.error]);
-  const settings = query.data;
-  const maxFileBytes = settings?.maxFileBytes;
-  const queueLimit = settings?.queueLimit;
-  const [controller, setController] = useState<UploadController | null>(null);
-  useEffect(() => {
-    if (maxFileBytes === undefined || queueLimit === undefined) return;
-    const instance = new UploadController({
-      maxFileBytes,
-      queueLimit,
-      onUnauthorized: () =>
-        window.location.replace('/login?reason=expired&returnTo=%2Fupload'),
-    });
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Publish the newly owned external store; each effect setup owns its own cleanup, including StrictMode.
-    setController(instance);
-    return () => instance.destroy();
-  }, [maxFileBytes, queueLimit]);
-  const items = useSyncExternalStore(
-    controller?.subscribe ?? emptySubscribe,
-    controller?.getSnapshot ?? emptySnapshot,
-    controller?.getSnapshot ?? emptySnapshot,
-  );
-  const [chosenStorageId, setStorageId] = useState<string>();
-  const [chosenVisibility, setVisibility] =
-    useState<UploadSettings['defaultVisibility']>();
+    query,
+    settings,
+    controller,
+    items,
+    chosenStorageId,
+    setStorageId,
+    chosenVisibility,
+    setVisibility,
+  } = useUploadQueue();
   const [error, setError] = useState('');
   const [detailId, setDetailId] = useState<string | null>(null);
   const input = useRef<HTMLInputElement>(null);
   const trigger = useRef<HTMLElement | null>(null);
   const queuedCount = items.filter((item) => item.state === 'queued').length;
   const completedCount = items.filter((item) =>
-    terminalStates.has(item.state),
+    uploadTerminalStates.has(item.state),
   ).length;
   const terminal = items.length > 0 && completedCount === items.length;
   const saving =
     items.length > 0 && items.every((item) => item.state === 'saving');
   const uploading = items.some((item) => item.state === 'uploading');
   const readyCount = items.filter((item) => item.state === 'ready').length;
-  const polling = items.some((item) =>
-    ['saving', 'processing-queued', 'processing', 'waiting-upload'].includes(
-      item.state,
-    ),
-  );
-  const hasLocalWork = items.some(
-    (item) => !terminalStates.has(item.state) && !item.imageId,
-  );
-  useEffect(() => {
-    if (!controller || !polling) return;
-    let stopped = false;
-    let timer: ReturnType<typeof setTimeout>;
-    const schedule = () => {
-      timer = setTimeout(
-        async () => {
-          await controller.refresh();
-          // A skipped or stale read need not change the item; keep polling it.
-          if (!stopped) schedule();
-        },
-        document.hidden ? 10000 : 2000,
-      );
-    };
-    schedule();
-    return () => {
-      stopped = true;
-      clearTimeout(timer);
-    };
-  }, [controller, polling]);
-  useEffect(() => {
-    if (!hasLocalWork) return;
-    const warn = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = '';
-    };
-    window.addEventListener('beforeunload', warn);
-    return () => window.removeEventListener('beforeunload', warn);
-  }, [hasLocalWork]);
   const dialogRef = useCallback((node: HTMLElement | null) => {
     if (!node)
       requestAnimationFrame(() =>
@@ -319,7 +218,9 @@ export function UploadScreen(props: ScreenProps) {
                 className="hidden min-h-11 w-full items-center justify-between gap-3 md:flex"
               >
                 <h2 className="text-lg font-medium">
-                  上传队列 · 待上传 {queuedCount} 张
+                  {queuedCount > 0
+                    ? `待上传 ${queuedCount} 张`
+                    : `共 ${items.length} 张`}
                 </h2>
                 <Tooltip>
                   <Button

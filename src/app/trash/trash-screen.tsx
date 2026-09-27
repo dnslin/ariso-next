@@ -12,6 +12,7 @@ import { Tooltip } from '@heroui/react/tooltip';
 import { Spinner } from '@heroui/react/spinner';
 import { RefreshCw, Trash2 } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
+import { useResetUpload } from '../../components/upload/provider';
 import { TrashAction } from '../../components/library/trash-actions';
 import {
   DetailReadError,
@@ -54,6 +55,7 @@ export function TrashScreen({
   ownerName: string;
   initialSidebarCollapsed: boolean;
 }) {
+  const resetUpload = useResetUpload();
   const params = useSearchParams();
   const imageId = params.get('image');
   const [page, setPage] = useState(1);
@@ -104,11 +106,12 @@ export function TrashScreen({
   useEffect(() => () => client.clear(), [client]);
   useEffect(() => {
     if (!expired) return;
+    resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
-  }, [client, expired]);
+  }, [client, expired, resetUpload]);
   useEffect(() => {
     const returningFromRecord = previousImageId.current !== null && !imageId;
     previousImageId.current = imageId;
@@ -232,13 +235,19 @@ export function TrashScreen({
       ) : (
         <section className="grid min-w-0 gap-5">
           <div className="flex items-center justify-between gap-4">
-            <h1
-              id="trash-title"
-              tabIndex={-1}
-              className="text-[28px] font-medium leading-normal md:text-[30px]"
-            >
-              回收站
-            </h1>
+            <div className="flex flex-wrap items-center gap-x-3">
+              <h1
+                id="trash-title"
+                tabIndex={-1}
+                className="text-[28px] font-medium leading-normal md:text-[30px]"
+              >
+                回收站
+              </h1>
+              <AccessDisclosure label="仅管理员可见">
+                <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
+                <p>恢复后保留原 ID、可见性和仍存在的相册与标签关系。</p>
+              </AccessDisclosure>
+            </div>
             <Tooltip>
               <Button
                 isIconOnly
@@ -286,10 +295,6 @@ export function TrashScreen({
               </Alert.Content>
             </Alert>
           ) : null}
-          <AccessDisclosure label="仅管理员可见">
-            <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
-            <p>恢复后保留原 ID、可见性和仍存在的相册与标签关系。</p>
-          </AccessDisclosure>
           {list.isPending ? (
             <p role="status">
               <Spinner size="sm" />

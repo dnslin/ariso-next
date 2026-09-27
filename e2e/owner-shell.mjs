@@ -19,7 +19,7 @@ export async function verifyOwnerShell(page, config) {
   const accountDialog = '[role="dialog"][aria-label="当前账号"]';
   const expected = [
     { label: '总览', href: null },
-    { label: '上传图片', href: '/upload' },
+    { label: '上传', href: '/upload' },
     { label: '图库', href: '/library' },
     { label: '相册', href: null },
     { label: '标签', href: null },

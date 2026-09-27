@@ -21,7 +21,7 @@ export function AccessDisclosure({
       >
         <Chip
           variant="soft"
-          className="border border-border bg-transparent px-3 text-sm"
+          className={`h-7 border border-border bg-transparent px-3 text-sm ${label === '仅管理员可见' ? 'min-w-33' : 'min-w-19'}`}
         >
           {label}
         </Chip>

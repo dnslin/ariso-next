@@ -84,3 +84,7 @@
 实际使用 `gh pr view 126 --json state,isDraft,headRefOid,statusCheckRollup`、`gh run list --branch codex/85-core-smoke` 及提交的 `check-runs` / `status` API 核对：PR 为 OPEN / draft；检查列表、工作流运行及 commit statuses 均为空。没有远端检查执行，不写成 CI 通过，也不等待不存在的工作流。日常 PR 以本地适用检查为准。
 
 未合并、未关闭 Issue、未发布镜像、未部署；分支与工作区保留。测试服务已停止，正式运行器确认临时目录清理，Ego TaskSpace 5 在成功结束后调用一次 finish。
+
+## 后续页面切换与交互反馈
+
+2026-09-27 用户追加七项三页反馈，后续实现、失败证据、Figma 同步和独立审计统一见[状态保留与界面修正](./workspace-continuity/README.md)。历史结论保留，当前完成边界与本轮验证结果以该记录为准，仍需用户人工验收。

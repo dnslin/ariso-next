@@ -112,8 +112,8 @@ async function layouts(name) {
         const { state, radius, padding, preview, action } = result.queue;
         assert.equal(radius, 0, 'Queue row uses the shared enclosing card');
         assert.equal(padding, 0);
-        assert.equal(preview.width, width < 768 ? 56 : 64);
-        assert.equal(preview.height, width < 768 ? 56 : 64);
+        assert.equal(preview.width, width < 1280 ? 56 : 64);
+        assert.equal(preview.height, width < 1280 ? 56 : 64);
         if (action && width < 768 && state !== 'queued') {
           assert.ok(
             action.top < preview.bottom &&
@@ -522,7 +522,7 @@ try {
       '处理选项',
     );
     await page.click(button('处理选项'));
-    await page.click(button('移入回收站'));
+    await page.click(button('删除图片'));
     assert.equal(
       await page.evaluate(
         () => !!document.querySelector('[data-testid="library-detail"]'),
@@ -553,7 +553,7 @@ try {
         return original(...args);
       };
     }, failedId);
-    await page.click(button('确认回收'));
+    await page.click(button('确认删除图片'));
     await page.waitForFunction(() =>
       document
         .querySelector('[data-testid="trash-confirm"]')
@@ -798,7 +798,7 @@ try {
     1,
   );
   report.checks.push(
-    'Leaving and reopening upload does not restore browser queue; previously accepted server image persists.',
+    'Hard document navigation and reopening upload does not restore browser queue; previously accepted server image persists.',
   );
   await trackReferences();
   // Persist a running job to hold scheduling, then release it to the real worker
@@ -848,7 +848,7 @@ try {
     'ready',
   );
   report.checks.push(
-    'Leaving an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.',
+    'Hard document navigation from an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.',
   );
 
   await trackReferences();

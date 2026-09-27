@@ -25,6 +25,8 @@ for (const name of [
   'm2-390.json',
   'interaction-polish-1440.json',
   'interaction-polish-390.json',
+  'workspace-continuity-1440.json',
+  'workspace-continuity-390.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),
   ),
@@ -345,6 +347,12 @@ try {
       `interaction-polish-${width}.log`,
     );
     report[`interaction-polish-${width}`] = 'passed';
+    await runBrowser(
+      '../e2e/workspace-continuity.mjs',
+      identityConfig,
+      `workspace-continuity-${width}.log`,
+    );
+    report[`workspace-continuity-${width}`] = 'passed';
     await stop(server);
   }
   // Reuse the same Ego space for isolated UI/library checks and let its runner

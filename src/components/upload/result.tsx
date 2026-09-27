@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { useResetUpload } from './provider';
 import { DetailReadError, readDetail } from '../library/read-detail';
 
 export function useUploadResult(
@@ -12,6 +13,7 @@ export function useUploadResult(
   client: QueryClient,
   mutationPending: boolean,
 ) {
+  const resetUpload = useResetUpload();
   const query = useQuery(
     {
       queryKey: ['upload-result', imageId, state],
@@ -27,10 +29,11 @@ export function useUploadResult(
   );
   useEffect(() => {
     if (query.error instanceof DetailReadError && query.error.status === 401) {
+      resetUpload();
       client.clear();
       window.location.replace('/login?reason=expired&returnTo=%2Fupload');
     }
-  }, [client, query.error]);
+  }, [client, query.error, resetUpload]);
   return query;
 }
 

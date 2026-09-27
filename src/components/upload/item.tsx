@@ -12,6 +12,7 @@ import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
 import { bytesLabel, stepLabels } from '../library/detail-labels';
+import { useResetUpload } from './provider';
 import { UploadResult, useUploadResult } from './result';
 import { TrashAction } from '../library/trash-actions';
 import type { UploadItem, UploadState } from './types';
@@ -36,7 +37,7 @@ function UploadPreview({ url, name }: { url: string | null; name: string }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   return url && !failed ? (
-    <span className="relative size-14 shrink-0 overflow-hidden rounded-lg md:size-16">
+    <span className="relative size-14 shrink-0 overflow-hidden rounded-lg xl:size-16">
       {!loaded ? (
         <Skeleton aria-hidden className="absolute inset-0 size-full" />
       ) : null}
@@ -46,11 +47,11 @@ function UploadPreview({ url, name }: { url: string | null; name: string }) {
         alt=""
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}
-        className="size-14 rounded-lg object-cover md:size-16"
+        className="size-14 rounded-lg object-cover xl:size-16"
       />
     </span>
   ) : (
-    <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-default text-xs md:size-16">
+    <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-default text-xs xl:size-16">
       {name.split('.').at(-1)?.slice(0, 8).toUpperCase() || '图片'}
     </span>
   );
@@ -143,7 +144,7 @@ function ProcessingOptions({
                 <TrashAction
                   record={query.data}
                   operation="trash"
-                  triggerLabel="移入回收站"
+                  triggerLabel="删除图片"
                   onPending={onPending}
                   onUnavailable={onUnavailable}
                   onVerified={(record) =>
@@ -182,6 +183,7 @@ export function UploadQueueItem({
   client: QueryClient;
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
+  const resetUpload = useResetUpload();
   const [confirm, setConfirm] = useState(false);
   const processingFailed = item.state === 'processing-failed';
   const [mutationPending, setMutationPending] = useState(false);
@@ -215,47 +217,64 @@ export function UploadQueueItem({
   return (
     <Card
       data-testid="upload-item"
+      data-queue-id={item.id}
       data-state={item.state}
       data-image-id={item.imageId ?? ''}
       className="min-w-0 gap-3 rounded-none border-0 bg-transparent p-0 py-2 shadow-none"
     >
       <div
         data-testid="upload-file-row"
-        className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)_88px] items-center gap-2 md:min-h-20 md:grid-cols-[64px_minmax(0,1fr)_140px] md:gap-4"
+        className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)_88px] items-center gap-2 md:min-h-20 xl:grid-cols-[64px_minmax(0,1fr)_140px] xl:gap-4"
       >
         <UploadPreview
           key={item.previewUrl ?? serverPreview}
           url={item.previewUrl ?? serverPreview}
           name={item.name}
         />
-        <div className="grid min-w-0 gap-1 md:grid-cols-3 md:items-center md:gap-4">
+        <div className="grid min-w-0 gap-1 xl:grid-cols-3 xl:items-center xl:gap-4">
           <p className="min-w-0 text-sm leading-normal [overflow-wrap:anywhere]">
             {item.name}
           </p>
-          <p className="text-xs leading-normal md:hidden">
-            {bytesLabel(item.size)} · {uploadLabels[item.state]}
-            {item.visibility ? (
-              <Chip size="sm" variant="soft" className="ml-1">
-                {item.visibility === 'private' ? '私有' : '公开'}
+          <p className="text-xs leading-normal">{bytesLabel(item.size)}</p>
+          <div role="status" className="grid min-w-0 gap-1.5 text-xs leading-5">
+            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5">
+              <span>上传状态：</span>
+              <Chip
+                size="sm"
+                variant="soft"
+                color={
+                  item.state === 'ready'
+                    ? 'success'
+                    : item.state.includes('failed')
+                      ? 'danger'
+                      : item.state === 'unknown'
+                        ? 'warning'
+                        : 'default'
+                }
+                className="h-auto min-h-6 max-w-full whitespace-normal py-0.5 text-xs"
+              >
+                {uploadLabels[item.state]}
               </Chip>
-            ) : null}
-          </p>
-          <p className="hidden text-xs leading-normal md:block">
-            {bytesLabel(item.size)}
-          </p>
-          <p
-            role="status"
-            className="sr-only text-xs leading-normal md:not-sr-only md:text-xs"
-          >
-            {uploadLabels[item.state]}
+            </div>
             {item.visibility ? (
-              <Chip size="sm" variant="soft" className="ml-1">
-                {item.visibility === 'private' ? '私有' : '公开'}
-              </Chip>
+              <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5">
+                <span>图片状态：</span>
+                <Chip
+                  size="sm"
+                  variant="soft"
+                  className={
+                    item.visibility === 'public'
+                      ? 'bg-default text-foreground'
+                      : 'bg-surface-secondary text-foreground'
+                  }
+                >
+                  {item.visibility === 'private' ? '私有' : '公开'}
+                </Chip>
+              </div>
             ) : null}
-          </p>
+          </div>
         </div>
-        <div className="w-22 md:w-35">
+        <div className="w-22 xl:w-35">
           {item.imageId ? (
             processingFailed ? (
               <ProcessingOptions
@@ -270,6 +289,7 @@ export function UploadQueueItem({
                   setUnavailable(status);
                   setMutationPending(false);
                   if (status === 401) {
+                    resetUpload();
                     client.clear();
                     window.location.replace(
                       '/login?reason=expired&returnTo=%2Fupload',
