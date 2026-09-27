@@ -3,7 +3,6 @@
 import { Button } from '@heroui/react/button';
 import { ArrowLeft } from 'lucide-react';
 import { Alert } from '@heroui/react/alert';
-import { AccessDisclosure } from '../../components/library/access-disclosure';
 import {
   initialPreview,
   PreviewImage,
@@ -63,21 +62,13 @@ export function TrashRecord({
         <ArrowLeft size={16} aria-hidden />
         返回
       </Button>
-      <div className="flex flex-wrap items-center gap-x-3">
-        <h1
-          id="trash-record-title"
-          tabIndex={-1}
-          className="text-[28px] font-medium md:text-[30px]"
-        >
-          回收记录
-        </h1>
-        <AccessDisclosure label="仅管理员可见">
-          <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
-          <p>
-            恢复后保留原 ID 和链接，内容访问遵循原可见性、处理结果和存储状态。
-          </p>
-        </AccessDisclosure>
-      </div>
+      <h1
+        id="trash-record-title"
+        tabIndex={-1}
+        className="text-[28px] font-medium md:text-[30px]"
+      >
+        回收记录
+      </h1>
       <p>
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>

@@ -26,7 +26,6 @@ import type { TrashPage } from '../../server/library/trash-types';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { TrashRecord } from './trash-record';
 import { TrashThumbnail } from './trash-thumbnail';
-import { AccessDisclosure } from '../../components/library/access-disclosure';
 import { ArrowLeft } from 'lucide-react';
 
 async function readPage(page: number, signal: AbortSignal): Promise<TrashPage> {
@@ -235,19 +234,13 @@ export function TrashScreen({
       ) : (
         <section className="grid min-w-0 gap-5">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-x-3">
-              <h1
-                id="trash-title"
-                tabIndex={-1}
-                className="text-[28px] font-medium leading-normal md:text-[30px]"
-              >
-                回收站
-              </h1>
-              <AccessDisclosure label="仅管理员可见">
-                <p>预览仅登录的管理员可见，原有外链仍不可访问。</p>
-                <p>恢复后保留原 ID、可见性和仍存在的相册与标签关系。</p>
-              </AccessDisclosure>
-            </div>
+            <h1
+              id="trash-title"
+              tabIndex={-1}
+              className="text-[28px] font-medium leading-normal md:text-[30px]"
+            >
+              回收站
+            </h1>
             <Tooltip>
               <Button
                 isIconOnly

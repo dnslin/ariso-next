@@ -16,12 +16,12 @@ export function AccessDisclosure({
     <Popover>
       <Button
         variant="ghost"
-        aria-label={label === '仅管理员可见' ? label : `${label}：查看访问说明`}
+        aria-label={`${label}：查看访问说明`}
         className="min-h-11 min-w-19 justify-self-start rounded-full p-0 text-sm font-normal"
       >
         <Chip
           variant="soft"
-          className={`h-7 border border-border bg-transparent px-3 text-sm ${label === '仅管理员可见' ? 'min-w-33' : 'min-w-19'}`}
+          className="h-7 min-w-19 border border-border bg-transparent px-3 text-sm"
         >
           {label}
         </Chip>

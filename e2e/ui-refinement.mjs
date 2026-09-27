@@ -91,16 +91,12 @@ export async function verifyAccessDisclosure(page, trigger, report) {
         document.activeElement?.textContent.trim(),
       label: document.activeElement?.textContent.trim(),
     }));
-    if (trigger.includes('查看访问说明')) {
-      assert.ok(['公开', '私有'].includes(focused.label));
-      assert.equal(
-        focused.name,
-        `${focused.label}：查看访问说明`,
-        'Access explanation accessible name retains its visible visibility label',
-      );
-    } else {
-      assert.equal(focused.name, '仅管理员可见');
-    }
+    assert.ok(['公开', '私有'].includes(focused.label));
+    assert.equal(
+      focused.name,
+      `${focused.label}：查看访问说明`,
+      'Access explanation accessible name retains its visible visibility label',
+    );
   }
   report.checks.push(
     'Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.',
@@ -109,11 +105,15 @@ export async function verifyAccessDisclosure(page, trigger, report) {
 
 export async function verifyNaturalPreview(page, report) {
   await page.waitForFunction(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return image?.complete && image.naturalWidth > 0;
   });
   const preview = await page.evaluate(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     const rect = image.getBoundingClientRect();
     const style = getComputedStyle(image);
     const body = document.querySelector('[data-testid="detail-body"]');
@@ -222,7 +222,7 @@ export async function verifyNaturalPreview(page, report) {
         const short = await page.evaluate(() => {
           const body = document.querySelector('[data-testid="detail-body"]');
           const image = document.querySelector(
-            '[data-testid="detail-preview"]',
+            '[data-testid="detail-preview"]:not([data-inert] *)',
           );
           body.scrollTop = 0;
           const rect = image.getBoundingClientRect();
@@ -248,7 +248,9 @@ export async function verifyNaturalPreview(page, report) {
           await page.evaluate(
             () =>
               document
-                .querySelector('[data-testid="detail-preview"]')
+                .querySelector(
+                  '[data-testid="detail-preview"]:not([data-inert] *)',
+                )
                 .getBoundingClientRect().bottom <=
               document
                 .querySelector('[data-testid="detail-body"]')
@@ -455,11 +457,7 @@ export async function verifyUIRefinement({ page, config, report }) {
             false,
             'Initial trash route does not steal focus into its heading',
           );
-          await verifyAccessDisclosure(
-            page,
-            'loc=role:button[name="仅管理员可见"]',
-            report,
-          );
+          await verifyTrashAccessHintRemoved(page);
         }
         measurements.push({ width, path, ...geometry });
         await page.screenshot({
@@ -490,7 +488,25 @@ export async function verifyUIRefinement({ page, config, report }) {
         false,
         'Pointer navigation to trash has no heading focus ring',
       );
-      await page.focus('loc=role:button[name="仅管理员可见"]');
+      await page.waitForFunction(
+        () =>
+          document.querySelector('button[aria-label="刷新回收站"]')
+            ?.disabled === false,
+      );
+      await page.focus('loc=role:button[name="刷新回收站"]');
+      await page.keyboard.press('Shift+Tab');
+      assert.equal(
+        await page.evaluate(() => {
+          const active = document.activeElement;
+          return (
+            active?.getAttribute('aria-label') !== '刷新回收站' &&
+            active.matches(':focus-visible,[data-focus-visible="true"]') &&
+            active.getBoundingClientRect().width > 0
+          );
+        }),
+        true,
+        'Shift+Tab leaves Refresh for an existing visible keyboard target',
+      );
       await page.keyboard.press('Tab');
       assert.equal(
         await page.evaluate(() => {
@@ -502,19 +518,7 @@ export async function verifyUIRefinement({ page, config, report }) {
           );
         }),
         true,
-        'Tab reaches the trash refresh control after the inline access label with visible keyboard focus',
-      );
-      await page.keyboard.press('Shift+Tab');
-      assert.equal(
-        await page.evaluate(() => {
-          const active = document.activeElement;
-          return (
-            active?.getAttribute('aria-label') === '仅管理员可见' &&
-            active.matches(':focus-visible,[data-focus-visible="true"]')
-          );
-        }),
-        true,
-        'Shift+Tab restores visible keyboard focus to the inline access label',
+        'Tab returns to the real Refresh control with visible keyboard focus',
       );
     }
     report.refinement = measurements;
@@ -527,82 +531,84 @@ export async function verifyUIRefinement({ page, config, report }) {
   }
 }
 
-export async function verifyOriginalExplanation(page) {
+export async function verifyTrashAccessHintRemoved(page) {
+  assert.equal(
+    await page.evaluate(() => {
+      const main = document.querySelector('main');
+      return (
+        main.textContent.includes('仅管理员可见') ||
+        !!main.querySelector('[aria-label="仅管理员可见"]') ||
+        !!document.querySelector('[role="dialog"][aria-label="访问说明"]')
+      );
+    }),
+    false,
+    'Trash has no administrator-only hint or disclosure; access is enforced by the real endpoints',
+  );
+}
+
+export async function verifyVersionTabLayout(page) {
   const previous = await page.evaluate(() =>
     document
       .querySelector('[role="tab"][aria-selected="true"]')
       .textContent.trim(),
   );
-  await page.click('loc=role:tab[name="压缩图"]');
-  await page.waitForSelector('loc=role:button[name="原图说明"]', {
-    state: 'hidden',
-  });
-  await page.click('loc=role:tab[name="原图"]');
-  await page.waitForSelector('loc=role:button[name="原图说明"]');
-  const placement = await page.evaluate(() => {
-    const original = [...document.querySelectorAll('[role="tab"]')]
-      .find((node) => node.textContent.trim() === '原图')
-      .getBoundingClientRect();
-    const next = [...document.querySelectorAll('[role="tab"]')]
-      .find((node) => node.textContent.trim() === '压缩图')
-      .getBoundingClientRect();
-    const trigger = document
-      .querySelector('button[aria-label="原图说明"]')
-      .getBoundingClientRect();
-    return {
-      originalRight: original.right,
-      nextLeft: next.left,
-      top: original.top,
-      trigger: {
-        left: trigger.left,
-        right: trigger.right,
-        top: trigger.top,
-        width: trigger.width,
-        height: trigger.height,
-      },
-    };
-  });
-  assert.ok(placement.trigger.width >= 44 && placement.trigger.height >= 44);
-  assert.ok(
-    placement.trigger.left >= placement.originalRight - 1 &&
-      placement.trigger.right <= placement.nextLeft + 1 &&
-      Math.abs(placement.trigger.top - placement.top) <= 1,
-    'Original explanation sits beside the Original tab without overlap',
-  );
-  assert.equal(
-    await page.evaluate(
-      () => !!document.querySelector('[role="dialog"][aria-label="原图说明"]'),
-    ),
-    false,
-  );
-  await page.focus('loc=role:button[name="原图说明"]');
-  await page.keyboard.press('Enter');
-  await page.waitForSelector('loc=role:dialog[name="原图说明"]');
-  assert.ok(
-    await page.evaluate(() =>
-      document
-        .querySelector('[role="dialog"][aria-label="原图说明"]')
-        .textContent.includes('GPS'),
-    ),
-  );
-  await page.keyboard.press('Escape');
-  await page.waitForSelector('loc=role:dialog[name="原图说明"]', {
-    state: 'hidden',
-  });
-  await page.waitForFunction(
-    () => document.activeElement?.getAttribute('aria-label') === '原图说明',
-    undefined,
-    { timeout: 3_000 },
-  );
-  assert.equal(
-    await page.evaluate(() =>
-      document.activeElement?.getAttribute('aria-label'),
-    ),
-    '原图说明',
-  );
-  await page.click(`loc=role:tab[name="${previous}"]`);
-  if (previous !== '原图')
-    await page.waitForSelector('loc=role:button[name="原图说明"]', {
-      state: 'hidden',
+  for (const selected of ['压缩图', '原图']) {
+    await page.click(`loc=role:tab[name="${selected}"]`);
+    const layout = await page.evaluate(() => {
+      const list = document.querySelector(
+        '[role="tablist"][aria-label="查看版本"]',
+      );
+      const rect = list.getBoundingClientRect();
+      return {
+        left: rect.left,
+        right: rect.right,
+        width: rect.width,
+        gap: parseFloat(getComputedStyle(list).columnGap),
+        hint: !!document.querySelector('[aria-label="原图说明"]'),
+        gps: document
+          .querySelector('[data-testid="library-detail"]')
+          .textContent.includes('原图可能包含 GPS'),
+        tabs: [...list.querySelectorAll('[role="tab"]')].map((tab) => {
+          const r = tab.getBoundingClientRect();
+          return {
+            name: tab.textContent.trim(),
+            width: r.width,
+            left: r.left,
+            right: r.right,
+          };
+        }),
+      };
     });
+    assert.equal(
+      layout.hint,
+      false,
+      'Original help trigger and Popover are removed',
+    );
+    assert.equal(
+      layout.gps,
+      false,
+      'The removed GPS explanation does not remain in the detail',
+    );
+    assert.deepEqual(
+      layout.tabs.map((tab) => tab.name),
+      ['原图', '压缩图', '缩略图', '水印图'],
+    );
+    assert.ok(
+      Math.abs(layout.tabs[0].left - layout.left) <= 1 &&
+        Math.abs(layout.tabs[3].right - layout.right) <= 1,
+      'Four tabs fill the full tab row without a reserved help slot',
+    );
+    for (const [index, tab] of layout.tabs.entries()) {
+      assert.ok(
+        Math.abs(tab.width - (layout.width - 3 * layout.gap) / 4) <= 1,
+        'All four version tabs have equal widths',
+      );
+      if (index)
+        assert.ok(
+          Math.abs(tab.left - layout.tabs[index - 1].right - layout.gap) <= 1,
+          'Only the standard gap separates adjacent version tabs',
+        );
+    }
+  }
+  await page.click(`loc=role:tab[name="${previous}"]`);
 }

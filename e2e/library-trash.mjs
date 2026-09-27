@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {
-  verifyAccessDisclosure,
+  verifyTrashAccessHintRemoved,
   verifyNaturalPreview,
 } from './ui-refinement.mjs';
 import { verifyLibraryTrashRace } from './library-trash-race.mjs';
@@ -134,6 +134,8 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
             target.width >= 44 && target.height >= 44,
             `${target.name}: 44px target`,
           );
+        if (state === 'list' || state === 'record')
+          await verifyTrashAccessHintRemoved(page);
         if (state === 'record') {
           const row = await page.evaluate(() => {
             const item = [
@@ -334,11 +336,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     ).status,
     401,
   );
-  await verifyAccessDisclosure(
-    page,
-    'loc=role:button[name="仅管理员可见"]',
-    report,
-  );
+  await verifyTrashAccessHintRemoved(page);
   await verifyNaturalPreview(page, report);
   await layouts('record');
   assert.equal(

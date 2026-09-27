@@ -145,7 +145,10 @@ export async function verifyLibraryTrashRace({ page, config, sql, report }) {
         await page.waitForSelector(button('重新核对'));
         assert.equal(
           await page.evaluate(
-            () => !!document.querySelector('[data-testid="detail-preview"]'),
+            () =>
+              !!document.querySelector(
+                '[data-testid="detail-preview"]:not([data-inert] *)',
+              ),
           ),
           false,
           'Unknown write result must not expose the stale readable preview',

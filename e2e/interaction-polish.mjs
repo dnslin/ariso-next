@@ -34,12 +34,17 @@ function sameGeometry(actual, expected, label) {
 }
 async function decoded() {
   await page.waitForFunction(() => {
-    const img = document.querySelector('[data-testid="detail-preview"]');
+    const img = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return img?.complete && img.naturalWidth > 0;
   });
-  await page.waitForSelector('[data-testid="preview-skeleton"]', {
-    state: 'hidden',
-  });
+  await page.waitForSelector(
+    '[data-testid="preview-skeleton"]:not([data-inert] *)',
+    {
+      state: 'hidden',
+    },
+  );
 }
 async function waitPaused(previewUrl) {
   const deadline = Date.now() + 15000;
@@ -324,7 +329,9 @@ try {
   await page.waitForSelector('[data-testid="detail-body"]');
   await decoded();
   await disclosure();
-  const stage = await geometry('[data-testid="preview-stage"]');
+  const stage = await geometry(
+    '[data-testid="preview-stage"]:not([data-inert] *)',
+  );
   report.stage = stage;
   const detailResponse = await page.fetch(`/api/images/${imageId}`);
   assert.equal(detailResponse.status, 200);
@@ -345,9 +352,11 @@ try {
   try {
     await page.click('loc=role:tab[name="原图"]');
     paused = await waitPaused(previewUrl);
-    await page.waitForSelector('[data-testid="preview-skeleton"]');
+    await page.waitForSelector(
+      '[data-testid="preview-skeleton"]:not([data-inert] *)',
+    );
     sameGeometry(
-      await geometry('[data-testid="preview-stage"]'),
+      await geometry('[data-testid="preview-stage"]:not([data-inert] *)'),
       stage,
       'Stage while real image response is held',
     );
@@ -357,7 +366,7 @@ try {
     paused = [];
     await decoded();
     sameGeometry(
-      await geometry('[data-testid="preview-stage"]'),
+      await geometry('[data-testid="preview-stage"]:not([data-inert] *)'),
       stage,
       'Stage after held response decodes',
     );
@@ -370,7 +379,7 @@ try {
     await page.click(`loc=role:tab[name="${label}"]`);
     await decoded();
     sameGeometry(
-      await geometry('[data-testid="preview-stage"]'),
+      await geometry('[data-testid="preview-stage"]:not([data-inert] *)'),
       stage,
       `Stage after ${label}`,
     );
@@ -378,7 +387,9 @@ try {
       await page.evaluate(
         () =>
           getComputedStyle(
-            document.querySelector('[data-testid="detail-preview"]'),
+            document.querySelector(
+              '[data-testid="detail-preview"]:not([data-inert] *)',
+            ),
           ).objectFit,
       ),
       'contain',

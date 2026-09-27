@@ -1,9 +1,10 @@
 import {
   verifyAccessDisclosure,
   verifyNaturalPreview,
-  verifyOriginalExplanation,
+  verifyVersionTabLayout,
 } from './ui-refinement.mjs';
 import assert from 'node:assert/strict';
+import { verifyPreviewSwitch } from './preview-switch.mjs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createServer, request } from 'node:http';
@@ -177,7 +178,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
               actions.width >= width - 34,
               'Mobile action row fills the 16px page insets',
             );
-          await verifyOriginalExplanation(page);
+          await verifyVersionTabLayout(page);
         }
         assert.equal(
           layout.overflow,
@@ -280,7 +281,9 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.keyboard.press('Enter');
   await page.waitForSelector(dialog);
-  await page.waitForSelector('[data-testid="detail-preview"]');
+  await page.waitForSelector(
+    '[data-testid="detail-preview"]:not([data-inert] *)',
+  );
   assert.equal(
     new URL(await page.url()).searchParams.get('image'),
     'library-007',
@@ -332,10 +335,13 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
 
   await direct('library-007');
   await page.waitForFunction(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return image?.complete && image.naturalWidth > 0;
   });
   await layouts('ready');
+  await verifyPreviewSwitch(page);
   assert.equal(
     await page.evaluate(() =>
       [
@@ -369,7 +375,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   await page.click('loc=role:tab[name="压缩图"]');
   await page.waitForFunction(() =>
     document
-      .querySelector('[data-testid="detail-preview"]')
+      .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
       ?.getAttribute('src')
       ?.includes('type=compressed'),
   );
@@ -393,7 +399,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     await page.click('loc=role:tab[name="压缩图"]');
     await page.waitForFunction(() =>
       document
-        .querySelector('[data-testid="detail-preview"]')
+        .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
         ?.getAttribute('src')
         ?.includes('type=compressed'),
     );
@@ -445,7 +451,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     assert.ok(
       await page.evaluate(() =>
         document
-          .querySelector('[data-testid="detail-preview"]')
+          .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
           ?.getAttribute('src')
           ?.includes('type=compressed'),
       ),
@@ -501,7 +507,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   assert.ok(
     await page.evaluate(() =>
       document
-        .querySelector('[data-testid="detail-preview"]')
+        .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
         ?.getAttribute('src')
         ?.includes('type=compressed'),
     ),
@@ -592,7 +598,9 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.click(button('重试预览'));
   await page.waitForFunction(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return (
       image?.complete &&
       image.naturalWidth > 0 &&
