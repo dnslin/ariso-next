@@ -33,4 +33,6 @@ EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 pnpm run test:browser
 
 将 22 替换为本任务首次输出的 ID。默认独立运行成功即关闭空间；连续任务设置 `EGO_KEEP_SPACE=1`，完成后调用一次 `task.finish({ keep: [] })`。不得新建空间绕过失败。
 
+`e2e/m2.mjs` / `e2e/m2-core.mjs` 在两个空目录初始化环境分别执行桌面和手机的 JPEG/PNG × 公私有上传矩阵，使用真实文件选择、复制、下载、回收和恢复。匿名页使用同一 TaskSpace 的独立主机隔离 Cookie；这不是第二浏览器引擎。原图核对磁盘和下载字节，三张统计表在实际周期刷库和生产 stop/start 后精确复核。重启夹具仅持有实际上传任务的调度，恢复后要求同一任务、快照和原图对象，且每个版本只存在一次。输出 `m2-1440.json`、`m2-390.json` 及前后阶段日志；本切片范围和独立双浏览器证据见 [M2 报告](../docs/verification/m2-85/README.md)。
+
 设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。

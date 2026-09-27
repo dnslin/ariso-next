@@ -5,9 +5,11 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
 import { Popover } from '@heroui/react/popover';
+import { useResetUpload } from '../upload/provider';
 
 /** 服务端已鉴权；浏览器会话请求负责接收续期 Cookie，并观察失效。 */
 export function useOwnerSession(returnTo: string) {
+  const resetUpload = useResetUpload();
   const [sessionError, setSessionError] = useState('');
   const [signOutError, setSignOutError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -27,11 +29,12 @@ export function useOwnerSession(returnTo: string) {
           throw new Error(`会话核对失败（HTTP ${response.status}）`);
         const session = await response.json();
         if (disposed || inFlight.current) return;
-        if (!session)
+        if (!session) {
+          resetUpload();
           window.location.replace(
             `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
           );
-        else setSessionError('');
+        } else setSessionError('');
       } catch (error) {
         if (!disposed && !inFlight.current)
           setSessionError(
@@ -52,7 +55,7 @@ export function useOwnerSession(returnTo: string) {
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onFocus);
     };
-  }, [returnTo]);
+  }, [returnTo, resetUpload]);
 
   async function signOut() {
     if (inFlight.current) return;
@@ -71,6 +74,7 @@ export function useOwnerSession(returnTo: string) {
       });
       if (!session.ok || (await session.json()) !== null)
         throw new Error('尚未确认会话已退出');
+      resetUpload();
       window.location.replace('/login?reason=signed-out');
     } catch (error) {
       setSignOutError(

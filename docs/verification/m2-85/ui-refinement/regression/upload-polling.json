@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Content acceptance invalidates an outstanding automatic read",
+      "overlap": {
+        "reads": 1,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": true
+      }
+    },
+    {
+      "name": "Content acceptance invalidates an outstanding automatic read",
+      "result": {
+        "imageId": "c76264fe-7813-403a-bd30-4f59e8c05222",
+        "reads": 2,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": false
+      }
+    },
+    {
+      "name": "A new file after cancellation and clearing also resumes automatic polling",
+      "overlap": {
+        "reads": 1,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": true
+      }
+    },
+    {
+      "name": "A new file after cancellation and clearing also resumes automatic polling",
+      "result": {
+        "imageId": "4ff98a2b-3b70-44be-94d3-ef6758e6235a",
+        "reads": 2,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": false
+      }
+    }
+  ],
+  "limitations": [
+    "Browser-boundary holds delay real responses without changing their payloads; no controller methods are called."
+  ]
+}

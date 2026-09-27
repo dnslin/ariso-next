@@ -198,6 +198,16 @@ async function layouts(name) {
       await page.screenshot({
         path: join(config.output, `identity-${name}-${theme}-${width}.png`),
       });
+      if (width === 1440) {
+        const designWidth = geometry.path === '/login' ? 1920 : 1440;
+        await resize(designWidth, 960);
+        await page.screenshot({
+          path: join(
+            config.output,
+            `identity-${name}-${theme}-${designWidth}x960.png`,
+          ),
+        });
+      }
     }
   }
   await resize(config.width);

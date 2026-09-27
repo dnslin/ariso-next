@@ -1,0 +1,38 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |integration| tests/integration/library/detail.test.ts (6 tests | 1 failed) 744ms
+   × allows owner trash preview while suppressing copy/download, disabled, missing and candidate content 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > allows owner trash preview while suppressing copy/download, disabled, missing and candidate content
+AssertionError: expected { kind: 'original', …(11) } to match object { previewPath: null, …(1) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "previewPath": null,
+-   "unavailableReason": "图片清理失败，无法预览",
++   "unavailableReason": "图片正在删除",
+  }
+
+ ❯ tests/integration/library/detail.test.ts:313:66
+    311|   ).toBeNull();
+    312|   connection.db.update(mediaImages).set({ deletionStatus: 'cleanup_fai…
+    313|   expect(readLibraryDetail(connection.db, 'states').versions[0]).toMat…
+       |                                                                  ^
+    314|   connection.db
+    315|     .update(mediaImages)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:15:23
+   Duration  1.04s (tests 75%, import 18%, transform 6%)

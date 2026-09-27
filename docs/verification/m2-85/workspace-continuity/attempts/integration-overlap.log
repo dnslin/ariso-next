@@ -1,0 +1,138 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=1
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+{"time":"2026-09-27T07:21:37.234Z","level":"info","module":"identity.setup","event":"setup-code","code":"dpyk4tZAogx6dJVWaMyJoXa9aOpYOZSC","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-27T07:21:37.305Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-27T07:21:37.580Z","level":"info","module":"identity.setup","event":"setup-code","code":"X_yA_6Rzzdy74MPGhl1QYJXrSFlIcgMd","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-27T07:21:37.583Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso/tests/integration/identity/setup-lifecycle.test.ts:120:40\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-NIY2et/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-27T07:21:37.587Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-27T07:21:37.844Z","level":"info","module":"identity.setup","event":"setup-code","code":"URWnGSIghp3VgfmASt6WayHpkEom9gnf","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-27T07:21:37.900Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/runtime/standalone.test.ts (9 tests | 9 failed) 90561ms
+   ❯ isolated production directory (9)
+     × 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码 42ms
+     × 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录 29ms
+     × 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源 15011ms
+     × 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源 15009ms
+     × 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 15006ms
+     × HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 15004ms
+     × 标准 Next 收到 SIGTERM 后停止队列并关闭数据库，以 143 退出 15003ms
+     × 标准 Next 收到 SIGINT 后停止队列并关闭数据库，以 130 退出 15006ms
+     × prestart 配置失败时非零退出且不监听 Web 端口 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码
+AssertionError: expected [ '.next', 'node_modules', …(3855) ] to include 'entrypoint.sh'
+ ❯ tests/integration/runtime/standalone.test.ts:37:21
+     35|       'verification/fixtures/sample.png',
+     36|     ]) {
+     37|       expect(files).toContain(file);
+       |                     ^
+     38|     }
+     39|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录
+AssertionError: expected 'node:internal/modules/cjs/loader:1520…' to contain 'magick'
+
+- Expected
++ Received
+
+- magick
++ node:internal/modules/cjs/loader:1520
++   throw err;
++   ^
++
++ Error: Cannot find module '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-zTPq34/app/scripts/verify-image.mjs'
++     at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
++     at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
++     at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
++     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
++     at Module._load (node:internal/modules/cjs/loader:1294:5)
++     at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
++     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
++     at node:internal/main/run_main_module:33:47 {
++   code: 'MODULE_NOT_FOUND',
++   requireStack: []
++ }
++
++ Node.js v24.18.1
+
+ ❯ tests/integration/runtime/standalone.test.ts:78:27
+     76|     );
+     77|     expect(result.exitCode).not.toBe(0);
+     78|     expect(result.stderr).toContain('magick');
+       |                           ^
+     79|     expect(result.stderr).toContain('ENOENT');
+     80|     expect(result.stdout).toContain(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源
+Error: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-zTPq34/app/entrypoint.sh: No such file or directory
+
+ ❯ tests/integration/runtime/standalone.test.ts:121:12
+    119|             { timeout: 15000 },
+    120|           )
+    121|           .toBe(200);
+       |            ^
+    122|         const health = await fetch(`${origin}/api/health`);
+    123|         expect(await health.json()).toEqual({ status: 'ok' });
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ tests/integration/runtime/standalone.test.ts:109:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 标准 Next 收到 SIGTERM 后停止队列并关闭数据库，以 143 退出
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 标准 Next 收到 SIGINT 后停止队列并关闭数据库，以 130 退出
+Error: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-zTPq34/app/entrypoint.sh: No such file or directory
+
+ ❯ tests/integration/runtime/standalone.test.ts:200:12
+    198|             { timeout: 15000 },
+    199|           )
+    200|           .toBe(200);
+       |            ^
+    201|         run.child.kill(requestedSignal);
+    202|         const [code, signal] = await run.closed;
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ tests/integration/runtime/standalone.test.ts:187:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > prestart 配置失败时非零退出且不监听 Web 端口
+AssertionError: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-zTPq34/app/entrypoint.sh: No such file or directory
+: expected 127 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 127
+
+ ❯ tests/integration/runtime/standalone.test.ts:222:32
+    220|     try {
+    221|       const [code] = await run.closed;
+    222|       expect(code, run.logs()).toBe(1);
+       |                                ^
+    223|       expect(run.logs()).toContain('prestart failed:');
+    224|       expect(run.logs()).toContain('HOST');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+
+ Test Files  1 failed | 61 passed (62)
+      Tests  9 failed | 505 passed (514)
+   Start at  15:18:32
+   Duration  389.06s (tests 98%, import 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

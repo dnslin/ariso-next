@@ -1,0 +1,80 @@
+{
+  "status": "failed",
+  "width": 390,
+  "height": 844,
+  "checks": [
+    "Idle upload cloud animates continuously without hover; reduced motion disables its animation.",
+    "Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes.",
+    "Original/compressed/thumbnail share stable stage geometry; pausing the real original response displays Skeleton until actual decode, without layout shift.",
+    "Real Toolbar ArrowRight/ArrowLeft focus navigation follows visible actions on desktop and mobile."
+  ],
+  "images": [
+    {
+      "id": "08dbe396-30f9-49bf-be42-9a7516445f12",
+      "originalName": "sample.jpg"
+    },
+    {
+      "id": "154c6ffd-4ace-4a61-9180-448090e1f3b4",
+      "originalName": "sample.png"
+    },
+    {
+      "id": "35ec9949-18f0-4a9f-9db0-c7ef89a43be3",
+      "originalName": "interaction-390-added.png"
+    }
+  ],
+  "composition": {
+    "x": 16,
+    "y": 176,
+    "width": 358,
+    "height": 596
+  },
+  "queue": {
+    "x": 16,
+    "y": 176,
+    "width": 358,
+    "height": 290
+  },
+  "submissionId": "cb142a4d-cf8f-4828-ad54-6e3eed1ac18d",
+  "mobileReadyRows": [
+    {
+      "actionWidth": 88,
+      "actionRight": 361,
+      "actionLeft": 273,
+      "textRight": 265,
+      "overlap": 44,
+      "textOverlap": 44,
+      "rowRight": 361
+    },
+    {
+      "actionWidth": 88,
+      "actionRight": 361,
+      "actionLeft": 273,
+      "textRight": 265,
+      "overlap": 44,
+      "textOverlap": 44,
+      "rowRight": 361
+    },
+    {
+      "actionWidth": 88,
+      "actionRight": 361,
+      "actionLeft": 273,
+      "textRight": 265,
+      "overlap": 44,
+      "textOverlap": 44,
+      "rowRight": 361
+    }
+  ],
+  "stage": {
+    "x": 16,
+    "y": 140,
+    "width": 358,
+    "height": 268.5
+  },
+  "toastLayer": {
+    "hitToast": false,
+    "regionZ": 100001,
+    "backdropZ": [100000, 100000]
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Toast title is visually above the modal and receives pointer hit-testing\n\nfalse !== true\n\n    at eval (eval at <anonymous> (file:////[eval2]:4:7), <anonymous>:482:10)\n    at async file:////[eval2]:4:1",
+  "page": "[p1 \"Ariso\" | space \"回收站管理员预览验收\"(6): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    anchor \"Ariso 首页\" [ref=1071, url=http://127.0.0.1:50082/]\n      text \"Ariso\"\n    button [ref=1072]\n      text \"菜单\"\n  container \"图库\"\n    heading\n      text \"图库\"\n    paragraph\n      text \"保存每一刻，也让每一次查找更轻松。\"\n    paragraph\n      text \"上传时间从新到旧 · 每批 40 张\"\n    button [ref=1073]\n      text \"刷新图库\"\n    unordered_list \"图库图片\"\n      list_item\n        button \"查看图片：sample\" [ref=1074]\n        image\n        paragraph\n          text \"sample\"\n        text \"公开\"\n        text \"0.0\"\n        text \"MiB ·\"\n        text \"已就绪\"\n        paragraph\n          text \"JPEG\"\n          text \"·\"\n          text \"默认本地存储\"\n      list_item\n        button \"查看图片：sample\" [ref=1075]\n        image\n        paragraph\n          text \"sample\"\n        text \"公开\"\n        text \"0.0\"\n        text \"MiB ·\"\n        text \"已就绪\"\n        paragraph\n          text \"PNG\"\n          text \"·\"\n          text \"默认本地存储\"\n      list_item\n        button \"查看图片：interaction-390-added\" [ref=1076, loc=css:button[aria-label=\"查看图片：interaction-390-added\"]]\n        image\n        paragraph\n          text \"interaction-390-added\"\n        text \"公开\"\n        text \"0.0\"\n        text \"MiB ·\"\n        text \"已就绪\"\n        paragraph\n          text \"PNG\"\n          text \"·\"\n          text \"默认本地存储\"\n      list_item\n        button \"查看图片：sample\" [ref=1077]\n        image\n        paragraph\n          text \"sample\"\n        text \"公开\"\n        text \"0.0\"\n        text \"MiB ·\"\n        text \"已就绪\"\n        paragraph\n          text \"PNG\"\n          text \"·\"\n          text \"默认本地存储\"\n      list_item\n        button \"查看图片：sample\" [ref=1078]\n        image\n  status\n    text \"5 张图片 · 已加载 5 张\"\n  dialog \"图片详情\"\n    heading\n      text \"图片详情\"\n    button \"关闭图片详情\" [ref=1079, loc=css:button[aria-label=\"关闭图片详情\"]]\n      svg_root\n    container\n      container\n        text \"原图\"\n        text \"压缩图\"\n        text \"缩略图\"\n        text \"水印图\"\n      image\n      paragraph\n        text \"当前查看：\"\n        text \"缩略图\"\n        text \"· WEBP · 0.4 KiB · 64 × 48 px\"\n      paragraph\n        text \"水印图\"\n        text \"：\"\n        text \"该版本尚未保存\"\n      heading\n        text \"sample\"\n      button \"公开：查看访问说明\" [ref=1080, loc=css:button[aria-label=\"公开：查看访问说明\"]]\n        text \"公开\"\n      paragraph\n        text \"已就绪\"\n      paragraph\n        text \"64\"\n        text \"×\"\n        text \"48\"\n        text \"px · 原图\"\n        text \"JPEG\"\n        text \"·\"\n        text \"0.6 KiB\"\n      paragraph\n        text \"默认本地存储\"\n        text \"·\"\n        text \"2026/9/27 03:29:26\"\n      paragraph\n        text \"相册：\"\n        text \"无\"\n      paragraph\n        text \"标签：\"\n        text \"无\"\n      paragraph\n        text \"原始名称：\"\n        text \"sample.jpg\"\n      paragraph\n        text \"图片 ID：\"\n        text \"08dbe396-30f9-49bf-be42-9a7516445f12\"\n    button [ref=1081]\n      text \"复制链接\"\n    button [ref=1082]\n      text \"更多操作\"\n  dialog \"复制图片链接\" [ref=1083, loc=role:dialog[name=\"复制图片链接\"]]\n    container\n      heading\n        text \"复制图片链接\"\n      button \"关闭复制链接\" [ref=1084, loc=css:button[aria-label=\"关闭复制链接\"]]\n        svg_root\n    container\n      paragraph\n        text \"sample\"\n      paragraph\n        text \"默认链接跟随站点设置。当前预览版本不会自动改变复制模式。\"\n      container\n        text \"复制版本\"\n        button \"默认链接 复制版本\" [ref=1085]\n          text \"默认链接\"\n          svg_root\n      paragraph\n        text \"当前默认：压缩图；实际版本：压缩图\"\n      group \"复制格式\"\n        button [ref=1086]\n          text \"复制\"\n          text \"URL\"\n        button [ref=1087]\n          text \"复制\"\n          text \"Markdown\"\n        button [ref=1088]\n          text \"复制\"\n          text \"HTML\"\n      paragraph\n        text \"公开原图可能包含 GPS 和拍摄信息。\"\n  region \"操作通知\"\n    alertdialog \"已复制到剪贴板\" [ref=1089, loc=role:alertdialog[name=\"已复制到剪贴板\"]]\n      alert\n        text \"已复制到剪贴板\"\n      button \"关闭通知\" [ref=1090, loc=css:button[aria-label=\"关闭通知\"]]\n"
+}

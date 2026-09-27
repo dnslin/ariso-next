@@ -1,0 +1,116 @@
+const imgD05 = "https://www.figma.com/api/mcp/asset/6a24d7ef-840d-475e-886c-df890cf460c2.svg";
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonDisabledProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonDisabled({ className, label = "按钮" }: ButtonDisabledProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center opacity-42 relative rounded-[8px] w-[398px]"} data-node-id="3:25" data-name="Button/Disabled">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:26">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function D05() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[20px] items-center justify-center px-[48px] py-[40px] relative size-full" data-node-id="184:768" data-name="D / 初始化 / 05 手动选择时区">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgD05} />
+      <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-[520px]" data-node-id="185:792" data-name="品牌">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[48px] text-[color:var(--foreground,#272343)] text-center w-full" data-node-id="185:793">
+          Ariso
+        </p>
+      </div>
+      <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[16px] items-start overflow-clip px-[28px] py-[24px] relative rounded-[24px] shrink-0 w-[520px]" data-node-id="185:794" data-name="初始化卡片">
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[8px] items-start leading-[1.5] overflow-clip relative shrink-0 w-full" data-node-id="185:795" data-name="步骤与说明">
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:796">
+            2 / 2 · 设置站点
+          </p>
+          <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[24px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:797">
+            选择站点时区
+          </p>
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:798">
+            无法识别浏览器时区，请手动选择。
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[18px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:2138" data-name="站点表单">
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:2139" data-name="公开地址">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:2140">
+              公开地址
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:2141" data-name="公开地址输入">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I185:2141;3:28">{`https://photos.example.com`}</p>
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:2143">
+              图片与分享链接会使用这个地址。
+            </p>
+          </div>
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:2144" data-name="站点时区">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:2145">
+              站点时区
+            </p>
+            <a className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center pl-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:2146" data-name="选择时区">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-pre" data-node-id="I185:2146;3:24">{`请选择时区  ⌄`}</p>
+            </a>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:2149">
+              未能识别浏览器时区，需要手动选择。
+            </p>
+          </div>
+        </div>
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:2150">
+          点击「完成初始化」即确认以上设置并创建账号。
+        </p>
+        <ButtonDisabled className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center opacity-42 relative rounded-[8px] shrink-0 w-full" label="完成初始化" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="上一步" />
+      </div>
+      <a className="absolute content-stretch cursor-pointer flex h-[44px] items-center justify-center left-[20px] px-[12px] rounded-[8px] top-[14px] w-[112px]" data-node-id="193:903" data-name="公共导航 / 返回首页">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I193:903;3:30">
+          ← 返回首页
+        </p>
+      </a>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Desktop
+**Node ID:** 192:799
+
+非后台页面共同背景。沿用首页右上淡黄与左下水绿径向柔光；装饰层置底，不接收交互。桌面可调整宽度，右上光晕右对齐，左下光晕左下对齐。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+
+## Button/Disabled
+**Node ID:** 3:25
+
+Ariso Button/Disabled；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

@@ -55,6 +55,13 @@ async function overlappingRead(name) {
     // Preserve the real Uppy XHR and response; only postpone its load callback.
     XMLHttpRequest.prototype.send = function (body) {
       XMLHttpRequest.prototype.send = originalSend;
+      this.upload.addEventListener('progress', (event) => {
+        trace.uploadProgress = {
+          loaded: event.loaded,
+          total: event.total,
+          lengthComputable: event.lengthComputable,
+        };
+      });
       const loaded = this.onload;
       this.onload = (event) => {
         window.__releasePollingLoad = () => {
@@ -85,8 +92,23 @@ async function overlappingRead(name) {
     await page.waitForSelector(`${item}[data-state="saving"]`);
     assert.ok(
       await page.evaluate(() =>
-        document.body.textContent.includes('文件已传输 100%'),
+        document.body.textContent.includes(
+          '文件传输结束，正在核对保存与处理结果。',
+        ),
       ),
+    );
+    const progress = await page.evaluate(
+      () => window.__pollingTrace.uploadProgress,
+    );
+    assert.ok(
+      progress?.lengthComputable,
+      'Real XHR upload reports a computable byte total',
+    );
+    assert.ok(progress.total > 0, 'Real XHR upload transmits a non-empty file');
+    assert.equal(
+      progress.loaded,
+      progress.total,
+      'Real XHR upload reaches 100% while its load callback is held',
     );
     await page.evaluate(() => {
       const release = window.__releasePollingLoad;

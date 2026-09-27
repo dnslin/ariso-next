@@ -6,6 +6,7 @@ import type {
 export type UploadState =
   | 'queued'
   | 'submitting'
+  | 'waiting-upload'
   | 'uploading'
   | 'saving'
   | 'processing-queued'
@@ -38,7 +39,14 @@ export type UploadItem = {
 type SubmissionResponse = ReturnType<typeof submissionResult>;
 export type UploadSessionResult = Pick<
   ReturnType<typeof sessionResult>,
-  'id' | 'state' | 'imageId' | 'jobId' | 'error' | 'cleanupStatus'
+  | 'id'
+  | 'queueItemId'
+  | 'groupIndex'
+  | 'state'
+  | 'imageId'
+  | 'jobId'
+  | 'error'
+  | 'cleanupStatus'
 > & {
   job?: Pick<
     NonNullable<SubmissionResponse['sessions'][number]['job']>,

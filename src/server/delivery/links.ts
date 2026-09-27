@@ -73,3 +73,8 @@ export function resolveImageVersion(
   }
   return { actualVersion, ...target.saved };
 }
+
+/** Management preview never reuses a public image URL. */
+export function buildTrashPreviewPath(imageId: string, version: VersionKind) {
+  return `/api/trash/${encodeURIComponent(imageId)}/preview?type=${version}`;
+}

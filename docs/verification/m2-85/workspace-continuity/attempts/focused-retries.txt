@@ -1,0 +1,12 @@
+专项 library 重试，2026-09-27，独立 ariso-workspace-54272.localhost:54272：
+
+1. 最新 h-12 构建通过 48px 检查后，Popover 的即时焦点检查失败：
+AssertionError [ERR_ASSERTION]: null !== '原图说明'
+at verifyOriginalExplanation (e2e/ui-refinement.mjs:580:10)
+
+后续真实浏览器观测：activeElement 是 aria-label=原图说明 的 button；再次按 Enter 打开、Escape 关闭也恢复该按钮。修正为最多 3 秒等待同一个焦点目标，再执行原精确断言。
+
+2. 未重新初始化测试数据直接重跑，匿名 API 前置失败：200 !== 401。真实退出后匿名前置恢复。
+3. 继续复用已由第一轮填充的图库，空态前置失败：page.waitForSelector timed out after 10000ms: [data-testid="library-empty"]。
+
+以上三次均不记通过。最终使用标准完整运行器创建全新临时数据与主机，结果另见 full-browser 归档。

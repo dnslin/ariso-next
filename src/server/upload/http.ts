@@ -10,6 +10,7 @@ export function sessionResult(session: UploadSession) {
   return {
     id: session.id,
     queueItemId: session.queueItemId,
+    groupIndex: session.groupIndex,
     originalName: session.originalName,
     declaredSize: session.declaredSize,
     state: session.state,

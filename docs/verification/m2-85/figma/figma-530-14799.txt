@@ -1,0 +1,122 @@
+const imgPublicSoftGlowMobile = "https://www.figma.com/api/mcp/asset/c1a06722-a22b-4c9f-8dab-d6b6bd2da3c0.svg";
+const img02M360Px = "https://www.figma.com/api/mcp/asset/2d35669c-5000-4bd3-8adf-1e265938b238.svg";
+const img = "https://www.figma.com/api/mcp/asset/e38f3bb4-c7dc-499d-9adc-8fc5920caa28.svg";
+const imgFrame = "https://www.figma.com/api/mcp/asset/ced9a6b1-884a-45d2-9fd9-6d2a65d8566e.svg";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/611edb81-2916-48ba-8829-404c206f2378.svg";
+
+function PublicSoftGlowMobile({ className }: { className?: string }) {
+  return (
+    <div className={className || "h-[844px] relative w-[390px]"} data-node-id="192:1836" data-name="Public/Soft glow/Mobile">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPublicSoftGlowMobile} />
+    </div>
+  );
+}
+
+export default function Component02M360Px() {
+  return (
+    <div className="bg-[var(--background,#181a22)] relative size-full" data-node-id="530:14799" data-name="02 · M / 认证公共页 / 深色 / 360px">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={img02M360Px} />
+      <div className="absolute h-[844px] left-0 top-0 w-[360px]" data-node-id="530:14801" data-name="点阵底纹">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={img} />
+      </div>
+      <div className="absolute bg-[var(--surface,#22252f)] border border-[var(--accent,#607d85)] border-solid content-stretch flex flex-col gap-[16px] items-start left-[16px] px-[16px] py-[20px] rounded-[24px] top-[150px] w-[328px]" data-node-id="530:14803" data-name="登录卡片">
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start leading-[1.5] relative shrink-0 text-[color:var(--foreground,#f4f1f8)] w-full" data-node-id="530:14804" data-name="标题">
+          <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[24px] w-full" data-node-id="530:14805">
+            登录
+          </p>
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px] w-full" data-node-id="530:14806">
+            轻装简从 · 欢迎回来
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full" data-node-id="530:14807" data-name="表单">
+          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full" data-node-id="530:14808" data-name="邮箱">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] w-[min-content]" data-node-id="530:14809">
+              邮箱
+            </p>
+            <div className="bg-[var(--background,#181a22)] border border-[var(--accent,#607d85)] border-solid content-stretch flex h-[44px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14810" data-name="Input">
+              <p className="[word-break:break-word] font-['Inter:Light'] font-light leading-[1.5] not-italic relative shrink-0 text-[16px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14810;3:28">
+                name@example.com
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="530:14811" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame} />
+            </div>
+          </div>
+          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full" data-node-id="530:14814" data-name="密码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] w-[min-content]" data-node-id="530:14815">
+              密码
+            </p>
+            <div className="bg-[var(--background,#181a22)] border border-[var(--accent,#607d85)] border-solid content-stretch flex h-[44px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14816" data-name="Input">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14816;3:28">
+                请输入密码
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="530:14817" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame1} />
+            </div>
+          </div>
+          <div className="content-stretch flex h-[44px] items-center justify-end pl-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14820" data-name="Link">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14820;3:30">
+              忘记密码
+            </p>
+          </div>
+          <div className="bg-[var(--primary,#ffd807)] content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-full" data-node-id="530:14821" data-name="Button/Primary">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="I530:14821;3:22">
+              登录
+            </p>
+          </div>
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full" data-node-id="530:14822" data-name="第三方登录">
+          <div className="content-stretch flex gap-[12px] h-[24px] items-center relative shrink-0 w-full" data-node-id="530:14823" data-name="分隔线">
+            <div className="bg-[var(--accent,#607d85)] flex-[1_0_0] h-px min-w-px relative" data-node-id="530:14824" data-name="Rectangle" />
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="530:14825">
+              或使用第三方登录
+            </p>
+            <div className="bg-[var(--accent,#607d85)] flex-[1_0_0] h-px min-w-px relative" data-node-id="530:14826" data-name="Rectangle" />
+          </div>
+          <div className="bg-[var(--background,#181a22)] border border-[var(--accent,#607d85)] border-solid content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-full" data-node-id="530:14827" data-name="Button/Outline">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14827;3:24">
+              使用 GitHub 登录
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="absolute content-stretch flex h-[44px] items-center justify-center left-[16px] px-[12px] rounded-[8px] top-[16px] w-[112px]" data-node-id="530:14828" data-name="公共导航 / 返回首页">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14828;3:30">
+          ← 返回首页
+        </p>
+      </div>
+      <div className="absolute bg-[var(--background,#181a22)] border border-[var(--accent,#607d85)] border-solid content-stretch flex h-[44px] items-center justify-center left-[200px] rounded-[8px] top-[16px] w-[144px]" data-node-id="530:14829" data-name="主题 / 选择入口">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#f4f1f8)] whitespace-nowrap" data-node-id="I530:14829;3:24">
+          外观 · 深色
+        </p>
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+These styles are contained in the design: Body/中文: Font(family: "Noto Sans SC", style: Regular, size: 14, weight: 400, lineHeight: 1.5, letterSpacing: 0).
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Mobile
+**Node ID:** 192:1836
+
+非后台手机页面共同背景。直接复用手机首页两处柔光的位置、大小、颜色与透明度，放在页面内容之下，不参与点击。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

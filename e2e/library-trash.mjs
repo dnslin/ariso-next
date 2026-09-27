@@ -1,4 +1,8 @@
 import assert from 'node:assert/strict';
+import {
+  verifyTrashAccessHintRemoved,
+  verifyNaturalPreview,
+} from './ui-refinement.mjs';
 import { verifyLibraryTrashRace } from './library-trash-race.mjs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -66,13 +70,12 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
         : '[data-testid="trash-detail"]',
     );
     await page.waitForSelector(
-      button(area === 'library' ? '更多操作' : '恢复图片'),
+      button(area === 'library' ? '删除图片' : '恢复图片'),
     );
   };
   const confirm = async (action) => {
     if (action === '回收') {
-      await page.click(button('更多操作'));
-      await page.click('loc=role:menuitem[name="回收图片"]');
+      await page.click(button('删除图片'));
     } else {
       await page.click(button(`${action}图片`));
     }
@@ -98,7 +101,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
       for (const width of [360, 390, 430, 768, 1440]) {
         await page.cdp('Emulation.setDeviceMetricsOverride', {
           width,
-          height: 844,
+          height: width >= 1200 ? 1080 : 844,
           deviceScaleFactor: 1,
           mobile: width < 768,
         });
@@ -131,6 +134,8 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
             target.width >= 44 && target.height >= 44,
             `${target.name}: 44px target`,
           );
+        if (state === 'list' || state === 'record')
+          await verifyTrashAccessHintRemoved(page);
         if (state === 'record') {
           const row = await page.evaluate(() => {
             const item = [
@@ -191,7 +196,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.click(button('取消'));
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('更多操作'),
+    document.activeElement?.textContent.includes('删除图片'),
   );
   assert.deepEqual(
     await page.evaluate(() => window.__trashTransport.writes),
@@ -201,12 +206,12 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.keyboard.press('Escape');
   await submitted();
   await page.waitForFunction(() =>
-    document.activeElement?.textContent.includes('更多操作'),
+    document.activeElement?.textContent.includes('删除图片'),
   );
   await page.evaluate(() => window.__restoreTrashTransport());
   await transport(page, { hold: true });
   await confirm('回收');
-  await page.click(button('确认回收'));
+  await page.click(button('确认删除图片'));
   await page.waitForFunction(
     () => typeof window.__trashTransport.release === 'function',
   );
@@ -271,9 +276,68 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await layouts('loading');
   await page.evaluate(() => window.__releaseInitialTrashRead());
   await page.waitForSelector('[data-testid="trash-record-library-007"]');
+  await page.waitForFunction(() => {
+    const image = document.querySelector(
+      '[data-testid="trash-record-library-007"] img',
+    );
+    return image?.complete && image.naturalWidth > 0;
+  });
+  await page.cdp('Network.enable');
+  await page.cdp('Network.setBlockedURLs', {
+    urls: ['*/api/trash/library-007/preview*'],
+  });
+  try {
+    await page.reload();
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-testid="trash-record-library-007"]')
+        ?.textContent.includes('预览读取失败'),
+    );
+  } finally {
+    await page.cdp('Network.setBlockedURLs', { urls: [] });
+  }
+  await page.click(button('刷新回收站'));
+  await page.waitForFunction(() => {
+    const image = document.querySelector(
+      '[data-testid="trash-record-library-007"] img',
+    );
+    return image?.complete && image.naturalWidth > 0;
+  });
+  report.checks.push(
+    'A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.',
+  );
   await layouts('list');
+  await page.focus('[data-testid="trash-record-library-007"]');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-testid="trash-detail"]');
+  await page.click(button('返回回收站列表'));
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="trash-detail"]'),
+  );
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="trash-record-library-007"]'),
+  );
+  report.checks.push(
+    'Opening a trash record and using its top return control restores focus to the original record.',
+  );
   await page.click('[data-testid="trash-record-library-007"]');
   await page.waitForSelector('[data-testid="trash-detail"]');
+  await page.waitForFunction(() => {
+    const image = document.querySelector('[data-testid="trash-detail"] img');
+    return image?.complete && image.naturalWidth > 0;
+  });
+  assert.equal(
+    (
+      await fetch(
+        `${config.origin}/api/trash/library-007/preview?type=thumbnail`,
+      )
+    ).status,
+    401,
+  );
+  await verifyTrashAccessHintRemoved(page);
+  await verifyNaturalPreview(page, report);
   await layouts('record');
   assert.equal(
     await page.evaluate(() =>
@@ -282,7 +346,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
         .some((entry) => new URL(entry.name).pathname.startsWith('/i/')),
     ),
     false,
-    'Trash list and record request no image content',
+    'Trash previews use the owner-only management route, never a public /i link',
   );
   await confirm('恢复');
   await layouts('restore-confirm');
@@ -306,7 +370,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   assert.equal(after.status, 200);
   assert.deepEqual(Buffer.from(await after.arrayBuffer()), bytes);
   report.checks.push(
-    'Real trash records render without any /i content request; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.',
+    'Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.',
   );
 
   await sql(
@@ -314,7 +378,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   );
   await detail('library-006');
   await confirm('回收');
-  await page.click(button('确认回收'));
+  await page.click(button('确认删除图片'));
   await submitted();
   await detail('library-006', 'trash');
   await confirm('恢复');
@@ -510,7 +574,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     ),
     true,
   );
-  await page.click(button('返回回收站'));
+  await page.click(button('返回回收站列表'));
   await page.waitForSelector('[data-testid="trash-record-library-007"]');
   await page.click('[data-testid="trash-record-library-007"]');
   await page.waitForFunction(() =>

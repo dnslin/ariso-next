@@ -32,7 +32,7 @@ const count = async (value) =>
       document.querySelectorAll('[data-testid="library-card"]').length === n,
     value,
   );
-const resize = async (width, height = 844) => {
+const resize = async (width, height = width >= 1200 ? 1080 : 844) => {
   await page.cdp('Emulation.setDeviceMetricsOverride', {
     width,
     height,

@@ -9,7 +9,10 @@ import { uploadSettings } from './schema.ts';
 export function readUploadPageSettings(db: BetterSQLite3Database) {
   return db.transaction((tx) => {
     const upload = tx
-      .select({ maxFileBytes: uploadSettings.maxFileBytes })
+      .select({
+        maxFileBytes: uploadSettings.maxFileBytes,
+        queueLimit: uploadSettings.queueLimit,
+      })
       .from(uploadSettings)
       .where(eq(uploadSettings.id, 1))
       .get();
@@ -27,6 +30,7 @@ export function readUploadPageSettings(db: BetterSQLite3Database) {
       );
     return {
       maxFileBytes: upload.maxFileBytes,
+      queueLimit: upload.queueLimit,
       defaultVisibility: media.defaultVisibility,
       defaultStorageId: storage.defaultStorageId,
       storages: tx

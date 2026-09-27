@@ -50,6 +50,7 @@
 - [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
 - [本地公开访问内存聚合验证](./verification/analytics-83/README.md)
 - [统计批写、保留与退出刷库验证](./verification/analytics-84/README.md)
+- [M2 本地图床核心冒烟验证](./verification/m2-85/README.md)
 - [统计关停、批写与缓冲实验](./tasks/evidence/EV-ANALYTICS-01/README.md)
 - [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
 

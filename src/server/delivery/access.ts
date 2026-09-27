@@ -13,7 +13,10 @@ export function selectImageDelivery(
   imageId: string,
   selectedVersion: VersionKind | undefined,
   owner: boolean,
+  access: 'published' | 'trash-preview' = 'published',
 ) {
+  if (access === 'trash-preview' && !owner)
+    throw deliveryError('OWNER_LOGIN_REQUIRED');
   const state = getImageAccessState(db, imageId);
   if (!state) throw deliveryError('IMAGE_NOT_FOUND');
   const { image } = state;
@@ -21,7 +24,10 @@ export function selectImageDelivery(
     throw deliveryError('OWNER_LOGIN_REQUIRED');
   if (image.processingStatus !== 'ready' && !owner)
     throw deliveryError('IMAGE_NOT_READY');
-  if (image.trashedAt || image.deletionStatus)
+  if (
+    image.deletionStatus ||
+    (access === 'trash-preview' ? !image.trashedAt : image.trashedAt)
+  )
     throw deliveryError('IMAGE_UNAVAILABLE');
   const storage = db
     .select()

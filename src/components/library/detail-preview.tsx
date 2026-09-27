@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { Tabs } from '@heroui/react/tabs';
+import { Skeleton } from '@heroui/react/skeleton';
+import { Button } from '@heroui/react/button';
 import { ImageOff } from 'lucide-react';
 import type {
   LibraryDetail,
@@ -20,16 +22,41 @@ export function initialPreview(detail: LibraryDetail) {
   );
 }
 
-function PreviewImage({
+export function PreviewImage({
   version,
   name,
+  width,
+  height,
+  onRetry,
 }: {
   version: LibraryDetailVersion;
   name: string;
+  width: number | null;
+  height: number | null;
+  onRetry?: () => void;
 }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   return (
-    <div className="flex h-62.5 items-center justify-center rounded-xl bg-default md:h-77.5">
+    <div
+      data-testid="preview-stage"
+      style={{
+        aspectRatio: width && height ? `${width} / ${height}` : undefined,
+      }}
+      className={`relative w-full min-w-0 max-h-[min(55dvh,420px)] overflow-hidden rounded-xl md:max-h-120 ${width && height ? '' : 'h-62.5'}`}
+    >
+      {version.previewPath && !failed && !loaded ? (
+        <>
+          <Skeleton
+            data-testid="preview-skeleton"
+            aria-hidden
+            className="absolute inset-0 size-full rounded-xl"
+          />
+          <span role="status" className="sr-only">
+            正在加载图片…
+          </span>
+        </>
+      ) : null}
       {version.previewPath && !failed ? (
         // The owner cookie and delivery access checks must reach the original route.
         // eslint-disable-next-line @next/next/no-img-element
@@ -37,21 +64,31 @@ function PreviewImage({
           data-testid="detail-preview"
           src={version.previewPath}
           alt={name}
-          className="h-full w-full object-contain"
+          className={`absolute inset-0 size-full rounded-xl object-contain ${loaded ? '' : 'opacity-0'}`}
+          onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
         />
       ) : (
         <div
-          className="grid justify-items-center gap-3 p-4 text-center"
+          className="absolute inset-0 grid content-center justify-items-center gap-3 rounded-xl bg-surface p-4 text-center"
           role="status"
         >
           <ImageOff aria-hidden="true" />
           <p>
             {failed
-              ? '当前版本读取失败，请刷新详情后重试。'
+              ? '当前版本读取失败。'
               : (version.unavailableReason ??
                 '此版本仅支持附件下载，无法在浏览器中预览。')}
           </p>
+          {failed && onRetry ? (
+            <Button
+              variant="outline"
+              className="min-h-11 rounded-lg"
+              onPress={onRetry}
+            >
+              重试预览
+            </Button>
+          ) : null}
         </div>
       )}
     </div>
@@ -63,32 +100,38 @@ export function DetailPreview({
   selected,
   onSelect,
   revision,
+  onRetry,
 }: {
   detail: LibraryDetail;
   selected: string;
   revision: number;
+  onRetry: () => void;
   onSelect: (kind: string) => void;
 }) {
+  const [visited, setVisited] = useState(() => new Set([selected]));
+  if (!visited.has(selected)) {
+    setVisited(new Set([...visited, selected]));
+  }
   return (
-    <div className="grid min-w-0 content-start gap-3">
+    <div className="grid min-w-0 content-start gap-3 md:[&_[data-testid=preview-stage]]:max-h-[max(160px,min(480px,calc(100cqh-144px)))]">
       <Tabs
+        className="gap-0"
         selectedKey={selected}
         onSelectionChange={(key) => onSelect(String(key))}
       >
-        <Tabs.ListContainer className="w-full">
+        <Tabs.ListContainer className="w-full rounded-none bg-transparent">
           <Tabs.List
             aria-label="查看版本"
-            className="grid w-full grid-cols-4 gap-1 p-0"
+            className="grid w-full grid-cols-4 gap-1.5 rounded-none bg-transparent p-0"
           >
             {detail.versions.map((version) => (
               <Tabs.Tab
                 key={version.kind}
                 id={version.kind}
                 isDisabled={!version.saved || !!version.unavailableReason}
-                className="min-h-11 min-w-0 px-1 text-sm"
+                className="min-h-11 min-w-0 rounded-lg border border-border bg-background px-1 text-sm text-foreground data-[selected=true]:border-accent data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
               >
                 {versionLabels[version.kind]}
-                <Tabs.Indicator />
               </Tabs.Tab>
             ))}
           </Tabs.List>
@@ -97,12 +140,16 @@ export function DetailPreview({
           <Tabs.Panel
             key={version.kind}
             id={version.kind}
-            className="grid gap-3 pt-3"
+            shouldForceMount={visited.has(version.kind)}
+            className="grid gap-3 p-0 pt-3 data-[inert]:hidden"
           >
             <PreviewImage
               key={`${revision}:${version.previewPath}:${version.format}:${version.byteSize}`}
               version={version}
               name={detail.displayName}
+              width={detail.width}
+              height={detail.height}
+              onRetry={onRetry}
             />
             <p data-testid="detail-current-version" className="text-sm">
               当前查看：{versionLabels[version.kind]}

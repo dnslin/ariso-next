@@ -1,0 +1,8 @@
+{
+  "status": "failed",
+  "width": 1440,
+  "checks": [],
+  "layouts": [],
+  "error": "Error: page.waitForSelector timed out after 10000ms: input[type=file]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "page": "[p1 \"Ariso\" | space \"Ariso Issue 85 M2 verification\"(5): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    anchor [ref=99, loc=href:/, url=http://ariso-55697.localhost:55697/]\n      svg_root\n      text \"返回首页\"\n    container \"登录\"\n      container\n        heading\n          text \"登录\"\n        paragraph\n          text \"轻装简从 · 欢迎回来\"\n      container [ref=100]\n        alert\n          text \"登录请求过于频繁，请等待服务允许后重试。（HTTP 429）\"\n      form\n        container\n          text \"邮箱\"\n          container\n            svg_root\n            textbox \"邮箱\" [ref=101, loc=css:input[name=\"email\"]]\n              text \"owner-1440@example.test\"\n        container\n          text \"密码\"\n          container\n            svg_root\n            textbox \"密码\" [ref=102, loc=css:input[name=\"password\"]]\n            button \"显示密码\" [ref=103, loc=css:button[aria-label=\"显示密码\"]]\n              svg_root\n        button [ref=104]\n          text \"登录\"\n"
+}

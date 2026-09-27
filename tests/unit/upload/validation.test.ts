@@ -27,6 +27,16 @@ describe('upload names and submission input', () => {
         .success,
     ).toBe(true);
     expect(
+      submissionInputSchema.safeParse({
+        requestId: 'multi',
+        files: [file, { ...file, queueItemId: 'other' }],
+      }).success,
+    ).toBe(true);
+    expect(
+      submissionInputSchema.safeParse({ requestId: 'empty', files: [] })
+        .success,
+    ).toBe(false);
+    expect(
       submissionInputSchema.safeParse({ requestId: 'r', files: [file, file] })
         .success,
     ).toBe(false);

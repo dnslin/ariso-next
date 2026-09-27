@@ -1,0 +1,27 @@
+export default function UiRefinement() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col items-start p-[24px] relative size-full" data-node-id="579:11977" data-name="UI Refinement / 尺寸与交互交接">
+      <div className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-[672px] whitespace-pre-wrap" data-node-id="579:11978">
+        <p className="leading-[26px] mb-0">2026-09-27 · 用户批准 UI 调整</p>
+        <p className="leading-[26px] mb-0">​</p>
+        <p className="leading-[26px] mb-0">图片优先：透明预览容器、object-fit: contain、自然比例居中。桌面最大高480；手机最大高min(55dvh, 420px)。</p>
+        <p className="leading-[26px] mb-0">图库详情552/416、间距24；回收详情640/480、间距24；手机上下。</p>
+        <p className="leading-[26px] mb-0">上传主区max-width1200；1440画板内容1144=760+24+360，上传区高360；手机358宽堆叠、选择区高280。</p>
+        <p className="leading-[26px] mb-0">底栏背景与分隔线铺满内容区域，桌面内边距32、手机16；详情弹层内边距24。</p>
+        <p className="leading-[26px] mb-0">仅管理员可见 / 公开 / 私有为44px状态入口，点击与键盘可展开说明，Esc关闭并回焦点。复制/下载动作保留必要提示。</p>
+        <p className="leading-[26px] mb-0">云图标40px：精细指针hover上移4px，150ms ease-out；reduced-motion静止。上传中保留云图标轻微透明度变化；成功用既有CheckCircle2短暂反馈。空闲不循环。</p>
+        <p className="leading-[26px] mb-0">本次不新增主题、大图、版本信息、多选、永久删除等未实现能力。</p>
+        <p className="leading-[26px]">图库详情桌面：预览高度取 max(160px, min(480px, 正文可用高度 − 144px))，为版本按钮与版本说明保留空间，正常桌面竖图首屏完整可见；极短视口保留160px最小可识别预览与内部滚动。手机仍为 min(55dvh,420px)，资料可向下滚动。</p>
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

@@ -144,13 +144,13 @@ export function createSubmission(db: BetterSQLite3Database, input: unknown) {
           createdAt: now,
         })
         .run();
-      for (const file of data.files) {
+      for (const [index, file] of data.files.entries()) {
         tx.insert(uploadSessions)
           .values({
             id: randomUUID(),
             submissionId: id,
             ...file,
-            groupIndex: 0,
+            groupIndex: Math.floor(index / settings.batchSize),
             storageId: storage.id,
             state: 'queued',
             candidateImageId: randomUUID(),

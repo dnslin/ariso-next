@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
+import { CloseButton } from '@heroui/react/close-button';
+import { toast } from '@heroui/react/toast';
 import { Spinner } from '@heroui/react/spinner';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
@@ -17,14 +19,8 @@ export function TrashAction({
   onComplete,
   onUnavailable,
   triggerLabel,
-  renderTrigger,
 }: {
   triggerLabel?: string;
-  renderTrigger?: (trigger: {
-    open: () => void;
-    isDisabled: boolean;
-    label: string;
-  }) => ReactNode;
   record: LibraryDetail;
   operation: 'trash' | 'restore';
   onPending: (pending: boolean) => void;
@@ -68,6 +64,7 @@ export function TrashAction({
         (restoring ? current.trashedAt === null : current.trashedAt !== null)
       ) {
         setOpen(false);
+        if (!restoring) toast.success('已移入回收站');
         onComplete(current);
       } else {
         setMessage(
@@ -127,50 +124,60 @@ export function TrashAction({
 
   const label = unknown
     ? '结果待核对'
-    : (triggerLabel ?? (restoring ? '恢复图片' : '回收图片'));
+    : (triggerLabel ?? (restoring ? '恢复图片' : '删除图片'));
   return (
     <div className="grid gap-2">
-      {renderTrigger?.({
-        open: () => setOpen(true),
-        isDisabled: disabled && !unknown,
-        label,
-      })}
       <AlertDialog
         isOpen={open}
         onOpenChange={(value) => {
           if (!busy) setOpen(value);
         }}
       >
-        {!renderTrigger ? (
-          <Button
-            variant={restoring ? 'primary' : 'outline'}
-            className="min-h-12 w-full rounded-lg"
-            isDisabled={disabled && !unknown}
-            onPress={() => setOpen(true)}
-          >
-            {label}
-          </Button>
-        ) : null}
+        <Button
+          variant={restoring ? 'primary' : 'outline'}
+          className="h-12 w-full rounded-lg"
+          isDisabled={disabled && !unknown}
+          onPress={() => setOpen(true)}
+        >
+          {label}
+        </Button>
         <AlertDialog.Backdrop isKeyboardDismissDisabled={busy}>
           <AlertDialog.Container placement="center" className="p-4">
             <AlertDialog.Dialog
               data-testid="trash-confirm"
               className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6 [overflow-wrap:anywhere]"
             >
-              <AlertDialog.Header>
+              <AlertDialog.Header className="flex flex-row items-center justify-between gap-3">
                 <AlertDialog.Heading>
-                  {restoring ? '恢复这张图片？' : '将这张图片移入回收站？'}
+                  {restoring ? '恢复这张图片？' : '删除这张图片？'}
                 </AlertDialog.Heading>
+                <CloseButton
+                  aria-label="关闭确认"
+                  className="size-11 shrink-0 rounded-lg border border-border"
+                  isDisabled={busy}
+                  onPress={() => setOpen(false)}
+                />
               </AlertDialog.Header>
               <AlertDialog.Body className="grid gap-4 text-sm">
                 <p>
-                  {record.displayName} · {bytesLabel(record.byteSize)}
+                  {record.originalName} · {bytesLabel(record.byteSize)}
                 </p>
-                <p className="rounded-lg bg-default p-3">
-                  {restoring
-                    ? '沿用原 ID 和可见性，保留仍存在的相册与标签关系，不会重新启动处理任务。恢复后的内容访问仍取决于权限、处理结果和存储状态。'
-                    : '内容链接将不可访问，文件仍占用空间，不会自动清理；可以从回收站恢复。'}
-                </p>
+                {restoring ? (
+                  <p className="leading-6">
+                    沿用原 ID
+                    和可见性，保留仍存在的相册与标签关系，不会重新启动处理任务。恢复后的内容访问仍取决于权限、处理结果和存储状态。
+                  </p>
+                ) : (
+                  <div className="grid gap-5 leading-6">
+                    <div>
+                      <p>删除后，原有链接将无法访问。</p>
+                      <p>图片会保留在回收站，可随时恢复。</p>
+                    </div>
+                    <p className="text-muted">
+                      回收站中的文件仍占用存储空间，不会自动清理。
+                    </p>
+                  </div>
+                )}
                 {message ? (
                   <p role={busy ? 'status' : 'alert'}>
                     {busy ? <Spinner size="sm" /> : null}
@@ -182,14 +189,17 @@ export function TrashAction({
                 <Button
                   autoFocus
                   variant="outline"
-                  className="min-h-12 w-full rounded-lg"
+                  className="h-12 w-full rounded-lg"
                   isDisabled={busy}
                   onPress={() => setOpen(false)}
                 >
                   {message ? '关闭' : '取消'}
                 </Button>
                 <Button
-                  className="min-h-12 w-full rounded-lg"
+                  className="h-12 w-full rounded-lg"
+                  aria-label={
+                    !restoring && !busy && !unknown ? '确认删除图片' : undefined
+                  }
                   isDisabled={busy || (disabled && !unknown)}
                   onPress={() => {
                     void run(!unknown);
@@ -201,7 +211,7 @@ export function TrashAction({
                       ? '重新核对'
                       : restoring
                         ? '确认恢复'
-                        : '确认回收'}
+                        : '删除图片'}
                 </Button>
               </AlertDialog.Footer>
             </AlertDialog.Dialog>

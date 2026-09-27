@@ -1,0 +1,4610 @@
+{
+  "status": "failed",
+  "checks": [
+    "Library login honors the real preceding HTTP 429 retry window.",
+    "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+    "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+    "Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.",
+    "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+    "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+    "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+    "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+    "Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.",
+    "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position."
+  ],
+  "layouts": [
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 283.28125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 283.28125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 268.625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 268.625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": 3,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": 4,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 283.28125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 283.28125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 156
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 268.625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 268.625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 260.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 227.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 171
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": 2,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 191
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": 3,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 253.96875,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 244.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 212.65625,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 233.3125,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 235.328125
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": 4,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "查看图片：library-000",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-001",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-002",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-003",
+          "shellNavigation": false,
+          "height": 330,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-004",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：很长的图片名称用来验证手机卡片中的文字换行与布局不会横向溢出非常长的名称.png",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-006",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：中文下载样本.png",
+          "shellNavigation": false,
+          "height": 326,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-008",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-009",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-010",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-011",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-012",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-013",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-014",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-015",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-016",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-017",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-018",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-019",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-020",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-021",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-022",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-023",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-024",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-025",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-026",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-027",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-028",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-029",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-030",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-031",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-032",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-033",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-034",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-035",
+          "shellNavigation": false,
+          "height": 286,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-036",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-037",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-038",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "查看图片：library-039",
+          "shellNavigation": false,
+          "height": 298,
+          "width": 269
+        },
+        {
+          "name": "加载更多",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 176
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "mainWidth": 360,
+      "mainScrollWidth": 360,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 328
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 358
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "mainWidth": 430,
+      "mainScrollWidth": 430,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 60
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 398
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 54,
+          "width": 63
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 64
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "error",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "mainWidth": 1208,
+      "mainScrollWidth": 1208,
+      "columns": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "height": 48,
+          "width": 120
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "height": 72,
+          "width": 84
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "height": 40,
+          "width": 191
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "height": 56,
+          "width": 191
+        },
+        {
+          "name": "刷新图库",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 90
+        },
+        {
+          "name": "重试加载",
+          "shellNavigation": false,
+          "height": 44,
+          "width": 144
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-loading",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "刷新详情",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "detail-ready",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "原图",
+          "width": 77.5,
+          "height": 44
+        },
+        {
+          "name": "压缩图",
+          "width": 77.5,
+          "height": 44
+        },
+        {
+          "name": "缩略图",
+          "width": 77.5,
+          "height": 44
+        },
+        {
+          "name": "水印图",
+          "width": 77.5,
+          "height": 44
+        },
+        {
+          "name": "公开：查看访问说明",
+          "width": 58,
+          "height": 44
+        },
+        {
+          "name": "复制链接",
+          "width": 158,
+          "height": 48
+        },
+        {
+          "name": "更多操作",
+          "width": 158,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "detail-ready",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "原图",
+          "width": 85,
+          "height": 44
+        },
+        {
+          "name": "压缩图",
+          "width": 85,
+          "height": 44
+        },
+        {
+          "name": "缩略图",
+          "width": 85,
+          "height": 44
+        },
+        {
+          "name": "水印图",
+          "width": 85,
+          "height": 44
+        },
+        {
+          "name": "公开：查看访问说明",
+          "width": 58,
+          "height": 44
+        },
+        {
+          "name": "复制链接",
+          "width": 173,
+          "height": 48
+        },
+        {
+          "name": "更多操作",
+          "width": 173,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "detail-ready",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "dialogOverflow": false,
+      "targets": [
+        {
+          "name": "关闭图片详情",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "原图",
+          "width": 95,
+          "height": 44
+        },
+        {
+          "name": "压缩图",
+          "width": 95,
+          "height": 44
+        },
+        {
+          "name": "缩略图",
+          "width": 95,
+          "height": 44
+        },
+        {
+          "name": "水印图",
+          "width": 95,
+          "height": 44
+        },
+        {
+          "name": "公开：查看访问说明",
+          "width": 58,
+          "height": 44
+        },
+        {
+          "name": "复制链接",
+          "width": 193,
+          "height": 48
+        },
+        {
+          "name": "更多操作",
+          "width": 193,
+          "height": 48
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Detail footer actions retain the 48px design height\n    at layouts (file:///Volumes/data/project/ariso/e2e/library-detail.mjs:144:20)\n    at async verifyLibraryDetail (file:///Volumes/data/project/ariso/e2e/library-detail.mjs:349:3)\n    at async file:////[eval2]:425:3"
+}

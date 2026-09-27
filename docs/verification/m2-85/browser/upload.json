@@ -1,0 +1,7529 @@
+{
+  "status": "passed",
+  "checks": [
+    "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image.",
+    "Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.",
+    "Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.",
+    "Native File selection is manual; remove and terminal completion release File/blob references; real upload reaches ready; detail return preserves result; clear retains persisted image.",
+    "Real empty, oversized sparse and unsupported files show distinct input reasons without creating queue items or retaining File references.",
+    "Real invalid image bytes fail server inspection without imageId or detail action.",
+    "Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.",
+    "Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure.",
+    "Lost real creation response is reconciled through original idempotent submission rather than an automatic second content upload.",
+    "Real content reaches 100% but held XHR acknowledgement remains saving; cancellation after server acceptance returns 409 and reconciles the same image instead of reporting cancellation.",
+    "Leaving and reopening upload does not restore browser queue; previously accepted server image persists.",
+    "Leaving an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.",
+    "Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.",
+    "Real missing default and disabled storage prevent manual start without silently choosing another target; lost real settings response displays retry and recovers."
+  ],
+  "layouts": [
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 717
+        },
+        "action": {
+          "top": 663,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 637
+        },
+        "action": {
+          "top": 583,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 899
+        },
+        "action": {
+          "top": 849,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 717
+        },
+        "action": {
+          "top": 663,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "queued",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 637
+        },
+        "action": {
+          "top": 583,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "ready",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "ready",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "upload-failed",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "upload-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing-failed",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "processing-failed",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "处理选项",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 340
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 280
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 340
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "unknown",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 280
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "重新核对",
+          "shellNavigation": false,
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 159,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 157,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 174,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 172,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 194,
+          "height": 44
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 192,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "cancelled",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "cancelled",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": null
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "清空已完成",
+          "shellNavigation": false,
+          "width": 180,
+          "height": 48
+        },
+        {
+          "name": "继续上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 350
+        },
+        "action": {
+          "top": 358,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 330.5
+        },
+        "action": {
+          "top": 338.5,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 377.5
+        },
+        "action": {
+          "top": 323.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "saving",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 317.5
+        },
+        "action": {
+          "top": 263.5,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "请求取消",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 340
+        },
+        "action": {
+          "top": 286,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 280
+        },
+        "action": {
+          "top": 226,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 12,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 293
+        },
+        "action": {
+          "top": 301,
+          "width": 110
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 110,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 340
+        },
+        "action": {
+          "top": 286,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "processing",
+        "radius": 16,
+        "padding": 20,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 280
+        },
+        "action": {
+          "top": 226,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "查看详情",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 955
+        },
+        "action": {
+          "top": 905,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 955
+        },
+        "action": {
+          "top": 905,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 773
+        },
+        "action": {
+          "top": 719,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 673
+        },
+        "action": {
+          "top": 619,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 955
+        },
+        "action": {
+          "top": 905,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 955
+        },
+        "action": {
+          "top": 905,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 773
+        },
+        "action": {
+          "top": 719,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "missing-default",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 673
+        },
+        "action": {
+          "top": 619,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "选择一个项目",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 773
+        },
+        "action": {
+          "top": 719,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 673
+        },
+        "action": {
+          "top": 619,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 294,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 328,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 324,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 358,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 16,
+        "preview": {
+          "width": 56,
+          "height": 56,
+          "bottom": 935
+        },
+        "action": {
+          "top": 885,
+          "width": 72
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 364,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 72,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 398,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 773
+        },
+        "action": {
+          "top": 719,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 223.859375,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "disabled-storage",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": {
+        "state": "queued",
+        "radius": 20,
+        "padding": 24,
+        "preview": {
+          "width": 64,
+          "height": 64,
+          "bottom": 673
+        },
+        "action": {
+          "top": 619,
+          "width": 140
+        }
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "选择图片",
+          "shellNavigation": false,
+          "width": 144,
+          "height": 44
+        },
+        {
+          "name": "默认本地存储（已停用）",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "公开",
+          "shellNavigation": false,
+          "width": 380.78125,
+          "height": 44
+        },
+        {
+          "name": "移除",
+          "shellNavigation": false,
+          "width": 140,
+          "height": 44
+        },
+        {
+          "name": "开始上传",
+          "shellNavigation": false,
+          "width": 200,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-loading",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 60,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 63,
+          "height": 54
+        },
+        {
+          "name": "菜单",
+          "shellNavigation": false,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "settings-error",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "queue": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "shellNavigation": false,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "name": "Ariso 首页",
+          "shellNavigation": false,
+          "width": 84,
+          "height": 72
+        },
+        {
+          "name": "收起侧栏",
+          "shellNavigation": false,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "上传图片",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "图库",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "回收站",
+          "shellNavigation": true,
+          "width": 191,
+          "height": 40
+        },
+        {
+          "name": "账号菜单",
+          "shellNavigation": false,
+          "width": 191,
+          "height": 56
+        },
+        {
+          "name": "重试读取设置",
+          "shellNavigation": false,
+          "width": 116,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium device emulation is not physical touch, soft keyboard or safe-area hardware evidence.",
+    "Transport failures and timing holds are controlled browser-boundary faults; processing failure uses a disposable SQLite trigger."
+  ]
+}

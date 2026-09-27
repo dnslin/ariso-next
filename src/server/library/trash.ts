@@ -1,7 +1,8 @@
-import { asc, count, desc, eq, isNotNull } from 'drizzle-orm';
+import { and, asc, count, desc, eq, inArray, isNotNull } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { mediaImages } from '../media/schema.ts';
+import { mediaImages, mediaObjects, mediaVersions } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
+import { buildTrashPreviewPath } from '../delivery/links.ts';
 import type { TrashPage } from './trash-types.ts';
 
 export class TrashQueryError extends Error {
@@ -23,7 +24,7 @@ export function parseTrashQuery(params: URLSearchParams): number {
   return page;
 }
 
-/** Read metadata only. Trashed records never grant access to image bytes. */
+/** Owner metadata includes only saved previews; delivery checks the current session and state. */
 export function readTrashPage(db: BetterSQLite3Database, page = 1): TrashPage {
   return db.transaction((tx) => {
     const trashed = isNotNull(mediaImages.trashedAt);
@@ -56,9 +57,31 @@ export function readTrashPage(db: BetterSQLite3Database, page = 1): TrashPage {
       .limit(40)
       .offset((page - 1) * 40)
       .all();
+    const thumbnails = rows.length
+      ? tx
+          .select({ imageId: mediaVersions.imageId })
+          .from(mediaVersions)
+          .innerJoin(mediaObjects, eq(mediaVersions.objectId, mediaObjects.id))
+          .where(
+            and(
+              inArray(
+                mediaVersions.imageId,
+                rows.map((row) => row.id),
+              ),
+              eq(mediaVersions.kind, 'thumbnail'),
+              eq(mediaObjects.status, 'stored'),
+            ),
+          )
+          .all()
+      : [];
+    const thumbnailIds = new Set(thumbnails.map((row) => row.imageId));
     return {
       items: rows.map((row) => ({
         ...row,
+        thumbnailPath:
+          row.storage.enabled && !row.deletionStatus && thumbnailIds.has(row.id)
+            ? buildTrashPreviewPath(row.id, 'thumbnail')
+            : null,
         trashedAt: row.trashedAt!.toISOString(),
       })),
       total,

@@ -1,0 +1,140 @@
+const imgPublicSoftGlowMobile = "https://www.figma.com/api/mcp/asset/2b5cebd9-519b-4f18-a3ef-d883e0817f6b.svg";
+const img01M360Px = "https://www.figma.com/api/mcp/asset/0a8660fd-d6d5-43a1-88fd-0482e8c26962.svg";
+const img = "https://www.figma.com/api/mcp/asset/fd03daf1-61bb-4ed5-9858-92a4bb988175.svg";
+const imgFrame = "https://www.figma.com/api/mcp/asset/ce16f031-c793-448a-b5b9-098f43ccfa0e.svg";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/c02244f1-a8cd-4775-8d01-d0a9ab9a959d.svg";
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type LinkProps = {
+  className?: string;
+  label?: string;
+};
+
+function Link({ className, label = "链接" }: LinkProps) {
+  return (
+    <div className={className || "content-stretch flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] w-[398px]"} data-node-id="3:29" data-name="Link">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:30">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function PublicSoftGlowMobile({ className }: { className?: string }) {
+  return (
+    <div className={className || "h-[844px] relative w-[390px]"} data-node-id="192:1836" data-name="Public/Soft glow/Mobile">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPublicSoftGlowMobile} />
+    </div>
+  );
+}
+
+export default function Component01M360Px() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="530:14759" data-name="01 · M / 认证公共页 / 浅色 / 360px">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={img01M360Px} />
+      <div className="absolute h-[844px] left-0 top-0 w-[360px]" data-node-id="530:14761" data-name="点阵底纹">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={img} />
+      </div>
+      <div className="absolute bg-[var(--surface,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[16px] items-start left-[16px] px-[16px] py-[20px] rounded-[24px] top-[150px] w-[328px]" data-node-id="530:14763" data-name="登录卡片">
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start leading-[1.5] relative shrink-0 text-[color:var(--foreground,#272343)] w-full" data-node-id="530:14764" data-name="标题">
+          <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[24px] w-full" data-node-id="530:14765">
+            登录
+          </p>
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px] w-full" data-node-id="530:14766">
+            轻装简从 · 欢迎回来
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full" data-node-id="530:14767" data-name="表单">
+          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full" data-node-id="530:14768" data-name="邮箱">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="530:14769">
+              邮箱
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14770" data-name="Input">
+              <p className="[word-break:break-word] font-['Inter:Light'] font-light leading-[1.5] not-italic relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I530:14770;3:28">
+                name@example.com
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="530:14771" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame} />
+            </div>
+          </div>
+          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full" data-node-id="530:14774" data-name="密码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="530:14775">
+              密码
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center pl-[36px] pr-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14776" data-name="Input">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I530:14776;3:28">
+                请输入密码
+              </p>
+            </div>
+            <div className="absolute left-[12px] size-[16px] top-[35px]" data-node-id="530:14777" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame1} />
+            </div>
+          </div>
+          <div className="content-stretch flex h-[44px] items-center justify-end pl-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:14780" data-name="Link">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I530:14780;3:30">
+              忘记密码
+            </p>
+          </div>
+          <div className="bg-[var(--primary,#ffd807)] content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-full" data-node-id="530:14781" data-name="Button/Primary">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="I530:14781;3:22">
+              登录
+            </p>
+          </div>
+        </div>
+        <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full" data-node-id="530:14782" data-name="第三方登录">
+          <div className="content-stretch flex gap-[12px] h-[24px] items-center relative shrink-0 w-full" data-node-id="530:14783" data-name="分隔线">
+            <div className="bg-[var(--accent,#bae8e8)] flex-[1_0_0] h-px min-w-px relative" data-node-id="530:14784" data-name="Rectangle" />
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="530:14785">
+              或使用第三方登录
+            </p>
+            <div className="bg-[var(--accent,#bae8e8)] flex-[1_0_0] h-px min-w-px relative" data-node-id="530:14786" data-name="Rectangle" />
+          </div>
+          <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="使用 GitHub 登录" />
+        </div>
+      </div>
+      <Link className="absolute content-stretch flex h-[44px] items-center justify-center left-[16px] px-[12px] rounded-[8px] top-[16px] w-[112px]" label="← 返回首页" />
+      <ButtonOutline className="absolute bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-center left-[200px] rounded-[8px] top-[16px] w-[144px]" label="外观 · 浅色" />
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+These styles are contained in the design: Body/中文: Font(family: "Noto Sans SC", style: Regular, size: 14, weight: 400, lineHeight: 1.5, letterSpacing: 0).
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Mobile
+**Node ID:** 192:1836
+
+非后台手机页面共同背景。直接复用手机首页两处柔光的位置、大小、颜色与透明度，放在页面内容之下，不参与点击。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

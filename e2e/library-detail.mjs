@@ -1,4 +1,10 @@
+import {
+  verifyAccessDisclosure,
+  verifyNaturalPreview,
+  verifyVersionTabLayout,
+} from './ui-refinement.mjs';
 import assert from 'node:assert/strict';
+import { verifyPreviewSwitch } from './preview-switch.mjs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createServer, request } from 'node:http';
@@ -71,12 +77,16 @@ export async function seedLibraryDetail(config, sql, directory, storageId) {
 export async function verifyLibraryDetail({ page, config, sql, report }) {
   const dialog = '[data-testid="library-detail"]';
   const button = (name) => `loc=role:button[name="${name}"]`;
-  const menuAction = async (name) => {
-    await page.click(button('更多操作'));
-    await page.click(`loc=role:menuitem[name="${name}"]`);
+  const refreshThroughCopy = async () => {
+    await page.click(button('复制链接'));
+    await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
+    await page.click(button('关闭复制链接'));
+    await page.waitForSelector('loc=role:dialog[name="复制图片链接"]', {
+      state: 'hidden',
+    });
   };
   const close = async () => {
-    await page.click(button('返回图库'));
+    await page.click(button('关闭图片详情'));
     await page.waitForFunction(
       () => !document.querySelector('[data-testid="library-detail"]'),
     );
@@ -101,7 +111,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       for (const width of [360, 390, 430, 768, 1440]) {
         await page.cdp('Emulation.setDeviceMetricsOverride', {
           width,
-          height: 844,
+          height: width >= 1200 ? 1080 : 844,
           deviceScaleFactor: 1,
           mobile: width < 768,
         });
@@ -127,64 +137,48 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
           };
         });
         if (state === 'ready') {
-          const heights = await page.evaluate(() =>
-            [
-              ...document.querySelectorAll(
-                '[data-testid="detail-actions"] button',
-              ),
-            ]
-              .filter((node) => node.getBoundingClientRect().width > 0)
-              .map((node) => node.getBoundingClientRect().height),
-          );
-          for (const height of heights)
-            assert.ok(
-              Math.abs(height - 48) <= 1,
-              'Detail footer actions retain the 48px design height',
-            );
-        }
-        if (state === 'ready' && width < 768) {
           const actions = await page.evaluate(() => {
             const row = document.querySelector(
               '[data-testid="detail-actions"]',
             );
             return {
               width: row.getBoundingClientRect().width,
+              gap: parseFloat(getComputedStyle(row).columnGap),
               buttons: [...row.querySelectorAll('button')]
                 .filter((node) => node.getBoundingClientRect().width > 0)
-                .map((node) => node.getBoundingClientRect().width),
+                .map((node) => ({
+                  name: node.textContent.trim(),
+                  width: node.getBoundingClientRect().width,
+                  height: node.getBoundingClientRect().height,
+                })),
             };
           });
-          assert.ok(
-            actions.width >= width - 34,
-            'Mobile action row fills the 16px page insets',
+          assert.equal(actions.buttons.length, 3);
+          assert.equal(actions.buttons[0].name, '复制链接');
+          assert.match(
+            actions.buttons[1].name,
+            /^下载(原图|压缩图|缩略图|水印图)$/,
           );
-          assert.equal(actions.buttons.length, 2);
-          for (const buttonWidth of actions.buttons)
+          assert.equal(actions.buttons[2].name, '删除图片');
+          for (const action of actions.buttons) {
             assert.ok(
-              Math.abs(buttonWidth - (actions.width - 12) / 2) <= 2,
-              'Copy and More evenly fill the mobile footer',
+              Math.abs(action.height - 48) <= 1,
+              'Every detail action is 48px tall',
             );
-        }
-        if (state === 'ready' && width >= 768) {
-          const widths = await page.evaluate(() =>
-            [
-              ...document.querySelectorAll(
-                '[data-testid="detail-actions"] button',
-              ),
-            ]
-              .filter((node) => node.getBoundingClientRect().width > 0)
-              .map((node) => node.getBoundingClientRect().width),
-          );
-          assert.equal(
-            widths.length,
-            3,
-            'Desktop keeps Copy, Download and More',
-          );
-          for (const buttonWidth of widths)
             assert.ok(
-              Math.abs(buttonWidth - 200) <= 2,
-              'Desktop actions retain the 200px design width',
+              Math.abs(
+                action.width -
+                  (width < 768 ? (actions.width - actions.gap * 2) / 3 : 200),
+              ) <= 2,
+              'Desktop actions are 200px; mobile actions share three equal columns',
             );
+          }
+          if (width < 768)
+            assert.ok(
+              actions.width >= width - 34,
+              'Mobile action row fills the 16px page insets',
+            );
+          await verifyVersionTabLayout(page);
         }
         assert.equal(
           layout.overflow,
@@ -254,8 +248,14 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.evaluate(() => window.__detailRelease());
   await page.waitForSelector('[data-testid="detail-body"]');
+  await verifyAccessDisclosure(
+    page,
+    'loc=role:button[name*="查看访问说明"]',
+    report,
+  );
+  await verifyNaturalPreview(page, report);
   await interceptDetail('fail');
-  await menuAction('刷新详情');
+  await refreshThroughCopy();
   await page.waitForFunction(() =>
     document
       .querySelector('[data-testid="library-detail"]')
@@ -281,10 +281,38 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.keyboard.press('Enter');
   await page.waitForSelector(dialog);
-  await page.waitForSelector('[data-testid="detail-preview"]');
+  await page.waitForSelector(
+    '[data-testid="detail-preview"]:not([data-inert] *)',
+  );
   assert.equal(
     new URL(await page.url()).searchParams.get('image'),
     'library-007',
+  );
+  assert.equal(
+    await page.evaluate(() => {
+      const tab = [...document.querySelectorAll('[role="tab"]')].find(
+        (node) => node.textContent.trim() === '水印图',
+      );
+      return (
+        tab?.getAttribute('aria-disabled') === 'true' || tab?.disabled === true
+      );
+    }),
+    true,
+    'Unsaved watermark tab remains disabled',
+  );
+  await page.focus('loc=role:tab[name="原图"]');
+  await page.keyboard.press('Enter');
+  for (const label of ['压缩图', '缩略图', '原图']) {
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction((label) => {
+      const tab = document.querySelector('[role="tab"][aria-selected="true"]');
+      return (
+        tab?.textContent.trim() === label && document.activeElement === tab
+      );
+    }, label);
+  }
+  report.checks.push(
+    'Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.',
   );
   await page.keyboard.press('Escape');
   await page.waitForFunction(
@@ -307,47 +335,47 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
 
   await direct('library-007');
   await page.waitForFunction(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return image?.complete && image.naturalWidth > 0;
   });
   await layouts('ready');
-  await page.focus(button('更多操作'));
-  await page.keyboard.press('ArrowDown');
-  await page.waitForFunction(() => {
-    const active = document.activeElement;
-    return (
-      active?.getAttribute('role') === 'menuitem' &&
-      active.textContent.trim() === '刷新详情' &&
-      active.getBoundingClientRect().height >= 44
-    );
-  });
+  await verifyPreviewSwitch(page);
   assert.equal(
     await page.evaluate(() =>
-      [...document.querySelectorAll('[role="menuitem"]')].some((node) =>
-        node.textContent.startsWith('下载'),
-      ),
+      [
+        ...document.querySelectorAll('[data-testid="detail-actions"] button'),
+      ].some((node) => /更多操作|刷新详情/.test(node.textContent)),
     ),
     false,
+    'Normal details show only direct actions',
   );
-  await page.keyboard.press('ArrowDown');
+  await page.focus(button('复制链接'));
+  await page.keyboard.press('ArrowRight');
   await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '回收图片',
+    () => document.activeElement?.textContent.trim() === '下载压缩图',
   );
-  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowRight');
   await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '刷新详情',
+    () => document.activeElement?.textContent.trim() === '删除图片',
   );
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-testid="trash-confirm"]');
   await page.keyboard.press('Escape');
   await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '更多操作',
+    () => !document.querySelector('[data-testid="trash-confirm"]'),
+  );
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '删除图片',
   );
   report.checks.push(
-    'Desktop keyboard opens More on the visible Refresh item; arrow navigation cycles only visible actions and Escape restores More.',
+    'Desktop action Toolbar moves Copy → Download → Delete by keyboard; Escape cancels deletion and returns focus to its direct trigger.',
   );
   await page.click('loc=role:tab[name="压缩图"]');
   await page.waitForFunction(() =>
     document
-      .querySelector('[data-testid="detail-preview"]')
+      .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
       ?.getAttribute('src')
       ?.includes('type=compressed'),
   );
@@ -357,13 +385,13 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   await page.click(button('复制 URL'));
   await page.waitForFunction(() =>
     document
-      .querySelector('[role="dialog"][aria-label="复制图片链接"]')
+      .querySelector('[data-slot="toast"]')
       ?.textContent.includes('已复制到剪贴板'),
   );
   report.checks.push(
     'Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.',
   );
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   const deniedProxy = await clipboardDeniedProxy(config.origin);
   try {
     await page.goto(`${deniedProxy.origin}/library?image=library-007`);
@@ -371,7 +399,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     await page.click('loc=role:tab[name="压缩图"]');
     await page.waitForFunction(() =>
       document
-        .querySelector('[data-testid="detail-preview"]')
+        .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
         ?.getAttribute('src')
         ?.includes('type=compressed'),
     );
@@ -419,11 +447,11 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       /^<img src=".*type=original"/,
     );
     await page.click(button('返回复制选项'));
-    await page.click(button('返回详情'));
+    await page.click(button('关闭复制链接'));
     assert.ok(
       await page.evaluate(() =>
         document
-          .querySelector('[data-testid="detail-preview"]')
+          .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
           ?.getAttribute('src')
           ?.includes('type=compressed'),
       ),
@@ -446,7 +474,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   });
   await page.waitForFunction(() => innerWidth === 390);
   const downloadPromise = page.waitForEvent('download', { timeout: 30000 });
-  await menuAction('下载压缩图');
+  await page.click(button('下载压缩图'));
   const download = await downloadPromise;
   assert.equal(download.suggestedFilename(), '中文下载样本.png');
   await download.saveAs(join(config.output, '中文下载样本.png'));
@@ -475,11 +503,11 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     new URL(updated.defaultLink.links.url).searchParams.has('type'),
     false,
   );
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   assert.ok(
     await page.evaluate(() =>
       document
-        .querySelector('[data-testid="detail-preview"]')
+        .querySelector('[data-testid="detail-preview"]:not([data-inert] *)')
         ?.getAttribute('src')
         ?.includes('type=compressed'),
     ),
@@ -568,9 +596,11 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
     ),
   );
-  await menuAction('刷新详情');
+  await page.click(button('重试预览'));
   await page.waitForFunction(() => {
-    const image = document.querySelector('[data-testid="detail-preview"]');
+    const image = document.querySelector(
+      '[data-testid="detail-preview"]:not([data-inert] *)',
+    );
     return (
       image?.complete &&
       image.naturalWidth > 0 &&
@@ -624,19 +654,10 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       .filter((node) => node.getBoundingClientRect().width > 0)
       .map((node) => node.textContent.trim()),
   );
-  assert.ok(footerActions.includes('更多操作'));
-  assert.equal(
-    footerActions.some((name) => name.startsWith('下载')),
-    false,
-  );
-  assert.equal(footerActions.includes('回收图片'), false);
-  await page.click(button('更多操作'));
-  await page.waitForSelector('loc=role:menuitem[name="下载压缩图"]');
-  await page.keyboard.press('Escape');
-  await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '更多操作',
-  );
-  await menuAction('回收图片');
+  for (const label of ['复制链接', '下载压缩图', '删除图片'])
+    assert.ok(footerActions.includes(label));
+  assert.equal(footerActions.includes('更多操作'), false);
+  await page.click(button('删除图片'));
   await page.waitForSelector('[data-testid="trash-confirm"]');
   assert.equal(
     await page.evaluate(() => !!document.querySelector('[role="menu"]')),
@@ -647,10 +668,10 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     () => !document.querySelector('[data-testid="trash-confirm"]'),
   );
   await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '更多操作',
+    () => document.activeElement?.textContent.trim() === '删除图片',
   );
   report.checks.push(
-    'Mobile details keep Copy and More in the fixed footer; download, refresh and trash use the real menu; Escape and cancelling trash return focus to the persistent More button.',
+    'Mobile details keep Copy, current-version Download and Delete directly in the fixed footer; cancelling deletion returns focus to Delete.',
   );
   await page.evaluate(() => {
     const body = document.querySelector('[data-testid="detail-body"]');
@@ -668,7 +689,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   );
   await page.click(button('复制链接'));
   await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
-  await page.click(button('返回详情'));
+  await page.click(button('关闭复制链接'));
   await page.waitForFunction(
     () => !document.querySelector('[role="dialog"][aria-label="复制图片链接"]'),
   );

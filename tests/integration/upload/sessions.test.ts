@@ -44,6 +44,45 @@ const input = (requestId = 'request', count = 1, size = 10) => ({
 });
 
 describe('persisted upload submissions', () => {
+  it('freezes one multi-file submission and assigns groups from its saved batch size', () => {
+    const { db } = fixture;
+    db.update(uploadSettings).set({ batchSize: 2 }).run();
+    const first = createSubmission(db, input('multi', 5));
+    expect(first.sessions.map((session) => session.groupIndex)).toEqual([
+      0, 0, 1, 1, 2,
+    ]);
+    expect(
+      new Set(first.sessions.map((session) => session.candidateImageId)).size,
+    ).toBe(5);
+    expect(
+      first.sessions.every((session) => session.submissionId === first.id),
+    ).toBe(true);
+    db.update(mediaSettings).set({ quality: 33 }).run();
+    db.update(uploadSettings).set({ batchSize: 1 }).run();
+    expect(createSubmission(db, input('multi', 5))).toEqual(first);
+    expect(getSubmission(db, first.id).snapshot.quality).toBe(82);
+    expect(createSubmission(db, input('next', 2)).snapshot.quality).toBe(33);
+  });
+
+  it('enforces the current queue limit and cancels only the selected file in a multi-file submission', () => {
+    const { db } = fixture;
+    db.update(uploadSettings).set({ queueLimit: 2 }).run();
+    expect(() => createSubmission(db, input('too-many', 3))).toThrowError(
+      expect.objectContaining({ code: 'UPLOAD_QUEUE_LIMIT' }),
+    );
+    expect(db.select().from(uploadSubmissions).all()).toHaveLength(0);
+    const submission = createSubmission(db, input('two', 2));
+    cancelSession(db, submission.sessions[0].id);
+    const result = getSubmission(db, submission.id);
+    expect(result.sessions.map((session) => session.state)).toEqual([
+      'cancelled',
+      'queued',
+    ]);
+    expect(result.sessions[1].candidateImageId).toBe(
+      submission.sessions[1].candidateImageId,
+    );
+  });
+
   it('expires only idle queued sessions with constant SQL count despite completed history', () => {
     const { db } = fixture;
     const now = new Date();

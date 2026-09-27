@@ -1,0 +1,116 @@
+const imgD01 = "https://www.figma.com/api/mcp/asset/a5649537-d319-431b-a910-5c07dbeea7e0.svg";
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function D01() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[20px] items-center justify-center px-[48px] py-[40px] relative size-full" data-node-id="184:764" data-name="D / 初始化 / 01 账号设置">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgD01} />
+      <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-[520px]" data-node-id="185:764" data-name="品牌">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[48px] text-[color:var(--foreground,#272343)] text-center w-full" data-node-id="185:765">
+          Ariso
+        </p>
+      </div>
+      <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[16px] items-start overflow-clip px-[28px] py-[24px] relative rounded-[24px] shrink-0 w-[520px]" data-node-id="185:766" data-name="初始化卡片">
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[8px] items-start leading-[1.5] overflow-clip relative shrink-0 w-full" data-node-id="185:767" data-name="步骤与说明">
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:768">
+            1 / 2 · 创建账号
+          </p>
+          <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[24px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:769">
+            欢迎使用 Ariso
+          </p>
+          <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:770">
+            先设置你的管理账号。完成下一步后，账号才会创建。
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[14px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:1917" data-name="账号表单">
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:1918" data-name="初始化码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:1919">
+              初始化码
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:1920" data-name="初始化码输入">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I185:1920;3:28">
+                粘贴初始化码
+              </p>
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:1922">
+              在容器启动日志中找到初始化码。
+            </p>
+          </div>
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:1923" data-name="邮箱">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:1924">
+              邮箱
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:1925" data-name="邮箱输入">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I185:1925;3:28">
+                owner@example.com
+              </p>
+            </div>
+          </div>
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:1927" data-name="密码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:1928">
+              密码
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:1929" data-name="密码输入">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I185:1929;3:28">
+                ••••••••
+              </p>
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="185:1931">
+              8–128 个字符，首尾空格也会计入密码。
+            </p>
+          </div>
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="185:1932" data-name="确认密码">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="185:1933">
+              确认密码
+            </p>
+            <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="185:1934" data-name="确认密码输入">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I185:1934;3:28">
+                ••••••••
+              </p>
+            </div>
+          </div>
+        </div>
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="下一步：设置站点" />
+      </div>
+      <a className="absolute content-stretch cursor-pointer flex h-[44px] items-center justify-center left-[20px] px-[12px] rounded-[8px] top-[14px] w-[112px]" data-node-id="193:879" data-name="公共导航 / 返回首页">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I193:879;3:30">
+          ← 返回首页
+        </p>
+      </a>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Desktop
+**Node ID:** 192:799
+
+非后台页面共同背景。沿用首页右上淡黄与左下水绿径向柔光；装饰层置底，不接收交互。桌面可调整宽度，右上光晕右对齐，左下光晕左下对齐。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

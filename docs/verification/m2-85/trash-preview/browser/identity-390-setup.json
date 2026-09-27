@@ -1,0 +1,2387 @@
+{
+  "status": "passed",
+  "width": 390,
+  "phase": "setup",
+  "checks": [
+    "Reload before final submission leaves setup open and clears in-memory secrets",
+    "Unavailable browser timezone recommendation requires an explicit selection",
+    "Unsent setup and failed status check remain unknown; real SETUP_REQUIRED unlocks retry without losing fields",
+    "390×400 shortened viewport can scroll and focus the submit button (not a physical soft-keyboard test)",
+    "Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner",
+    "Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers",
+    "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+    "Owner session does not authenticate the second hostname browser page",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [
+    {
+      "name": "setup",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 724
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "setup",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 724
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "setup",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 703
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "setup",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 724
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "setup",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 724
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "setup",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 703
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "site",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "publicUrl",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "timeZone",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "选择时区",
+          "width": 44,
+          "height": 48
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_d_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 629
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 738
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 722
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 701
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 268,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 220,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 738
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 298,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 250,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 722
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "code-error",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "code",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "email",
+          "width": 338,
+          "height": 46
+        },
+        {
+          "name": "password",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "confirmPassword",
+          "width": 290,
+          "height": 46
+        },
+        {
+          "name": "显示确认密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_bmlubtb_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 701
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": [
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          },
+          {
+            "height": 48,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 503
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 503
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 482
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 270,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 270,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 312,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 503
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 300,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 300,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 342,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 503
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "核对初始化结果",
+          "width": 340,
+          "height": 48
+        },
+        {
+          "name": "react-aria4506704758-_r_24_",
+          "width": 340,
+          "height": 48
+        }
+      ],
+      "geometry": {
+        "path": "/setup",
+        "card": {
+          "left": 24,
+          "top": 168,
+          "width": 382,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 76,
+          "height": 482
+        },
+        "brand": {
+          "top": 76,
+          "height": 72
+        },
+        "fields": []
+      }
+    },
+    {
+      "name": "login",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 256,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 208,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 294,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 328,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 238,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 324,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 358,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 326,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 278,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 364,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 398,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 256,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 208,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 294,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 328,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 238,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 324,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 358,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 326,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 278,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 364,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 398,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 256,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 208,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 294,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 328,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 238,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 324,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 358,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 326,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 278,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 364,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 398,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 256,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 208,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 294,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 328,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 238,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 324,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 358,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    },
+    {
+      "name": "password-error",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "返回首页",
+          "width": 100,
+          "height": 44
+        },
+        {
+          "name": "email",
+          "width": 326,
+          "height": 44
+        },
+        {
+          "name": "password",
+          "width": 278,
+          "height": 44
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "react-aria-_R_3ulubtb_",
+          "width": 364,
+          "height": 44
+        }
+      ],
+      "geometry": {
+        "path": "/login",
+        "card": {
+          "left": 16,
+          "top": 150,
+          "width": 398,
+          "radius": "24px"
+        },
+        "group": {
+          "top": 0,
+          "height": 844
+        },
+        "brand": null,
+        "fields": [
+          {
+            "height": 44,
+            "radius": "8px"
+          },
+          {
+            "height": 44,
+            "radius": "8px"
+          }
+        ]
+      }
+    }
+  ],
+  "health": [
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "focusStyles": {
+    "innerBorder": "0px",
+    "innerOutline": "none",
+    "groupOutline": "none",
+    "groupShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+    "buttonRadius": "8px"
+  },
+  "settings": {
+    "site_settings": [
+      {
+        "id": 1,
+        "public_url": "http://ariso-62877.localhost:62877",
+        "time_zone": "UTC",
+        "name": "Ariso",
+        "description": "",
+        "logo_key": null,
+        "logo_mime": null,
+        "favicon_key": null,
+        "favicon_mime": null,
+        "updated_at": 1790438681800
+      }
+    ],
+    "media_settings": [
+      {
+        "id": 1,
+        "compression_enabled": 1,
+        "output_format": "webp",
+        "quality": 82,
+        "max_edge": null,
+        "jpeg_background": "#FFFFFF",
+        "watermark_mode": "off",
+        "default_link_version": "compressed",
+        "default_visibility": "public",
+        "concurrency": 1,
+        "updated_at": 1790438681800
+      }
+    ],
+    "storage_settings": [
+      {
+        "id": 1,
+        "default_storage_id": "1293a372-bf63-4501-b478-264edbde9c9d"
+      }
+    ],
+    "storage_configs": [
+      {
+        "id": "1293a372-bf63-4501-b478-264edbde9c9d",
+        "name": "默认本地存储",
+        "type": "local",
+        "enabled": 1,
+        "local_path": "default",
+        "created_at": 1790438664022,
+        "updated_at": 1790438664022
+      }
+    ]
+  },
+  "loginFailure": {
+    "status": 500,
+    "body": ""
+  },
+  "activeCheck": "credential-logout",
+  "errors": []
+}

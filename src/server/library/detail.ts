@@ -5,6 +5,7 @@ import { deliveryError } from '../delivery/errors.ts';
 import {
   buildImagePath,
   buildImageUrl,
+  buildTrashPreviewPath,
   resolveImageVersion,
 } from '../delivery/links.ts';
 import { getImageAccessState } from '../media/images.ts';
@@ -52,12 +53,16 @@ export function readLibraryDetail(
     if (!storage) throw new Error(`Missing image storage: ${image.storageId}`);
     const { publicUrl } = requireSiteSettings(tx);
     const defaultVersion = requireMediaSettings(tx).defaultLinkVersion;
+    const previewBlocked = image.deletionStatus
+      ? image.deletionStatus === 'cleanup_failed'
+        ? '图片清理失败，无法预览'
+        : '图片正在删除'
+      : !storage.enabled
+        ? '存储已停用'
+        : null;
     const blocked =
-      image.trashedAt || image.deletionStatus
-        ? '图片已回收或正在删除'
-        : !storage.enabled
-          ? '存储已停用'
-          : null;
+      previewBlocked ??
+      (image.trashedAt ? '图片已回收，公开链接与下载不可用' : null);
     const links = (kind?: VersionKind): LibraryDetailLinks => {
       const url = buildImageUrl(publicUrl, imageId, kind);
       const alt = image.displayName
@@ -151,7 +156,7 @@ export function readLibraryDetail(
         .all(),
       versions: state.versions.map(({ kind, applicable, saved }) => {
         const unavailableReason =
-          blocked ??
+          previewBlocked ??
           (saved
             ? null
             : applicable === false
@@ -169,11 +174,14 @@ export function readLibraryDetail(
           previewPath:
             unavailableReason || saved?.version.mime === 'image/svg+xml'
               ? null
-              : buildImagePath(imageId, kind),
-          downloadPath: unavailableReason
-            ? null
-            : buildImagePath(imageId, kind, true),
-          links: unavailableReason ? null : links(kind),
+              : image.trashedAt
+                ? buildTrashPreviewPath(imageId, kind)
+                : buildImagePath(imageId, kind),
+          downloadPath:
+            blocked || unavailableReason
+              ? null
+              : buildImagePath(imageId, kind, true),
+          links: blocked || unavailableReason ? null : links(kind),
           unavailableReason,
         };
       }),

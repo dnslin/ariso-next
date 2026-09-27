@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "height": 1080,
+  "theme": "light",
+  "checks": [
+    "M2 login honors the real preceding identity rate-limit countdown before retrying.",
+    "1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+    "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+    "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+    "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+    "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+  ],
+  "core": {
+    "analyticsBefore": [],
+    "images": [
+      {
+        "id": "c355e4ad-366e-4865-8c03-d6cbc2193ae0",
+        "format": "jpg",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-50411.localhost:50411/i/c355e4ad-366e-4865-8c03-d6cbc2193ae0?type=original"
+      },
+      {
+        "id": "0c820550-e92f-4802-a9f7-895c65485dbd",
+        "format": "jpg",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-50411.localhost:50411/i/0c820550-e92f-4802-a9f7-895c65485dbd?type=original"
+      },
+      {
+        "id": "064b8cb2-c5ed-422b-b6f0-5a36f1aadd47",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-50411.localhost:50411/i/064b8cb2-c5ed-422b-b6f0-5a36f1aadd47?type=original"
+      },
+      {
+        "id": "2f4199ed-fce6-41c8-8dac-1a37032c8766",
+        "format": "png",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-50411.localhost:50411/i/2f4199ed-fce6-41c8-8dac-1a37032c8766?type=original"
+      },
+      {
+        "id": "66b1c216-78d2-45f9-b929-0ad02bdbb8a2",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 0
+      }
+    ]
+  },
+  "recovery": {
+    "imageId": "f3910cf1-6a31-4c01-b5d5-f3474297630a",
+    "job": {
+      "id": "4e340b2b-4e91-49ae-b20e-5db6d8595d2b",
+      "status": "running",
+      "snapshot": "{\"compressionEnabled\":true,\"outputFormat\":\"webp\",\"quality\":82,\"maxEdge\":null,\"jpegBackground\":\"#FFFFFF\",\"watermarkMode\":\"off\",\"defaultVisibility\":\"public\"}",
+      "expected_versions": "[\"compressed\",\"thumbnail\"]"
+    },
+    "original": {
+      "id": "53d67569-2e7e-452f-92fa-d85cac6b481a",
+      "key": "original/f3910cf1-6a31-4c01-b5d5-f3474297630a.png",
+      "storage_id": "a540ae01-e41c-49c4-88ff-6947f1adf024",
+      "local_path": "default"
+    },
+    "versions": [
+      {
+        "kind": "compressed",
+        "count": 1
+      },
+      {
+        "kind": "original",
+        "count": 1
+      },
+      {
+        "kind": "thumbnail",
+        "count": 1
+      }
+    ]
+  }
+}

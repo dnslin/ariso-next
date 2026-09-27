@@ -27,7 +27,7 @@ export const submissionInputSchema = z
           declaredMime: z.string().max(255).optional(),
         }),
       )
-      .length(1),
+      .min(1),
     storageId: id.optional(),
     visibility: z.enum(['public', 'private']).optional(),
     albumIds: z.array(id).default([]),

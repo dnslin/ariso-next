@@ -1,0 +1,59 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |integration| tests/integration/runtime/build.test.ts (1 test | 1 failed) 7056ms
+   × 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 7055ms
+{"time":"2026-09-27T07:16:43.398Z","level":"info","module":"identity.setup","event":"setup-code","code":"_26jLIXe4UI1CfnnDrpwG_z25NjyK8zi","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-27T07:16:43.476Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-27T07:16:43.999Z","level":"info","module":"identity.setup","event":"setup-code","code":"gc3g1ovkzdy5ZBVV_De9Cf3Q8gEAcEWa","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-27T07:16:44.007Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso/tests/integration/identity/setup-lifecycle.test.ts:120:40\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-dvViS7/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-27T07:16:44.014Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-27T07:16:44.487Z","level":"info","module":"identity.setup","event":"setup-code","code":"mx48yqPOxVpYsbM3TnzNH9Rb8WMVcHqO","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-27T07:16:44.543Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 1 failed) 29730ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 5296ms
+ ❯ |integration| tests/integration/identity/setup-dev.test.ts (1 test | 1 failed) 101847ms
+   × real Next dev recompilation retains the startup code and the original code creates a login-capable owner 101846ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |integration| tests/integration/runtime/build.test.ts > 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码
+Error: ENOENT: no such file or directory, lstat '/Volumes/data/project/ariso/src/components/library/detail-more-actions.tsx'
+ ❯ tests/integration/runtime/build.test.ts:24:7
+     22|       if (file.startsWith('.env')) continue;
+     23|       await mkdir(dirname(join(app, file)), { recursive: true });
+     24|       await cp(resolve(file), join(app, file));
+       |       ^
+     25|     }
+     26|     // Copy rather than link: Turbopack and the CLI tracer stay inside…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |integration| tests/integration/identity/setup-dev.test.ts > real Next dev recompilation retains the startup code and the original code creates a login-capable owner
+
+[重复的临时 Next dev 失败堆栈省略；原始日志保留在 test-results/m2-85/workspace-continuity/integration.log]
+
+
+
+ Test Files  3 failed | 59 passed (62)
+      Tests  3 failed | 511 passed (514)
+   Start at  15:16:27
+   Duration  102.39s (tests 97%, import 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.

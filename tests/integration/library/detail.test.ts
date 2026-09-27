@@ -280,7 +280,7 @@ it('encodes all fixed and default copy formats independently of display-name pun
   }
 });
 
-it('allows private failed saved versions but suppresses disabled, recycled, missing and candidate content', () => {
+it('allows owner trash preview while suppressing copy/download, disabled, missing and candidate content', () => {
   const { objectId } = seed('states');
   connection.db.update(mediaImages).set({ processingStatus: 'failed' }).run();
   expect(
@@ -299,10 +299,28 @@ it('allows private failed saved versions but suppresses disabled, recycled, miss
   connection.db.update(mediaImages).set({ trashedAt: new Date() }).run();
   detail = readLibraryDetail(connection.db, 'states');
   expect(detail.trashedAt).not.toBeNull();
+  expect(detail.versions.every((v) => !v.links && !v.downloadPath)).toBe(true);
+  expect(detail.versions[0]).toMatchObject({
+    previewPath: '/api/trash/states/preview?type=original',
+    unavailableReason: null,
+  });
+  expect(detail.defaultLink.links).toBeNull();
+  connection.db.update(mediaImages).set({ deletionStatus: 'deleting' }).run();
   expect(
-    detail.versions.every((v) => !v.links && !v.previewPath && !v.downloadPath),
-  ).toBe(true);
-  connection.db.update(mediaImages).set({ trashedAt: null }).run();
+    readLibraryDetail(connection.db, 'states').versions[0].previewPath,
+  ).toBeNull();
+  connection.db
+    .update(mediaImages)
+    .set({ deletionStatus: 'cleanup_failed' })
+    .run();
+  expect(readLibraryDetail(connection.db, 'states').versions[0]).toMatchObject({
+    previewPath: null,
+    unavailableReason: '图片清理失败，无法预览',
+  });
+  connection.db
+    .update(mediaImages)
+    .set({ trashedAt: null, deletionStatus: null })
+    .run();
   connection.db
     .update(mediaObjects)
     .set({ status: 'writing' })

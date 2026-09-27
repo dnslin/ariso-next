@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "width": 390,
+  "height": 844,
+  "theme": "light",
+  "checks": [
+    "390px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+    "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+    "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+    "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+    "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+  ],
+  "core": {
+    "analyticsBefore": [
+      {
+        "version": "original",
+        "count": 3
+      }
+    ],
+    "images": [
+      {
+        "id": "84aba28a-0e6b-49c4-aa41-bbf50ff376ef",
+        "format": "jpg",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-62877.localhost:62877/i/84aba28a-0e6b-49c4-aa41-bbf50ff376ef?type=original"
+      },
+      {
+        "id": "8f74cf6a-9032-4d87-8728-12eab9907fef",
+        "format": "jpg",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-62877.localhost:62877/i/8f74cf6a-9032-4d87-8728-12eab9907fef?type=original"
+      },
+      {
+        "id": "b12f3ef4-4f44-4f7a-b0cf-b695996b1f86",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-62877.localhost:62877/i/b12f3ef4-4f44-4f7a-b0cf-b695996b1f86?type=original"
+      },
+      {
+        "id": "8caa5a85-bfaa-40a7-89d4-0f93cd319581",
+        "format": "png",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-62877.localhost:62877/i/8caa5a85-bfaa-40a7-89d4-0f93cd319581?type=original"
+      },
+      {
+        "id": "d1b0cf82-ad44-4925-8c5e-7542041eb1c9",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 0
+      }
+    ]
+  },
+  "recovery": {
+    "imageId": "4654b054-68b7-4f17-91fb-605a019330e7",
+    "job": {
+      "id": "b987cfd5-cebe-47c2-a926-6a7d729d6fff",
+      "status": "running",
+      "snapshot": "{\"compressionEnabled\":true,\"outputFormat\":\"webp\",\"quality\":82,\"maxEdge\":null,\"jpegBackground\":\"#FFFFFF\",\"watermarkMode\":\"off\",\"defaultVisibility\":\"public\"}",
+      "expected_versions": "[\"compressed\",\"thumbnail\"]"
+    },
+    "original": {
+      "id": "6cee1118-e0ae-49ed-bb0c-0d7988cf9b54",
+      "key": "original/4654b054-68b7-4f17-91fb-605a019330e7.png",
+      "storage_id": "1293a372-bf63-4501-b478-264edbde9c9d",
+      "local_path": "default"
+    },
+    "versions": [
+      {
+        "kind": "compressed",
+        "count": 1
+      },
+      {
+        "kind": "original",
+        "count": 1
+      },
+      {
+        "kind": "thumbnail",
+        "count": 1
+      }
+    ]
+  }
+}
