@@ -57,3 +57,9 @@
 独立代码/文档审计使用 `code-review-and-quality`，核对 Issue、SPEC、实际实现与证据；最终 Critical 0、Required 0、Optional 0。审计者独立运行文档依赖检查（120 任务、298 需求）、5 个拒绝场景、diff 检查均通过；另核对 10 张 PNG 实际尺寸与节点记录一致，三份文档相对文件链接存在。无运行时或资源生命周期变更，不以未运行的业务测试作为通过依据。
 
 本次不合并 PR、不主动关闭 Issue、不删除分支或 worktree。
+
+## PR 与远端回读
+
+已提交、推送并创建 [PR #201](https://github.com/dnslin/ariso-next/pull/201)，分支 `codex/issue-128-albums`。实施提交为 `e25bfac7e5d28d9d20b00c08cfb548907f0c1be6`，本段作为后续证据提交记录。PR 保持草稿，原因是上述全仓格式检查失败。
+
+实际执行 `gh pr view 201 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/issue-128-albums --json databaseId,status,conclusion,workflowName` 及该提交的 `gh api repos/dnslin/ariso-next/commits/<sha>/check-runs`、`gh api repos/dnslin/ariso-next/commits/<sha>/status`。回读为草稿、CLEAN、检查/Actions 列表为空，check-runs 与状态数量均为 0；状态聚合 pending 没有实际检查，不算 CI 通过或运行中。现有工作流仅 Release 发布触发，未为本 PR 创建发布。
