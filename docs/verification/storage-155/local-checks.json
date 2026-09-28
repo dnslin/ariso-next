@@ -243,5 +243,91 @@
     "command": "gh pr ready 204 --repo dnslin/ariso-next",
     "exitCode": 0,
     "readBack": "gh pr view confirms isDraft false and empty statusCheckRollup; gh pr checks exits 1 with no checks; gh run list is empty. No merge or release."
+  },
+  "reviewFixes": {
+    "date": "2026-09-28",
+    "baseline": "3211765640670c4c7e79e6b636820ef172580f09",
+    "scope": [
+      "Abort PUT immediately when the source closes prematurely without an error event.",
+      "Preserve GET response metadata and original stream error code after body truncation."
+    ],
+    "red": {
+      "command": "pnpm exec vitest run --project integration tests/integration/storage/s3.test.ts --maxWorkers=1 -t '源流无错误提前关闭|消费中远端截断'",
+      "exitCode": 1,
+      "result": "Both selected regressions failed before the production fix. PUT settled stayed false at the poll deadline; truncated GET lost requestId, metadata and cause.code. The other 18 cases were excluded only by this focused RED command."
+    },
+    "checks": [
+      {
+        "command": "pnpm exec vitest run tests/unit/storage/s3.test.ts tests/integration/storage/s3.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "result": "2 files / 30 tests passed."
+      },
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=1",
+        "exitCode": 0,
+        "result": "32 files / 478 tests passed."
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "result": "Build completed before integration. Existing optional better-sqlite3 Debug binding trace warnings remain."
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements."
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases passed."
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=1",
+        "exitCode": 0,
+        "result": "After build: integration and media-tools, 63 files / 534 tests passed, 357.73 seconds."
+      }
+    ],
+    "reviews": [
+      {
+        "skill": "code-review-and-quality",
+        "agent": "pr204_correctness_review",
+        "verdict": "Approve; no required or optional findings.",
+        "checks": [
+          "Focused unit/integration 30/30",
+          "Changed production/test files ESLint",
+          "tsc --noEmit --incremental false --project tsconfig.json",
+          "git diff --check"
+        ]
+      },
+      {
+        "skill": "thermo-nuclear-code-quality-review",
+        "agent": "pr204_structure_review",
+        "verdict": "Approve; no required or optional findings. Native stream completion replaces custom event handling; SDK metadata type replaces duplicate fields; no new abstraction or dependency.",
+        "checks": ["Focused unit/integration 30/30", "git diff --check"]
+      }
+    ],
+    "notRerun": [
+      "Browser: no UI/e2e changes in this fix, and createS3Storage currently has no application consumers. Prior complete browser result remains separately recorded.",
+      "R2/SeaweedFS live expiry matrix: signing/configuration/protocol unchanged; these stream failure paths are verified with the real SDK and local HTTP. Prior live reports are not represented as reruns.",
+      "AWS S3 live testing cancelled by owner.",
+      "Release-only AMD64/ARM64 image and container validation."
+    ]
   }
 }

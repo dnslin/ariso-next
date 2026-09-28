@@ -1,9 +1,15 @@
-import { PassThrough, Readable, addAbortSignal } from 'node:stream';
+import {
+  PassThrough,
+  Readable,
+  addAbortSignal,
+  finished as observeStream,
+} from 'node:stream';
 import { finished } from 'node:stream/promises';
 import {
   CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  type GetObjectCommandOutput,
   HeadObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -115,16 +121,15 @@ export function createS3Storage(config: S3StorageConfig) {
         storageId: config.id,
       });
   }
-  function failure(cause: unknown, key: string, operation: string) {
+  function failure(
+    cause: unknown,
+    key: string,
+    operation: string,
+    responseMetadata?: GetObjectCommandOutput['$metadata'],
+  ) {
     const error = cause as Error & {
       code?: string;
-      $metadata?: {
-        httpStatusCode?: number;
-        requestId?: string;
-        extendedRequestId?: string;
-        attempts?: number;
-        totalRetryDelay?: number;
-      };
+      $metadata?: GetObjectCommandOutput['$metadata'];
     };
     if (error?.code === 'STORAGE_DISABLED') return error;
     let message = error instanceof Error ? error.message : String(cause);
@@ -141,8 +146,9 @@ export function createS3Storage(config: S3StorageConfig) {
     }
     const safeCause = Object.assign(new Error(message), {
       name: error?.name ?? 'Error',
+      code: error?.code,
     });
-    const metadata = error?.$metadata;
+    const metadata = error?.$metadata ?? responseMetadata;
     return Object.assign(
       new Error(
         `Storage ${operation} failed: ${config.id}, ${key}: ${message}`,
@@ -194,11 +200,16 @@ export function createS3Storage(config: S3StorageConfig) {
         enabled();
         return await run(key, 'write', options, async (signal, abort) => {
           let inputError: Error | undefined;
-          const failed = (error: Error) => {
-            inputError = error;
-            abort(error);
-          };
-          source.once('error', failed);
+          const stopObserving = observeStream(
+            source,
+            { readable: true, writable: false },
+            (error) => {
+              if (error) {
+                inputError = error;
+                abort(error);
+              }
+            },
+          );
           try {
             const result = await client.send(
               new PutObjectCommand({
@@ -213,7 +224,7 @@ export function createS3Storage(config: S3StorageConfig) {
           } catch (cause) {
             throw inputError ?? cause;
           } finally {
-            source.removeListener('error', failed);
+            stopObserving();
           }
         });
       } finally {
@@ -247,7 +258,7 @@ export function createS3Storage(config: S3StorageConfig) {
         });
         body.once('end', () => request.close());
         body.once('error', (cause) =>
-          stream.destroy(failure(cause, key, 'read')),
+          stream.destroy(failure(cause, key, 'read', result.$metadata)),
         );
         body.pipe(stream);
         return {

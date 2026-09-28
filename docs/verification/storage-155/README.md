@@ -100,3 +100,24 @@ node tests/experiments/storage-s3/verify-objects.ts \
 ## 剩余验收与发布边界
 
 AWS S3 实测要求已由所有者取消，不再阻塞本任务；R2 与 SeaweedFS 的对象模块证据不替代下游完整业务验收。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。三份历史 JSON 已按授权修复，全仓格式及最终完整浏览器检查通过。新增代码此前通过单元、集成、构建与独立审计；本轮测试同步修正及实际两端通过证据也完成独立复核。适用本地完成条件已满足。PR 初建时为草稿，首次 `gh pr checks` 退出 1 并报告 no checks；远端检查和工作流列表为空，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 持续推送；最终通过 `gh pr ready 204` 转为正式待评审，并回读确认 `state: OPEN`、`isDraft: false`。再次执行 `gh pr checks 204` 仍报告 no checks（退出 1），`gh run list --branch codex/s3-object-155` 仍为空。未合并、关闭 Issue 或清理 worktree。
+
+## PR 双角度评审后的修复计划
+
+评审基线为 `3211765`。本轮只处理两项发现：PUT 源流提前 close 没有中止请求，以及 GET 流错误丢失已取得的响应诊断信息。
+
+1. 先补真实 SDK + localhost HTTP 回归：发送部分数据后无错误销毁源流，要求操作及时拒绝、远端连接关闭且后续请求可用；截断 GET 要求异常保留 requestId、metadata 和底层错误码。先运行并记录失败。
+2. PUT 使用 Node 原生流结束检测覆盖 error 与 premature close，正常/失败路径均解除监听。GET 沿现有错误形状带入响应 metadata，保留必要底层 code；不引入新依赖或错误框架。
+3. 执行定向测试、冻结安装、格式/lint/类型、单元、构建及构建后的集成检查，由两名独立评审者复核修复。
+4. 更新本记录和 PR，提交推送，不合并。UI、签名协议和配置不变；不把历史浏览器/真实服务通过描述为本轮重跑。
+
+## 两项评审问题的修复结果
+
+先执行聚焦回归命令 `pnpm exec vitest run --project integration tests/integration/storage/s3.test.ts --maxWorkers=1 -t '源流无错误提前关闭|消费中远端截断'`，退出 1，两项均失败：PUT 的 settled 在轮询期限内仍为 false；GET 错误中的 requestId、metadata 和 cause.code 缺失。其余 18 项仅因该 RED 命令的名称过滤未运行，后续完整测试不使用过滤。
+
+PUT 改用 Node 原生 `finished` 回调同时检测源流错误和提前关闭，立即中止 SDK 请求，并在 finally 解除监听。错误保留 `ERR_STREAM_PREMATURE_CLOSE`；回归确认远端连接关闭且后续 HEAD 成功。GET 将已收到的响应 metadata 传入现有错误包装，安全 cause 保留底层 code；实际截断测试确认 requestId、metadata 和 `ECONNRESET` 均保留。沿用现有脱敏规则，不新增依赖或错误框架。
+
+两名独立 agent 分别用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 复审当前修复，均为 **Approve，无 Required 或 Optional 问题**。两人各自复跑聚焦单元/集成 **30/30** 与差异检查；正确性评审另执行改动文件 ESLint 和 `tsc --noEmit --incremental false --project tsconfig.json`，均通过。结构评审核对原生流 API 与 SDK 类型，确认监控和销毁等待职责不同，没有重复抽象；生产模块 404 行、集成测试 708 行。
+
+本轮没有 UI/e2e 改动，S3 工厂当前没有应用调用方，设计及人工 UI 验收不适用。未重跑浏览器和 R2/SeaweedFS 真实过期矩阵；上文完整浏览器与真实服务报告保留为此前证据。签名、配置及请求协议未改变，本次异常路径由真实 SDK + localhost HTTP 验证。AWS 实测仍按所有者要求取消，双架构镜像与容器检查仍只在 Release 流程执行。
+
+本轮使用上文相同的 Node 24 / pnpm 环境，实际执行冻结安装、全仓格式、lint、类型、单元、构建及构建后的普通集成/真实图片工具组检查，全部通过。单元 **32 文件 / 478 项**；集成 **63 文件 / 534 项，357.73 秒**；聚焦 S3 **2 文件 / 30 项**。文档依赖检查 120 任务 / 298 需求，5 项拒绝自测也通过。构建仍有既有 better-sqlite3 可选 Debug 绑定追踪警告，实际构建退出 0。完整命令与两轮失败/成功结果见 [local-checks.json 的 reviewFixes](./local-checks.json)；本机原始日志为 `/tmp/ariso-155-review-fixes-*.log`。本轮只修改 S3 模块、对应集成测试和本目录既有两份记录。

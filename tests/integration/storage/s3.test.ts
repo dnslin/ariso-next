@@ -394,6 +394,51 @@ it('PUT 源流失败关闭输入并保留错误，后续请求不受影响', asy
   );
 });
 
+it('PUT 源流无错误提前关闭时立即拒绝并释放连接，之后仍能请求', async () => {
+  await withEndpoint(
+    () => ({ status: 200, headers: { 'content-length': '0' } }),
+    async ({ storage, incoming }) => {
+      let sent = false;
+      const source = new Readable({
+        read() {
+          if (!sent) {
+            sent = true;
+            this.push(Buffer.alloc(64 * 1024));
+          }
+        },
+      });
+      let settled = false;
+      let failure: unknown;
+      const write = storage
+        .writeObject('uploads/session/file', source, {
+          size: 128 * 1024,
+          contentType: 'image/png',
+        })
+        .catch((error: unknown) => {
+          failure = error;
+        })
+        .finally(() => {
+          settled = true;
+        });
+      await expect
+        .poll(() => incoming[0]?.request.socket.bytesRead ?? 0)
+        .toBeGreaterThanOrEqual(64 * 1024);
+      source.destroy();
+      await expect.poll(() => settled).toBe(true);
+      await write;
+      expect(failure).toMatchObject({
+        code: 'STORAGE_OPERATION_FAILED',
+        operation: 'write',
+        cause: { code: 'ERR_STREAM_PREMATURE_CLOSE' },
+      });
+      await expect.poll(() => incoming[0]?.response.destroyed).toBe(true);
+      await expect(
+        storage.inspectObject('images/after'),
+      ).resolves.toMatchObject({ size: 0 });
+    },
+  );
+});
+
 it('PUT 传输中取消释放源流与在途 HTTP 连接，之后仍能请求', async () => {
   await withEndpoint(
     () => ({ status: 200, headers: { 'content-length': '0' } }),
@@ -481,6 +526,7 @@ it('GET 消费中远端截断保留读取失败并关闭流，之后仍能请求
       response.writeHead(200, {
         'content-length': String(128 * 1024),
         'content-type': 'image/png',
+        'x-amz-request-id': 'truncated-request',
       });
       response.write(Buffer.alloc(64 * 1024));
     },
@@ -490,6 +536,9 @@ it('GET 消费中远端截断保留读取失败并关闭流，之后仍能请求
         code: 'STORAGE_OPERATION_FAILED',
         operation: 'read',
         key: 'images/truncated',
+        requestId: 'truncated-request',
+        metadata: result.metadata,
+        cause: { code: 'ECONNRESET' },
       });
       incoming[0]!.response.destroy();
       await consumed;
