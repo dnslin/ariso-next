@@ -90,7 +90,7 @@
 - 规格与预计文件：SPEC-media §11、MED-18/19、analytics 对象归属契约；`src/server/media/cleanup.ts`、引用/用量查询、图片删除及 cleanup/retry 路由。
 - 直接前置：`T-MED-05`、`T-MED-10`、`T-COL-01`、`T-ANA-01`
 - 验收条件：deleting/cleanup_failed 不可恢复或发布新版本；停用仍尝试删除；单对象成功持久保存，临时错误自动一次，手动重试新有限周期，重启不重置次数。所有对象与活动写入结束后才删除记录；相册标签关系按外键清除，历史统计保留。readMediaUsage 区分当前原图/派生/回收/候选旧对象，未知不填零，不重复计算版本表。
-- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/delete.test.ts` 覆盖运行处理与删除竞争、部分失败、断进程恢复、重复请求及真实对象清单；本任务完成本地闭环，S3由T-MED-14扩展并等待真实远端结算前置；本任务不声称已关闭S3删除验收。
+- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/delete.test.ts` 覆盖运行处理与删除竞争、部分失败、断进程恢复、重复请求及真实对象清单；本任务完成本地闭环，S3由T-MED-14扩展并消费UPLOAD-V01的清理方案；本任务不声称已关闭S3删除验收。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 回收记录、进度、失败重试与批量结果由 T-LIB-11 接入。
 - 需求：`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`R-9.4-01`、`R-19.1-01`、`A-26.11-06`、`A-26.11-07`
 
@@ -137,7 +137,7 @@
 - 范围：持久 probe、普通 Bucket 支持范围检查、四阶段连接报告、版本拒绝和 R2 全 Bucket 无锁确认；提供 readProbeUsage 与引用查询。
 - 规格与预计文件：SPEC-storage §5–6、ST-05/06/07/15；`src/server/storage/probes.ts`、test/retry-cleanup路由、storage测试。
 - 直接前置：`T-STO-03`、`EV-STORAGE-01`、`UPLOAD-V01`
-- 验收条件：随机写入→鉴权读取并校字节→真正匿名同对象 GET→删除；只有明确私有响应计通过，网络/TLS/3xx/未知404不算私有证据。Enabled/Suspended/对象锁拒绝；R2自动依据和所有者确认分开、按revision记录。清理失败保留引用，重启继续有限重试；服务端PUT取消/断连也按已验证的远端结束证据结算，不凭本地Abort提前解除；旧revision结果不能覆盖新配置；只有当前测试通过可启用。
+- 验收条件：随机写入→鉴权读取并校字节→真正匿名同对象 GET→删除；只有明确私有响应计通过，网络/TLS/3xx/未知404不算私有证据。Enabled/Suspended/对象锁拒绝；R2自动依据和所有者确认分开、按revision记录。清理失败保留引用，重启继续有限重试；服务端PUT取消/断连先结束本地工作并清理已知Key，之后可能迟到的孤儿按SPEC-storage §9扫描处理；本任务提供引用和用量，完整扫描组合归T-STO-06；旧revision结果不能覆盖新配置；只有当前测试通过可启用。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/probes.test.ts` 三服务测试公开对象、权限、阶段错误、修改revision期间回包、进程中断与实际对象最终清理；不能只断言2xx。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 报告由 T-STO-07 渲染；这里关闭非签名连接探测清理，签名 CORS probe 的最终责任由 T-STO-05。
 - 需求：`R-9.3-02`、`R-9.3-03`、`R-9.3-04`、`U-STORAGE-01`、`A-26.4-01`、`A-26.4-02`、`A-26.6-05`、`R-19.1-01`
@@ -149,7 +149,7 @@
 - 范围：交付CORS示例、浏览器PUT探测、服务器内容复核与清理，以及site修改origin同事务调用的失效函数。
 - 规格与预计文件：SPEC-storage §7、ST-08/09/15；`src/server/storage/cors.ts`、cors-tests路由、CORS检测组件与浏览器测试。
 - 直接前置：`T-STO-04`、`T-UI-01`、`UPLOAD-V01`、`DG-STORAGE`
-- 验收条件：示例与正式签名所需头一致，不自动修改Bucket；浏览器可读成功、服务器校验和删除都成功才passed。opaque或服务器fetch不能代替浏览器证据。origin/revision不符、A→B→A旧回包不可恢复通过；失败仅影响直传而不取消私有要求。仍可能写入的probe保留清理责任，最终释放按UPLOAD-V01验证结果执行。
+- 验收条件：示例与正式签名所需头一致，不自动修改Bucket；浏览器可读成功、服务器校验和删除都成功才passed。opaque或服务器fetch不能代替浏览器证据。origin/revision不符、A→B→A旧回包不可恢复通过；失败仅影响直传而不取消私有要求。活动probe保持引用，终态执行确切Key清理；其后迟到孤儿按UPLOAD-V01选定的扫描方案处理，完整组合归T-STO-06。
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/storage/cors.test.ts` 与浏览器真实跨域PUT覆盖成功/错误来源/中断/到期；三服务检查实际请求头和最终对象清单。
 - 界面：`/settings/storage/:id` 的检测区域，仅所有者；数据来自持久probe与当前site origin。桌面 [346:4712](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4712)、手机 [346:4807](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4807)；状态桌面 [346:5348](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5348)、手机 [346:5361](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5361)；示例 桌面 [346:4865](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4865)、手机 [346:4876](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4876)。HeroUI：Button、Alert、Card、Spinner、Accordion、可选中只读TextArea；复制失败提供完整可选文本。桌面嵌于编辑页、手机完整页，长origin/JSON可横向查看且操作可触达。
 - 需求：`R-8.2-01`、`R-8.2-02`、`R-8.3-02`、`R-5.4-04`、`A-26.4-04`
@@ -158,11 +158,11 @@
 
 - 任务组：`STORAGE-ADMIN`
 - 里程碑：M4
-- 范围：管理入口组合media/upload/probe真实引用；实现有引用字段限制、并发登记与修改先后、全部清完后删除及停用跨模块联验。
-- 规格与预计文件：SPEC-storage §9–10、ST-12–17；`src/server/storage/references.ts`、管理组合路由、跨模块存储集成测试。
+- 范围：管理入口组合media/upload/probe真实引用；实现 Local/S3 的 Ariso 命名空间孤儿扫描、定期调度与重启恢复，并完成位置修改、配置删除及停用跨模块联验。
+- 规格与预计文件：SPEC-storage §9–10、ST-12–17；`src/server/storage/references.ts`、Local/S3 列举与清理、Web 启动调度组合、管理组合路由及跨模块存储集成测试。
 - 直接前置：`T-STO-05`、`T-UP-04`、`T-MED-14`、`T-DEL-02`、`UPLOAD-V01`
-- 验收条件：每种资产状态/版本/上传会话/任务/候选/迟到对象/probe均阻止删配置和改位置；短事务内查询与修改，无引用空窗。有引用可改名称/启停/凭据，相同规范化位置不误拒绝。停用阻新内容/上传，不阻元数据和删除；在途结果仍结算，重启用保持ID/链接。所有责任和实际对象清完才删配置并清默认；不删Bucket、挂载根或外部文件。
-- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/references.test.ts` 在本地和三服务逐类构造引用、并发上传/改位置/删除；永久删除失败与迟到写入后核验真实对象列表为空，再验证删除成功。
+- 验收条件：有效资产（含回收站）/版本/活动上传会话/任务/候选/probe及已知清理失败引用均阻止删配置和改位置；短事务内查询与修改，无引用空窗。有引用可改名称/启停/凭据，相同规范化位置不误拒绝。停用阻新内容/上传，不阻元数据和删除；在途结果仍结算，重启用保持ID/链接。扫描仅限 Ariso 自有命名空间，分批列举并在删除前复核当前引用；正常写入先登记、Key不复用。迟到孤儿在后续轮次发现并删除，失败保留诊断与重试，停用仍执行维护清理。配置删除前结束本地活动、确认无有效引用并完成当前位置扫描清理；发现错误不删配置。一轮扫描不证明未来永无远端写入，配置删除后不再扫描，极晚到达对象不再保证自动回收。不删Bucket、挂载根或外部文件。
+- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/references.test.ts` 在本地和三服务逐类构造引用、并发上传/改位置/删除；覆盖分页、无引用孤儿、回收站和活动写入保护、扫描期间新增引用、删除失败重试、重启与停用；先删除后迟到写入，再运行下一轮扫描确认孤儿清除。验证配置删除前清理失败会阻止删除，以及删除后不再运行扫描；不声称扫描器能证明未来无写入。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 阻塞分类和操作反馈由 T-STO-07；不提供强制删除或迁移。
 - 需求：`R-9.4-01`、`R-9.4-02`、`R-9.4-03`、`R-9.5-01`、`R-9.5-02`、`R-9.5-03`、`R-9.6-01`、`R-9.6-02`、`A-26.5-01`、`A-26.5-03`、`A-26.5-04`、`A-26.5-05`、`A-26.5-06`、`A-26.5-07`、`A-26.5-08`
 
@@ -218,10 +218,10 @@
 
 - 任务组：`UPLOAD-S3`
 - 里程碑：M4
-- 范围：Web begin时选直传或中转；固定原图、交接、会话到期/取消/响应不确定恢复及最终释放迟到对象引用；提供完整上传引用和用量查询。
+- 范围：Web begin时选直传或中转；固定原图、交接、会话到期/取消/响应不确定恢复、确切Key清理及迟到孤儿扫描交接；提供完整上传引用和用量查询。
 - 规格与预计文件：SPEC-upload §6–8/11、UP-07–13/23；`src/server/upload/s3.ts`、流接收/cleanup/usage与sessions路由、上传组件。
 - 直接前置：`T-UP-03`、`T-STO-05`、`T-DEL-02`、`UPLOAD-V01`、`UPLOAD-V02`、`UPLOAD-V03`、`DG-UPLOAD`
-- 验收条件：名额可用才签900秒临时PUT，进行中不切链路。HEAD/条件GET校实际字节/格式并条件Copy至新正式Key；源变或200内部错误明确失败；重复complete只一图。S3中转流式、跨盘发布正确，写前登记责任，正式交接同事务转移；断连接收未完清理，接收完仅结束等待。取消/到期后按已验证方法最终处理在途和重复PUT，不用固定宽限/HEAD404/无限保留；readUploadUsage与media交接不重算且tmp不归配置存储。
+- 验收条件：名额可用才签900秒临时PUT，进行中不切链路。HEAD/条件GET校实际字节/格式并条件Copy至新正式Key；源变或200内部错误明确失败；重复complete只一图。S3中转流式、跨盘发布正确，写前登记责任，正式交接同事务转移；断连接收未完清理，接收完仅结束等待。取消/到期后结束本地活动并清理已知Key，业务终态不复活；之后迟到和旧签名重写由T-STO-06定期扫描收尾。本任务交付引用/用量与交接测试，不反向依赖扫描器实现，也不以HEAD404证明永久不再写入；readUploadUsage与media交接不重算且tmp不归配置存储。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/upload/s3.test.ts` 三服务真实直传/中转、源变化、Copy响应丢失、慢网/大文件/代理、到期前开始到期后完成、旧签名重写、重启与最终对象清单；`pnpm run test:browser` 验证混合插件总并发3和链路提示。
 - 界面：`/upload` 及既有存储清理区域，只限所有者；采用真实sessions/cleanup结果。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [316:4784](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4784)、手机 [316:4793](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4793)；待清理 桌面 [317:4335](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4335)、手机 [317:4326](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4326)；失败 桌面 [317:4344](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4344)、手机 [317:4353](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4353)。HeroUI：Alert、ProgressBar、Spinner、Button、Table/Card，沿用T-UP-03队列；传完显示“正在保存”而非假处理百分比。手机完整链路和清理重试可用。
 - 需求：`R-8.1-01`、`R-8.1-02`、`R-8.1-03`、`R-8.1-04`、`R-8.3-01`、`R-8.3-02`、`R-11.8-01`、`R-9.4-01`、`R-19.1-01`、`A-26.4-03`、`A-26.4-04`、`A-26.4-06`
@@ -326,10 +326,10 @@
 
 - 任务组：`MEDIA-DELETE`
 - 里程碑：M4
-- 范围：将本地永久删除提供方接入S3对象操作；补远端处理产物写入取消、结果未知、迟到对象最终清理及真实存储引用释放，闭合全提供方永久删除。
+- 范围：将本地永久删除提供方接入S3对象操作；补远端处理产物写入取消、结果未知和确切Key清理；提供真实引用并将迟到孤儿交给T-STO-06扫描，完整扫描联验归该任务。
 - 规格与预计文件：SPEC-media §11、SPEC-storage §8–10、SPEC-upload §7.3；`src/server/media/cleanup.ts`、S3写入结算组合、`tests/integration/media/s3-delete.test.ts`。
 - 直接前置：`T-MED-11`、`T-STO-02`、`T-UP-04`、`EV-STORAGE-01`、`UPLOAD-V01`
-- 验收条件：AWS S3/R2/MinIO 分别证明处理写入结束或采用已验证收尾方式，再删除全部原图/派生/候选/旧对象。取消请求、签名到期、HEAD404和一次删除不能单独解除责任；永久删除也不释放upload仍可写临时Key。停用可删；权限/网络失败保留cleanup_failed和剩余清单，自动一次、手动有限重试，重启不重置预算。全部实际对象和写入责任清完才删除资产/关系，历史统计继续保留。
+- 验收条件：结束本地处理任务，禁止终态任务发布新版本，删除已知原图/派生/候选/旧对象；不要求证明远端永不写入。之后迟到孤儿由命名空间扫描回收；活动upload临时Key继续由upload持有引用。停用可删；权限/网络失败保留cleanup_failed和剩余清单，自动一次、手动有限重试，重启不重置预算。本地活动结束且已知对象清理成功或不存在后删除资产/关系，之后迟到孤儿按扫描方案处理；历史统计继续保留。
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`；三服务注入处理PUT响应丢失、永久删除与写入竞争、迟到对象、部分DELETE失败及进程中断；记录实际对象清单、引用、重试次数和最终数据库状态，复核现有Ariso外链已关闭。
 - 界面：无独立界面：复用 T-LIB-11 的删除记录、进度与重试；本任务提供真实S3后端结果，不引入另一套状态或绕过已确认权限。
 - 需求：`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`R-9.5-03`、`R-9.6-01`、`R-9.6-02`、`A-26.11-06`、`A-26.11-07`、`A-26.5-08`

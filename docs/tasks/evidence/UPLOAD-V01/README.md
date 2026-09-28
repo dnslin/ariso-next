@@ -1,10 +1,39 @@
 # UPLOAD-V01 迟到 PUT 最终收尾
 
-2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；按本轮最新确认将 R2 桶名改为 `image` 后，两服务 HeadBucket 均为 200，OPTIONS 均允许实验来源的 PUT/content-type。两服务真实浏览器、900 秒跨期 PUT、响应丢失、进程中断及分片观测已完成，见[本轮证据](#2026-09-28-真实写入故障与分片实验)。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
+2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[PR #202](https://github.com/dnslin/ariso-next/pull/202)。**当前决策：保留单 PUT，以 Local/S3 自有命名空间定期孤儿扫描处理迟到对象。** 所有者确认当前风险不值得为严格的远端终态证明投入额外复杂度；不再推进 Multipart 替换、提供方升级或物理 GC 验证。
 
-前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；本任务最初未继承其 AWS 豁免；所有者本轮另行明确免除本任务 AWS 实测，AWS 保留未验证，不算通过。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
+#142 是工程前置：交付真实实验、方案和开发交接，**不交付生产扫描器**。本轮只修改规格、任务与记录，生产 Local/S3 扫描、定期运行和行为测试仍由 [T-STO-06 / #164](https://github.com/dnslin/ariso-next/issues/164) 实施。两服务真实实验已取得，AWS 按所有者要求未验证；所有原始报告保留实际结果。
 
-## 当前交付与边界
+## 已确认方案与验收边界
+
+具体业务契约统一维护在 [storage §9](../../../specs/SPEC-storage.md)、[upload §7.3/13](../../../specs/SPEC-upload.md)、[media §11](../../../specs/SPEC-media.md)，不另建规则：
+
+- 常规路径先结束本地工作并按确切 Key 清理；单 PUT 或签名到期不保证此前远端请求已经结束。
+- 定期扫描 Local/S3 的 Ariso 自有命名空间，保护有效业务引用、回收站文件及活动写入；不扫描或删除用户其他文件。
+- 允许删除之后出现迟到孤儿，由后续轮次发现并清理。失败保留诊断与重试，不把未知当作清理成功。
+- 不为“未来永远不会再写入”无限保留每个终态会话。已删除配置无法继续扫描；极晚到达对象在该边界外不保证自动回收，不以一次扫描声称绝对无残留。
+
+| 承接任务                                                                                                                               | 实际开发责任                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [T-STO-04 / #157](https://github.com/dnslin/ariso-next/issues/157)、[T-STO-05 / #158](https://github.com/dnslin/ariso-next/issues/158) | 探测正常清理、引用及用量，真实连接/CORS 结果                                      |
+| [T-UP-04 / #162](https://github.com/dnslin/ariso-next/issues/162)                                                                      | 保留单 PUT，取消/到期终态、确切 Key 清理及引用交接                                |
+| [T-MED-14 / #163](https://github.com/dnslin/ariso-next/issues/163)                                                                     | 已知媒体对象永久删除、有限失败重试及迟到孤儿交接                                  |
+| [T-STO-06 / #164](https://github.com/dnslin/ariso-next/issues/164)                                                                     | Local/S3 分批扫描、删除前引用复核、定期调度、重启恢复、失败重试和配置删除组合测试 |
+| [EV-ANALYTICS-02 / #143](https://github.com/dnslin/ariso-next/issues/143)                                                              | 扫描发现对象的待清理用量交接，未知量不伪装为精确零                                |
+
+保持现有任务 ID、需求编号及原生依赖。#164 消费其他模块提供的引用，不让 #157/#158/#162/#163 反向等待 #164；业务模块通过组合入口接入，storage 不反向导入业务模块。前置 #70 已关闭；#142 和 PR 的最终合并/关闭由所有者操作，未提前移除对下游任务的阻塞关系。
+
+## 本次收尾验证与评审
+
+本次为纯文档收尾，按[执行约定](../../execution.md#适用检查)执行冻结安装、格式与文档依赖检查。实验代码的构建、类型、lint、468 项单元、550 项集成及独立代码审计结果见后文历史记录；本次没有修改实验或生产代码，不重跑真实远端实验。产品 UI 没有变更，Figma 设计验收与人工 UI 验收不适用。
+
+本次适用检查与独立一致性审计结果在完成后补记；生产扫描器未实现、未测试，不能以本 PR 合并代替 #164 验收。
+
+## 历史实验记录的阅读方式
+
+以下保留各轮实际观察、命令、失败和当时的判断。旧记录中的“保持草稿”“最终协议未验收”“下一步 Multipart”等属于**方案调整前的历史结论**，已被上面的所有者决策取代，不再作为当前任务门槛。原始 JSON 的 `releasePermitted=false`、`release.permitted=false` 和严格诊断退出 1 仍忠实表示未证明绝对终态，不修改为通过；它们不检验后来选择的扫描方案。Multipart 候选未采用，相关实验不继续扩展。
+
+## 历史实验交付与边界
 
 实现位于 `tests/experiments/upload-late-put/`，复用 EV-STORAGE-01 的配置、SDK 客户端、能力检查、错误记录、签名及真实 Ego 浏览器探测。依赖仍为项目已锁定的 AWS SDK 3.1136.0；未新增依赖。读取已安装 `getSignedUrl` 的 `RequestPresigningArguments` 类型及 S3 命令类型后使用。
 
@@ -89,7 +118,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 发现并修复一项误报：首块后立即收到 403 响应头、错误响应体在截止后才结束时，旧检查只比较响应结束时间，可能把它记为跨期传输通过。transport 增加仅在请求体写完时记录的 `bodyFinishedAt`；suite 同时要求完整字节数与 body 完成时间跨过截止。补充延迟错误体的负例测试及正常发完后响应延迟的时间区分测试。新增回归先失败后通过，修复后聚焦 12 项全部通过。独立审计者复读最终代码并独立执行同一组测试，4 文件、12 测试通过（19.41 秒）。结论：本次诊断实验范围无剩余必须修复的代码问题；Issue 验收仍受真实环境与协议缺口阻塞，保持草稿。设计验收不适用。
 
-## 未完成项
+## 方案调整前的未完成项（已由当前决策取代）
 
 1. 可证明最终无写入的协议及有限收尾，必要时先修订规格。新增真实反例说明普通单 PUT 的删除、HEAD404、签名到期组合不足以证明最终收尾。
 2. Multipart 候选协议在未知 Create/Complete 结果下的逻辑终态依据与所属规格变更。应用不需要检查提供方物理磁盘；真正的剩余条件见[本轮 Multipart 补充验证](#multipart-候选的补充验证与版本前置)。本轮未修改生产协议。
@@ -251,7 +280,7 @@ Complete 在 [prepare 阶段](https://github.com/seaweedfs/seaweedfs/blob/c50733
 
 核对 master `4fec65d949f4778c545f1457b4ae1306f318a724` 的[提交条件](https://github.com/seaweedfs/seaweedfs/blob/4fec65d949f4778c545f1457b4ae1306f318a724/weed/s3api/s3api_object_routed_write.go#L258-L285)与[Abort 路径](https://github.com/seaweedfs/seaweedfs/blob/4fec65d949f4778c545f1457b4ae1306f318a724/weed/s3api/filer_multipart.go#L1180-L1231)，这些修复是可继续验证的明确路线。还需定向覆盖“已开始 Complete + Abort + 迟到 UploadPart/UploadPartCopy”的组合；存在条件与会话标记检查的关系需要实际核对。此项属于待验证风险，未写成已确认的新上游缺陷。本轮没有构建、部署或实测该 master 版本。
 
-### 可继续实施的顺序
+### 当时提出的候选顺序（未采用）
 
 1. 在包含上述修复的明确 SeaweedFS 版本上验证逻辑终态，覆盖多网关、重复 Complete 和三方竞争；当前测试环境的精确版本也需重新确认。部署变更另行授权，不使用本 PR 发布或替换服务。
 2. 对 R2 的 S3 接口确认未知 Complete 的恢复判据。[强一致性](https://developers.cloudflare.com/r2/reference/consistency/)说明已完成操作的可见性，不直接等于未完成操作已被取消；[Workers 文档](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/#r2multipartupload-definition)明确与 S3 有语义差异，不能仅凭其 Promise 描述填补 S3 契约。
