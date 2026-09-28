@@ -235,5 +235,13 @@
         "evidence": "browser-complete/runner.json"
       }
     ]
+  },
+  "finalPullRequestStatus": {
+    "url": "https://github.com/dnslin/ariso-next/pull/204",
+    "state": "OPEN",
+    "isDraft": false,
+    "command": "gh pr ready 204 --repo dnslin/ariso-next",
+    "exitCode": 0,
+    "readBack": "gh pr view confirms isDraft false and empty statusCheckRollup; gh pr checks exits 1 with no checks; gh run list is empty. No merge or release."
   }
 }

@@ -99,4 +99,4 @@ node tests/experiments/storage-s3/verify-objects.ts \
 
 ## 剩余验收与发布边界
 
-AWS S3 实测要求已由所有者取消，不再阻塞本任务；R2 与 SeaweedFS 的对象模块证据不替代下游完整业务验收。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。三份历史 JSON 已按授权修复，全仓格式及最终完整浏览器检查通过。新增代码此前通过单元、集成、构建与独立审计；本轮测试同步修正及实际两端通过证据也完成独立复核。适用本地完成条件已满足。PR 初建时为草稿，首次 `gh pr checks` 退出 1 并报告 no checks；远端检查和工作流列表为空，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 持续推送；PR 状态在最终提交后回读记录，未合并、关闭 Issue 或清理 worktree。
+AWS S3 实测要求已由所有者取消，不再阻塞本任务；R2 与 SeaweedFS 的对象模块证据不替代下游完整业务验收。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。三份历史 JSON 已按授权修复，全仓格式及最终完整浏览器检查通过。新增代码此前通过单元、集成、构建与独立审计；本轮测试同步修正及实际两端通过证据也完成独立复核。适用本地完成条件已满足。PR 初建时为草稿，首次 `gh pr checks` 退出 1 并报告 no checks；远端检查和工作流列表为空，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 持续推送；最终通过 `gh pr ready 204` 转为正式待评审，并回读确认 `state: OPEN`、`isDraft: false`。再次执行 `gh pr checks 204` 仍报告 no checks（退出 1），`gh run list --branch codex/s3-object-155` 仍为空。未合并、关闭 Issue 或清理 worktree。
