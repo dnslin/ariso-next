@@ -1,0 +1,72 @@
+# Media format fixtures
+
+These small geometric images are original Ariso test artwork, dedicated to the
+public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
+They contain no third-party photograph or private data. `manifest.json` records
+source, license, original SHA-256, container expectations, and independently
+specified preview pixels. Expected values describe the required behavior, not a
+claim that the current processing implementation passes.
+
+Run `python3 tests/fixtures/media-formats/generate.py` to regenerate with Python 3,
+ImageMagick 7.1.2-32 and libheif 1.23.5 (`heif-enc`). Generation is not part of
+verification: committed bytes are the inputs on both architectures. Encoder
+versions may produce different compressed bytes; regenerate manifest hashes with
+the samples. The source PNG has red, lime, blue and white quadrants; its second
+frame is solid lime. HEIC alpha samples use half opacity.
+
+- `animated.gif` / `animated.webp`: real two-frame encoded animations.
+- `animated.avif`: libheif image sequence (`avis` brand, `pict` track), two
+  frames at 5 fps. ExifTool may report `MP4`; the track and AVIF brands establish
+  its actual type. A single-image decode does not prove a static image.
+- `animated.png`: real APNG, two full-canvas frames, default image is frame 1.
+- `poster.png`: real APNG with a **blue non-animation default image**, followed
+  by red and lime animation frames. Correct preview is red, never blue.
+  The generator writes PNG/APNG chunks, CRCs and compressed raster bytes directly
+  according to [PNG specification, APNG chunks](https://www.w3.org/TR/png-3/#apng-chunks).
+  These are complete decodable containers, not signature-only fixtures.
+- `alpha.heic`: one independent primary image plus associated alpha image.
+  Encoded dimensions can be padded to 64x64; the displayed clean aperture is
+  64x48. Auxiliary alpha must not count as another primary page.
+- `multiple.heic` / `multiple.avif`: two independent images, first image primary,
+  no auxiliary alpha. These are image collections, not animations.
+- `multiple.tiff`: two distinct pages. `multiple.ico`: 64, 32 and 16 pixel icons.
+- `static.*`, `source.png`: genuine static encodings. `static.svg` is an inert
+  vector container with the same quadrants.
+
+`preview.input` describes the intended ImageMagick selector. In particular the
+`APNG:` prefix requires its animation decoder; ordinary PNG decoding would
+produce the wrong poster preview. The first local attempt failed because ffmpeg
+was absent. With ffmpeg 9.0.2 installed, the candidate verification path directly
+uses `ffmpeg -i input.png -frames:v 1` to decode only the first displayed canvas,
+rather than ImageMagick’s APNG delegate expanding the complete animation. The
+poster sample has now been decoded to the expected red first frame by that path. All expected frame/page counts are known
+from source construction and must be cross-checked against actual container data.
+
+Additional edge cases:
+
+- `static.gif`: one frame, still preview-only under the agreed GIF rule.
+- `alpha.avif`: one primary image with auxiliary alpha, not a collection.
+- `oriented.heic`: native container rotation (`irot`), 90 degrees clockwise;
+  displayed dimensions are 48x64 and the upper-left quadrant is blue.
+- `mirrored.heic`: native horizontal mirror (`imir`), upper-left is lime.
+  Both are produced by libheif transforms, not by merely writing an EXIF tag.
+- `offset.gif`: its first image is only 24x16 at +20+12 within a 64x48 logical
+  screen. The outer canvas is transparent. `preview.coalesce` requires assembling
+  that first displayed canvas after selecting frame zero; decoding the small
+  image alone is wrong. It is not necessary to expand the remaining animation.
+
+`expected.nativeTags` contains independently specified ExifTool grouped numeric facts
+that follow from fixture construction. The generator never copies tool output
+into these expectations. `expected.decodedImages` supplements collections whose
+ExifTool output does not give an independent-image count. That native tool check
+is verification evidence, not a substitute for future production classification.
+
+`primary-second.heic` and `primary-second.avif` keep the two independent items in
+original order but designate item 2 (solid lime) as primary. `generate.py` edits
+only the unique 14-byte version-0 `pitm` box produced by our controlled encoder,
+asserting its original ID, exact size and uniqueness. The 16-bit item-ID layout
+follows ISO/IEC 14496-12 PrimaryItemBox, as implemented in
+[libheif Box_pitm](https://github.com/strukturag/libheif/blob/master/libheif/box.cc).
+Expected preview pixels are all lime, not the four-color item 1. Actual local
+ImageMagick `[0]` decoding selected item 2 for both formats, and ExifTool reported
+`Meta:Main:PrimaryItemReference = 2`.

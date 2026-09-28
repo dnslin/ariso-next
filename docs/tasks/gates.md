@@ -159,6 +159,8 @@
 - 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-MEDIA-02/` 报告；不预建业务模块。
 - 界面：无产品界面交付；浏览器实验只用于验证实际库/协议，不关闭 DES/RG 或业务界面任务。
 
+- 实施与验证记录：[EV-MEDIA-02](./evidence/EV-MEDIA-02/README.md)（#147；本地样本实验与发布阶段验证边界分别记录）。
+
 ### EV-DELIVERY-01 Next 本地流与条件请求验证
 
 实验实现、验证证据与后续接入边界见[实验报告](./evidence/EV-DELIVERY-01/README.md)；不代替 T-DEL-01 业务验收。

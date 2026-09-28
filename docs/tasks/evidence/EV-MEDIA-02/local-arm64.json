@@ -1,0 +1,4754 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.6.0",
+    "magick": "Version: ImageMagick 7.1.2-32 Q16-HDRI aarch64 68f8d115a:20260926 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/license/\nFeatures: Cipher DPC HDRI Modules \nDelegates (built-in): bzlib freetype heic jng jpeg lcms ltdl lzma png tiff webp xml zlib zstd\nCompiler: clang (21.0.0)",
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with Apple clang version 21.0.0 (clang-2100.3.34.2)\nconfiguration: --prefix=/opt/homebrew/Cellar/ffmpeg/9.0.2 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon\nlibavutil      61.  1.102 / 61.  1.102\nlibavcodec     63.  1.102 / 63.  1.102\nlibavformat    63.  1.102 / 63.  1.102\nlibavdevice    63.  1.102 / 63.  1.102\nlibavfilter    12.  1.102 / 12.  1.102\nlibswscale     10.  1.102 / 10.  1.102\nlibswresample   7.  1.102 /  7.  1.102\n\nExiting with exit code 0",
+    "exiftool": "13.55",
+    "policy": "\nPath: /opt/homebrew/Cellar/imagemagick/7.1.2-32/etc/ImageMagick-7/policy.xml\n  Policy: Undefined\n    rights: None \n\nPath: [built-in]\n  Policy: Undefined\n    rights: None "
+  },
+  "scope": "Native-tool experiment. Production all-format processing remains T-MED-06 (#150).",
+  "commands": [
+    {
+      "command": "magick",
+      "args": ["-version"],
+      "exitCode": 0,
+      "durationMs": 26,
+      "stderr": ""
+    },
+    {
+      "command": "ffmpeg",
+      "args": ["-version"],
+      "exitCode": 0,
+      "durationMs": 62,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": ["-ver"],
+      "exitCode": 0,
+      "durationMs": 66,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": ["-list", "policy"],
+      "exitCode": 0,
+      "durationMs": 6,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/source.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 72,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/source.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/source.png[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/source-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 16,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/source-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/source-png.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 59,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.jpg[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-jpg.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-jpg.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 5,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-jpg.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 58,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.webp[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-webp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-webp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 6,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-webp.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 75,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 36,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.avif[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 24,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-avif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.bmp"
+      ],
+      "exitCode": 0,
+      "durationMs": 65,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.bmp"
+      ],
+      "exitCode": 0,
+      "durationMs": 6,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.bmp[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-bmp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-bmp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 6,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-bmp.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.tiff"
+      ],
+      "exitCode": 0,
+      "durationMs": 67,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.tiff"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.tiff[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-tiff.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-tiff.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-tiff.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 73,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.heic[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 5,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-heic.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 70,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.heic[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-heic.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 74,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.avif[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 22,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 19,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-avif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 89,
+      "stderr": ""
+    },
+    {
+      "command": "ffmpeg",
+      "args": [
+        "-v",
+        "error",
+        "-i",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.avif",
+        "-map",
+        "0:v:0",
+        "-frames:v",
+        "1",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "pipe:1"
+      ],
+      "exitCode": 0,
+      "durationMs": 58,
+      "stderr": {}
+    },
+    {
+      "command": "ffprobe",
+      "args": [
+        "-v",
+        "error",
+        "-show_entries",
+        "stream=codec_name,nb_frames,width,height",
+        "-of",
+        "json",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 27,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-avif-first.png",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 6,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-avif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 98,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.gif[0]",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-gif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 93,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.webp[0]",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-webp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-webp.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-webp.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.tiff"
+      ],
+      "exitCode": 0,
+      "durationMs": 99,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.tiff"
+      ],
+      "exitCode": 0,
+      "durationMs": 26,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.tiff[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-tiff.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 21,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-tiff.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-tiff.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.ico"
+      ],
+      "exitCode": 0,
+      "durationMs": 63,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.ico"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.ico[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-ico.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-ico.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/multiple-ico.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 85,
+      "stderr": ""
+    },
+    {
+      "command": "ffmpeg",
+      "args": [
+        "-v",
+        "error",
+        "-f",
+        "apng",
+        "-i",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.png",
+        "-map",
+        "0:v:0",
+        "-frames:v",
+        "1",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "pipe:1"
+      ],
+      "exitCode": 0,
+      "durationMs": 27,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-png-first.png",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 14,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animated-png.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/poster.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 79,
+      "stderr": ""
+    },
+    {
+      "command": "ffmpeg",
+      "args": [
+        "-v",
+        "error",
+        "-f",
+        "apng",
+        "-i",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/poster.png",
+        "-map",
+        "0:v:0",
+        "-frames:v",
+        "1",
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "png",
+        "pipe:1"
+      ],
+      "exitCode": 0,
+      "durationMs": 23,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/poster-png-first.png",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/poster-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/poster-png.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/poster-png.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.svg"
+      ],
+      "exitCode": 0,
+      "durationMs": 139,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.svg"
+      ],
+      "exitCode": 0,
+      "durationMs": 42,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.svg[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-svg.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 68,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-svg.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 17,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-svg.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 142,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.gif[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 16,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/static-gif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 133,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 17,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.avif[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 20,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 14,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/alpha-avif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 22,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/oriented.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 151,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/oriented.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 16,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/oriented.heic[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/oriented-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 26,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/oriented-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/oriented-heic.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/mirrored.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 124,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/mirrored.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 25,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/mirrored.heic[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/mirrored-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/mirrored-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/mirrored-heic.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/offset.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 146,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/offset.gif"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/offset.gif[0]",
+        "-coalesce",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/offset-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 17,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/offset-gif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 23,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/offset-gif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 15,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 236,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.heic"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.heic[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 20,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-heic.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-heic.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 96,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-ping",
+        "-format",
+        "%n\n",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.avif"
+      ],
+      "exitCode": 0,
+      "durationMs": 16,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.avif[0]",
+        "-auto-orient",
+        "-colorspace",
+        "sRGB",
+        "-resize",
+        "640x640>",
+        "-strip",
+        "-quality",
+        "80",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 26,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "identify",
+        "-format",
+        "%m %wx%h",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-avif.webp"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/primary-second-avif.webp",
+        "-depth",
+        "8",
+        "rgba:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 14,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-FileType",
+        "-MIMEType",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/misleading.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 116,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/truncated.png[0]",
+        "null:"
+      ],
+      "exitCode": 1,
+      "durationMs": 16,
+      "stderr": "magick: insufficient image data in file `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/truncated.png' @ error/png.c/ReadPNGImage/3962."
+    },
+    {
+      "command": "magick",
+      "args": [
+        "-size",
+        "32x16",
+        "xc:red",
+        "-profile",
+        "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/sRGB2014.icc",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 17,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-EXIF:Artist=first",
+        "-XMP-tiff:Artist=other-group",
+        "-EXIF:ImageDescription=1.10",
+        "-ExifIFD:SerialNumber=123456789012345678901234567890",
+        "-GPSLatitude=31.2",
+        "-GPSLatitudeRef=N",
+        "-GPSLongitude=121.5",
+        "-GPSLongitudeRef=E",
+        "-Orientation#=6",
+        "-XMP-mwg-rs:RegionInfo={AppliedToDimensions={W=32,H=16,Unit=pixel},RegionList=[{Name=1.10,Type=Face,Area={X=0.5,Y=0.5,W=0.2,H=0.2,Unit=normalized}}]}",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 359,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-b",
+        "-EXIF",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 101,
+      "stderr": {}
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-overwrite_original",
+        "-EXIF:Artist=second",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 190,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-json",
+        "-a",
+        "-G1:3:4",
+        "-struct",
+        "-api",
+        "structformat=jsonq",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 91,
+      "stderr": ""
+    },
+    {
+      "command": "exiftool",
+      "args": [
+        "-b",
+        "-ICC_Profile",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+      ],
+      "exitCode": 0,
+      "durationMs": 86,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "-size",
+        "32x32",
+        "xc:red",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-canary.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/safe.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/safe-use.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe-use.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe-use.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 14,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/safe-gradient.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe-gradient.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-safe-gradient.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/network-image.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-network-image.png"
+      ],
+      "exitCode": 1,
+      "durationMs": 15,
+      "stderr": "magick: explicit coder not allowed `http://127.0.0.1:52894/image.png' @ error/constitute-private.h/StrictReadImage/56."
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-image.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-local-image.png"
+      ],
+      "exitCode": 1,
+      "durationMs": 7,
+      "stderr": "magick: explicit coder not allowed `file:///var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-canary.png' @ error/constitute-private.h/StrictReadImage/56."
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/absolute-image.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-absolute-image.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-absolute-image.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/relative-image.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-relative-image.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-relative-image.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/script.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-script.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 19,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-script.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/event-handler.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-event-handler.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-event-handler.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/animation.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-animation.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 12,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-animation.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-entity.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-local-entity.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-local-entity.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/network-entity.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-network-entity.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-network-entity.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 11,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/css-import.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-css-import.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-css-import.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 13,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/css-escaped-import.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-css-escaped-import.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-css-escaped-import.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 7,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/css-escaped-url.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-css-escaped-url.png"
+      ],
+      "exitCode": 1,
+      "durationMs": 11,
+      "stderr": "magick: unrecognized color `u\\\\72l('http' @ warning/color.c/QueryColorCompliance/2506.\nmagick: non-conforming drawing primitive definition `fill' @ error/draw.c/RenderMVGContent/4678."
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/xml-base.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-xml-base.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 8,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-xml-base.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    },
+    {
+      "command": "magick",
+      "args": [
+        "MSVG:/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/foreign-object.svg",
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-foreign-object.png"
+      ],
+      "exitCode": 0,
+      "durationMs": 9,
+      "stderr": ""
+    },
+    {
+      "command": "magick",
+      "args": [
+        "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/native-foreign-object.png",
+        "-crop",
+        "1x1+16+16",
+        "+repage",
+        "-depth",
+        "8",
+        "rgb:-"
+      ],
+      "exitCode": 0,
+      "durationMs": 10,
+      "stderr": {}
+    }
+  ],
+  "checks": [
+    {
+      "name": "complete-sample-coverage",
+      "status": "passed",
+      "evidence": {
+        "count": 24
+      }
+    },
+    {
+      "name": "no-fixed-admission-policy",
+      "status": "passed",
+      "evidence": {
+        "unchangedInstalledPolicy": true
+      }
+    },
+    {
+      "name": "source-png",
+      "status": "passed",
+      "evidence": {
+        "source": "source.png",
+        "sha256": "2ad29c518b0a4f72bba1a1f5e0adb706bb555bfcd6f98a52c7bdac42758f4951",
+        "expected": {
+          "format": "PNG",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "PNG"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/source.png",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "source.png",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 420,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "PNG",
+          "File:Main:FileTypeExtension": "PNG",
+          "File:Main:MIMEType": "image/png",
+          "PNG:Main:ImageWidth": 64,
+          "PNG:Main:ImageHeight": 48,
+          "PNG:Main:BitDepth": 8,
+          "PNG:Main:ColorType": 6,
+          "PNG:Main:Compression": 0,
+          "PNG:Main:Filter": 0,
+          "PNG:Main:Interlace": 0,
+          "PNG:Main:WhitePointX": 0.3127,
+          "PNG:Main:WhitePointY": 0.329,
+          "PNG:Main:RedX": 0.64,
+          "PNG:Main:RedY": 0.33,
+          "PNG:Main:GreenX": 0.3,
+          "PNG:Main:GreenY": 0.6,
+          "PNG:Main:BlueX": 0.15,
+          "PNG:Main:BlueY": 0.06,
+          "PNG:Main:BackgroundColor": "255 255 255",
+          "PNG:Main:ModifyDate": "2026:09:28 06:59:51",
+          "PNG:Main:Datecreate": "2026-09-28T06:59:51+00:00",
+          "PNG:Main:Datemodify": "2026-09-28T06:59:51+00:00",
+          "PNG:Main:Datetimestamp": "2026-09-28T06:59:51+00:00",
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-jpg",
+      "status": "passed",
+      "evidence": {
+        "source": "static.jpg",
+        "sha256": "c6f0e0945c45f8f1fc089fa0e072ae5548b057a39d5c3dfea157b0c7e1d2282e",
+        "expected": {
+          "format": "JPEG",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "JPEG"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.jpg",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.jpg",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 373,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "JPEG",
+          "File:Main:FileTypeExtension": "JPG",
+          "File:Main:MIMEType": "image/jpeg",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "File:Main:EncodingProcess": 0,
+          "File:Main:BitsPerSample": 8,
+          "File:Main:ColorComponents": 3,
+          "File:Main:YCbCrSubSampling": "1 1",
+          "JFIF:Main:JFIFVersion": "1 1",
+          "JFIF:Main:ResolutionUnit": 0,
+          "JFIF:Main:XResolution": 1,
+          "JFIF:Main:YResolution": 1,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [254, 0, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-webp",
+      "status": "passed",
+      "evidence": {
+        "source": "static.webp",
+        "sha256": "7bab8a0a64bb4c4a8cab762430d2d08a5746b98e0a661008a459347b3edb93ec",
+        "expected": {
+          "format": "WEBP",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "WEBP"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.webp",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.webp",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 144,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "WEBP",
+          "File:Main:FileTypeExtension": "WEBP",
+          "File:Main:MIMEType": "image/webp",
+          "RIFF:Main:VP8Version": 0,
+          "RIFF:Main:ImageWidth": 64,
+          "RIFF:Main:HorizontalScale": 0,
+          "RIFF:Main:ImageHeight": 48,
+          "RIFF:Main:VerticalScale": 0,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [253, 255, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-avif",
+      "status": "passed",
+      "evidence": {
+        "source": "static.avif",
+        "sha256": "285d34fbbfec94c3ef58795b40a38e71fb5cee920c4d872cb356ff064d28b4f5",
+        "expected": {
+          "format": "AVIF",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "AVIF",
+            "QuickTime:Main:MajorBrand": "avif",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.avif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.avif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 485,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "AVIF",
+          "File:Main:FileTypeExtension": "AVIF",
+          "File:Main:MIMEType": "image/avif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "QuickTime:Main:MajorBrand": "avif",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "avif", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:AV1ConfigurationVersion": 1,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:ChromaSamplePosition": 0,
+          "QuickTime:Main:ImageSpatialExtent": "64 48",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 81,
+          "QuickTime:Main:MediaDataOffset": 404,
+          "Meta:Main:PrimaryItemReference": 1,
+          "QuickTime:Doc1:Copy1:AV1ConfigurationVersion": 1,
+          "QuickTime:Doc1:Copy1:ChromaFormat": 7,
+          "QuickTime:Doc1:Copy1:ChromaSamplePosition": 0,
+          "QuickTime:Doc1:Copy1:ImagePixelDepth": 8,
+          "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:mpegB:cicp:systems:auxiliary:alpha",
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [254, 0, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-bmp",
+      "status": "passed",
+      "evidence": {
+        "source": "static.bmp",
+        "sha256": "9a7c8029c93cab14994058c5adc036b295966e842a717d61af2e9084daf0ea43",
+        "expected": {
+          "format": "BMP",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "BMP"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.bmp",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.bmp",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 12426,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "BMP",
+          "File:Main:FileTypeExtension": "BMP",
+          "File:Main:MIMEType": "image/bmp",
+          "File:Main:BMPVersion": 124,
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "File:Main:Planes": 1,
+          "File:Main:BitDepth": 32,
+          "File:Main:Compression": 3,
+          "File:Main:ImageLength": 12288,
+          "File:Main:PixelsPerMeterX": 0,
+          "File:Main:PixelsPerMeterY": 0,
+          "File:Main:NumColors": 0,
+          "File:Main:NumImportantColors": 0,
+          "File:Main:RedMask": 16711680,
+          "File:Main:GreenMask": 65280,
+          "File:Main:BlueMask": 255,
+          "File:Main:AlphaMask": 4278190080,
+          "File:Main:ColorSpace": "sRGB",
+          "File:Main:RenderingIntent": 4,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-tiff",
+      "status": "passed",
+      "evidence": {
+        "source": "static.tiff",
+        "sha256": "1d3bba08fbe9df71f08a7ab6d877927aa85586bfcbd339deee9886a3e5bd0d55",
+        "expected": {
+          "format": "TIFF",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "nativeTags": {
+            "File:Main:FileType": "TIFF"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.tiff",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.tiff",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 12566,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:41+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "TIFF",
+          "File:Main:FileTypeExtension": "TIF",
+          "File:Main:MIMEType": "image/tiff",
+          "File:Main:ExifByteOrder": "II",
+          "IFD0:Main:ImageWidth": 64,
+          "IFD0:Main:ImageHeight": 48,
+          "IFD0:Main:BitsPerSample": "8 8 8 8",
+          "IFD0:Main:Compression": 1,
+          "IFD0:Main:PhotometricInterpretation": 2,
+          "IFD0:Main:FillOrder": 1,
+          "IFD0:Main:StripOffsets": 8,
+          "IFD0:Main:Orientation": 1,
+          "IFD0:Main:SamplesPerPixel": 4,
+          "IFD0:Main:RowsPerStrip": 48,
+          "IFD0:Main:StripByteCounts": 12288,
+          "IFD0:Main:PlanarConfiguration": 1,
+          "IFD0:Main:PageNumber": "0 1",
+          "IFD0:Main:WhitePoint": "0.3127000034 0.3289999962",
+          "IFD0:Main:PrimaryChromaticities": "0.6399999857 0.3300000131 0.3000000119 0.6000000238 0.150000006 0.05999999866",
+          "IFD0:Main:ExtraSamples": 2,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "alpha-heic",
+      "status": "passed",
+      "evidence": {
+        "source": "alpha.heic",
+        "sha256": "896cb17984d9a5675257cde425b4e47a07c348568e07622a88f3dfe76832296a",
+        "expected": {
+          "format": "HEIC",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "primaryImages": 1,
+          "auxiliaryImages": 1,
+          "nativeTags": {
+            "File:Main:FileType": "HEIF",
+            "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:hevc:2015:auxid:1",
+            "QuickTime:Main:MajorBrand": "heix",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.heic",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "alpha.heic",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1417,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "HEIF",
+          "File:Main:FileTypeExtension": "HEIF",
+          "File:Main:MIMEType": "image/heif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 64,
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "heix", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:HEVCConfigurationVersion": 1,
+          "QuickTime:Main:GeneralProfileSpace": 0,
+          "QuickTime:Main:GeneralTierFlag": 0,
+          "QuickTime:Main:GeneralProfileIDC": 4,
+          "QuickTime:Main:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Main:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Main:GeneralLevelIDC": 255,
+          "QuickTime:Main:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Main:ParallelismType": 0,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:BitDepthLuma": 8,
+          "QuickTime:Main:BitDepthChroma": 8,
+          "QuickTime:Main:AverageFrameRate": 0,
+          "QuickTime:Main:ConstantFrameRate": 0,
+          "QuickTime:Main:NumTemporalLayers": 1,
+          "QuickTime:Main:TemporalIDNested": 1,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 64",
+          "QuickTime:Main:CleanAperture": "64 48 0 -8",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 761,
+          "QuickTime:Main:MediaDataOffset": 656,
+          "Meta:Main:PrimaryItemReference": 1,
+          "QuickTime:Doc1:Copy1:HEVCConfigurationVersion": 1,
+          "QuickTime:Doc1:Copy1:GeneralProfileSpace": 0,
+          "QuickTime:Doc1:Copy1:GeneralTierFlag": 0,
+          "QuickTime:Doc1:Copy1:GeneralProfileIDC": 4,
+          "QuickTime:Doc1:Copy1:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Doc1:Copy1:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Doc1:Copy1:GeneralLevelIDC": 255,
+          "QuickTime:Doc1:Copy1:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Doc1:Copy1:ParallelismType": 0,
+          "QuickTime:Doc1:Copy1:ChromaFormat": 0,
+          "QuickTime:Doc1:Copy1:BitDepthLuma": 8,
+          "QuickTime:Doc1:Copy1:BitDepthChroma": 8,
+          "QuickTime:Doc1:Copy1:AverageFrameRate": 0,
+          "QuickTime:Doc1:Copy1:ConstantFrameRate": 0,
+          "QuickTime:Doc1:Copy1:NumTemporalLayers": 1,
+          "QuickTime:Doc1:Copy1:TemporalIDNested": 1,
+          "QuickTime:Doc1:Copy1:ImagePixelDepth": 8,
+          "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:hevc:2015:auxid:1",
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 128]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 128]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 128]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 128]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "multiple-heic",
+      "status": "passed",
+      "evidence": {
+        "source": "multiple.heic",
+        "sha256": "9a6cedae06a843f4498c037b1f69dc23cef756bae76a53f7ab8e47203ae48bb2",
+        "expected": {
+          "format": "HEIC",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "primaryImages": 2,
+          "auxiliaryImages": 0,
+          "pages": 2,
+          "nativeTags": {
+            "File:Main:FileType": "HEIF",
+            "QuickTime:Main:MajorBrand": "heix",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.heic",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "multiple.heic",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1332,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "HEIF",
+          "File:Main:FileTypeExtension": "HEIF",
+          "File:Main:MIMEType": "image/heif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 64,
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "heix", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:HEVCConfigurationVersion": 1,
+          "QuickTime:Main:GeneralProfileSpace": 0,
+          "QuickTime:Main:GeneralTierFlag": 0,
+          "QuickTime:Main:GeneralProfileIDC": 4,
+          "QuickTime:Main:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Main:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Main:GeneralLevelIDC": 255,
+          "QuickTime:Main:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Main:ParallelismType": 0,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:BitDepthLuma": 8,
+          "QuickTime:Main:BitDepthChroma": 8,
+          "QuickTime:Main:AverageFrameRate": 0,
+          "QuickTime:Main:ConstantFrameRate": 0,
+          "QuickTime:Main:NumTemporalLayers": 1,
+          "QuickTime:Main:TemporalIDNested": 1,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 64",
+          "QuickTime:Main:CleanAperture": "64 48 0 -8",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 867,
+          "QuickTime:Main:MediaDataOffset": 465,
+          "Meta:Main:PrimaryItemReference": 1,
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "multiple-avif",
+      "status": "passed",
+      "evidence": {
+        "source": "multiple.avif",
+        "sha256": "760b2cf4d6e7b6333c874b5a1ee6736cadf18724cb6db8aab6f3e1be3a82e8db",
+        "expected": {
+          "format": "AVIF",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "primaryImages": 2,
+          "auxiliaryImages": 0,
+          "pages": 2,
+          "nativeTags": {
+            "File:Main:FileType": "AVIF",
+            "QuickTime:Main:MajorBrand": "avif",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.avif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "multiple.avif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 462,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "AVIF",
+          "File:Main:FileTypeExtension": "AVIF",
+          "File:Main:MIMEType": "image/avif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "QuickTime:Main:MajorBrand": "avif",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "avif", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:AV1ConfigurationVersion": 1,
+          "QuickTime:Main:ChromaFormat": 0,
+          "QuickTime:Main:ChromaSamplePosition": 2,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 48",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 146,
+          "QuickTime:Main:MediaDataOffset": 316,
+          "Meta:Main:PrimaryItemReference": 1,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "animated-avif",
+      "status": "passed",
+      "evidence": {
+        "source": "animated.avif",
+        "sha256": "dbf96242d222e0432495461f94b0460a27c3dc00e5dd123707fc4425a3e13508",
+        "expected": {
+          "format": "AVIF",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "nativeTags": {
+            "File:Main:FileType": "MP4",
+            "Track1:Main:Copy1:HandlerType": "pict",
+            "QuickTime:Main:MajorBrand": "avis",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          }
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.avif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "animated.avif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1593,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "MP4",
+          "File:Main:FileTypeExtension": "MP4",
+          "File:Main:MIMEType": "video/mp4",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "QuickTime:Main:MajorBrand": "avis",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": [
+            "mif1",
+            "avif",
+            "miaf",
+            "msf1",
+            "isom",
+            "avis"
+          ],
+          "QuickTime:Main:MovieHeaderVersion": 0,
+          "QuickTime:Main:CreateDate": "0000:00:00 00:00:00",
+          "QuickTime:Main:ModifyDate": "0000:00:00 00:00:00",
+          "QuickTime:Main:TimeScale": 90000,
+          "QuickTime:Main:Duration": 0.4,
+          "QuickTime:Main:PreferredRate": 1,
+          "QuickTime:Main:PreferredVolume": 1,
+          "QuickTime:Main:PreviewTime": 0,
+          "QuickTime:Main:PreviewDuration": 0,
+          "QuickTime:Main:PosterTime": 0,
+          "QuickTime:Main:SelectionTime": 0,
+          "QuickTime:Main:SelectionDuration": 0,
+          "QuickTime:Main:CurrentTime": 0,
+          "QuickTime:Main:NextTrackID": 2,
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:AV1ConfigurationVersion": 1,
+          "QuickTime:Main:ChromaFormat": 0,
+          "QuickTime:Main:ChromaSamplePosition": 2,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 48",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 586,
+          "QuickTime:Main:MediaDataOffset": 1007,
+          "QuickTime:Main:Copy1:MatrixStructure": "1 0 0 0 1 0 0 0 1",
+          "QuickTime:Main:Copy1:MediaDataSize": 106,
+          "QuickTime:Main:Copy1:MediaDataOffset": 893,
+          "Track1:Main:TrackHeaderVersion": 0,
+          "Track1:Main:TrackCreateDate": "0000:00:00 00:00:00",
+          "Track1:Main:TrackModifyDate": "0000:00:00 00:00:00",
+          "Track1:Main:TrackID": 1,
+          "Track1:Main:TrackDuration": 0.4,
+          "Track1:Main:TrackLayer": 0,
+          "Track1:Main:TrackVolume": 1,
+          "Track1:Main:MatrixStructure": "1 0 0 0 1 0 0 0 1",
+          "Track1:Main:MediaHeaderVersion": 0,
+          "Track1:Main:MediaCreateDate": "0000:00:00 00:00:00",
+          "Track1:Main:MediaModifyDate": "0000:00:00 00:00:00",
+          "Track1:Main:MediaTimeScale": 90000,
+          "Track1:Main:MediaDuration": 0.4,
+          "Track1:Main:MediaLanguageCode": "unk",
+          "Track1:Main:OtherFormat": "av01",
+          "Track1:Main:GraphicsMode": 0,
+          "Track1:Main:OpColor": "0 0 0",
+          "Track1:Main:Copy1:ImageWidth": 64,
+          "Track1:Main:Copy1:ImageHeight": 48,
+          "Track1:Main:Copy1:HandlerType": "pict",
+          "Meta:Main:PrimaryItemReference": 1,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072,
+          "Composite:Main:AvgBitrate": 13840
+        },
+        "tracks": [
+          {
+            "codec_name": "av1",
+            "width": 64,
+            "height": 48,
+            "nb_frames": "2"
+          },
+          {
+            "codec_name": "av1",
+            "width": 64,
+            "height": 48,
+            "nb_frames": "1"
+          }
+        ],
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "animated-gif",
+      "status": "passed",
+      "evidence": {
+        "source": "animated.gif",
+        "sha256": "59141c8631ed1422e39d9ac11d7da94fd1850df98ebfaf5408d36c64ffdbb5e3",
+        "expected": {
+          "format": "GIF",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "nativeTags": {
+            "File:Main:FileType": "GIF",
+            "GIF:Main:FrameCount": 2
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.gif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "animated.gif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 344,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "GIF",
+          "File:Main:FileTypeExtension": "GIF",
+          "File:Main:MIMEType": "image/gif",
+          "GIF:Main:GIFVersion": "89a",
+          "GIF:Main:ImageWidth": 64,
+          "GIF:Main:ImageHeight": 48,
+          "GIF:Main:HasColorMap": 1,
+          "GIF:Main:ColorResolutionDepth": 8,
+          "GIF:Main:BitsPerPixel": 2,
+          "GIF:Main:BackgroundColor": 3,
+          "GIF:Main:AnimationIterations": 0,
+          "GIF:Main:FrameCount": 2,
+          "GIF:Main:Duration": 0.4,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "animated-webp",
+      "status": "passed",
+      "evidence": {
+        "source": "animated.webp",
+        "sha256": "dcee1058e84350e464fc7afa0b786011d3aa904b3a2175da13a2fd69f416617b",
+        "expected": {
+          "format": "WEBP",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "nativeTags": {
+            "File:Main:FileType": "Extended WEBP",
+            "RIFF:Main:AnimationLoopCount": 0,
+            "RIFF:Main:Duration": 0.4
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.webp",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "animated.webp",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 344,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "Extended WEBP",
+          "File:Main:FileTypeExtension": "WEBP",
+          "File:Main:MIMEType": "image/webp",
+          "RIFF:Main:WebP_Flags": 18,
+          "RIFF:Main:ImageWidth": 64,
+          "RIFF:Main:ImageHeight": 48,
+          "RIFF:Main:BackgroundColor": "255 255 255 255",
+          "RIFF:Main:AnimationLoopCount": 0,
+          "RIFF:Main:Duration": 0.4,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [254, 1, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [253, 255, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "multiple-tiff",
+      "status": "passed",
+      "evidence": {
+        "source": "multiple.tiff",
+        "sha256": "96a8fcec953ab948d744beef035895a8d657bda740a101bd053ad3b50ebf157a",
+        "expected": {
+          "format": "TIFF",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "pages": 2,
+          "nativeTags": {
+            "File:Main:FileType": "TIFF",
+            "File:Main:PageCount": 2
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.tiff",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "multiple.tiff",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 25148,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "TIFF",
+          "File:Main:FileTypeExtension": "TIF",
+          "File:Main:MIMEType": "image/tiff",
+          "File:Main:ExifByteOrder": "II",
+          "File:Main:PageCount": 2,
+          "IFD0:Main:Copy1:SubfileType": 2,
+          "IFD0:Main:Copy1:FillOrder": 1,
+          "IFD0:Main:Copy1:StripOffsets": 8,
+          "IFD0:Main:Copy1:StripByteCounts": 12288,
+          "IFD0:Main:Copy1:PageNumber": "0 2",
+          "IFD0:Main:Copy1:WhitePoint": "0.3127000034 0.3289999962",
+          "IFD0:Main:Copy1:ExtraSamples": 2,
+          "IFD0:Main:ImageWidth": 64,
+          "IFD0:Main:ImageHeight": 48,
+          "IFD0:Main:BitsPerSample": "8 8 8 8",
+          "IFD0:Main:Compression": 1,
+          "IFD0:Main:PhotometricInterpretation": 2,
+          "IFD0:Main:Orientation": 1,
+          "IFD0:Main:SamplesPerPixel": 4,
+          "IFD0:Main:RowsPerStrip": 48,
+          "IFD0:Main:PlanarConfiguration": 1,
+          "IFD0:Main:PrimaryChromaticities": "0.6399999857 0.3300000131 0.3000000119 0.6000000238 0.150000006 0.05999999866",
+          "IFD1:Main:SubfileType": 2,
+          "IFD1:Main:FillOrder": 1,
+          "IFD1:Main:StripOffsets": 12578,
+          "IFD1:Main:StripByteCounts": 12288,
+          "IFD1:Main:PageNumber": "1 2",
+          "IFD1:Main:WhitePoint": "0.3127000034 0.3289999962",
+          "IFD1:Main:ExtraSamples": 2,
+          "IFD1:Main:Copy1:ImageWidth": 64,
+          "IFD1:Main:Copy1:ImageHeight": 48,
+          "IFD1:Main:Copy1:BitsPerSample": "8 8 8 8",
+          "IFD1:Main:Copy1:Compression": 1,
+          "IFD1:Main:Copy1:PhotometricInterpretation": 2,
+          "IFD1:Main:Copy1:Orientation": 1,
+          "IFD1:Main:Copy1:SamplesPerPixel": 4,
+          "IFD1:Main:Copy1:RowsPerStrip": 48,
+          "IFD1:Main:Copy1:PlanarConfiguration": 1,
+          "IFD1:Main:Copy1:PrimaryChromaticities": "0.6399999857 0.3300000131 0.3000000119 0.6000000238 0.150000006 0.05999999866",
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "multiple-ico",
+      "status": "passed",
+      "evidence": {
+        "source": "multiple.ico",
+        "sha256": "f422a515feab31ddbbe574ca233915282a508402a3c3f3b86a7b16867f9145e0",
+        "expected": {
+          "format": "ICO",
+          "width": 64,
+          "height": 64,
+          "classification": "container",
+          "pages": 3,
+          "nativeTags": {
+            "File:Main:FileType": "ICO",
+            "File:Main:ImageCount": 3
+          },
+          "decodedImages": 3
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/multiple.ico",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "multiple.ico",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 22382,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "ICO",
+          "File:Main:FileTypeExtension": "ICO",
+          "File:Main:MIMEType": "image/x-icon",
+          "File:Main:ImageCount": 3,
+          "File:Doc1:ImageWidth": 64,
+          "File:Doc1:ImageHeight": 64,
+          "File:Doc1:NumColors": 0,
+          "File:Doc1:ColorPlanes": 1,
+          "File:Doc1:BitsPerPixel": 32,
+          "File:Doc1:ImageLength": 16936,
+          "File:Doc2:Copy1:ImageWidth": 32,
+          "File:Doc2:Copy1:ImageHeight": 32,
+          "File:Doc2:Copy1:NumColors": 0,
+          "File:Doc2:Copy1:ColorPlanes": 1,
+          "File:Doc2:Copy1:BitsPerPixel": 32,
+          "File:Doc2:Copy1:ImageLength": 4264,
+          "File:Doc3:Copy2:ImageWidth": 16,
+          "File:Doc3:Copy2:ImageHeight": 16,
+          "File:Doc3:Copy2:NumColors": 0,
+          "File:Doc3:Copy2:ColorPlanes": 1,
+          "File:Doc3:Copy2:BitsPerPixel": 32,
+          "File:Doc3:Copy2:ImageLength": 1128,
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 3,
+        "preview": {
+          "dimensions": "WEBP 64x64",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "animated-png",
+      "status": "passed",
+      "evidence": {
+        "source": "animated.png",
+        "sha256": "8e2289bd86c928039ed12f1293d4a104b6cbf68e18866bb329f1744a2898d212",
+        "expected": {
+          "format": "PNG",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "defaultImageIsFrame": true,
+          "nativeTags": {
+            "File:Main:FileType": "APNG",
+            "PNG:Main:AnimationFrames": 2
+          }
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/animated.png",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "animated.png",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 418,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "APNG",
+          "File:Main:FileTypeExtension": "PNG",
+          "File:Main:MIMEType": "image/apng",
+          "PNG:Main:ImageWidth": 64,
+          "PNG:Main:ImageHeight": 48,
+          "PNG:Main:BitDepth": 8,
+          "PNG:Main:ColorType": 6,
+          "PNG:Main:Compression": 0,
+          "PNG:Main:Filter": 0,
+          "PNG:Main:Interlace": 0,
+          "PNG:Main:AnimationFrames": 2,
+          "PNG:Main:AnimationPlays": 0,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "poster-png",
+      "status": "passed",
+      "evidence": {
+        "source": "poster.png",
+        "sha256": "a282495f83ef276e192bc2ba43e86e565a0888012c82b24eaf1b4331c1157190",
+        "expected": {
+          "format": "PNG",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "defaultImageIsFrame": false,
+          "nativeTags": {
+            "File:Main:FileType": "APNG",
+            "PNG:Main:AnimationFrames": 2
+          }
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/poster.png",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "poster.png",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 566,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "APNG",
+          "File:Main:FileTypeExtension": "PNG",
+          "File:Main:MIMEType": "image/apng",
+          "PNG:Main:ImageWidth": 64,
+          "PNG:Main:ImageHeight": 48,
+          "PNG:Main:BitDepth": 8,
+          "PNG:Main:ColorType": 6,
+          "PNG:Main:Compression": 0,
+          "PNG:Main:Filter": 0,
+          "PNG:Main:Interlace": 0,
+          "PNG:Main:AnimationFrames": 2,
+          "PNG:Main:AnimationPlays": 0,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-svg",
+      "status": "passed",
+      "evidence": {
+        "source": "static.svg",
+        "sha256": "9b2088858d5b3d15d171c2b79571188fdcf5fdd8c9a993f1ffd0f1edfcf165e1",
+        "expected": {
+          "format": "SVG",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "pages": 1,
+          "nativeTags": {
+            "File:Main:FileType": "SVG"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.svg",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.svg",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 224,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "SVG",
+          "File:Main:FileTypeExtension": "SVG",
+          "File:Main:MIMEType": "image/svg+xml",
+          "SVG:Main:Xmlns": "http://www.w3.org/2000/svg",
+          "SVG:Main:ImageWidth": 64,
+          "SVG:Main:ImageHeight": 48,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "static-gif",
+      "status": "passed",
+      "evidence": {
+        "source": "static.gif",
+        "sha256": "99b38100ab591107b27b0d5b3f6b2f49356918838f1c2eddc774fbe2a872838a",
+        "expected": {
+          "format": "GIF",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "frames": 1,
+          "nativeTags": {
+            "File:Main:FileType": "GIF"
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/static.gif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "static.gif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 241,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "GIF",
+          "File:Main:FileTypeExtension": "GIF",
+          "File:Main:MIMEType": "image/gif",
+          "GIF:Main:GIFVersion": "89a",
+          "GIF:Main:ImageWidth": 64,
+          "GIF:Main:ImageHeight": 48,
+          "GIF:Main:HasColorMap": 1,
+          "GIF:Main:ColorResolutionDepth": 8,
+          "GIF:Main:BitsPerPixel": 2,
+          "GIF:Main:BackgroundColor": 3,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "alpha-avif",
+      "status": "passed",
+      "evidence": {
+        "source": "alpha.avif",
+        "sha256": "7b94d61c30666b9fb92e9077ec308240199c70cf234b8ad050bcefb7092ed770",
+        "expected": {
+          "format": "AVIF",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "primaryImages": 1,
+          "auxiliaryImages": 1,
+          "nativeTags": {
+            "File:Main:FileType": "AVIF",
+            "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:mpegB:cicp:systems:auxiliary:alpha",
+            "QuickTime:Main:MajorBrand": "avif",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/alpha.avif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "alpha.avif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 549,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "AVIF",
+          "File:Main:FileTypeExtension": "AVIF",
+          "File:Main:MIMEType": "image/avif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "QuickTime:Main:MajorBrand": "avif",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "avif", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:AV1ConfigurationVersion": 1,
+          "QuickTime:Main:ChromaFormat": 0,
+          "QuickTime:Main:ChromaSamplePosition": 2,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 48",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 125,
+          "QuickTime:Main:MediaDataOffset": 424,
+          "Meta:Main:PrimaryItemReference": 1,
+          "QuickTime:Doc1:Copy1:AV1ConfigurationVersion": 1,
+          "QuickTime:Doc1:Copy1:ChromaFormat": 7,
+          "QuickTime:Doc1:Copy1:ChromaSamplePosition": 0,
+          "QuickTime:Doc1:Copy1:ImagePixelDepth": 8,
+          "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:mpegB:cicp:systems:auxiliary:alpha",
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [255, 0, 2, 128]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 128]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 0, 255, 128]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [255, 254, 255, 128]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "oriented-heic",
+      "status": "passed",
+      "evidence": {
+        "source": "oriented.heic",
+        "sha256": "7bc553e8c08b8806aee0933301eeaa93dec70e7ccd5e6651863673d7460b6e13",
+        "expected": {
+          "format": "HEIC",
+          "width": 48,
+          "height": 64,
+          "classification": "static",
+          "primaryImages": 1,
+          "auxiliaryImages": 0,
+          "nativeTags": {
+            "File:Main:FileType": "HEIF",
+            "QuickTime:Main:Rotation": 3,
+            "QuickTime:Main:MajorBrand": "heix",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/oriented.heic",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "oriented.heic",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1174,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:43+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "HEIF",
+          "File:Main:FileTypeExtension": "HEIF",
+          "File:Main:MIMEType": "image/heif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 64,
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "heix", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:HEVCConfigurationVersion": 1,
+          "QuickTime:Main:GeneralProfileSpace": 0,
+          "QuickTime:Main:GeneralTierFlag": 0,
+          "QuickTime:Main:GeneralProfileIDC": 4,
+          "QuickTime:Main:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Main:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Main:GeneralLevelIDC": 255,
+          "QuickTime:Main:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Main:ParallelismType": 0,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:BitDepthLuma": 8,
+          "QuickTime:Main:BitDepthChroma": 8,
+          "QuickTime:Main:AverageFrameRate": 0,
+          "QuickTime:Main:ConstantFrameRate": 0,
+          "QuickTime:Main:NumTemporalLayers": 1,
+          "QuickTime:Main:TemporalIDNested": 1,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 64",
+          "QuickTime:Main:CleanAperture": "64 48 0 -8",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:Rotation": 3,
+          "QuickTime:Main:MediaDataSize": 746,
+          "QuickTime:Main:MediaDataOffset": 428,
+          "Meta:Main:PrimaryItemReference": 1,
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 48x64",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 36,
+              "y": 8,
+              "rgba": [255, 0, 0, 255]
+            },
+            {
+              "x": 8,
+              "y": 48,
+              "rgba": [255, 255, 255, 255]
+            },
+            {
+              "x": 36,
+              "y": 48,
+              "rgba": [0, 255, 1, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "mirrored-heic",
+      "status": "passed",
+      "evidence": {
+        "source": "mirrored.heic",
+        "sha256": "4599490a774656885b6ca07cc04c7cc63d0f4a3e622607dbc8b67c8ac8a52830",
+        "expected": {
+          "format": "HEIC",
+          "width": 64,
+          "height": 48,
+          "classification": "static",
+          "primaryImages": 1,
+          "auxiliaryImages": 0,
+          "nativeTags": {
+            "File:Main:FileType": "HEIF",
+            "QuickTime:Main:Mirroring": 1,
+            "QuickTime:Main:MajorBrand": "heix",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 1
+          },
+          "decodedImages": 1
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/mirrored.heic",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "mirrored.heic",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1174,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:45+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "HEIF",
+          "File:Main:FileTypeExtension": "HEIF",
+          "File:Main:MIMEType": "image/heif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 64,
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "heix", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:HEVCConfigurationVersion": 1,
+          "QuickTime:Main:GeneralProfileSpace": 0,
+          "QuickTime:Main:GeneralTierFlag": 0,
+          "QuickTime:Main:GeneralProfileIDC": 4,
+          "QuickTime:Main:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Main:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Main:GeneralLevelIDC": 255,
+          "QuickTime:Main:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Main:ParallelismType": 0,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:BitDepthLuma": 8,
+          "QuickTime:Main:BitDepthChroma": 8,
+          "QuickTime:Main:AverageFrameRate": 0,
+          "QuickTime:Main:ConstantFrameRate": 0,
+          "QuickTime:Main:NumTemporalLayers": 1,
+          "QuickTime:Main:TemporalIDNested": 1,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 64",
+          "QuickTime:Main:CleanAperture": "64 48 0 -8",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:Mirroring": 1,
+          "QuickTime:Main:MediaDataSize": 746,
+          "QuickTime:Main:MediaDataOffset": 428,
+          "Meta:Main:PrimaryItemReference": 1,
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 1,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 55,
+              "y": 8,
+              "rgba": [255, 1, 0, 255]
+            },
+            {
+              "x": 15,
+              "y": 8,
+              "rgba": [0, 255, 3, 255]
+            },
+            {
+              "x": 55,
+              "y": 36,
+              "rgba": [0, 0, 255, 255]
+            },
+            {
+              "x": 15,
+              "y": 36,
+              "rgba": [255, 255, 255, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "offset-gif",
+      "status": "passed",
+      "evidence": {
+        "source": "offset.gif",
+        "sha256": "c8794ae29bdeb0bcbb5d5b6f53d88e326cd3c7e6b1a2ac44bcffbf1efec745d6",
+        "expected": {
+          "format": "GIF",
+          "width": 64,
+          "height": 48,
+          "classification": "animation",
+          "frames": 2,
+          "nativeTags": {
+            "File:Main:FileType": "GIF",
+            "GIF:Main:FrameCount": 2
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/offset.gif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "offset.gif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 138,
+          "System:Main:FileModifyDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:45+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 14:59:51+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "GIF",
+          "File:Main:FileTypeExtension": "GIF",
+          "File:Main:MIMEType": "image/gif",
+          "GIF:Main:GIFVersion": "89a",
+          "GIF:Main:ImageWidth": 64,
+          "GIF:Main:ImageHeight": 48,
+          "GIF:Main:HasColorMap": 1,
+          "GIF:Main:ColorResolutionDepth": 8,
+          "GIF:Main:BitsPerPixel": 1,
+          "GIF:Main:BackgroundColor": 0,
+          "GIF:Main:AnimationIterations": 0,
+          "GIF:Main:TransparentColor": 0,
+          "GIF:Main:FrameCount": 2,
+          "GIF:Main:Duration": 0.2,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 0,
+              "y": 0,
+              "rgba": [0, 0, 0, 0]
+            },
+            {
+              "x": 24,
+              "y": 16,
+              "rgba": [255, 0, 2, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "primary-second-heic",
+      "status": "passed",
+      "evidence": {
+        "source": "primary-second.heic",
+        "sha256": "c213f6e5c0b4d2bdc13b205ed95726e82e742b418487c8d39a394868980cc9b4",
+        "expected": {
+          "format": "HEIC",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "primaryImages": 2,
+          "auxiliaryImages": 0,
+          "pages": 2,
+          "nativeTags": {
+            "File:Main:FileType": "HEIF",
+            "QuickTime:Main:MajorBrand": "heix",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 2
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.heic",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "primary-second.heic",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 1332,
+          "System:Main:FileModifyDate": "2026:09:28 15:10:23+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:45+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 15:10:23+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "HEIF",
+          "File:Main:FileTypeExtension": "HEIF",
+          "File:Main:MIMEType": "image/heif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 64,
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "heix", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:HEVCConfigurationVersion": 1,
+          "QuickTime:Main:GeneralProfileSpace": 0,
+          "QuickTime:Main:GeneralTierFlag": 0,
+          "QuickTime:Main:GeneralProfileIDC": 4,
+          "QuickTime:Main:GenProfileCompatibilityFlags": 134217728,
+          "QuickTime:Main:ConstraintIndicatorFlags": "0 0 0 0 0 0",
+          "QuickTime:Main:GeneralLevelIDC": 255,
+          "QuickTime:Main:MinSpatialSegmentationIDC": 0,
+          "QuickTime:Main:ParallelismType": 0,
+          "QuickTime:Main:ChromaFormat": 3,
+          "QuickTime:Main:BitDepthLuma": 8,
+          "QuickTime:Main:BitDepthChroma": 8,
+          "QuickTime:Main:AverageFrameRate": 0,
+          "QuickTime:Main:ConstantFrameRate": 0,
+          "QuickTime:Main:NumTemporalLayers": 1,
+          "QuickTime:Main:TemporalIDNested": 1,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 64",
+          "QuickTime:Main:CleanAperture": "64 48 0 -8",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 867,
+          "QuickTime:Main:MediaDataOffset": 465,
+          "Meta:Main:PrimaryItemReference": 2,
+          "Composite:Main:ImageSize": "64 64",
+          "Composite:Main:Megapixels": 0.004096
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [0, 255, 1, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "primary-second-avif",
+      "status": "passed",
+      "evidence": {
+        "source": "primary-second.avif",
+        "sha256": "6729a01d14fe521fc6b64bf4ba0b0c8f7af2a721ace1937096d199aa840e11ba",
+        "expected": {
+          "format": "AVIF",
+          "width": 64,
+          "height": 48,
+          "classification": "container",
+          "primaryImages": 2,
+          "auxiliaryImages": 0,
+          "pages": 2,
+          "nativeTags": {
+            "File:Main:FileType": "AVIF",
+            "QuickTime:Main:MajorBrand": "avif",
+            "QuickTime:Main:HandlerType": "pict",
+            "Meta:Main:PrimaryItemReference": 2
+          },
+          "decodedImages": 2
+        },
+        "metadata": {
+          "SourceFile": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats/primary-second.avif",
+          "ExifTool:Main:ExifToolVersion": 13.55,
+          "System:Main:FileName": "primary-second.avif",
+          "System:Main:Directory": "/Users/dnslin/.codex/worktrees/147-media-samples/ariso/tests/fixtures/media-formats",
+          "System:Main:FileSize": 462,
+          "System:Main:FileModifyDate": "2026:09:28 15:10:23+08:00",
+          "System:Main:FileAccessDate": "2026:09:28 15:14:45+08:00",
+          "System:Main:FileInodeChangeDate": "2026:09:28 15:10:23+08:00",
+          "System:Main:FilePermissions": 100644,
+          "File:Main:FileType": "AVIF",
+          "File:Main:FileTypeExtension": "AVIF",
+          "File:Main:MIMEType": "image/avif",
+          "File:Main:ImageWidth": 64,
+          "File:Main:ImageHeight": 48,
+          "QuickTime:Main:MajorBrand": "avif",
+          "QuickTime:Main:MinorVersion": "0.0.0",
+          "QuickTime:Main:CompatibleBrands": ["mif1", "avif", "miaf"],
+          "QuickTime:Main:HandlerType": "pict",
+          "QuickTime:Main:AV1ConfigurationVersion": 1,
+          "QuickTime:Main:ChromaFormat": 0,
+          "QuickTime:Main:ChromaSamplePosition": 2,
+          "QuickTime:Main:ColorProfiles": "nclx",
+          "QuickTime:Main:ColorPrimaries": 1,
+          "QuickTime:Main:TransferCharacteristics": 13,
+          "QuickTime:Main:MatrixCoefficients": 0,
+          "QuickTime:Main:VideoFullRangeFlag": 1,
+          "QuickTime:Main:ImageSpatialExtent": "64 48",
+          "QuickTime:Main:ImagePixelDepth": "8 8 8",
+          "QuickTime:Main:MediaDataSize": 146,
+          "QuickTime:Main:MediaDataOffset": 316,
+          "Meta:Main:PrimaryItemReference": 2,
+          "Composite:Main:ImageSize": "64 48",
+          "Composite:Main:Megapixels": 0.003072
+        },
+        "decodedImages": 2,
+        "preview": {
+          "dimensions": "WEBP 64x48",
+          "pixels": [
+            {
+              "x": 8,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 8,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 8,
+              "y": 36,
+              "rgba": [0, 255, 1, 255]
+            },
+            {
+              "x": 48,
+              "y": 36,
+              "rgba": [0, 255, 1, 255]
+            }
+          ]
+        },
+        "originalUnchanged": true
+      }
+    },
+    {
+      "name": "misleading-extension-and-truncation",
+      "status": "passed",
+      "evidence": {
+        "detectedFormat": "PNG",
+        "detectedMime": "image/png",
+        "truncatedExitCode": 1,
+        "stderr": "magick: insufficient image data in file `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/truncated.png' @ error/png.c/ReadPNGImage/3962."
+      }
+    },
+    {
+      "name": "metadata-preservation",
+      "status": "passed",
+      "evidence": {
+        "status": "passed",
+        "source": "outputs/metadata.jpg",
+        "sha256": "4ee7096e4476836ff2e99d02dea95bd23db97a862d911f3eafd0ee5952025115",
+        "bytes": 7810,
+        "args": [
+          "-json",
+          "-a",
+          "-G1:3:4",
+          "-struct",
+          "-api",
+          "structformat=jsonq",
+          "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/metadata.jpg"
+        ],
+        "metadataPath": "outputs/metadata.json",
+        "duplicateArtists": ["second", "first"],
+        "groupedArtist": ["other-group"],
+        "numericText": "1.10",
+        "serial": "123456789012345678901234567890",
+        "structuredXmp": {
+          "AppliedToDimensions": {
+            "H": "16",
+            "Unit": "pixel",
+            "W": "32"
+          },
+          "RegionList": [
+            {
+              "Area": {
+                "H": "0.2",
+                "Unit": "normalized",
+                "W": "0.2",
+                "X": "0.5",
+                "Y": "0.5"
+              },
+              "Name": "1.10",
+              "Type": "Face"
+            }
+          ]
+        },
+        "iccSha256": "384b832de3412066743b52a75ee906b6fb9fb8d9e09e936fc2c43223815c6e0a",
+        "originalUnchanged": true,
+        "scope": "Tool-level extraction only; persistence, retry and ready-state semantics belong to MEDIA-METADATA."
+      }
+    },
+    {
+      "name": "svg-external-resources",
+      "status": "passed",
+      "evidence": {
+        "status": "passed",
+        "candidate": "@xmldom/xmldom + css-tree static admission followed by resvg-js with system fonts disabled and no image resolver",
+        "admission": [
+          {
+            "name": "safe",
+            "source": "outputs/safe.svg",
+            "allowed": true,
+            "rejection": null,
+            "rendererInvoked": true,
+            "rendered": {
+              "output": "outputs/candidate-safe.png",
+              "width": 32,
+              "height": 32,
+              "pixel": [0, 0, 255, 255],
+              "bytes": 100,
+              "sha256": "d8d64c1aabcd0ffa70f8020c8844485407052eb0707e8f995729f80cad7bb1a7"
+            },
+            "networkRequests": []
+          },
+          {
+            "name": "safe-use",
+            "source": "outputs/safe-use.svg",
+            "allowed": true,
+            "rejection": null,
+            "rendererInvoked": true,
+            "rendered": {
+              "output": "outputs/candidate-safe-use.png",
+              "width": 32,
+              "height": 32,
+              "pixel": [0, 255, 0, 255],
+              "bytes": 101,
+              "sha256": "02c5edd81178def998a32713d87ca5b1b99730d5cf4f16354f950a5f42987a0e"
+            },
+            "networkRequests": []
+          },
+          {
+            "name": "safe-gradient",
+            "source": "outputs/safe-gradient.svg",
+            "allowed": true,
+            "rejection": null,
+            "rendererInvoked": true,
+            "rendered": {
+              "output": "outputs/candidate-safe-gradient.png",
+              "width": 32,
+              "height": 32,
+              "pixel": [124, 0, 131, 255],
+              "bytes": 115,
+              "sha256": "46aa4775c7da56a1b66585e2e2802051a0b74abb8565b0e2179e481165415b42"
+            },
+            "networkRequests": []
+          },
+          {
+            "name": "network-image",
+            "source": "outputs/network-image.svg",
+            "allowed": false,
+            "rejection": "SVG external resource: http://127.0.0.1:52894/image.png",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "local-image",
+            "source": "outputs/local-image.svg",
+            "allowed": false,
+            "rejection": "SVG external resource: file:///var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-canary.png",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "absolute-image",
+            "source": "outputs/absolute-image.svg",
+            "allowed": false,
+            "rejection": "SVG external resource: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-canary.png",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "relative-image",
+            "source": "outputs/relative-image.svg",
+            "allowed": false,
+            "rejection": "SVG external resource: local-canary.png",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "script",
+            "source": "outputs/script.svg",
+            "allowed": false,
+            "rejection": "SVG active element: script",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "event-handler",
+            "source": "outputs/event-handler.svg",
+            "allowed": false,
+            "rejection": "SVG event handler: onload",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "animation",
+            "source": "outputs/animation.svg",
+            "allowed": false,
+            "rejection": "SVG active element: animate",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "local-entity",
+            "source": "outputs/local-entity.svg",
+            "allowed": false,
+            "rejection": "Reporting error \"entity not found:&payload;\" caused Error: SVG XML error: entity not found:&payload;",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "network-entity",
+            "source": "outputs/network-entity.svg",
+            "allowed": false,
+            "rejection": "Reporting error \"entity not found:&payload;\" caused Error: SVG XML error: entity not found:&payload;",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "css-import",
+            "source": "outputs/css-import.svg",
+            "allowed": false,
+            "rejection": "SVG CSS rule: import",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "css-escaped-import",
+            "source": "outputs/css-escaped-import.svg",
+            "allowed": false,
+            "rejection": "SVG CSS rule: import",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "css-escaped-url",
+            "source": "outputs/css-escaped-url.svg",
+            "allowed": false,
+            "rejection": "SVG external resource: http://127.0.0.1:52894/paint.svg",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "xml-base",
+            "source": "outputs/xml-base.svg",
+            "allowed": false,
+            "rejection": "SVG xml:base is prohibited",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          },
+          {
+            "name": "foreign-object",
+            "source": "outputs/foreign-object.svg",
+            "allowed": false,
+            "rejection": "SVG active element: foreignobject",
+            "rendererInvoked": false,
+            "rendered": null,
+            "networkRequests": []
+          }
+        ],
+        "cases": [
+          {
+            "name": "safe",
+            "source": "outputs/safe.svg",
+            "sha256": "aaa04c3bd981557627cda6cfa827ecebdb8763e2da8c1b6525bb08ebed29e1f9",
+            "bytes": 197,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-safe.png",
+            "pixel": [0, 0, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "safe-use",
+            "source": "outputs/safe-use.svg",
+            "sha256": "3d5da119bca0ef3e357e5ae3567ec927c59d53de10d724514aa973986a195fc7",
+            "bytes": 250,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-safe-use.png",
+            "pixel": [0, 255, 0],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "safe-gradient",
+            "source": "outputs/safe-gradient.svg",
+            "sha256": "767e1d6a46925aa9604541104f575f8142ebd79a68dc462dfd37b8a22ca2cdf3",
+            "bytes": 374,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-safe-gradient.png",
+            "pixel": [0, 0, 0],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "network-image",
+            "source": "outputs/network-image.svg",
+            "sha256": "3065ba001b60a648c7e90249872f64f8f47e6685fab6e356563bd55d78b8683d",
+            "bytes": 232,
+            "exitCode": 1,
+            "stderr": "magick: explicit coder not allowed `http://127.0.0.1:52894/image.png' @ error/constitute-private.h/StrictReadImage/56.",
+            "output": null,
+            "pixel": null,
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": true,
+            "originalUnchanged": true
+          },
+          {
+            "name": "local-image",
+            "source": "outputs/local-image.svg",
+            "sha256": "32d2a7156767dec35ed67d4d907fe73a7c653f80eb4c41132c5ee6e57594ee7b",
+            "bytes": 299,
+            "exitCode": 1,
+            "stderr": "magick: explicit coder not allowed `file:///var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-media-formats-awtSPR/local-canary.png' @ error/constitute-private.h/StrictReadImage/56.",
+            "output": null,
+            "pixel": null,
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": true,
+            "originalUnchanged": true
+          },
+          {
+            "name": "absolute-image",
+            "source": "outputs/absolute-image.svg",
+            "sha256": "f98efd1a51ba54c159332f4ea9f4f636907c0c9feb3d3d8e3c383cde55921808",
+            "bytes": 292,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-absolute-image.png",
+            "pixel": [255, 0, 0],
+            "networkRequests": [],
+            "localResourceRendered": true,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "relative-image",
+            "source": "outputs/relative-image.svg",
+            "sha256": "b3890c1f88f366abdad00d9248c4ae5b2c526989fd774412fa85c124f3b76026",
+            "bytes": 216,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-relative-image.png",
+            "pixel": [255, 0, 0],
+            "networkRequests": [],
+            "localResourceRendered": true,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "script",
+            "source": "outputs/script.svg",
+            "sha256": "000a4e0987aeb1c670a75dcc7811707972834347154935b82bba91d7a76b6d82",
+            "bytes": 210,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-script.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "event-handler",
+            "source": "outputs/event-handler.svg",
+            "sha256": "10d0499ab1bdd95e7851339c6df1b586af558ec21551d743f7ffef72d4db0110",
+            "bytes": 230,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-event-handler.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "animation",
+            "source": "outputs/animation.svg",
+            "sha256": "4e4c21b9fd4a9e61c67d8c75f98d6b895f1ce3b9474c15cd27d0051ad1c5aecf",
+            "bytes": 287,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-animation.png",
+            "pixel": [0, 128, 0],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "local-entity",
+            "source": "outputs/local-entity.svg",
+            "sha256": "551e04ebf904ee8cb5a524980f018cc7286c420bb1dd8c8a5e7dec4038c8e402",
+            "bytes": 307,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-local-entity.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "network-entity",
+            "source": "outputs/network-entity.svg",
+            "sha256": "c5f65d5adff4fe3ba9902e077bf815fd69046d08f265bfea26ea7b1c57d00fdc",
+            "bytes": 237,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-network-entity.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "css-import",
+            "source": "outputs/css-import.svg",
+            "sha256": "ca1323ec97b62c9a9292da5b8c17ef9f0ddc315e8c16544c264a56bdd5176ba6",
+            "bytes": 218,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-css-import.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "css-escaped-import",
+            "source": "outputs/css-escaped-import.svg",
+            "sha256": "feaaa59834f9e3964de9cc4cd04565099e9c2cc2d30acae0761402a21f014517",
+            "bytes": 215,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-css-escaped-import.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "css-escaped-url",
+            "source": "outputs/css-escaped-url.svg",
+            "sha256": "6fb955a501353606f27f2d1f365cf54e927a72aeafbb1fc595b34d0bbdea2694",
+            "bytes": 240,
+            "exitCode": 1,
+            "stderr": "magick: unrecognized color `u\\\\72l('http' @ warning/color.c/QueryColorCompliance/2506.\nmagick: non-conforming drawing primitive definition `fill' @ error/draw.c/RenderMVGContent/4678.",
+            "output": null,
+            "pixel": null,
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": true,
+            "originalUnchanged": true
+          },
+          {
+            "name": "xml-base",
+            "source": "outputs/xml-base.svg",
+            "sha256": "7a4494305f052e1c0b1277cc1b4383162f17c870f5add0614c97687b9b4ae5e2",
+            "bytes": 223,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-xml-base.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          },
+          {
+            "name": "foreign-object",
+            "source": "outputs/foreign-object.svg",
+            "sha256": "cb62cf103ee33e39d57dcd79af2836a535ba7300158fbf23ad0baf05a8deefc8",
+            "bytes": 235,
+            "exitCode": 0,
+            "stderr": "",
+            "output": "outputs/native-foreign-object.png",
+            "pixel": [255, 255, 255],
+            "networkRequests": [],
+            "localResourceRendered": false,
+            "timedOut": false,
+            "rejected": false,
+            "originalUnchanged": true
+          }
+        ],
+        "nativeNegativeControl": {
+          "status": "blocked",
+          "unsafeAccepted": [
+            "absolute-image",
+            "relative-image",
+            "script",
+            "event-handler",
+            "animation",
+            "local-entity",
+            "network-entity",
+            "css-import",
+            "css-escaped-import",
+            "xml-base",
+            "foreign-object"
+          ]
+        },
+        "limitation": "The parser policy passes this corpus; MSVG alone is not an admission validator. Direct native negative controls intentionally render rejected inputs to demonstrate that distinction. T-MED-06 #150 must integrate admission before rendering. No business endpoint or universal sandbox is implemented.",
+        "fixtureLicense": "Generated test SVG, PNG and entity payloads; no third-party artwork."
+      }
+    }
+  ],
+  "status": "passed"
+}
