@@ -1,6 +1,6 @@
 # UPLOAD-V01 迟到 PUT 最终收尾
 
-2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；只读预检中 SeaweedFS 可连接，且 OPTIONS 已允许实验来源的 PUT/content-type；R2 的 `images` 桶返回 403。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
+2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；按本轮最新确认将 R2 桶名改为 `image` 后，两服务 HeadBucket 均为 200，OPTIONS 均允许实验来源的 PUT/content-type。真实浏览器 PUT 尚未验证。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
 
 前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；本任务最初未继承其 AWS 豁免；所有者本轮另行明确免除本任务 AWS 实测，AWS 保留未验证，不算通过。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
 
@@ -91,7 +91,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 ## 未完成项
 
-1. R2 访问权限（用户已确认桶名为 `images`）、两服务真实浏览器 CORS 及实际 900 秒慢 PUT、取消、重放、对象最终复查证据。AWS 已获本任务验收豁免，不再阻塞。
+1. 两服务真实浏览器 CORS 及实际 900 秒慢 PUT、取消、重放、对象最终复查证据。R2 桶名按本轮最新确认改为 `image`，只读连通已通过。AWS 已获本任务验收豁免，不再阻塞。
 2. 在途进程崩溃、SDK PUT/Copy 响应丢失的真实服务样本。
 3. 可证明最终无写入的协议及有限收尾，必要时先修订规格。本轮不得把上述本地模拟测试或“保留责任”称为解决本项。
 4. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持；Release 双架构镜像/容器验证按既有流程，本轮未执行。
@@ -113,7 +113,7 @@ Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-pref
 
 ## CORS 判断更正与 R2 桶名确认
 
-用户确认 R2 桶名为 `images`。使用当前凭据分别以 `us-east-1` 和 `auto` 调用 HeadBucket/GetBucketLocation，均为 403；切换 region 未解决访问，尚不能仅凭该结果断言密钥无效或具体缺少哪项权限。
+此前按 `images` 桶名记录的检查（已被下节最新的 `image` 确认取代）：使用当前凭据分别以 `us-east-1` 和 `auto` 调用 HeadBucket/GetBucketLocation，均为 403；切换 region 未解决访问，尚不能仅凭该结果断言密钥无效或具体缺少哪项权限。
 
 前文 NoSuchCORSConfiguration 只说明缺少桶级规则，不能据此断言 SeaweedFS 缺少有效 CORS。[官方文档](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)说明没有桶级规则时可使用全局设置。此前将“无桶级规则”写成 CORS 阻塞的判断过强，现予更正。
 
