@@ -192,6 +192,48 @@
         "evidence": "browser-retry/runner.json"
       }
     ],
-    "review": "Independent reviewer confirmed no required issues in the service selection, policy change, or three JSON formatting edits; R2/SeaweedFS assertions and failure handling unchanged. Independent evidence review confirmed the mobile failure is a test race: succeeded read occurred on /upload before navigation, so terminal state correctly stops polling. No product failure established. Test fix awaits authorization; PR remains draft."
+    "review": "Independent reviewer confirmed no required issues in the service selection, policy change, or three JSON formatting edits; R2/SeaweedFS assertions and failure handling unchanged. Independent evidence review confirmed the mobile failure is a test race: succeeded read occurred on /upload before navigation, so terminal state correctly stops polling. No product failure established. Owner subsequently authorized the test fix. The historical failed run remains unchanged; the fixed full-run result is recorded separately."
+  },
+  "testTimingFix": {
+    "authorization": "Owner explicitly allowed modification after the independently diagnosed browser test race.",
+    "file": "e2e/workspace-continuity.mjs",
+    "change": "Hold actual XHR load and real GET response delivery until navigation, requiring a held response on /upload before releasing on /library. Preserve payloads, 20-second limit and persistence/identity assertions; release all holds in finally.",
+    "review": "Independent code-review-and-quality review: no required issues. node --check, file ESLint and git diff --check passed. Independent reviewer also cross-checked focused report identity/SQL assertions and both heldReadPaths; full reports are passed as well.",
+    "checks": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-final pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Before reaching the fixed scene, desktop M2 stalled at private PNG download and reached the unchanged per-script 300000ms cap. Three preceding downloaded files exist; fourth absent. No product error established; original run retained.",
+        "evidence": "browser-after-timing-fix/runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/workspace-focused-isolated node /tmp/ariso-155-workspace-focused.mjs",
+        "exitCode": 0,
+        "result": "Existing production fixture/setup/cleanup reused in a temporary scoped runner: both widths workspace continuity and final UI/library fixture passed. Earlier temporary harness preparation attempts hit identity-suite in-memory rate limits; corrected isolation restarts after setup without rerunning the unrelated login-failure suite. No limit or assertions changed.",
+        "evidence": "workspace-focused/runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-complete pnpm run test:browser",
+        "exitCode": 0,
+        "result": "Full suite passed, including both widths workspace continuity and final UI/library fixture. Eight M2 downloads completed. Temporary download stage logging was removed after diagnosis; request behavior/assertions unchanged.",
+        "evidence": "browser-complete/runner.json"
+      }
+    ]
   }
 }

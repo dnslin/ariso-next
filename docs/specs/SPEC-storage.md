@@ -1,7 +1,7 @@
 # Spec: storage — 本地与 S3 存储
 
 - 模块 ID：`storage`。
-- 状态：已通过评审；用户于 2026-09-17 确认。本地存储已交付；S3 对象模块的实施与未完成验收见 [T-STO-02 记录](../verification/storage-155/README.md)，配置管理与完整业务接入仍由后续任务承接。
+- 状态：已通过评审；用户于 2026-09-17 确认。本地存储已交付；S3 对象模块的实施与验收记录见 [T-STO-02 记录](../verification/storage-155/README.md)，配置管理与完整业务接入仍由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)与 [identity](./SPEC-identity.md)已通过评审；运行基础见 [runtime 归档](../archive/runtime/README.md)。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.2–5.3、8.1–8.4、9、14.7–14.10、18、20、24.2、26.2、26.4–26.6；[覆盖表](../tasks/coverage.md)。

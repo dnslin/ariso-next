@@ -1,6 +1,6 @@
 # T-STO-02 S3 对象操作与方法签名
 
-关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155) 与[草稿 PR #204](https://github.com/dnslin/ariso-next/pull/204)。核心实现与独立审计已完成，R2、SeaweedFS 真实服务验收通过。所有者于 2026-09-28 明确取消 AWS S3 实测要求，依据见[统一执行约定](../../tasks/execution.md#对象存储验证目标调整)；AWS S3 保持未验证。前置 #49、#70、#71 均已关闭。首次浏览器图库场景超时，重试结果见下文。
+关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155) 与[PR #204](https://github.com/dnslin/ariso-next/pull/204)。核心实现与独立审计已完成，R2、SeaweedFS 真实服务验收通过。所有者于 2026-09-28 明确取消 AWS S3 实测要求，依据见[统一执行约定](../../tasks/execution.md#对象存储验证目标调整)；AWS S3 保持未验证。前置 #49、#70、#71 均已关闭。浏览器历史失败、测试时序修正及最终完整通过记录见下文。
 
 ## 范围与调用契约
 
@@ -58,7 +58,19 @@ AWS S3 因缺少环境取消实测要求，已同步统一执行约定、任务�
 
 浏览器重试命令：`EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，退出 1。[重试运行报告](./browser-retry/runner.json)确认基础/故障恢复、桌面与手机认证、图库、上传及轮询、桌面与手机 M2、交互检查、桌面状态保留均通过。手机状态保留失败于等待 `/library` 上的成功读取，最后的 UI 夹具尚未运行；原图库超时未复现。
 
-从未导航或重载的原测试页面读取到[真实网络记录](./browser-retry/workspace-390-failure-network.json)：唯一提交已 accepted，图片 ready，任务 succeeded；成功读取发生在 `/upload`，早于手机导航完成。`useUploadLifetime` 对 saving 项每 2 秒轮询，成功后正常停止；测试只扣留 XHR 的 load 回调，没有扣留同期读取，因而可能在导航前已经结束。脚本随后等待 `/library` 再出现成功读取，20 秒后超时。独立评审实际读取请求记录、provider、controller 与脚本后确认该测试时序竞态，没有证据指向产品失败。此证据解释本次失败；未修改产品代码，也未把失败包装成通过。测试脚本属于本轮额外修改范围，已请求授权但尚未修改；PR 继续保留草稿。
+从未导航或重载的原测试页面读取到[真实网络记录](./browser-retry/workspace-390-failure-network.json)：唯一提交已 accepted，图片 ready，任务 succeeded；成功读取发生在 `/upload`，早于手机导航完成。`useUploadLifetime` 对 saving 项每 2 秒轮询，成功后正常停止；测试只扣留 XHR 的 load 回调，没有扣留同期读取，因而可能在导航前已经结束。脚本随后等待 `/library` 再出现成功读取，20 秒后超时。独立评审实际读取请求记录、provider、controller 与脚本后确认该测试时序竞态，没有证据指向产品失败。此证据解释本次失败；未修改产品代码，也未把失败包装成通过。所有者随后明确授权修正该测试。`e2e/workspace-continuity.mjs` 现在同时暂缓真实 XHR load 与真实提交 GET 响应的交付，在确认队列仍 saving 后完成导航，再原样释放。新增断言确认至少一份真实响应在 `/upload` 等待，从而必然覆盖导航前轮询的竞态；既有 20 秒上限、提交次数、真实数据库和队列/图片身份断言全部保留。finally 释放两类等待并恢复原始网络方法。产品代码没有变化，后续完整重跑结果单独记录。
+
+## 测试时序修正后的验证
+
+独立审计确认暂挂的是实际服务响应，未修改内容或断言；正常路径与 finally 均会释放等待。两端[聚焦验证](./workspace-focused/runner.json)已通过，1440/390 的报告均记录 `heldReadPaths: ['/upload']`，并核对单次提交、图库成功读取、回到上传页的 queue/image ID 与真实 SQL 记录一致。硬刷新、退出、会话过期、结果 401 和最终 UI 夹具也通过。独立评审逐项读取并交叉校验上述证据。
+
+聚焦运行临时复用既有生产夹具、初始化和清理代码，命令见 local-checks。前两次拆分准备因紧邻登录失败测试触发内存限流，保存了[初始化后限流](./focused-preparation/setup-rate-limit/workspace-continuity-1440.json)和[重启测试后限流](./focused-preparation/restart-suite-rate-limit/workspace-continuity-1440.json)证据；最终采用初始化后重启的独立场景准备，没有修改产品限流或测试断言。该准备修正不代表产品缺陷。
+
+第一次完整重跑在到达本次修改场景前，桌面 M2 的第四个下载等待达到 300 秒，见[原始失败报告](./browser-after-timing-fix/runner.json)。前三个下载文件存在，第四个未生成；未取得阶段日志时不能确认具体停点。该轮失败保留，不由聚焦通过覆盖。
+
+最终完整命令 `EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-complete pnpm run test:browser` **退出 0**，2026-09-28 08:47:44–09:03:04 UTC，全部适用场景通过，见[完整运行报告](./browser-complete/runner.json)。包括两端初始化/重启、图库、上传与轮询、M2、交互、状态保留和最终 UI/图库夹具。两端状态保留均在完整顺序下再次取得 `heldReadPaths: ['/upload']` 及身份一致性证据。运行器已停止服务、删除临时数据，末尾 UI 运行器按技能关闭同一个 Ego TaskSpace。
+
+该轮为排查下载等待，曾在 M2 测试中增加仅输出阶段的临时日志；[8 次桌面/手机下载](./browser-complete/download-stages.json)均实际完成事件和保存阶段，未改请求、断言或超时。该停顿未复现，根因尚未确定；不将一次通过表述成已修复此停顿。诊断日志代码已恢复，唯一持久测试改动仍是 workspace-continuity 的同步修正；恢复后重新执行格式、lint、类型及文档检查。完整原始输出保留在本机 `test-results/browser-complete/`，关键报告与实际手机截图随本记录提交。
 
 ## 真实服务验证
 
@@ -87,4 +99,4 @@ node tests/experiments/storage-s3/verify-objects.ts \
 
 ## 剩余验收与发布边界
 
-AWS S3 实测要求已由所有者取消，不再阻塞本任务；R2 与 SeaweedFS 的对象模块证据不替代下游完整业务验收。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。三份历史 JSON 已按授权修复且全仓格式检查通过；浏览器图库详情超时的重试结果单独记录。本次新增代码通过单元、集成、构建和独立代码审计，最终 PR 状态以适用检查完成情况为准。已通过 `gh pr view 204`、`gh pr checks 204` 与 `gh run list --branch codex/s3-object-155` 核对：PR 为 OPEN / draft，检查列表和运行列表均为空；`gh pr checks` 退出 1 并报告 no checks。没有远端检查被触发，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 已推送，未合并、关闭 Issue 或清理 worktree。
+AWS S3 实测要求已由所有者取消，不再阻塞本任务；R2 与 SeaweedFS 的对象模块证据不替代下游完整业务验收。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。三份历史 JSON 已按授权修复，全仓格式及最终完整浏览器检查通过。新增代码此前通过单元、集成、构建与独立审计；本轮测试同步修正及实际两端通过证据也完成独立复核。适用本地完成条件已满足。PR 初建时为草稿，首次 `gh pr checks` 退出 1 并报告 no checks；远端检查和工作流列表为空，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 持续推送；PR 状态在最终提交后回读记录，未合并、关闭 Issue 或清理 worktree。
