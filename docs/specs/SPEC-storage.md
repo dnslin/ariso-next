@@ -1,7 +1,7 @@
 # Spec: storage — 本地与 S3 存储
 
 - 模块 ID：`storage`。
-- 状态：已通过评审；用户于 2026-09-17 确认。未实现，未安装 S3 依赖。
+- 状态：已通过评审；用户于 2026-09-17 确认。本地存储已交付；S3 对象模块的实施与未完成验收见 [T-STO-02 记录](../verification/storage-155/README.md)，配置管理与完整业务接入仍由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)与 [identity](./SPEC-identity.md)已通过评审；运行基础见 [runtime 归档](../archive/runtime/README.md)。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.2–5.3、8.1–8.4、9、14.7–14.10、18、20、24.2、26.2、26.4–26.6；[覆盖表](../tasks/coverage.md)。
@@ -23,7 +23,7 @@ storage 提供配置、路径与对象访问、S3 测试/签名/CORS 检测和�
 
 现有 runtime 已创建 `${DATA_DIR}/storage` 父目录，**没有**创建 `default` 子目录或存储记录。`runPreflight(..., prepare)` 可同步准备目录和业务默认值；Drizzle 使用 better-sqlite3，事务内不得等待网络或异步文件流。
 
-仓库已有 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`；没有 AWS SDK。已临时读取 npm 官方 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1134.0** 的发布包类型，未修改依赖与锁文件。实施时固定实际版本，核对与 AWS S3、R2、MinIO 的真实兼容性。
+仓库复用 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`。T-STO-02 将 EV-STORAGE-01 已验证的 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1136.0** 从开发依赖移入生产依赖，保持锁定版本。已核对安装包的流、条件复制、方法签名和超时类型；本轮真实服务结果见[实施记录](../verification/storage-155/README.md)。当前验证目标为 AWS S3、R2、SeaweedFS，遵守[执行约定](../tasks/execution.md#对象存储验证目标调整)。
 
 | 库能力                                                             | 本模块使用方式                                                                   |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
@@ -34,7 +34,7 @@ storage 提供配置、路径与对象访问、S3 测试/签名/CORS 检测和�
 | `getSignedUrl`                                                     | PUT 900 秒；GET 300 秒；附件名称和类型用 GET 的响应参数                          |
 | `GetBucketVersioningCommand` / `GetObjectLockConfigurationCommand` | 支持这些接口的服务检查 Bucket 能力边界；不把未知、拒绝访问或未实现当作已通过     |
 
-官方资料：[SDK v3 的流与签名](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrate-s3.html)、[client-s3 发布包](https://registry.npmjs.org/@aws-sdk/client-s3/3.1134.0)、[presigner 发布包](https://registry.npmjs.org/@aws-sdk/s3-request-presigner/3.1134.0)。资料与类型核对不等于三服务已经通过测试。
+官方资料：[SDK v3 的流与签名](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrate-s3.html)、[client-s3 发布包](https://registry.npmjs.org/@aws-sdk/client-s3/3.1136.0)、[presigner 发布包](https://registry.npmjs.org/@aws-sdk/s3-request-presigner/3.1136.0)。资料与类型核对不等于三服务已经通过测试。
 
 所有大文件使用流，正常结束、失败和取消均关闭流并释放连接。服务器上传本地临时文件时提供已知 ContentLength。按站点配置核对实际文件大小，保留存储服务明确拒绝的错误；不要求探测服务技术极限并据此推导统一上限。本稿不凭空改变 PRD 的 50 MiB 默认值，也不提前扩展多段直传协议。
 

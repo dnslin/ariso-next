@@ -1,0 +1,20 @@
+{
+  "service": "aws",
+  "runId": "a4a95d97-cf4b-4760-ab3d-e23185047703",
+  "startedAt": "2026-09-28T07:08:21.503Z",
+  "status": "incomplete",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [],
+  "cleanupResponsibility": "No remote requests started",
+  "checks": [
+    {
+      "name": "real-service-environment",
+      "status": "incomplete",
+      "evidence": "No explicit credentials and test bucket supplied; no remote requests attempted"
+    }
+  ]
+}
