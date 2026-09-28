@@ -141,5 +141,57 @@
     }
   ],
   "implementationCommit": "d4b43e6",
-  "pullRequest": "https://github.com/dnslin/ariso-next/pull/204"
+  "pullRequest": "https://github.com/dnslin/ariso-next/pull/204",
+  "followUp": {
+    "date": "2026-09-28",
+    "authorization": "Owner cancelled AWS S3 live testing because no environment is available, requested Ego retry and correction of the three historical JSON files.",
+    "requiredServices": ["r2", "seaweedfs"],
+    "checks": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm exec prettier docs/verification/m2-85/remove-explanations/preview-switch/after.json docs/verification/m2-85/remove-explanations/preview-switch/before.json docs/verification/m2-85/remove-explanations/preview-switch/mobile.json --write",
+        "exitCode": 0,
+        "result": "Formatting only. Parsed JSON equals HEAD for all three files; independently verified."
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0,
+        "result": "Full repository formatting passes after the authorized historical corrections."
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements."
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases passed."
+      },
+      {
+        "command": "node tests/experiments/storage-s3/verify-objects.ts --output test-results/storage-155-required-matrix",
+        "exitCode": 1,
+        "result": "Expected: only R2/SeaweedFS selected; both incomplete without configuration. Report directories and statuses asserted. No remote requests.",
+        "evidence": "missing-environment-retry/run-B1BCUC"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Library, upload, polling, desktop/mobile M2 and interaction checks passed. Mobile workspace continuity timed out waiting for succeeded read on /library; captured network shows succeeded already observed on /upload. UI fixture suite was not reached. Production code unchanged.",
+        "evidence": "browser-retry/runner.json"
+      }
+    ],
+    "review": "Independent reviewer confirmed no required issues in the service selection, policy change, or three JSON formatting edits; R2/SeaweedFS assertions and failure handling unchanged. Independent evidence review confirmed the mobile failure is a test race: succeeded read occurred on /upload before navigation, so terminal state correctly stops polling. No product failure established. Test fix awaits authorization; PR remains draft."
+  }
 }

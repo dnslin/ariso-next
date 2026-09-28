@@ -1,0 +1,106 @@
+{
+  "url": "http://ariso-55627.localhost:55627/library",
+  "network": {
+    "submissions": [
+      {
+        "id": "a323c136-7ccb-4cfb-bf18-ed1fff22e047",
+        "storageId": "f72aeebe-b070-4dbd-942e-744a0a36e07c",
+        "visibility": "private",
+        "maxFileBytes": 52428800,
+        "sessions": [
+          {
+            "id": "868c0e38-89b5-4946-adc3-aefdb3dda665",
+            "queueItemId": "3517e824-d03a-4619-9421-e71fcd7252d8",
+            "groupIndex": 0,
+            "originalName": "sample.jpg",
+            "declaredSize": 638,
+            "state": "queued",
+            "imageId": null,
+            "jobId": null,
+            "byteSize": null,
+            "errorCode": null,
+            "error": null,
+            "cleanupStatus": "none",
+            "image": null,
+            "job": null
+          }
+        ]
+      }
+    ],
+    "reads": [
+      {
+        "pathname": "/upload",
+        "body": {
+          "id": "a323c136-7ccb-4cfb-bf18-ed1fff22e047",
+          "storageId": "f72aeebe-b070-4dbd-942e-744a0a36e07c",
+          "visibility": "private",
+          "maxFileBytes": 52428800,
+          "sessions": [
+            {
+              "id": "868c0e38-89b5-4946-adc3-aefdb3dda665",
+              "queueItemId": "3517e824-d03a-4619-9421-e71fcd7252d8",
+              "groupIndex": 0,
+              "originalName": "sample.jpg",
+              "declaredSize": 638,
+              "state": "accepted",
+              "imageId": "4e8965e3-6cc7-418d-9613-06814d127f6f",
+              "jobId": "fd87ce18-945a-4a61-b63f-818646ebd1da",
+              "byteSize": 638,
+              "errorCode": null,
+              "error": null,
+              "cleanupStatus": "none",
+              "image": {
+                "id": "4e8965e3-6cc7-418d-9613-06814d127f6f",
+                "storageId": "f72aeebe-b070-4dbd-942e-744a0a36e07c",
+                "originalName": "sample.jpg",
+                "displayName": "sample",
+                "visibility": "private",
+                "format": "JPEG",
+                "mime": "image/jpeg",
+                "width": 64,
+                "height": 48,
+                "byteSize": 638,
+                "animated": false,
+                "pageCount": 1,
+                "classification": "static",
+                "processingStatus": "ready",
+                "trashedAt": null,
+                "deletionStatus": null,
+                "createdAt": "2026-09-28T08:06:43.827Z",
+                "updatedAt": "2026-09-28T08:06:44.161Z"
+              },
+              "job": {
+                "id": "fd87ce18-945a-4a61-b63f-818646ebd1da",
+                "imageId": "4e8965e3-6cc7-418d-9613-06814d127f6f",
+                "kind": "process",
+                "scope": "all",
+                "snapshot": {
+                  "compressionEnabled": true,
+                  "outputFormat": "webp",
+                  "quality": 82,
+                  "maxEdge": null,
+                  "jpegBackground": "#FFFFFF",
+                  "watermarkMode": "off",
+                  "defaultVisibility": "public"
+                },
+                "expectedVersions": ["compressed", "thumbnail"],
+                "status": "succeeded",
+                "error": null,
+                "step": "complete",
+                "retryCount": 0,
+                "recoveryCount": 0,
+                "nextAttemptAt": null,
+                "startedAt": "2026-09-28T08:06:43.837Z",
+                "finishedAt": "2026-09-28T08:06:44.161Z",
+                "createdAt": "2026-09-28T08:06:43.827Z",
+                "updatedAt": "2026-09-28T08:06:44.161Z"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "releases": 0
+  },
+  "document": "2b2f93c5-7ebf-4506-a0ab-de3492ebc872"
+}

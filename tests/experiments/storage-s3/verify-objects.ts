@@ -97,7 +97,7 @@ const targets = values.config
 assert.equal(new Set(targets.map((item) => item.service)).size, targets.length);
 const selected = values.service
   ? [z.enum(services).parse(values.service)]
-  : services;
+  : (['r2', 'seaweedfs'] as const);
 const root = resolve(values.output);
 await mkdir(root, { recursive: true });
 const output = await mkdtemp(`${root}/run-`);

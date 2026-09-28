@@ -23,7 +23,7 @@ storage 提供配置、路径与对象访问、S3 测试/签名/CORS 检测和�
 
 现有 runtime 已创建 `${DATA_DIR}/storage` 父目录，**没有**创建 `default` 子目录或存储记录。`runPreflight(..., prepare)` 可同步准备目录和业务默认值；Drizzle 使用 better-sqlite3，事务内不得等待网络或异步文件流。
 
-仓库复用 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`。T-STO-02 将 EV-STORAGE-01 已验证的 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1136.0** 从开发依赖移入生产依赖，保持锁定版本。已核对安装包的流、条件复制、方法签名和超时类型；本轮真实服务结果见[实施记录](../verification/storage-155/README.md)。当前验证目标为 AWS S3、R2、SeaweedFS，遵守[执行约定](../tasks/execution.md#对象存储验证目标调整)。
+仓库复用 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`。T-STO-02 将 EV-STORAGE-01 已验证的 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1136.0** 从开发依赖移入生产依赖，保持锁定版本。已核对安装包的流、条件复制、方法签名和超时类型；本轮真实服务结果见[实施记录](../verification/storage-155/README.md)。当前必需验证目标为 R2、SeaweedFS；AWS S3 因无环境取消实测要求且保持未验证，遵守[执行约定](../tasks/execution.md#对象存储验证目标调整)。
 
 | 库能力                                                             | 本模块使用方式                                                                   |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
