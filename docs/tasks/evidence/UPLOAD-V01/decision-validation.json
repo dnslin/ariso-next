@@ -1,0 +1,73 @@
+{
+  "date": "2026-09-28",
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "platform": "macOS arm64",
+  "testedCommit": "5adfde8c92095e72c4d540599eb4edb18dbf1154",
+  "checks": [
+    {
+      "name": "format",
+      "command": ["pnpm", "run", "format:check"],
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "command": ["pnpm", "run", "lint"],
+      "exitCode": 0
+    },
+    {
+      "name": "typecheck",
+      "command": ["pnpm", "run", "typecheck"],
+      "exitCode": 0
+    },
+    {
+      "name": "unit",
+      "command": ["pnpm", "run", "test:unit", "--maxWorkers=2"],
+      "exitCode": 0
+    },
+    {
+      "name": "docs",
+      "command": ["node", "docs/tasks/check.mjs"],
+      "exitCode": 0
+    },
+    {
+      "name": "docs-self",
+      "command": ["node", "docs/tasks/check.mjs", "--self-test"],
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "command": ["pnpm", "run", "build"],
+      "exitCode": 0
+    },
+    {
+      "name": "integration-first",
+      "command": ["pnpm", "run", "test:integration", "--maxWorkers=4"],
+      "exitCode": 1,
+      "passed": 569,
+      "failed": 1,
+      "failure": "runtime/shutdown.test.ts: SIGTERM case; seed -> acceptOriginal INSERT: SqliteError: database is locked; before signal"
+    },
+    {
+      "name": "shutdown-recheck",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/runtime/shutdown.test.ts"
+      ],
+      "exitCode": 0,
+      "passed": 4
+    },
+    {
+      "name": "integration-recheck",
+      "command": ["pnpm", "run", "test:integration", "--maxWorkers=2"],
+      "exitCode": 0,
+      "files": 73,
+      "passed": 570
+    }
+  ]
+}

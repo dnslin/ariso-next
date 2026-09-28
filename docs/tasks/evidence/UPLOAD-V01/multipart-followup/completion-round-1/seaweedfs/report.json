@@ -1,0 +1,917 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-28T09:27:27.913Z",
+  "status": "observed",
+  "productionReleasePermitted": false,
+  "backendPartsReclaimed": "unverified",
+  "cases": [
+    {
+      "mode": "lost-response",
+      "key": "ariso/upload-v01/completion/f21aefe4-1763-4000-a463-44a5e6acbad5",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:27.916Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/f21aefe4-1763-4000-a463-44a5e6acbad5",
+            "UploadId": "afafc1bda2469331b5deb0cc35ab4ee49d1a8edb_9dda8e768120460cabfb4809d76b8e2a",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FAC6E36DBD5304E9C8",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:28.774Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:28.775Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FAD4B9390E41176F0D",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:29.100Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:30.204Z",
+          "error": {
+            "name": "InjectedResponseLoss",
+            "message": "Injected loss after provider Complete response",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:30.490Z"
+        },
+        {
+          "name": "provider-complete-response",
+          "dispatchedAt": "2026-09-28T09:27:30.488Z",
+          "result": {
+            "status": 200,
+            "requestId": "18D971FB2DCFA937EFA79CC0",
+            "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<CompleteMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Location>https://fs.447654.xyz/images/ariso/upload-v01/completion/f21aefe4-1763-4000-a463-44a5e6acbad5</Location><Bucket>images</Bucket><Key>ariso/upload-v01/completion/f21aefe4-1763-4000-a463-44a5e6acbad5</Key><ETag>&#34;eb9e93867e85e8fe954c49c428f757f2-1&#34;</ETag></CompleteMultipartUploadResult>"
+          }
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:31.385Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FB68EF7EF5ED6A8AD3",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:31.485Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:31.486Z",
+          "result": {
+            "AcceptRanges": "bytes",
+            "LastModified": "2026-09-28T09:27:30.000Z",
+            "ContentLength": 65536,
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "ContentType": "application/octet-stream",
+            "Metadata": {},
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FB6F3DCEE0463B4321",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:31.591Z"
+        },
+        {
+          "name": "get-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:31.592Z",
+          "result": {
+            "bytes": 65536,
+            "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+          },
+          "settledAt": "2026-09-28T09:27:31.883Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:32.985Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FBC8C004B01D6FD931",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:33.091Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:33.092Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FBCFC58392D3EE3FD2",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:33.209Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:33.211Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FBD693602EDE6A30E0",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:33.323Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "afafc1bda2469331b5deb0cc35ab4ee49d1a8edb_9dda8e768120460cabfb4809d76b8e2a",
+      "recovery": {
+        "pid": 79065,
+        "exists": true,
+        "events": [
+          {
+            "name": "list",
+            "dispatchedAt": "2026-09-28T09:27:30.622Z",
+            "error": {
+              "name": "NoSuchUpload",
+              "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+              "httpStatusCode": 404,
+              "requestId": "18D971FB497B9FC352FD617E",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            },
+            "settledAt": "2026-09-28T09:27:30.960Z"
+          },
+          {
+            "name": "head",
+            "dispatchedAt": "2026-09-28T09:27:30.960Z",
+            "result": {
+              "AcceptRanges": "bytes",
+              "LastModified": "2026-09-28T09:27:30.000Z",
+              "ContentLength": 65536,
+              "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+              "ContentType": "application/octet-stream",
+              "Metadata": {},
+              "$metadata": {
+                "httpStatusCode": 200,
+                "requestId": "18D971FB504D90DB4CE0FD76",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "settledAt": "2026-09-28T09:27:31.068Z"
+          }
+        ],
+        "actualSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+        "contentMatches": true
+      }
+    },
+    {
+      "mode": "complete-first",
+      "key": "ariso/upload-v01/completion/f001389a-c3a9-44a0-97bb-5b3a89fd3c0c",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:33.326Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/f001389a-c3a9-44a0-97bb-5b3a89fd3c0c",
+            "UploadId": "a82825b823b34d757ad890fab31bc14369ed3b1a_27028c0270794c2eb777539ff22e6a41",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FBDD115C64B51B11CF",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:33.436Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:33.437Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FBE3B21E92E8D3AB71",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:33.545Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:34.648Z",
+          "result": {
+            "Location": "https://fs.447654.xyz/images/ariso/upload-v01/completion/f001389a-c3a9-44a0-97bb-5b3a89fd3c0c",
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/f001389a-c3a9-44a0-97bb-5b3a89fd3c0c",
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FC2CB841039C95F2EA",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:34.770Z"
+        },
+        {
+          "name": "abort",
+          "dispatchedAt": "2026-09-28T09:27:34.772Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FC3417829831DA85F5",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:34.892Z"
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:34.893Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FC3AF27C0B42359559",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:35.007Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:35.008Z",
+          "result": {
+            "AcceptRanges": "bytes",
+            "LastModified": "2026-09-28T09:27:34.000Z",
+            "ContentLength": 65536,
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "ContentType": "application/octet-stream",
+            "Metadata": {},
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FC423EF91D0FA738D8",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:35.129Z"
+        },
+        {
+          "name": "get-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:35.131Z",
+          "result": {
+            "bytes": 65536,
+            "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+          },
+          "settledAt": "2026-09-28T09:27:35.325Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:36.429Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FC95F8230AAF3199E5",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:36.534Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:36.536Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FC9CD17156CF9A8009",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:36.650Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:36.652Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FCA39B66762DA87233",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:36.763Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "a82825b823b34d757ad890fab31bc14369ed3b1a_27028c0270794c2eb777539ff22e6a41"
+    },
+    {
+      "mode": "abort-first",
+      "key": "ariso/upload-v01/completion/91e34b67-b5a2-4911-8c58-235a044ffb7f",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:36.768Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/91e34b67-b5a2-4911-8c58-235a044ffb7f",
+            "UploadId": "3fe74f6429da80c0fbbc6a959d843797c93ea63c_472a264596c14e1992a94f6ff41fcadb",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FCA9FE65504BF7EA76",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:36.871Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:36.872Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FCB01C45CC065DD894",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:36.975Z"
+        },
+        {
+          "name": "abort",
+          "dispatchedAt": "2026-09-28T09:27:38.078Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FCF844B8B02148383A",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:38.183Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:38.185Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FCFE688EA28A42A6CB",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:38.287Z"
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:38.289Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FD04EAF3AA16E2F06D",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:38.396Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:38.397Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FD0BDFC5889E54C1F2",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:38.512Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:39.614Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FD53D36DB71C4048D1",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:39.719Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:39.720Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FD597F31A210A07AD3",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:39.814Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:39.815Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FD5F7F3C4382BECC0F",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:39.915Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "3fe74f6429da80c0fbbc6a959d843797c93ea63c_472a264596c14e1992a94f6ff41fcadb"
+    },
+    {
+      "mode": "concurrent-1",
+      "key": "ariso/upload-v01/completion/10ea4a74-949a-42bb-ade0-58ffe9fb4265",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:39.917Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/10ea4a74-949a-42bb-ade0-58ffe9fb4265",
+            "UploadId": "c365c4fff6f25416fe825fcf1f2fe3e8fccbf693_1fd325875914440580683fe6f7caab8f",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FD66230DDF2C6175A7",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:40.029Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:40.029Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FD6CA05BD3779E622F",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:40.138Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:41.240Z",
+          "result": {
+            "Location": "https://fs.447654.xyz/images/ariso/upload-v01/completion/10ea4a74-949a-42bb-ade0-58ffe9fb4265",
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/10ea4a74-949a-42bb-ade0-58ffe9fb4265",
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FDB4DF27AAB9450898",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:41.349Z"
+        },
+        {
+          "name": "abort",
+          "dispatchedAt": "2026-09-28T09:27:41.240Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FDC1942FA34C6BB00B",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:41.561Z"
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:41.563Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FDC8614861D4E493D2",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:41.676Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:41.677Z",
+          "result": {
+            "AcceptRanges": "bytes",
+            "LastModified": "2026-09-28T09:27:41.000Z",
+            "ContentLength": 65536,
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "ContentType": "application/octet-stream",
+            "Metadata": {},
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FDCF26F86E8D4B2CF6",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:41.789Z"
+        },
+        {
+          "name": "get-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:41.789Z",
+          "result": {
+            "bytes": 65536,
+            "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+          },
+          "settledAt": "2026-09-28T09:27:42.127Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:43.229Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FE2BA4938741B3ABE7",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:43.340Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:43.342Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FE32DE480A6D7AC9CF",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:43.461Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:43.462Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FE396F864E7F961F93",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:43.572Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "c365c4fff6f25416fe825fcf1f2fe3e8fccbf693_1fd325875914440580683fe6f7caab8f"
+    },
+    {
+      "mode": "concurrent-2",
+      "key": "ariso/upload-v01/completion/a161ff0d-946c-4fc7-8677-8d8b40bf38f2",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:43.575Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/a161ff0d-946c-4fc7-8677-8d8b40bf38f2",
+            "UploadId": "e9d210dd476b59a4766709438a8386d413d0d75d_0ae38e7b8f324c6c84fc382ac6aa7cd2",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FE3F4FC4E995F0C6E3",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:43.672Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:43.673Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FE45411CF2C1B74D3F",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:43.865Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:44.969Z",
+          "result": {
+            "Location": "https://fs.447654.xyz/images/ariso/upload-v01/completion/a161ff0d-946c-4fc7-8677-8d8b40bf38f2",
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/a161ff0d-946c-4fc7-8677-8d8b40bf38f2",
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FE93924CD3ADB7EE7D",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:45.086Z"
+        },
+        {
+          "name": "abort",
+          "dispatchedAt": "2026-09-28T09:27:44.969Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FE93B9FD8B5BB6EE22",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:45.087Z"
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:45.088Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FE9AA2085AE465B828",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:45.203Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:45.204Z",
+          "result": {
+            "AcceptRanges": "bytes",
+            "LastModified": "2026-09-28T09:27:45.000Z",
+            "ContentLength": 65536,
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "ContentType": "application/octet-stream",
+            "Metadata": {},
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FEA12532D683CC816C",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:45.312Z"
+        },
+        {
+          "name": "get-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:45.313Z",
+          "result": {
+            "bytes": 65536,
+            "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+          },
+          "settledAt": "2026-09-28T09:27:45.477Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:46.580Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FEF314B8283687B109",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:46.686Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:46.687Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FEF9765C2294C6719C",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:46.793Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:46.795Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FF0011B3D1AEE8C0D0",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:46.904Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "e9d210dd476b59a4766709438a8386d413d0d75d_0ae38e7b8f324c6c84fc382ac6aa7cd2"
+    },
+    {
+      "mode": "concurrent-3",
+      "key": "ariso/upload-v01/completion/942d8279-f4ae-4f74-a57d-f4021bb14e41",
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "events": [
+        {
+          "name": "create",
+          "dispatchedAt": "2026-09-28T09:27:46.908Z",
+          "result": {
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/942d8279-f4ae-4f74-a57d-f4021bb14e41",
+            "UploadId": "7c3b839751e49e9f204a6f0d0e7ab37b3f0ba2a4_6e66cefa06294216a67d824b496142d6",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FF06DE966430F48C58",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:47.020Z"
+        },
+        {
+          "name": "part",
+          "dispatchedAt": "2026-09-28T09:27:47.021Z",
+          "result": {
+            "ETag": "\"2d61aa54b58c2e94403fb092c3dbc027\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FF0D6A56E0F35C6ADA",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:47.130Z"
+        },
+        {
+          "name": "complete",
+          "dispatchedAt": "2026-09-28T09:27:48.233Z",
+          "result": {
+            "Location": "https://fs.447654.xyz/images/ariso/upload-v01/completion/942d8279-f4ae-4f74-a57d-f4021bb14e41",
+            "Bucket": "images",
+            "Key": "ariso/upload-v01/completion/942d8279-f4ae-4f74-a57d-f4021bb14e41",
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FF566579BFFB1F0BCC",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:48.354Z"
+        },
+        {
+          "name": "abort",
+          "dispatchedAt": "2026-09-28T09:27:48.233Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FF567F7127C8FA3455",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:48.355Z"
+        },
+        {
+          "name": "list-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:48.357Z",
+          "error": {
+            "name": "NoSuchUpload",
+            "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+            "httpStatusCode": 404,
+            "requestId": "18D971FF5D5F85BF67D1120F",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:48.470Z"
+        },
+        {
+          "name": "head-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:48.471Z",
+          "result": {
+            "AcceptRanges": "bytes",
+            "LastModified": "2026-09-28T09:27:48.000Z",
+            "ContentLength": 65536,
+            "ETag": "\"eb9e93867e85e8fe954c49c428f757f2-1\"",
+            "ContentType": "application/octet-stream",
+            "Metadata": {},
+            "$metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D971FF63EC7973BF2B1B47",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:48.580Z"
+        },
+        {
+          "name": "get-after-settled",
+          "dispatchedAt": "2026-09-28T09:27:48.582Z",
+          "result": {
+            "bytes": 65536,
+            "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+          },
+          "settledAt": "2026-09-28T09:27:48.755Z"
+        },
+        {
+          "name": "cleanup-abort",
+          "dispatchedAt": "2026-09-28T09:27:49.858Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FFB74D515C00227598",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:49.980Z"
+        },
+        {
+          "name": "cleanup-delete",
+          "dispatchedAt": "2026-09-28T09:27:49.982Z",
+          "result": {
+            "$metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D971FFBE71EB66495E1933",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "settledAt": "2026-09-28T09:27:50.099Z"
+        },
+        {
+          "name": "cleanup-head",
+          "dispatchedAt": "2026-09-28T09:27:50.101Z",
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D971FFC551E2D9E5DFC510",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "settledAt": "2026-09-28T09:27:50.214Z"
+        }
+      ],
+      "objectAbsent": true,
+      "uploadId": "7c3b839751e49e9f204a6f0d0e7ab37b3f0ba2a4_6e66cefa06294216a67d824b496142d6"
+    }
+  ],
+  "failures": []
+}

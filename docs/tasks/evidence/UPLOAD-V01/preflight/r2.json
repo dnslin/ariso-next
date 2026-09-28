@@ -1,0 +1,26 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "images",
+  "region": "us-east-1",
+  "at": "2026-09-28T07:48:19.479Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "operation": "HeadBucketCommand",
+      "error": {
+        "name": "Unknown",
+        "message": "UnknownError",
+        "status": 403
+      }
+    },
+    {
+      "operation": "GetBucketCorsCommand",
+      "error": {
+        "name": "AccessDenied",
+        "message": "Access Denied",
+        "status": 403
+      }
+    }
+  ]
+}

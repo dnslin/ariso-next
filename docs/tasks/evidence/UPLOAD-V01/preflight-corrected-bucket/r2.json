@@ -1,0 +1,29 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "region": "us-east-1",
+  "at": "2026-09-28T08:34:45.715Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "operation": "HeadBucketCommand",
+      "response": {
+        "BucketRegion": "APAC",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "operation": "GetBucketCorsCommand",
+      "error": {
+        "name": "AccessDenied",
+        "message": "Access Denied",
+        "status": 403
+      }
+    }
+  ]
+}

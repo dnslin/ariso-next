@@ -1,0 +1,200 @@
+{
+  "status": "observed",
+  "service": "r2",
+  "bucket": "image",
+  "key": "upload-v01/multipart/52b1ca85-cf2d-4bd0-bdb4-b5ef0bc3199a",
+  "events": [
+    {
+      "name": "create",
+      "at": "2026-09-28T09:01:01.419Z",
+      "result": {
+        "AbortDate": "2026-10-05T09:01:02.000Z",
+        "AbortRuleId": "Default%20Multipart%20Abort%20Rule",
+        "Bucket": "image",
+        "Key": "upload-v01/multipart/52b1ca85-cf2d-4bd0-bdb4-b5ef0bc3199a",
+        "UploadId": "AG7AZ2FE36XNtRK9gv3grEIhufONYvGBkhj-Dcp0mbMSaptQfylLtfc_Hp2kJr7YTDueEAgfgK4QdVu8DAtd2Q3e6KsPwPUoj_llMJMaM6KXzBQcAZXapOwoxFIL3DY0HW5OMAhzAIxNLW81Ocvqu5uLmyDDdOmBkFtR-Gf5mQ4nnh_NHNn_kyWbOIc9YICP4Mwfz4hsb-qd33u2t2Ko-yaclbX93ffOswRyuGSDIJCDaX2Vy-4ZWAKh1Kurp9jYNG9OYcdekD2SexcCV1RktAn-sb9yCNxiqzq-fY0KpPdM1LmuSu952nlcU8ENP_1pO4G5R3GVBmX9RAEE2Lgpj0g",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "upload-part-1",
+      "at": "2026-09-28T09:01:02.740Z",
+      "result": {
+        "ETag": "\"79b281060d337b9b2b84ccf390adcf74\"",
+        "ChecksumCRC64NVME": "PbvLEkWUSgg=",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "list-before-abort",
+      "at": "2026-09-28T09:01:08.011Z",
+      "result": {
+        "Bucket": "image",
+        "Key": "upload-v01/multipart/52b1ca85-cf2d-4bd0-bdb4-b5ef0bc3199a",
+        "UploadId": "AG7AZ2FE36XNtRK9gv3grEIhufONYvGBkhj-Dcp0mbMSaptQfylLtfc_Hp2kJr7YTDueEAgfgK4QdVu8DAtd2Q3e6KsPwPUoj_llMJMaM6KXzBQcAZXapOwoxFIL3DY0HW5OMAhzAIxNLW81Ocvqu5uLmyDDdOmBkFtR-Gf5mQ4nnh_NHNn_kyWbOIc9YICP4Mwfz4hsb-qd33u2t2Ko-yaclbX93ffOswRyuGSDIJCDaX2Vy-4ZWAKh1Kurp9jYNG9OYcdekD2SexcCV1RktAn-sb9yCNxiqzq-fY0KpPdM1LmuSu952nlcU8ENP_1pO4G5R3GVBmX9RAEE2Lgpj0g",
+        "PartNumberMarker": "0",
+        "NextPartNumberMarker": "1",
+        "MaxParts": 1000,
+        "IsTruncated": false,
+        "Parts": [
+          {
+            "PartNumber": 1,
+            "LastModified": "2026-09-28T09:01:07.873Z",
+            "ETag": "\"79b281060d337b9b2b84ccf390adcf74\"",
+            "Size": 5242880
+          }
+        ],
+        "Initiator": {
+          "ID": "24aefab5f3cb70b3568d7aeaf292135b",
+          "DisplayName": "24aefab5f3cb70b3568d7aeaf292135b"
+        },
+        "Owner": {
+          "DisplayName": "24aefab5f3cb70b3568d7aeaf292135b",
+          "ID": "24aefab5f3cb70b3568d7aeaf292135b"
+        },
+        "StorageClass": "STANDARD",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "abort-during-send",
+      "at": "2026-09-28T09:01:11.129Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "list-immediately-after-abort",
+      "at": "2026-09-28T09:01:11.622Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist.",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "slow-part-result",
+      "at": "2026-09-28T09:01:21.425Z",
+      "result": {
+        "startedAt": "2026-09-28T09:01:09.627Z",
+        "finishedAt": "2026-09-28T09:01:21.425Z",
+        "bytesSent": 5242880,
+        "bodyFinishedAt": "2026-09-28T09:01:20.717Z",
+        "outcome": "response",
+        "status": 404,
+        "code": "NoSuchUpload"
+      }
+    },
+    {
+      "name": "list-after-sender-settled",
+      "at": "2026-09-28T09:01:21.426Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist.",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "repeat-abort",
+      "at": "2026-09-28T09:01:23.207Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "replay-old-part-url",
+      "at": "2026-09-28T09:01:24.752Z",
+      "result": {
+        "startedAt": "2026-09-28T09:01:24.752Z",
+        "finishedAt": "2026-09-28T09:01:25.501Z",
+        "bytesSent": 1024,
+        "bodyFinishedAt": "2026-09-28T09:01:25.090Z",
+        "outcome": "response",
+        "status": 404,
+        "code": "NoSuchUpload"
+      }
+    },
+    {
+      "name": "complete-aborted-session",
+      "at": "2026-09-28T09:01:26.603Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist.",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "head-after-complete-attempt",
+      "at": "2026-09-28T09:01:27.004Z",
+      "error": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "cleanup-abort",
+      "at": "2026-09-28T09:01:28.499Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "cleanup-delete",
+      "at": "2026-09-28T09:01:29.497Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "cleanup-head",
+      "at": "2026-09-28T09:01:29.959Z",
+      "error": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ],
+  "objectAbsent": true,
+  "backendPartsReclaimed": "unverified",
+  "uploadId": "AG7AZ2FE36XNtRK9gv3grEIhufONYvGBkhj-Dcp0mbMSaptQfylLtfc_Hp2kJr7YTDueEAgfgK4QdVu8DAtd2Q3e6KsPwPUoj_llMJMaM6KXzBQcAZXapOwoxFIL3DY0HW5OMAhzAIxNLW81Ocvqu5uLmyDDdOmBkFtR-Gf5mQ4nnh_NHNn_kyWbOIc9YICP4Mwfz4hsb-qd33u2t2Ko-yaclbX93ffOswRyuGSDIJCDaX2Vy-4ZWAKh1Kurp9jYNG9OYcdekD2SexcCV1RktAn-sb9yCNxiqzq-fY0KpPdM1LmuSu952nlcU8ENP_1pO4G5R3GVBmX9RAEE2Lgpj0g"
+}

@@ -1,0 +1,25 @@
+{
+  "service": "r2",
+  "status": "incomplete",
+  "startedAt": "2026-09-28T07:01:43.725Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "sdk": "3.1136.0"
+  },
+  "keys": [],
+  "checks": [
+    {
+      "name": "real-service-environment",
+      "status": "incomplete",
+      "evidence": "No explicit test bucket configuration supplied; no remote operations attempted."
+    }
+  ],
+  "experiment": "UPLOAD-V01",
+  "expiresIn": 900,
+  "release": {
+    "permitted": false,
+    "reason": "Single PUT has no verified provider-side settlement barrier; observations cannot authorize reference release."
+  }
+}

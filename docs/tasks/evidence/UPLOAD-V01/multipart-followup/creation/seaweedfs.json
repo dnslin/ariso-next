@@ -1,0 +1,83 @@
+{
+  "service": "seaweedfs",
+  "bucket": "images",
+  "key": "ariso/upload-v01/creation/4918bcfd-9c02-4d06-83de-25ca3e982552",
+  "startedAt": "2026-09-28T09:28:13.371Z",
+  "status": "observed",
+  "uploadIds": [
+    "9a86ee1394db2aab1ec7a4acdad776525ce0a297_e8a93bd6a1fd4423b889623dedca03c7"
+  ],
+  "objectAbsent": true,
+  "sessionsAbsent": true,
+  "productionReleasePermitted": false,
+  "limitation": "The injected loss occurs after the complete provider response. An empty list cannot prove an unresolved in-flight Create has settled. No parts are uploaded; backend reclamation is not inferred.",
+  "events": [
+    {
+      "name": "create-response-lost",
+      "at": "2026-09-28T09:28:13.374Z",
+      "result": {
+        "providerStatus": 200,
+        "clientError": {
+          "name": "InjectedResponseLoss",
+          "message": "Injected loss after provider response drained; SDK received no Create acknowledgement",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "recover-by-exact-key",
+      "at": "2026-09-28T09:28:13.656Z",
+      "result": {
+        "exactUploadIds": [
+          "9a86ee1394db2aab1ec7a4acdad776525ce0a297_e8a93bd6a1fd4423b889623dedca03c7"
+        ],
+        "requestId": "18D972054D04065C9CA2D409",
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-discover",
+      "at": "2026-09-28T09:28:13.969Z",
+      "result": {
+        "exactUploadIds": [
+          "9a86ee1394db2aab1ec7a4acdad776525ce0a297_e8a93bd6a1fd4423b889623dedca03c7"
+        ],
+        "requestId": "18D972055377A898F6667C40",
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-abort",
+      "at": "2026-09-28T09:28:14.073Z",
+      "result": {
+        "uploadId": "9a86ee1394db2aab1ec7a4acdad776525ce0a297_e8a93bd6a1fd4423b889623dedca03c7",
+        "status": 204,
+        "requestId": "18D9720559B65D465BF3E6C4"
+      }
+    },
+    {
+      "name": "cleanup-list-after-abort",
+      "at": "2026-09-28T09:28:14.178Z",
+      "result": {
+        "exactUploadIds": [],
+        "requestId": "18D9720560025A0654114F1F",
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-head",
+      "at": "2026-09-28T09:28:14.285Z",
+      "result": {
+        "status": 404
+      }
+    }
+  ],
+  "providerStatus": 200,
+  "clientError": {
+    "name": "InjectedResponseLoss",
+    "message": "Injected loss after provider response drained; SDK received no Create acknowledgement",
+    "attempts": 1,
+    "totalRetryDelay": 0
+  }
+}

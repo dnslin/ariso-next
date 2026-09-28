@@ -18,7 +18,12 @@ export const overrides = {
     'attachment; filename="image.svg"; filename*=UTF-8\'\'%E6%97%85%E8%A1%8C.svg',
   ResponseCacheControl: 'private, no-store, no-transform',
 };
-export function createClient(config: StorageConfig) {
+export function createClient(
+  config: Pick<
+    StorageConfig,
+    'endpoint' | 'region' | 'credentials' | 'forcePathStyle'
+  >,
+) {
   return new S3Client({
     endpoint: config.endpoint,
     region: config.region,

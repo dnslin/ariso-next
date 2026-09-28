@@ -1,0 +1,77 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-28T08:57:18.013Z",
+  "keys": [
+    "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/put.bin",
+    "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/copy.bin",
+    "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/restart.bin"
+  ],
+  "scope": "Controlled fault experiment only; private bucket and lock policy are not asserted.",
+  "productionReleasePermitted": false,
+  "lostResponses": [
+    {
+      "operation": "PUT",
+      "provider": {
+        "status": 200,
+        "requestId": "18D970554B02BE22EB1AD78E",
+        "receivedAt": "2026-09-28T08:57:18.553Z"
+      },
+      "clientError": {
+        "name": "InjectedResponseLoss",
+        "message": "Injected connection loss after actual provider response; SDK did not receive acknowledgement",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "actualSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+    },
+    {
+      "operation": "Copy",
+      "provider": {
+        "status": 200,
+        "requestId": "18D97055857459894BCEFC7B",
+        "receivedAt": "2026-09-28T08:57:19.423Z"
+      },
+      "clientError": {
+        "name": "InjectedResponseLoss",
+        "message": "Injected connection loss after actual provider response; SDK did not receive acknowledgement",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      },
+      "expectedSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+      "actualSha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a"
+    }
+  ],
+  "recovery": {
+    "killedAt": "2026-09-28T08:57:20.009Z",
+    "ownerSignal": "SIGKILL",
+    "key": "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/restart.bin",
+    "recoveredAt": "2026-09-28T08:57:20.421Z",
+    "afterEarlyDelete": false,
+    "writer": {
+      "startedAt": "2026-09-28T08:57:19.789Z",
+      "firstChunkAt": "2026-09-28T08:57:20.009Z",
+      "bodyFinishedAt": "2026-09-28T08:57:35.553Z",
+      "status": 200,
+      "finishedAt": "2026-09-28T08:57:35.785Z"
+    },
+    "afterWriterCompleted": true,
+    "responsibilityRetained": true
+  },
+  "cleanup": [
+    {
+      "key": "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/put.bin",
+      "absent": true
+    },
+    {
+      "key": "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/copy.bin",
+      "absent": true
+    },
+    {
+      "key": "ariso/upload-v01/faults/b7526ce6-faf7-4ba6-a9c1-95614f196d25/restart.bin",
+      "absent": true
+    }
+  ]
+}
