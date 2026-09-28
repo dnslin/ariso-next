@@ -118,3 +118,13 @@ Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-pref
 前文 NoSuchCORSConfiguration 只说明缺少桶级规则，不能据此断言 SeaweedFS 缺少有效 CORS。[官方文档](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)说明没有桶级规则时可使用全局设置。此前将“无桶级规则”写成 CORS 阻塞的判断过强，现予更正。
 
 实际向测试对象路径发 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求方法 PUT、请求头 content-type。响应 200，允许该 Origin、PUT 和 content-type。见[原始响应](./preflight/seaweedfs-cors-options.json)。未修改服务器或桶配置；此证据只证明预检允许，不能替代真实浏览器 PUT 及可读响应验证，也不能确定响应头由全局 SeaweedFS 配置还是前置代理生成。
+
+## 桶名纠正与 CORS 复核
+
+所有者明确 R2 桶名为 `image` 后，只修改本机忽略配置中的 R2 桶名，重新执行 `node .data/upload-v01-preflight.mjs`。R2 与 SeaweedFS 均 HeadBucket 200；R2 GetBucketCors 仍 AccessDenied 403，只表示当前凭据不能读取此管理配置，不据此判断浏览器一定失败。
+
+另用 Node 24 的 fetch 向两服务独立实验路径发送 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求 PUT/content-type。SeaweedFS 返回 200，R2 返回 204，均包含匹配 origin、PUT 及 content-type 的允许头。没有写入对象或修改 Bucket 配置。原始证据：[SeaweedFS](./preflight-corrected-bucket/seaweedfs.json)、[R2](./preflight-corrected-bucket/r2.json)、[SeaweedFS OPTIONS](./preflight-corrected-bucket/seaweedfs-options.json)、[R2 OPTIONS](./preflight-corrected-bucket/r2-options.json)。
+
+纠正此前判断：SeaweedFS 的 NoSuchCORSConfiguration 仅表示无桶级配置，不能直接推断实际缺少 CORS。[官方说明](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)支持桶级 PutBucketCors 和全局 allowedOrigins；当前实际响应已允许实验来源，具体由服务全局配置还是代理提供，本轮未读取部署配置，不能断言。OPTIONS 也不能替代真实浏览器 PUT 的可读成功响应和服务端对象核对。
+
+本轮仅更新证据与配置说明；修改文件的 Prettier、文档任务检查及差异检查通过，不重复应用测试。最终清理责任释放仍须满足：不再接受新写入、已有写入得到确定结算、最后删除/不存在验证完成。当前普通单 PUT 在结果未知/客户端失联场景下，第二项仍缺少可验证的提供方或协议保证。

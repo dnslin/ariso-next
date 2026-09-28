@@ -1,0 +1,50 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "region": "us-east-1",
+  "at": "2026-09-28T08:34:45.012Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "operation": "HeadBucketCommand",
+      "response": {
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D96F1A408A51753119812A",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "operation": "GetBucketCorsCommand",
+      "error": {
+        "name": "NoSuchCORSConfiguration",
+        "message": "The CORS configuration does not exist",
+        "status": 404,
+        "requestId": "18D96F1A47CD0F2ED3C43963"
+      }
+    },
+    {
+      "operation": "GetBucketVersioningCommand",
+      "response": {
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D96F1A4F2B1F28BF3C81A8",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "operation": "GetObjectLockConfigurationCommand",
+      "error": {
+        "name": "ObjectLockConfigurationNotFoundError",
+        "message": "Object Lock configuration does not exist for this bucket",
+        "status": 404,
+        "requestId": "18D96F1A5631ADA284328D2F"
+      }
+    }
+  ]
+}
