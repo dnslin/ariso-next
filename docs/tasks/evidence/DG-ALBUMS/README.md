@@ -50,7 +50,7 @@
 | `git diff --check`                                                                                                                                                     | 通过。                                                                              |
 | Python 标准库检查三份 Markdown 的相对文件链接、新增消费锚点及新增 Figma 节点                                                                                           | 137 个文件链接存在，2 个新锚点有效，50 个新增链接节点均在本次实时读取的两端分区中。 |
 
-全仓格式失败文件为 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json`。逐文件执行 `git show origin/main:<path>` 与工作区字节比较，三者完全一致；将 main 内容传给 `pnpm exec prettier --check --stdin-filepath <path>` 均返回 1，确认是已有问题。本次不修改范围外历史证据，也不跳过或削弱全仓检查。日志见[实际格式输出](./format-check.txt)；**PR 保持草稿**，不能把仅改动文件通过写成全仓通过。
+全仓格式失败文件为 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json`。逐文件执行 `git show origin/main:<path>` 与工作区字节比较，三者完全一致；将 main 内容传给 `pnpm exec prettier --check --stdin-filepath <path>` 均返回 1，确认是已有问题。首次交付未修改范围外历史证据，也未跳过或削弱全仓检查。日志见[首次格式输出](./format-check.txt)；当时 PR 保持草稿，后续授权修正见下节。
 
 独立设计 agent 实际读取 Figma 的 10 个节点并查看全部 10 张截图，复核同名、资格与呈现分离、恢复及删除边界。发现封面选择页缺当前相册身份标识，已修正文档明确具体节点、负责人和用户批准要求，复核后本次设计适用文档无剩余必修项。此结论不等于网页设计还原验收。
 
@@ -60,6 +60,12 @@
 
 ## PR 与远端回读
 
-已提交、推送并创建 [PR #201](https://github.com/dnslin/ariso-next/pull/201)，分支 `codex/issue-128-albums`。实施提交为 `e25bfac7e5d28d9d20b00c08cfb548907f0c1be6`，本段作为后续证据提交记录。PR 保持草稿，原因是上述全仓格式检查失败。
+已提交、推送并创建 [PR #201](https://github.com/dnslin/ariso-next/pull/201)，分支 `codex/issue-128-albums`。实施提交为 `e25bfac7e5d28d9d20b00c08cfb548907f0c1be6`，本段作为后续证据提交记录。创建时 PR 保持草稿，原因是上述全仓格式检查失败。
 
 实际执行 `gh pr view 201 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/issue-128-albums --json databaseId,status,conclusion,workflowName` 及该提交的 `gh api repos/dnslin/ariso-next/commits/<sha>/check-runs`、`gh api repos/dnslin/ariso-next/commits/<sha>/status`。回读为草稿、CLEAN、检查/Actions 列表为空，check-runs 与状态数量均为 0；状态聚合 pending 没有实际检查，不算 CI 通过或运行中。现有工作流仅 Release 发布触发，未为本 PR 创建发布。
+
+## 授权格式修正（2026-09-28）
+
+用户随后明确授权仅格式化上述三份 JSON、复跑检查、独立提交并将 PR 转为正式待评审。实际运行 `pnpm exec prettier --write docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json`；Python 标准库逐文件解析 HEAD 与格式化后的 JSON，三份数据均完全相等，只有格式变化。
+
+同一 Node 24.18.1 / pnpm 11.19.0 环境下重新执行 `pnpm run format:check`，全仓通过，见[修正后格式输出](./format-check-fixed.txt)。`node docs/tasks/check.mjs`（120 任务、298 需求）、`node docs/tasks/check.mjs --self-test`（5 个拒绝场景）和 `git diff --check` 均通过。此前格式失败阻塞已解除；本次仍无网页开发，不需要网页人工验收。后续 UI 任务的设计缺口和验收责任保持不变。
