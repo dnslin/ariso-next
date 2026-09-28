@@ -6,7 +6,7 @@
 
 所有任务同时继承[共用执行与HeroUI组件文档](./execution.md)。
 
-所有测试路径均是该任务拟新增或扩展的交付物；命令是实施后的验证要求，本轮未执行业务验证。每项还运行 `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`；修改 schema 时运行 `pnpm run db:generate` 并审查迁移。远端协议必须分别记录 AWS S3、R2、MinIO 真实环境，不能用模拟返回代替。
+所有测试路径均是该任务拟新增或扩展的交付物；命令是实施后的验证要求，本轮未执行业务验证。每项还运行 `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`；修改 schema 时运行 `pnpm run db:generate` 并审查迁移。远端协议的必需服务矩阵按[对象存储验证目标调整](./execution.md#对象存储验证目标调整)执行，当前分别记录 R2、SeaweedFS 真实环境，不能用模拟返回代替。
 
 所有界面任务采用 [HeroUI 官方组件索引](https://heroui.com/react/llms.txt) 与项目锁定版本的文档和类型；不混用 v2/v3。下面列出组件组合，实际选型记录在任务证据中。通用控件使用 HeroUI，业务专用部分注明原因。除另述外，相对原型无业务差异，控件内部细节按 HeroUI 统一；具体状态及复用规则先通过对应 DG 门槛。真实验收共同覆盖 360/390/430、768 和桌面、浅深色、键盘焦点、44px 手机点击区与短视口滚动；长表单独立页面，手机设置分类用 Select，操作栏固定并给正文留空间。适用的加载、空、错误、成功和禁用状态都由真实数据驱动。
 
@@ -114,8 +114,9 @@
 - 规格与预计文件：SPEC-storage §2/8、ST-10/11；`src/server/storage/s3.ts`、固定依赖与锁文件、storage 集成测试。
 - 直接前置：`T-STO-01`、`EV-STORAGE-01`、`UPLOAD-V02`
 - 验收条件：显式凭据/endpoint/region/pathStyle；特殊 Key 编码正确，ETag 仅作变更标識；源变化与 Copy 200 内错误拒绝固定。签名不存库、不泄密，不向正式原图签 PUT；流正常/失败/取消释放连接；下载覆盖缓存/附件/类型由调用方指定。维护删除不受 enabled 阻止；SDK尝试与持久重试预算分开。
-- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/s3.test.ts` 对三个真实服务验证签名方法/期限/必需头、条件复制、取消、对象字节及远端错误，保留服务版本与请求 ID。
+- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/s3.test.ts` 验证模块协议；`tests/experiments/storage-s3/verify-objects.ts` 对 R2、SeaweedFS 两个真实服务验证签名方法/期限/必需头、条件复制、取消、对象字节及远端错误，保留服务版本与请求 ID。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。
+- 实施证据：[Issue #155 实施与验收记录](../verification/storage-155/README.md)。所有者于 2026-09-28 取消 AWS S3 实测要求；R2、SeaweedFS 各 9 项真实服务验证通过，AWS S3 保持未验证。
 - 需求：`R-8.1-02`、`R-9.1-02`、`R-9.3-04`、`R-14.7-02`、`R-14.10-01`、`R-10.2-01`
 
 ### T-STO-03 多本地/S3 配置与默认选择提供方

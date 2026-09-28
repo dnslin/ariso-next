@@ -1,0 +1,353 @@
+{
+  "service": "seaweedfs",
+  "runId": "0d51e3fd-7989-4a17-a6b1-7fa125299c3c",
+  "startedAt": "2026-09-28T07:08:21.501Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [
+    {
+      "relative": "uploads/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/临时 +%?.svg",
+      "remote": "ariso/verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c/uploads/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/临时 +%?.svg"
+    },
+    {
+      "relative": "images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/固定 +%?.svg",
+      "remote": "ariso/verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c/images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/固定 +%?.svg"
+    },
+    {
+      "relative": "images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/rejected.svg",
+      "remote": "ariso/verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c/images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/rejected.svg"
+    },
+    {
+      "relative": "probes/missing-0d51e3fd-7989-4a17-a6b1-7fa125299c3c",
+      "remote": "ariso/verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c/probes/missing-0d51e3fd-7989-4a17-a6b1-7fa125299c3c"
+    }
+  ],
+  "cleanupResponsibility": "Local controlled requests ended; inspect cleanup results. An interrupted write does not prove remote settlement. This does not verify the general UPLOAD-V01 late-PUT lifecycle.",
+  "checks": [
+    {
+      "name": "stream-put-head-full-get-and-conditional-copy",
+      "status": "passed",
+      "evidence": {
+        "put": {
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D96A639CEBC42528CD3D28",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "head": {
+          "size": 1048657,
+          "contentType": "image/svg+xml",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D96A63E49D1DE3AAE0F2EB",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "get": {
+          "httpStatusCode": 200,
+          "requestId": "18D96A63EA2ED85FAA0E008F",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "copy": {
+          "etag": "e65d6e84146832b0c37ec55369d9b883",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D96A640D4C32AD8B02F1C9",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "fixedGet": {
+          "httpStatusCode": 200,
+          "requestId": "18D96A641341578CC536E58D",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "bytesCompared": 1048657
+      }
+    },
+    {
+      "name": "put-900-seconds-required-headers-and-reput-cannot-change-fixed-object",
+      "status": "passed",
+      "evidence": {
+        "expiresSeconds": 900,
+        "headers": {
+          "content-type": "image/svg+xml"
+        },
+        "wrongHeader": {
+          "status": 403,
+          "requestId": "18D96A642ECFADC3FF889972",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "564",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "SignatureDoesNotMatch"
+        },
+        "put": {
+          "status": 200,
+          "requestId": "18D96A6444E932716AF34FE6",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": null,
+          "contentLength": "0",
+          "etag": "\"b24c6a4d065d10a89f963c7c80a64d96\"",
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "fixedBytesUnchanged": true
+      }
+    },
+    {
+      "name": "changed-source-rejects-stale-etag-get-and-copy",
+      "status": "passed",
+      "evidence": [
+        {
+          "name": "Error",
+          "message": "Storage read failed: verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c, uploads/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/临时 +%?.svg: At least one of the pre-conditions you specified did not hold",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "requestId": "18D96A64590D9ED4158EAF74",
+          "key": "uploads/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/临时 +%?.svg",
+          "operation": "read"
+        },
+        {
+          "name": "Error",
+          "message": "Storage copy failed: verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c, images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/rejected.svg: At least one of the pre-conditions you specified did not hold",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "requestId": "18D96A645E9C22AE8AEBDF95",
+          "key": "images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/rejected.svg",
+          "operation": "copy"
+        }
+      ]
+    },
+    {
+      "name": "get-head-300-seconds-response-overrides-and-method-isolation",
+      "status": "passed",
+      "evidence": {
+        "expiresSeconds": 300,
+        "get": {
+          "status": 200,
+          "requestId": "18D96A6473C7FEEFDF340D0C",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/octet-stream",
+          "contentLength": "1048657",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "contentDisposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "cacheControl": "private, no-store, no-transform"
+        },
+        "head": {
+          "status": 200,
+          "requestId": "18D96A64A38EA889A306B82C",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "image/svg+xml",
+          "contentLength": "1048657",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "headWithGetUrl": {
+          "status": 403,
+          "requestId": "18D96A64B00E5CB9DAC9A89A",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "580",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "getWithHeadUrl": {
+          "status": 403,
+          "requestId": "18D96A64C1E8B90940655B2E",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "580",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "SignatureDoesNotMatch"
+        }
+      }
+    },
+    {
+      "name": "cancel-get-release-stream-and-next-request-succeeds",
+      "status": "passed",
+      "evidence": {
+        "cancelledGet": {
+          "httpStatusCode": 200,
+          "requestId": "18D96A64C997EBA4C989E9B9",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "streamDestroyed": true,
+        "subsequentGet": {
+          "httpStatusCode": 200,
+          "requestId": "18D96A64EF3765B7310EECD7",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "missing-read-is-error-missing-head-is-null-and-delete-is-idempotent",
+      "status": "passed",
+      "evidence": {
+        "failure": {
+          "name": "Error",
+          "message": "Storage read failed: verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c, probes/missing-0d51e3fd-7989-4a17-a6b1-7fa125299c3c: The specified key does not exist.",
+          "code": "STORAGE_OBJECT_MISSING",
+          "serviceCode": "NoSuchKey",
+          "httpStatusCode": 404,
+          "requestId": "18D96A651E72D06268F11429",
+          "key": "probes/missing-0d51e3fd-7989-4a17-a6b1-7fa125299c3c",
+          "operation": "read"
+        },
+        "first": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D96A652CADE7C153372A0E",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "second": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D96A65335B03C34AF67A0B",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "real-300-second-get-head-expiry",
+      "status": "passed",
+      "evidence": {
+        "checkedAt": "2026-09-28T07:13:28.003Z",
+        "getExpiresAt": "2026-09-28T07:13:26.000Z",
+        "headExpiresAt": "2026-09-28T07:13:26.000Z",
+        "get": {
+          "status": 403,
+          "requestId": "18D96AAACC655CAB5BE83778",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "477",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "AccessDenied"
+        },
+        "head": {
+          "status": 403,
+          "requestId": "18D96AAAE055BCF732480C2F",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "477",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null
+        }
+      }
+    },
+    {
+      "name": "real-900-second-put-expiry",
+      "status": "passed",
+      "evidence": {
+        "checkedAt": "2026-09-28T07:23:26.002Z",
+        "expiresAt": "2026-09-28T07:23:24.000Z",
+        "put": {
+          "status": 403,
+          "requestId": "18D96B362CD7FCD377551258",
+          "server": "SeaweedFS 30GB 4.47",
+          "contentType": "application/xml",
+          "contentLength": "461",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "AccessDenied"
+        }
+      }
+    },
+    {
+      "name": "exact-key-final-cleanup",
+      "status": "passed",
+      "evidence": [
+        {
+          "key": "uploads/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/临时 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D96B36412928AB493192AA",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/固定 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D96B364DCFA4F2DFB9F816",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/0d51e3fd-7989-4a17-a6b1-7fa125299c3c/original/rejected.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D96B365AE0CFB6683550E6",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "probes/missing-0d51e3fd-7989-4a17-a6b1-7fa125299c3c",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "requestId": "18D96B3667C1CA60C055B975",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        }
+      ]
+    }
+  ],
+  "target": {
+    "endpoint": "https://fs.447654.xyz",
+    "region": "us-east-1",
+    "bucket": "images",
+    "forcePathStyle": true
+  },
+  "storageId": "verify-155-0d51e3fd-7989-4a17-a6b1-7fa125299c3c",
+  "putValidUntil": "2026-09-28T07:23:24.000Z",
+  "finishedAt": "2026-09-28T07:23:28.005Z"
+}

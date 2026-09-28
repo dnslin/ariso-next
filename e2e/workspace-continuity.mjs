@@ -174,11 +174,19 @@ try {
     'Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.',
   );
 
-  // Observe actual requests, preserving their response bodies. Hold only the real XHR load callback.
+  // Hold real XHR completion and status responses until navigation finishes.
+  // Polling can otherwise finish the upload before the mobile menu closes.
   await page.evaluate(() => {
     const originalFetch = window.__workspaceFetch;
     const originalSend = XMLHttpRequest.prototype.send;
-    const trace = { submissions: [], reads: [], releases: [] };
+    const trace = {
+      submissions: [],
+      reads: [],
+      releases: [],
+      readReleases: [],
+      heldReadPaths: [],
+      holdReads: true,
+    };
     window.__workspaceNetwork = trace;
     window.__workspaceFetch = async (...args) => {
       const response = await originalFetch(...args);
@@ -188,11 +196,14 @@ try {
       if (
         path.startsWith('/api/uploads/submissions/') &&
         (!args[1]?.method || args[1].method === 'GET')
-      )
-        trace.reads.push({
-          pathname: location.pathname,
-          body: await response.clone().json(),
-        });
+      ) {
+        const body = await response.clone().json();
+        if (trace.holdReads) {
+          trace.heldReadPaths.push(location.pathname);
+          await new Promise((resolve) => trace.readReleases.push(resolve));
+        }
+        trace.reads.push({ pathname: location.pathname, body });
+      }
       return response;
     };
     XMLHttpRequest.prototype.send = function (body) {
@@ -203,6 +214,8 @@ try {
       return originalSend.call(this, body);
     };
     window.__restoreWorkspaceNetwork = () => {
+      trace.holdReads = false;
+      for (const release of trace.readReleases.splice(0)) release();
       for (const release of trace.releases.splice(0)) release();
       window.__workspaceFetch = originalFetch;
       XMLHttpRequest.prototype.send = originalSend;
@@ -211,15 +224,19 @@ try {
   try {
     await page.click(button('开始上传'));
     await page.waitForFunction(
-      () => window.__workspaceNetwork.releases.length === 1,
+      () =>
+        window.__workspaceNetwork.releases.length === 1 &&
+        window.__workspaceNetwork.readReleases.length === 1,
     );
     await page.waitForSelector(
       '[data-testid="upload-item"][data-state="saving"]',
     );
     await navigate('图库', '/library');
     await page.evaluate(() => {
-      for (const release of window.__workspaceNetwork.releases.splice(0))
-        release();
+      const trace = window.__workspaceNetwork;
+      trace.holdReads = false;
+      for (const release of trace.releases.splice(0)) release();
+      for (const release of trace.readReleases.splice(0)) release();
     });
     await page.waitForFunction(
       () =>
@@ -236,7 +253,13 @@ try {
     const network = await page.evaluate(() => ({
       submissions: window.__workspaceNetwork.submissions,
       reads: window.__workspaceNetwork.reads,
+      heldReadPaths: window.__workspaceNetwork.heldReadPaths,
     }));
+    assert.deepEqual(
+      network.heldReadPaths,
+      ['/upload'],
+      'A real status response waits on Upload until navigation completes',
+    );
     assert.equal(
       network.submissions.length,
       1,

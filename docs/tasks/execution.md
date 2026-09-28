@@ -37,7 +37,9 @@
 
 ## 对象存储验证目标调整
 
-2026-09-23 所有者明确取消 MinIO 验证要求，以 SeaweedFS 替代。当前服务矩阵为 AWS S3、Cloudflare R2、SeaweedFS；适用于 EV-STORAGE-01、UPLOAD-V01 及消费这些证据的后续任务。冻结需求中的 MinIO 名称按本调整执行，不改写冻结 PRD；已有 MinIO 报告保留为历史记录，不算 SeaweedFS 验证证据。随后所有者明确要求本次 EV-STORAGE-01 不再因 AWS S3 未实测阻塞，按 R2 与 SeaweedFS 已取得的证据合并并关闭 Issue #70。AWS S3 保持未验证，不冒充通过；本次前置完成不替代 UPLOAD-V01 的迟到 PUT 协议或其他后续业务验收。
+2026-09-23 所有者明确取消 MinIO 验证要求，以 SeaweedFS 替代。当时服务矩阵为 AWS S3、Cloudflare R2、SeaweedFS；适用于 EV-STORAGE-01、UPLOAD-V01 及消费这些证据的后续任务。冻结需求中的 MinIO 名称按本调整执行，不改写冻结 PRD；已有 MinIO 报告保留为历史记录，不算 SeaweedFS 验证证据。随后所有者明确要求本次 EV-STORAGE-01 不再因 AWS S3 未实测阻塞，按 R2 与 SeaweedFS 已取得的证据合并并关闭 Issue #70。AWS S3 保持未验证，不冒充通过；本次前置完成不替代 UPLOAD-V01 的迟到 PUT 协议或其他后续业务验收。
+
+2026-09-28 所有者进一步明确：因没有 AWS S3 环境，取消 AWS S3 实测要求，当前必需服务矩阵调整为 **Cloudflare R2 与 SeaweedFS**，适用于 T-STO-02（Issue #155）及后续对象存储验收。旧任务卡或规格中的“三服务”与 AWS S3 实测要求按本调整执行；保留 AWS S3 未验证的事实及历史报告，不把取消要求记作测试通过，不改写冻结 PRD。
 
 ## 前端共用验收
 
