@@ -1,6 +1,6 @@
 # UPLOAD-V01 迟到 PUT 最终收尾
 
-2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)。**状态：诊断实验已实现，任务验收未完成。** 当前没有本任务可用的 AWS S3、R2、SeaweedFS 测试配置，也尚无经过验证的普通单 PUT 最终结算依据。保留草稿 PR，不解锁下游任务。
+2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 当前没有本任务可用的 AWS S3、R2、SeaweedFS 测试配置，也尚无经过验证的普通单 PUT 最终结算依据。保留草稿 PR，不解锁下游任务。
 
 前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；其 AWS 豁免不扩展至本任务。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
 
@@ -94,3 +94,7 @@ node tests/experiments/upload-late-put/run.ts \
 2. 在途进程崩溃、SDK PUT/Copy 响应丢失的真实服务样本。
 3. 可证明最终无写入的协议及有限收尾，必要时先修订规格。本轮不得把上述本地模拟测试或“保留责任”称为解决本项。
 4. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持；Release 双架构镜像/容器验证按既有流程，本轮未执行。
+
+## PR 状态核对
+
+已提交并推送分支 `codex/issue-142-late-put`。`gh pr view 202 --json state,isDraft,statusCheckRollup` 确认 OPEN、草稿、检查列表为空；`gh pr checks 202` 显示没有检查。没有远端检查不等于 CI 通过，不等待不存在的工作流。首次直连推送超时，按用户提供的单命令代理重试成功；未修改全局代理。未合并 PR、关闭 Issue、发布、部署或删除分支/worktree。
