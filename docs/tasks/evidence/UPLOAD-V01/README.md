@@ -25,9 +25,26 @@
 
 ## 本次收尾验证与评审
 
-本次为纯文档收尾，按[执行约定](../../execution.md#适用检查)执行冻结安装、格式与文档依赖检查。实验代码的构建、类型、lint、468 项单元、550 项集成及独立代码审计结果见后文历史记录；本次没有修改实验或生产代码，不重跑真实远端实验。产品 UI 没有变更，Figma 设计验收与人工 UI 验收不适用。
+本次为文档收尾，并同步最新主分支 `7c4f898`（合并提交 `5adfde8`），因此重新执行冻结安装、全库格式、lint、类型、单元、构建和集成检查。环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0。未修改本 PR 的实验或生产代码，未重跑真实远端实验。产品 UI 没有变更，Figma 设计验收与人工 UI 验收不适用。
 
-本次适用检查与独立一致性审计结果在完成后补记；生产扫描器未实现、未测试，不能以本 PR 合并代替 #164 验收。
+| 实际命令                                                                                | 本次结果                                                                                          |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                        | 通过；同步主分支既有锁文件，无新增依赖决策                                                        |
+| `pnpm run format:check`                                                                 | 通过；同步前的三份历史 JSON 格式失败已由主分支修复，本 PR 未单独修改它们                          |
+| `pnpm run lint`、`pnpm run typecheck`                                                   | 均通过                                                                                            |
+| `pnpm run test:unit --maxWorkers=2`                                                     | 34 文件、524 测试通过                                                                             |
+| `pnpm run build`                                                                        | 退出 0；编译及静态生成完成，仍输出既有 SQLite Debug 绑定与 Next 跟踪诊断                          |
+| `pnpm run test:integration --maxWorkers=4`                                              | 首次失败：569 通过、1 失败；关停测试在 seed 写入图片时遇到 `database is locked`，尚未发送 SIGTERM |
+| `pnpm exec vitest run --project integration tests/integration/runtime/shutdown.test.ts` | 单独复查 4 项通过，未修改代码、超时或断言                                                         |
+| `pnpm run test:integration --maxWorkers=2`                                              | 完整重跑 73 文件、570 测试通过，210.68 秒；包含普通集成与真实媒体工具                             |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                    | 120 任务、298 需求无环；5 个校验器拒绝用例通过                                                    |
+| `git diff --check`                                                                      | 通过；本轮修改文档的 275 个相对文件链接均存在                                                     |
+
+本轮命令结果亦见[验证摘要](./decision-validation.json)。`gh pr view 202 --json state,isDraft,statusCheckRollup` 核对远端检查列表为空；没有远端检查不记作 CI 通过。适用本地检查及审计完成后转正式待评审，合并与 Issue 关闭仍由所有者决定。
+
+独立 agent 使用 `code-review-and-quality` 审计最终四份规格、任务卡及证据：无必须修正项。确认保留单 PUT、扫描保护有效引用和活动写入、#164 承接生产实现、无倒置依赖、配置删除后的限制明确。前轮实验代码独立审计见历史记录。本轮功能结论为方案与开发交接合格；生产扫描器未实现、未测试，不能以本 PR 合并代替 #164 验收。
+
+#142、#143、#157、#158、#162、#163、#164 已更新并回读核对正文；七项原生 blocked-by 关系与更新前一致。首次集成锁冲突保留为失败证据，不能解释为扫描功能的缺陷或通过；完整复跑通过后结束检查，没有扩大到无关运行时修改。本轮未运行浏览器、AWS、Release 双架构或容器验证，历史真实 R2/SeaweedFS 结果保持原样。
 
 ## 历史实验记录的阅读方式
 
