@@ -148,6 +148,24 @@ jobs:
             --workdir /workspace --entrypoint node \
             "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \
               --reporter=default --reporter=junit --outputFile=test-results/media-process.xml
+      - name: Verify complete media format and metadata samples
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" tests/experiments/media-formats/run.mjs \
+              --output-dir test-results/media-formats
+      - name: Preserve complete media format evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-formats-${{ matrix.arch }}
+          path: test-results/media-formats
+          if-no-files-found: warn
+          retention-days: 14
       - name: Verify media recovery resources on a real limited volume
         env:
           IMAGE: ariso:ci-${{ matrix.arch }}
