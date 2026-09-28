@@ -1,6 +1,6 @@
 # T-STO-02 S3 对象操作与方法签名
 
-关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155)。核心实现与独立审计已完成；AWS S3 缺少测试配置，三服务验收尚未完成，既有浏览器图库场景也发生超时，PR 保持草稿。前置 #49、#70、#71 均已关闭；#70 的 AWS 豁免不扩展到本任务。
+关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155) 与[草稿 PR #204](https://github.com/dnslin/ariso-next/pull/204)。核心实现与独立审计已完成；AWS S3 缺少测试配置，三服务验收尚未完成，既有浏览器图库场景也发生超时，PR 保持草稿。前置 #49、#70、#71 均已关闭；#70 的 AWS 豁免不扩展到本任务。
 
 ## 范围与调用契约
 
@@ -75,4 +75,4 @@ node tests/experiments/storage-s3/verify-objects.ts \
 
 ## 剩余验收与发布边界
 
-AWS S3 真实服务配置尚未提供，不能称 #155 完整验收或解除下游的全部验收责任。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。全仓格式检查的三份基线 JSON 与浏览器图库详情超时也仍未解决；本次新增代码通过单元、集成、构建和独立代码审计，不把这些局部通过作为正式待评审条件已经满足。创建 PR 后核对实际远端检查，空检查列表不记作 CI 通过。
+AWS S3 真实服务配置尚未提供，不能称 #155 完整验收或解除下游的全部验收责任。日常 PR 按本地适用检查，不发布 Release、镜像或部署；AMD64/ARM64 容器验证保留到 Release 流程。全仓格式检查的三份基线 JSON 与浏览器图库详情超时也仍未解决；本次新增代码通过单元、集成、构建和独立代码审计，不把这些局部通过作为正式待评审条件已经满足。已通过 `gh pr view 204`、`gh pr checks 204` 与 `gh run list --branch codex/s3-object-155` 核对：PR 为 OPEN / draft，检查列表和运行列表均为空；`gh pr checks` 退出 1 并报告 no checks。没有远端检查被触发，不记作 CI 通过，也不等待不存在的工作流。分支 `codex/s3-object-155` 已推送，未合并、关闭 Issue 或清理 worktree。

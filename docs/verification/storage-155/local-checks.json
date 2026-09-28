@@ -106,6 +106,21 @@
       "command": "git diff --check",
       "exitCode": 0,
       "result": "No whitespace errors."
+    },
+    {
+      "command": "gh pr view 204 --repo dnslin/ariso-next --json number,url,isDraft,state,statusCheckRollup,headRefName,headRefOid",
+      "exitCode": 0,
+      "result": "OPEN / draft, head codex/s3-object-155, statusCheckRollup empty."
+    },
+    {
+      "command": "gh pr checks 204 --repo dnslin/ariso-next",
+      "exitCode": 1,
+      "result": "No checks reported on branch; absence is not CI success."
+    },
+    {
+      "command": "gh run list --repo dnslin/ariso-next --branch codex/s3-object-155 --json databaseId,name,status,conclusion,headSha --limit 20",
+      "exitCode": 0,
+      "result": "Empty workflow run list."
     }
   ],
   "notRun": [
@@ -125,5 +140,6 @@
       "result": "passed"
     }
   ],
-  "implementationCommit": "d4b43e6"
+  "implementationCommit": "d4b43e6",
+  "pullRequest": "https://github.com/dnslin/ariso-next/pull/204"
 }
