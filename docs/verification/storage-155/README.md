@@ -121,3 +121,9 @@ PUT 改用 Node 原生 `finished` 回调同时检测源流错误和提前关闭�
 本轮没有 UI/e2e 改动，S3 工厂当前没有应用调用方，设计及人工 UI 验收不适用。未重跑浏览器和 R2/SeaweedFS 真实过期矩阵；上文完整浏览器与真实服务报告保留为此前证据。签名、配置及请求协议未改变，本次异常路径由真实 SDK + localhost HTTP 验证。AWS 实测仍按所有者要求取消，双架构镜像与容器检查仍只在 Release 流程执行。
 
 本轮使用上文相同的 Node 24 / pnpm 环境，实际执行冻结安装、全仓格式、lint、类型、单元、构建及构建后的普通集成/真实图片工具组检查，全部通过。单元 **32 文件 / 478 项**；集成 **63 文件 / 534 项，357.73 秒**；聚焦 S3 **2 文件 / 30 项**。文档依赖检查 120 任务 / 298 需求，5 项拒绝自测也通过。构建仍有既有 better-sqlite3 可选 Debug 绑定追踪警告，实际构建退出 0。完整命令与两轮失败/成功结果见 [local-checks.json 的 reviewFixes](./local-checks.json)；本机原始日志为 `/tmp/ariso-155-review-fixes-*.log`。本轮只修改 S3 模块、对应集成测试和本目录既有两份记录。
+
+## 合并前同步 main
+
+所有者授权合并、清理及关闭 Issue 后，将 `origin/main` 的 `ad609e0` 合入任务分支。冲突仅在 package.json / pnpm-lock.yaml：保留本任务的 AWS SDK 生产依赖归属，同时保留 main 新增的 `@resvg/resvg-js` 开发依赖及全部锁定条目；未改业务实现。
+
+在合并结果上实际重跑 `pnpm install --frozen-lockfile`、`pnpm run build`、`pnpm run typecheck`、`pnpm run lint`、`pnpm run format:check`，全部通过。`pnpm run test:unit --maxWorkers=1` 为 **34 文件 / 524 项通过**（包括 main 新增用例）；`pnpm exec vitest run --project integration tests/integration/storage/s3.test.ts --maxWorkers=1` 为 **20 项通过**。文档检查及 5 项自测通过，日志在 `/tmp/ariso-155-merge-*.log`。本轮冲突处理没有改动运行时代码，未重复此前完整集成、浏览器及真实服务验证。

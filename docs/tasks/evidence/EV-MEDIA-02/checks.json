@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-09-28T07:21:08.494Z",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "checks": [
+    {
+      "name": "format",
+      "exitCode": 1,
+      "output": "Already up to date\nDone in 46ms using pnpm v11.19.0\n$ prettier . --check\nChecking formatting...\n[warn] docs/verification/m2-85/remove-explanations/preview-switch/after.json\n[warn] docs/verification/m2-85/remove-explanations/preview-switch/before.json\n[warn] docs/verification/m2-85/remove-explanations/preview-switch/mobile.json\n[warn] Code style issues found in 3 files. Run Prettier with --write to fix.\n[ELIFECYCLE] Command failed with exit code 1.\n"
+    },
+    {
+      "name": "changedFormat",
+      "exitCode": 0,
+      "output": "Already up to date\nDone in 33ms using pnpm v11.19.0\nChecking formatting...\nAll matched files use Prettier code style!\n"
+    },
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "output": "Already up to date\nDone in 36ms using pnpm v11.19.0\n$ eslint . --max-warnings=0\n"
+    },
+    {
+      "name": "types",
+      "exitCode": 0,
+      "output": "Already up to date\nDone in 40ms using pnpm v11.19.0\n$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json\nGenerating route types...\n✓ Types generated successfully\n"
+    },
+    {
+      "name": "unit",
+      "exitCode": 0,
+      "output": "Already up to date\nDone in 50ms using pnpm v11.19.0\n$ vitest run --project unit\n\n RUN  v5.0.0 /Users/dnslin/.codex/worktrees/147-media-samples/ariso\n\n\n Test Files  33 passed (33)\n      Tests  514 passed (514)\n   Start at  15:14:44\n   Duration  2.47s (tests 55%, import 32%, transform 11%, worker 1%)\n\n"
+    },
+    {
+      "name": "integration",
+      "exitCode": 0,
+      "output": "\n Test Files  62 passed (62)\n      Tests  514 passed (514)\n   Start at  15:05:20\n   Duration  232.28s (tests 97%, import 3%)\n\n"
+    }
+  ]
+}
