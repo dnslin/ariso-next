@@ -1,8 +1,8 @@
 # UPLOAD-V01 迟到 PUT 最终收尾
 
-2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 当前没有本任务可用的 AWS S3、R2、SeaweedFS 测试配置，也尚无经过验证的普通单 PUT 最终结算依据。保留草稿 PR，不解锁下游任务。
+2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；只读预检中 SeaweedFS 可连接但没有 CORS，R2 的 `images` 桶返回 403。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
 
-前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；其 AWS 豁免不扩展至本任务。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
+前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；本任务最初未继承其 AWS 豁免；所有者本轮另行明确免除本任务 AWS 实测，AWS 保留未验证，不算通过。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
 
 ## 当前交付与边界
 
@@ -37,11 +37,12 @@
 
 ```sh
 pnpm install --frozen-lockfile
-# 三服务均应提供配置。缺失项仍输出 incomplete 并退出 1。
+# 本任务提供 R2 与 SeaweedFS 配置；AWS 已获本任务验收豁免。
+# 通用诊断运行器仍输出缺失服务的 incomplete，不将豁免改写为实测通过。
 node tests/experiments/upload-late-put/run.ts \
   --config /absolute/private/storage-s3.json \
   --output test-results/upload-late-put
-# 默认每种服务两次 900 秒窗口，三服务依次运行。
+# 默认每种已配置服务两次 900 秒窗口，按服务依次运行。
 # --expires-in 10 可加快诊断，但不能替代产品 900 秒样本。
 ```
 
@@ -90,7 +91,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 ## 未完成项
 
-1. 三服务真实 Bucket/凭据与实际 900 秒慢 PUT、取消、重放、CORS、对象最终复查证据。
+1. R2 桶名/权限、两服务 CORS 及实际 900 秒慢 PUT、取消、重放、对象最终复查证据。AWS 已获本任务验收豁免，不再阻塞。
 2. 在途进程崩溃、SDK PUT/Copy 响应丢失的真实服务样本。
 3. 可证明最终无写入的协议及有限收尾，必要时先修订规格。本轮不得把上述本地模拟测试或“保留责任”称为解决本项。
 4. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持；Release 双架构镜像/容器验证按既有流程，本轮未执行。
@@ -98,3 +99,14 @@ node tests/experiments/upload-late-put/run.ts \
 ## PR 状态核对
 
 已提交并推送分支 `codex/issue-142-late-put`。`gh pr view 202 --json state,isDraft,statusCheckRollup` 确认 OPEN、草稿、检查列表为空；`gh pr checks 202` 显示没有检查。没有远端检查不等于 CI 通过，不等待不存在的工作流。首次直连推送超时，按用户提供的单命令代理重试成功；未修改全局代理。未合并 PR、关闭 Issue、发布、部署或删除分支/worktree。
+
+## 所有者范围调整与真实只读预检
+
+所有者提供两服务配置后，于本轮明确“不需要验证 aws s3，我们没有 aws 的环境”。此决定仅移除 UPLOAD-V01 的 AWS 实测门槛，不代表 AWS 已验证，也不免除两服务实际协议与最终收尾验收。共用执行记录见[对象存储验证目标调整](../../execution.md#对象存储验证目标调整)。
+
+Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-preflight.mjs`，依次调用已有 SDK 的 HeadBucket、GetBucketCors；SeaweedFS 另调用 GetBucketVersioning 和 GetObjectLockConfiguration。此脚本仅做只读预检，未发送 PUT/Copy/Delete，凭据未纳入证据。
+
+- [SeaweedFS 原始结果](./preflight/seaweedfs.json)：`images` 桶 HEAD 200；版本配置未返回启用/暂停状态；对象锁配置明确不存在；CORS 返回 NoSuchCORSConfiguration。
+- [R2 原始结果](./preflight/r2.json)：用户提供的 `images` 桶 HEAD 403，CORS AccessDenied 403。此前 EV-STORAGE-01 桶名为 `image`，不能自动改桶或沿用旧桶声明。
+
+因此 PR #202 继续保留草稿。尚缺两服务真实写入与浏览器证据、在途进程中断/响应丢失实验及有限最终收尾协议；这些阻塞独立于 AWS。原无配置报告和此前验证记录保留为历史，不改写结果。
