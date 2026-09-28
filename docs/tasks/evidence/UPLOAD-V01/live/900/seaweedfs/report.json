@@ -1,0 +1,455 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-09-28T08:53:39.667Z",
+  "expiresIn": 900,
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [
+    "ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/browser.svg",
+    "ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+    "ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin"
+  ],
+  "status": "observed",
+  "releasePermitted": false,
+  "observations": [
+    {
+      "name": "signature:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T08:53:39.676Z",
+      "result": {
+        "key": "ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+        "expiresAt": "2026-09-28T09:08:39.000Z",
+        "signature": {
+          "url": "https://fs.447654.xyz/images/ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+          "expires": "900",
+          "signedHeaders": "content-type;host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260928T085339Z",
+            "X-Amz-Expires": "900",
+            "X-Amz-SignedHeaders": "content-type;host",
+            "x-id": "PutObject"
+          }
+        }
+      }
+    },
+    {
+      "name": "signature:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T08:53:39.677Z",
+      "result": {
+        "key": "ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+        "expiresAt": "2026-09-28T09:08:39.000Z",
+        "signature": {
+          "url": "https://fs.447654.xyz/images/ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+          "expires": "900",
+          "signedHeaders": "content-type;host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260928T085339Z",
+            "X-Amz-Expires": "900",
+            "X-Amz-SignedHeaders": "content-type;host",
+            "x-id": "PutObject"
+          }
+        }
+      }
+    },
+    {
+      "name": "replay-after-delete:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T08:53:41.480Z",
+      "result": {
+        "first": {
+          "startedAt": "2026-09-28T08:53:39.678Z",
+          "finishedAt": "2026-09-28T08:53:40.239Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:39.872Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D970227257D7BDB58465DB"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:40.641Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D970228F231A710680CA52",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D970229504AD3F1244F497",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "replay": {
+          "startedAt": "2026-09-28T08:53:40.642Z",
+          "finishedAt": "2026-09-28T08:53:41.196Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:40.876Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D97022AF8E5738C741B459"
+        },
+        "content": {
+          "bytes": 65536,
+          "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D97022BC0881834EC30E39",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "cancel-mid-body:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T08:53:42.094Z",
+      "result": {
+        "cancelled": {
+          "startedAt": "2026-09-28T08:53:41.482Z",
+          "finishedAt": "2026-09-28T08:53:41.898Z",
+          "bytesSent": 131072,
+          "outcome": "aborted"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:42.094Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D97022E5D95FA235A1A534",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D97022EBA8978C42B52334",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "replay-after-delete:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T08:53:43.652Z",
+      "result": {
+        "first": {
+          "startedAt": "2026-09-28T08:53:42.095Z",
+          "finishedAt": "2026-09-28T08:53:42.740Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:42.309Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D970230586302B7215921F"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:42.937Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D970231808C592801DD075",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D970231DE84601E9FB164F",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "replay": {
+          "startedAt": "2026-09-28T08:53:42.939Z",
+          "finishedAt": "2026-09-28T08:53:43.483Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:43.158Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D9702337FE84A73A625B56"
+        },
+        "content": {
+          "bytes": 65536,
+          "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D970234447282B3422EA1F",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "cancel-mid-body:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T08:53:44.238Z",
+      "result": {
+        "cancelled": {
+          "startedAt": "2026-09-28T08:53:43.654Z",
+          "finishedAt": "2026-09-28T08:53:44.045Z",
+          "bytesSent": 131072,
+          "outcome": "aborted"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:44.238Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D9702365B22DEB0A938475",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D970236B7DEB8834F39BB0",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "late-put:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T09:08:51.171Z",
+      "result": {
+        "expiresAt": "2026-09-28T09:08:39.000Z",
+        "during": {
+          "deletedAt": "2026-09-28T09:08:31.939Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D970F213A2A912A8F69CB7",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D970F219C11E81D5D00C51",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "result": {
+          "startedAt": "2026-09-28T09:08:29.007Z",
+          "finishedAt": "2026-09-28T09:08:50.150Z",
+          "bytesSent": 2097152,
+          "bodyFinishedAt": "2026-09-28T09:08:50.047Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D970F1A6CD920860F8B38C"
+        },
+        "crossed": true,
+        "head": {
+          "exists": true,
+          "bytes": 2097152,
+          "etag": "\"de89461b64701958984c95d1bfb0065a\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D970F65DE45058CD28C7F1",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "content": {
+          "bytes": 2097152,
+          "sha256": "5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D970F664CF4F80AA536790",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "late-put:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T09:08:51.215Z",
+      "result": {
+        "expiresAt": "2026-09-28T09:08:39.000Z",
+        "during": {
+          "deletedAt": "2026-09-28T09:08:31.934Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D970F212658E4B093F065A",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "requestId": "18D970F21937266C6E22C92E",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "result": {
+          "startedAt": "2026-09-28T09:08:29.002Z",
+          "finishedAt": "2026-09-28T09:08:50.202Z",
+          "bytesSent": 2097152,
+          "bodyFinishedAt": "2026-09-28T09:08:50.090Z",
+          "outcome": "response",
+          "status": 200,
+          "requestId": "18D970F1AA6D6D80BEBDE3D8"
+        },
+        "crossed": true,
+        "head": {
+          "exists": true,
+          "bytes": 2097152,
+          "etag": "\"de89461b64701958984c95d1bfb0065a\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D970F660C75BE1E5222A0E",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "content": {
+          "bytes": 2097152,
+          "sha256": "5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18D970F66810977D0CC966D1",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "expired-url:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T09:08:51.666Z",
+      "result": {
+        "startedAt": "2026-09-28T09:08:51.178Z",
+        "finishedAt": "2026-09-28T09:08:51.666Z",
+        "bytesSent": 65536,
+        "bodyFinishedAt": "2026-09-28T09:08:51.377Z",
+        "outcome": "response",
+        "status": 403,
+        "code": "AccessDenied",
+        "requestId": "18D970F6ABA13D97F1187B51"
+      }
+    },
+    {
+      "name": "expired-url:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T09:08:51.675Z",
+      "result": {
+        "startedAt": "2026-09-28T09:08:51.216Z",
+        "finishedAt": "2026-09-28T09:08:51.675Z",
+        "bytesSent": 65536,
+        "bodyFinishedAt": "2026-09-28T09:08:51.404Z",
+        "outcome": "response",
+        "status": 403,
+        "code": "AccessDenied",
+        "requestId": "18D970F6ACB2CDDE54A4B857"
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/browser.svg",
+      "at": "2026-09-28T09:08:51.911Z",
+      "result": {
+        "deletedAt": "2026-09-28T09:08:51.911Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D970F6B8FE227EEAC6DB0B",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D970F6BFEDE309B89B43E0",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/upload.bin",
+      "at": "2026-09-28T09:08:52.148Z",
+      "result": {
+        "deletedAt": "2026-09-28T09:08:52.148Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D970F6C6F2E66E270AF336",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D970F6CE09E4BD95F391BE",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-dd9e4ec3-5d8a-4cae-a50e-b2e01cb3b7df/probe.bin",
+      "at": "2026-09-28T09:08:52.375Z",
+      "result": {
+        "deletedAt": "2026-09-28T09:08:52.375Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D970F6D54538702C16E18B",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "requestId": "18D970F6DB80347028807A02",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    }
+  ]
+}

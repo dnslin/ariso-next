@@ -1,0 +1,359 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "startedAt": "2026-09-28T08:53:22.559Z",
+  "expiresIn": 30,
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [
+    "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/browser.svg",
+    "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+    "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin"
+  ],
+  "status": "failed",
+  "releasePermitted": false,
+  "observations": [
+    {
+      "name": "browser-signature-issued",
+      "at": "2026-09-28T08:53:22.560Z",
+      "result": {
+        "key": "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/browser.svg",
+        "validUntilNoLaterThan": "2026-09-28T09:08:23.560Z"
+      }
+    },
+    {
+      "name": "real-browser-put-and-download",
+      "at": "2026-09-28T08:53:27.160Z",
+      "result": {
+        "browser": {
+          "date": "2026-09-28T08:53:25.597Z",
+          "origin": "http://127.0.0.1:47070",
+          "put": {
+            "status": 200,
+            "type": "cors",
+            "headers": {
+              "content-length": "0",
+              "content-type": "text/plain;charset=UTF-8",
+              "etag": "\"90347d2b9c5363b59f8a2b5aea1f860c\""
+            },
+            "body": "",
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+          },
+          "actualPutHeaders": [
+            {
+              "accept": "*/*",
+              "accept-encoding": "gzip, deflate, br, zstd",
+              "accept-language": "zh-CN,zh;q=0.9",
+              "connection": "keep-alive",
+              "content-length": "110",
+              "host": "24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+              "origin": "http://127.0.0.1:47070",
+              "referer": "http://127.0.0.1:47070/",
+              "sec-fetch-dest": "empty",
+              "sec-fetch-mode": "cors",
+              "sec-fetch-site": "cross-site",
+              "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+              "content-type": "image/svg+xml",
+              "sec-ch-ua": "\"Not?A_Brand\";v=\"24\", \"Chromium\";v=\"152\"",
+              "sec-ch-ua-mobile": "?0",
+              "sec-ch-ua-platform": "\"macOS\""
+            }
+          ],
+          "download": {
+            "filename": "旅行.svg",
+            "completed": true
+          }
+        },
+        "content": {
+          "bytes": 110,
+          "sha256": "342048b552c12845e6d8d6ce03f3761ecb89b4b4dfb7ea1e8a247557b4dc9bfe",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "signature:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+      "at": "2026-09-28T08:53:27.164Z",
+      "result": {
+        "key": "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+        "expiresAt": "2026-09-28T08:53:57.000Z",
+        "signature": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+          "expires": "30",
+          "signedHeaders": "content-type;host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260928T085327Z",
+            "X-Amz-Expires": "30",
+            "X-Amz-SignedHeaders": "content-type;host",
+            "x-id": "PutObject"
+          }
+        }
+      }
+    },
+    {
+      "name": "signature:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+      "at": "2026-09-28T08:53:27.167Z",
+      "result": {
+        "key": "ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+        "expiresAt": "2026-09-28T08:53:57.000Z",
+        "signature": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+          "expires": "30",
+          "signedHeaders": "content-type;host",
+          "query": {
+            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+            "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
+            "X-Amz-Date": "20260928T085327Z",
+            "X-Amz-Expires": "30",
+            "X-Amz-SignedHeaders": "content-type;host",
+            "x-id": "PutObject"
+          }
+        }
+      }
+    },
+    {
+      "name": "replay-after-delete:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+      "at": "2026-09-28T08:53:33.686Z",
+      "result": {
+        "first": {
+          "startedAt": "2026-09-28T08:53:27.168Z",
+          "finishedAt": "2026-09-28T08:53:28.517Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:27.530Z",
+          "outcome": "response",
+          "status": 200
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:30.404Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "replay": {
+          "startedAt": "2026-09-28T08:53:31.505Z",
+          "finishedAt": "2026-09-28T08:53:32.774Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:31.851Z",
+          "outcome": "response",
+          "status": 200
+        },
+        "content": {
+          "bytes": 65536,
+          "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "cancel-mid-body:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+      "at": "2026-09-28T08:53:37.182Z",
+      "result": {
+        "cancelled": {
+          "startedAt": "2026-09-28T08:53:34.788Z",
+          "finishedAt": "2026-09-28T08:53:35.308Z",
+          "bytesSent": 131072,
+          "outcome": "aborted"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:37.182Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "replay-after-delete:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+      "at": "2026-09-28T08:53:44.319Z",
+      "result": {
+        "first": {
+          "startedAt": "2026-09-28T08:53:37.183Z",
+          "finishedAt": "2026-09-28T08:53:38.562Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:37.525Z",
+          "outcome": "response",
+          "status": 200
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:40.858Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "replay": {
+          "startedAt": "2026-09-28T08:53:41.959Z",
+          "finishedAt": "2026-09-28T08:53:43.308Z",
+          "bytesSent": 65536,
+          "bodyFinishedAt": "2026-09-28T08:53:42.294Z",
+          "outcome": "response",
+          "status": 200
+        },
+        "content": {
+          "bytes": 65536,
+          "sha256": "bf718b6f653bebc184e1479f1935b8da974d701b893afcf49e701f3e2f9f9c5a",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "cancel-mid-body:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+      "at": "2026-09-28T08:53:47.939Z",
+      "result": {
+        "cancelled": {
+          "startedAt": "2026-09-28T08:53:45.421Z",
+          "finishedAt": "2026-09-28T08:53:45.958Z",
+          "bytesSent": 131072,
+          "outcome": "aborted"
+        },
+        "removed": {
+          "deletedAt": "2026-09-28T08:53:47.939Z",
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          },
+          "head": {
+            "exists": false,
+            "error": {
+              "name": "NotFound",
+              "message": "UnknownError",
+              "httpStatusCode": 404,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        },
+        "releasePermitted": false
+      }
+    },
+    {
+      "name": "run-failed",
+      "at": "2026-09-28T08:53:47.941Z",
+      "error": {
+        "name": "AssertionError",
+        "message": "Preparation consumed the window; use a longer expires-in"
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/browser.svg",
+      "at": "2026-09-28T08:53:50.416Z",
+      "result": {
+        "deletedAt": "2026-09-28T08:53:50.416Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/upload.bin",
+      "at": "2026-09-28T08:53:52.719Z",
+      "result": {
+        "deletedAt": "2026-09-28T08:53:52.719Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "controlled-experiment-cleanup:ariso/upload-v01/live-8448b7c0-7917-42da-a170-52339ce893b2/probe.bin",
+      "at": "2026-09-28T08:53:54.949Z",
+      "result": {
+        "deletedAt": "2026-09-28T08:53:54.949Z",
+        "metadata": {
+          "httpStatusCode": 204,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "head": {
+          "exists": false,
+          "error": {
+            "name": "NotFound",
+            "message": "UnknownError",
+            "httpStatusCode": 404,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "status": "observed",
+  "service": "seaweedfs",
+  "bucket": "images",
+  "key": "upload-v01/multipart/cefdce6b-4c65-4343-a130-573ac38e5d16",
+  "events": [
+    {
+      "name": "create",
+      "at": "2026-09-28T09:00:40.222Z",
+      "result": {
+        "Bucket": "images",
+        "Key": "upload-v01/multipart/cefdce6b-4c65-4343-a130-573ac38e5d16",
+        "UploadId": "9a5239848e3ac84597d5a2516fdb26f1aa211ab5_fb6333fa32fc42ba8c8408f8fd510b41",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D9708471506BE2ED69ACE8",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "upload-part-1",
+      "at": "2026-09-28T09:00:40.958Z",
+      "result": {
+        "ETag": "\"79b281060d337b9b2b84ccf390adcf74\"",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D970848230A7D6EE240F66",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "list-before-abort",
+      "at": "2026-09-28T09:00:43.649Z",
+      "result": {
+        "Bucket": "images",
+        "Key": "upload-v01/multipart/cefdce6b-4c65-4343-a130-573ac38e5d16",
+        "UploadId": "9a5239848e3ac84597d5a2516fdb26f1aa211ab5_fb6333fa32fc42ba8c8408f8fd510b41",
+        "PartNumberMarker": "0",
+        "MaxParts": 10000,
+        "IsTruncated": false,
+        "Parts": [
+          {
+            "PartNumber": 1,
+            "LastModified": "2026-09-28T09:00:43.000Z",
+            "ETag": "\"79b281060d337b9b2b84ccf390adcf74\"",
+            "Size": 5242880
+          }
+        ],
+        "StorageClass": "STANDARD",
+        "$metadata": {
+          "httpStatusCode": 200,
+          "requestId": "18D9708517AF9F518FD7CB35",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "abort-during-send",
+      "at": "2026-09-28T09:00:46.354Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D97085B8D756D637DBE8FF",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "list-immediately-after-abort",
+      "at": "2026-09-28T09:00:46.451Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+        "httpStatusCode": 404,
+        "requestId": "18D97085BE80E8E226711B78",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "slow-part-result",
+      "at": "2026-09-28T09:00:55.981Z",
+      "result": {
+        "startedAt": "2026-09-28T09:00:44.851Z",
+        "finishedAt": "2026-09-28T09:00:55.981Z",
+        "bytesSent": 5242880,
+        "bodyFinishedAt": "2026-09-28T09:00:55.796Z",
+        "outcome": "response",
+        "status": 404,
+        "code": "NoSuchUpload",
+        "requestId": "18D970856F0743279FA10815"
+      }
+    },
+    {
+      "name": "list-after-sender-settled",
+      "at": "2026-09-28T09:00:55.982Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+        "httpStatusCode": 404,
+        "requestId": "18D97087F688989D0824B767",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "repeat-abort",
+      "at": "2026-09-28T09:00:57.177Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D970883DD5606EA36F515C",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "replay-old-part-url",
+      "at": "2026-09-28T09:00:58.375Z",
+      "result": {
+        "startedAt": "2026-09-28T09:00:58.375Z",
+        "finishedAt": "2026-09-28T09:00:58.731Z",
+        "bytesSent": 1024,
+        "bodyFinishedAt": "2026-09-28T09:00:58.615Z",
+        "outcome": "response",
+        "status": 404,
+        "code": "NoSuchUpload",
+        "requestId": "18D9708894A90CBA8EE38339"
+      }
+    },
+    {
+      "name": "complete-aborted-session",
+      "at": "2026-09-28T09:00:59.833Z",
+      "error": {
+        "name": "NoSuchUpload",
+        "message": "The specified multipart upload does not exist. The upload ID may be invalid, or the upload may have been aborted or completed.",
+        "httpStatusCode": 404,
+        "requestId": "18D97088DC3F5B740B320E1E",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "head-after-complete-attempt",
+      "at": "2026-09-28T09:00:59.931Z",
+      "error": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D97088E1F87F6CEA843FBA",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "cleanup-abort",
+      "at": "2026-09-28T09:01:01.129Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D9708929858833293B2EB3",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "cleanup-delete",
+      "at": "2026-09-28T09:01:01.227Z",
+      "result": {
+        "$metadata": {
+          "httpStatusCode": 204,
+          "requestId": "18D970892F3121CF195F7327",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "cleanup-head",
+      "at": "2026-09-28T09:01:01.322Z",
+      "error": {
+        "name": "NotFound",
+        "message": "UnknownError",
+        "httpStatusCode": 404,
+        "requestId": "18D9708934E991664E351DC6",
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ],
+  "objectAbsent": true,
+  "backendPartsReclaimed": "unverified",
+  "uploadId": "9a5239848e3ac84597d5a2516fdb26f1aa211ab5_fb6333fa32fc42ba8c8408f8fd510b41"
+}

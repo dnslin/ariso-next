@@ -44,10 +44,10 @@ const headers = requests.map((event) => {
   );
   assert.ok(extra, 'Require actual wire headers including Origin');
   const result = Object.fromEntries(
-    Object.entries(extra.params.headers).map(([key, value]) => [
-      key.toLowerCase(),
-      value,
-    ]),
+    Object.entries(extra.params.headers)
+      // HTTP/2 :path contains the signed query; transport pseudoheaders are not CORS evidence.
+      .filter(([key]) => !key.startsWith(':'))
+      .map(([key, value]) => [key.toLowerCase(), value]),
   );
   assert.equal(result.origin, config.origin);
   assert.equal(result.authorization, undefined);

@@ -1,6 +1,6 @@
 # UPLOAD-V01 迟到 PUT 最终收尾
 
-2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；按本轮最新确认将 R2 桶名改为 `image` 后，两服务 HeadBucket 均为 200，OPTIONS 均允许实验来源的 PUT/content-type。真实浏览器 PUT 尚未验证。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
+2026-09-28，关联 [Issue #142](https://github.com/dnslin/ariso-next/issues/142)、[草稿 PR #202](https://github.com/dnslin/ariso-next/pull/202)。**状态：诊断实验已实现，任务验收未完成。** 所有者已明确本任务不验证 AWS S3，验收范围改为 R2 与 SeaweedFS。两组配置已提供；按本轮最新确认将 R2 桶名改为 `image` 后，两服务 HeadBucket 均为 200，OPTIONS 均允许实验来源的 PUT/content-type。两服务真实浏览器、900 秒跨期 PUT、响应丢失、进程中断及分片观测已完成，见[本轮证据](#2026-09-28-真实写入故障与分片实验)。普通单 PUT 最终结算依据仍未解决。保留草稿 PR，不解锁下游任务。
 
 前置 [EV-STORAGE-01 / #70](https://github.com/dnslin/ariso-next/issues/70) 已关闭并合并 PR #109；本任务最初未继承其 AWS 豁免；所有者本轮另行明确免除本任务 AWS 实测，AWS 保留未验证，不算通过。原生 blocking 为 #157、#158、#162、#163、#164、#143。未改冻结 PRD、业务接口或生产模块。规格以 [upload §7.3/13](../../../specs/SPEC-upload.md#73-取消到期与迟到写入)、[storage 探测责任](../../../specs/SPEC-storage.md) 为准。产品 UI、Figma、响应式与人工设计验收不适用。
 
@@ -12,8 +12,8 @@
 | ----------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
 | upload 临时 Key   | 删除后在有效期内重复原 URL；部分发送后取消；慢 PUT 横跨签名截止，传输期间删除并 HEAD，之后复查；截止后新请求应拒绝 | 任意未知客户端/在途请求不会再写入的提供方判据               |
 | storage probe Key | 对独立 probe Key 执行同样的单 PUT 时序；可选复用真实浏览器 CORS PUT/下载                                           | HTTP 实验不等于浏览器 CORS；签名过期不是 probe 责任释放证明 |
-| 服务端写入        | SDK PUT → HEAD → CopySourceIfMatch → HEAD 的已确认路径                                                             | SDK PUT/Copy 响应丢失、进程在途崩溃及提供方最终结算         |
-| 重启清理          | 新进程读取已保存的目标、revision 和确切 Key，再尝试删除及 HEAD；失败记录保留且可再次运行                           | 这不是生产恢复模块，也不是进程在途崩溃的真实云证据          |
+| 服务端写入        | 真实 SDK PUT/Copy 响应丢失，客户端报错后 GET 内容哈希一致                                                          | 提供方最终结算判据                                          |
+| 重启清理          | 独立慢上传期间 SIGKILL 责任进程，新进程从日志读取确切 Key 删除；随后对象重现                                       | 这是真实云故障实验，不是生产恢复模块                        |
 
 报告在签名/远端写入之前登记四个独立随机 Key，逐步持久化时序、状态、服务错误及请求 ID。不会保存访问密钥或完整签名 URL。每轮目录独立，不覆盖旧报告。清理仅操作报告中的明确 Key，不扫描 Bucket。删除成功和 HEAD404 的检查通过只代表当时观测；报告始终保留 `release.permitted=false` 与引用 Key。此状态是实验阻塞记录，**不是以永久保留引用作为产品方案**。未建立最终结算协议前，运行器始终以退出 1 表示任务不满足验收。
 
@@ -46,7 +46,7 @@ node tests/experiments/upload-late-put/run.ts \
 # --expires-in 10 可加快诊断，但不能替代产品 900 秒样本。
 ```
 
-需要真实 CORS 证据时使用 `ego-browser` 技能与现有 Ego Lite 创建并复用一个 TaskSpace，通过 `EGO_TASK_SPACE` 传入。复用的探测 origin 为 `http://127.0.0.1:47070`，真实 Bucket 须已允许该 origin 的 PUT/content-type。浏览器额外签发 900 秒 PUT，其截止时间继续保存，不立即宣称最终清理；本轮未运行该路径。无新产品界面，不另建 Figma 设计。
+需要真实 CORS 证据时使用 `ego-browser` 技能与现有 Ego Lite 创建并复用一个 TaskSpace，通过 `EGO_TASK_SPACE` 传入。复用的探测 origin 为 `http://127.0.0.1:47070`，真实 Bucket 须已允许该 origin 的 PUT/content-type。浏览器额外签发 900 秒 PUT，其截止时间继续保存，不立即宣称最终清理；本轮已执行该路径，见末尾真实浏览器记录。无新产品界面，不另建 Figma 设计。
 
 进程中断或想复查对象时，用原目标/revision 的配置和原报告运行：
 
@@ -60,7 +60,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 网络失败可在当前命令使用用户提供的代理变量重试；本地服务须补充 localhost/127.0.0.1/::1/.localhost 到现有 NO_PROXY/no_proxy。原生 Node HTTP/SDK 不默认保证读取这些代理变量，不应把设置环境变量本身当成连接成功证据。
 
-## 本轮实际验证
+## 首轮本地验证（真实配置接入前）
 
 环境：macOS arm64，Node 24.18.1，pnpm 11.19.0，独立 worktree `upload-late-put/ariso`，基于开始任务时最新 origin/main。未读取或修改原工作区未提交文档，未接触用户预览数据。
 
@@ -83,7 +83,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 `pnpm run test:browser` 未执行：无产品 UI 变更；真实 CORS 探测因三服务配置缺失仍未完成，不能由全站既有浏览器冒烟替代。未下载浏览器，未运行 Release/镜像/部署。
 
-## 独立代码审计
+## 首轮独立代码审计
 
 独立 agent 使用 `code-review-and-quality` 检查需求覆盖、模块边界、时序、资源生命周期、证据与测试。
 
@@ -91,10 +91,9 @@ node tests/experiments/upload-late-put/run.ts \
 
 ## 未完成项
 
-1. 两服务真实浏览器 CORS 及实际 900 秒慢 PUT、取消、重放、对象最终复查证据。R2 桶名按本轮最新确认改为 `image`，只读连通已通过。AWS 已获本任务验收豁免，不再阻塞。
-2. 在途进程崩溃、SDK PUT/Copy 响应丢失的真实服务样本。
-3. 可证明最终无写入的协议及有限收尾，必要时先修订规格。本轮不得把上述本地模拟测试或“保留责任”称为解决本项。
-4. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持；Release 双架构镜像/容器验证按既有流程，本轮未执行。
+1. 可证明最终无写入的协议及有限收尾，必要时先修订规格。新增真实反例说明普通单 PUT 的删除、HEAD404、签名到期组合不足以证明最终收尾。
+2. Multipart 候选协议的内部残片回收依据与所属规格变更。API 返回 NoSuchUpload 不能替代物理回收证据；本轮未修改生产协议。
+3. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持。AWS 按所有者要求未测试；Release 双架构镜像/容器验证按既有流程，本轮未执行。
 
 ## PR 状态核对
 
@@ -128,3 +127,88 @@ Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-pref
 纠正此前判断：SeaweedFS 的 NoSuchCORSConfiguration 仅表示无桶级配置，不能直接推断实际缺少 CORS。[官方说明](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)支持桶级 PutBucketCors 和全局 allowedOrigins；当前实际响应已允许实验来源，具体由服务全局配置还是代理提供，本轮未读取部署配置，不能断言。OPTIONS 也不能替代真实浏览器 PUT 的可读成功响应和服务端对象核对。
 
 本轮仅更新证据与配置说明；修改文件的 Prettier、文档任务检查及差异检查通过，不重复应用测试。最终清理责任释放仍须满足：不再接受新写入、已有写入得到确定结算、最后删除/不存在验证完成。当前普通单 PUT 在结果未知/客户端失联场景下，第二项仍缺少可验证的提供方或协议保证。
+
+## 2026-09-28 真实写入、故障与分片实验
+
+本轮使用所有者提供的 SeaweedFS `images` 和 R2 `image`，每轮写入独立随机 Key；未修改桶 CORS、策略或用户已有对象。连接配置仅存于忽略目录。新运行器只读取连接字段，不伪造私有桶/对象锁的所有者声明，也不将此实验当成对这些设置的验收。
+
+### 复现命令与观测含义
+
+```sh
+# 短窗口诊断；浏览器使用同一个 Ego Lite TaskSpace，两个服务顺序运行。
+EGO_TASK_SPACE=3 node tests/experiments/upload-late-put/live.ts \
+  --config .data/upload-v01-targets.json --service seaweedfs --browser \
+  --expires-in 30 --output test-results/upload-v01-live-short
+EGO_TASK_SPACE=3 node tests/experiments/upload-late-put/live.ts \
+  --config .data/upload-v01-targets.json --service r2 --browser \
+  --expires-in 30 --output test-results/upload-v01-live-short
+# 正式窗口，两个服务各开一个独立进程；签名从当前真实时间开始，不回拨签名时间。
+node tests/experiments/upload-late-put/live.ts \
+  --config .data/upload-v01-targets.json --service seaweedfs \
+  --expires-in 900 --output test-results/upload-v01-live-900
+node tests/experiments/upload-late-put/live.ts \
+  --config .data/upload-v01-targets.json --service r2 \
+  --expires-in 900 --output test-results/upload-v01-live-900
+node tests/experiments/upload-late-put/faults.ts run \
+  .data/upload-v01-targets.json test-results/upload-v01-faults/run-20260928-verified
+node tests/experiments/upload-late-put/multipart.ts \
+  --config .data/upload-v01-targets.json --output test-results/upload-v01-multipart
+```
+
+`live.ts` 的 `observed` / 退出 0 只表示完成该组诊断观测，`releasePermitted` 始终为 false；不是 Issue 验收通过。原严格诊断 `run.ts` 仍以缺少最终协议判据标记未完成。两个运行器含义分别保留，避免把成功复现缺陷解释为产品通过。
+
+### 已取得的真实证据
+
+- **浏览器**：两个服务均由 Ego Lite 实际跨域 PUT 返回 200、`response.type=cors`；实际请求带预期 Origin/content-type。浏览器下载 `旅行.svg` 完成，服务端 GET 的 110 字节及 SHA256 与源文件一致。Origin 为 `http://127.0.0.1:47070`。这证明当前来源的有效 CORS，不等于当前凭据可读取/修改桶 CORS 配置。
+- **短窗口**：SeaweedFS 在删除并 HEAD404 后，完整 2 MiB PUT 跨过 30 秒签名截止仍返回 200，GET 长度与哈希一致。两种 Key 均复现。R2 的准备步骤耗尽 30 秒窗口，运行退出 1，完整保留失败报告；这轮浏览器观测有效，但不作为 R2 跨期证据。
+- **响应丢失**：实际 SDK request handler 先收到并读完真实提供方响应，再向 SDK 抛连接错误；不是修改签名或伪造远端响应。PUT 与 Copy 均配置 `maxAttempts=1`，服务返回 200，客户端得到 InjectedResponseLoss；随后 GET 哈希匹配。此实验覆盖“远端已提交但调用者不知道”的窗口，不声称模拟了所有网络故障。
+- **进程中断**：慢发送器独立进程先写首块，再将负责持久记录的进程 SIGKILL。新进程读取原 Key 执行 DELETE/HEAD404；原发送器继续完成，HEAD 再次存在。记录首块、SIGKILL、恢复删除、body 完成的时间顺序。最后等受控发送器结束再清理。它验证故障窗口，不冒充尚未实现的产品恢复服务。
+- **分片候选**：两服务均已实际上传并列出 part 1。在 part 2 发送中 Abort，完整 5 MiB 请求体随后结束，返回 NoSuchUpload。立即/发送后 ListParts、重放旧 UploadPart、尝试 Complete 均 NoSuchUpload。最终对象 HEAD404。**`backendPartsReclaimed=unverified`：没有读取提供方内部数据，不能证明内部残片物理回收。**
+
+R2 对同 Key 操作之间的 1.1 秒等待仅用于遵守[写入频率限制](https://developers.cloudflare.com/r2/platform/limits/)，不是最终收尾宽限依据。客户端 body 完成时间和字节数表示已交给本机传输层；真实远端成功另由 HTTP 200 与 GET 全量内容核对证明。
+
+本轮浏览器证据发现 HTTP/2 `:path` 含临时签名查询参数。已过滤这些传输伪头，并补充执行实际浏览器脚本的回归测试；已生成报告仅移除该类头，保留 Origin、content-type、响应、时间与内容哈希，未修改观测结果。凭据与完整签名不进入提交。
+
+### 本轮审计与本地验证
+
+独立 agent 按 `code-review-and-quality` 先审查测试，再审查真实发送、故障注入和资源释放；另一位审计者复核分片最终修复及原始报告。发现并修复：并发报告保存共用临时文件、删除失败丢失发送结果、写盘失败跳过客户端销毁、子进程 exit 早于输出排空、SDK 超时默认只警告、分片意外错误未影响退出状态、浏览器 HTTP/2 路径泄露临时签名。新增失败用例先复现问题，再修复；最终审计无剩余必须修改项。
+
+环境仍为 macOS arm64、Node 24.18.1、pnpm 11.19.0，无新增依赖。实际执行：
+
+| 命令                                                                                                                                         | 结果                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                             | 退出 0，锁文件未变                                             |
+| `pnpm run build`                                                                                                                             | 退出 0；既有可选依赖/跟踪诊断仍存在                            |
+| `pnpm run test:unit --maxWorkers=2`                                                                                                          | 31 文件、468 测试通过                                          |
+| `pnpm run test:integration --maxWorkers=4`                                                                                                   | 69 文件、533 测试通过；随后新增/修复的实验用例再做下行定向复测 |
+| `pnpm exec vitest run --project integration tests/integration/storage/late-put-*.test.ts tests/integration/storage/browser-evidence.test.ts` | 8 文件、22 测试通过（80.31 秒）                                |
+| `pnpm run lint`、`pnpm run typecheck`                                                                                                        | 退出 0                                                         |
+
+定向测试验证：真实本地 socket 跨期、并发报告完整落盘、删除失败仍留发送结果、所有受控发送结束后才最终清理、响应丢失、SIGKILL 恢复、服务 500、分片超时与清理失败、CLI 非零退出、浏览器证据脱敏。未下载 Playwright/Chromium。本任务无产品 UI 变更，Figma 与人工设计验收不适用；Release 双架构镜像/容器验证未执行。真实服务诊断完成不等于最终责任释放验收通过。
+
+### 证据入口
+
+| 场景                                    | SeaweedFS                                                                                         | R2                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 真实浏览器与短窗口（R2 短窗口失败保留） | [完整报告](./live/short/seaweedfs/report.json)、[浏览器记录](./live/short/seaweedfs/browser.json) | [完整报告](./live/short/r2/report.json)、[浏览器记录](./live/short/r2/browser.json) |
+| PUT/Copy 响应丢失、SIGKILL 恢复         | [报告](./live/faults/seaweedfs/report.json)                                                       | [报告](./live/faults/r2/report.json)                                                |
+| Multipart Abort、重放与 Complete        | [报告](./live/multipart/seaweedfs.json)                                                           | [报告](./live/multipart/r2.json)                                                    |
+
+`pnpm run format:check` 最终仍因仓库原有的三份 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json` 格式失败。本次文件已格式化并定向检查，未修改范围外文件。`node docs/tasks/check.mjs`：120 任务、298 需求通过；`--self-test`：5 项通过；`git diff --check` 通过。
+
+### 正式 900 秒结果与最终复查
+
+两服务均签发当前时间起算的 900 秒 URL，真实等待至截止前 10 秒发送 2 MiB（每块 64 KiB，间隔 650 ms），发送期间 DELETE/HEAD404，然后继续发送。不是回拨签名时间，也不是只延迟响应。以下为 UTC：
+
+| 服务      | Key 类型   | 开始          | 签名截止      | 请求体发送完成 | 结果                                         |
+| --------- | ---------- | ------------- | ------------- | -------------- | -------------------------------------------- |
+| seaweedfs | upload.bin | 09:08:29.007Z | 09:08:39.000Z | 09:08:50.047Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
+| seaweedfs | probe.bin  | 09:08:29.002Z | 09:08:39.000Z | 09:08:50.090Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
+| r2        | probe.bin  | 09:11:21.008Z | 09:11:31.000Z | 09:11:42.082Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
+| r2        | upload.bin | 09:11:21.004Z | 09:11:31.000Z | 09:11:42.082Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
+
+原始报告：[SeaweedFS 900 秒](./live/900/seaweedfs/report.json)、[R2 900 秒](./live/900/r2/report.json)。四个样本均完整发送 2,097,152 字节，完整内容 SHA256 为 `5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5`（以各报告原始哈希为准）。签名到期后新发起请求均返回 403；这与已开始的请求仍成功并不矛盾。两轮正式进程在报告持久化修复前启动，均正常退出 0，最终报告完整；保存队列与失败路径的修复由最终 22 项定向测试另行验证，未将旧进程冒称为重跑后的版本。
+
+本轮结果是普通 PUT 的真实反例，而不是最终协议通过。任何生产责任释放仍需三个事实同时成立：不能再开始新写入；所有已开始的写入有确定结果；之后删除及不存在核对完成。第二项在未知客户端/失联场景下尚缺依据。Multipart 的 API 会话不可继续不等于后台残片已回收，因此本轮不改生产协议、不解锁下游、不将 PR 转为正式待评审。
+
+最终执行 `node .data/upload-v01-recheck.mjs`：从本轮各报告读取已登记确切 Key，逐一 HEAD、必要时按既有 uploadId Abort、DELETE、HEAD。涵盖成功、失败及重跑记录共 **34 个 Key**；复查前均不存在，最终均 HEAD404，错误 0。原始记录见[最终复查](./live/final-recheck.json)，时间 2026-09-28T09:12:18.917Z 至 2026-09-28T09:12:57.762Z。这是一轮已知受控发送器均退出后的清理记录；不扫描 Bucket，不证明内部残片回收，也不释放生产场景的未知在途写入责任。
