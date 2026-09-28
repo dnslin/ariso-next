@@ -23,6 +23,8 @@
     "build:shell": "next build tests/experiments/shell --webpack"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1136.0",
+    "@aws-sdk/s3-request-presigner": "3.1136.0",
     "@better-auth/drizzle-adapter": "1.7.5",
     "@heroui/react": "3.2.6",
     "@heroui/styles": "3.2.6",
@@ -46,15 +48,16 @@
     "zod": "4.6.2"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "3.1136.0",
-    "@aws-sdk/s3-request-presigner": "3.1136.0",
+    "@resvg/resvg-js": "2.6.2",
     "@tailwindcss/postcss": "4.3.3",
     "@types/better-sqlite3": "9.6.0",
     "@types/busboy": "1.5.4",
     "@types/node": "24.13.4",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@xmldom/xmldom": "0.9.12",
     "auth": "1.7.5",
+    "css-tree": "3.2.1",
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.5",

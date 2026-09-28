@@ -1,0 +1,22 @@
+{
+  "startedAt": "2026-09-28T07:51:07.066Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-55266.localhost:55266",
+  "taskSpaceId": 2,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (identity-390-setup.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/147-media-samples/ariso/scripts/verify-browser.mjs:263:14)\n    at async file:///Users/dnslin/.codex/worktrees/147-media-samples/ariso/scripts/verify-browser.mjs:298:5",
+  "finishedAt": "2026-09-28T07:53:19.301Z",
+  "temporaryDirectoryRemoved": true
+}

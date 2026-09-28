@@ -1,0 +1,333 @@
+{
+  "date": "2026-09-28",
+  "baseCommit": "56546929967b8756d79cd373a3d778a6dc1bca9a",
+  "environment": {
+    "platform": "macOS 26.6.2",
+    "arch": "arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "ImageMagick": "7.1.2-32",
+    "ExifTool": "13.55"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "Frozen install before implementation and after moving the unchanged SDK versions to production dependencies."
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "result": "Repository ESLint passed."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "result": "Final full typecheck passed; initial in-progress test Reply typing failure was corrected."
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=1",
+      "exitCode": 0,
+      "result": "32 files, 478 tests passed."
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "Final build passed without deployment secrets/database; existing optional better-sqlite3 Debug trace warnings retained."
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0,
+      "result": "After build: integration and media-tools, 63 files, 533 tests, 364.23 seconds."
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "Existing browser fixture installation passed."
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles."
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "result": "5 rejection cases passed."
+    },
+    {
+      "command": "pnpm audit --json",
+      "exitCode": 1,
+      "result": "One existing moderate esbuild advisory through drizzle-kit; no SDK advisory; no unrelated upgrade."
+    },
+    {
+      "command": "pnpm exec vitest run --project unit --project integration tests/unit/storage/s3.test.ts tests/integration/storage/s3.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "result": "Independent reviewer: 2 files, 29 tests passed after both lifecycle regressions were fixed."
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 pnpm run test:browser",
+      "exitCode": 1,
+      "result": "Existing library detail flow reached the per-script 300000ms deadline. Desktop M2, interaction polish, workspace continuity and desktop/mobile identity completed. Last screenshot: detail clipboard denial; final library report absent, remaining suites unverified. No UI/e2e code was changed."
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 1,
+      "result": "Only three unchanged origin/main evidence files fail Prettier: docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json. git diff --exit-code origin/main on these files returns 0. Kept out of scope."
+    },
+    {
+      "command": "node tests/experiments/storage-s3/verify-objects.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output docs/verification/storage-155/live --service seaweedfs --wait-for-expiry",
+      "exitCode": 0,
+      "result": "9/9 checks passed, including real 300/900-second expiry and exact-key final cleanup.",
+      "evidence": "live/run-P2vuVy/seaweedfs/report.json"
+    },
+    {
+      "command": "node tests/experiments/storage-s3/verify-objects.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output docs/verification/storage-155/live --service r2 --wait-for-expiry",
+      "exitCode": 0,
+      "result": "9/9 checks passed, including real 300/900-second expiry and exact-key final cleanup.",
+      "evidence": "live/run-tAGXDQ/r2/report.json"
+    },
+    {
+      "command": "node tests/experiments/storage-s3/verify-objects.ts --output docs/verification/storage-155/missing-environment",
+      "exitCode": 1,
+      "result": "Expected incomplete result for all three services without explicit configuration; no remote requests."
+    },
+    {
+      "command": "pnpm exec eslint tests/experiments/storage-s3/verify-objects.ts --max-warnings=0; pnpm exec tsc --noEmit --project tsconfig.json",
+      "exitCode": 0,
+      "result": "After runner interruption signal fix; production code unchanged."
+    },
+    {
+      "command": "pnpm exec prettier docs/verification/storage-155 docs/specs/SPEC-storage.md docs/tasks/m3-m4-platform.md tests/experiments/storage-s3/verify-objects.ts src/server/storage/s3.ts tests/unit/storage/s3.test.ts tests/integration/storage/s3.test.ts package.json --check",
+      "exitCode": 0,
+      "result": "All changed format-supported files pass."
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "No whitespace errors."
+    },
+    {
+      "command": "gh pr view 204 --repo dnslin/ariso-next --json number,url,isDraft,state,statusCheckRollup,headRefName,headRefOid",
+      "exitCode": 0,
+      "result": "OPEN / draft, head codex/s3-object-155, statusCheckRollup empty."
+    },
+    {
+      "command": "gh pr checks 204 --repo dnslin/ariso-next",
+      "exitCode": 1,
+      "result": "No checks reported on branch; absence is not CI success."
+    },
+    {
+      "command": "gh run list --repo dnslin/ariso-next --branch codex/s3-object-155 --json databaseId,name,status,conclusion,headSha --limit 20",
+      "exitCode": 0,
+      "result": "Empty workflow run list."
+    }
+  ],
+  "notRun": [
+    "Schema generation: no schema change",
+    "Release AMD64/ARM64 container validation: release-only policy",
+    "AWS S3: no explicit test configuration supplied"
+  ],
+  "redGreen": [
+    {
+      "failure": "PUT source error left HTTP request pending; test exceeded 5000ms",
+      "fix": "Abort SDK request when source emits error; preserve original input error",
+      "result": "passed"
+    },
+    {
+      "failure": "GET consumer destroy while awaiting next bytes left remote response open; test exceeded 5000ms",
+      "fix": "Backpressure-preserving PassThrough with direct source destruction",
+      "result": "passed"
+    }
+  ],
+  "implementationCommit": "d4b43e6",
+  "pullRequest": "https://github.com/dnslin/ariso-next/pull/204",
+  "followUp": {
+    "date": "2026-09-28",
+    "authorization": "Owner cancelled AWS S3 live testing because no environment is available, requested Ego retry and correction of the three historical JSON files.",
+    "requiredServices": ["r2", "seaweedfs"],
+    "checks": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm exec prettier docs/verification/m2-85/remove-explanations/preview-switch/after.json docs/verification/m2-85/remove-explanations/preview-switch/before.json docs/verification/m2-85/remove-explanations/preview-switch/mobile.json --write",
+        "exitCode": 0,
+        "result": "Formatting only. Parsed JSON equals HEAD for all three files; independently verified."
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0,
+        "result": "Full repository formatting passes after the authorized historical corrections."
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements."
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases passed."
+      },
+      {
+        "command": "node tests/experiments/storage-s3/verify-objects.ts --output test-results/storage-155-required-matrix",
+        "exitCode": 1,
+        "result": "Expected: only R2/SeaweedFS selected; both incomplete without configuration. Report directories and statuses asserted. No remote requests.",
+        "evidence": "missing-environment-retry/run-B1BCUC"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Library, upload, polling, desktop/mobile M2 and interaction checks passed. Mobile workspace continuity timed out waiting for succeeded read on /library; captured network shows succeeded already observed on /upload. UI fixture suite was not reached. Production code unchanged.",
+        "evidence": "browser-retry/runner.json"
+      }
+    ],
+    "review": "Independent reviewer confirmed no required issues in the service selection, policy change, or three JSON formatting edits; R2/SeaweedFS assertions and failure handling unchanged. Independent evidence review confirmed the mobile failure is a test race: succeeded read occurred on /upload before navigation, so terminal state correctly stops polling. No product failure established. Owner subsequently authorized the test fix. The historical failed run remains unchanged; the fixed full-run result is recorded separately."
+  },
+  "testTimingFix": {
+    "authorization": "Owner explicitly allowed modification after the independently diagnosed browser test race.",
+    "file": "e2e/workspace-continuity.mjs",
+    "change": "Hold actual XHR load and real GET response delivery until navigation, requiring a held response on /upload before releasing on /library. Preserve payloads, 20-second limit and persistence/identity assertions; release all holds in finally.",
+    "review": "Independent code-review-and-quality review: no required issues. node --check, file ESLint and git diff --check passed. Independent reviewer also cross-checked focused report identity/SQL assertions and both heldReadPaths; full reports are passed as well.",
+    "checks": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-final pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Before reaching the fixed scene, desktop M2 stalled at private PNG download and reached the unchanged per-script 300000ms cap. Three preceding downloaded files exist; fourth absent. No product error established; original run retained.",
+        "evidence": "browser-after-timing-fix/runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/workspace-focused-isolated node /tmp/ariso-155-workspace-focused.mjs",
+        "exitCode": 0,
+        "result": "Existing production fixture/setup/cleanup reused in a temporary scoped runner: both widths workspace continuity and final UI/library fixture passed. Earlier temporary harness preparation attempts hit identity-suite in-memory rate limits; corrected isolation restarts after setup without rerunning the unrelated login-failure suite. No limit or assertions changed.",
+        "evidence": "workspace-focused/runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-complete pnpm run test:browser",
+        "exitCode": 0,
+        "result": "Full suite passed, including both widths workspace continuity and final UI/library fixture. Eight M2 downloads completed. Temporary download stage logging was removed after diagnosis; request behavior/assertions unchanged.",
+        "evidence": "browser-complete/runner.json"
+      }
+    ]
+  },
+  "finalPullRequestStatus": {
+    "url": "https://github.com/dnslin/ariso-next/pull/204",
+    "state": "OPEN",
+    "isDraft": false,
+    "command": "gh pr ready 204 --repo dnslin/ariso-next",
+    "exitCode": 0,
+    "readBack": "gh pr view confirms isDraft false and empty statusCheckRollup; gh pr checks exits 1 with no checks; gh run list is empty. No merge or release."
+  },
+  "reviewFixes": {
+    "date": "2026-09-28",
+    "baseline": "3211765640670c4c7e79e6b636820ef172580f09",
+    "scope": [
+      "Abort PUT immediately when the source closes prematurely without an error event.",
+      "Preserve GET response metadata and original stream error code after body truncation."
+    ],
+    "red": {
+      "command": "pnpm exec vitest run --project integration tests/integration/storage/s3.test.ts --maxWorkers=1 -t '源流无错误提前关闭|消费中远端截断'",
+      "exitCode": 1,
+      "result": "Both selected regressions failed before the production fix. PUT settled stayed false at the poll deadline; truncated GET lost requestId, metadata and cause.code. The other 18 cases were excluded only by this focused RED command."
+    },
+    "checks": [
+      {
+        "command": "pnpm exec vitest run tests/unit/storage/s3.test.ts tests/integration/storage/s3.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "result": "2 files / 30 tests passed."
+      },
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=1",
+        "exitCode": 0,
+        "result": "32 files / 478 tests passed."
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "result": "Build completed before integration. Existing optional better-sqlite3 Debug binding trace warnings remain."
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements."
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases passed."
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=1",
+        "exitCode": 0,
+        "result": "After build: integration and media-tools, 63 files / 534 tests passed, 357.73 seconds."
+      }
+    ],
+    "reviews": [
+      {
+        "skill": "code-review-and-quality",
+        "agent": "pr204_correctness_review",
+        "verdict": "Approve; no required or optional findings.",
+        "checks": [
+          "Focused unit/integration 30/30",
+          "Changed production/test files ESLint",
+          "tsc --noEmit --incremental false --project tsconfig.json",
+          "git diff --check"
+        ]
+      },
+      {
+        "skill": "thermo-nuclear-code-quality-review",
+        "agent": "pr204_structure_review",
+        "verdict": "Approve; no required or optional findings. Native stream completion replaces custom event handling; SDK metadata type replaces duplicate fields; no new abstraction or dependency.",
+        "checks": ["Focused unit/integration 30/30", "git diff --check"]
+      }
+    ],
+    "notRerun": [
+      "Browser: no UI/e2e changes in this fix, and createS3Storage currently has no application consumers. Prior complete browser result remains separately recorded.",
+      "R2/SeaweedFS live expiry matrix: signing/configuration/protocol unchanged; these stream failure paths are verified with the real SDK and local HTTP. Prior live reports are not represented as reruns.",
+      "AWS S3 live testing cancelled by owner.",
+      "Release-only AMD64/ARM64 image and container validation."
+    ]
+  }
+}

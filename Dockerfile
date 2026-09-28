@@ -32,6 +32,7 @@ RUN apt-get update \
         ca-certificates \
         procps \
         imagemagick-7.q16 \
+        ffmpeg \
         libmagickcore-7.q16-10-extra \
         libheif-plugin-aomenc \
         libimage-exiftool-perl \

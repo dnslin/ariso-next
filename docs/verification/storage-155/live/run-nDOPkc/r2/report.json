@@ -1,0 +1,208 @@
+{
+  "service": "r2",
+  "runId": "76848acd-ffb7-4d94-b840-6ef1efedbe33",
+  "startedAt": "2026-09-28T07:08:21.501Z",
+  "status": "failed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [
+    {
+      "relative": "uploads/76848acd-ffb7-4d94-b840-6ef1efedbe33/临时 +%?.svg",
+      "remote": "ariso/verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33/uploads/76848acd-ffb7-4d94-b840-6ef1efedbe33/临时 +%?.svg"
+    },
+    {
+      "relative": "images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/固定 +%?.svg",
+      "remote": "ariso/verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33/images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/固定 +%?.svg"
+    },
+    {
+      "relative": "images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/rejected.svg",
+      "remote": "ariso/verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33/images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/rejected.svg"
+    },
+    {
+      "relative": "probes/missing-76848acd-ffb7-4d94-b840-6ef1efedbe33",
+      "remote": "ariso/verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33/probes/missing-76848acd-ffb7-4d94-b840-6ef1efedbe33"
+    }
+  ],
+  "cleanupResponsibility": "PUT signature can still write until putValidUntil; exact-key record retained. Immediate DELETE does not revoke it. Final cleanup after expiry remains required.",
+  "checks": [
+    {
+      "name": "stream-put-head-full-get-and-conditional-copy",
+      "status": "passed",
+      "evidence": {
+        "put": {
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "head": {
+          "size": 1048657,
+          "contentType": "image/svg+xml",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "get": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "copy": {
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "fixedGet": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "bytesCompared": 1048657
+      }
+    },
+    {
+      "name": "put-900-seconds-required-headers-and-reput-cannot-change-fixed-object",
+      "status": "passed",
+      "evidence": {
+        "expiresSeconds": 900,
+        "headers": {
+          "content-type": "image/svg+xml"
+        },
+        "wrongHeader": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "contentType": "application/xml",
+          "contentLength": null,
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "SignatureDoesNotMatch"
+        },
+        "put": {
+          "status": 200,
+          "requestId": null,
+          "server": "cloudflare",
+          "contentType": "text/plain;charset=UTF-8",
+          "contentLength": "0",
+          "etag": "\"b24c6a4d065d10a89f963c7c80a64d96\"",
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "fixedBytesUnchanged": true
+      }
+    },
+    {
+      "name": "changed-source-rejects-stale-etag-get-and-copy",
+      "status": "passed",
+      "evidence": [
+        {
+          "name": "Error",
+          "message": "Storage read failed: verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33, uploads/76848acd-ffb7-4d94-b840-6ef1efedbe33/临时 +%?.svg: At least one of the pre-conditions you specified did not hold.",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "key": "uploads/76848acd-ffb7-4d94-b840-6ef1efedbe33/临时 +%?.svg",
+          "operation": "read"
+        },
+        {
+          "name": "Error",
+          "message": "Storage copy failed: verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33, images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/rejected.svg: At least one of the pre-conditions you specified did not hold.",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "key": "images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/rejected.svg",
+          "operation": "copy"
+        }
+      ]
+    },
+    {
+      "name": "get-head-300-seconds-response-overrides-and-method-isolation",
+      "status": "failed",
+      "evidence": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\nnull !== '1048657'\n",
+        "code": "ERR_ASSERTION"
+      }
+    },
+    {
+      "name": "exact-key-final-cleanup",
+      "status": "passed",
+      "evidence": [
+        {
+          "key": "uploads/76848acd-ffb7-4d94-b840-6ef1efedbe33/临时 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/固定 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/76848acd-ffb7-4d94-b840-6ef1efedbe33/original/rejected.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "probes/missing-76848acd-ffb7-4d94-b840-6ef1efedbe33",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        }
+      ]
+    },
+    {
+      "name": "put-window-final-cleanup",
+      "status": "incomplete",
+      "evidence": "PUT signature can still write until putValidUntil; exact-key record retained. Immediate DELETE does not revoke it. Final cleanup after expiry remains required."
+    }
+  ],
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "region": "auto",
+    "bucket": "image",
+    "forcePathStyle": true
+  },
+  "storageId": "verify-155-76848acd-ffb7-4d94-b840-6ef1efedbe33",
+  "putValidUntil": "2026-09-28T07:23:30.000Z",
+  "finishedAt": "2026-09-28T07:08:45.047Z"
+}

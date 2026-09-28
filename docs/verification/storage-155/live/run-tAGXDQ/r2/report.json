@@ -1,0 +1,355 @@
+{
+  "service": "r2",
+  "runId": "db4a1e65-ffc4-4654-95f1-0791d981d25f",
+  "startedAt": "2026-09-28T07:10:16.608Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "keys": [
+    {
+      "relative": "uploads/db4a1e65-ffc4-4654-95f1-0791d981d25f/临时 +%?.svg",
+      "remote": "ariso/verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f/uploads/db4a1e65-ffc4-4654-95f1-0791d981d25f/临时 +%?.svg"
+    },
+    {
+      "relative": "images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/固定 +%?.svg",
+      "remote": "ariso/verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f/images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/固定 +%?.svg"
+    },
+    {
+      "relative": "images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/rejected.svg",
+      "remote": "ariso/verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f/images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/rejected.svg"
+    },
+    {
+      "relative": "probes/missing-db4a1e65-ffc4-4654-95f1-0791d981d25f",
+      "remote": "ariso/verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f/probes/missing-db4a1e65-ffc4-4654-95f1-0791d981d25f"
+    }
+  ],
+  "cleanupResponsibility": "Local controlled requests ended; inspect cleanup results. An interrupted write does not prove remote settlement. This does not verify the general UPLOAD-V01 late-PUT lifecycle.",
+  "checks": [
+    {
+      "name": "stream-put-head-full-get-and-conditional-copy",
+      "status": "passed",
+      "evidence": {
+        "put": {
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "head": {
+          "size": 1048657,
+          "contentType": "image/svg+xml",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "get": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "copy": {
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "fixedGet": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "bytesCompared": 1048657
+      }
+    },
+    {
+      "name": "put-900-seconds-required-headers-and-reput-cannot-change-fixed-object",
+      "status": "passed",
+      "evidence": {
+        "expiresSeconds": 900,
+        "headers": {
+          "content-type": "image/svg+xml"
+        },
+        "wrongHeader": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420ed9e8c263ceb-LAX",
+          "contentEncoding": null,
+          "contentType": "application/xml",
+          "contentLength": "3130",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "SignatureDoesNotMatch"
+        },
+        "put": {
+          "status": 200,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420eda278f978d8-LAX",
+          "contentEncoding": null,
+          "contentType": "text/plain;charset=UTF-8",
+          "contentLength": "0",
+          "etag": "\"b24c6a4d065d10a89f963c7c80a64d96\"",
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "fixedBytesUnchanged": true
+      }
+    },
+    {
+      "name": "changed-source-rejects-stale-etag-get-and-copy",
+      "status": "passed",
+      "evidence": [
+        {
+          "name": "Error",
+          "message": "Storage read failed: verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f, uploads/db4a1e65-ffc4-4654-95f1-0791d981d25f/临时 +%?.svg: At least one of the pre-conditions you specified did not hold.",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "key": "uploads/db4a1e65-ffc4-4654-95f1-0791d981d25f/临时 +%?.svg",
+          "operation": "read"
+        },
+        {
+          "name": "Error",
+          "message": "Storage copy failed: verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f, images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/rejected.svg: At least one of the pre-conditions you specified did not hold.",
+          "code": "STORAGE_OBJECT_CHANGED",
+          "serviceCode": "PreconditionFailed",
+          "httpStatusCode": 412,
+          "key": "images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/rejected.svg",
+          "operation": "copy"
+        }
+      ]
+    },
+    {
+      "name": "get-head-300-seconds-response-overrides-and-method-isolation",
+      "status": "passed",
+      "evidence": {
+        "expiresSeconds": 300,
+        "get": {
+          "status": 200,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420edd4bdacc277-LAX",
+          "contentEncoding": null,
+          "contentType": "application/octet-stream",
+          "contentLength": "1048657",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "contentDisposition": "attachment; filename=\"image.svg\"; filename*=UTF-8''%E6%97%85%E8%A1%8C.svg",
+          "cacheControl": "private, no-store, no-transform"
+        },
+        "head": {
+          "status": 200,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420ede0ad45b4c4-LAX",
+          "contentEncoding": null,
+          "contentType": "image/svg+xml",
+          "contentLength": "1048657",
+          "etag": "\"e65d6e84146832b0c37ec55369d9b883\"",
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "headWithGetUrl": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420ede66b63c277-LAX",
+          "contentEncoding": null,
+          "contentType": "text/plain;charset=UTF-8",
+          "contentLength": null,
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null
+        },
+        "getWithHeadUrl": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420edea198f83d9-LAX",
+          "contentEncoding": null,
+          "contentType": "application/xml",
+          "contentLength": "2890",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "SignatureDoesNotMatch"
+        }
+      }
+    },
+    {
+      "name": "cancel-get-release-stream-and-next-request-succeeds",
+      "status": "passed",
+      "evidence": {
+        "cancelledGet": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        },
+        "streamDestroyed": true,
+        "subsequentGet": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "missing-read-is-error-missing-head-is-null-and-delete-is-idempotent",
+      "status": "passed",
+      "evidence": {
+        "failure": {
+          "name": "Error",
+          "message": "Storage read failed: verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f, probes/missing-db4a1e65-ffc4-4654-95f1-0791d981d25f: The specified key does not exist.",
+          "code": "STORAGE_OBJECT_MISSING",
+          "serviceCode": "NoSuchKey",
+          "httpStatusCode": 404,
+          "key": "probes/missing-db4a1e65-ffc4-4654-95f1-0791d981d25f",
+          "operation": "read"
+        },
+        "first": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "second": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "real-300-second-get-head-expiry",
+      "status": "passed",
+      "evidence": {
+        "checkedAt": "2026-09-28T07:15:34.003Z",
+        "getExpiresAt": "2026-09-28T07:15:32.000Z",
+        "headExpiresAt": "2026-09-28T07:15:32.000Z",
+        "get": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420f532dbc9d942-LAX",
+          "contentEncoding": null,
+          "contentType": "application/xml",
+          "contentLength": "118",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "ExpiredRequest"
+        },
+        "head": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a420f536e9d3fda5-LAX",
+          "contentEncoding": null,
+          "contentType": "text/plain;charset=UTF-8",
+          "contentLength": null,
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null
+        }
+      }
+    },
+    {
+      "name": "real-900-second-put-expiry",
+      "status": "passed",
+      "evidence": {
+        "checkedAt": "2026-09-28T07:25:26.003Z",
+        "expiresAt": "2026-09-28T07:25:24.000Z",
+        "put": {
+          "status": 403,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a42103a31bf0cb9b-LAX",
+          "contentEncoding": null,
+          "contentType": "application/xml",
+          "contentLength": "118",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "serviceCode": "ExpiredRequest"
+        }
+      }
+    },
+    {
+      "name": "exact-key-final-cleanup",
+      "status": "passed",
+      "evidence": [
+        {
+          "key": "uploads/db4a1e65-ffc4-4654-95f1-0791d981d25f/临时 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/固定 +%?.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "images/db4a1e65-ffc4-4654-95f1-0791d981d25f/original/rejected.svg",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        },
+        {
+          "key": "probes/missing-db4a1e65-ffc4-4654-95f1-0791d981d25f",
+          "status": "passed",
+          "deleted": {
+            "metadata": {
+              "httpStatusCode": 204,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "absent": true
+        }
+      ]
+    }
+  ],
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "region": "auto",
+    "bucket": "image",
+    "forcePathStyle": true
+  },
+  "storageId": "verify-155-db4a1e65-ffc4-4654-95f1-0791d981d25f",
+  "putValidUntil": "2026-09-28T07:25:24.000Z",
+  "finishedAt": "2026-09-28T07:25:32.149Z"
+}
