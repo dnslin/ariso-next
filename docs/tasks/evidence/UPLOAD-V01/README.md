@@ -92,7 +92,7 @@ node tests/experiments/upload-late-put/run.ts \
 ## 未完成项
 
 1. 可证明最终无写入的协议及有限收尾，必要时先修订规格。新增真实反例说明普通单 PUT 的删除、HEAD404、签名到期组合不足以证明最终收尾。
-2. Multipart 候选协议的内部残片回收依据与所属规格变更。API 返回 NoSuchUpload 不能替代物理回收证据；本轮未修改生产协议。
+2. Multipart 候选协议在未知 Create/Complete 结果下的逻辑终态依据与所属规格变更。应用不需要检查提供方物理磁盘；真正的剩余条件见[本轮 Multipart 补充验证](#multipart-候选的补充验证与版本前置)。本轮未修改生产协议。
 3. #157/#158/#162/#163/#164/#143 对本前置的阻塞保持。AWS 按所有者要求未测试；Release 双架构镜像/容器验证按既有流程，本轮未执行。
 
 ## PR 状态核对
@@ -209,6 +209,92 @@ R2 对同 Key 操作之间的 1.1 秒等待仅用于遵守[写入频率限制](h
 
 原始报告：[SeaweedFS 900 秒](./live/900/seaweedfs/report.json)、[R2 900 秒](./live/900/r2/report.json)。四个样本均完整发送 2,097,152 字节，完整内容 SHA256 为 `5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5`（以各报告原始哈希为准）。签名到期后新发起请求均返回 403；这与已开始的请求仍成功并不矛盾。两轮正式进程在报告持久化修复前启动，均正常退出 0，最终报告完整；保存队列与失败路径的修复由最终 22 项定向测试另行验证，未将旧进程冒称为重跑后的版本。
 
-本轮结果是普通 PUT 的真实反例，而不是最终协议通过。任何生产责任释放仍需三个事实同时成立：不能再开始新写入；所有已开始的写入有确定结果；之后删除及不存在核对完成。第二项在未知客户端/失联场景下尚缺依据。Multipart 的 API 会话不可继续不等于后台残片已回收，因此本轮不改生产协议、不解锁下游、不将 PR 转为正式待评审。
+本轮结果是普通 PUT 的真实反例，而不是最终协议通过。任何生产责任释放仍需三个事实同时成立：不能再开始新写入；所有已开始的写入有确定结果；之后删除及不存在核对完成。第二项在未知客户端/失联场景下尚缺依据。Multipart 仍需验证未知 Complete 的逻辑终态，因此本轮不改生产协议、不解锁下游、不将 PR 转为正式待评审。底层物理回收不单独作为应用验收要求，见后续补充验证的边界更正。
 
 最终执行 `node .data/upload-v01-recheck.mjs`：从本轮各报告读取已登记确切 Key，逐一 HEAD、必要时按既有 uploadId Abort、DELETE、HEAD。涵盖成功、失败及重跑记录共 **34 个 Key**；复查前均不存在，最终均 HEAD404，错误 0。原始记录见[最终复查](./live/final-recheck.json)，时间 2026-09-28T09:12:18.917Z 至 2026-09-28T09:12:57.762Z。这是一轮已知受控发送器均退出后的清理记录；不扫描 Bucket，不证明内部残片回收，也不释放生产场景的未知在途写入责任。
+
+## Multipart 候选的补充验证与版本前置
+
+所有者在查看普通 PUT 反例后授权继续验证“服务器控制 Complete/Abort”的候选。范围仍为 UPLOAD-V01 实验；未提前实现下游业务模块、修改冻结 PRD 或更改测试桶/服务部署。原分片 Abort 报告继续保留，不改写为完整协议通过。
+
+### 先更正验收边界
+
+应用需要确认的是：上传会话不能再生成逻辑对象，已生成对象已按协议处理，提供方接受相应回收操作。**不要求读取提供方物理磁盘，也不要求证明底层 GC 已经擦除全部数据。** 旧报告 `backendPartsReclaimed=unverified` 仅表示没有测量内部回收，不能单独成为产品阻塞理由。
+
+当前真正缺少的是未知在途 Create/Complete 的结束依据。客户端超时、进程退出、Abort 成功或 NoSuchUpload，不一定足以证明此前已开始的 Complete 不能再发布对象。已成功响应但客户端没收到的情况，与服务端仍在执行的情况分开验证和记录。
+
+### 新增实验与实际边界
+
+- `multipart-creation.ts`：先登记唯一 Key，再发 Create；实际读取完整服务响应后，在 SDK 接收前丢弃，SDK 单次尝试报错。恢复只使用 `ListMultipartUploads(Prefix=确切 Key)` 并严格匹配相等 Key，不扫描全桶、不处理同前缀的其他 Key。找到 UploadId 后登记、Abort，再列会话和 HEAD。截断列表明确失败，本诊断不实现分页；权限或服务失败也不以 HEAD404 掩盖。两服务本轮均找回一个会话并完成清理。
+- `multipart-completion.ts`：先登记 Key/UploadId，上传一份 64 KiB 最后分片。收到实际 Complete 成功 XML 后注入响应丢失；新 Node 进程读取持久报告，调用 ListParts、HEAD、GET，核对完整 SHA256。此处是“新进程恢复已提交但失去确认的结果”，**不是旧 Complete 尚在执行时强杀进程的证明**。
+- 同一脚本另执行 complete-first、abort-first，以及三个独立 Key 的并发派发。顺序基线必须符合对应的最终对象状态；并发不预设赢家，保存所有请求的派发/完成时间和失败，存在对象时 GET 核对内容。`Promise.allSettled` 收齐所有已知操作后才清理，结果拒绝不会被忽略。客户端同时派发不证明提供方内部必然重叠。
+- 真实第二轮 R2 的 concurrent-1/2 返回 429 ServiceUnavailable，要求降低同 Key 并发频率；整轮明确 failed/退出 1。保留报告，不增加顺序延时把竞争实验改成普通成功路径。完整对象仍按确切 Key 清理。
+
+这些实验的 `observed` 只表示观测过程符合该场景的断言；所有报告保持 `productionReleasePermitted=false`。Create 的恢复样本发生在提供方已经完整响应之后；一次空列表不能证明另一个仍在途的 Create 不会稍后建立会话。
+
+### SeaweedFS 4.47 的逻辑竞争与上游修复候选
+
+依据既有 EV-STORAGE-01 环境基线核对 4.47 源码，固定 SHA `c5073360007d28385a33426a42ac3e4ec504c5a3`。本轮未重新读取部署主机版本，不将版本标签当成本轮远端接口返回值。
+
+Complete 在 [prepare 阶段](https://github.com/seaweedfs/seaweedfs/blob/c5073360007d28385a33426a42ac3e4ec504c5a3/weed/s3api/filer_multipart.go#L411-L423) 校验会话并读取分片，随后[发布对象](https://github.com/seaweedfs/seaweedfs/blob/c5073360007d28385a33426a42ac3e4ec504c5a3/weed/s3api/filer_multipart.go#L860)。[写入入口](https://github.com/seaweedfs/seaweedfs/blob/c5073360007d28385a33426a42ac3e4ec504c5a3/weed/s3api/s3api_object_routed_write.go#L233-L237) 没有再次约束上传会话仍有效；[Abort](https://github.com/seaweedfs/seaweedfs/blob/c5073360007d28385a33426a42ac3e4ec504c5a3/weed/s3api/filer_multipart.go#L999-L1018) 独立删除上传目录。
+
+**源码推导**允许 Complete 已读取会话 → Abort 删除会话 → HEAD404 → 原 Complete 再发布对象。这不是本轮远端已确定复现的精确时序，也不是内部磁盘回收问题。正常 owner 路径的重复 Complete 同样不能未经验证当成等待前一次写完的屏障。
+
+上游已有直接相关修复：
+
+| 修复                                                        | 已合并提交                                 | 含义                                                   |
+| ----------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------ |
+| [#11375](https://github.com/seaweedfs/seaweedfs/pull/11375) | `15520f601f6846c1060d2c79ce36f6dab7cce3fc` | 对象提交与移除上传目录合入事务，提交时检查会话         |
+| [#11385](https://github.com/seaweedfs/seaweedfs/pull/11385) | `87ee3b63a287f7a08b9280b8037efd5f1ffb3e56` | Abort 已完成会话只清元数据，并通过对应对象条件协调删除 |
+
+2026-09-28 用 GitHub API 核对：两个 PR 均于 2026-09-18 合并，最新 release 仍为 [4.47（2026-09-14 发布）](https://github.com/seaweedfs/seaweedfs/releases/tag/4.47)。因此不能把 master 已合并修复当成已发布版能力，更不能声称本轮测试服务已经具备它。
+
+核对 master `4fec65d949f4778c545f1457b4ae1306f318a724` 的[提交条件](https://github.com/seaweedfs/seaweedfs/blob/4fec65d949f4778c545f1457b4ae1306f318a724/weed/s3api/s3api_object_routed_write.go#L258-L285)与[Abort 路径](https://github.com/seaweedfs/seaweedfs/blob/4fec65d949f4778c545f1457b4ae1306f318a724/weed/s3api/filer_multipart.go#L1180-L1231)，这些修复是可继续验证的明确路线。还需定向覆盖“已开始 Complete + Abort + 迟到 UploadPart/UploadPartCopy”的组合；存在条件与会话标记检查的关系需要实际核对。此项属于待验证风险，未写成已确认的新上游缺陷。本轮没有构建、部署或实测该 master 版本。
+
+### 可继续实施的顺序
+
+1. 在包含上述修复的明确 SeaweedFS 版本上验证逻辑终态，覆盖多网关、重复 Complete 和三方竞争；当前测试环境的精确版本也需重新确认。部署变更另行授权，不使用本 PR 发布或替换服务。
+2. 对 R2 的 S3 接口确认未知 Complete 的恢复判据。[强一致性](https://developers.cloudflare.com/r2/reference/consistency/)说明已完成操作的可见性，不直接等于未完成操作已被取消；[Workers 文档](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/#r2multipartupload-definition)明确与 S3 有语义差异，不能仅凭其 Promise 描述填补 S3 契约。
+3. 终态依据成立后，再在既有 upload/storage 规格中替换单 PUT 契约，同时覆盖 CORS probe、服务器中转写入及固定对象的 Copy 路径。只改浏览器 UploadPart 不能关闭 #142。
+
+目前不把候选写成生产契约，不解锁 #157/#158/#162/#163/#164/#143。具体阻塞已经缩小为提供方的逻辑终态与未知结果恢复，而不是要求应用承担底层物理 GC 验收。
+
+### 本轮命令、证据与审计
+
+环境：macOS arm64，Node 24.18.1，pnpm 11.19.0；AWS SDK 3.1136.0，无新增依赖。继续使用原独立分支，未改动 `/Volumes/data/project/ariso` 的未提交工作。
+
+```sh
+pnpm install --frozen-lockfile
+pnpm run build
+pnpm run test:unit --maxWorkers=2
+pnpm run test:integration --maxWorkers=4
+pnpm run lint
+pnpm run typecheck
+pnpm run format:check
+pnpm exec vitest run --project integration \
+  tests/integration/storage/late-put-multipart-completion.test.ts \
+  tests/integration/storage/late-put-multipart-creation.test.ts
+node tests/experiments/upload-late-put/multipart-creation.ts \
+  --config .data/upload-v01-targets.json --output test-results/upload-v01-creation
+node tests/experiments/upload-late-put/multipart-completion.ts run \
+  .data/upload-v01-targets.json test-results/upload-v01-completion
+```
+
+证据：
+
+| 实验                              | SeaweedFS                                                             | R2                                                                 |
+| --------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Create 丢失响应后按 Key 恢复      | [报告](./multipart-followup/creation/seaweedfs.json)                  | [报告](./multipart-followup/creation/r2.json)                      |
+| Complete 第一轮                   | [报告](./multipart-followup/completion-round-1/seaweedfs/report.json) | [报告](./multipart-followup/completion-round-1/r2/report.json)     |
+| Complete 第二轮，保留 R2 429 失败 | [报告](./multipart-followup/completion-round-2/seaweedfs/report.json) | [失败报告](./multipart-followup/completion-round-2/r2/report.json) |
+| Complete 最终断言版本             | [报告](./multipart-followup/completion-final/seaweedfs/report.json)   | [报告](./multipart-followup/completion-final/r2/report.json)       |
+
+最终轮两服务均 observed/退出 0，每服务包含丢响应、两种顺序基线、三个并发样本。第二轮 R2 failed/退出 1 仍是有效的限流失败观测，不被第三轮成功覆盖。SeaweedFS 最终轮 concurrent-3 客户端先在 `09:31:57.389Z` 收到 Abort204，再在 `.392Z` 收到 Complete200，随后 GET 内容正确。只说明收到 Abort 时另一个调用仍未返回，不据此推断提供方内部提交先后。
+
+两个独立 agent 交叉使用 `code-review-and-quality` 审计。已修复并补回归：顺序基线缺少最终对象状态断言、并发 Promise 拒绝可能被忽略、创建恢复写盘失败跳过客户端释放。故障与顺序异常必须使报告失败，最终清理成功不能覆盖原失败。独立复核无剩余必修项；研究者另核对文档，未发现把源码推导、上游候选修复或新进程恢复夸大为实测终态保证。无产品 UI，设计验收不适用；本轮没有运行浏览器或 Release 容器流程。
+
+本轮冻结安装、构建、lint、类型检查均退出 0；单元 31 文件/468 测试、完整集成 72 文件/550 测试通过，最终新增两文件定向 14 测试通过（1.50 秒）。构建仍包含既有可选依赖/跟踪诊断，未改动相关依赖。
+
+最后执行 `node .data/upload-v01-multipart-recheck.mjs`，仅从本轮报告提取确切 Key/uploadId，对 38 个 Key 再做 HEAD、Abort、DELETE、HEAD。2026-09-28T09:34:54.838Z 至 2026-09-28T09:35:47.463Z，复查前全部不存在，清理后全部 HEAD404，错误 0。见[最终复查报告](./multipart-followup/final-recheck.json)。本轮所有受控请求均已结束，凭据和完整签名未归档；此记录不冒充未知客户端场景的生产责任释放。
+
+本轮全库 `format:check` 仍只因前述三份原有预览 JSON 失败，本次文件格式通过。文档检查为 120 任务/298 需求，校验器自测 5 项通过，`git diff --check` 通过。真实 R2 第二轮 429 失败及提供方版本/逻辑终态前置保留，PR 继续草稿；不把本地测试通过写成 Issue 验收完成。

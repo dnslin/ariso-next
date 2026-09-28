@@ -1,0 +1,88 @@
+{
+  "service": "r2",
+  "bucket": "image",
+  "key": "ariso/upload-v01/creation/8301ca1b-453f-4929-8f49-8211c7aed007",
+  "startedAt": "2026-09-28T09:28:14.394Z",
+  "status": "observed",
+  "uploadIds": [
+    "AG-gkmH5FX2cMa5B_1Uum8MI7pU5g40mcAAYMTGxO7ivRYe9P9aq527TUY4Qy0NsudqYK7OMk6jZ5LFUMKMu4VoscDdt7GxII-JCSl1JKW00zlSfo7rh9XZDA8qCeNzgM0B6-U2JLMdkCsQk3RRgQGwmkANzOeoZ1Cq5qu2bdMGZdZoZ8eHegmv4qjElR5fKkJaxrUpqrZ-U7WFn9iE_9bIGN0wY91ETTNFlPIkDhhn21MwSyTcTnEh-j9qHz34mg8fUBUIwRdrWIQRw9riQQy40hcBi6Fcdy6SH2UxH7XCKkY9EiOzA_mKG_lvl51Li76ceH-xsued2MkgrSvBco4k",
+    "AEFb2QuUvyq7QYeq1HOqtskz0cnJi3ahDcq35k9XHu5jEEtKpztfZcZLCpyUC7b5X7nfbwOEmKrMh12DujgC-CcgRv7fbh2qwiJxYlQCqAv_PJvhCjE5_hALM0l3ctk1Xz1mOV_dEGOjYCV6Xtf66-Ea0NWP0IBMoxnyoPQZAFLRERpm0VUnyq5U8QNXdLIcjYfW2HUKqIalGZtZbYJzbjxvLRWJJ6Y8NHpufGKurgZXOI1a2VjX_qNTZ8wH_BvuvzqmovQVddBCJFX2FeAn7oBY9YrH0T7_kKqYNMPcz6Jx0K996R_pIE1pKN67nvPl5HNRbgCPEj1hZR1RiaGYU7c"
+  ],
+  "objectAbsent": true,
+  "sessionsAbsent": true,
+  "productionReleasePermitted": false,
+  "limitation": "The injected loss occurs after the complete provider response. An empty list cannot prove an unresolved in-flight Create has settled. No parts are uploaded; backend reclamation is not inferred.",
+  "events": [
+    {
+      "name": "create-response-lost",
+      "at": "2026-09-28T09:28:14.395Z",
+      "result": {
+        "providerStatus": 200,
+        "clientError": {
+          "name": "InjectedResponseLoss",
+          "message": "Injected loss after provider response drained; SDK received no Create acknowledgement",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      }
+    },
+    {
+      "name": "recover-by-exact-key",
+      "at": "2026-09-28T09:28:15.233Z",
+      "result": {
+        "exactUploadIds": [
+          "AG-gkmH5FX2cMa5B_1Uum8MI7pU5g40mcAAYMTGxO7ivRYe9P9aq527TUY4Qy0NsudqYK7OMk6jZ5LFUMKMu4VoscDdt7GxII-JCSl1JKW00zlSfo7rh9XZDA8qCeNzgM0B6-U2JLMdkCsQk3RRgQGwmkANzOeoZ1Cq5qu2bdMGZdZoZ8eHegmv4qjElR5fKkJaxrUpqrZ-U7WFn9iE_9bIGN0wY91ETTNFlPIkDhhn21MwSyTcTnEh-j9qHz34mg8fUBUIwRdrWIQRw9riQQy40hcBi6Fcdy6SH2UxH7XCKkY9EiOzA_mKG_lvl51Li76ceH-xsued2MkgrSvBco4k"
+        ],
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-discover",
+      "at": "2026-09-28T09:28:15.942Z",
+      "result": {
+        "exactUploadIds": [
+          "AEFb2QuUvyq7QYeq1HOqtskz0cnJi3ahDcq35k9XHu5jEEtKpztfZcZLCpyUC7b5X7nfbwOEmKrMh12DujgC-CcgRv7fbh2qwiJxYlQCqAv_PJvhCjE5_hALM0l3ctk1Xz1mOV_dEGOjYCV6Xtf66-Ea0NWP0IBMoxnyoPQZAFLRERpm0VUnyq5U8QNXdLIcjYfW2HUKqIalGZtZbYJzbjxvLRWJJ6Y8NHpufGKurgZXOI1a2VjX_qNTZ8wH_BvuvzqmovQVddBCJFX2FeAn7oBY9YrH0T7_kKqYNMPcz6Jx0K996R_pIE1pKN67nvPl5HNRbgCPEj1hZR1RiaGYU7c"
+        ],
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-abort",
+      "at": "2026-09-28T09:28:16.335Z",
+      "result": {
+        "uploadId": "AG-gkmH5FX2cMa5B_1Uum8MI7pU5g40mcAAYMTGxO7ivRYe9P9aq527TUY4Qy0NsudqYK7OMk6jZ5LFUMKMu4VoscDdt7GxII-JCSl1JKW00zlSfo7rh9XZDA8qCeNzgM0B6-U2JLMdkCsQk3RRgQGwmkANzOeoZ1Cq5qu2bdMGZdZoZ8eHegmv4qjElR5fKkJaxrUpqrZ-U7WFn9iE_9bIGN0wY91ETTNFlPIkDhhn21MwSyTcTnEh-j9qHz34mg8fUBUIwRdrWIQRw9riQQy40hcBi6Fcdy6SH2UxH7XCKkY9EiOzA_mKG_lvl51Li76ceH-xsued2MkgrSvBco4k",
+        "status": 204
+      }
+    },
+    {
+      "name": "cleanup-abort",
+      "at": "2026-09-28T09:28:16.738Z",
+      "result": {
+        "uploadId": "AEFb2QuUvyq7QYeq1HOqtskz0cnJi3ahDcq35k9XHu5jEEtKpztfZcZLCpyUC7b5X7nfbwOEmKrMh12DujgC-CcgRv7fbh2qwiJxYlQCqAv_PJvhCjE5_hALM0l3ctk1Xz1mOV_dEGOjYCV6Xtf66-Ea0NWP0IBMoxnyoPQZAFLRERpm0VUnyq5U8QNXdLIcjYfW2HUKqIalGZtZbYJzbjxvLRWJJ6Y8NHpufGKurgZXOI1a2VjX_qNTZ8wH_BvuvzqmovQVddBCJFX2FeAn7oBY9YrH0T7_kKqYNMPcz6Jx0K996R_pIE1pKN67nvPl5HNRbgCPEj1hZR1RiaGYU7c",
+        "status": 204
+      }
+    },
+    {
+      "name": "cleanup-list-after-abort",
+      "at": "2026-09-28T09:28:17.113Z",
+      "result": {
+        "exactUploadIds": [],
+        "truncated": false
+      }
+    },
+    {
+      "name": "cleanup-head",
+      "at": "2026-09-28T09:28:17.502Z",
+      "result": {
+        "status": 404
+      }
+    }
+  ],
+  "providerStatus": 200,
+  "clientError": {
+    "name": "InjectedResponseLoss",
+    "message": "Injected loss after provider response drained; SDK received no Create acknowledgement",
+    "attempts": 1,
+    "totalRetryDelay": 0
+  }
+}
