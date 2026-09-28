@@ -76,6 +76,8 @@ git diff --check
 
 ## 发布验证
 
+提交分支为 `codex/147-media-samples`，关联 [草稿 PR #203](https://github.com/dnslin/ariso-next/pull/203)。2026-09-28 使用 `gh pr view 203 --json url,isDraft,state,statusCheckRollup,mergeable` 与 `gh pr checks 203` 核对：PR 为 OPEN / draft，检查列表为空，未触发远端检查。这不表示 CI 通过；上述两项本地失败仍保留，未转为正式待评审。
+
 [images.yml](../../../../.github/workflows/images.yml) 在现有 `release.published` 流程中，分别使用 AMD64/ARM64 实际镜像执行同一完整矩阵，保留 `media-formats-{arch}` 报告与导出文件。原有媒体资源实验继续检查安装后的 ImageMagick policy；本矩阵也拒绝 width/height/list-length 固定准入策略。SVG 负面对照所用临时策略只禁用 delegate/网络 coder，不覆盖或取消生产资源限制。
 
 本地通过不代表 Debian 工具版本、另一 CPU 架构或最终镜像通过。这些验证本轮未执行，按既有执行约定在 Release 时补齐；不为本 PR 创建 Release、发布镜像或部署。未合并 PR、未主动关闭 Issue、未删除分支或 worktree。
