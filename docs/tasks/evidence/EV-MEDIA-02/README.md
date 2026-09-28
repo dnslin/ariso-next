@@ -68,6 +68,14 @@ git diff --check
 
 检查输出摘要见 [checks.json](./checks.json)。
 
+## 格式修正与浏览器重试（2026-09-28）
+
+所有者明确授权修正上述三份历史 JSON，并重试浏览器。使用 Node 24.18.1 / pnpm 11.19.0 执行 `pnpm install --frozen-lockfile`、对三份文件执行 `pnpm exec prettier --write`、`pnpm run format:check`，均通过。逐份解析并与修正前 HEAD 内容比较，JSON 值完全一致；独立审计确认只有数组排版及末尾换行变化。上文首次格式失败记录保留，当前格式问题已消除。
+
+原样执行 `BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，保留既有 NO_PROXY/no_proxy 并补充 localhost、127.0.0.1、::1、.localhost。重试仍失败，见[重试运行器](./browser-retry-runner.json)与[手机初始化现场](./browser-retry-identity-390.json)。基础页面、错误恢复、桌面身份初始化和重启、M2、交互及跨页连续性通过；本次在手机初始化 `e2e/identity.mjs` 的 `HeroUI retains the group focus ring` 断言失败，比首次轮询超时更早。失败现场仍聚焦 password，输入框外层 box-shadow 为透明的 0px 阴影，未显示要求的 2px 焦点环。本次未到达手机后台轮询场景，不能说原超时已通过重试。后续手机及独立 UI/library 套件未执行。未更改测试断言、超时或业务代码；运行器已清理临时服务和数据，失败浏览器空间保留。
+
+独立复核确认首次超时的代码链路：测试只阻断 XHR onload，saving 状态仍触发每 2 秒后台读取；手机打开菜单期间可在 `/upload` 得到 succeeded，控制器置 ready 后停止轮询。此后测试等待 `/library` 再次读取成功便会超时。这不证明任务丢失，也不证明完整浏览器套件已通过。当前仍保留草稿，待解决浏览器失败。
+
 ## 独立审计
 
 独立 agent 按 `code-review-and-quality` 实际阅读规格、实现、夹具、测试与 Release 入口，并独立运行 29 项完整矩阵和 46 项聚焦单元测试，均通过。初审要求修复两项：SVG 准入必须控制真实渲染执行，而非只记录预期布尔值；临时目录删除后 artifact 引用仍须可用。两项均已修复并复审，审计者实际核对 53 个导出引用存在。另补第二项主图 HEIF/AVIF 和覆盖完整性断言。代码审计通过，无未解决 Required；不将这一结论等同全仓适用检查全部通过。
