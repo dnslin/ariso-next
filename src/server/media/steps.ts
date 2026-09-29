@@ -1,6 +1,6 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { resolveUploadStorage } from '../storage/defaults.ts';
+import { resolveLocalUploadStorage } from '../storage/defaults.ts';
 import { inspectImage } from './formats.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { readObject, inspectObject, deleteObject } from '../storage/local.ts';
@@ -32,7 +32,7 @@ export function activeMediaJob(db: BetterSQLite3Database, jobId: string) {
       'MEDIA_IMAGE_DELETING',
       `Image is being deleted: ${image.id}`,
     );
-  const storage = resolveUploadStorage(db, image.storageId);
+  const storage = resolveLocalUploadStorage(db, image.storageId);
   return { job, image, storage };
 }
 

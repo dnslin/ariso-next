@@ -7,7 +7,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -41,7 +41,7 @@ export async function createCountFixture() {
       updatedAt: new Date(),
     })
     .run();
-  const storage = resolveUploadStorage(db);
+  const storage = resolveLocalUploadStorage(db);
   const imageId = randomUUID();
   const bytes = Buffer.alloc(1024 * 1024, 42);
   const plan = planLocalWrite('uploads');

@@ -1,3 +1,4 @@
+import { requireLocalStorage } from '../storage/settings.ts';
 import { and, eq, inArray, lte, or, isNull } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { terminateMediaTools } from '../media/tools.ts';
@@ -19,6 +20,7 @@ export async function cleanupSession(context: UploadContext, id: string) {
     .where(eq(storageConfigs.id, session.storageId))
     .get()!;
   try {
+    requireLocalStorage(storage);
     if (session.temporaryKey || session.finalKey)
       await terminateMediaTools(`${storageRoot}/upload-${id}`);
     for (const field of ['temporaryKey', 'finalKey'] as const) {

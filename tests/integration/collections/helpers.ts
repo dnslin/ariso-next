@@ -6,7 +6,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   createProcessingSnapshot,
@@ -25,7 +25,7 @@ export function collectionFixture() {
   const db = connection.db;
   migrateRuntimeDatabase(db, resolve('drizzle'));
   prepareInitialStorage(db, { storage: storageRoot });
-  const storage = resolveUploadStorage(db);
+  const storage = resolveLocalUploadStorage(db);
   const snapshot = db.transaction((tx) => {
     prepareInitialMedia(tx);
     return createProcessingSnapshot(tx);

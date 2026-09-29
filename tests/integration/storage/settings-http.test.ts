@@ -1,0 +1,375 @@
+import { randomBytes, randomUUID } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { afterAll, beforeAll, expect, it, vi } from 'vitest';
+import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
+import { launch, stop } from '../runtime/process-helpers.ts';
+import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
+
+let directory: string;
+let server: Awaited<ReturnType<typeof launch>>;
+let connection: ReturnType<typeof openRuntimeDatabase>;
+let origin: string;
+let cookie: string;
+let env: Record<string, string>;
+function request(
+  path: string,
+  method = 'GET',
+  body?: unknown,
+  headers = { cookie, origin },
+) {
+  return fetch(`${origin}${path}`, {
+    method,
+    headers: { 'content-type': 'application/json', ...headers },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    signal: AbortSignal.timeout(10000),
+  });
+}
+beforeAll(async () => {
+  directory = await mkdtemp(join(tmpdir(), 'ariso-storage-http-'));
+  env = {
+    DATA_DIR: join(directory, 'data'),
+    HOST: '127.0.0.1',
+    BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
+    ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
+  };
+  server = await launch(resolve('.next/standalone'), directory, env);
+  origin = `http://127.0.0.1:${server.port}`;
+  await vi.waitFor(
+    async () => {
+      if (server.child.exitCode !== null) throw new Error(server.logs());
+      expect((await fetch(`${origin}/api/health`)).status).toBe(200);
+    },
+    { timeout: 15000 },
+  );
+  connection = openRuntimeDatabase(join(env.DATA_DIR, 'ariso.db'));
+  await seedAuthOwner(connection, origin);
+  const login = await request(
+    '/api/auth/sign-in/email',
+    'POST',
+    { email, password },
+    { cookie: '', origin },
+  );
+  expect(login.status).toBe(200);
+  cookie = login.headers
+    .getSetCookie()
+    .map((c) => c.split(';')[0])
+    .join('; ');
+}, 30000);
+afterAll(async () => {
+  if (server) await stop(server.child, server.closed);
+  connection?.close();
+  if (directory) await rm(directory, { recursive: true, force: true });
+});
+
+it('管理路由拒绝匿名、上传 Token 与跨来源写入', async () => {
+  for (const [path, method] of [
+    ['/api/storages', 'GET'],
+    ['/api/storages', 'POST'],
+    ['/api/storages/missing', 'GET'],
+    ['/api/storages/missing', 'PATCH'],
+    ['/api/settings/storage', 'GET'],
+    ['/api/settings/storage', 'PATCH'],
+  ]) {
+    const response = await request(
+      path,
+      method,
+      method === 'GET' ? undefined : {},
+      { cookie: '', origin },
+    );
+    expect(response.status, `${method} ${path}`).toBe(401);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    const bearer = await fetch(`${origin}${path}`, {
+      method,
+      headers: { authorization: 'Bearer upload-token', origin },
+    });
+    expect(bearer.status).toBe(401);
+  }
+  expect(
+    (
+      await request(
+        '/api/storages',
+        'POST',
+        {},
+        { cookie, origin: 'https://other.example' },
+      )
+    ).status,
+  ).toBe(403);
+});
+
+it('真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，受限位置和删除不开放', async () => {
+  const create = await request('/api/storages', 'POST', {
+    type: 'local',
+    name: 'HTTP 本地',
+    localPath: 'http-local',
+  });
+  expect(create.status, await create.clone().text()).toBe(201);
+  const local = await create.json();
+  const set = await request('/api/settings/storage', 'PATCH', {
+    defaultStorageId: local.id,
+  });
+  expect(set.status).toBe(200);
+  expect(await (await request('/api/settings/storage')).json()).toMatchObject({
+    defaultStorageId: local.id,
+  });
+  expect((await request('/api/storages/missing')).status).toBe(404);
+  const invalid = await request('/api/storages', 'POST', {
+    type: 'local',
+    name: 'bad',
+    localPath: 'ok',
+    bucket: 'foreign',
+  });
+  expect(invalid.status).toBe(400);
+  const s3Response = await request('/api/storages', 'POST', {
+    type: 's3',
+    name: 'HTTP S3',
+    endpoint: 'https://objects.example.test',
+    region: 'auto',
+    bucket: 'test-bucket',
+    pathPrefix: '/photos/',
+    forcePathStyle: true,
+    accessKey: 'http-access-fixture',
+    secretKey: 'http-secret-fixture',
+  });
+  expect(s3Response.status, await s3Response.clone().text()).toBe(201);
+  const s3 = await s3Response.json();
+  expect(s3).toMatchObject({
+    enabled: false,
+    hasAccessKey: true,
+    hasSecretKey: true,
+  });
+  const listing = await (await request('/api/storages')).text();
+  expect(listing).toContain(s3.id);
+  expect(listing).not.toContain('http-access-fixture');
+  expect(listing).not.toContain('http-secret-fixture');
+  expect(
+    (
+      await request('/api/settings/storage', 'PATCH', {
+        defaultStorageId: s3.id,
+      })
+    ).status,
+  ).toBe(409);
+  expect(
+    (await request(`/api/storages/${s3.id}`, 'PATCH', { enabled: true }))
+      .status,
+  ).toBe(409);
+  const renamed = await request(`/api/storages/${s3.id}`, 'PATCH', {
+    name: '重命名',
+  });
+  expect(renamed.status).toBe(200);
+  expect((await renamed.json()).configRevision).toBe(s3.configRevision);
+  const replaced = await request(`/api/storages/${s3.id}`, 'PATCH', {
+    secretKey: 'replacement-fixture',
+  });
+  expect(replaced.status).toBe(200);
+  expect(await replaced.json()).toMatchObject({
+    enabled: false,
+    configRevision: s3.configRevision + 1,
+  });
+  expect(
+    (
+      await request(`/api/storages/${local.id}`, 'PATCH', {
+        localPath: 'changed',
+      })
+    ).status,
+  ).toBe(400);
+  expect((await request(`/api/storages/${local.id}`, 'DELETE')).status).toBe(
+    405,
+  );
+  expect(
+    (
+      await request('/api/settings/storage', 'PATCH', {
+        defaultStorageId: null,
+      })
+    ).status,
+  ).toBe(200);
+  expect(await (await request('/api/settings/storage')).json()).toMatchObject({
+    defaultStorageId: null,
+  });
+  expect(
+    (await request(`/api/storages/${s3.id}`, 'PATCH', { secretKey: null }))
+      .status,
+  ).toBe(200);
+  const read = await (await request(`/api/storages/${s3.id}`)).json();
+  expect(read).toMatchObject({ hasAccessKey: true, hasSecretKey: false });
+  expect(read).not.toHaveProperty('accessKey');
+  expect(read).not.toHaveProperty('secretKey');
+  expect(read).not.toHaveProperty('accessKeyEncrypted');
+  expect(read).not.toHaveProperty('secretKeyEncrypted');
+});
+
+it('现有本地上传入口拒绝显式或默认 S3，在分配会话前返回明确冲突', async () => {
+  const response = await request('/api/storages', 'POST', {
+    type: 's3',
+    name: '尚未接入上传',
+    endpoint: 'https://objects.example.test',
+    region: 'auto',
+    bucket: 'upload-boundary',
+    accessKey: 'fixture-access',
+    secretKey: 'fixture-secret',
+  });
+  expect(response.status).toBe(201);
+  const storage = await response.json();
+  // T-STO-04 owns real probes; this historical result only exercises the caller boundary.
+  connection.db.$client
+    .prepare(
+      "UPDATE storage_configs SET enabled=1, connection_status='passed', connection_revision=config_revision WHERE id=?",
+    )
+    .run(storage.id);
+  expect(
+    (
+      await request('/api/settings/storage', 'PATCH', {
+        defaultStorageId: storage.id,
+      })
+    ).status,
+  ).toBe(200);
+  const submissions = connection.db.$client
+    .prepare('SELECT * FROM upload_submissions')
+    .all();
+  const sessions = connection.db.$client
+    .prepare('SELECT * FROM upload_sessions')
+    .all();
+  try {
+    for (const explicit of [true, false]) {
+      const rejected = await request('/api/uploads/submissions', 'POST', {
+        requestId: randomUUID(),
+        files: [
+          {
+            queueItemId: randomUUID(),
+            originalName: 'boundary.png',
+            declaredSize: 32,
+          },
+        ],
+        ...(explicit ? { storageId: storage.id } : {}),
+      });
+      expect(rejected.status, await rejected.clone().text()).toBe(409);
+      expect(await rejected.json()).toMatchObject({
+        code: 'STORAGE_TYPE_UNSUPPORTED',
+      });
+      expect(
+        connection.db.$client.prepare('SELECT * FROM upload_submissions').all(),
+      ).toEqual(submissions);
+      expect(
+        connection.db.$client.prepare('SELECT * FROM upload_sessions').all(),
+      ).toEqual(sessions);
+    }
+  } finally {
+    expect(
+      (
+        await request('/api/settings/storage', 'PATCH', {
+          defaultStorageId: null,
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await request(`/api/storages/${storage.id}`, 'PATCH', {
+          enabled: false,
+        })
+      ).status,
+    ).toBe(200);
+  }
+});
+
+it('输入和持久化错误保留诊断但不回显凭据，失败后可重试', async () => {
+  const input = {
+    type: 's3',
+    name: '故障配置',
+    endpoint: 'https://objects.example.test',
+    region: 'auto',
+    bucket: 'fault-bucket',
+    accessKey: 'failure-access-fixture',
+    secretKey: 'failure-secret-fixture',
+  };
+  const invalid = await request('/api/storages', 'POST', {
+    ...input,
+    secretKey: '********',
+  });
+  expect(invalid.status).toBe(400);
+  expect(await invalid.text()).not.toContain(input.accessKey);
+  const local = await (
+    await request('/api/storages', 'POST', {
+      type: 'local',
+      name: 'local-secret-check',
+      localPath: 'secret-check',
+    })
+  ).json();
+  expect(
+    (
+      await request(`/api/storages/${local.id}`, 'PATCH', {
+        secretKey: 'not-local',
+      })
+    ).status,
+  ).toBe(400);
+  const logOffset = server.logs().length;
+  connection.db.$client.exec(
+    "CREATE TRIGGER storage_write_fault BEFORE INSERT ON storage_configs BEGIN SELECT RAISE(ABORT, 'injected storage failure'); END",
+  );
+  try {
+    const failed = await request('/api/storages', 'POST', input);
+    expect(failed.status).toBe(500);
+    const response = await failed.text();
+    await vi.waitFor(() =>
+      expect(server.logs().slice(logOffset)).toContain(
+        'injected storage failure',
+      ),
+    );
+    for (const secret of [input.accessKey, input.secretKey]) {
+      expect(response).not.toContain(secret);
+      expect(server.logs().slice(logOffset)).not.toContain(secret);
+    }
+  } finally {
+    connection.db.$client.exec('DROP TRIGGER storage_write_fault');
+  }
+  expect((await request('/api/storages', 'POST', input)).status).toBe(201);
+});
+
+it('停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变', async () => {
+  const created = await request('/api/storages', 'POST', {
+    type: 's3',
+    name: '预检',
+    endpoint: 'https://no-network.example.test',
+    region: 'auto',
+    bucket: 'preflight-bucket',
+    pathPrefix: '',
+    forcePathStyle: false,
+    accessKey: 'preflight-access',
+    secretKey: 'preflight-secret',
+  });
+  expect(created.status).toBe(201);
+  await stop(server.child, server.closed);
+  const before = connection.db.$client
+    .prepare('SELECT * FROM storage_configs ORDER BY id')
+    .all();
+  const run = (key: string) =>
+    spawnSync(process.execPath, ['dist/cli/prestart.js'], {
+      cwd: process.cwd(),
+      env: { ...process.env, ...env, ARISO_ENCRYPTION_KEY: key },
+      encoding: 'utf8',
+      timeout: 10000,
+    });
+  const wrong = run(randomBytes(32).toString('hex'));
+  expect(wrong.status).toBe(1);
+  expect(wrong.stdout + wrong.stderr).toContain('密文认证失败');
+  for (const secret of ['preflight-access', 'preflight-secret'])
+    expect(wrong.stdout + wrong.stderr).not.toContain(secret);
+  expect(
+    connection.db.$client
+      .prepare('SELECT * FROM storage_configs ORDER BY id')
+      .all(),
+  ).toEqual(before);
+  const correct = run(env.ARISO_ENCRYPTION_KEY);
+  expect(correct.status, correct.stdout + correct.stderr).toBe(0);
+  expect(
+    connection.db.$client
+      .prepare('SELECT * FROM storage_configs ORDER BY id')
+      .all(),
+  ).toEqual(before);
+  expect(
+    connection.db.$client
+      .prepare('SELECT default_storage_id FROM storage_settings')
+      .get(),
+  ).toEqual({ default_storage_id: null });
+});

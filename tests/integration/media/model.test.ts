@@ -13,7 +13,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -45,7 +45,7 @@ beforeEach(async () => {
   connection = openRuntimeDatabase(join(directory, 'ariso.db'));
   migrateRuntimeDatabase(connection.db, resolve('drizzle'));
   prepareInitialStorage(connection.db, { storage: storageRoot });
-  const storage = resolveUploadStorage(connection.db);
+  const storage = resolveLocalUploadStorage(connection.db);
   const write = planLocalWrite('uploads');
   // Test-only owner stands in for upload, which is delivered by T-UP-01.
   connection.db.$client.exec(
@@ -86,7 +86,7 @@ const state = () => getImageAccessState(connection.db, input.imageId)!;
 async function originalBytes() {
   const object = await readObject(
     storageRoot,
-    resolveUploadStorage(connection.db),
+    resolveLocalUploadStorage(connection.db),
     input.key,
     input.mime,
   );
@@ -104,7 +104,7 @@ describe('T-MED-01 persistent asset contract', () => {
       .run(secondPlan.key, secondPlan.temporaryKey);
     await writeObject(
       storageRoot,
-      resolveUploadStorage(connection.db),
+      resolveLocalUploadStorage(connection.db),
       secondPlan,
       Readable.from(bytes),
     );

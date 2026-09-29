@@ -35,6 +35,11 @@ function writeMigrations(
       when: 4,
       sql: readFileSync(resolve('drizzle/0009_wide_scarlet_witch.sql'), 'utf8'),
     },
+    {
+      tag: '0004_storage_settings',
+      when: 5,
+      sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -152,6 +157,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { created_at: 2 },
       { created_at: 3 },
       { created_at: 4 },
+      { created_at: 5 },
     ]);
   } finally {
     db.close();
@@ -265,6 +271,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { created_at: 2 },
         { created_at: 3 },
         { created_at: 4 },
+        { created_at: 5 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

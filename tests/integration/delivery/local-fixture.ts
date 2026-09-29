@@ -8,7 +8,7 @@ import { acceptOriginal } from '../../../src/server/media/images.ts';
 import { mediaImages, mediaJobs } from '../../../src/server/media/schema.ts';
 import { createProcessingSnapshot } from '../../../src/server/media/settings.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
-import { resolveUploadStorage } from '../../../src/server/storage/defaults.ts';
+import { resolveLocalUploadStorage } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
   writeObject,
@@ -69,7 +69,7 @@ export async function launchLocalDelivery() {
       .map((value) => value.split(';')[0])
       .join('; ');
     const token = (await login.json()).token as string;
-    const storage = resolveUploadStorage(db);
+    const storage = resolveLocalUploadStorage(db);
     async function seed(svg = false) {
       const bytes = svg
         ? Buffer.from(

@@ -1,3 +1,5 @@
+import { verifyStorageSecrets } from '../storage/settings.ts';
+import { createSecretCrypto } from '../runtime/crypto.ts';
 import { join, resolve } from 'node:path';
 import { openRuntimeDatabase } from '../runtime/db.ts';
 import { parseRuntimeEnv } from '../runtime/env.ts';
@@ -18,6 +20,10 @@ function initializeServerRuntime() {
   const config = parseRuntimeEnv();
   const connection = openRuntimeDatabase(join(config.dataDir, 'ariso.db'));
   try {
+    verifyStorageSecrets(
+      connection.db,
+      createSecretCrypto(config.encryptionKey),
+    );
     const setup = createSetupState(connection.db, connection.db.$client.name);
     if (!setup.code) {
       requireInitialSettings(connection.db, connection.db.$client.name);

@@ -8,7 +8,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   prepareInitialMedia,
@@ -45,7 +45,7 @@ function enqueue() {
   return connection.db.transaction((tx) =>
     acceptOriginal(tx, {
       imageId: randomUUID(),
-      storageId: resolveUploadStorage(tx).id,
+      storageId: resolveLocalUploadStorage(tx).id,
       key: randomUUID(),
       originalName: 'input.png',
       visibility: 'private',

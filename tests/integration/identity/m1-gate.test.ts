@@ -7,7 +7,7 @@ import { expect, it, vi } from 'vitest';
 import { requireMediaSettings } from '../../../src/server/media/settings.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { requireSiteSettings } from '../../../src/server/site/settings.ts';
-import { resolveUploadStorage } from '../../../src/server/storage/defaults.ts';
+import { resolveLocalUploadStorage } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
   readObject,
@@ -66,7 +66,7 @@ it('M1: empty directory → setup → login → logout → real restart preserve
     expect(codes).toHaveLength(1);
     connection = openRuntimeDatabase(join(data, 'ariso.db'));
     const db = connection.db;
-    const storage = resolveUploadStorage(db);
+    const storage = resolveLocalUploadStorage(db);
     expect(storage).toMatchObject({
       name: '默认本地存储',
       type: 'local',
@@ -171,10 +171,10 @@ it('M1: empty directory → setup → login → logout → real restart preserve
     const restarted = connection.db;
     expect(requireSiteSettings(restarted)).toEqual(site);
     expect(requireMediaSettings(restarted)).toEqual(media);
-    expect(resolveUploadStorage(restarted)).toEqual(storage);
+    expect(resolveLocalUploadStorage(restarted)).toEqual(storage);
     const object = await readObject(
       join(data, 'storage'),
-      resolveUploadStorage(restarted),
+      resolveLocalUploadStorage(restarted),
       write.key,
       'application/octet-stream',
     );

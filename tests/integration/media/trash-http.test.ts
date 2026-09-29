@@ -14,7 +14,7 @@ import {
 } from '../../../src/server/media/schema.ts';
 import { createProcessingSnapshot } from '../../../src/server/media/settings.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
-import { resolveUploadStorage } from '../../../src/server/storage/defaults.ts';
+import { resolveLocalUploadStorage } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
   writeObject,
@@ -96,7 +96,7 @@ beforeEach(async () => {
     .map((value) => value.split(';')[0])
     .join('; ');
   token = (await login.json()).token;
-  const storage = resolveUploadStorage(connection.db);
+  const storage = resolveLocalUploadStorage(connection.db);
   const plan = planLocalWrite('uploads');
   const storageRoot = join(env.DATA_DIR, 'storage');
   bytes = await readFile(resolve('tests/fixtures/runtime/images/sample.png'));

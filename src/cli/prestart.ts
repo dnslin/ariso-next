@@ -1,3 +1,5 @@
+import { verifyStorageSecrets } from '../server/storage/settings.ts';
+import { createSecretCrypto } from '../server/runtime/crypto.ts';
 import { join } from 'node:path';
 import { prepareInitialStorage } from '../server/storage/defaults.ts';
 import { runPreflight } from '../server/startup/preflight.ts';
@@ -14,6 +16,7 @@ try {
     parseLogLevel(process.env.LOG_LEVEL),
   );
   runPreflight(process.env, (db, config) => {
+    verifyStorageSecrets(db, createSecretCrypto(config.encryptionKey));
     const databasePath = join(config.dataDir, 'ariso.db');
     if (readSetupOwner(db, databasePath))
       requireInitialSettings(db, databasePath);

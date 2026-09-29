@@ -20,7 +20,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -135,7 +135,7 @@ async function accept(extension: 'jpg' | 'png') {
   const bytes = await readFile(
     resolve(`tests/fixtures/runtime/images/sample.${extension}`),
   );
-  const storage = resolveUploadStorage(connection.db);
+  const storage = resolveLocalUploadStorage(connection.db);
   const plan = planLocalWrite('uploads');
   await writeObject(runtime.storageRoot, storage, plan, Readable.from(bytes));
   const accepted = connection.db.transaction((tx) =>

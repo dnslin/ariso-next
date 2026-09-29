@@ -17,7 +17,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
@@ -41,7 +41,7 @@ function seed(id: string, trashedAt: Date | null = new Date(1000)) {
     .insert(mediaImages)
     .values({
       id,
-      storageId: resolveUploadStorage(connection.db).id,
+      storageId: resolveLocalUploadStorage(connection.db).id,
       originalName: `${id}.png`,
       displayName: id,
       visibility: 'private',
@@ -127,7 +127,7 @@ it('reads current processing/storage/deletion facts without image content and ex
 it('exposes an owner thumbnail only for an available stored version, including failed images', () => {
   seed('preview');
   expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
-  const storageId = resolveUploadStorage(connection.db).id;
+  const storageId = resolveLocalUploadStorage(connection.db).id;
   connection.db
     .insert(mediaObjects)
     .values({
@@ -235,7 +235,7 @@ describe('owner-only trash HTTP', () => {
         expect(response.status).toBe(401);
         expect(response.headers.get('cache-control')).toBe('no-store');
       }
-      const storage = resolveUploadStorage(live.db);
+      const storage = resolveLocalUploadStorage(live.db);
       live.db
         .insert(mediaImages)
         .values({

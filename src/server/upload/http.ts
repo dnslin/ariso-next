@@ -69,6 +69,7 @@ export async function uploadResponse(
               'COLLECTION_IMAGE_UNAVAILABLE',
               'STORAGE_NOT_FOUND',
               'STORAGE_DISABLED',
+              'STORAGE_TYPE_UNSUPPORTED',
               'DEFAULT_STORAGE_UNSET',
               'DEFAULT_STORAGE_DISABLED',
             ].includes(code)
