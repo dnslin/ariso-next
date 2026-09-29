@@ -114,4 +114,34 @@ describe('watermark validation error boundaries', () => {
       cause: failure,
     });
   });
+
+  it('preserves decoder cache exhaustion instead of blaming image content', async () => {
+    vi.mocked(inspectImageFile).mockResolvedValue({
+      format: 'PNG',
+      mime: 'image/png',
+      coder: 'png',
+      extension: 'png',
+      width: 6000,
+      height: 6000,
+      animated: false,
+      pageCount: 1,
+      classification: 'static',
+    });
+    const failure = Object.assign(
+      new Error('magick: cache resources exhausted'),
+      {
+        exitCode: 1,
+      },
+    );
+    vi.mocked(startMediaTool).mockReturnValue({
+      settled: Promise.resolve(failure),
+    } as ReturnType<typeof startMediaTool>);
+    await expect(
+      validateWatermarkFile(
+        '/source',
+        '/workspace',
+        new AbortController().signal,
+      ),
+    ).rejects.toBe(failure);
+  });
 });

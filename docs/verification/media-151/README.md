@@ -6,7 +6,7 @@
 
 ## 最终结论
 
-所有者批准修复基线阻塞后，本地适用检查全部通过：单元 541 项、完整集成 89 文件 / 737 项，无失败或跳过；类型、生产构建、lint、格式和文档检查通过。独立代码审计 Critical 0 / Required 0；本任务无 UI，设计验收不适用。以下保留首轮失败证据，最终交付以授权后复测为准。
+2026-09-30 双角度评审问题修复后，本地适用检查全部通过：单元 560 项、完整集成 89 文件 / 738 项，无失败或跳过；冻结安装、类型、生产构建、lint、格式和文档检查通过。独立行为与结构复审均无未解决 Required 或 Optional；本任务无 UI，设计验收不适用。以下保留各轮失败证据，最终结果见本轮双角度评审修复记录。
 
 ## 实施与剩余边界
 
@@ -92,8 +92,36 @@ git diff --check
 
 `pnpm run test:browser` 未运行：本任务只改后端模块、HTTP 和测试夹具，无界面或公共 UI 变化，业务真实 HTTP 已覆盖。设备、容器、AMD64/ARM64 镜像检查按既有 Release 流程执行，本轮未运行，不记通过。下游未实现能力仍按本文的任务归属承接。
 
+## 2026-09-30 双角度评审修复
+
+所有者要求按 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review` 分别独立评审，并授权修复。行为评审确认两个 P2 Required：ImageMagick 自身拒绝缓存分配被误报为无效图片；HTTP 格式/资源与磁盘错误没有遵守 SPEC-media §12.2 的 422/507 约定。结构评审没有额外优化项，本轮没有扩展重构。
+
+修复只涉及两个生产文件：现有 `analyzeMediaError` 识别明确的 `cache resources exhausted`；水印路由复用该分析器归一原生/工具错误，并返回资源/格式 422、磁盘 507。保留原始错误消息、日志 requestId、no-store，以及身份与请求形状已有状态。验证器不再把工具资源失败包装成“图片无效”，持久记录继续保存真实诊断。
+
+测试先取得 [错误分类 3 项失败](./review-errors-red.txt) 和 [HTTP 状态 8 项失败](./review-http-red.txt)。新增真实 HTTP 用例使用合法 16000×16000 RGBA PNG，文件 1,044,047 字节，生产 512 MiB 缓存预算未改变；返回资源限制，数据库留下 cleanup_pending 和原始诊断，没有 ready 资产。夹具使用 Node 原生 zlib 流式生成，只复用一行像素，没有新增依赖；[真实工具失败输出](./review-cache-tool.txt) 和 [CRC/完整解压验证](./review-fixture.txt) 证明文件有效。
+
+结构复审还发现本轮归一化可能用内层 cause 覆盖明确的外层 `MEDIA_WATERMARK_INVALID`。真实 HTTP 和新增单元均复现，见 [HTTP 回归失败](./review-http-cause-red.txt)、[单元回归失败](./review-cause-red.txt)。已改为保留明确的外层 `MEDIA_*` 码，再对原生/工具失败归一分类；没有降低或删除原断言。
+
+复审：行为 agent 独立重跑 46 项针对性单元，Critical 0 / Required 0 / Optional 0；结构 agent 复核上述回归修复、职责和复杂度，Required 0 / Optional 0。共享错误分析器的 steps、recovery、process 调用方已核查：资源失败沿已有规则保留恢复候选，不新增自动重试条件。本轮没有 UI，设计验收不适用。
+
+环境沿用上轮 macOS arm64、Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32、ExifTool 13.55。完整集成使用单 worker，所有 HTTP 服务与数据都在临时目录，不修改用户数据。实际命令与结果：
+
+| 命令                                                                                                                                                                        | 结果                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                            | 通过，锁文件无变化；[日志](./review-install.txt)                                    |
+| `pnpm run format:check`                                                                                                                                                     | 通过；[日志](./review-format.txt)                                                   |
+| `pnpm run lint`                                                                                                                                                             | 通过；[日志](./review-lint.txt)                                                     |
+| `pnpm run typecheck`                                                                                                                                                        | 通过；[日志](./review-typecheck.txt)                                                |
+| `pnpm run test:unit`                                                                                                                                                        | 38 文件 / 560 项通过；[日志](./review-unit.txt)                                     |
+| `pnpm exec vitest run --project unit tests/unit/media/errors.test.ts tests/unit/media/watermark-validation.test.ts tests/unit/media/watermark-route.test.ts --maxWorkers=1` | 3 文件 / 46 项通过；[日志](./review-focused.txt)                                    |
+| `pnpm run build`                                                                                                                                                            | 通过，退出码 0；保留既有 resvg 可选平台依赖追踪警告；[日志](./review-build.txt)     |
+| `pnpm run test:integration --maxWorkers=1`                                                                                                                                  | 89 文件 / 738 项全部通过，580.43 秒，无失败或跳过；[日志](./review-integration.txt) |
+| `node docs/tasks/check.mjs` / `git diff --check`                                                                                                                            | 通过，120 tasks / 298 requirements；[文档日志](./review-docs.txt)                   |
+
+最终完整集成覆盖重建后的 8 项真实水印 HTTP 用例，资源耗尽和原无效图片响应均通过。磁盘不足 507 通过 HTTP handler 边界注入原生 ENOSPC、工具磁盘失败和领域错误验证，没有填满实际磁盘。真实 HTTP 已使用生产缓存上限触发资源耗尽。没有 schema 变化，不重复生成迁移；浏览器/人工设计验收不适用。物理设备、容器、AMD64/ARM64 镜像和部署未执行，仍按 Release 流程取得证据。
+
 ## PR 与远端检查
 
-[PR #212](https://github.com/dnslin/ariso-next/pull/212)，分支 `codex/151-watermark-assets`。首轮因基线失败创建草稿；所有者授权修复后，本地适用检查及独立审计均通过，已满足转正式待评审条件。
+[PR #212](https://github.com/dnslin/ariso-next/pull/212)，分支 `codex/151-watermark-assets`。首轮因基线失败创建草稿；授权修复后转为待评审。本轮发现两项 P2 时暂时恢复草稿，修复及全量验证完成后再次满足正式待评审条件。
 
 实际使用 `gh pr view 212 --repo dnslin/ariso-next --json isDraft,mergeStateStatus,baseRefOid,statusCheckRollup` 和 `gh pr checks 212 --repo dnslin/ariso-next` 核对：当前 main 基线为 `00979f5`，无合并冲突，检查列表为空。仓库没有远端 PR 检查，不能记作 CI 通过。未合并、关闭 Issue、发布、部署或删除分支/worktree。

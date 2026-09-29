@@ -33,6 +33,11 @@ it.each([
   ],
   [new DOMException('cancelled', 'AbortError'), 'MEDIA_CANCELLED', false],
   [new Error('no space left on device'), 'INSUFFICIENT_DISK_SPACE', false],
+  [
+    new Error('magick: cache resources exhausted'),
+    'MEDIA_RESOURCE_LIMIT',
+    false,
+  ],
   ['unexpected rejection', 'MEDIA_PROCESS_FAILED', false],
 ] as const)(
   'keeps diagnostics and retry policy for %s',
@@ -52,6 +57,7 @@ it.each([
   [failure('MEDIA_TOOL_UNAVAILABLE'), true],
   [failure('MEDIA_TOOL_SHUTDOWN_FAILED'), true],
   [failure('MEDIA_RESOURCE_LIMIT'), true],
+  [new Error('magick: cache resources exhausted'), true],
   [failure('INSUFFICIENT_DISK_SPACE'), true],
   [failure('MEDIA_OUTPUT_INVALID'), false],
   [new SyntaxError('incomplete tool JSON'), false],

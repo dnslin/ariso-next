@@ -197,12 +197,37 @@ it('rejects animation and invalid image bytes without exposing a ready asset', a
     Buffer.from([0, 1, 2, 3, 255, 254, 253, 252]),
   ]) {
     const response = await upload(fileForm(bytes));
-    expect(response.status, await response.clone().text()).toBe(415);
+    expect(response.status, await response.clone().text()).toBe(422);
     expect(await response.json()).toMatchObject({
       code: 'MEDIA_WATERMARK_INVALID',
     });
     expect(readyAssets()).toEqual([]);
   }
+});
+
+it('reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset', async () => {
+  // A valid 16000 × 16000 RGBA PNG stays below the upload byte limit, while
+  // its decoded pixels exceed the production 512 MiB cache even with Q8.
+  const bytes = await readFile('tests/fixtures/media/watermark-cache.png');
+  expect(bytes.length).toBeLessThan(5 * 1024 * 1024);
+  const response = await upload(fileForm(bytes));
+  const failure = await response.json();
+  expect(response.status, JSON.stringify(failure)).toBe(422);
+  expect(failure).toMatchObject({
+    code: 'MEDIA_RESOURCE_LIMIT',
+    message: expect.stringContaining('cache resources exhausted'),
+    requestId: expect.any(String),
+  });
+  expect(readyAssets()).toEqual([]);
+  const assets = connection!.db.select().from(mediaWatermarkAssets).all();
+  expect(assets).toHaveLength(1);
+  expect(assets[0]).toMatchObject({
+    status: 'cleanup_pending',
+    byteSize: bytes.length,
+    error: expect.stringContaining('cache resources exhausted'),
+  });
+  expect(assets[0].error).toBe(failure.message);
+  expect(server!.logs()).toContain(failure.requestId);
 });
 
 it('rejects a file one byte over 5 MiB without creating an asset', async () => {

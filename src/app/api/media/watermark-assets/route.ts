@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { requireOwner } from '../../../../server/identity/owner.ts';
+import { analyzeMediaError } from '../../../../server/media/errors.ts';
 import { getServerRuntime } from '../../../../server/startup/server-start.ts';
 import { createRuntimeLogger } from '../../../../server/runtime/logger.ts';
 export const runtime = 'nodejs';
@@ -15,16 +16,24 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     const detail = error as { code?: string; status?: number };
-    const code = detail?.code ?? 'MEDIA_WATERMARK_FAILED';
+    const analysis = analyzeMediaError(error);
+    const code =
+      detail?.code?.startsWith('MEDIA_') ||
+      analysis.code === 'MEDIA_PROCESS_FAILED'
+        ? (detail?.code ?? 'MEDIA_WATERMARK_FAILED')
+        : analysis.code;
     const status =
       detail?.status ??
       ([
         'MEDIA_WATERMARK_INVALID',
         'MEDIA_FORMAT_UNSUPPORTED',
         'MEDIA_IDENTIFICATION_FAILED',
+        'MEDIA_RESOURCE_LIMIT',
       ].includes(code)
-        ? 415
-        : 500);
+        ? 422
+        : code === 'INSUFFICIENT_DISK_SPACE'
+          ? 507
+          : 500);
     createRuntimeLogger('media.watermark', 'info').error(
       { err: error, requestId },
       'Watermark upload failed',
