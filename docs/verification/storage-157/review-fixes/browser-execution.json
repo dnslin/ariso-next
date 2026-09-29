@@ -1,0 +1,38 @@
+{
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "browser": "Existing Ego Lite / Chromium 152",
+  "environment": {
+    "NO_PROXY": "existing entries plus localhost,127.0.0.1,::1,.localhost",
+    "no_proxy": "same as NO_PROXY"
+  },
+  "first": {
+    "command": "pnpm run test:browser",
+    "BROWSER_REPORT_DIR": "test-results/pr211-review-fixes/browser",
+    "EGO_TASK_SPACE": "unset; runner created TaskSpace 10",
+    "exitCode": 1,
+    "sourceDirectory": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-first",
+    "commandLog": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-first/command.log",
+    "failure": "The library.mjs group reached the unchanged runner 300000 ms limit. library.log is empty; the exact stalled statement is not established.",
+    "diagnosis": "After timeout, TaskSpace 10 remained agent-owned. Snapshot and timeout-context.png showed the original production origin /library?image=library-007 with the compressed preview selected and the Download compressed image action visible. No permission prompt was reported or observed. Last pre-timeout artifact was detail-clipboard-denied-light-390.png; this does not establish a clipboard failure."
+  },
+  "retry": {
+    "command": "EGO_TASK_SPACE=10 pnpm run test:browser",
+    "BROWSER_REPORT_DIR": "test-results/pr211-review-fixes/browser-retry",
+    "exitCode": 0,
+    "sourceDirectory": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-retry",
+    "commandLog": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-retry-command.log",
+    "result": "Complete production and isolated UI/library suites passed; no timeouts, assertions, source files or test files were changed for the rerun."
+  },
+  "taskSpace": {
+    "id": 10,
+    "createdOnce": true,
+    "reusedForRetry": true,
+    "finishedBy": "Final successful UI browser runner; no manual finish call",
+    "verifiedAfterCompletion": "listTaskSpaces returned only user-owned spaces 3 and 4; space 10 no longer exists"
+  },
+  "limitations": [
+    "The initial timeout remains recorded; the rerun passing does not establish its root cause.",
+    "Existing-page browser regression only; no new UI or Figma acceptance claim."
+  ]
+}

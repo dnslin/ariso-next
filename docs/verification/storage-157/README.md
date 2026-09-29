@@ -2,7 +2,7 @@
 
 关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
 
-当前结论：所有者授权补修后，适用本地验证已完成，独立代码复审无剩余 Required。首轮失败和复测分别保留在本记录；最终结果见末节。本任务没有 UI 改动。
+当前结论：2026-09-30 根据所有者要求修复 PR 双 agent 评审发现的两项 P2。配置检查未尝试写入时不再删除对象，读取超时由统一错误转换处理。新增回归、完整本地验证与真实 R2/SeaweedFS 复测已通过，独立交叉复审无剩余问题；浏览器首轮超时及原断言完整复测记录见末节。本任务没有 UI 改动。
 
 ## 范围与接口
 
@@ -13,12 +13,12 @@
 - 只有对应当前配置 revision 的完整通过报告才允许现有设置接口启用。运行中保留历史检测结果，失败完成后停用配置；凭据修改使报告失效，旧回包不能覆盖新配置。
 - R2 的无版本服务能力与全 Bucket 无锁的所有者确认分别记录，确认绑定报告 revision。匿名 API 拒绝只证明本次对象请求；报告保留私有 Bucket 和关闭公开别名的部署要求，不声明已枚举所有别名。
 - `GET /api/storages/:id` 返回脱敏配置、最后连接报告和当前 probe 清理责任。`POST /api/storages/:id/probes/:probeId/retry-cleanup` 只清理该记录的确切 Key。
-- `readProbeReferences(db, storageId)` 供组合入口取得 Key/活动责任；`readProbeUsage(db)` 按存储返回已确认字节、待核对对象数和确认时间。planned 不贡献已知占用，writing 计待核对，stored 持续计入，删除成功才释放。
-- Web 进程单例启动恢复未结束探测，将其标为失败并清理；预启动不等待远端网络。自动清理最多三次，重启不重置次数，保留错误与下次时间。手动重试可重新尝试。停用不阻止维护清理，进程退出先等待本地操作及清理收尾再关闭数据库。
+- `readProbeReferences(db, storageId)` 供组合入口取得 Key/活动责任；`readProbeUsage(db)` 按存储返回已确认字节、待核对对象数和确认时间。planned 不贡献已知占用，writing 计待核对，stored 持续计入；已尝试写入的责任在删除成功或确认不存在后释放，未尝试写入的失败按末节直接释放。
+- Web 进程单例启动恢复未结束探测，将其标为失败，依据持久对象状态释放未写入记录或继续清理；预启动不等待远端网络。自动清理最多三次，重启不重置次数，保留错误与下次时间。手动重试可重新尝试。停用不阻止维护清理，进程退出先等待本地操作及清理收尾再关闭数据库。
 
 迁移 `0011_wise_maria_hill.sql` 新增 `storage_probes` 及配置 `connection_report`，外键保留清理引用。复用现有 AWS SDK、xmldom、Zod、Drizzle 与 Web 启动机制，无新增依赖。已核对 SDK 命令与 middleware 类型、[AWS 版本接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html)、[对象锁接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectLockConfiguration.html)和 [R2 兼容表](https://developers.cloudflare.com/r2/api/s3/api/)。官方资料不是实测证据。
 
-## 真实服务与故障验证
+## 首轮真实服务与故障验证（历史）
 
 环境：macOS ARM64，Node **24.18.1**，pnpm **11.19.0**。命令前置 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`；全部业务验证使用独立随机存储命名空间和临时 SQLite，不修改用户预览数据或 Bucket 配置。
 
@@ -86,3 +86,37 @@ AWS 实测要求按执行约定取消，保持未验证。AMD64/ARM64 镜像与�
 `pnpm run test:browser` 最终退出 0；现有 Ego Lite / Chromium 152，仅使用 TaskSpace 8，成功后由运行器关闭。覆盖首页、真实读取失败重试、公共外壳、两端初始化/身份、图库/详情/回收站、相册、上传/轮询、M2 上传下载与进程重启、交互与页面切换、公共组件夹具；360/390/430/768/1440 浅深色及短视口/键盘场景由现有脚本执行。[运行器结果](./approved-repair/browser-runner.json)确认临时目录已删除，[分项断言](./approved-repair/browser-checks.json)保留逐组实际结果。原始报告和截图在本机工作区 `test-results/browser/`；本次为已有页面回归，不冒充新增 UI 的 Figma 对照或人工设计验收。
 
 最终命令及环境继续统一见 [local-checks.json](./local-checks.json)：Node 24.18.1 / pnpm 11.19.0 / macOS ARM64；冻结安装、格式、lint、类型、542 项单元、构建及浏览器命令成功；完整 736 项集成集合经保留断言的失败文件复测收齐通过证据。真实 R2/SeaweedFS 结果沿用本分支此前最终运行，本轮未修改 S3/probe 生产代码，无需重复远端写入。AMD64/ARM64 镜像仍按 Release 流程验证；AWS 未实测，按既有约定不再作为本任务门槛。
+
+## 2026-09-30 双 agent 评审修复
+
+所有者明确要求修复两份评审中的问题与优化建议。修复范围如下，未增加依赖、迁移、兼容层或新的清理状态：
+
+- 配置检查失败且持久化对象状态仍为 planned 时，没有发起 PUT。报告把删除标为 skipped，保留配置失败并释放 probe；版本化 Bucket 不会因这次失败测试收到 DELETE 并生成删除标记。启动恢复同样释放 running/planned。已经尝试写入的 writing/stored 继续清理；已有 cleanup 记录不会被这一规则直接丢弃。
+- 在 S3 现有 failure 转换函数统一根据请求 signal.reason 分类超时。普通操作、读取响应头与读取响应体共用该函数。主动取消不冒充超时，读取流的释放时机不变，错误保留原始服务诊断。
+
+[SPEC-storage 6.2](../../specs/SPEC-storage.md#62-四步连接测试)同步明确未写入时跳过删除的边界；未修改冻结 PRD。
+
+先取得失败回归再修改实现。planned 三个失败场景来自独立 agent 的实际运行，原 stdout 仅留工具会话，因此明确保存为[运行摘要](./review-fixes/probe-red-summary.json)，不冒充原始日志；修复后[16 项通过](./review-fixes/probe-green.txt)。等待响应头、读取响应体两项超时[先失败](./review-fixes/timeout-red.txt)，修复后协议测试[39 项通过](./review-fixes/timeout-green.txt)，包含两项主动取消不误报超时的断言。
+
+HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保留真实 S3 协议夹具：随机 64 字节实际写入、鉴权读取、匿名拒绝、DELETE 403、管理路由重试 502、两次删除同一个 Key，且仍保留对象与清理引用。没有删除原失败检查来换取通过。
+
+本轮[真实两服务报告](./review-fixes/live/checks.json)全部通过。SeaweedFS 的错误凭据在配置阶段被拒绝，后续四阶段 skipped，无清理引用和占用，手动清理明确不适用且未执行。R2 的能力检查通过后才尝试 PUT，错误凭据使 PUT/DELETE 失败，保留确切 Key 和一个待核对对象，恢复凭据后手动清理成功。两服务都验证了恢复凭据不能直接启用，新 revision 完整重测后才可启用；每个服务三个精确 Key 最终 HEAD 不存在，临时数据库删除。旧报告保留当时行为，不把 SeaweedFS 本轮未执行的清理写成通过。
+
+两个 agent 分别实际读取 code-review-and-quality 与 thermo-nuclear-code-quality-review，采用交叉复审，未由实现者给自己的修改验收。正确性评审检查另一 agent 的超时实现、取消区别、响应元数据及流释放，并实际运行两文件 59 项通过。结构评审检查主 agent 的清理修复、规格及回归：复用既有持久化状态和事务，不增加影子状态或额外清理层，未发现 Required 或 Optional 项。HTTP 回归另经未参与实现的 agent 只读复审，确认真实写入和 502 覆盖未被削弱。主 agent 独立检查真实服务运行器的固定预期、revision、引用和占用断言；没有根据被测结果临时放宽预期。
+
+本轮完整集成命令退出 0，87 文件 / 745 项全部通过。浏览器首轮在图库单组触发运行器 300000ms 超时，后续场景未执行；空日志不能确定具体卡点。实际检查 TaskSpace 10 仍由 agent 控制，页面已返回图片详情，无权限提示，未认定为剪贴板功能失败。保留首轮证据后，在同一空间重跑完整流程，不增加时限、不跳过断言。完整重跑最终退出 0，21 份结果报告均已保存，首轮图库超时没有再次出现；不声称已定位或修复该超时的根因。运行器完成后关闭 TaskSpace 10，独立临时目录删除。见[首轮失败](./review-fixes/browser-first-runner.json)、[最终运行器](./review-fixes/browser-retry-runner.json)和[最终分项断言](./review-fixes/browser-retry-checks.json)。原始截图及日志在本机工作区 test-results/pr211-review-fixes/browser-first 与 browser-retry。
+
+本轮最终适用检查汇总（Node 24.18.1 / pnpm 11.19.0 / macOS ARM64）：
+
+| 实际命令                                                         | 结果                                                                                                     |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| pnpm install --frozen-lockfile                                   | 通过，锁文件未改                                                                                         |
+| pnpm run format:check、pnpm run lint、pnpm run typecheck         | 通过；最终 HTTP 测试补充后重跑 lint/typecheck                                                            |
+| pnpm run test:unit --maxWorkers=2                                | 38 文件 / 542 项通过                                                                                     |
+| pnpm run build                                                   | 退出 0；追踪器仍输出 resvg/sharp 可选依赖、Next 源映射和动态依赖解析诊断，打包后真实 HTTP 与浏览器均通过 |
+| pnpm run test:integration --maxWorkers=1                         | 87 文件 / 745 项全部通过，退出 0                                                                         |
+| pnpm run test:browser                                            | 首轮图库单组超时退出 1；同 TaskSpace 10 完整重跑退出 0                                                   |
+| node docs/tasks/check.mjs、node docs/tasks/check.mjs --self-test | 120 任务 / 298 需求、5 项拒绝自测通过                                                                    |
+| 真实 S3 运行器（完整命令见 JSON）                                | R2 / SeaweedFS 全部通过                                                                                  |
+
+命令环境和结果统一见 [local-checks.json](./local-checks.json)，[交叉审计结论](./review-fixes/audit.json)无剩余修改项。集成日志中的一次性测试 setup code 已脱敏，构建记录摘录全部不同的打包追踪诊断，重复解析栈未提交；完整本地日志路径保留在摘录中。本轮没有 UI 修改，Figma 和人工 UI 验收不适用。无新增 Release、镜像发布或部署；AWS 与双架构容器验证边界沿用前述执行约定。

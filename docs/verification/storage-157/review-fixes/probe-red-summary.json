@@ -1,0 +1,31 @@
+{
+  "kind": "Transcript summary, not original stdout",
+  "source": "Independent agent /root/pr211_correctness_review, original exec session 32735",
+  "command": "pnpm exec vitest run --project integration tests/integration/storage/probes.test.ts --maxWorkers=1",
+  "startedAtLocal": "2026-09-30 00:16:42 Asia/Shanghai",
+  "exitCode": 1,
+  "tests": 16,
+  "passed": 13,
+  "failed": 3,
+  "failures": [
+    {
+      "case": "Enabled",
+      "line": 165,
+      "expected": "Only GET bucket versioning",
+      "actual": "Additional DELETE for the probe key"
+    },
+    {
+      "case": "Suspended",
+      "line": 165,
+      "expected": "Only GET bucket versioning",
+      "actual": "Additional DELETE for the probe key"
+    },
+    {
+      "case": "Restart planned probe",
+      "line": 249,
+      "expected": "No remote request",
+      "actual": "DELETE for the probe key"
+    }
+  ],
+  "limitations": "Original stdout retained only in agent tool transcript; this is an explicit summary. No reconstructed stdout or rerun against modified historical code."
+}

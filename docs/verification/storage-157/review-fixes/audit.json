@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-30",
+  "scope": "Fixes for two P2 review findings in PR #211; worktree diff after eb34fef",
+  "reviewers": [
+    {
+      "agent": "pr211_correctness_review",
+      "skill": "code-review-and-quality",
+      "scope": [
+        "src/server/storage/s3.ts",
+        "tests/integration/storage/s3-probe-protocol.test.ts"
+      ],
+      "conclusion": "Approve",
+      "required": [],
+      "optional": [],
+      "checks": {
+        "command": "pnpm exec vitest run --project integration tests/integration/storage/s3-probe-protocol.test.ts tests/integration/storage/s3.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "files": 2,
+        "tests": 59
+      },
+      "notes": "Header/body timeout classification, explicit cancellation, response metadata and stream disposal verified. Did not author S3 implementation."
+    },
+    {
+      "agent": "pr211_structural_review",
+      "skill": "thermo-nuclear-code-quality-review",
+      "scope": [
+        "src/server/storage/probes.ts",
+        "docs/specs/SPEC-storage.md",
+        "tests/integration/storage/probes.test.ts"
+      ],
+      "conclusion": "Approve",
+      "required": [],
+      "optional": [],
+      "notes": "Persistent objectState remains the source of truth. Transactional report/release, cleanup responsibility, writing/stored recovery preserved; no shadow state or new cleanup abstraction. Reviewer did not author these changes."
+    },
+    {
+      "agent": "probe_live_validation",
+      "skill": "code-review-and-quality",
+      "scope": ["tests/integration/storage/settings-http.test.ts"],
+      "conclusion": "Approve",
+      "required": [],
+      "optional": [],
+      "notes": "Read-only independent review. Actual management HTTP to SDK to S3 HTTP fixture, 64-byte PUT/GET and anonymous refusal; DELETE403 and retry502 preserve exact stored object. No weakening of original coverage. Did not run tests."
+    },
+    {
+      "agent": "root",
+      "scope": [
+        "tests/experiments/storage-s3/verify-probes.ts",
+        "docs/verification/storage-157/review-fixes/live"
+      ],
+      "conclusion": "Approve",
+      "required": [],
+      "optional": [],
+      "notes": "Fixed expectations by service rather than reported result; strict stage, revision, enablement, exact-key, reference and usage assertions. SeaweedFS manual cleanup explicitly not applicable. Did not author runner changes."
+    }
+  ],
+  "designAcceptance": "Not applicable: no UI change. Existing browser regression is not Figma or human design acceptance."
+}

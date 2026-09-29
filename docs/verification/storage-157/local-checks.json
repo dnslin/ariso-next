@@ -178,5 +178,99 @@
     "workflowRuns": [],
     "ciPassed": false,
     "note": "Historical draft snapshot before owner-approved repairs; no remote checks configured"
+  },
+  "reviewFixes": {
+    "date": "2026-09-30",
+    "authorization": "所有者要求修复两份独立评审的问题与优化建议",
+    "environment": {
+      "node": "24.18.1",
+      "pnpm": "11.19.0",
+      "platform": "macOS arm64",
+      "base": "00979f5"
+    },
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0,
+        "evidence": "review-fixes/unit.txt"
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "evidence": "review-fixes/build.txt"
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0,
+        "result": "Repeated after final HTTP regression edit"
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0,
+        "result": "Repeated after final test edits"
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=1",
+        "exitCode": 0,
+        "files": 87,
+        "tests": 745,
+        "evidence": "review-fixes/integration.txt"
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements"
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases"
+      },
+      {
+        "command": "BROWSER_REPORT_DIR=test-results/pr211-review-fixes/browser pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Library group reached original 300000ms runner timeout; no precise cause established",
+        "evidence": "review-fixes/browser-first-runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=10 BROWSER_REPORT_DIR=test-results/pr211-review-fixes/browser-retry pnpm run test:browser",
+        "exitCode": 0,
+        "result": "Complete rerun in the same space, unchanged code/timeout/assertions; all groups passed and space finished once",
+        "evidence": "review-fixes/browser-retry-runner.json"
+      }
+    ],
+    "redEvidence": [
+      "review-fixes/probe-red-summary.json",
+      "review-fixes/timeout-red.txt"
+    ],
+    "audit": "review-fixes/audit.json",
+    "liveEvidence": "review-fixes/live/checks.json",
+    "browser": {
+      "conclusion": "Full rerun passed after first-run timeout; initial failure retained",
+      "taskSpaceId": 10,
+      "finalChecks": "review-fixes/browser-retry-checks.json",
+      "localArtifacts": "test-results/pr211-review-fixes/browser-first and browser-retry",
+      "spaceClosed": true
+    },
+    "notRun": {
+      "release": "No Release/image/container/deployment requested",
+      "design": "No UI change; Figma and human UI acceptance not applicable"
+    }
   }
 }
