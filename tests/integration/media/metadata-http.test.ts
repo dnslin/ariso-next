@@ -115,30 +115,33 @@ beforeEach(async () => {
   );
   expect(await readFile(originalPath)).toEqual(bytes);
   imageId = randomUUID();
-  connection.db.transaction((tx) => {
-    const accepted = acceptOriginal(tx, {
-      imageId,
-      storageId: storage.id,
-      key: plan.key,
-      originalName: 'HTTP-original.png',
-      visibility: 'private',
-      format: 'PNG',
-      mime: 'image/png',
-      byteSize: bytes.length,
-      snapshot: createProcessingSnapshot(tx),
-      expectedVersions: ['compressed', 'thumbnail'],
-    });
-    // Persist a terminal failed asset fixture before the live queue can claim it.
-    // This tests metadata reread HTTP, not prior image processing.
-    tx.update(mediaJobs)
-      .set({ status: 'failed', error: 'fixture: prior processing failed' })
-      .where(eq(mediaJobs.id, accepted.jobId))
-      .run();
-    tx.update(mediaImages)
-      .set({ processingStatus: 'failed' })
-      .where(eq(mediaImages.id, imageId))
-      .run();
-  });
+  connection.db.transaction(
+    (tx) => {
+      const accepted = acceptOriginal(tx, {
+        imageId,
+        storageId: storage.id,
+        key: plan.key,
+        originalName: 'HTTP-original.png',
+        visibility: 'private',
+        format: 'PNG',
+        mime: 'image/png',
+        byteSize: bytes.length,
+        snapshot: createProcessingSnapshot(tx),
+        expectedVersions: ['compressed', 'thumbnail'],
+      });
+      // Persist a terminal failed asset fixture before the live queue can claim it.
+      // This tests metadata reread HTTP, not prior image processing.
+      tx.update(mediaJobs)
+        .set({ status: 'failed', error: 'fixture: prior processing failed' })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
+      tx.update(mediaImages)
+        .set({ processingStatus: 'failed' })
+        .where(eq(mediaImages.id, imageId))
+        .run();
+    },
+    { behavior: 'immediate' },
+  );
 }, 30000);
 
 afterEach(async () => {
@@ -226,14 +229,17 @@ it('reports image lifecycle, active processing, and disabled storage conflicts w
 });
 
 it('returns the same already queued metadata job on repeated HTTP requests', async () => {
-  const job = connection.db.transaction((tx) => {
-    const accepted = requestMetadataRead(tx, imageId);
-    tx.update(mediaJobs)
-      .set({ nextAttemptAt: new Date('2100-01-01T00:00:00Z') })
-      .where(eq(mediaJobs.id, accepted.jobId))
-      .run();
-    return accepted;
-  });
+  const job = connection.db.transaction(
+    (tx) => {
+      const accepted = requestMetadataRead(tx, imageId);
+      tx.update(mediaJobs)
+        .set({ nextAttemptAt: new Date('2100-01-01T00:00:00Z') })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
+      return accepted;
+    },
+    { behavior: 'immediate' },
+  );
   const before = snapshot();
   expect(await requestRead()).toEqual({ status: 202, body: job });
   expect(await requestRead()).toEqual({ status: 202, body: job });

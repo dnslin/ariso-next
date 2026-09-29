@@ -11,13 +11,14 @@ import { startMediaTool } from './tools.ts';
 import type { MediaRuntime } from './process.ts';
 
 export class MediaMetadataError extends Error {
-  constructor(
-    public readonly code: string,
-    public readonly status: 404 | 409 | 422,
-    message: string,
-  ) {
+  readonly code: string;
+  readonly status: 404 | 409 | 422;
+
+  constructor(code: string, status: 404 | 409 | 422, message: string) {
     super(message);
     this.name = 'MediaMetadataError';
+    this.code = code;
+    this.status = status;
   }
 }
 

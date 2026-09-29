@@ -24,7 +24,7 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 单元新增测试先因模块尚不存在失败，再通过。真实持久化测试是在实现已出现后编写；首轮 2 项失败源于测试混淆原始尺寸与校正后派生尺寸，已按现有契约修正，不将其声称为业务缺陷的失败证据。数据库故障测试和真实超时/超限用于验证明确的失败行为。
 
-## 实际验证
+## 首轮验证（修复前历史）
 
 环境：macOS arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，ExifTool 13.55。命令均在上述独立 worktree 执行，Node 路径为 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`。未使用用户预览数据，未发布镜像或部署。
 
@@ -42,7 +42,32 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 | 全量 `pnpm run test:integration`、新真实 HTTP 场景、`pnpm run test:browser`                                                                                                                                                                                                               | 尚未执行；依执行约定等待成功构建，不通过跳过类型检查制造产物                                |
 | AMD64/ARM64 镜像、受限容器挂载                                                                                                                                                                                                                                                            | 未执行，按既有 Release 流程验证，不属于本次日常 PR 检查                                     |
 
-### 主分支既有阻塞
+## 获批修复后验证
+
+仍使用上述 Node 24 / pnpm / macOS arm64 环境。[最终命令与退出码](./final-checks.json)包含失败项，整体不记通过。`pnpm run format:check` 最终[通过](./final-format.txt)。
+
+| 命令                                                                                                                                                                                                                                                                                                               | 结果                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                                                                                                   | [通过](./final-install.txt)，锁文件未改                                                                |
+| `pnpm run typecheck`                                                                                                                                                                                                                                                                                               | [通过](./final-typecheck.txt)                                                                          |
+| `pnpm run build`                                                                                                                                                                                                                                                                                                   | [通过](./final-build.txt)，无部署密钥/无数据库的生产构建及 standalone 打包完成                         |
+| `pnpm run lint`                                                                                                                                                                                                                                                                                                    | [通过](./final-lint.txt)                                                                               |
+| `pnpm run test:unit`                                                                                                                                                                                                                                                                                               | [37 文件 / 539 项通过](./final-unit.txt)                                                               |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck`                                                                                                                                                                                                       | [冻结安装](./final-ui-install.txt)、[类型检查](./final-ui-typecheck.txt)通过；夹具构建由浏览器命令完成 |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                                                                                                                                                                                                                               | [任务检查](./final-task-check.txt)、[自检](./final-task-selftest.txt)通过                              |
+| `pnpm exec vitest run --maxWorkers=1 --project integration tests/integration/runtime/standalone.test.ts tests/integration/runtime/logging.test.ts tests/integration/runtime/secret-preflight.test.ts tests/integration/runtime/health.test.ts --project media-tools tests/integration/media/metadata-http.test.ts` | [5 文件 / 26 项通过](./packaging-http-recheck.txt)，包含新增元数据真实 HTTP 6 场景                     |
+
+最终 `pnpm run test:integration --maxWorkers=2` 完整执行普通集成与真实工具两组：**86 文件通过 / 1 文件失败，704 项通过 / 1 项失败（共 705 项）**，见 [final-integration.txt](./final-integration.txt)。唯一失败是未获批修改的既有统计规模夹具；本次元数据、HTTP、原生恢复、产物隔离、健康检查及计数场景全部通过。没有跳过测试或放宽超时，不将这次完整运行记为通过。
+
+### 浏览器回归
+
+`EGO_TASK_SPACE=7 BROWSER_REPORT_DIR=docs/verification/media-170/browser pnpm run test:browser` 完整退出 0，见[主运行器](./browser-runner.json)、[独立 UI 运行器](./browser-ui-runner.json)及[命令输出](./final-browser.txt)。使用现有 Ego Lite 同一 TaskSpace 7，包含桌面 1440 / 手机 390 初始化与重启、真实上传/复制/下载/匿名访问/回收恢复、访问计数、处理失败、队列恢复、相册、后台轮询、两端交互与跨页连续性。公共布局回归含 360/390/430/768/1440、浅深色、短视口、键盘焦点与点击目标。
+
+浏览器使用原生加载修复后的隔离生产包；运行期间仅有动态工作目录拼接的构建追踪修正，之后的生产包隔离及元数据 HTTP 已另行复测通过，没有 UI 逻辑变更。测试临时数据/服务已由运行器清理，独立 UI 套件成功后关闭 TaskSpace 7，没有下载浏览器或触碰用户预览数据。
+
+沿用 T-MED-03 的归档方式，本次无 UI 改动，仅提交运行器结论。完整截图及原始浏览器报告保留在本 worktree 的 `test-results/browser-170/`，避免把数百张已有界面回归截图重复入库。这些回归不替代后续 T-LIB-06 的 Figma 设计及人工 UI 验收。
+
+### 已获批修复的主分支问题
 
 在未修改的 `/Volumes/data/project/ariso`（同一 `00979f5`）实际运行 `pnpm run build:runtime` 和 `pnpm exec tsc --noEmit --project tsconfig.json` 复现。对应[主分支类型检查输出](./baseline-typecheck.txt)：
 
@@ -50,16 +75,31 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 - `tests/integration/media/{format-recovery,formats,svg}.test.ts` 存在同类本地存储调用类型错误。
 - `tests/integration/analytics/usage.test.ts` 的格式夹具缺少现有契约要求的 `extension`、`coder`。
 
-上述文件未由本次修改。依据用户“范围外问题未经批准不修改”的要求，已提出具体最小修复方案并等待批准；未绕过类型检查、削弱断言或修改验证配置。尚无批准时保留草稿，不将本 Issue 标为完成。
+用户于 2026-09-29 明确“批准修复”。本次将上述 4 个本地存储调用文件改用现有 `resolveLocalUploadStorage`，analytics 夹具补齐 PNG 的 `extension`、`coder` 和字面量类型。没有新增兼容层、削弱断言或修改验证配置。修复后类型检查与完整生产构建通过，原始基线失败记录保留。
+
+首次全量集成另外暴露本次新增错误类的构造函数参数属性不支持 Node 24 原生 TypeScript strip-only 加载。已取得[失败证据](./native-import-before.txt)，改为项目既有的显式字段和构造函数赋值后[原生加载通过](./native-import-after.txt)。首次集成在确认此原因后主动终止，[原始输出](./integration-native-failure.txt)不计通过；同时中止旧产物浏览器运行，等待重新构建后完整重跑。独立审计核对了恢复夹具子进程的原生加载调用链及修复，没有修改异常接口或绕过执行约定。
+
+### 完整集成后的修正与待确认项
+
+完整运行普通集成和真实媒体工具两组得到 87 文件、705 项：699 通过 / 6 失败，见 [integration-before-fixes.txt](./integration-before-fixes.txt)。新增元数据 HTTP 的 6 个场景已执行并通过。这一轮不计全量通过。
+
+- 本次元数据任务的动态 `join` 路径被 Turbopack 误推断为递归 `media-*` 资源，导致 3 项生产包隔离断言失败。改为既有处理任务使用的 `sep` 拼接后，重新构建通过；[前后追踪清单](./packaging-before.json)、[修复后产物清单](./packaging-after.json)确认项目 `tests/docs` 不再进入产物，没有增加排除名单或放宽测试。
+- 健康检查的生产表精确清单补入本次新增 `media_metadata`，并增加其初始化后为空的断言。
+- 访问计数首次为 `original` 场景 5000ms 超时；保持原配置单文件重跑时该项通过，但另一多请求场景超时，见 [count-recheck.txt](./count-recheck.txt)。当时本机有多个独立工作区运行验证，负载较高；在构建和其他本任务集成结束后保持同样命令和超时再次运行，[13 项全部通过](./count-final.txt)。不隐去前两次超时，也不改超时或断言。
+- `tests/experiments/analytics-scale/fixture.ts` 既有夹具向 22 列表无列名插入 7 个值，已在 `origin/main` 核实同样代码，并[独立复现](./scale-fixture-before.txt)。最小方案是显式列明原有 7 个字段；它不在此前获批的 5 个文件内，已单独请求用户批准，当前未修改。
+
+后续完整集成取得 703 / 705 通过，见 [integration-fixture-race.txt](./integration-fixture-race.txt)。除上述基线规模夹具外，新增 HTTP 测试的准备阶段暴露与真实队列的 SQLite 读事务升级竞争。已将初始化图片和预排队元数据这两个测试夹具的外层事务改为 `immediate`：先取得写权限，再读取并写入。沿用现有数据库等待配置，不增加重试、延长超时或削弱断言。独立 agent 读取失败栈、真实队列与 better-sqlite3 嵌套事务实现确认根因；[单文件 6 项复测通过](./http-fixture-recheck.txt)。
 
 ## 独立审计
 
-独立 agent 使用 `code-review-and-quality` 实际读取规则、Issue、规格、迁移、调用路径、核心实现和新增测试。初审无 Critical/Required 缺陷；核对了完整值保存、失败隔离、旧成功时间、鉴权、共享并发、恢复和工具清理。审计者独立执行单元元数据与队列测试，2 文件 / 18 项通过，`git diff --check` 通过。指出的测试任务编号与 S3 承接编号已修正。最终独立复核已完成：没有新增 Critical/Required 代码问题；新增 UTF-8 字节限制、用户自定义 Error 标签和图库摘要隔离测试均已核对。审计者实际读取最终检查输出，确认类型失败与基线相同。结论为可以提交草稿，不能转正式待评审或宣称任务完成。
+独立 agent 使用 `code-review-and-quality` 实际读取规则、Issue、规格、迁移、调用路径、核心实现和新增测试。核对完整值保存、失败隔离、旧成功时间、所有者鉴权、共享并发、恢复、图片状态隔离和工具清理；独立执行元数据单元与队列测试 2 文件 / 18 项通过。测试任务编号与 S3 承接编号建议已修正。
 
-功能结论：已通过源码聚焦验证，真实 HTTP/完整集成仍受构建阻塞。设计结论：无 UI 变更，不适用，不能将代码审计当作后续 UI 验收。
+获批的 5 文件基线修复、本次 Node 24 原生加载、Turbopack 误打包、健康检查表清单和 HTTP 夹具事务竞争修正，均完成独立复审。审计者实际读取驱动事务实现及修复前后日志，确认未削弱断言、增加重试或放宽超时。最终再次核对全量 704 / 705 结果、5 文件 / 26 项产物与 HTTP 复测、6 项 HTTP 夹具复测及两份浏览器运行器报告。
+
+代码功能结论：无未解决的 Critical/Required 问题，本次元数据真实工具、HTTP、恢复和产物隔离均通过。整体交付结论：唯一既有统计规模夹具仍失败且修复待批准，完整集成不得标通过，PR 保持草稿。设计结论：无 UI 变更，不适用；代码与浏览器回归不替代后续界面的设计及人工验收。
 
 ## PR 状态
 
 已提交并推送实现提交 `98397ea`，创建 [草稿 PR #209](https://github.com/dnslin/ariso-next/pull/209)。通过 `gh pr view 209 --json number,url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup` 核对为 OPEN、草稿、MERGEABLE，`statusCheckRollup=[]`；`gh pr checks 209` 返回 no checks reported，退出 1。没有远端检查，不记为 CI 通过，不等待不存在的工作流。
 
-适用检查未全部通过，不转正式待评审。尚未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。等待范围外最小修复授权后才能继续完整验证。
+此前获批的 5 文件基线修复和本次回归修正已完成。统计规模夹具的新增范围外修复仍待批准；适用检查未全部通过时继续保留草稿。本轮修复和实际验证证据追加提交并推送到同一分支。尚未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。

@@ -1,0 +1,53 @@
+Already up to date
+Done in 50ms using pnpm v11.19.0
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs
+$ next build tests/experiments/shell --webpack
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.mjs took 12ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 37.4s
+  Running TypeScript ...
+  Finished TypeScript in 15.1s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/2) ...
+✓ Generating static pages using 4 workers (2/2) in 1750ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /[[...path]]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+$ next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.mjs took 34ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.5s
+  Running TypeScript ...
+  Finished TypeScript in 4.4s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/6) ...
+  Generating static pages using 7 workers (1/6) 
+  Generating static pages using 7 workers (2/6) 
+  Generating static pages using 7 workers (4/6) 
+✓ Generating static pages using 7 workers (6/6) in 544ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /library
+├ ƒ /library/data
+└ ƒ /probe
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[ELIFECYCLE] Command failed.

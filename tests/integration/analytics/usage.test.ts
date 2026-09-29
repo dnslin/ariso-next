@@ -37,11 +37,13 @@ afterEach(() => fixture.close());
 const facts = {
   format: 'PNG',
   mime: 'image/png',
+  extension: 'png',
+  coder: 'png',
   width: 1,
   height: 1,
   animated: false,
   pageCount: 1,
-};
+} as const;
 const usage = () => aggregateUsage(readUsageObjects(fixture.db.$client));
 function record(overrides: Partial<UsageObject>) {
   const value: UsageObject = {

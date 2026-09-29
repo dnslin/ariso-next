@@ -1,7 +1,7 @@
 import { and, eq } from 'drizzle-orm';
 import { mkdir, rm } from 'node:fs/promises';
 import { once } from 'node:events';
-import { join } from 'node:path';
+import { sep } from 'node:path';
 import { readObject } from '../storage/local.ts';
 import { analyzeMediaError } from './errors.ts';
 import { readAndStoreMetadata } from './metadata.ts';
@@ -18,7 +18,7 @@ export async function processMetadataJob(
   signal = new AbortController().signal,
 ) {
   const { db, logger } = runtime;
-  const workspace = join(runtime.temporaryRoot, `media-${jobId}`);
+  const workspace = `${runtime.temporaryRoot}${sep}media-${jobId}`;
   let workspaceReady = false;
   let toolCleanupFailed = false;
   try {
