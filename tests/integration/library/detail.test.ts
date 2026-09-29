@@ -4,6 +4,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { readLibraryPage } from '../../../src/server/library/queries.ts';
+import { getImageAccessState } from '../../../src/server/media/images.ts';
 import { readLibraryDetail } from '../../../src/server/library/detail.ts';
 import { siteSettings } from '../../../src/server/site/schema.ts';
 import {
@@ -429,4 +431,48 @@ describe('owner-only detail HTTP', () => {
       await stop(server.child, server.closed);
     }
   }, 30000);
+});
+
+it('does not let metadata jobs replace processing or version summaries', () => {
+  seed('metadata-isolation');
+  connection.db.update(mediaImages).set({ classification: 'static' }).run();
+  connection.db
+    .update(mediaJobs)
+    .set({ status: 'failed', error: 'thumbnail failed' })
+    .run();
+  const process = connection.db.select().from(mediaJobs).get()!;
+  connection.db
+    .insert(mediaJobs)
+    .values([
+      {
+        ...process,
+        id: 'metadata-failed',
+        kind: 'metadata',
+        error: 'ExifTool timeout',
+        expectedVersions: [],
+      },
+      {
+        ...process,
+        id: 'metadata-running',
+        kind: 'metadata',
+        status: 'running',
+        expectedVersions: [],
+      },
+    ])
+    .run();
+  const detail = readLibraryDetail(connection.db, 'metadata-isolation');
+  const item = readLibraryPage(connection.db).items[0];
+  for (const record of [detail, item]) {
+    expect(record.activeJob).toBeNull();
+    expect(record.latestFailedJob).toMatchObject({
+      id: process.id,
+      error: 'thumbnail failed',
+    });
+    expect(JSON.stringify(record)).not.toContain('ExifTool');
+  }
+  const state = getImageAccessState(connection.db, 'metadata-isolation')!;
+  expect(state.latestJob!.id).toBe(process.id);
+  expect(
+    state.versions.find((version) => version.kind === 'thumbnail')!.status,
+  ).toBe('failed');
 });

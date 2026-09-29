@@ -200,3 +200,30 @@ await settled;
     }
   });
 });
+
+it('bounds binary output by UTF-8 bytes rather than text length', async () => {
+  const output = '中'.repeat(30);
+  const successful = startMediaTool(
+    'node',
+    ['-e', `process.stdout.write(${JSON.stringify(output)})`],
+    {
+      workspace,
+      encoding: 'buffer',
+      maxBuffer: 90,
+    },
+  );
+  expect(await successful.settled).toBeUndefined();
+  expect(Buffer.from((await successful.child).stdout).toString('utf8')).toBe(
+    output,
+  );
+  const limited = startMediaTool(
+    'node',
+    ['-e', `process.stdout.write(${JSON.stringify(output)})`],
+    {
+      workspace,
+      encoding: 'buffer',
+      maxBuffer: 64,
+    },
+  );
+  expect(await limited.settled).toMatchObject({ isMaxBuffer: true });
+});

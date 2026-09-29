@@ -139,6 +139,7 @@ export function readLibraryPage(
       .where(
         and(
           inArray(mediaJobs.imageId, ids),
+          eq(mediaJobs.kind, 'process'),
           inArray(mediaJobs.status, ['queued', 'running', 'failed']),
         ),
       )
