@@ -88,5 +88,14 @@
     "Original HTTP returned 500 instead of 502/504 (2 failed tests)",
     "prestart table list lacked storage_probes before correction"
   ],
-  "liveEvidence": "live/checks.json"
+  "liveEvidence": "live/checks.json",
+  "pullRequest": {
+    "url": "https://github.com/dnslin/ariso-next/pull/211",
+    "state": "OPEN",
+    "isDraft": true,
+    "statusCheckRollup": [],
+    "workflowRuns": [],
+    "ciPassed": false,
+    "note": "No remote checks configured; local build/typecheck remain blocked"
+  }
 }

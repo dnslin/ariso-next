@@ -1,6 +1,6 @@
 # T-STO-04 私有性连接测试与探测清理恢复
 
-关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
+关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[草稿 PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
 
 ## 范围与接口
 
@@ -64,3 +64,9 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 本任务无 UI，Figma、设计还原和人工 UI 验收不适用；存储管理界面由 T-STO-07 承接。签名 CORS probe 由 #158 承接；完整引用组合、位置修改、配置删除和周期孤儿扫描由 #164 承接；汇总统计由 #168 承接。未将这些计划能力描述为已实现。
 
 AWS 实测要求按执行约定取消，保持未验证。AMD64/ARM64 镜像与容器验证留在 Release 流程，本次未创建 Release、发布镜像或部署。未合并 PR、关闭 Issue、删除分支或 worktree。适用检查仍有失败或缺证据时保持草稿，不以 PR 已创建代替验收完成。
+
+## PR 状态
+
+已提交并推送 `codex/issue-157-storage-probes`，创建草稿 PR #211。首次直连 GitHub 推送在 75 秒后连接失败；按用户提供的命令级代理重试成功，未修改全局代理。`gh pr view 211 --json url,state,isDraft,headRefName,statusCheckRollup` 确認 OPEN、isDraft=true、检查为空；`gh pr checks 211` 报 no checks，分支 `gh run list` 返回空数组。没有远端检查不记作 CI 通过，也不等待不存在的工作流。
+
+草稿原因是上文已复现的 main 类型/构建失败及其下游验证缺口。范围外修正授权问题仍待用户答复；本次可独立完成的实现、故障与真实服务验证、审计、提交和 PR 操作已完成。完整交付验收仍未完成。
