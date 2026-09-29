@@ -6,7 +6,7 @@
 
 ## 最终结论
 
-2026-09-30 双角度评审问题修复后，本地适用检查全部通过：单元 560 项、完整集成 89 文件 / 738 项，无失败或跳过；冻结安装、类型、生产构建、lint、格式和文档检查通过。独立行为与结构复审均无未解决 Required 或 Optional；本任务无 UI，设计验收不适用。以下保留各轮失败证据，最终结果见本轮双角度评审修复记录。
+2026-09-30 双角度评审修复并同步最新 main 后，本地适用检查全部通过：单元 590 项、完整集成 90 文件 / 765 项，无失败或跳过；冻结安装、类型、生产构建、lint、格式和文档检查通过。独立行为与结构复审均无未解决 Required 或 Optional；本任务无 UI，设计验收不适用。以下保留各轮失败证据，最终结果见本轮双角度评审修复记录。
 
 ## 实施与剩余边界
 
@@ -120,8 +120,14 @@ git diff --check
 
 最终完整集成覆盖重建后的 8 项真实水印 HTTP 用例，资源耗尽和原无效图片响应均通过。磁盘不足 507 通过 HTTP handler 边界注入原生 ENOSPC、工具磁盘失败和领域错误验证，没有填满实际磁盘。真实 HTTP 已使用生产缓存上限触发资源耗尽。没有 schema 变化，不重复生成迁移；浏览器/人工设计验收不适用。物理设备、容器、AMD64/ARM64 镜像和部署未执行，仍按 Release 流程取得证据。
 
+### 推送后同步最新 main
+
+推送修复提交 `28044b1` 后，GitHub 报告冲突。远端 main 已合入 PR #210，更新为 `6c24c07`。唯一冲突是 `tests/integration/analytics/usage.test.ts` 的同一夹具：双方都补了 coder/extension，但字段位置不同。采用 main 的等价排列，类型和值均保留；水印代码与测试相对修复提交没有变化。独立结构 agent 核查通过，Required 0 / Optional 0，无未解决冲突。没有重新审计或改写 main 已合入的 library 功能。
+
+合并引入 main 已有的图片查询入口、依赖声明和配置，因此重新执行冻结安装、构建和完整回归。Node 24 环境保持不变：`pnpm install --frozen-lockfile`、`pnpm run build`、`pnpm run typecheck`、`pnpm run lint`、`pnpm run format:check` 均通过；`pnpm run test:unit` 为 39 文件 / 590 项通过；`pnpm run test:integration --maxWorkers=1` 为 90 文件 / 765 项全部通过，556.58 秒，无失败或跳过。结果分别见 [安装](./main-sync-install.txt)、[构建](./main-sync-build.txt)、[类型](./main-sync-typecheck.txt)、[lint](./main-sync-lint.txt)、[格式](./main-sync-format.txt)、[单元](./main-sync-unit.txt)、[集成](./main-sync-integration.txt)。构建仍有既有可选平台依赖追踪警告，退出码为 0。`node docs/tasks/check.mjs` 通过（120 tasks / 298 requirements），见[文档检查](./main-sync-docs.txt)；相对最新 main 的 PR 差异空白检查通过。main 自带历史日志的行尾空白不属于本次修改，未改写。
+
 ## PR 与远端检查
 
 [PR #212](https://github.com/dnslin/ariso-next/pull/212)，分支 `codex/151-watermark-assets`。首轮因基线失败创建草稿；授权修复后转为待评审。本轮发现两项 P2 时暂时恢复草稿，修复及全量验证完成后再次满足正式待评审条件。
 
-实际使用 `gh pr view 212 --repo dnslin/ariso-next --json isDraft,mergeStateStatus,baseRefOid,statusCheckRollup` 和 `gh pr checks 212 --repo dnslin/ariso-next` 核对：当前 main 基线为 `00979f5`，无合并冲突，检查列表为空。仓库没有远端 PR 检查，不能记作 CI 通过。未合并、关闭 Issue、发布、部署或删除分支/worktree。
+实际使用 `gh pr view 212 --repo dnslin/ariso-next --json isDraft,mergeStateStatus,baseRefOid,statusCheckRollup` 和 `gh pr checks 212 --repo dnslin/ariso-next` 核对：初次核查的 main 基线为 `00979f5`；推送后已同步 `6c24c07` 并解决夹具冲突，检查列表仍为空。仓库没有远端 PR 检查，不能记作 CI 通过。未合并、关闭 Issue、发布、部署或删除分支/worktree。

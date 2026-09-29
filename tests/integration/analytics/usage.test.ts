@@ -37,10 +37,10 @@ afterEach(() => fixture.close());
 const facts: Parameters<typeof acceptSession>[2] = {
   format: 'PNG',
   mime: 'image/png',
+  extension: 'png',
+  coder: 'png',
   width: 1,
   height: 1,
-  coder: 'png',
-  extension: 'png',
 };
 const usage = () => aggregateUsage(readUsageObjects(fixture.db.$client));
 function record(overrides: Partial<UsageObject>) {
