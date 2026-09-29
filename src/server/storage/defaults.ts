@@ -1,3 +1,4 @@
+import { requireLocalStorage } from './settings.ts';
 import { randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
@@ -62,5 +63,15 @@ export function resolveUploadStorage(
       storageId: id,
     });
   }
+  return config;
+}
+
+/** Existing local-only flows keep their explicit capability boundary. */
+export function resolveLocalUploadStorage(
+  db: BetterSQLite3Database,
+  requestedId?: string,
+) {
+  const config = resolveUploadStorage(db, requestedId);
+  requireLocalStorage(config);
   return config;
 }

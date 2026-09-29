@@ -1,0 +1,185 @@
+{
+  "environment": {
+    "platform": "macOS ARM64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "imageMagick": "7.1.2-32",
+    "exifTool": "13.55",
+    "worktree": "/Users/dnslin/.codex/worktrees/storage-settings-156/ariso",
+    "base": "279a84f",
+    "branch": "codex/storage-settings-156"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-install.log"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-ui-install.log"
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0,
+      "result": "0010 generated; SQL reviewed and adjusted to preserve parent-table foreign keys; final rerun reports no schema changes"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-baseline-build.log",
+      "phase": "baseline before new routes"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts --maxWorkers=1",
+      "exitCode": 1,
+      "testsFailed": 3,
+      "log": "/tmp/ariso-156-http-red.log",
+      "phase": "baseline routes return 404"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-build-final.log",
+      "phase": "initial implementation; later standalone tests detect excess traced files"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts tests/integration/storage/settings.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testsPassed": 25,
+      "log": "/tmp/ariso-156-focused.log"
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=2",
+      "exitCode": 0,
+      "filesPassed": 35,
+      "testsPassed": 529,
+      "log": "/tmp/ariso-156-unit.log"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 1,
+      "log": "/tmp/ariso-156-format.log",
+      "result": "Two generated migration metadata files required Prettier; fixed without data changes"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "exitCode": 1,
+      "filesFailed": 9,
+      "filesPassed": 66,
+      "testsFailed": 28,
+      "testsPassed": 558,
+      "durationSeconds": 507.57,
+      "log": "/tmp/ariso-156-integration.log",
+      "result": "Old migration/SQL fixtures and Next tracing regressions, plus dev-recompile/process-inspection timeouts; final serial rerun required"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/prestart.test.ts tests/integration/runtime/standalone.test.ts tests/integration/library/sqlite-query.test.ts --maxWorkers=1",
+      "exitCode": 1,
+      "filesFailed": 3,
+      "testsFailed": 7,
+      "testsPassed": 11,
+      "log": "/tmp/ariso-156-regression-red.log",
+      "phase": "regression reproduction"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-build-tracing-fix.log",
+      "result": "resolve(DATA_DIR, storage) avoids source/test trace glob; no deployment environment or database required"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testsPassed": 5,
+      "log": "/tmp/ariso-156-http-boundary.log",
+      "result": "Includes explicit/default S3 upload rejection before allocating records"
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser pnpm run test:browser",
+      "exitCode": 1,
+      "log": "/tmp/ariso-156-browser.log",
+      "report": "browser-first/runner.json",
+      "result": "M2 desktop media process-inspection exceeded existing 1000ms budget; later browser cases not run"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements"
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "result": "5 rejection cases passed"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/validation.test.ts --project integration tests/integration/storage/settings.test.ts",
+      "exitCode": 0,
+      "testsPassed": 26,
+      "phase": "independent code audit"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/logging.test.ts tests/integration/runtime/standalone.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testsPassed": 12,
+      "log": "/tmp/ariso-156-production-regression.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/startup.test.ts tests/integration/runtime/secret-preflight.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testsPassed": 17,
+      "log": "/tmp/ariso-156-startup-fixtures-green.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-lint-final.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-typecheck-final.log"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "log": "/tmp/ariso-156-format-final.log"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0,
+      "filesPassed": 75,
+      "testsPassed": 596,
+      "durationSeconds": 620.59,
+      "log": "/tmp/ariso-156-integration-final.log",
+      "result": "Full integration and media-tools projects pass after fixture/tracing fixes; prior dev/process timeouts did not recur"
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-final pnpm run test:browser",
+      "exitCode": 1,
+      "log": "/tmp/ariso-156-browser-final.log",
+      "report": "browser-final/runner.json",
+      "result": "Desktop suites and mobile identity/library/upload pass; mobile M2 before phase aborted at unchanged 300000ms script timeout. Exact blocked operation unresolved; remaining browser checks not run."
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry3 pnpm run test:browser",
+      "exitCode": 1,
+      "report": "browser-retry3/runner.json",
+      "log": "/tmp/ariso-156-browser-retry3.log",
+      "result": "Original Ego TaskSpace 2 no longer exists; listTaskSpaces returns []; business browser scenarios not started. Awaiting authorization to create a replacement space per skill."
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry4 pnpm run test:browser",
+      "exitCode": 0,
+      "report": "browser-passed/runner.json",
+      "log": "/tmp/ariso-156-browser-retry4.log",
+      "result": "Full browser suite passed with user-authorized replacement Ego space. Desktop/mobile identity, M2, interaction, continuity, library, upload, polling and final UI fixture pass. No code, timeout or assertion changes."
+    }
+  ],
+  "notRun": [
+    "Release AMD64/ARM64 image and container validation",
+    "Remote S3 connection/CORS probes (T-STO-04/05)",
+    "Figma/design and UI acceptance (no UI changes)"
+  ]
+}

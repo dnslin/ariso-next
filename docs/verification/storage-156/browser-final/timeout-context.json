@@ -1,0 +1,46 @@
+{
+  "phase": "m2-390-before",
+  "timeoutMs": 300000,
+  "lastConfirmedBehavior": "Both public and private JPG uploads accepted and media processing completed. Public JPG restored-byte artifacts exist. Exact suspended browser operation is unknown.",
+  "events": [
+    {
+      "time": "2026-09-29T01:52:19.783Z",
+      "level": "info",
+      "module": "upload",
+      "msg": "Upload accepted",
+      "imageId": "ee82798f-2959-49a5-be7b-9d400bdaadad"
+    },
+    {
+      "time": "2026-09-29T01:52:20.121Z",
+      "level": "info",
+      "module": "media.queue",
+      "msg": "Media processing completed",
+      "imageId": "ee82798f-2959-49a5-be7b-9d400bdaadad"
+    },
+    {
+      "time": "2026-09-29T01:52:36.270Z",
+      "level": "info",
+      "module": "upload",
+      "msg": "Upload accepted",
+      "imageId": "775c51de-f0cc-42bb-8787-c97d5a86d2a7"
+    },
+    {
+      "time": "2026-09-29T01:52:36.645Z",
+      "level": "info",
+      "module": "media.queue",
+      "msg": "Media processing completed",
+      "imageId": "775c51de-f0cc-42bb-8787-c97d5a86d2a7"
+    },
+    {
+      "time": "2026-09-29T01:57:10.460Z",
+      "level": "info",
+      "module": "runtime.shutdown",
+      "msg": "Upload and media queues stopped, analytics flushed, database closed"
+    }
+  ],
+  "unverified": [
+    "Remaining mobile M2 checks and restart",
+    "Mobile interaction-polish and workspace-continuity",
+    "Final UI fixture browser checks"
+  ]
+}

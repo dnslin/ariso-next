@@ -28,7 +28,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
@@ -37,7 +37,7 @@ import { launch, stop } from '../runtime/process-helpers.ts';
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
 function seed(id: string, createdAt = new Date(1000)) {
-  const storage = resolveUploadStorage(connection.db);
+  const storage = resolveLocalUploadStorage(connection.db);
   const accepted = connection.db.transaction((tx) =>
     acceptOriginal(tx, {
       imageId: id,
@@ -391,7 +391,7 @@ describe('owner-only detail HTTP', () => {
         expect(response.status).toBe(401);
         expect(response.headers.get('cache-control')).toBe('no-store');
       }
-      const storage = resolveUploadStorage(live.db);
+      const storage = resolveLocalUploadStorage(live.db);
       live.db
         .insert(mediaImages)
         .values({

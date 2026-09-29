@@ -71,7 +71,7 @@ export function createSqliteFixture(path: string, count: number) {
       CREATE INDEX experiment_tag_images ON experiment_image_tags(tag_id, image_id);
     `);
     const storage = db.prepare(
-      'INSERT INTO storage_configs VALUES (?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO storage_configs (id, name, type, enabled, local_path, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
     );
     const image = db.prepare(`INSERT INTO media_images
       (id, storage_id, original_name, display_name, visibility, format, mime,

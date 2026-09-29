@@ -4,7 +4,7 @@ import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { prepareUploadSelection } from '../collections/memberships.ts';
 import { mediaImages, mediaJobs } from '../media/schema.ts';
 import { createProcessingSnapshot } from '../media/settings.ts';
-import { resolveUploadStorage } from '../storage/defaults.ts';
+import { resolveLocalUploadStorage } from '../storage/defaults.ts';
 import { UploadError } from './errors.ts';
 import {
   uploadSettings,
@@ -69,7 +69,7 @@ export function requireSessionStorage(
   db: BetterSQLite3Database,
   session: UploadSession,
 ) {
-  return resolveUploadStorage(db, session.storageId);
+  return resolveLocalUploadStorage(db, session.storageId);
 }
 
 export function createSubmission(db: BetterSQLite3Database, input: unknown) {
@@ -121,7 +121,7 @@ export function createSubmission(db: BetterSQLite3Database, input: unknown) {
           '文件大小超过上传上限',
           413,
         );
-      const storage = resolveUploadStorage(tx, data.storageId);
+      const storage = resolveLocalUploadStorage(tx, data.storageId);
       const selection = prepareUploadSelection(tx, data);
       const snapshot = createProcessingSnapshot(tx);
       const id = randomUUID();

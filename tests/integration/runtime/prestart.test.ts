@@ -36,6 +36,11 @@ function writeMigrations(
   return writeRuntimeMigrations(folder, [
     storageMigration,
     identityMigration,
+    {
+      tag: '0002_storage_settings',
+      when: 3,
+      sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }

@@ -18,7 +18,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -79,7 +79,7 @@ async function accept(
   bytes: Buffer,
   changes: Partial<ProcessingSnapshot> = {},
 ) {
-  const storage = resolveUploadStorage(connection.db);
+  const storage = resolveLocalUploadStorage(connection.db);
   const plan = planLocalWrite('uploads');
   await writeObject(runtime.storageRoot, storage, plan, Readable.from(bytes));
   const snapshot = {
@@ -117,7 +117,7 @@ async function versionBytes(
   const row = state(imageId).versions.find((v) => v.kind === kind)!.saved!;
   const object = await readObject(
     runtime.storageRoot,
-    resolveUploadStorage(connection.db, row.object.storageId),
+    resolveLocalUploadStorage(connection.db, row.object.storageId),
     row.object.key,
     row.version.mime,
   );

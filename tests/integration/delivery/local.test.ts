@@ -16,7 +16,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import * as local from '../../../src/server/storage/local.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
@@ -38,7 +38,7 @@ let directory: string;
 let storageRoot: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
 let imageId: string;
-let storage: ReturnType<typeof resolveUploadStorage>;
+let storage: ReturnType<typeof resolveLocalUploadStorage>;
 let owner: boolean;
 const bytes = readFileSync(resolve('tests/fixtures/runtime/images/sample.png'));
 const onAccess = vi.fn();
@@ -53,7 +53,7 @@ beforeEach(async () => {
   connection = openRuntimeDatabase(join(directory, 'ariso.db'));
   migrateRuntimeDatabase(connection.db, resolve('drizzle'));
   prepareInitialStorage(connection.db, { storage: storageRoot });
-  storage = resolveUploadStorage(connection.db);
+  storage = resolveLocalUploadStorage(connection.db);
   imageId = randomUUID();
   owner = false;
   onAccess.mockReset();

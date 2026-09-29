@@ -24,7 +24,7 @@ import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 
 let directory: string;
@@ -55,7 +55,7 @@ function enqueue() {
   return connection.db.transaction((tx) =>
     acceptOriginal(tx, {
       imageId: randomUUID(),
-      storageId: resolveUploadStorage(connection.db).id,
+      storageId: resolveLocalUploadStorage(connection.db).id,
       key: `missing/${randomUUID()}`,
       originalName: 'missing.png',
       visibility: 'private',
