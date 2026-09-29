@@ -1,6 +1,6 @@
 # EV-ANALYTICS-02 完整用量交接与规模实验
 
-2026-09-29；[Issue #143](https://github.com/dnslin/ariso-next/issues/143)。依据 [analytics §7/9/11](../../../specs/SPEC-analytics.md)、[任务卡](../../gates.md#ev-analytics-02-完整用量交接与规模实验)及[执行约定](../../execution.md)。
+2026-09-29；[Issue #143](https://github.com/dnslin/ariso-next/issues/143)、[草稿 PR #206](https://github.com/dnslin/ariso-next/pull/206)。依据 [analytics §7/9/11](../../../specs/SPEC-analytics.md)、[任务卡](../../gates.md#ev-analytics-02-完整用量交接与规模实验)及[执行约定](../../execution.md)。
 
 ## 当前结论与边界
 
@@ -95,3 +95,7 @@ node tests/experiments/analytics-usage/run-live.ts --config /absolute/private/up
 最终独立代码审计通过，无剩余必须修改项。评审者回读原始报告并独立重算三轮各 25 个样本的 p50/p95，确认基线失败、中间未选中索引与最终覆盖查询结论一致，也确认写入、磁盘与 RSS 代价未隐藏。设计验收不适用。真实服务欠缺导致任务验收未完成，与代码审计通过分别记录。
 
 首次全套集成失败时，同机可观察到其他工作区并行运行多套测试。负载是排查线索，不替代复跑结果；保留原失败，不将其标成通过。本次新用例均通过。定向 `pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts` 随后 13/13 通过（17.05 秒），未修改测试。完整 `pnpm run test:integration --maxWorkers=1` 重跑 **76 文件、579/579 测试通过**，耗时 493.25 秒，包含普通集成与真实媒体工具组。
+
+## 提交与远端核对
+
+分支 `codex/issue-143-analytics`，实验代码提交 `315015a`。全部本地实验、独立审计、最终构建和检查记录收齐后提交并推送；真实服务配置缺失，PR #206 保持草稿。`gh pr view 206 --json url,state,isDraft,headRefName,statusCheckRollup` 返回 OPEN、isDraft=true、statusCheckRollup=[]；`gh pr checks 206` 返回 no checks reported（退出 1 表示无检查，不是 CI 失败或通过）。没有等待不存在的工作流。未合并、未关闭 Issue、未发布镜像、未部署，也未删除分支或 worktree。
