@@ -168,6 +168,13 @@
       "report": "browser-retry3/runner.json",
       "log": "/tmp/ariso-156-browser-retry3.log",
       "result": "Original Ego TaskSpace 2 no longer exists; listTaskSpaces returns []; business browser scenarios not started. Awaiting authorization to create a replacement space per skill."
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry4 pnpm run test:browser",
+      "exitCode": 0,
+      "report": "browser-passed/runner.json",
+      "log": "/tmp/ariso-156-browser-retry4.log",
+      "result": "Full browser suite passed with user-authorized replacement Ego space. Desktop/mobile identity, M2, interaction, continuity, library, upload, polling and final UI fixture pass. No code, timeout or assertion changes."
     }
   ],
   "notRun": [

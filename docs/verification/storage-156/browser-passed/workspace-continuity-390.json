@@ -1,0 +1,182 @@
+{
+  "status": "passed",
+  "width": 390,
+  "height": 844,
+  "checks": [
+    "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+    "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+    "Hard reload still warns for unsent work and starts a fresh document with no persisted queue.",
+    "Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.",
+    "A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held."
+  ],
+  "background": {
+    "network": {
+      "submissions": [
+        {
+          "id": "bed8059b-1f3a-4441-82e1-6be399495c61",
+          "storageId": "181a92f7-52c1-4eef-b0e4-beb193383bf6",
+          "visibility": "private",
+          "maxFileBytes": 52428800,
+          "sessions": [
+            {
+              "id": "1e154ba1-86cc-4c8a-98ef-cb757e5a5968",
+              "queueItemId": "70f01f7d-c4d8-4fd1-b330-1a08cc3431ec",
+              "groupIndex": 0,
+              "originalName": "sample.jpg",
+              "declaredSize": 638,
+              "state": "queued",
+              "imageId": null,
+              "jobId": null,
+              "byteSize": null,
+              "errorCode": null,
+              "error": null,
+              "cleanupStatus": "none",
+              "image": null,
+              "job": null
+            }
+          ]
+        }
+      ],
+      "reads": [
+        {
+          "pathname": "/library",
+          "body": {
+            "id": "bed8059b-1f3a-4441-82e1-6be399495c61",
+            "storageId": "181a92f7-52c1-4eef-b0e4-beb193383bf6",
+            "visibility": "private",
+            "maxFileBytes": 52428800,
+            "sessions": [
+              {
+                "id": "1e154ba1-86cc-4c8a-98ef-cb757e5a5968",
+                "queueItemId": "70f01f7d-c4d8-4fd1-b330-1a08cc3431ec",
+                "groupIndex": 0,
+                "originalName": "sample.jpg",
+                "declaredSize": 638,
+                "state": "accepted",
+                "imageId": "33a45a73-7260-447d-969d-ce6ee65d26ab",
+                "jobId": "2d0b9804-c32c-402b-bff7-345405ff1318",
+                "byteSize": 638,
+                "errorCode": null,
+                "error": null,
+                "cleanupStatus": "none",
+                "image": {
+                  "id": "33a45a73-7260-447d-969d-ce6ee65d26ab",
+                  "storageId": "181a92f7-52c1-4eef-b0e4-beb193383bf6",
+                  "originalName": "sample.jpg",
+                  "displayName": "sample",
+                  "visibility": "private",
+                  "format": "JPEG",
+                  "mime": "image/jpeg",
+                  "width": 64,
+                  "height": 48,
+                  "byteSize": 638,
+                  "animated": false,
+                  "pageCount": 1,
+                  "classification": "static",
+                  "processingStatus": "ready",
+                  "trashedAt": null,
+                  "deletionStatus": null,
+                  "createdAt": "2026-09-29T02:40:08.508Z",
+                  "updatedAt": "2026-09-29T02:40:08.793Z"
+                },
+                "job": {
+                  "id": "2d0b9804-c32c-402b-bff7-345405ff1318",
+                  "imageId": "33a45a73-7260-447d-969d-ce6ee65d26ab",
+                  "kind": "process",
+                  "scope": "all",
+                  "snapshot": {
+                    "compressionEnabled": true,
+                    "outputFormat": "webp",
+                    "quality": 82,
+                    "maxEdge": null,
+                    "jpegBackground": "#FFFFFF",
+                    "watermarkMode": "off",
+                    "defaultVisibility": "public"
+                  },
+                  "expectedVersions": ["compressed", "thumbnail"],
+                  "status": "succeeded",
+                  "error": null,
+                  "step": "complete",
+                  "retryCount": 0,
+                  "recoveryCount": 0,
+                  "nextAttemptAt": null,
+                  "startedAt": "2026-09-29T02:40:08.524Z",
+                  "finishedAt": "2026-09-29T02:40:08.793Z",
+                  "createdAt": "2026-09-29T02:40:08.508Z",
+                  "updatedAt": "2026-09-29T02:40:08.793Z"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "heldReadPaths": ["/upload"]
+    },
+    "returned": {
+      "document": "9dcb684b-8ae4-47f5-b8fd-dae9f96f852f",
+      "rows": [
+        {
+          "id": "70f01f7d-c4d8-4fd1-b330-1a08cc3431ec",
+          "image": "33a45a73-7260-447d-969d-ce6ee65d26ab"
+        }
+      ]
+    },
+    "persisted": [
+      {
+        "queue_item_id": "70f01f7d-c4d8-4fd1-b330-1a08cc3431ec",
+        "image_id": "33a45a73-7260-447d-969d-ce6ee65d26ab",
+        "state": "accepted"
+      }
+    ]
+  },
+  "hardRefresh": {
+    "document": "c70dc39c-1e48-4f9e-b29d-a59f00d04b88",
+    "trace": {
+      "revoked": [
+        "blob:http://ariso-61136.localhost:61136/905852a6-ccf4-46fe-9beb-bef334ab71fb"
+      ],
+      "unloads": [
+        {
+          "prevented": true,
+          "document": "9dcb684b-8ae4-47f5-b8fd-dae9f96f852f"
+        }
+      ]
+    }
+  },
+  "logout": {
+    "revoked": [
+      "blob:http://ariso-61136.localhost:61136/905852a6-ccf4-46fe-9beb-bef334ab71fb",
+      "blob:http://ariso-61136.localhost:61136/1f11a05a-3c71-418f-b551-7d56b3356f6e"
+    ],
+    "unloads": [
+      {
+        "prevented": true,
+        "document": "9dcb684b-8ae4-47f5-b8fd-dae9f96f852f"
+      }
+    ]
+  },
+  "expiry": {
+    "revoked": [
+      "blob:http://ariso-61136.localhost:61136/905852a6-ccf4-46fe-9beb-bef334ab71fb",
+      "blob:http://ariso-61136.localhost:61136/1f11a05a-3c71-418f-b551-7d56b3356f6e",
+      "blob:http://ariso-61136.localhost:61136/984c2920-832b-4e9b-9af7-8dbf4e071ca7"
+    ],
+    "unloads": [
+      {
+        "prevented": true,
+        "document": "9dcb684b-8ae4-47f5-b8fd-dae9f96f852f"
+      }
+    ]
+  },
+  "result401": {
+    "imageId": "d058562e-3c31-4b4d-ada0-4be5472e2fb1",
+    "reads": [
+      {
+        "path": "/api/images/d058562e-3c31-4b4d-ada0-4be5472e2fb1",
+        "status": 401
+      }
+    ],
+    "sessionChecksHeld": 3,
+    "beforeUnload": [false]
+  }
+}
