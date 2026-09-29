@@ -181,7 +181,7 @@ export function AlbumsScreen(props: {
               className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
             >
               <ArrowLeft size={16} />
-              返回相册列表
+              返回
             </Link>
             {album ? (
               <>
