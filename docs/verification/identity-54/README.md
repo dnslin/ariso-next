@@ -1,6 +1,6 @@
 # T-ID-02 启动码与完整初始化事务
 
-关联 [Issue #54](https://github.com/dnslin/ariso-next/issues/54)。需求 R-5.3-01、R-5.3-02、R-5.3-03、A-26.1-01、A-26.1-02、A-26.1-03、A-26.1-11；范围以 [任务卡](../../tasks/m1-m2.md#t-id-02-启动码与完整初始化事务) 与 [identity §4](../../specs/SPEC-identity.md#4-初始化及中断恢复) 为准。
+关联 [Issue #54](https://github.com/dnslin/ariso-next/issues/54)。需求 R-5.3-01、R-5.3-02、R-5.3-03、A-26.1-01、A-26.1-02、A-26.1-03、A-26.1-11；范围以 [任务卡](../../archive/m1-m2/tasks.md#t-id-02-启动码与完整初始化事务) 与 [identity §4](../../specs/SPEC-identity.md#4-初始化及中断恢复) 为准。
 
 ## 前置与范围
 

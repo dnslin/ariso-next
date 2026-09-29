@@ -1,21 +1,21 @@
 # 文档导航
 
-更新：2026-09-26。当前推进第二阶段 M2 本地图床交付，目标仍是完成 PRD 的全部首版功能。运行基础与部分业务能力已有实现及证据；完整业务和全站设计验收尚未完成。当前 PR 收尾与后续 UI 顺序见下方计划入口。
+更新：2026-09-28。M1/M2 已完成并归档，当前推进 M3/M4。目标仍是完成 PRD 全部首版功能；M5 全量验收和实际发布尚未完成。
 
 ## 从哪里开始
 
-| 需要了解什么                   | 当前依据                                                                     |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| 产品要做什么、首版如何验收     | [PRD v1.1](./product/Ariso-PRD-v1.1.md)                                      |
-| 模块职责、接口提供方和依赖     | [能力地图与十份规格索引](./product/CAPABILITY-MAP.md)                        |
-| 先开发什么、前置未完成如何处理 | [第二阶段计划](./tasks/plan.md)                                              |
-| 本轮收尾后 UI 如何继续         | [当前 UI 推进顺序](./tasks/plan.md#7-当前-pr-收尾后的-ui-推进顺序2026-09-26) |
-| 本地检查和发布验证何时执行     | [任务执行与验证约定](./tasks/execution.md#适用检查)                          |
-| 全部首版实施任务与直接前置     | [任务索引](./tasks/todo.md)                                                  |
-| 需求原文与任务映射             | [PRD 逐条覆盖表](./tasks/coverage.md)                                        |
-| 页面对应哪个 Figma 原型        | [17 个设计模块](./design/README.md)                                          |
-| 采用哪些布局、交互与响应式规则 | [设计交付规范](./design/handoff.md)                                          |
-| 哪些设计与真实交互仍需验收     | [设计待验收清单](./design/acceptance.md)                                     |
+| 需要了解什么                   | 当前依据                                              |
+| ------------------------------ | ----------------------------------------------------- |
+| 产品要做什么、首版如何验收     | [PRD v1.1](./product/Ariso-PRD-v1.1.md)               |
+| 模块职责、接口提供方和依赖     | [能力地图与十份规格索引](./product/CAPABILITY-MAP.md) |
+| 先开发什么、前置未完成如何处理 | [第二阶段计划](./tasks/plan.md)                       |
+| M3/M4 如何继续推进             | [M3/M4执行顺序与检查点](./tasks/m3-m4-sequence.md)    |
+| 本地检查和发布验证何时执行     | [任务执行与验证约定](./tasks/execution.md#适用检查)   |
+| 全部首版实施任务与直接前置     | [任务索引](./tasks/todo.md)                           |
+| 需求原文与任务映射             | [PRD 逐条覆盖表](./tasks/coverage.md)                 |
+| 页面对应哪个 Figma 原型        | [17 个设计模块](./design/README.md)                   |
+| 采用哪些布局、交互与响应式规则 | [设计交付规范](./design/handoff.md)                   |
+| 哪些设计与真实交互仍需验收     | [设计待验收清单](./design/acceptance.md)              |
 
 全部首版已经拆为本地任务卡，具体入口见[任务索引](./tasks/todo.md)、[需求映射](./tasks/mapping.md)和[依赖检查](./tasks/dependencies.md)。已同步任务的状态以 GitHub 为准，后续任务仍须核对真实前置。任务映射和依赖无环不代表业务或原型真实交互已验收。上传的三项技术前置及其他开放范围见[计划第 3 节](./tasks/plan.md#3-尚未关闭的前置与验收)。
 
@@ -36,25 +36,8 @@
 - [Docker 部署](./guides/deployment.md)
 - [升级、停止备份与恢复](./guides/upgrading.md)
 - [当前浏览器冒烟运行方式](../e2e/runtime.md)
-- [M1 空目录初始化与登录关卡验证](./verification/m1-61/README.md)
-- [JPEG/PNG 首图处理与持久任务实施验证](./verification/media-63/README.md)
-- [媒体任务恢复与按需资源实施验证](./verification/media-64/README.md)
-- [相册标签模型与上传关联事务验证](./verification/collections-66/README.md)
-- [回收与恢复服务契约验证](./verification/media-67/README.md)
-- [本地稳定图片访问与下载验证](./verification/delivery-69/README.md)
-- [基础图库读取与手机网格验证](./verification/library-76/README.md)
-- [基础详情与链接复制下载验证](./verification/library-77/README.md)
-- [单图回收恢复界面验证](./verification/library-79/README.md)
-- [手动上传单图与结果界面验证](./verification/upload-81/README.md)
-- [本地单文件接收与原子交接验证](./verification/upload-73/README.md)
-- [上传大小与传输超时实验](./tasks/evidence/UPLOAD-V02/README.md)
-- [本地公开访问内存聚合验证](./verification/analytics-83/README.md)
-- [统计批写、保留与退出刷库验证](./verification/analytics-84/README.md)
-- [M2 本地图床核心冒烟验证](./verification/m2-85/README.md)
-- [统计关停、批写与缓冲实验](./tasks/evidence/EV-ANALYTICS-01/README.md)
-- [Uppy 双链路与流式解析实验](./tasks/evidence/UPLOAD-V03/README.md)
 
-部署和升级说明仍适用于当前代码，不能因运行基础阶段结束而归档。
+M1/M2 的分项验证和原始证据已集中在[阶段归档](./archive/m1-m2/README.md)。共享工程实验仍由[工程前置](./tasks/gates.md)引用。部署和升级说明继续作为现行文档维护。
 
 ## 历史与维护
 
@@ -65,5 +48,5 @@ PRD 保留已确认正文，不因目录整理修改需求。当前进度以计�
 - 当前规则只在所属文档维护，其他文档通过链接引用。
 - 阶段过程与逐批检查记录进入归档，原始 JSON、截图不改写；正文只维护当前结论与仍需完成的事项。
 - 前端任务引用具体桌面、手机和状态节点；后置任务不能越过未完成的直接前置。
-- M1/M2 已[同步 39 个 GitHub Issue 及 73 条原生阻塞关系](./tasks/github-m1-m2.md)，执行状态以 GitHub 为准，本地维护任务定义、依赖和链接。后续阶段尚未同步；自动校验证据和合并拦截仍待 P2-DEPENDENCIES 落实。
+- M1/M2 已[同步 39 个 GitHub Issue 及 73 条原生阻塞关系](./archive/m1-m2/github.md)，执行状态以 GitHub 为准，本地维护任务定义、依赖和链接。M3/M4 已[同步74个Issue和208条原生依赖](./tasks/github-m3-m4.md)；自动校验证据和合并拦截仍待 P2-DEPENDENCIES 落实。
 - 移动文档时同步更新引用和配置，检查本地链接，不保留重复的当前版本。

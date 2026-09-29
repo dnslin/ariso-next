@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 const directory = dirname(fileURLToPath(import.meta.url));
 const files = [
   'gates.md',
-  'm1-m2.md',
+  '../archive/m1-m2/tasks.md',
+  '../archive/m1-m2/acceptance.md',
   'm3-m4-platform.md',
   'm3-m4-experience.md',
   'acceptance-tasks.md',
@@ -178,7 +179,7 @@ for (const task of tasks)
 const report = [
   '# 本地依赖检查报告',
   '',
-  '从任务卡生成；这是定义检查，不是工程验证或 GitHub 合并规则生效报告。除 BASE-RUNTIME 外，所有验证与业务任务仍待执行，按实际前置状态决定 Ready/Blocked。',
+  '从任务卡生成；这是定义检查，不是工程验证或 GitHub 合并规则生效报告。本报告不维护完成状态；按实际交付证据决定 Ready/Blocked，当前阶段见 plan.md。',
   '',
   `检查 ${tasks.length} 项任务、${tasks.reduce((n, t) => n + t.deps.length, 0)} 条直接依赖、${requirements.size} 个需求/场景/补充ID。缺失ID、自依赖、循环、遗漏需求及必填字段错误均为0。`,
   '',

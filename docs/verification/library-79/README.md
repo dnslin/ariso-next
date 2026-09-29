@@ -4,7 +4,7 @@
 
 ## 前置与交付
 
-从 `origin/main` 的 `1e2effc` 创建独立 worktree 与 `codex/issue-79-trash-ui`。原工作区保持不变。实际回读 Issue 正文、评论和原生依赖：#77、#67、#78 均已关闭，评论为空；下游为 #81、#85。设计依据为 [DG-TRASH-BASE 消费结论](../../tasks/m1-m2.md#dg-trash-base-t-lib-12-核对结论2026-09-25)，不重新评审产品选择、不修改冻结 PRD 或 Figma。
+从 `origin/main` 的 `1e2effc` 创建独立 worktree 与 `codex/issue-79-trash-ui`。原工作区保持不变。实际回读 Issue 正文、评论和原生依赖：#77、#67、#78 均已关闭，评论为空；下游为 #81、#85。设计依据为 [DG-TRASH-BASE 消费结论](../../archive/m1-m2/tasks.md#dg-trash-base-t-lib-12-核对结论2026-09-25)，不重新评审产品选择、不修改冻结 PRD 或 Figma。
 
 - 详情提供单图回收确认；取消不写入。提交时停用旧预览，完成后从图库移除卡片并关闭详情。
 - `/trash` 读取真实记录，固定每页 40 条，按回收时间倒序、ID 升序；显示名称、原文件大小、存储、可见性、处理/删除状态和回收时间。读取失败不冒充空库。

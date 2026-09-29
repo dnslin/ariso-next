@@ -1,6 +1,6 @@
 # DG-SHELL 设计适用核对证据
 
-日期：2026-09-21。关联 [Issue #56](https://github.com/dnslin/ariso-next/issues/56)，唯一直接消费任务为 [T-UI-01 / #57](../../m1-m2.md#t-ui-01-heroui-接入与公共后台外壳)。状态/规则适用范围与真实验收责任只维护在消费任务，本文件记录核对依据与实际检查，不复制交接规则。
+日期：2026-09-21。关联 [Issue #56](https://github.com/dnslin/ariso-next/issues/56)，唯一直接消费任务为 [T-UI-01 / #57](../../../archive/m1-m2/tasks.md#t-ui-01-heroui-接入与公共后台外壳)。状态/规则适用范围与真实验收责任只维护在消费任务，本文件记录核对依据与实际检查，不复制交接规则。
 
 ## 范围与依据
 

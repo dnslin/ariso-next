@@ -1,6 +1,6 @@
 # T-ID-03 初始化与登录实施记录
 
-日期：2026-09-22。关联 [Issue #60](https://github.com/dnslin/ariso-next/issues/60)；规则、需求编号和 Figma 节点继续维护于 [T-ID-03](../../tasks/m1-m2.md#t-id-03-两端初始化与登录闭环)。此前的前置核对及所有者验收决定保留于[历史记录](./prerequisites.md)，不再构成实施阻塞。
+日期：2026-09-22。关联 [Issue #60](https://github.com/dnslin/ariso-next/issues/60)；规则、需求编号和 Figma 节点继续维护于 [T-ID-03](../../archive/m1-m2/tasks.md#t-id-03-两端初始化与登录闭环)。此前的前置核对及所有者验收决定保留于[历史记录](./prerequisites.md)，不再构成实施阻塞。
 
 ## 范围与实现
 

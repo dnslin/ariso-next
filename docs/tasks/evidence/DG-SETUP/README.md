@@ -1,6 +1,6 @@
 # DG-SETUP 设计适用核对证据
 
-日期：2026-09-22；关联 [Issue #58](https://github.com/dnslin/ariso-next/issues/58)。状态／复用规则只维护在 [T-ID-03 消费任务](../../m1-m2.md#dg-setup-核对结论2026-09-22)。
+日期：2026-09-22；关联 [Issue #58](https://github.com/dnslin/ariso-next/issues/58)。状态／复用规则只维护在 [T-ID-03 消费任务](../../../archive/m1-m2/tasks.md#dg-setup-核对结论2026-09-22)。
 
 ## 范围与依据
 

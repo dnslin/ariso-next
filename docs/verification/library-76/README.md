@@ -1,6 +1,6 @@
 # T-LIB-01 基础图库读取与手机网格
 
-日期：2026-09-25。关联 [Issue #76](https://github.com/dnslin/ariso-next/issues/76)、[PR #120](https://github.com/dnslin/ariso-next/pull/120)，模块 `LIBRARY-BASE`，任务定义见 [T-LIB-01](../../tasks/m1-m2.md#t-lib-01-基础图库读取与手机网格)。本次仅交付 R-15.1-01、R-15.2-01 的默认网格、每批 40 条和加载更多，不关闭完整布局、分页、筛选及选择责任。
+日期：2026-09-25。关联 [Issue #76](https://github.com/dnslin/ariso-next/issues/76)、[PR #120](https://github.com/dnslin/ariso-next/pull/120)，模块 `LIBRARY-BASE`，任务定义见 [T-LIB-01](../../archive/m1-m2/tasks.md#t-lib-01-基础图库读取与手机网格)。本次仅交付 R-15.1-01、R-15.2-01 的默认网格、每批 40 条和加载更多，不关闭完整布局、分页、筛选及选择责任。
 
 ## 前置与实现
 

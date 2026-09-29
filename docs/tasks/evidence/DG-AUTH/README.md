@@ -1,6 +1,6 @@
 # DG-AUTH 设计适用核对证据
 
-日期：2026-09-22。关联 [Issue #59](https://github.com/dnslin/ariso-next/issues/59)，唯一直接消费任务为 [T-ID-03 / #60](../../m1-m2.md#t-id-03-两端初始化与登录闭环)。状态与规则仅维护在[消费任务核对结论](../../m1-m2.md#dg-auth-核对结论2026-09-22)，本文件记录依据和验证。
+日期：2026-09-22。关联 [Issue #59](https://github.com/dnslin/ariso-next/issues/59)，唯一直接消费任务为 [T-ID-03 / #60](../../../archive/m1-m2/tasks.md#t-id-03-两端初始化与登录闭环)。状态与规则仅维护在[消费任务核对结论](../../../archive/m1-m2/tasks.md#dg-auth-核对结论2026-09-22)，本文件记录依据和验证。
 
 ## 范围与依据
 

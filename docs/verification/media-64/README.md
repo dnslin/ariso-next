@@ -1,6 +1,6 @@
 # T-MED-04 任务重启恢复与按需资源
 
-对应 [Issue #64](https://github.com/dnslin/ariso-next/issues/64)。任务、需求编号与边界沿用 [T-MED-04](../../tasks/m1-m2.md#t-med-04-任务重启恢复与按需资源)，规则见 [media §7/10](../../specs/SPEC-media.md)。记录日期：2026-09-22。当前执行范围统一引用[适用检查](../../tasks/execution.md#适用检查)，不改冻结 PRD。
+对应 [Issue #64](https://github.com/dnslin/ariso-next/issues/64)。任务、需求编号与边界沿用 [T-MED-04](../../archive/m1-m2/tasks.md#t-med-04-任务重启恢复与按需资源)，规则见 [media §7/10](../../specs/SPEC-media.md)。记录日期：2026-09-22。当前执行范围统一引用[适用检查](../../tasks/execution.md#适用检查)，不改冻结 PRD。
 
 最新的双 agent 复审修复与优化结果见[修订验证](./revision/README.md)。下列首轮证据保留原执行结果。
 

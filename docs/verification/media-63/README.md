@@ -1,6 +1,6 @@
 # T-MED-03 本地首图处理与持久任务
 
-对应 [Issue #63](https://github.com/dnslin/ariso-next/issues/63) 和 [PR #105](https://github.com/dnslin/ariso-next/pull/105)。范围及需求编号沿用 [T-MED-03](../../tasks/m1-m2.md#t-med-03-本地首图处理与持久任务)，业务规则见 [media §5–7](../../specs/SPEC-media.md)。记录日期：2026-09-22。
+对应 [Issue #63](https://github.com/dnslin/ariso-next/issues/63) 和 [PR #105](https://github.com/dnslin/ariso-next/pull/105)。范围及需求编号沿用 [T-MED-03](../../archive/m1-m2/tasks.md#t-med-03-本地首图处理与持久任务)，业务规则见 [media §5–7](../../specs/SPEC-media.md)。记录日期：2026-09-22。
 
 后续验证策略已按所有者决定调整，当前执行范围统一见[适用检查](../../tasks/execution.md#适用检查)。下文保留 #63 实施时的本地与远端验证事实和原始证据，不作为后续 PR 的远端验收要求。
 

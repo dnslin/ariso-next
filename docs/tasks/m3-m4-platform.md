@@ -1,10 +1,10 @@
 # M3/M4 媒体、存储与开放能力实施任务
 
-更新：2026-09-20。此清单只定义待实施任务，不代表业务或工程验证已经完成。任务保留既有模块和任务组边界；`T-` 前缀区分实施任务与规格中的验收编号。M3/M4 是交付范围，不是整模块互相等待。
+更新：2026-09-28。此清单只定义待实施任务，不代表业务或工程验证已经完成。任务保留既有模块和任务组边界；`T-` 前缀区分实施任务与规格中的验收编号。M3/M4 是交付范围，不是整模块互相等待。
 
 依据：[PRD](../product/Ariso-PRD-v1.1.md)、[能力地图](../product/CAPABILITY-MAP.md)、[media](../specs/SPEC-media.md)、[storage](../specs/SPEC-storage.md)、[delivery](../specs/SPEC-delivery.md)、[upload](../specs/SPEC-upload.md)、[identity](../specs/SPEC-identity.md)。工程与设计门槛由任务索引统一定义；下列直接前置未关闭时，对应任务不能 Ready。
 
-所有任务同时继承[共用执行与HeroUI组件文档](./execution.md)。
+所有任务同时继承[共用执行与HeroUI组件文档](./execution.md)。推进顺序与阶段检查点见 [M3/M4 执行拆解](./m3-m4-sequence.md)。卡内步骤按顺序完成，每步继承本卡直接前置、文件边界和验证方法；一个步骤只交付一个可验证结果，预计 S/M（约 1–5 个主要实现文件，测试另计）。超过边界时开工前继续细分，不以一个大 PR 交付整张卡。全部步骤及整卡验收完成才关闭父任务。
 
 所有测试路径均是该任务拟新增或扩展的交付物；命令是实施后的验证要求，本轮未执行业务验证。每项还运行 `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`；修改 schema 时运行 `pnpm run db:generate` 并审查迁移。远端协议的必需服务矩阵按[对象存储验证目标调整](./execution.md#对象存储验证目标调整)执行，当前分别记录 R2、SeaweedFS 真实环境，不能用模拟返回代替。
 
@@ -21,6 +21,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 扩展 `tests/integration/media/formats.test.ts`、完整样本清单及 `scripts/verify-image.mjs`；执行 `node scripts/verify-image.mjs --output-dir verification/media`，在 amd64/arm64 镜像分别核验全部格式与资源样本。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 版本状态由 T-LIB-06/T-LIB-07 展示，特殊格式访问由 T-DEL-02 联验。
 - 需求：`R-12.1-01`、`R-12.2-01`、`R-12.3-01`、`R-12.4-01`、`R-12.5-01`、`R-11.3-02`、`R-11.4-01`、`R-11.4-02`、`R-11.8-01`、`A-26.8-01`、`A-26.8-02`
+- 实施步骤：
+  - [ ] 1. 静态格式识别与派生：真实字节、方向、透明背景和缩小规则逐格式通过。
+  - [ ] 2. 动画首展示帧合成及多主图容器按需读取：APNG/AVIF/HEIF 不误判。
+  - [ ] 3. SVG/图标预览与拒绝矩阵：无脚本或外部读取，原图摘要不变。
 
 实施与验证记录：[T-MED-06 / Issue #150](../verification/media-150/README.md)。最终状态以记录中的实际检查和 PR 为准。
 
@@ -35,6 +39,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/metadata.test.ts` 使用含 GPS/ICC/MakerNotes/重复标签的真实文件，并注入超时、输出超限和重读失败。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 常用参数、完整树与读取失败由 T-LIB-06 接入；不增加摄影元数据筛选。
 - 需求：`R-13.1-01`、`R-13.2-01`、`R-13.2-02`、`R-13.3-01`、`R-13.4-01`、`R-11.1-03`
+- 实施步骤：
+  - [ ] 1. 完整分组元数据读取与持久化：重复标签、结构值和数字文本无损。
+  - [ ] 2. 独立重读任务与 API：失败保留旧成功值，和处理共用并发限额。
 
 ### T-MED-13 不可变水印素材与快照引用生命周期
 
@@ -47,6 +54,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/watermark-assets.test.ts` 验证时间边界、采用/替换/自动重试引用及清理失败恢复；真实上传批次联验在 T-UP-03。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 素材选择及状态在 T-MED-12。
 - 需求：`R-11.5-02`、`R-11.2-03`、`R-11.2-04`、`R-11.5-03`
+- 实施步骤：
+  - [ ] 1. 上传临时素材与正式采用：格式/5MiB/一小时到期边界可验证。
+  - [ ] 2. 设置及任务引用释放与清理：替换、重启、清理失败不删在用素材。
 
 ### T-MED-08 文字与图片水印编码和处理设置
 
@@ -59,6 +69,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/watermark.test.ts` 做四种压缩/水印组合、九宫格像素及输出属性验证，包含字段边界与双架构字体渲染。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 表单、九宫格和输出结果在 T-MED-12；接口只接受所有者会话。
 - 需求：`R-11.5-01`、`R-11.5-02`、`R-11.5-03`、`R-11.5-04`、`R-11.3-02`、`R-13.3-01`、`R-14.4-02`、`A-26.7-06`、`A-26.7-07`
+- 实施步骤：
+  - [ ] 1. 文字水印编码：中文字体、转义、九宫格和放不下的失败。
+  - [ ] 2. 图片水印编码：宽度、透明度及四种压缩/水印组合。
+  - [ ] 3. 完整设置保存：默认版本联动，已排队任务快照不变。
 
 ### T-MED-09 真实临时预览与取消到期清理
 
@@ -71,6 +85,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/preview.test.ts` 对比正式结果、检查各业务表无资产、模拟取消/到期/重启/ENOSPC。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 预览交互由 T-MED-12，所有结果与图片内容仅当前所有者可读。
 - 需求：`R-11.6-01`、`R-11.6-02`、`R-11.2-02`
+- 实施步骤：
+  - [ ] 1. 创建与读取真实预览：复用正式处理，输出字节属性一致。
+  - [ ] 2. 取消/30分钟到期/重启清理：业务表无资产，失败可诊断。
 
 ### T-MED-10 重处理范围与候选版本原子发布
 
@@ -83,6 +100,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/reprocess.test.ts` 注入每个写入/发布/清旧故障，期间持续 HTTP 读原链接；原图摘要、ID 与未选版本保持。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 单图入口 T-LIB-06、批量入口 T-LIB-09、上传失败结果 T-UP-03 负责实际界面。
 - 需求：`R-11.7-01`、`R-11.7-02`、`R-11.7-03`、`R-10.3-01`、`R-11.2-03`、`A-26.7-05`、`A-26.7-08`、`A-26.7-09`
+- 实施步骤：
+  - [ ] 1. 全部重试与同 ID 保留：ready 图旧版本在处理期间可读。
+  - [ ] 2. 单范围重处理与一次发布：未选版本不变，失败不切换。
+  - [ ] 3. 候选及旧对象收尾：清旧失败不回滚，回收/删除竞态可复现。
 
 ### T-MED-11 本地持久永久删除、剩余清单与有限重试
 
@@ -95,6 +116,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/media/delete.test.ts` 覆盖运行处理与删除竞争、部分失败、断进程恢复、重复请求及真实对象清单；本任务完成本地闭环，S3由T-MED-14扩展并消费UPLOAD-V01的清理方案；本任务不声称已关闭S3删除验收。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 回收记录、进度、失败重试与批量结果由 T-LIB-11 接入。
 - 需求：`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`R-9.4-01`、`R-19.1-01`、`A-26.11-06`、`A-26.11-07`
+- 实施步骤：
+  - [ ] 1. 回收图永久删除入口与持久剩余对象清单：进入删除态即拒绝恢复。
+  - [ ] 2. 逐对象删除与有限重试：部分成功、重启、活动写入结束均可核对。
+  - [ ] 3. 全清后的关系释放与媒体用量查询：历史统计保留且不重复计量。
 
 ### T-MED-12 处理设置、水印和真实预览界面
 
@@ -107,6 +132,10 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增处理设置浏览器用例，对实际产物进行 MIME/尺寸检查，取消后重新预览，检查短视口下固定操作栏。
 - 界面：`/settings/processing`，仅所有者，数据来自 media settings/assets/previews/jobs。桌面 [34:338](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-338)、手机 [102:1526](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1526)；状态桌面 [369:5005](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5005)、手机 [369:4957](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-4957)；文字 桌面 [60:686](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=60-686)、手机 [102:2120](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2120)；图片 桌面 [60:879](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=60-879)、手机 [102:2361](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2361)；预览 桌面 [367:2258](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=367-2258)、手机 [367:5113](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=367-5113)；状态桌面 [369:5278](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5278)、手机 [369:5230](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=369-5230)。HeroUI：Switch、Select、NumberField、Slider、TextField、TextArea、ColorField/ColorSwatch、Button、Alert、Modal、Spinner。九宫格为专用业务布局，内部选择按钮复用 HeroUI；上传素材使用原生文件输入配 Button，浏览器滤镜不可冒充结果。桌面分组表单，手机长页滚动，九个位置均可键盘选。
 - 需求：`R-14.1-01`、`R-11.3-01`、`R-11.3-02`、`R-11.5-01`、`R-11.5-02`、`R-11.6-01`、`R-11.6-02`、`R-14.4-01`、`R-14.4-02`、`R-11.2-02`、`R-22.1-01`、`R-22.4-01`
+- 实施步骤：
+  - [ ] 1. 压缩/默认值/并发表单真实保存：失败保留输入。
+  - [ ] 2. 文字与图片水印编辑及素材采用：替换/过期可操作。
+  - [ ] 3. 未保存参数真实预览：取消、重试及短视口两端验收。
 
 ### T-STO-02 S3 对象操作、条件固定与方法签名
 
@@ -120,6 +149,10 @@
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。
 - 实施证据：[Issue #155 实施与验收记录](../verification/storage-155/README.md)。所有者于 2026-09-28 取消 AWS S3 实测要求；R2、SeaweedFS 各 9 项真实服务验证通过，AWS S3 保持未验证。
 - 需求：`R-8.1-02`、`R-9.1-02`、`R-9.3-04`、`R-14.7-02`、`R-14.10-01`、`R-10.2-01`
+- 实施步骤：
+  - [ ] 1. 流式对象读写删除：取消释放资源，特殊 Key 字节正确。
+  - [ ] 2. 条件读取与复制：源变更及 Copy 内部错误被拒绝。
+  - [ ] 3. PUT/GET/HEAD 签名：方法、期限、附件头在真实服务核验。
 
 ### T-STO-03 多本地/S3 配置与默认选择提供方
 
@@ -133,6 +166,9 @@
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 完整管理界面在 T-STO-07；本任务只提供创建、查询、默认选择及受控配置操作契约。
 - 需求：`R-9.1-01`、`R-9.1-02`、`R-9.2-01`、`R-9.3-01`、`R-24.2-02`、`R-24.2-03`
 - 实施证据：[Issue #156 后端配置与默认选择](../verification/storage-156/README.md)，实际检查与审计结果见记录；不代表后续管理与探测任务完成。
+- 实施步骤：
+  - [ ] 1. 多配置创建查询与默认选择：重启不补建默认。
+  - [ ] 2. 凭据保存和 revision 更新：读取不回显，位置变更失效测试。
 
 ### T-STO-04 私有性连接测试与探测清理恢复
 
@@ -145,6 +181,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/probes.test.ts` 三服务测试公开对象、权限、阶段错误、修改revision期间回包、进程中断与实际对象最终清理；不能只断言2xx。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 报告由 T-STO-07 渲染；这里关闭非签名连接探测清理，签名 CORS probe 的最终责任由 T-STO-05。
 - 需求：`R-9.3-02`、`R-9.3-03`、`R-9.3-04`、`U-STORAGE-01`、`A-26.4-01`、`A-26.4-02`、`A-26.6-05`、`R-19.1-01`
+- 实施步骤：
+  - [ ] 1. 真实四步私有性测试与启用：未知结果不当通过。
+  - [ ] 2. probe 清理与重启恢复：保留在途责任，旧 revision 不覆盖新配置。
 
 ### T-STO-05 真实浏览器 CORS 检测与 origin 失效
 
@@ -157,6 +196,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/storage/cors.test.ts` 与浏览器真实跨域PUT覆盖成功/错误来源/中断/到期；三服务检查实际请求头和最终对象清单。
 - 界面：`/settings/storage/:id` 的检测区域，仅所有者；数据来自持久probe与当前site origin。桌面 [346:4712](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4712)、手机 [346:4807](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4807)；状态桌面 [346:5348](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5348)、手机 [346:5361](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5361)；示例 桌面 [346:4865](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4865)、手机 [346:4876](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4876)。HeroUI：Button、Alert、Card、Spinner、Accordion、可选中只读TextArea；复制失败提供完整可选文本。桌面嵌于编辑页、手机完整页，长origin/JSON可横向查看且操作可触达。
 - 需求：`R-8.2-01`、`R-8.2-02`、`R-8.3-02`、`R-5.4-04`、`A-26.4-04`
+- 实施步骤：
+  - [ ] 1. 浏览器真实 PUT/GET/HEAD 探测：报告必需头及具体错误。
+  - [ ] 2. origin/revision 改变后失效与探测清理：重新检测才更新结果。
 
 ### T-STO-06 完整引用约束、位置修改与配置删除
 
@@ -169,6 +211,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/storage/references.test.ts` 在本地和三服务逐类构造引用、并发上传/改位置/删除；覆盖分页、无引用孤儿、回收站和活动写入保护、扫描期间新增引用、删除失败重试、重启与停用；先删除后迟到写入，再运行下一轮扫描确认孤儿清除。验证配置删除前清理失败会阻止删除，以及删除后不再运行扫描；不声称扫描器能证明未来无写入。
 - 界面：无界面：本任务交付模块接口与持久行为；对应管理界面由明确的调用方任务接入，不以模拟页面关闭本任务。 阻塞分类和操作反馈由 T-STO-07；不提供强制删除或迁移。
 - 需求：`R-9.4-01`、`R-9.4-02`、`R-9.4-03`、`R-9.5-01`、`R-9.5-02`、`R-9.5-03`、`R-9.6-01`、`R-9.6-02`、`A-26.5-01`、`A-26.5-03`、`A-26.5-04`、`A-26.5-05`、`A-26.5-06`、`A-26.5-07`、`A-26.5-08`
+- 实施步骤：
+  - [ ] 1. 聚合 media/upload/probe 的真实引用：各来源仍在用均拒绝删除。
+  - [ ] 2. 位置修改与配置删除：和新写入竞争验证，无零引用占位实现。
 
 ### T-STO-07 完整存储管理两端界面
 
@@ -181,6 +226,10 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增存储管理浏览器用例，以真实配置和清理记录完成创建→测试→启用→上传引用阻塞→清理→删除流程。
 - 界面：`/settings/storage`、`/settings/storage/new`、`/settings/storage/:id`；所有者管理，storage API供数据。桌面 [30:1413](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1413)、手机 [102:1231](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1231)；本地 桌面 [77:757](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=77-757)、手机 [102:2586](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2586)；S3 桌面 [58:669](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=58-669)、手机 [102:1968](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1968)；新建 桌面 [66:794](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=66-794)、手机 [102:2843](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2843)；引用阻塞 桌面 [346:6106](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-6106)、手机 [346:6201](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-6201)；保存待测 桌面 [344:1913](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=344-1913)、手机 [344:4287](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=344-4287)。HeroUI：Table/Card、TextField、Select、Switch、Button、AlertDialog、Alert、Skeleton、Accordion。表单按规格互斥组合，无自制基础控件；桌面表格、手机记录卡与长表单独立页，引用说明保留可读空间。
 - 需求：`R-9.1-01`、`R-9.2-01`、`R-9.3-01`、`R-9.3-02`、`R-9.3-03`、`R-9.4-01`、`R-9.4-02`、`R-9.5-01`、`R-9.6-01`、`R-9.6-02`、`U-STORAGE-01`、`R-22.1-01`、`R-22.4-01`
+- 实施步骤：
+  - [ ] 1. 配置列表、创建、默认选择及停用两端流程。
+  - [ ] 2. 连接测试、CORS 及清理重试两端流程。
+  - [ ] 3. 受限修改/删除与失败保留输入：完整引用提示可核对。
 
 ### T-DEL-02 S3 内容访问、特殊格式和附件联验
 
@@ -193,6 +242,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/delivery/s3.test.ts` 三服务真实HTTP、中文/点段下载名、HEAD方法、过期、权限竞态、动画与多页摘要；`pnpm run test:browser` 验证SVG附件、外站嵌入及Cookie差异。
 - 界面：无独立界面：交付 `/i/{imageId}` 响应与内容协议；详情/上传/分享页面复用结果，组件和状态由各界面任务验收。
 - 需求：`R-12.5-02`、`R-14.2-01`、`R-14.3-01`、`R-14.5-01`、`R-14.6-01`、`R-14.6-02`、`R-14.7-02`、`R-14.8-01`、`R-14.9-01`、`R-14.10-01`、`R-19.2-01`、`R-19.2-02`、`R-19.2-03`、`A-26.4-06`、`A-26.4-07`、`A-26.6-04`、`A-26.8-03`、`A-26.8-04`、`A-26.8-05`、`A-26.8-06`
+- 实施步骤：
+  - [ ] 1. 真实 S3 GET/HEAD/下载：鉴权、签名和附件属性正确。
+  - [ ] 2. 本地及 S3 特殊格式访问：SVG/动画/缺版/停用矩阵。
 
 ### T-UP-07 目录、拖拽、粘贴与独立文件身份
 
@@ -205,6 +257,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增真实目录/剪贴板浏览器用例；验证支持与缺失能力浏览器，混合目录、重复文件、取消和大队列内存释放。
 - 界面：`/upload`，仅所有者；原生File/Clipboard/目录API输入进入同一Uppy队列。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [316:4259](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4259)、手机 [316:4268](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4268)；降级 桌面 [316:4327](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4327)、手机 [316:4336](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4336)。HeroUI：Button、ProgressBar、Alert、Modal、Card。文件扫描是Uppy/原生能力业务适配，无对应通用HeroUI能力；队列基础控件继续复用。手机保留完整普通上传，拖拽/目录缺失有明确说明。
 - 需求：`R-7.1-01`、`R-7.1-02`、`R-7.2-02`、`R-7.4-01`、`R-7.5-03`、`R-10.1-01`、`R-22.1-01`
+- 实施步骤：
+  - [ ] 1. 拖拽/粘贴与重复文件独立身份：入队不自动上传。
+  - [ ] 2. 目录分段扫描及取消：名额、权限失败汇总，能力缺失保留普通入口。
 
 ### T-UP-03 完整批次快照、取消与结果队列
 
@@ -217,6 +272,10 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/upload/submissions.test.ts`、浏览器队列测试覆盖设置/素材中途改变、目标并发删除、取消竞态、页面关闭、结果丢失核对与真实剪贴板。
 - 界面：`/upload`，所有者；数据来自submissions/sessions、collections和media jobs。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [317:4617](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4617)、手机 [317:4776](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4776)；取消竞争 桌面 [317:4016](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4016)、手机 [317:4025](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4025)；失败 桌面 [317:4052](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4052)、手机 [317:4063](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4063)；快速相册 桌面 [37:304](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=37-304)、手机 [102:3243](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3243)、标签 桌面 [37:313](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=37-313)、手机 [102:3729](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3729)。HeroUI：Table/Card、ComboBox、TagGroup、Select、RadioGroup、ProgressBar、Button、AlertDialog、Modal、Alert。队列和批次栏以HeroUI组合Uppy，专有取消/快照状态由业务控制；手机名称/大小/状态分行，固定开始栏，不缩桌面。
 - 需求：`R-7.2-01`、`R-7.2-02`、`R-7.3-01`、`R-7.3-02`、`R-7.3-03`、`R-7.4-01`、`R-7.4-02`、`R-7.4-03`、`R-7.5-01`、`R-7.5-02`、`R-7.5-03`、`R-7.5-04`、`R-11.2-03`、`A-26.5-02`、`A-26.7-06`、`A-26.7-07`
+- 实施步骤：
+  - [ ] 1. 上传限制 API 与完整提交快照：45项拆为20/20/5且旧提交不变。
+  - [ ] 2. 完整队列与快速关系创建：下一提交编辑、总并发3、终态占名额。
+  - [ ] 3. 取消/交接/结果操作：同ID重试、未知结果核对及File/Blob释放。
 
 ### T-UP-04 S3 直传、中转、条件交接与最终清理
 
@@ -229,6 +288,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/upload/s3.test.ts` 三服务真实直传/中转、源变化、Copy响应丢失、慢网/大文件/代理、到期前开始到期后完成、旧签名重写、重启与最终对象清单；`pnpm run test:browser` 验证混合插件总并发3和链路提示。
 - 界面：`/upload` 及既有存储清理区域，只限所有者；采用真实sessions/cleanup结果。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [316:4784](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4784)、手机 [316:4793](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4793)；待清理 桌面 [317:4335](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4335)、手机 [317:4326](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4326)；失败 桌面 [317:4344](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4344)、手机 [317:4353](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4353)。HeroUI：Alert、ProgressBar、Spinner、Button、Table/Card，沿用T-UP-03队列；传完显示“正在保存”而非假处理百分比。手机完整链路和清理重试可用。
 - 需求：`R-8.1-01`、`R-8.1-02`、`R-8.1-03`、`R-8.1-04`、`R-8.3-01`、`R-8.3-02`、`R-11.8-01`、`R-9.4-01`、`R-19.1-01`、`A-26.4-03`、`A-26.4-04`、`A-26.4-06`
+- 实施步骤：
+  - [ ] 1. S3 中转接收与交接：字节校验、重复 complete 只生成一图。
+  - [ ] 2. 直传选路与条件固定：名额可用才签名，源变化明确失败。
+  - [ ] 3. 迟到 PUT、取消和重启最终清理：真实对象清空后才释放引用及用量。
 
 ### T-UP-05 同步单文件公共上传 API
 
@@ -241,6 +304,10 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/upload/api.test.ts` 使用真实HTTP multipart/curl、Token生命周期、本地与三服务、时钟和代理断连；断言响应与数据库/对象/本次job一致，运行超过10次排除插件默认限额。
 - 界面：无界面：公共 HTTP 协议。用法/Token列表由 T-UP-06/T-ID-08；所有后台查询、设置、清理和私有图仍拒绝此Token。
 - 需求：`R-6.5-01`、`R-8.4-01`、`R-8.4-02`、`R-8.4-03`、`R-8.4-04`、`R-8.4-05`、`R-8.4-06`、`R-8.4-07`、`A-26.3-01`、`A-26.3-02`、`A-26.3-03`、`A-26.3-04`、`A-26.3-05`、`A-26.3-06`、`A-26.3-07`、`A-26.4-05`、`A-26.5-02`
+- 实施步骤：
+  - [ ] 1. Bearer 与 multipart 接收：任意字段顺序、第二文件拒绝且清理。
+  - [ ] 2. 同步等待真实任务结果：201/失败/504/409与数据库一致。
+  - [ ] 3. 本地及 S3 HTTP 联验：Token不能读后台，重复POST语义明确。
 
 ### T-UP-06 OpenAPI、curl 示例与上传用法页
 
@@ -253,6 +320,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 任务新增OpenAPI生成/一致性测试并通过 `pnpm run test:unit`；对本地/S3执行用法页最小与完整curl及错误示例；`pnpm run test:browser` 验证折叠、复制失败、长地址与手机阅读。
 - 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情具体子路径随DG-API确认，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时提醒常驻，回Token列表恢复上下文。
 - 需求：`R-8.4-08`、`R-23.4-01`、`A-26.3-08`
+- 实施步骤：
+  - [ ] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。
+  - [ ] 2. 用法页真实 curl 与复制：当前站点地址、超时说明和手机阅读。
 
 ### T-ID-04 邮箱与密码管理
 
@@ -265,6 +335,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/account.test.ts` 使用真实库/SQLite和两浏览器上下文验证改邮箱/密码后登录与会话，不只mock认证。
 - 界面：`/settings/account`，仅所有者Cookie；identity account/API真实数据。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:872](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-872)、手机 [196:1988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1988)；邮箱成功 桌面 [197:2126](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2126)、手机 [197:2059](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2059)。HeroUI：TextField/Input、Button、Modal、Alert、FieldError；密码显示切换复用InputGroup；手机弹窗在短视口下可滚动，错误关联字段、关闭回焦点。无自定义基础控件。
 - 需求：`R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`
+- 实施步骤：
+  - [ ] 1. 邮箱更新：真实会话、校验及失败保留输入。
+  - [ ] 2. 密码更新与会话处理：原密码验证、重新登录及两端页面。
 
 ### T-ID-05 GitHub 配置、主动绑定与登录
 
@@ -277,6 +350,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/oauth.test.ts` 与真实GitHub测试App验证state、同/不同邮箱、恶意requestSignUp、启停重启、换origin和秘密轮换；日志不含凭据。
 - 界面：`/settings/account`与`/login`；仅所有者配置/绑定，登录按真实生效配置显示。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:2001](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2001)、手机 [196:2011](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2011)；已绑定 桌面 [197:2245](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2245)、手机 [197:2092](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2092)；失败 桌面 [196:880](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-880)、手机 [196:1996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1996)；登录 桌面 [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)、手机 [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。HeroUI：TextField、Switch、Button、Alert、AlertDialog；长回调完整换行和独立复制，手机失败可手动选择；仅业务绑定组合，无自制通用控件。
 - 需求：`R-6.1-02`、`R-6.2-02`、`R-6.4-01`、`R-6.4-02`、`R-5.4-04`、`R-24.2-02`、`R-24.2-03`、`A-26.1-06`、`A-26.1-07`、`A-26.1-08`
+- 实施步骤：
+  - [ ] 1. 配置保存与主动绑定：回调状态、所有者身份和冲突验证。
+  - [ ] 2. GitHub 登录/解绑：真实账户完整流程及失败恢复。
 
 ### T-ID-06 SMTP 配置、真实发送与诊断
 
@@ -289,6 +365,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/smtp.test.ts` 故障SMTP与真实收件账户验证发送、阶段错误及超时，收件证据不包含秘密；两端真实测试/清除Tips与焦点。
 - 界面：`/settings/email`，所有者；identity smtp持久配置、测试接口供结果。桌面 [34:710](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-710)、手机 [99:786](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=99-786)；状态桌面 [219:2451](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2451)、手机 [219:2431](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2431)；清除 桌面 [219:2515](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2515)、手机 [219:2541](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2541)；Tips 桌面 [240:1116](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=240-1116)、手机 [235:2477](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=235-2477)。HeroUI：TextField、NumberField、Select/RadioGroup、Button、AlertDialog、Alert、Tooltip/Popover。桌面聚焦/悬停可读，手机点击Tips可关闭归焦，清除按钮保持短按钮；保存与测试独立。
 - 需求：`R-21.4-01`、`R-21.4-02`、`R-24.2-02`、`R-24.2-03`、`A-26.1-09`
+- 实施步骤：
+  - [ ] 1. SMTP 配置独立保存：加密、读取遮蔽和启动解密。
+  - [ ] 2. 独立测试发送与诊断页面：真实收到邮件，失败不冒充已保存。
 
 ### T-ID-09 独立容器 CLI 密码恢复
 
@@ -301,6 +380,9 @@
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 新增 `tests/integration/identity/reset-password-cli.test.ts` 与PTY中断验证；生产amd64/arm64容器执行 `docker exec -it ariso node dist/cli/reset-password.js`，随后真实登录检查新旧密码及会话。
 - 界面：无网页界面：交付容器终端交互；恢复说明在T-ID-07，输出只含结果及下一步，不输出密码。
 - 需求：`R-6.3-02`、`A-26.1-10`、`R-24.1-01`
+- 实施步骤：
+  - [ ] 1. 独立 CLI 重置：真实持久库、密码输入和会话撤销。
+  - [ ] 2. 并发/中断恢复验证：与 Web 进程组合，记录发布容器待验项。
 
 ### T-ID-07 邮件找回、一次重置与恢复界面
 
@@ -313,6 +395,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/password-reset.test.ts` 冻结时钟/并发/消费后故障与真实收件链接，检查全部旧会话；浏览器直接从邮件打开、短视口滚动、失效再申请。
 - 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；CLI说明 桌面 [217:2380](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2380)、手机 [217:2321](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2321)；未配置 桌面 [217:2475](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2475)、手机 [217:2768](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2768)。HeroUI：TextField/Input、Button、Link、Alert、Spinner；采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果状态通过DG-RESET核对适用现有节点，不以定时跳转代替请求。
 - 需求：`R-6.3-01`、`R-6.3-02`、`A-26.1-09`、`A-26.1-10`、`R-22.1-01`、`R-22.4-01`
+- 实施步骤：
+  - [ ] 1. 找回申请及真实邮件落地：错误和限流可验证。
+  - [ ] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
 
 ### T-ID-08 上传 Token 生命周期与一次明文界面
 
@@ -325,6 +410,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/tokens.test.ts` 检查插件真实SQLite哈希/权限/时间边界与数据库故障日志；浏览器测一次展示、关闭/刷新不可找回、复制失败、未知结果核对。
 - 界面：`/settings/api`，所有者管理；upload-tokens API真实列表；Bearer验证仅供POST公共上传组合。桌面 [34:586](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-586)、手机 [102:1837](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1837)；状态桌面 [249:1434](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1434)、手机 [249:3557](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3557)；结果未知 桌面 [249:1360](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1360)、手机 [249:3483](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3483)；撤销 桌面 [249:1536](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1536)、手机 [249:3659](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3659)。HeroUI：Table/Card、Modal、TextField、DatePicker、Switch、AlertDialog、Button、Alert。时间选择按site时区转UTC，列表无明文/哈希；手机弹窗可滚动且关窗归焦，无自制通用控件。
 - 需求：`R-6.5-01`、`R-6.5-02`、`R-6.5-03`、`A-26.3-01`、`R-22.1-01`、`R-22.4-01`
+- 实施步骤：
+  - [ ] 1. Token创建/列表/撤销与权限：一次明文，摘要持久化。
+  - [ ] 2. 两端管理交互：过期、复制失败、创建结果未知先核对。
 
 ### T-MED-14 S3 永久删除与远端在途写入结算
 
@@ -337,6 +425,9 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`；三服务注入处理PUT响应丢失、永久删除与写入竞争、迟到对象、部分DELETE失败及进程中断；记录实际对象清单、引用、重试次数和最终数据库状态，复核现有Ariso外链已关闭。
 - 界面：无独立界面：复用 T-LIB-11 的删除记录、进度与重试；本任务提供真实S3后端结果，不引入另一套状态或绕过已确认权限。
 - 需求：`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`R-9.5-03`、`R-9.6-01`、`R-9.6-02`、`A-26.11-06`、`A-26.11-07`、`A-26.5-08`
+- 实施步骤：
+  - [ ] 1. S3 删除接入：停用仍删，部分失败保存剩余对象。
+  - [ ] 2. 远端写入竞争/迟到对象/重启：结算后全清才释放资产与引用。
 
 ### T-UP-08 上传限制独立设置界面
 
@@ -349,3 +440,6 @@
 - 验收条件：默认50MiB/20/500，批次1–200、队列100–2000且批次不大于队列；文件大小以正整数MiB保存并显示当前配置值，前后端使用同一字节限制；只影响新提交，固定并发3不可配置；字段错误/服务失败保留输入，无其他模块假成功。
 - 验证方法：新增设置浏览器用例并接入 `pnpm run test:browser`，测试边界/保存失败/重启读取，以及旧submission与新submission限制差异；适用工程检查按执行约定。
 - 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、短视口不裁底栏，通用控件按HeroUI统一，无业务差异。
+- 实施步骤：
+  - [ ] 1. 独立上传限制保存组：边界、服务失败和重启值一致。
+  - [ ] 2. 旧/新提交差异与两端短视口：不调用 site PATCH 保存上传字段。

@@ -1,6 +1,6 @@
 # T-ANA-01 本地公开访问内存聚合
 
-日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)、[PR #121](https://github.com/dnslin/ariso-next/pull/121)，范围以 [T-ANA-01 任务卡](../../tasks/m1-m2.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
+日期：2026-09-26。关联 [Issue #83](https://github.com/dnslin/ariso-next/issues/83)、[PR #121](https://github.com/dnslin/ariso-next/pull/121)，范围以 [T-ANA-01 任务卡](../../archive/m1-m2/tasks.md#t-ana-01-本地公开访问内存聚合)为准。覆盖 R-19.2-01/02/03 的本地计数部分，不代表整个 ANALYTICS-COUNT 或持久统计已经完成。
 
 ## 前置与实现
 
@@ -9,7 +9,7 @@
 - `src/server/analytics/collector.ts` 同步聚合 imageId/date/timezone/version，不写数据库、文件或网络，不重新查询图片状态。日期复用 site 所用的原生 Intl 时区能力，按事件 occurredAt 提取年月日；只缓存最近一个时区格式器。实现前核对了 [ECMA-402 formatToParts](https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formattoparts) 和锁定 TypeScript 的 Intl 类型，无新增依赖。
 - `src/app/i/[imageId]/route.ts` 在 delivery 首块事件回调内读取已提交 site 时区并立即聚合，两者之间没有 await。请求内重复回调最多尝试一次，失败不重试内容请求。异常日志保留错误、图片/存储 ID、实际版本、事件时间及时区；合法响应继续返回。
 - 进程内单例在开发热更新时复用。缓冲上限沿用实验的 20000 个不同键，满时仍接收旧键增量；新键拒绝、累计 dropped/incomplete 并记录诊断。snapshot 返回副本，调用者不能改写历史增量。
-- 本次不创建无人消费的数据库表或迁移。批写、批次确认、定时器、365 天保留与关停协调由 [T-ANA-02 / #84](../../tasks/m1-m2.md#t-ana-02-统计批写保留与退出刷库) 实施。#82 报告中“#83 接入时统一关停”的归属与任务卡不一致；按执行约定的任务卡唯一范围处理。本次不声称关停无损，进程退出仍丢失全部内存计数，缓冲尚不会自动释放。
+- 本次不创建无人消费的数据库表或迁移。批写、批次确认、定时器、365 天保留与关停协调由 [T-ANA-02 / #84](../../archive/m1-m2/tasks.md#t-ana-02-统计批写保留与退出刷库) 实施。#82 报告中“#83 接入时统一关停”的归属与任务卡不一致；按执行约定的任务卡唯一范围处理。本次不声称关停无损，进程退出仍丢失全部内存计数，缓冲尚不会自动释放。
 
 统计功能本身无产品 UI 改动。后续按用户授权修复登录错误提示焦点，并完善浏览器场景；见 [回归修复与最终验证](./review/README.md)。沿用 HeroUI，无 Figma、主题或布局交接差异；服务端计数使用下列单元/集成证据。
 

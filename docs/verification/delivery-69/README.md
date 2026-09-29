@@ -1,6 +1,6 @@
 # T-DEL-01 本地稳定图片访问与下载
 
-日期：2026-09-23。对应 [Issue #69](https://github.com/dnslin/ariso-next/issues/69)，范围沿用 [T-DEL-01](../../tasks/m1-m2.md#t-del-01-本地稳定图片访问与下载) 和 [delivery 规格](../../specs/SPEC-delivery.md)。保留 R-14.2-01、R-14.3-01、R-14.5-01、R-14.6-01/02、R-14.7-01、R-14.8-01、R-14.9-01、R-14.10-01/02、A-26.6-01/02 的既有编号与模块边界，不改冻结 PRD。
+日期：2026-09-23。对应 [Issue #69](https://github.com/dnslin/ariso-next/issues/69)，范围沿用 [T-DEL-01](../../archive/m1-m2/tasks.md#t-del-01-本地稳定图片访问与下载) 和 [delivery 规格](../../specs/SPEC-delivery.md)。保留 R-14.2-01、R-14.3-01、R-14.5-01、R-14.6-01/02、R-14.7-01、R-14.8-01、R-14.9-01、R-14.10-01/02、A-26.6-01/02 的既有编号与模块边界，不改冻结 PRD。
 
 最新评审修订及复跑结果见[三项问题修订记录](./revision/README.md)。下文保留首次交付的历史证据。
 

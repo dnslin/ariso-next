@@ -1,6 +1,6 @@
 # T-ID-01 认证库与所有者权限入口
 
-关联 [Issue #53](https://github.com/dnslin/ariso-next/issues/53)，需求 R-6.1-01、R-24.2-04、A-26.12-03、R-23.1-02。实现范围以 [任务定义](../../tasks/m1-m2.md#t-id-01-认证库与所有者权限入口) 为准，不代表完整 identity 模块完成。
+关联 [Issue #53](https://github.com/dnslin/ariso-next/issues/53)，需求 R-6.1-01、R-24.2-04、A-26.12-03、R-23.1-02。实现范围以 [任务定义](../../archive/m1-m2/tasks.md#t-id-01-认证库与所有者权限入口) 为准，不代表完整 identity 模块完成。
 
 ## 前置与边界
 

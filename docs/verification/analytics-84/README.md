@@ -1,6 +1,6 @@
 # T-ANA-02 统计批写、保留与退出刷库
 
-2026-09-26；[PR #123](https://github.com/dnslin/ariso-next/pull/123)；[Issue #84](https://github.com/dnslin/ariso-next/issues/84)。依据 [analytics §4–5/8](../../specs/SPEC-analytics.md#4-统计表与批量写入)和[任务卡](../../tasks/m1-m2.md#t-ana-02-统计批写保留与退出刷库)。本次实现 ANALYTICS-COUNT 的持久化部分，不代表报表、S3 计数或完整 M2 冒烟已交付。
+2026-09-26；[PR #123](https://github.com/dnslin/ariso-next/pull/123)；[Issue #84](https://github.com/dnslin/ariso-next/issues/84)。依据 [analytics §4–5/8](../../specs/SPEC-analytics.md#4-统计表与批量写入)和[任务卡](../../archive/m1-m2/tasks.md#t-ana-02-统计批写保留与退出刷库)。本次实现 ANALYTICS-COUNT 的持久化部分，不代表报表、S3 计数或完整 M2 冒烟已交付。
 
 ## 前置与实现
 

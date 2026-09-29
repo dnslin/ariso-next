@@ -1,6 +1,6 @@
 # DG-TRASH-BASE 设计适用核对证据
 
-日期：2026-09-25（Asia/Shanghai）。关联 [Issue #78](https://github.com/dnslin/ariso-next/issues/78)，可复用状态和真实行为责任只维护在 [T-LIB-12 消费结论](../../m1-m2.md#dg-trash-base-t-lib-12-核对结论2026-09-25)。本次是文档交付，无业务代码、依赖或数据契约变更。
+日期：2026-09-25（Asia/Shanghai）。关联 [Issue #78](https://github.com/dnslin/ariso-next/issues/78)，可复用状态和真实行为责任只维护在 [T-LIB-12 消费结论](../../../archive/m1-m2/tasks.md#dg-trash-base-t-lib-12-核对结论2026-09-25)。本次是文档交付，无业务代码、依赖或数据契约变更。
 
 ## 范围与来源
 

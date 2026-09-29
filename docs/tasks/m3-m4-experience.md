@@ -1,10 +1,10 @@
 # M3/M4 完整管理、分享与报表任务
 
-更新：2026-09-20。实施任务定义，尚未实现或验收；唯一例外是先供 M2 上传使用的 T-COL-01，仍未实现。任务 ID 使用 `T-`，与规格验收编号分开。产品选择沿用已评审规格，不恢复相册手动排序。
+更新：2026-09-28。M3/M4 待执行任务定义；M2 的 T-COL-01 已交付，见卡内证据。任务 ID 使用 `T-`，与规格验收编号分开。产品选择沿用已评审规格，不恢复相册手动排序。
 
 本文件的需求字段参与[需求映射](./mapping.md)生成；需求验收需同时满足该需求关联的全部任务。前置状态按[计划](./plan.md)判断，未完成工程验证和设计核对不得绕过。
 
-所有任务同时继承[共用执行与HeroUI组件文档](./execution.md)。
+所有任务同时继承[共用执行与HeroUI组件文档](./execution.md)。推进顺序与阶段检查点见 [M3/M4 执行拆解](./m3-m4-sequence.md)。卡内步骤按顺序完成，每步继承本卡直接前置、文件边界和验证方法；一个步骤只交付一个可验证结果，预计 S/M（约 1–5 个主要实现文件，测试另计）。超过边界时开工前继续细分，不以一个大 PR 交付整张卡。全部步骤及整卡验收完成才关闭父任务。
 
 ## 公共执行要求
 
@@ -36,6 +36,9 @@
 - 验收条件：名称 1–100、描述≤2000 码点；20/40/80 分页稳定，搜索将 %/_ 当字面。删除立即清关系但不删图/任务/其他相册，错误不报成功；包含回收关系。分享失效完整联验交给 T-SHR-04，不使模型反向依赖 sharing。
 - 验证方法：SQLite 测删除影响、同名和计数；浏览器连续创建/改名/删除、空列表、保存失败、未知结果核对、手机触摸。
 - 界面：所有者 /albums；读取真实相册和成员数量，写入复用身份/来源检查。桌面[30:473](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-473)、手机[101:1155](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1155)、桌面状态[279:1561](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-1561)、手机状态[279:3816](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-3816)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。同名项显示数量和短 ID；手机列表按可用宽度排列；DG-ALBUMS 对应 DES-04；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 相册列表、搜索分页及创建：同名 ID 可区分。
+  - [ ] 2. 编辑和删除：真实关系清除但图片保留，未知结果核对。
 
 - 实施证据：[Issue #175 实施、验证与审计记录](../verification/collections-175/README.md)。UI 人工验收尚未完成，不据此关闭完整需求或后置任务。
 
@@ -65,6 +68,9 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
 - 验收条件：标签 1–50 码点；同键创建复用、仅改大小写不改首次形式；冲突不合并。改名保 ID/关系，删除含回收关联但不删图，同名重建不继承。正常图库数量准确，取消上传形成的空标签可手工删除。
 - 验证方法：单元/SQLite 覆盖规范化、唯一竞争和外键；浏览器分页搜索、冲突、未知结果、改名后 URL 查询保留、真 ID 跳转与返回。
 - 界面：所有者 /tags → /library?tagId=<id>；标签管理响应与 T-LIB-04 查询。桌面[30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)、手机[101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295)、桌面状态[418:3988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-3988)、手机状态[418:8180](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-8180)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。手机紧凑列表不省略管理功能；DG-TAGS 对应 DES-06-TAGS；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 标签列表及创建/重命名：Unicode唯一与冲突不合并。
+  - [ ] 2. 删除与 tagId 跳图库：回收关联清除，返回查询保留。
 
 ### T-COL-04 固定相册内容与手动自动封面
 
@@ -76,6 +82,9 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
 - 验收条件：全相册先过滤资格再按 joined_at 降序/ID 升序选第一公开图；手动封面变私有/回收临时回退，恢复重现，移出后清空。选中图处理中/停用时占位，不偷偷换下一张；无公开图占位。
 - 验证方法：真实关系数据覆盖跨页第一公开图、加入同值、临时回退/恢复、移出再加入、文件丢失；浏览器触摸选择/切回自动、内容筛选固定顺序。
 - 界面：所有者 /albums/{albumId}；成员与封面身份来自 collections，thumbnail 经 delivery。桌面[38:378](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=38-378)、手机[102:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4002)、桌面状态[282:1724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1724)、手机状态[282:4070](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4070)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Card](https://heroui.com/en/docs/react/components/card)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Alert](https://heroui.com/en/docs/react/components/alert)。封面异常另见 [282:1979](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1979) / [282:4244](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4244)；DG-ALBUMS 核对 DES-04，手机选择器保留短 ID/状态；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
+  - [ ] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
 
 #### DG-ALBUMS 对 T-COL-04 的核对结论（2026-09-28）
 
@@ -105,6 +114,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：名称完整子串，标签任一匹配、条件间交集；日期按站点时区转 UTC 含起不含止；排序按原文件大小/上传时间与 ID 次级，相册固定顺序。失效引用显式报错；cursor 绑定查询/范围；每页≤80、总数不因关系重复，状态查询≤80。
 - 验证方法：SQLite 组合数据、同值游标、深页、跨 DST、%/_、越界页和失效引用；记录查询计划与十万样本初始指标，无逐卡读文件/HEAD；最终规模回归归 T-QA-04。
 - 界面：无界面：所有者查询协议；T-LIB-04/07 接入具体列表与邻居。
+- 实施步骤：
+  - [ ] 1. 全部筛选与稳定分页：关系不重复、日期/DST边界正确。
+  - [ ] 2. 查询绑定游标及邻居：失效引用、深页、批量状态与查询计划。
 
 ### T-LIB-04 四种布局加载组合与筛选历史
 
@@ -116,6 +128,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：默认网格+加载更多，20/40/80；切布局无新增列表请求且保留查询，切加载方式/筛选/排序回首批。已应用查询写 URL 与历史；加载旧数据时禁用旧图操作；迟到响应不覆盖新查询；外部变化、无效 cursor 有刷新恢复。
 - 验证方法：真实浏览器四组合×三数量，网络次数、前进后退/复制链接、DST 日期、localStorage 不可用；持续加载测 DOM/内存并查键盘顺序。
 - 界面：所有者 /library、/albums/{albumId}；T-LIB-03 API 与 collections/storage 筛选项。桌面[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)、手机[98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)、桌面状态[43:428](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=43-428)、手机状态[102:4306](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4306)。HeroUI：[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Select](https://heroui.com/en/docs/react/components/select)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[ToggleButtonGroup](https://heroui.com/en/docs/react/components/toggle-button-group)、[Alert](https://heroui.com/en/docs/react/components/alert)。瀑布流/分段渲染无通用控件对应，采用专用业务布局；手机双列与固定分页栏；DG-LIBRARY 对应 DES-06-LIBRARY/RG-02；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 网格查询/分页/历史：URL回放和迟到响应隔离。
+  - [ ] 2. 瀑布流及加载更多组合：布局切换无请求，有界渲染与返回位置。
 
 ### T-LIB-05 跨页显式选择与已选清单
 
@@ -127,6 +142,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：本页全选/取消仅改本页，翻页/历史保留其他页；加载新项不自动选。显示总数/当前/其他页和清空；筛选/排序/加载方式重建查询清空，布局保留；失效图移除，数据位置改变保留仍有效选择。
 - 验证方法：浏览器以超过两页和超过200个显式选择验证选择守恒、历史/布局、失效清理和任意清单行移除；不得预读全库或图片文件。
 - 界面：所有者 /library、/albums/{albumId}；T-LIB-04 当前查询与显式选择清单。桌面[389:7582](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7582)、手机[389:7886](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7886)、桌面状态[388:2608](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-2608)、手机状态[388:5896](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-5896)。HeroUI：[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Toolbar](https://heroui.com/en/docs/react/components/toolbar)、[Table](https://heroui.com/en/docs/react/components/table)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Button](https://heroui.com/en/docs/react/components/button)。已选清单桌面/手机可逐项查看移除；DG-LIBRARY 核对 RG-01 的任意行及当前页全选；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 跨页显式选择及当前页全选：过滤清空而布局保留。
+  - [ ] 2. 已选清单逐项移除与失效清理：超过200项不预读全库。
 
 ### T-LIB-06 完整详情、元数据与单图编辑
 
@@ -138,6 +156,10 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：显示真实四版本/实际编码/状态；失败步骤、媒体任务和存储停用独立。displayName 1–255码点不改 originalName/ID/Key；回收详情只读。元数据重读错误标旧值、不触发重处理；公开原图复制下载提示 GPS 风险且不阻止；已有版本按 delivery 下载。
 - 验证方法：真实字段修改、元数据失败/旧数据、会话失效清缓存、活动状态≤80批读终态停轮询；浏览器字段树搜索、失败保留输入、原图与每版本下载、停用/failed状态矩阵。
 - 界面：所有者 /library?image=<id>、/albums/{albumId}?image=<id>；library 详情聚合 media/collections/delivery；元数据独立 API。桌面[36:312](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=36-312)、手机[102:3228](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3228)、桌面状态[388:5946](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-5946)、手机状态[388:6159](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6159)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Select](https://heroui.com/en/docs/react/components/select)、[Accordion](https://heroui.com/en/docs/react/components/accordion)、[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。元数据树组合Accordion，DG-LIBRARY 在开工前核对完整字段树及单图 visibility 尚未逐项连通范围；手机详情独立页面；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 详情真实版本及单图字段/关系编辑：回收只读，失败保留输入。
+  - [ ] 2. 完整元数据树与重读：旧值标记、GPS提示和版本下载。
+  - [ ] 3. 单图重处理与状态更新：终态停轮询、会话失效清缓存。
 
 ### T-LIB-07 大图查看、同图选版与上下文恢复
 
@@ -149,6 +171,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：默认预览独立外链；动画原图、SVG既有预览，明确选版不回退。按当前查询跨页、首尾不循环，只预载相邻各一张，不改列表页码/选择；直达详情无列表上下文仅看当前。缩放平移全屏/能力降级有效；下载留详情，无分享/幻灯片；关闭恢复焦点滚动。
 - 验证方法：真实格式/解码与多页查询、同图四版本、移动双指/平移手势、键盘与全屏支持；删除当前图/邻居失败/迟到响应，断言不通过图片优化代理绕 delivery。
 - 界面：所有者图库/相册详情的大图入口；T-LIB-03 neighbors 与 delivery 内容地址。桌面[390:6943](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6943)、手机[390:6996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6996)、桌面状态[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、手机状态[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Select](https://heroui.com/en/docs/react/components/select)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。HeroUI 无专用图片缩放平移查看器，复用已选 YARL 及 Zoom/Fullscreen；DG-LIBRARY 对应 RG-02/06，手机紧凑版本选择器；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 同图选版与缩放全屏：真实格式，明确选版不回退。
+  - [ ] 2. 当前查询跨页邻居：仅预载两张、删除恢复和关闭归焦。
 
 ### T-LIB-08 批量关系、可见性和回收恢复
 
@@ -160,6 +185,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：多相册添加/移出、增删标签、公开私有、回收恢复均按显式ID；>200分批且逐图短事务。每次复核查询归属；changed/unchanged/accepted移出选择，有效失败项跨页保留。未知结果先核对；恢复只保留幸存关系和原加入时间。
 - 验证方法：真实模块混合成功/失败/无变化、目标并发删除、响应丢失、201+跨页项及失败再次重试；操作前后比对关系/ID/文件数量。
 - 界面：所有者 /library、/albums/{albumId}、/trash 的批量入口；选择快照与真实逐图结果。桌面[522:13055](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13055)、手机[522:13688](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13688)、桌面状态[522:13173](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13173)、手机状态[522:13729](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13729)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[Select](https://heroui.com/en/docs/react/components/select)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Table](https://heroui.com/en/docs/react/components/table)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。多个目标选择由HeroUI组合；手机结果正文滚动不遮底部操作；DG-LIBRARY 核对 RG-04 的四种关系动作与动态数量；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 批量关系和可见性：201+显式ID拆批、逐图结果及失败保留。
+  - [ ] 2. 批量回收恢复：未知结果核对，关系和原加入时间保持。
 
 ### T-LIB-09 批量重处理与结果核对
 
@@ -171,6 +199,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：每图独立任务，failed只允许全部派生，ready遵守四范围；混合选仅水印不偷改failed范围。每次受理用最新设置快照，跨请求不伪造整批快照；受理与完成分开，断网先查taskId避免重复建任务，关闭页面不取消已受理任务。
 - 验证方法：混合状态/适用格式及并发任务冲突，分批间改设置，注入受理响应丢失；检查快照、旧版本、任务数量、部分失败不阻断其他项。
 - 界面：所有者图库/相册批量重新处理；media任务受理与状态 API。桌面[387:6074](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6074)、手机[387:6018](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6018)、桌面状态[388:7246](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-7246)、手机状态[388:7454](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-7454)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[RadioGroup](https://heroui.com/en/docs/react/components/radio-group)、[Table](https://heroui.com/en/docs/react/components/table)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。手机展示全部范围及逐项冲突；DG-LIBRARY 核对 RG-05 与首次失败仅全部派生；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 批量范围选择及重处理受理：逐图真实任务与不适用拒绝。
+  - [ ] 2. 结果核对及失败重试：未知结果不重复提交，保留有效失败选择。
 
 ### T-LIB-10 跨页批量复制与剪贴板降级
 
@@ -182,6 +213,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：>200显式项跨请求按完整查询顺序合并、一图一行、统一模式；默认不带type，明确版本缺失不回退。每项校验查询/版本/存储；不可复制列表有原因，其余继续。Markdown/HTML按displayName转义；全失败不覆盖剪贴板；权限提示不授予匿名访问；复制不GET/签名/计数。
 - 验证方法：构造跨页跨批乱序响应、同排序值/特殊名称/混合私有failed停用/缺失版本；拦截网络证明无内容请求；浏览器拒绝Clipboard转可选文本并验证实际复制内容。
 - 界面：所有者图库/相册批量复制面板；delivery解析与服务端已转义行、完整排序键。桌面[387:5769](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5769)、手机[387:5709](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5709)、桌面状态[388:6482](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6482)、手机状态[388:6690](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6690)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[Select](https://heroui.com/en/docs/react/components/select)、[TextArea](https://heroui.com/en/docs/react/components/text-area)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。手动复制状态 [387:5972](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5972) / [387:5928](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5928)；DG-LIBRARY 核对全部输出格式×选版组合，手机长文本完整可选；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 按显式选择顺序生成多格式链接：默认/固定版本及不可用原因。
+  - [ ] 2. 真实剪贴板和手动复制：失败保留完整文本，两端长内容可用。
 
 ### T-LIB-11 回收站完整查询、批量删除与失败清理
 
@@ -190,9 +224,13 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 需求：`R-15.7-01`、`R-18.1-01`、`R-18.2-01`、`R-18.2-02`、`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`A-26.11-04`、`A-26.11-05`、`A-26.11-06`、`A-26.11-07`
 - 范围：[library 规格](../specs/SPEC-library.md) §9；扩展 M2 回收页，完整过滤/选择及 media 永久删除/重试命令，展示未清对象。
 - 直接前置：`T-LIB-08`、`T-LIB-12`、`T-MED-11`、`DG-TRASH`
-- 验收条件：回收页只读记录不请求缩略图/大图/下载；固定回收顺序，查询范围不开放修改恢复信息。恢复停用资产记录但不冒充内容可读。>200显式删除分批，202受理保留记录，deleting/cleanup_failed禁止恢复，全清成功才移除；不新增自动清理或全筛选清空。
-- 验证方法：浏览器网络断言零内容请求；真实本地/后续S3注入部分清理失败、一次自动重试后手动重试/重启、未知结果核对和跨页失败保留；停用S3的跨提供方联验由存储验收继续覆盖。
-- 界面：所有者 /trash?image=<id> 与列表；library只读记录、media清理任务/剩余对象。桌面[30:1037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1037)、手机[102:852](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-852)、桌面状态[405:7599](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7599)、手机状态[405:7923](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7923)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。批量进度 [405:8601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8601) / [405:8924](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8924)；DG-TRASH 对应DES-06-TRASH，手机无内容占位与完整错误可展开；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 验收条件：回收页保留只读记录及已批准的所有者缩略图/详情预览；仅通过受保护的 /api/trash/{id}/preview 读取已存版本，公开 /i 仍拒绝回收图；固定回收顺序，查询范围不开放修改恢复信息。恢复停用资产记录但不冒充内容可读。>200显式删除分批，202受理保留记录，deleting/cleanup_failed禁止恢复，全清成功才移除；不新增自动清理或全筛选清空。
+- 验证方法：浏览器验证所有者预览可用，匿名/Bearer/分享授权均不可读，删除中/清理失败/停用拒绝预览且不增加公开计数；真实本地/后续S3注入部分清理失败、一次自动重试后手动重试/重启、未知结果核对和跨页失败保留；停用S3的跨提供方联验由存储验收继续覆盖。
+- 界面：所有者 /trash?image=<id> 与列表；library只读记录、media清理任务/剩余对象。桌面[30:1037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1037)、手机[102:852](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-852)、桌面状态[405:7599](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7599)、手机状态[405:7923](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7923)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。批量进度 [405:8601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8601) / [405:8924](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8924)；DG-TRASH 对应DES-06-TRASH，手机沿用所有者预览及不可用原因占位，完整错误可展开；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 完整回收查询与跨页选择：保留已批准的所有者预览边界。
+  - [ ] 2. 批量永久删除与逐图结果：202受理留记录，删除态禁止恢复和预览。
+  - [ ] 3. 失败清理/重试/重启：剩余对象可核对，全清才移除。
 
 ### T-SHR-01 分享配置、期限与密码授权协议
 
@@ -204,6 +242,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：每册一条分享，重复创建不覆盖；地址Token稳定，rotate改Token保留配置。密码keep/set/clear明确；UTC期限按站点时区/DST转换。24小时固定授权、各相册Cookie路径隔离；改密/关闭/到期后续期/rotate撤销，哈希验证期间变化不得发旧授权。真错误、429和日志脱敏有诊断。
 - 验证方法：真实哈希+SQLite+HTTP竞争/重启/恰好到期/多相册并发/同相册多标签，验证授权只存摘要、原密码不回显、无会话与上传Token不可管理；压测执行已验证限流/并发边界。
 - 界面：无界面：共享管理/匿名入口协议；管理和密码表单分别由 T-SHR-02/03 集成。
+- 实施步骤：
+  - [ ] 1. 每册分享配置/Token/期限：重复创建及rotate语义正确。
+  - [ ] 2. 密码授权及撤销：24小时、Cookie路径、多标签与竞争验证。
 
 ### T-SHR-02 分享管理与独立设置保存
 
@@ -215,6 +256,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：每次仅保存明确变更字段；过期重新启用同时延期/清除期限；改时区不改变已存到期时刻。响应不明先读当前配置，rotate不自动重发；复制失败提供完整可选地址；设置密码不声称保护公开图片独立地址。
 - 验证方法：真实浏览器独立编辑与刷新持久化、两个标签并发保存、未知响应、长地址与Clipboard拒绝，桌面手机均能完成所有操作。
 - 界面：所有者 /shares 与 /albums/{albumId} 分享入口；/api/shares 与 /api/albums/{id}/share。桌面[30:849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-849)、手机[101:1463](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1463)、桌面状态[431:3753](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3753)、手机状态[431:8415](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8415)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[Modal](https://heroui.com/en/docs/react/components/modal)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Switch](https://heroui.com/en/docs/react/components/switch)、[Select](https://heroui.com/en/docs/react/components/select)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Alert](https://heroui.com/en/docs/react/components/alert)。保存失败 [431:3989](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3989) / [431:8493](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8493)；DG-SHARING 核对DES-06-SHARING/RG-08，手机日期显示站点时区；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 创建/编辑/复制/启停两端闭环：字段独立保存。
+  - [ ] 2. 密码/期限/rotate未知响应：回读核对不自动重复写。
 
 ### T-SHR-03 匿名密码页、裁剪列表与状态刷新
 
@@ -226,6 +270,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：未授权HTML/RSC/元信息无相册数据；只返回公开成员，private/回收/移出在查询分页计数前排除。有所有者Cookie仍按访客集合。40张每批，公开ID锚点；pending/processing/failed/存储停用保留原位占位，处理完成或重新启用后在原位置显示；showName关闭时响应、alt、title、aria-label均无名称。可见每5秒检查≤80ID分批，隐藏停/恢复立即查，授权失效清全量，旧响应不填回；private/no-store/noindex。
 - 验证方法：匿名/所有者双上下文HTTP与DOM字段检查、空相册/私有/处理中/失败/停用、锚点移除、80+ID、后台恢复、撤权竞态和名称关闭迟到响应；格式内容经delivery校验。
 - 界面：匿名 /s/{token}；仅sharing裁剪数据，不调用后台详情/元数据。桌面[433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610)、手机[433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)、桌面状态[432:3573](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-3573)、手机状态[432:7913](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-7913)。HeroUI：[Card](https://heroui.com/en/docs/react/components/card)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Spinner](https://heroui.com/en/docs/react/components/spinner)。异常占位 [433:4042](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-4042) / [433:8715](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8715)；DG-SHARING 对应 DES-03，复用有界图库布局但只接匿名字段；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 匿名密码页和裁剪列表：未授权不泄露相册数据。
+  - [ ] 2. 40张加载与状态刷新：私有/回收排除，迟到响应不能回填撤销数据。
 
 ### T-SHR-04 匿名大图与删除相册后失效联验
 
@@ -237,6 +284,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：匿名只前后/缩放/平移/关闭/支持时全屏，最多预载前后各一张；无后台选版/技术信息/下载/幻灯片。当前图移除返回列表、授权失效清数据。删除相册级联分享/授权，旧Cookie不放行；图片独立公开地址遵守其状态，S3剩余有效期说明准确。
 - 验证方法：两上下文+真实本地/S3覆盖开着大图时关闭/改密/到期/rotate/删册/私有/回收/停用；触摸键盘、名称显示返回和焦点，HTTP新请求立即拒绝而旧已下载内容不冒充可撤回。
 - 界面：匿名 /s/{token} 精简大图；sharing公开邻居与delivery内容。桌面[434:4003](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-4003)、手机[434:8782](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-8782)、桌面状态[432:3744](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-3744)、手机状态[432:8084](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-8084)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。复用T-LIB-07查看组件但不接管理DTO；DG-SHARING 对应DES-03/RG-02，手机双指平移与返回来源；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 匿名精简大图：复用查看器，不提供后台字段和选版。
+  - [ ] 2. 删除相册/撤权/成员变化联验：本地与S3新请求失效。
 
 ### T-ANA-03 完整当前数量与对象占用
 
@@ -248,6 +298,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：正常图片/回收分列，空相册计入；原图/派生/回收/处理中待清理按storageId+key互斥，交接不重复。planned为零，writing未知；清理成功才减少，停用不归零。返回已知字节/待核对对象/确认信息，不把未知补零或扫描Bucket总容量。
 - 验证方法：逐对象真实清单对账，覆盖upload迟到写入/交接、media候选/旧对象、probe遗留、回收恢复与部分删除；按同一事务聚合验证无重复/遗漏，失败有错误不变成功零。
 - 界面：无界面：/api/analytics/usage及overview数量数据；T-ANA-05呈现范围与未知状态。
+- 实施步骤：
+  - [ ] 1. 真实数量与分类对象用量：读取提供方且交接不重算。
+  - [ ] 2. 未知/残留/清理中用量：故障与恢复后数值可核对。
 
 ### T-ANA-04 周期趋势、历史排行与单图统计
 
@@ -259,6 +312,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：7/30/90含今日，趋势/热门/版本同范围，前三版本之和一致；缺日补零，故障不补零。排行前10按访问降序/ID升序，永久删除保历史占位且无旧名/内容链接，回收链接管理记录。时区改后旧日期保留并标注；overview同次读快照返回更新时间/健康状态。
 - 验证方法：真实一年热点/长尾数据验证并列排行、10项、不重复相册计数、历史删除/同名重传、365天及DST；真实 S3 302 签发计入、签名失败不计，与本地事件合并后的三版本口径一致；查询计划、刷库/清理并发时延按工程验证结果回归。
 - 界面：无界面：所有者私有统计查询，拒绝匿名/上传Token/分享授权；界面与单图详情组合在T-ANA-05。
+- 实施步骤：
+  - [ ] 1. 时区周期趋势与单图统计：边界、零值及历史保留。
+  - [ ] 2. 排行及规模查询：稳定排序，热点/长尾实测。
 
 ### T-ANA-05 工作台、统计图表与详情统计联动
 
@@ -270,6 +326,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：URL days切周期只接最新请求；可见10秒刷新/隐藏停/恢复立即查，不叠加请求。空库/无访问/读取失败/旧数据/延迟/漏计/空间待核对分开。正常/回收/删除排行目标正确，单图统计真实关联；长名、全10项、图表键盘触摸可读，今日标截至更新，S3计数非完整下载。
 - 验证方法：浏览器可控时间与迟到响应/注销清缓存、图表文本对账、排行与失败图真实定位、手机触摸读数、10秒轮询可见性；故障注入核对旧值提示和未知组成。
 - 界面：所有者 /dashboard、/analytics?days=7、图片详情统计区；T-ANA-03/04 API与管理详情。桌面[446:8063](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=446-8063)、手机[446:8030](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=446-8030)、桌面状态[451:17337](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-17337)、手机状态[451:17648](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-17648)。HeroUI：[Card](https://heroui.com/en/docs/react/components/card)、[Tabs](https://heroui.com/en/docs/react/components/tabs)、[Table](https://heroui.com/en/docs/react/components/table)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)。HeroUI无业务折线/组成图，使用PRD选定Recharts并核对固定版本/键盘能力，保留Table等价结果；DG-ANALYTICS核对单图区及全部排行入口，手机堆叠图表保持固定底部操作；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 工作台真实总览与异常状态：不用示例数字。
+  - [ ] 2. 统计趋势/排行/单图联动：真实筛选、导航及两端图表。
 
 ### T-SITE-02 站点地址时区与基础设置组合
 
@@ -281,6 +340,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：origin更新与全部S3 CORS失效同事务，失败回滚；图片ID/Key不变，新链接使用新origin，提示OAuth回调/重测CORS/维护旧域名，不自动跳转。时区只改变解释/展示，不重写UTC；默认存储可空/停用，无可用不切换；各默认值调用所属模块，不复制校验。
 - 验证方法：真实site/storage/identity事务与新origin登录/旧origin写入、图片及OAuth地址，长地址复制；改时区核对历史不变，sharing/analytics最终消费由对应任务联验；失败保留输入与独立保存。
 - 界面：所有者 /settings/general；各模块真实设置API，site只接其字段。桌面[467:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=467-4002)、手机[467:9001](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=467-9001)、桌面状态[468:11189](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11189)、手机状态[468:11481](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11481)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Select](https://heroui.com/en/docs/react/components/select)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)。DG-SITE核对DES-06-SITE/RG-03；手机长地址展开和手工复制、时区外标签；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 站点地址/时区独立保存：验证影响和失败输入保留。
+  - [ ] 2. 设置页组合与地址切换：OAuth/CORS/链接联验，不跨模块假保存。
 
 ### T-SITE-03 品牌素材存取、静态校验与清理
 
@@ -292,6 +354,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：Logo PNG/JPEG/WebP/静态SVG，Favicon PNG/ICO/静态SVG，按内容识别并在读取中限5MiB；SVG不内联执行。新文件→DB引用→旧文件删除，失败旧配置可用，启动重试自有孤立文件；缺文件明确错误。素材不进图库计数，当前引用匿名读、版本URL换新，无自定义HTML/CSS；无部署DB/密钥可构建。
 - 验证方法：真实允许/拒绝格式、损坏/脚本/动画SVG、5MiB±1与流式超限；各写入/提交/删除中断点和重启、其他模块文件不受影响；MIME/附件行为与metadata不在构建读库。
 - 界面：无管理界面：素材与品牌服务/HTTP；页面联动和用户操作在T-SITE-04。
+- 实施步骤：
+  - [ ] 1. 品牌文件校验与替换：真实格式/5MiB，新写失败旧配置可用。
+  - [ ] 2. 匿名读取/metadata与旧文件清理：重启、缓存、无数据库构建。
 
 ### T-SITE-04 品牌设置及登录分享跨页联动
 
@@ -303,6 +368,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：保存后新请求/当前页面使用最新名称描述图标；修改失败保留旧配置和输入，缺失素材有明确状态不当默认素材。允许格式/5MiB提示准确，删除恢复内置品牌；不把素材选择预览当成功保存。
 - 验证方法：真实文件上传替换删除及失败，跨刷新/重启/首页/登录/匿名分享/浏览器标签对比；网络缓存不展示旧素材，无HTML注入；手机宽度下的滚动与文件选择。
 - 界面：所有者 /settings/general；匿名首页/登录与 /s/{token} 消费品牌；site配置与branding服务。桌面[468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)、手机[468:12216](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-12216)、桌面状态[469:10633](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10633)、手机状态[469:10934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10934)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Button](https://heroui.com/en/docs/react/components/button)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Card](https://heroui.com/en/docs/react/components/card)。跨页代表首页 [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10) / [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)，匿名分享 [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610) / [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)；DG-SITE核对RG-08的Favicon/元信息，保留失败输入；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 品牌表单上传/替换/删除：失败保留配置与输入。
+  - [ ] 2. 首页/登录/分享/标题联验：刷新与重启使用最新品牌。
 
 ### T-SITE-05 浅深系统主题与浏览器偏好
 
@@ -314,3 +382,6 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验收条件：默认system；light/dark/system只存浏览器，SQLite无主题字段。显式主题不被系统切换覆盖，刷新/跨标签页符合库行为；挂载前不产生选择器水合错误，照片不反色。所有已实现界面与后续界面按同一语义颜色接入，最终全站矩阵归T-QA-02。
 - 验证方法：真实浏览器切系统颜色、三偏好、刷新/跨页/跨标签、服务端首屏及DB检查；覆盖图表/错误禁用/照片叠字与360/430/768px代表，记录必要HeroUI样式差异。
 - 界面：站点通用主题入口与 /settings/general；next-themes localStorage，无站点PATCH。桌面[472:4538](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4538)、手机[472:9570](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9570)、桌面状态[472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)、手机状态[472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)。HeroUI：[RadioGroup](https://heroui.com/en/docs/react/components/radio-group)、[Select](https://heroui.com/en/docs/react/components/select)、[Button](https://heroui.com/en/docs/react/components/button)。深色图库/手机代表 [530:14568](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14568) / [530:14911](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14911)；DG-THEME核对DES-05/RG-07，不凭设置页一图关闭全站深色；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 实施步骤：
+  - [ ] 1. 复核现有 next-themes 并补设置入口：三模式只存浏览器。
+  - [ ] 2. 跨页/标签/系统切换回归：无水合错误，照片不反色。

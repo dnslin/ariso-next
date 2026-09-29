@@ -1,6 +1,6 @@
 # T-CP-M1 空目录初始化与登录关卡
 
-日期：2026-09-22。对应 [Issue #61](https://github.com/dnslin/ariso-next/issues/61)，需求 A-26.1-01、A-26.1-02、A-26.1-03、A-26.1-04、A-26.1-11。范围及默认值继续以[任务卡](../../tasks/acceptance-tasks.md#t-cp-m1-空目录初始化与登录关卡)、[identity](../../specs/SPEC-identity.md)、[storage](../../specs/SPEC-storage.md)、[media](../../specs/SPEC-media.md) 为准。本关卡不代表上传、完整认证设置或全部首版能力完成。
+日期：2026-09-22。对应 [Issue #61](https://github.com/dnslin/ariso-next/issues/61)，需求 A-26.1-01、A-26.1-02、A-26.1-03、A-26.1-04、A-26.1-11。范围及默认值继续以[任务卡](../../archive/m1-m2/acceptance.md#t-cp-m1-空目录初始化与登录关卡)、[identity](../../specs/SPEC-identity.md)、[storage](../../specs/SPEC-storage.md)、[media](../../specs/SPEC-media.md) 为准。本关卡不代表上传、完整认证设置或全部首版能力完成。
 
 ## 前置与修改范围
 

@@ -1,6 +1,6 @@
 # DG-UPLOAD-BASE 设计适用核对证据
 
-日期：2026-09-25（Asia/Shanghai）；关联 [Issue #80](https://github.com/dnslin/ariso-next/issues/80)。状态、复用规则和真实验收责任只维护在 [T-UP-02 核对结论](../../m1-m2.md#dg-upload-base-t-up-02-核对结论2026-09-25)。
+日期：2026-09-25（Asia/Shanghai）；关联 [Issue #80](https://github.com/dnslin/ariso-next/issues/80)。状态、复用规则和真实验收责任只维护在 [T-UP-02 核对结论](../../../archive/m1-m2/tasks.md#dg-upload-base-t-up-02-核对结论2026-09-25)。
 
 ## 范围与来源
 

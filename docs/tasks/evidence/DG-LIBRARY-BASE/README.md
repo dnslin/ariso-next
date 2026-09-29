@@ -1,6 +1,6 @@
 # DG-LIBRARY-BASE 设计适用核对证据
 
-日期：2026-09-24（Asia/Shanghai）；关联 [Issue #74](https://github.com/dnslin/ariso-next/issues/74)。可复用状态和真实验收范围只维护在消费任务：[T-LIB-01](../../m1-m2.md#dg-library-base-t-lib-01-核对结论2026-09-24)、[T-LIB-02](../../m1-m2.md#dg-library-base-t-lib-02-核对结论2026-09-24)。
+日期：2026-09-24（Asia/Shanghai）；关联 [Issue #74](https://github.com/dnslin/ariso-next/issues/74)。可复用状态和真实验收范围只维护在消费任务：[T-LIB-01](../../../archive/m1-m2/tasks.md#dg-library-base-t-lib-01-核对结论2026-09-24)、[T-LIB-02](../../../archive/m1-m2/tasks.md#dg-library-base-t-lib-02-核对结论2026-09-24)。
 
 ## 范围与依据
 

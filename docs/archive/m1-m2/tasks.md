@@ -1,158 +1,160 @@
 # M1 / M2：初始化与本地图床
 
-本文件是 [任务索引](./todo.md) 的实施定义。任务定义与实施证据分开维护；`T-` 前缀避免与 SPEC 内验收编号混淆。需求编号保持不变，允许一条需求由多个阶段共同完成；M2 的 JPEG/PNG 路径不代表全格式或完整队列已经交付。
+2026-09-28 归档：M1/M2 已由用户确认完成。下文保留原任务及当时同步记录；当前工作见[文档导航](../../README.md)，最终范围与证据见[本阶段归档](./README.md)。
 
-每项的预计文件是主要修改边界，新增迁移和测试计入同一提交。测试路径均为**本任务应新增**，不是已有通过证据。执行约定、HeroUI 官方组件链接、响应式与完成门槛见 [共用约定](./execution.md)。
+本文件是 [任务索引](../../tasks/todo.md) 的实施定义。任务定义与实施证据分开维护；`T-` 前缀避免与 SPEC 内验收编号混淆。需求编号保持不变，允许一条需求由多个阶段共同完成；M2 的 JPEG/PNG 路径不代表全格式或完整队列已经交付。
+
+每项的预计文件是主要修改边界，新增迁移和测试计入同一提交。测试路径均为**本任务应新增**，不是已有通过证据。执行约定、HeroUI 官方组件链接、响应式与完成门槛见 [共用约定](../../tasks/execution.md)。
 
 ### T-SITE-01 公开地址与时区数据契约
 
 - 任务组：`SITE-BASE`
 - 里程碑：M1
 - 需求：R-5.4-01、R-5.5-01
-- 规格：[site §3–5/8/10](../specs/SPEC-site.md)
+- 规格：[site §3–5/8/10](../../specs/SPEC-site.md)
 - 直接前置：`BASE-RUNTIME`
 - 范围：site 单行表、输入校验、事务内初始化、读取和 URL/UTC 展示函数；完整设置组合另归 T-SITE-02。
 - 预计文件：src/server/site/{schema,settings,validation,urls,time}.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：空库正常但不得生成虚构地址；仅 HTTP(S) 根地址，拒绝凭据/查询/片段/子路径；有效 IANA/UTC 可用且纯偏移拒绝，改时区不重写 UTC。
-- 验证方法：新增 tests/unit/site/settings.test.ts 和 tests/integration/site/settings.test.ts；真实 SQLite 唯一性、事务失败和跨进程读取，夏令时/非法地址参数化验证；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/unit/site/settings.test.ts 和 tests/integration/site/settings.test.ts；真实 SQLite 唯一性、事务失败和跨进程读取，夏令时/非法地址参数化验证；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-SITE-01 实际结果与保留边界](../verification/site-47/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-SITE-01 实际结果与保留边界](../../verification/site-47/README.md)。执行状态以 GitHub 为准。
 
 ### T-STO-01 默认本地存储与流式对象操作
 
 - 任务组：`STORAGE-LOCAL`
 - 里程碑：M1
 - 需求：R-5.2-02、R-9.1-01、A-26.2-01
-- 规格：[storage §3–4/8–10](../specs/SPEC-storage.md)
+- 规格：[storage §3–4/8–10](../../specs/SPEC-storage.md)
 - 直接前置：`T-SITE-01`, `EV-STORAGE-LOCAL`
 - 范围：一次性默认存储准备、默认解析、本地命名空间及受控对象流读写删除；只提供内部操作，管理UI和多配置见 T-STO-03/07。
 - 预计文件：src/server/storage/{schema,local,defaults}.ts、src/cli/prestart.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：目录与记录中断后可重复完成；设置行存在就不重新选择/启用；合法根内链接/挂载可用，越界拒绝，失败保留实际路径；写入失败不破坏旧对象，清理不碰其他文件。
-- 验证方法：新增 tests/integration/storage/local.test.ts；临时卷、权限失败、ENOSPC、跨盘发布/取消、已清空默认后重启，核对字节和句柄；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/storage/local.test.ts；临时卷、权限失败、ENOSPC、跨盘发布/取消、已清空默认后重启，核对字节和句柄；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-STO-01 实际结果与保留边界](../verification/storage-49/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-STO-01 实际结果与保留边界](../../verification/storage-49/README.md)。执行状态以 GitHub 为准。
 
 ### T-MED-01 图片与版本持久契约
 
 - 任务组：`MEDIA-MODEL`
 - 里程碑：M1
 - 需求：R-10.1-01、R-10.1-02、R-10.1-03、R-10.1-04、R-10.2-01、R-10.3-01、A-26.2-07
-- 规格：[media §3/5/12](../specs/SPEC-media.md)
+- 规格：[media §3/5/12](../../specs/SPEC-media.md)
 - 直接前置：`T-STO-01`
 - 范围：图片/对象/版本/任务的最小持久结构；acceptOriginal 同步事务函数与 getImageAccessState；预定Key先有责任记录，不预建未用模块。
 - 预计文件：src/server/media/{schema,images,objects}.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：同文件两次接收产生两个ID；每图每类最多一个当前版本；原图、显示名、处理/回收/删除维度独立；交接失败整体回滚且调用方仍负责文件。
-- 验证方法：新增 tests/integration/media/model.test.ts，真实SQLite重复接收/事务中断/约束与原字节核对；上传真实交接由T-UP-01补验；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/media/model.test.ts，真实SQLite重复接收/事务中断/约束与原字节核对；上传真实交接由T-UP-01补验；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-MED-01 实际结果与保留边界](../verification/media-50/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-MED-01 实际结果与保留边界](../../verification/media-50/README.md)。执行状态以 GitHub 为准。
 
 ### T-MED-02 初始化媒体默认值
 
 - 任务组：`MEDIA-DEFAULTS`
 - 里程碑：M1
 - 需求：R-11.3-01、R-14.1-01、R-14.4-01、R-14.4-02、A-26.2-02
-- 规格：[media §4.1–4.2](../specs/SPEC-media.md)
+- 规格：[media §4.1–4.2](../../specs/SPEC-media.md)
 - 直接前置：`T-MED-01`
 - 范围：prepareInitialMedia(tx)、共享设置schema和快照读取；只交付setup所需初值，设置页另由T-MED-12完成。
 - 预计文件：src/server/media/{settings,validation}.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：压缩WebP质量82/水印关/默认compressed/公开/并发1；重复准备不覆盖用户值；关闭当前默认开关须同次改有效默认，非法组合字段报错。
-- 验证方法：新增 tests/unit/media/settings.test.ts 与 tests/integration/media/defaults.test.ts，默认值、事务回滚和重启不覆盖测试；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/unit/media/settings.test.ts 与 tests/integration/media/defaults.test.ts，默认值、事务回滚和重启不覆盖测试；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-MED-02 实际结果与保留边界](../verification/media-51/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-MED-02 实际结果与保留边界](../../verification/media-51/README.md)。执行状态以 GitHub 为准。
 
 ### T-ID-01 认证库与所有者权限入口
 
 - 任务组：`IDENTITY-AUTH`
 - 里程碑：M1
 - 需求：R-6.1-01、R-24.2-04、A-26.12-03、R-23.1-02
-- 规格：[identity §2–5/10/13](../specs/SPEC-identity.md)
+- 规格：[identity §2–5/10/13](../../specs/SPEC-identity.md)
 - 直接前置：`T-SITE-01`, `EV-IDENTITY-01`
 - 范围：固定认证依赖schema/实例、requireOwner及按方法路径放行；本地登录/退出与会话HTTP。setup未完成返回明确状态。
 - 预计文件：src/server/identity/{schema,auth,owner}.ts、src/app/api/auth/[...all]/route.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：唯一所有者约束成立，公开注册/任意用户更新/credential解绑不可调用；会话7天/1天续期和退出撤销成立；只接受Cookie所有者，origin更新生效，Secret轮换使旧Cookie失效而数据保留。
-- 验证方法：新增 tests/integration/identity/auth.test.ts，真实库与SQLite/HTTP、两浏览器Cookie、跨进程密钥轮换；不用手造会话代替；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/identity/auth.test.ts，真实库与SQLite/HTTP、两浏览器Cookie、跨进程密钥轮换；不用手造会话代替；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-ID-01 实际结果与保留边界](../verification/identity-53/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-ID-01 实际结果与保留边界](../../verification/identity-53/README.md)。执行状态以 GitHub 为准。
 
 ### T-ID-02 启动码与完整初始化事务
 
 - 任务组：`IDENTITY-SETUP`
 - 里程碑：M1
 - 需求：R-5.3-01、R-5.3-02、R-5.3-03、A-26.1-01、A-26.1-02、A-26.1-03、A-26.1-11
-- 规格：[identity §4](../specs/SPEC-identity.md)
+- 规格：[identity §4](../../specs/SPEC-identity.md)
 - 直接前置：`T-ID-01`, `T-STO-01`, `T-MED-02`
 - 范围：Web进程发码、一次完整setup提交、组合site/media/credential；prestart只准备存储及必要预检。
 - 预计文件：src/server/identity/setup.ts、src/server/startup/server-start.ts、src/app/api/setup/route.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：码仅日志输出，HTTP不可读；热更新不换码，真实重启换码；哈希在事务外、并发只一位所有者；中断可重试，提交丢响应后引导登录，完成不再开放setup、不自动登录。
-- 验证方法：新增 tests/integration/identity/setup.test.ts；空目录启动、并发请求、各提交中断点及重启；无密钥构建不得发码/打开业务库；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/identity/setup.test.ts；空目录启动、并发请求、各提交中断点及重启；无密钥构建不得发码/打开业务库；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
-- 实施证据：[T-ID-02 实际结果与保留边界](../verification/identity-54/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-ID-02 实际结果与保留边界](../../verification/identity-54/README.md)。执行状态以 GitHub 为准。
 
 ### T-UI-01 HeroUI 接入与公共/后台外壳
 
 - 任务组：`SITE-THEME`
 - 里程碑：M1
 - 需求：R-22.1-01、R-22.3-01、R-22.4-01
-- 规格：[交付规范](../design/handoff.md)、[site §2/6](../specs/SPEC-site.md)
+- 规格：[交付规范](../../design/handoff.md)、[site §2/6](../../specs/SPEC-site.md)
 - 直接前置：`EV-UI-01`, `DG-SHELL`, `T-SITE-01`
 - 范围：随首页和M1路由引入HeroUI/Tailwind/查询与表单所需依赖，公共背景/返回首页、后台侧栏/手机全屏导航、设置分类与固定底栏；不一次挂未实现入口。
 - 预计文件：src/app/{layout,page}.tsx、src/components/shell/、应用样式、package.json/pnpm-lock.yaml；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：首页及后台布局使用中文与Ariso颜色字体；<768全屏导航、768–1199顶部菜单、≥1200侧栏；44px点击目标、焦点返回，减少动态效果；主题完整行为由T-SITE-05交付。
-- 验证方法：新增M1浏览器外壳场景并接入现有test:browser运行器；360/390/430/768/1440截图+键盘操作，核对实际安装类型与构建；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增M1浏览器外壳场景并接入现有test:browser运行器；360/390/430/768/1440截图+键盘操作，核对实际安装类型与构建；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：首页/所有后台M1入口；权限由路由任务接入，配置来自T-SITE-01。[桌面 2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10) / [手机 102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)；背景状态[桌面 192:799](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-799) / [手机 192:1836](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-1836)；手机导航[106:1494](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=106-1494)，桌面后台[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)。HeroUI Button、Link、Modal、Select、Tabs、Toast；用Modal组合全屏导航，非侧边抽屉。通用控件差异仅按HeroUI统一，布局无差异。
 
-实施记录：[T-UI-01 实际交付与验证](../verification/ui-57/README.md)。后台业务路由与真实设备验收仍按所属任务保留边界。
+实施记录：[T-UI-01 实际交付与验证](../../verification/ui-57/README.md)。后台业务路由与真实设备验收仍按所属任务保留边界。
 
 2026-09-22 项目所有者确认：#57 正常完成，不存在待处理验收缺口；历史未执行设备测试不再阻塞下游实施，不改写为测试通过。
 
 #### DG-SHELL 核对结论（Issue #56，2026-09-21）
 
-本任务是 DG-SHELL 唯一直接消费任务，家族为 `UI-HOME` / `UI-SHELL`，沿用上述需求编号、界面节点和组件选型。文档走查确认现有代表与[公共页面、导航与布局规则](../design/handoff.md#公共页面导航与布局)可复用，未发现阻塞本任务的设计表达缺口；不表示外壳已经实现或 DES-07 已验收。[核对依据、命令与审计证据](./evidence/DG-SHELL/README.md)。
+本任务是 DG-SHELL 唯一直接消费任务，家族为 `UI-HOME` / `UI-SHELL`，沿用上述需求编号、界面节点和组件选型。文档走查确认现有代表与[公共页面、导航与布局规则](../../design/handoff.md#公共页面导航与布局)可复用，未发现阻塞本任务的设计表达缺口；不表示外壳已经实现或 DES-07 已验收。[核对依据、命令与审计证据](../../tasks/evidence/DG-SHELL/README.md)。
 
-| 核对范围           | 可复用节点与规则                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | T-UI-01 的实际验收与责任边界                                                                                                                                                                                                                                                                                                           |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 首页与公共返回     | 上述首页与背景母版；返回样例为登录[桌面 2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11) / [手机 102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。复用 Link 表达明确目的地，背景复用双柔光与点阵。                                                                                                                                                                                                                                    | 首页不加返回自身的入口；其他公共完整页及异常状态保留“返回首页”，直达页面也能回到首页，不能依赖浏览器历史。流程内“上一步/返回登录”由所属页面保留；提交中离开不等于服务端取消。T-ID-03 接入初始化/登录，后续恢复与分享任务接入各自页面。                                                                                                 |
-| 后台导航与权限入口 | 上述桌面后台与手机全屏导航；当前项[浅色图库 268:3308](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3308)、[深色图库 268:3472](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3472)、[浅色设置 268:3390](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3390)、[深色设置 268:3554](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3554)。                                                                               | 导航可用性按[公共界面复用与占位退出](../design/handoff.md#公共界面复用与占位退出)的当前用户确认执行，按实际路由显示当前项，用户信息放底部。Button 触发、Modal 组合全屏菜单、Link 导航；打开后的键盘焦点限制、Esc/关闭及返回触发点、来源滚动保持须实测。菜单关闭恢复来源与路由跳转分别验证。图库/设置样例不授予提前实现业务入口的权限。 |
-| 设置分类与固定底栏 | 设置[桌面 30:1601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1601) / [手机 102:1389](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1389)，手机分类[113:1499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=113-1499)。Tabs / Select 分别承接桌面标签与手机选择器。                                                                                                                                                                      | 分类显示当前值，只接已有页面。数量/分页/设置操作栏与正文滚动分离并为正文留位；空态按钮在说明下、弹窗操作在弹窗底部，不强制变成全页底栏。验证长短正文和短视口，保存/取消及未保存输入的处理仍由设置任务负责，不为验收外壳提前开放设置写入。                                                                                              |
-| 浅深色、焦点与禁用 | 焦点/状态[桌面浅色 266:1561](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-1561) / [深色 266:1578](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-1578)，[手机浅色 266:3458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-3458) / [深色 266:3475](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-3475)；[R6 两端颜色与屏宽对照](../archive/preparation-2026-09/design/parallel-theme-widths-2026-09-19.md#节点矩阵)。 | 验证中文、品牌字体、两种主题的当前项/焦点/错误/禁用可读性，装饰不拦截点击或辅助阅读；图标按钮有可访问名称与 Tooltip，按需复用 HeroUI Tooltip。Tab/Shift+Tab 顺序、2px 焦点、44px 手机点击区及减少动态效果须实测。T-SITE-05 承接完整主题偏好/系统变化/刷新/跨标签页验收。                                                               |
+| 核对范围           | 可复用节点与规则                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | T-UI-01 的实际验收与责任边界                                                                                                                                                                                                                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 首页与公共返回     | 上述首页与背景母版；返回样例为登录[桌面 2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11) / [手机 102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。复用 Link 表达明确目的地，背景复用双柔光与点阵。                                                                                                                                                                                                                            | 首页不加返回自身的入口；其他公共完整页及异常状态保留“返回首页”，直达页面也能回到首页，不能依赖浏览器历史。流程内“上一步/返回登录”由所属页面保留；提交中离开不等于服务端取消。T-ID-03 接入初始化/登录，后续恢复与分享任务接入各自页面。                                                                                                    |
+| 后台导航与权限入口 | 上述桌面后台与手机全屏导航；当前项[浅色图库 268:3308](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3308)、[深色图库 268:3472](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3472)、[浅色设置 268:3390](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3390)、[深色设置 268:3554](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3554)。                                                                       | 导航可用性按[公共界面复用与占位退出](../../design/handoff.md#公共界面复用与占位退出)的当前用户确认执行，按实际路由显示当前项，用户信息放底部。Button 触发、Modal 组合全屏菜单、Link 导航；打开后的键盘焦点限制、Esc/关闭及返回触发点、来源滚动保持须实测。菜单关闭恢复来源与路由跳转分别验证。图库/设置样例不授予提前实现业务入口的权限。 |
+| 设置分类与固定底栏 | 设置[桌面 30:1601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1601) / [手机 102:1389](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1389)，手机分类[113:1499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=113-1499)。Tabs / Select 分别承接桌面标签与手机选择器。                                                                                                                                                              | 分类显示当前值，只接已有页面。数量/分页/设置操作栏与正文滚动分离并为正文留位；空态按钮在说明下、弹窗操作在弹窗底部，不强制变成全页底栏。验证长短正文和短视口，保存/取消及未保存输入的处理仍由设置任务负责，不为验收外壳提前开放设置写入。                                                                                                 |
+| 浅深色、焦点与禁用 | 焦点/状态[桌面浅色 266:1561](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-1561) / [深色 266:1578](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-1578)，[手机浅色 266:3458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-3458) / [深色 266:3475](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=266-3475)；[R6 两端颜色与屏宽对照](../preparation-2026-09/design/parallel-theme-widths-2026-09-19.md#节点矩阵)。 | 验证中文、品牌字体、两种主题的当前项/焦点/错误/禁用可读性，装饰不拦截点击或辅助阅读；图标按钮有可访问名称与 Tooltip，按需复用 HeroUI Tooltip。Tab/Shift+Tab 顺序、2px 焦点、44px 手机点击区及减少动态效果须实测。T-SITE-05 承接完整主题偏好/系统变化/刷新/跨标签页验收。                                                                  |
 
 状态与输入/错误契约按以下边界验收，不能把固定成功跳转作为证据：
 
-| 状态        | 适用范围与验收                                                                                                                                                                                                                                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 加载/处理中 | 有真实配置/会话读取或页面操作时区分加载与内容，不能先显示所有者入口；公共背景/出口保持可用。等待由实际请求决定，不复用原型计时。数据请求及提交行为由路由任务接入。                                                                                                                                                              |
-| 空/未初始化 | site 无配置是正常初态，可用内置品牌；不等于数据库故障。初始化入口由 identity 状态决定，不能靠 site 行是否存在判断完成；没有列表数据时沿用内容空态，外壳不伪造业务空列表或添加占位入口。                                                                                                                                         |
-| 错误        | 依据 [site §3/7](../specs/SPEC-site.md) 区分无配置与读取失败，不用默认品牌掩盖故障；依据 [identity §4/5/10](../specs/SPEC-identity.md) 区分字段错误 400、未授权 401、setup 冲突 409、限流 429 与内部错误。错误保留公共出口，字段错误紧跟字段并保留输入；Toast 不能成为关键错误的唯一承载。具体错误映射由所属路由/表单任务验收。 |
-| 成功        | 导航切换只代表进入目的页，不冒充保存成功；初始化完成去登录、不自动登录。外壳本身没有保存事务，不新增通用“保存成功”状态；实际成功与响应丢失后的结果核对由业务任务验收。                                                                                                                                                          |
-| 禁用        | 真正不可用的控件有明确原因且不能执行；提交中防重复属于表单任务。未实现导航的呈现遵守[交接中的用户确认](../design/handoff.md#公共界面复用与占位退出)，不把禁用菜单视为模块已实现；菜单当前项的选中状态不等于业务禁用。                                                                                                           |
+| 状态        | 适用范围与验收                                                                                                                                                                                                                                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 加载/处理中 | 有真实配置/会话读取或页面操作时区分加载与内容，不能先显示所有者入口；公共背景/出口保持可用。等待由实际请求决定，不复用原型计时。数据请求及提交行为由路由任务接入。                                                                                                                                                                    |
+| 空/未初始化 | site 无配置是正常初态，可用内置品牌；不等于数据库故障。初始化入口由 identity 状态决定，不能靠 site 行是否存在判断完成；没有列表数据时沿用内容空态，外壳不伪造业务空列表或添加占位入口。                                                                                                                                               |
+| 错误        | 依据 [site §3/7](../../specs/SPEC-site.md) 区分无配置与读取失败，不用默认品牌掩盖故障；依据 [identity §4/5/10](../../specs/SPEC-identity.md) 区分字段错误 400、未授权 401、setup 冲突 409、限流 429 与内部错误。错误保留公共出口，字段错误紧跟字段并保留输入；Toast 不能成为关键错误的唯一承载。具体错误映射由所属路由/表单任务验收。 |
+| 成功        | 导航切换只代表进入目的页，不冒充保存成功；初始化完成去登录、不自动登录。外壳本身没有保存事务，不新增通用“保存成功”状态；实际成功与响应丢失后的结果核对由业务任务验收。                                                                                                                                                                |
+| 禁用        | 真正不可用的控件有明确原因且不能执行；提交中防重复属于表单任务。未实现导航的呈现遵守[交接中的用户确认](../../design/handoff.md#公共界面复用与占位退出)，不把禁用菜单视为模块已实现；菜单当前项的选中状态不等于业务禁用。                                                                                                              |
 
 权限不由菜单代替：匿名/过期/已撤销会话不能访问所有者页面或管理 API；登录回跳只允许站内受保护入口，不能接受外部地址。T-UI-01 提供布局与入口组合，T-ID-03 及后续路由任务消费 identity 鉴权并验证直达、过期与回跳；上传 Token 和分享授权不作为后台登录凭据。具体登录默认目的地由路由任务按届时已交付入口落实，不将原型演示目标当成新路由契约。
 
-真实验收仍开放：T-UI-01 在 360/390/430/768/1440 及断点两侧 767/1199/1200 检查全屏菜单、顶部菜单、侧栏切换；浅深色覆盖上述适用状态。滚动与焦点记录实际浏览器结果；设备实测范围按[共用验收](./execution.md#前端共用验收)。T-ID-03 承接公共认证页集成；设置任务承接实际分类/保存；T-SITE-05 承接完整主题；T-QA-02 汇总 DES-07、DES-05 与 RG-07，其他详情/大图返回上下文继续由 RG-02 及所属模块验收。本次未新增需补画的状态，不修改 Figma，不关闭上述责任。
+真实验收仍开放：T-UI-01 在 360/390/430/768/1440 及断点两侧 767/1199/1200 检查全屏菜单、顶部菜单、侧栏切换；浅深色覆盖上述适用状态。滚动与焦点记录实际浏览器结果；设备实测范围按[共用验收](../../tasks/execution.md#前端共用验收)。T-ID-03 承接公共认证页集成；设置任务承接实际分类/保存；T-SITE-05 承接完整主题；T-QA-02 汇总 DES-07、DES-05 与 RG-07，其他详情/大图返回上下文继续由 RG-02 及所属模块验收。本次未新增需补画的状态，不修改 Figma，不关闭上述责任。
 
 ### T-ID-03 两端初始化与登录闭环
 
 - 任务组：`IDENTITY-SETUP`
 - 里程碑：M1
 - 需求：R-5.3-02、R-5.3-03、R-6.1-01、A-26.1-04
-- 规格：[identity §4–5/10–11](../specs/SPEC-identity.md)
+- 规格：[identity §4–5/10–11](../../specs/SPEC-identity.md)
 - 直接前置：`T-ID-02`, `T-UI-01`, `DG-SETUP`, `DG-AUTH`
 - 范围：/setup两步收集最终一次提交；/login真实邮箱密码、退出和受保护路由回跳；后端权限仍由T-ID-01负责。
 - 预计文件：src/app/{setup,login}/、src/components/identity/、e2e/identity.mjs；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：错误不丢其他字段，无法推荐时区须手选；码和密码不持久化；提交未知先核对，成功去登录；登录失败/限流/过期/未初始化各有真实反馈，匿名不能读后台。
-- 验证方法：新增 e2e/identity.mjs 并接入运行器；两端空目录→setup→登录→退出→重启→旧码拒绝；HTTP绕过页面负测；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 e2e/identity.mjs 并接入运行器；两端空目录→setup→登录→退出→重启→旧码拒绝；HTTP绕过页面负测；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：UI-SETUP [桌面 184:764](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-764) / [手机 184:1774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1774)；字段/码错误[桌面 184:766](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-766) / [手机 184:1776](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1776)、时区[桌面 184:767](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-767) / [手机 184:1777](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1777)、未知结果[桌面 184:772](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-772) / [手机 184:1782](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1782)；UI-AUTH [桌面 2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11) / [手机 102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)、密码错误[桌面 200:2105](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=200-2105) / [手机 200:2371](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=200-2371)。HeroUI Form、TextField、InputGroup、ComboBox、Button、Alert、Spinner；字段外标签/手机滚动和公共返回沿用外壳；无自制通用控件或业务差异。
 
-实施记录：[T-ID-03 实际行为、验证与保留边界](../verification/identity-60/README.md)。前置已满足；本次落实 `/setup`、`/login` 及最小受保护 `/admin` 工作空间，登录默认及回跳只采用当前已交付入口。执行状态以 GitHub 为准，不将页面存在或历史关闭等同于全部验收完成。
+实施记录：[T-ID-03 实际行为、验证与保留边界](../../verification/identity-60/README.md)。前置已满足；本次落实 `/setup`、`/login` 及最小受保护 `/admin` 工作空间，登录默认及回跳只采用当前已交付入口。执行状态以 GitHub 为准，不将页面存在或历史关闭等同于全部验收完成。
 
 #### DG-SETUP 核对结论（2026-09-22）
 
-仅消费 UI-SETUP，关联 [#58](https://github.com/dnslin/ariso-next/issues/58)；登录错误和回跳仍由 DG-AUTH 核对。下表对照[既有 DES-01 节点与交互约定](../archive/preparation-2026-09/design/README.md#本轮已补des-01-首次初始化2026-09-17)、identity §4–5/10–11 和 site 输入契约，不新增产品规则。两端各 11 态均有来源，文档走查未发现需补画的具体缺口。
+仅消费 UI-SETUP，关联 [#58](https://github.com/dnslin/ariso-next/issues/58)；登录错误和回跳仍由 DG-AUTH 核对。下表对照[既有 DES-01 节点与交互约定](../preparation-2026-09/design/README.md#本轮已补des-01-首次初始化2026-09-17)、identity §4–5/10–11 和 site 输入契约，不新增产品规则。两端各 11 态均有来源，文档走查未发现需补画的具体缺口。
 
 | 状态               | 桌面 / 手机节点                                                                                                                                                   | 可复用规则                                                                                    | T-ID-03 真实验收范围（未完成）                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -170,17 +172,17 @@
 
 复用现有 HeroUI Form、TextField、InputGroup、ComboBox、Button、Alert、Spinner 及字段标签／错误组件；公共背景与返回首页由 T-UI-01 外壳提供。通用控件内部细节沿用 HeroUI，保留两步业务布局；本次没有额外自制控件或需偏离原型的业务差异。上一步与字段错误只保留当前页面内存，刷新／离开后重新填写；码和密码不写 Cookie、URL、localStorage 或 sessionStorage。
 
-主题和响应式按[设计交接](../design/handoff.md)复用：360/390/430/768 及桌面 1440，浅深色覆盖上述全部适用状态；空态仅适用于未填字段、无推荐和搜索无结果，不新增“空账号列表”。T-ID-03 验证外标签与字段错误关联、Tab 顺序、清楚焦点、密码显示切换、ComboBox 选择与焦点返回、至少 44px 点击目标、长错误换行、滚动和减少动态效果。设备实测范围按[共用验收](./execution.md#前端共用验收)。
+主题和响应式按[设计交接](../../design/handoff.md)复用：360/390/430/768 及桌面 1440，浅深色覆盖上述全部适用状态；空态仅适用于未填字段、无推荐和搜索无结果，不新增“空账号列表”。T-ID-03 验证外标签与字段错误关联、Tab 顺序、清楚焦点、密码显示切换、ComboBox 选择与焦点返回、至少 44px 点击目标、长错误换行、滚动和减少动态效果。设备实测范围按[共用验收](../../tasks/execution.md#前端共用验收)。
 
 当前 POST 契约及事务已由 T-ID-02 交付，但 `/setup` 页面尚未实现；结果核对的页面／请求接入由 T-ID-03 落实，不能把重复写入充当先核对，也不在本设计任务新增查询接口。启动前目录失败由部署日志承接，不新增无法启动时的网页。T-ID-03 必须在所有直接前置有交付与验收证据后实施；本核对不解锁 DG-AUTH 或替其余前置宣告完成。
 
-DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述页面行为，T-CP-M1 承接空目录到登录的部署闭环，T-QA-02 汇总主题／宽度与交互证据。若实施发现既有规则不能表达的具体状态，由 T-ID-03 记录状态和影响并交对应设计责任处理，不重画整组代表图。[本次核对与验证证据](./evidence/DG-SETUP/README.md)。
+DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述页面行为，T-CP-M1 承接空目录到登录的部署闭环，T-QA-02 汇总主题／宽度与交互证据。若实施发现既有规则不能表达的具体状态，由 T-ID-03 记录状态和影响并交对应设计责任处理，不重画整组代表图。[本次核对与验证证据](../../tasks/evidence/DG-SETUP/README.md)。
 
 #### DG-AUTH 核对结论（2026-09-22）
 
 项目所有者最终确认：#59 正常完成，不存在待处理验收缺口；本节历史核对中的 #57 前置限制同时解除。以下保留原始规则与核对记录，不将未执行测试改记为通过。
 
-本节承接 [DG-AUTH / #59](https://github.com/dnslin/ariso-next/issues/59)，仅核对 T-ID-03 的本地登录、退出、失效与回跳。依据 [identity §5/10–11](../specs/SPEC-identity.md)、[设计交接](../design/handoff.md)及[登录状态原始索引](../archive/preparation-2026-09/design/README.md#本轮已补des-06-auth-登录与账号安全2026-09-17)。初始化由 DG-SETUP 承接；账号修改、OAuth、邮件恢复不因此提前实施。核对命令与审计记录见[证据](./evidence/DG-AUTH/README.md)。
+本节承接 [DG-AUTH / #59](https://github.com/dnslin/ariso-next/issues/59)，仅核对 T-ID-03 的本地登录、退出、失效与回跳。依据 [identity §5/10–11](../../specs/SPEC-identity.md)、[设计交接](../../design/handoff.md)及[登录状态原始索引](../preparation-2026-09/design/README.md#本轮已补des-06-auth-登录与账号安全2026-09-17)。初始化由 DG-SETUP 承接；账号修改、OAuth、邮件恢复不因此提前实施。核对命令与审计记录见[证据](../../tasks/evidence/DG-AUTH/README.md)。
 
 | 状态与可复用节点（桌面 / 手机）                                                                                                                                                                                                                                                                                                              | T-ID-03 应消费的规则与真实验收范围                                                                                                                                                                                                                                                                                  |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -192,23 +194,23 @@ DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述
 | 服务不可用：[200:2333](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=200-2333) / [200:2599](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=200-2599)                                                                                                                                                              | 连接失败和内部错误保留可诊断反馈及重试出口；不能假报登录/退出成功。退出失败保留重试，只有真实会话撤销才完成退出；重放旧 Cookie 不得访问后台。响应不明不能仅凭前端跳页判为成功。                                                                                                                                     |
 | 未初始化、加载/提交中、成功/退出                                                                                                                                                                                                                                                                                                             | 不新增整页：`409 / SETUP_REQUIRED` 由登录布局配 Alert、Link 明确引导 `/setup`；加载/提交中用 Button、Spinner 表达等待并禁止重复提交；真实登录成功后执行允许的回跳，退出后不能再访问后台。登录无列表空态，“空”适用为未填写表单；未初始化与服务故障不是空列表。                                                       |
 
-**现有交付与真实责任。** T-ID-01 的[认证证据](../verification/identity-53/README.md)和 T-ID-02 的[初始化证据](../verification/identity-54/README.md)已覆盖真实 HTTP/SQLite；生产入口当前仅开放 `POST /api/auth/sign-in/email`、`POST /api/auth/sign-out`、`GET /api/auth/get-session`。`requireOwner` 只鉴权，不刷新 Cookie；T-ID-03 需通过会话 HTTP 消费既有续期能力，不能把任意后台请求当成续期。页面和管理 API 分别检查身份，上传 Token/分享授权不能成为登录凭据。以上后端证据不证明 `/login`、`/setup` 或受保护页面闭环已交付。
+**现有交付与真实责任。** T-ID-01 的[认证证据](../../verification/identity-53/README.md)和 T-ID-02 的[初始化证据](../../verification/identity-54/README.md)已覆盖真实 HTTP/SQLite；生产入口当前仅开放 `POST /api/auth/sign-in/email`、`POST /api/auth/sign-out`、`GET /api/auth/get-session`。`requireOwner` 只鉴权，不刷新 Cookie；T-ID-03 需通过会话 HTTP 消费既有续期能力，不能把任意后台请求当成续期。页面和管理 API 分别检查身份，上传 Token/分享授权不能成为登录凭据。以上后端证据不证明 `/login`、`/setup` 或受保护页面闭环已交付。
 
-**两端与主题。** 视觉对照沿用 [R6 认证公共页矩阵](../archive/preparation-2026-09/design/parallel-theme-widths-2026-09-19.md)：[桌面 1440 深色 530:14528](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14528)、[手机 360 浅色 530:14759](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14759) / [深色 530:14799](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14799)、[768 深色 268:3718](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3718)；这些仅作视觉对照，不作为交互流程起点。各行均消费同一套 [公共背景、返回首页、表单、焦点和主题规则](../design/handoff.md)；HeroUI 采用项目已锁定版本，不自制通用输入、提示或按钮。T-ID-03 在 360/390/430/768 及桌面 1440 检查浅深色、错误长文案与纵向滚动；Tab/Enter、密码切换、错误关联和焦点恢复均需实测。手机点击目标至少 44px、短视口下提交/返回可达和减少动态效果需记录实际浏览器环境。登录表单操作随内容排列，不套用设置页固定底栏；所有异常状态仍保留公共返回。
+**两端与主题。** 视觉对照沿用 [R6 认证公共页矩阵](../preparation-2026-09/design/parallel-theme-widths-2026-09-19.md)：[桌面 1440 深色 530:14528](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14528)、[手机 360 浅色 530:14759](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14759) / [深色 530:14799](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14799)、[768 深色 268:3718](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=268-3718)；这些仅作视觉对照，不作为交互流程起点。各行均消费同一套 [公共背景、返回首页、表单、焦点和主题规则](../../design/handoff.md)；HeroUI 采用项目已锁定版本，不自制通用输入、提示或按钮。T-ID-03 在 360/390/430/768 及桌面 1440 检查浅深色、错误长文案与纵向滚动；Tab/Enter、密码切换、错误关联和焦点恢复均需实测。手机点击目标至少 44px、短视口下提交/返回可达和减少动态效果需记录实际浏览器环境。登录表单操作随内容排列，不套用设置页固定底栏；所有异常状态仍保留公共返回。
 
-**表达缺口与开放项。** 文档走查未发现必须补画的状态；未初始化、等待、退出失败复用上述布局与现有组件，不臆造专用节点。任意回跳目标、响应丢失、续期与响应式组合属于 T-ID-03（P2-IDENTITY）的实施验收；若实际布局无法表达，由 P2-DESIGN 按具体缺口补充，不能重新评审已确认产品选择。DES-06-AUTH、DES-07、DES-05、RG-07 均继续开放，T-QA-02 汇总跨端验收。DG-AUTH 核对当时的前置状态保留在[历史证据](./evidence/DG-AUTH/README.md)；T-ID-03 当前前置结论与实施结果见[实施记录](../verification/identity-60/README.md)。
+**表达缺口与开放项。** 文档走查未发现必须补画的状态；未初始化、等待、退出失败复用上述布局与现有组件，不臆造专用节点。任意回跳目标、响应丢失、续期与响应式组合属于 T-ID-03（P2-IDENTITY）的实施验收；若实际布局无法表达，由 P2-DESIGN 按具体缺口补充，不能重新评审已确认产品选择。DES-06-AUTH、DES-07、DES-05、RG-07 均继续开放，T-QA-02 汇总跨端验收。DG-AUTH 核对当时的前置状态保留在[历史证据](../../tasks/evidence/DG-AUTH/README.md)；T-ID-03 当前前置结论与实施结果见[实施记录](../../verification/identity-60/README.md)。
 
 ### T-MED-03 本地首图处理与持久任务
 
 - 任务组：`MEDIA-PROCESS`
 - 里程碑：M2
 - 需求：R-11.1-01、R-11.1-02、R-11.1-03、R-11.2-01、R-11.2-03、R-11.3-02、R-11.4-01、R-13.3-01、A-26.7-01、A-26.7-02、A-26.7-03、A-26.7-04、A-26.2-04、A-26.2-05、R-23.5-01
-- 规格：[media §5–7](../specs/SPEC-media.md)
+- 规格：[media §5–7](../../specs/SPEC-media.md)
 - 直接前置：`T-MED-02`, `EV-MEDIA-01`
 - 范围：JPEG/PNG首图最小闭环：可信头部识别、默认WebP压缩/缩略、方向与元数据去除、SQLite任务领取及启动单例；不声称全格式完成。
 - 预计文件：src/server/media/{formats,process,queue}.ts、src/server/startup/server-start.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：原图不变；缩略WebP 640/80且不放大；本次应生成版本均保存才ready，单步失败保留原图和成功版本；快照不随设置变，I/O与处理不在同步事务内。
-- 验证方法：新增 tests/integration/media/process.test.ts；实际ImageMagick输出类型/尺寸/方向/透明样本与错误编码，任务状态和字节对照；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/media/process.test.ts；实际ImageMagick输出类型/尺寸/方向/透明样本与错误编码，任务状态和字节对照；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
 ### T-MED-04 任务重启恢复与按需资源
@@ -216,56 +218,56 @@ DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述
 - 任务组：`MEDIA-PROCESS`
 - 里程碑：M2
 - 需求：R-11.2-02、R-11.2-04、R-11.8-01、R-11.8-02、A-26.7-06、A-26.7-07、A-26.7-10、A-26.7-11
-- 规格：[media §7/10](../specs/SPEC-media.md)
+- 规格：[media §7/10](../../specs/SPEC-media.md)
 - 直接前置：`T-MED-03`, `EV-MEDIA-01`
 - 范围：内容任务并发1–4、一次临时错误重试、无进展恢复预算、实际空间计数与子进程有界结束；保留通用于后续格式的步骤接口。
 - 预计文件：src/server/media/{queue,resources,recovery}.ts、启动停止组合；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：重启不重复发布、不清空其他tmp；同图不交错；低空间小图可运行，不设像素/帧/页阈值或固定工作区预留；磁盘耗尽/工具超时保留原图，重启不重置重试次数。
-- 验证方法：新增 tests/integration/media/recovery.test.ts，真实子进程SIGTERM/SIGKILL、并发/低空间/ENOSPC/重复中断；记录峰值内存磁盘与未结束子进程；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/media/recovery.test.ts，真实子进程SIGTERM/SIGKILL、并发/低空间/ENOSPC/重复中断；记录峰值内存磁盘与未结束子进程；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[任务恢复、真实低空间与验证记录](../verification/media-64/README.md)。
+- 实施证据：[任务恢复、真实低空间与验证记录](../../verification/media-64/README.md)。
 
 ### T-MED-05 回收与恢复服务契约
 
 - 任务组：`MEDIA-TRASH`
 - 里程碑：M2
 - 需求：R-18.1-01、R-18.1-02、R-18.2-01、R-18.2-02、A-26.11-01、A-26.11-02、A-26.11-03、A-26.11-04、A-26.11-05
-- 规格：[media §11/12](../specs/SPEC-media.md)
+- 规格：[media §11/12](../../specs/SPEC-media.md)
 - 直接前置：`T-MED-01`, `T-ID-01`, `T-COL-01`
 - 范围：trashImage/restoreImage及所有者HTTP，只改回收维度并保留关系/加入时间；永久删除由T-MED-11。
 - 预计文件：src/server/media/trash.ts、src/app/api/images/[id]/{trash,restore}/route.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：重复回收恢复幂等；恢复沿用ID/Key，已删除关系不重建；停用存储仍可恢复记录，删除已受理禁止恢复；无自动清空。
-- 验证方法：新增 tests/integration/media/trash.test.ts；真实关系/加入时间/存储停用和删除状态，重启检查；链接拦截在T-DEL-01联验；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/media/trash.test.ts；真实关系/加入时间/存储停用和删除状态，重启检查；链接拦截在T-DEL-01联验；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
-- 实施证据：[T-MED-05 实际契约、验证与保留边界](../verification/media-67/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-MED-05 实际契约、验证与保留边界](../../verification/media-67/README.md)。执行状态以 GitHub 为准。
 
 ### T-DEL-01 本地稳定图片访问与下载
 
 - 任务组：`DELIVERY-CORE`
 - 里程碑：M2
 - 需求：R-14.2-01、R-14.3-01、R-14.5-01、R-14.6-01、R-14.6-02、R-14.7-01、R-14.8-01、R-14.10-01、R-14.10-02、R-14.9-01、A-26.6-01、A-26.6-02
-- 规格：[delivery §3–10](../specs/SPEC-delivery.md)
+- 规格：[delivery §3–10](../../specs/SPEC-delivery.md)
 - 直接前置：`T-SITE-01`, `T-ID-01`, `T-STO-01`, `T-MED-04`, `T-MED-05`, `EV-DELIVERY-01`
 - 范围：GET/HEAD /i/{id}，默认与显式版本解析、权限/状态/流响应、附件文件名和计数事件契约；S3由T-DEL-02。
 - 预计文件：src/server/delivery/{links,access,response}.ts、src/app/i/[imageId]/route.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：私有只Cookie所有者可读，回收/删除/停用都拒绝；默认仅格式不适用回原图，显式缺版本不回退；异步后复核权限/版本，流背压/关闭正确；所有响应no-store，HEAD/304/Range按规格且不计数。
-- 验证方法：新增 tests/unit/delivery/resolve.test.ts 与 tests/integration/delivery/local.test.ts；真实流、取消/首字节失败、条件请求、权限变化/版本切换、中文附件与SVG响应头；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/unit/delivery/resolve.test.ts 与 tests/integration/delivery/local.test.ts；真实流、取消/首字节失败、条件请求、权限变化/版本切换、中文附件与SVG响应头；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
-- 实施证据：[T-DEL-01 实际结果与保留边界](../verification/delivery-69/README.md)。执行状态以 GitHub 为准。
+- 实施证据：[T-DEL-01 实际结果与保留边界](../../verification/delivery-69/README.md)。执行状态以 GitHub 为准。
 
 ### T-UP-01 本地单文件接收与原子交接
 
 - 任务组：`UPLOAD-LOCAL`
 - 里程碑：M2
 - 需求：R-7.3-01、R-10.1-01、A-26.2-03
-- 规格：[upload §3–6/8–9/11](../specs/SPEC-upload.md)
+- 规格：[upload §3–6/8–9/11](../../specs/SPEC-upload.md)
 - 直接前置：`T-ID-01`, `T-ID-02`, `T-COL-01`, `T-MED-04`, `T-DEL-01`, `UPLOAD-V02`, `UPLOAD-V03`
 - 范围：submission/session及本地流式content入口；固定存储/设置/集合快照、登记文件责任、初验后同事务交接；先交付单文件真实路径，完整多批由T-UP-03。
 - 预计文件：src/server/upload/{schema,sessions,receive,accept}.ts、src/app/api/uploads/；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：默认50MiB等边界、未知长度/伪长度/截断/空图检查；文件名归一化且重复文件独立ID；交接前取消不建图，交接后关页处理继续；失败/重启按确切路径清理，重复提交不多建图。
-- 验证方法：新增 tests/integration/upload/local.test.ts；真实multipart/磁盘/SQLite和事务故障，取消竞争、提交响应丢失、原图字节、集合删除与快照固定；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果；本次交付见[实施验证](../verification/upload-73/README.md)。
+- 验证方法：新增 tests/integration/upload/local.test.ts；真实multipart/磁盘/SQLite和事务故障，取消竞争、提交响应丢失、原图字节、集合删除与快照固定；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果；本次交付见[实施验证](../../verification/upload-73/README.md)。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
 ### T-LIB-01 基础图库读取与手机网格
@@ -273,26 +275,26 @@ DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述
 - 任务组：`LIBRARY-BASE`
 - 里程碑：M2
 - 需求：R-15.1-01、R-15.2-01
-- 规格：[library §3–5/10](../specs/SPEC-library.md)
+- 规格：[library §3–5/10](../../specs/SPEC-library.md)
 - 直接前置：`T-DEL-01`, `T-COL-01`, `T-UI-01`, `DG-LIBRARY-BASE`, `EV-LIBRARY-01`
 - 范围：/library与轻量列表读取；初始网格+加载更多、40条、创建时间与ID稳定顺序，正常资产各处理/存储状态；完整筛选/选择由T-LIB-03起。
 - 预计文件：src/server/library/queries.ts、src/app/api/images/route.ts、src/app/library/；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：真实列表含private/failed/处理中/停用记录但排除回收；只请求受控缩略图，不通过优化器绕过权限；加载/空/读失败分别显示，未完成功能不做假按钮。
-- 验证方法：新增 tests/integration/library/base.test.ts 与 e2e/library.mjs 接入运行器；混合状态数据、匿名拒绝及两端加载/空/失败；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/library/base.test.ts 与 e2e/library.mjs 接入运行器；混合状态数据、匿名拒绝及两端加载/空/失败；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：所有者，数据来自media/storage/collections与delivery。[桌面 30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285) / [手机 98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)；加载[桌面 389:6940](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-6940) / [手机 389:7140](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7140)、读取失败[桌面 389:7261](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7261) / [手机 389:7461](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7461)。HeroUI Card、Skeleton、Alert、Button；业务网格组合缩略与状态，手机双列、固定数量栏；无额外通用控件。
 
-实施与验收记录：[T-LIB-01 基础图库读取与手机网格](../verification/library-76/README.md)。完整需求责任仍按下方切片边界维护。
+实施与验收记录：[T-LIB-01 基础图库读取与手机网格](../../verification/library-76/README.md)。完整需求责任仍按下方切片边界维护。
 
 #### DG-LIBRARY-BASE T-LIB-01 核对结论（2026-09-24）
 
-[Issue #74](https://github.com/dnslin/ariso-next/issues/74) 的本项消费范围为 `UI-LIBRARY` 基础读取。现有两端节点与规则足以表达本切片，文档走查未发现需要补图的具体缺口；核对时真实页面尚未实现，不关闭 DES-06-LIBRARY、DES-05/07 或 RG-07。[核对依据与验证记录](./evidence/DG-LIBRARY-BASE/README.md)。
+[Issue #74](https://github.com/dnslin/ariso-next/issues/74) 的本项消费范围为 `UI-LIBRARY` 基础读取。现有两端节点与规则足以表达本切片，文档走查未发现需要补图的具体缺口；核对时真实页面尚未实现，不关闭 DES-06-LIBRARY、DES-05/07 或 RG-07。[核对依据与验证记录](../../tasks/evidence/DG-LIBRARY-BASE/README.md)。
 
-| 核对范围           | 可复用状态与规则                                                                                                                                                                                                                                                                                                                                                                                               | T-LIB-01 的真实验收与责任                                                                                                                                                                                                                                                                                                                    |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 默认列表与加载更多 | 上述主节点、加载与读取失败节点；[library §3–4](../specs/SPEC-library.md#3-页面url-与查询语义)。Card 组合业务网格，Skeleton 表示读取中，Alert 与 Button 承接错误和重试。                                                                                                                                                                                                                                        | 首批及后续每批 40，创建时间降序、图片 ID 升序；同时间值跨批不重漏，总数不因相册/标签关系重复。加载更多失败与空库分开，不能把失败当作没有更多图片；使用真实游标与 hasMore，不沿用原型固定数量。                                                                                                                                               |
-| 空库与成功         | 空库[桌面 389:2725](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-2725) / [手机 389:6146](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-6146)；成功读取使用主节点网格，空态布局沿用[交接](../design/handoff.md#公共页面导航与布局)。                                                                                                                                       | 空库显示说明；按钮只接已实现入口。真实图片/总数替换示例，读取成功不需要额外成功弹窗。无筛选结果属于 T-LIB-03，本项不增加筛选、选择、批量或布局切换假按钮。详情入口随 T-LIB-02 接通。                                                                                                                                                         |
-| 处理、存储与权限   | [library §5 状态表](../specs/SPEC-library.md#5-详情与可操作状态)；失败与停用的文字语义复用详情[失败 390:6757 / 390:6805](../archive/preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)、[停用桌面 390:6849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6849) / [手机 390:6897](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6897)，不把详情布局搬进卡片。 | private、pending、processing、failed 和存储停用的正常资产仍列出，回收资产排除。仅有已保存且可读 thumbnail 才请求受控缩略图；缺少可读缩略图时显示处理状态占位，停用显示停用占位；pending/processing/failed 有已保存可读 thumbnail 仍展示，不请求原图替代、不走 Next 图片优化器。图片处理、活动/失败任务和存储状态分别表达；管理接口拒绝匿名。 |
-| 两端、主题与禁用   | 手机双列与固定数量栏沿用交接；深色[桌面 265:1552](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=265-1552) / [手机 265:3719](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=265-3719)。焦点/禁用复用[共享状态规范](../design/handoff.md#表单提示与操作)。                                                                                                                            | 在 360/390/430/768/1440、浅深色验证加载/空/错误/成功/禁用；按钮进行中不能重复加载，必要原因有文字，不只靠颜色或悬停。检查至少 44px 点击目标、键盘、短视口正文与底栏不遮挡、减少动态效果。软键盘和安全区域适配沿用外壳，设备实测范围引用[共用验收](./execution.md#前端共用验收)，不以静态节点冒充实测。                                       |
+| 核对范围           | 可复用状态与规则                                                                                                                                                                                                                                                                                                                                                                                          | T-LIB-01 的真实验收与责任                                                                                                                                                                                                                                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 默认列表与加载更多 | 上述主节点、加载与读取失败节点；[library §3–4](../../specs/SPEC-library.md#3-页面url-与查询语义)。Card 组合业务网格，Skeleton 表示读取中，Alert 与 Button 承接错误和重试。                                                                                                                                                                                                                                | 首批及后续每批 40，创建时间降序、图片 ID 升序；同时间值跨批不重漏，总数不因相册/标签关系重复。加载更多失败与空库分开，不能把失败当作没有更多图片；使用真实游标与 hasMore，不沿用原型固定数量。                                                                                                                                               |
+| 空库与成功         | 空库[桌面 389:2725](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-2725) / [手机 389:6146](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-6146)；成功读取使用主节点网格，空态布局沿用[交接](../../design/handoff.md#公共页面导航与布局)。                                                                                                                               | 空库显示说明；按钮只接已实现入口。真实图片/总数替换示例，读取成功不需要额外成功弹窗。无筛选结果属于 T-LIB-03，本项不增加筛选、选择、批量或布局切换假按钮。详情入口随 T-LIB-02 接通。                                                                                                                                                         |
+| 处理、存储与权限   | [library §5 状态表](../../specs/SPEC-library.md#5-详情与可操作状态)；失败与停用的文字语义复用详情[失败 390:6757 / 390:6805](../preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)、[停用桌面 390:6849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6849) / [手机 390:6897](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6897)，不把详情布局搬进卡片。 | private、pending、processing、failed 和存储停用的正常资产仍列出，回收资产排除。仅有已保存且可读 thumbnail 才请求受控缩略图；缺少可读缩略图时显示处理状态占位，停用显示停用占位；pending/processing/failed 有已保存可读 thumbnail 仍展示，不请求原图替代、不走 Next 图片优化器。图片处理、活动/失败任务和存储状态分别表达；管理接口拒绝匿名。 |
+| 两端、主题与禁用   | 手机双列与固定数量栏沿用交接；深色[桌面 265:1552](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=265-1552) / [手机 265:3719](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=265-3719)。焦点/禁用复用[共享状态规范](../../design/handoff.md#表单提示与操作)。                                                                                                                    | 在 360/390/430/768/1440、浅深色验证加载/空/错误/成功/禁用；按钮进行中不能重复加载，必要原因有文字，不只靠颜色或悬停。检查至少 44px 点击目标、键盘、短视口正文与底栏不遮挡、减少动态效果。软键盘和安全区域适配沿用外壳，设备实测范围引用[共用验收](../../tasks/execution.md#前端共用验收)，不以静态节点冒充实测。                             |
 
 责任由 T-LIB-01（#76）承接上述列表/API/浏览器验证；既有 EV-LIBRARY-01 是隔离实验，不能替代真实列表验收。完整四种布局/加载组合、20/80、筛选与选择由 T-LIB-03 起完成，本切片不关闭 R-15.1-01、R-15.2-01 的全量责任。
 
@@ -301,64 +303,64 @@ DES-01、DES-05、DES-07、RG-07 保持真实验收开放：T-ID-03 承接上述
 - 任务组：`LIBRARY-BASE`
 - 里程碑：M2
 - 需求：R-14.5-01、R-14.8-01、R-15.8-01、A-26.8-05、A-26.8-06
-- 规格：[library §5/8](../specs/SPEC-library.md)、[delivery §3/7](../specs/SPEC-delivery.md)
+- 规格：[library §5/8](../../specs/SPEC-library.md)、[delivery §3/7](../../specs/SPEC-delivery.md)
 - 直接前置：`T-LIB-01`, `DG-LIBRARY-BASE`
 - 范围：/library?image=id真实详情，已有版本/步骤错误/实际编码，默认与固定版本的URL/Markdown/HTML复制及下载；完整编辑元数据由T-LIB-06。
 - 预计文件：src/server/library/detail.ts、src/app/api/images/[id]/route.ts、src/components/library/detail.tsx；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：查看版本与复制模式独立；缺版本说明不静默回退；复制失败有完整可选文本，原图提示GPS；关闭保留当前列表滚动/焦点，直达无上下文仍有出口。
-- 验证方法：新增 tests/integration/library/detail.test.ts 和 e2e/library.mjs 对应流程；真实Clipboard拒绝、中文下载名、private/failed/存储停用与默认切换；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/integration/library/detail.test.ts 和 e2e/library.mjs 对应流程；真实Clipboard拒绝、中文下载名、private/failed/存储停用与默认切换；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：UI-DETAIL [桌面 36:312](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=36-312) / [手机 102:3228](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3228)；失败图[桌面 390:6757](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6757) / [手机 390:6805](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6805)；复制拒绝[桌面 387:5972](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5972) / [手机 387:5928](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5928)。HeroUI Modal、Tabs、Select、Button、Alert、TextArea；桌面详情浮层、手机独立详情布局，页内查询入口保持相同；无自制通用控件。
 
-实施与验收记录：[T-LIB-02 基础详情与链接复制下载](../verification/library-77/README.md)。完整需求责任仍按下方切片边界维护。
+实施与验收记录：[T-LIB-02 基础详情与链接复制下载](../../verification/library-77/README.md)。完整需求责任仍按下方切片边界维护。
 
 #### DG-LIBRARY-BASE T-LIB-02 核对结论（2026-09-24）
 
-本项消费范围为 `UI-DETAIL` 的基本详情、已有版本、单图复制下载和直达返回。上述主节点、失败图与复制拒绝节点可复用；补充状态见下表。未发现必须新画才能表达的业务差异；直达无上下文等未由原型验证的行为由 T-LIB-02（#77）实施并取得证据。DES-06-LIBRARY、DES-05/07、RG-02/06/07 继续开放。[核对依据与验证记录](./evidence/DG-LIBRARY-BASE/README.md)。
+本项消费范围为 `UI-DETAIL` 的基本详情、已有版本、单图复制下载和直达返回。上述主节点、失败图与复制拒绝节点可复用；补充状态见下表。未发现必须新画才能表达的业务差异；直达无上下文等未由原型验证的行为由 T-LIB-02（#77）实施并取得证据。DES-06-LIBRARY、DES-05/07、RG-02/06/07 继续开放。[核对依据与验证记录](../../tasks/evidence/DG-LIBRARY-BASE/README.md)。
 
 | 核对范围                 | 可复用状态与规则                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | T-LIB-02 的真实验收与责任                                                                                                                                                                                                                                                              |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 已有版本与实际信息       | 主节点为压缩图；原图[桌面 390:2942](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-2942) / [手机 390:6447](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6447)，缩略图[390:6489](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6489) / [390:6535](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6535)，水印图[390:6577](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6577) / [390:6624](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6624)。 | 从真实详情读取名称/原名、ID、格式/尺寸/大小、时间、可见性、存储、关系、步骤错误与版本信息；实际编码不能用类型名称推断。Tabs/Select 切换同图版本，显示当前版本，不修改全站默认。已有水印可展示不等于 M2 已交付水印生成。完整编辑与元数据能力留 T-LIB-06。                               |
 | 版本缺失、处理与停用     | 缺水印[桌面 390:6667](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6667) / [手机 390:6713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6713)；上述失败图；停用[390:6849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6849) / [390:6897](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6897)。                                                                                                                                                                                | 显式缺失/不适用版本说明原因，不回退、不临时生成。failed 所有者仍可读取已保存版本；候选不可读。ready 的重处理错误与图片 failed 分开；停用只显示记录和占位，查看/下载不可用。缺版本为局部状态，不伪造成图片不存在。                                                                      |
-| 默认与固定复制           | 复制入口[桌面 387:5769](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5769) / [手机 387:5709](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5709)，固定选版[387:5788](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5788) / [387:5728](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5728)；[library §8](../specs/SPEC-library.md#8-批量复制与逐版本下载)、[delivery §3](../specs/SPEC-delivery.md#3-地址参数与生成链接)。                                                        | 查看版本与复制模式独立。默认 URL 不带 type，随全站默认变化；固定选版才带 type。URL/Markdown/HTML 均覆盖两种模式及四种选版，alt 按 displayName 转义，生成地址使用 site 的 publicUrl。private/非 ready 的已有版本注明仅所有者可访问；停用/缺版本不生成可用链接。                         |
-| 复制成功、拒绝与空结果   | 成功反馈沿用[历史复制状态 26–32](../archive/preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)；上述复制拒绝两端节点；无链接[桌面 387:5983](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5983) / [手机 387:5939](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5939)。                                                                                                                                                                                                                                  | 真实 Clipboard 成功后才报成功；拒绝后 TextArea 提供完整可选文本和手动复制，视觉换行不进入复制值；任意长中文名称/地址仍可读。无可复制链接不覆盖剪贴板。原型固定版本只示范 URL，其与 Markdown/HTML 的组合由同一规则表达并在本任务实测，不增加重复画板。                                  |
-| 逐版本下载               | 发起下载[桌面 387:6050](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6050) / [手机 387:5994](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5994)，失败[387:6061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6061) / [387:6005](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6005)；[delivery §7](../specs/SPEC-delivery.md#7-类型svg-与附件名称)。                                                                                                                           | 每个已存版本分别下载，中文附件名与实际扩展名一致，如“旅行.final.webp”；只报已发起，不报下载完成。读取失败保留原因，不换版本。公开原图复制/下载提示可能含 GPS/拍摄信息，不新增确认拦截。SVG 原图沿用附件契约，预览为 WebP thumbnail；不将此核对扩为全格式处理或 S3 验收。               |
-| 加载、详情读取失败与失效 | 复用列表加载/错误容器语义与 Alert/Button、详情主布局和 [library §3/5](../specs/SPEC-library.md#3-页面url-与查询语义)。这些是既有规则的组合，不宣称另有专属详情读取画板。                                                                                                                                                                                                                                                                                                                                                                                  | 详情读取中不展示其他图片数据；接口失败与版本文件读取失败分开，可重试或返回。image 参数无效、记录不存在、已回收/删除、会话失效给准确提示与可用出口，不呈现假预览。沿用提供方错误：VERSION_UNAVAILABLE、STORAGE_DISABLED、IMAGE_UNAVAILABLE 等，不把 delivery 的文件错误当作列表空库。   |
-| 返回与直达               | [RG-02 来源保持代表](../archive/preparation-2026-09/design/library-return-regression-2026-09-19.md#返回和版本动作)，具体详情[桌面 506:4483](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=506-4483) / [手机 506:9992](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=506-9992)；[library §3.2/6.2](../specs/SPEC-library.md#32-偏好与历史)。                                                                                                                                                                                   | `/library?image=id` 只控制详情；开关详情不重查列表。由列表进入后关闭恢复现有列表上下文、已加载内容、滚动和触发焦点。直达无来源时提供明确返回图库，不仅调用 history.back，也不猜测邻居。原型覆盖层与固定第一张不能证明直达、任意图片或焦点已验收；完整筛选/选择及 Lightbox 属后续任务。 |
-| 两端、主题与键盘         | 桌面 Modal、手机独立详情布局沿用主节点与[交接](../design/handoff.md#表单提示与操作)，不把手机长详情塞进短确认框。共享浅深色/焦点/禁用规则与 T-LIB-01 同源。                                                                                                                                                                                                                                                                                                                                                                                               | 360/390/430/768/1440 浅深色覆盖上述状态；长名称、完整地址、短视口滚动和操作区可达，至少 44px 点击目标、Tab/Esc、关闭焦点、减少动态效果。文本选择、软键盘与安全区域适配按[共用验收](./execution.md#前端共用验收)记录实际覆盖，不把静态状态标通过。                                      |
+| 默认与固定复制           | 复制入口[桌面 387:5769](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5769) / [手机 387:5709](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5709)，固定选版[387:5788](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5788) / [387:5728](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5728)；[library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)、[delivery §3](../../specs/SPEC-delivery.md#3-地址参数与生成链接)。                                                  | 查看版本与复制模式独立。默认 URL 不带 type，随全站默认变化；固定选版才带 type。URL/Markdown/HTML 均覆盖两种模式及四种选版，alt 按 displayName 转义，生成地址使用 site 的 publicUrl。private/非 ready 的已有版本注明仅所有者可访问；停用/缺版本不生成可用链接。                         |
+| 复制成功、拒绝与空结果   | 成功反馈沿用[历史复制状态 26–32](../preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)；上述复制拒绝两端节点；无链接[桌面 387:5983](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5983) / [手机 387:5939](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5939)。                                                                                                                                                                                                                                          | 真实 Clipboard 成功后才报成功；拒绝后 TextArea 提供完整可选文本和手动复制，视觉换行不进入复制值；任意长中文名称/地址仍可读。无可复制链接不覆盖剪贴板。原型固定版本只示范 URL，其与 Markdown/HTML 的组合由同一规则表达并在本任务实测，不增加重复画板。                                  |
+| 逐版本下载               | 发起下载[桌面 387:6050](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6050) / [手机 387:5994](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5994)，失败[387:6061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6061) / [387:6005](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6005)；[delivery §7](../../specs/SPEC-delivery.md#7-类型svg-与附件名称)。                                                                                                                        | 每个已存版本分别下载，中文附件名与实际扩展名一致，如“旅行.final.webp”；只报已发起，不报下载完成。读取失败保留原因，不换版本。公开原图复制/下载提示可能含 GPS/拍摄信息，不新增确认拦截。SVG 原图沿用附件契约，预览为 WebP thumbnail；不将此核对扩为全格式处理或 S3 验收。               |
+| 加载、详情读取失败与失效 | 复用列表加载/错误容器语义与 Alert/Button、详情主布局和 [library §3/5](../../specs/SPEC-library.md#3-页面url-与查询语义)。这些是既有规则的组合，不宣称另有专属详情读取画板。                                                                                                                                                                                                                                                                                                                                                                               | 详情读取中不展示其他图片数据；接口失败与版本文件读取失败分开，可重试或返回。image 参数无效、记录不存在、已回收/删除、会话失效给准确提示与可用出口，不呈现假预览。沿用提供方错误：VERSION_UNAVAILABLE、STORAGE_DISABLED、IMAGE_UNAVAILABLE 等，不把 delivery 的文件错误当作列表空库。   |
+| 返回与直达               | [RG-02 来源保持代表](../preparation-2026-09/design/library-return-regression-2026-09-19.md#返回和版本动作)，具体详情[桌面 506:4483](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=506-4483) / [手机 506:9992](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=506-9992)；[library §3.2/6.2](../../specs/SPEC-library.md#32-偏好与历史)。                                                                                                                                                                                        | `/library?image=id` 只控制详情；开关详情不重查列表。由列表进入后关闭恢复现有列表上下文、已加载内容、滚动和触发焦点。直达无来源时提供明确返回图库，不仅调用 history.back，也不猜测邻居。原型覆盖层与固定第一张不能证明直达、任意图片或焦点已验收；完整筛选/选择及 Lightbox 属后续任务。 |
+| 两端、主题与键盘         | 桌面 Modal、手机独立详情布局沿用主节点与[交接](../../design/handoff.md#表单提示与操作)，不把手机长详情塞进短确认框。共享浅深色/焦点/禁用规则与 T-LIB-01 同源。                                                                                                                                                                                                                                                                                                                                                                                            | 360/390/430/768/1440 浅深色覆盖上述状态；长名称、完整地址、短视口滚动和操作区可达，至少 44px 点击目标、Tab/Esc、关闭焦点、减少动态效果。文本选择、软键盘与安全区域适配按[共用验收](../../tasks/execution.md#前端共用验收)记录实际覆盖，不把静态状态标通过。                            |
 
-library 只组合读取与界面；版本/任务归 media、存储状态归 storage、链接解析/内容权限/下载名归 delivery。沿用现有 HeroUI 组件和[前端实现约束](../design/handoff.md#前端实现约束)，不新增自制通用控件。本核对不关闭 R-15.8-01 的批量复制全量责任，也不提前交付 T-LIB-06 的编辑、T-LIB-12 的回收或 M3 大图/批量操作；未实现入口不展示为可操作按钮。
+library 只组合读取与界面；版本/任务归 media、存储状态归 storage、链接解析/内容权限/下载名归 delivery。沿用现有 HeroUI 组件和[前端实现约束](../../design/handoff.md#前端实现约束)，不新增自制通用控件。本核对不关闭 R-15.8-01 的批量复制全量责任，也不提前交付 T-LIB-06 的编辑、T-LIB-12 的回收或 M3 大图/批量操作；未实现入口不展示为可操作按钮。
 
 ### T-LIB-12 单图回收恢复界面闭环
 
 - 任务组：`MEDIA-TRASH`
 - 里程碑：M2
 - 需求：R-18.1-01、R-18.2-01、A-26.11-01、A-26.11-02
-- 规格：[library §9](../specs/SPEC-library.md)、[media §11](../specs/SPEC-media.md)
+- 规格：[library §9](../../specs/SPEC-library.md)、[media §11](../../specs/SPEC-media.md)
 - 直接前置：`T-LIB-02`, `T-MED-05`, `DG-TRASH-BASE`
 - 范围：详情回收确认、/trash基础记录列表及单图恢复；完整查询/批量/永久删除由T-LIB-11。
 - 预计文件：src/app/trash/、src/components/library/trash-actions.tsx；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：回收站不请求真实thumbnail/下载，使用记录占位；恢复后原ID/原链接可用；停用存储恢复明确记录已恢复但内容不可读；失败和结果未知先核对。
-- 验证方法：扩展 e2e/library.mjs 与 tests/integration/library/trash.test.ts；网络请求断言无回收图片读取，匿名外链拒绝→恢复同URL可访问；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：扩展 e2e/library.mjs 与 tests/integration/library/trash.test.ts；网络请求断言无回收图片读取，匿名外链拒绝→恢复同URL可访问；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：所有者、调用media接口。[桌面 30:1037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1037) / [手机 102:852](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-852)；恢复确认[桌面 405:7266](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7266) / [手机 405:6797](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6797)、停用恢复[桌面 405:7305](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7305) / [手机 405:6836](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6836)。HeroUI AlertDialog、Button、Card、Alert、Spinner；手机独立记录页和固定底栏；无业务差异。
 
-实施与验收记录：[T-LIB-12 单图回收恢复界面](../verification/library-79/README.md)。完整回收站能力仍由 T-LIB-11 承接。
+实施与验收记录：[T-LIB-12 单图回收恢复界面](../../verification/library-79/README.md)。完整回收站能力仍由 T-LIB-11 承接。
 
-2026-09-26 用户在 #85 中批准回收列表缩略图及详情管理预览。下方 2026-09-25 核对表和 #79 历史验收中的“无回收内容读取”仅描述当时版本；现行实现与验收改为“仅有效所有者管理预览可读，`/i` 外链仍拒绝，停用/删除中不可读”。设计变化及边界统一见 [交接](../design/handoff.md#回收站管理预览变更2026-09-26用户批准)、[library §9](../specs/SPEC-library.md#9-回收站与状态恢复) 和本次 #85 验证记录，不改历史结论为新能力已通过。
+2026-09-26 用户在 #85 中批准回收列表缩略图及详情管理预览。下方 2026-09-25 核对表和 #79 历史验收中的“无回收内容读取”仅描述当时版本；现行实现与验收改为“仅有效所有者管理预览可读，`/i` 外链仍拒绝，停用/删除中不可读”。设计变化及边界统一见 [交接](../../design/handoff.md#回收站管理预览变更2026-09-26用户批准)、[library §9](../../specs/SPEC-library.md#9-回收站与状态恢复) 和本次 #85 验证记录，不改历史结论为新能力已通过。
 
 #### DG-TRASH-BASE T-LIB-12 核对结论（2026-09-25）
 
-[Issue #78](https://github.com/dnslin/ariso-next/issues/78) 仅核对 `UI-DETAIL` 单图回收与 `UI-TRASH` 基础记录/恢复。下表依据已有两端节点索引与 SPEC，不是实时 Figma 或真实交互验收；未发现必须新增画板才能表达的 M2 差异。[核对依据与验证记录](./evidence/DG-TRASH-BASE/README.md)。DES-06-TRASH、DES-05/07、RG-02/07 继续开放，由 T-LIB-12（#79）承接本切片真实验收。
+[Issue #78](https://github.com/dnslin/ariso-next/issues/78) 仅核对 `UI-DETAIL` 单图回收与 `UI-TRASH` 基础记录/恢复。下表依据已有两端节点索引与 SPEC，不是实时 Figma 或真实交互验收；未发现必须新增画板才能表达的 M2 差异。[核对依据与验证记录](../../tasks/evidence/DG-TRASH-BASE/README.md)。DES-06-TRASH、DES-05/07、RG-02/07 继续开放，由 T-LIB-12（#79）承接本切片真实验收。
 
 | 核对范围                       | 可复用状态与规则                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | T-LIB-12 的真实验收与责任                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 详情回收确认与成功             | 确认[桌面 387:6180](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6180) / [手机 387:6130](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6130)，成功[387:6252](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6252) / [387:6206](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6206)；复用 AlertDialog、Button。                                                                                                                                                            | 固定当前 imageId，取消不发送写请求；确认后调用既有 POST /api/images/{id}/trash。回收仍占空间且不自动清理；收到成功后更新正常列表/详情归属，不保留可读预览。停用存储也允许回收。回收后所有版本入口拒绝，包括所有者；不把历史已下载字节称作可撤回。                                                                                                                                                                                                                        |
-| 基础列表、记录详情与空态       | 上述主节点；记录[405:6888](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6888) / [405:6735](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6735)，空态[405:7078](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7078) / [405:6767](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6767)；[library §9](../specs/SPEC-library.md#9-回收站与状态恢复)。                                                                                                                         | Card 组合名称、大小、原存储、原可见性、当前处理状态和回收时间；按回收时间倒序、ID 升序读取真实记录，不复制原型 8 条示例。列表及详情不请求任何图片内容，包括 thumbnail、原图和派生版本；无 Lightbox、复制内容链接、下载、新处理或编辑恢复信息入口。成功读取零条才显示空态。                                                                                                                                                                                               |
+| 基础列表、记录详情与空态       | 上述主节点；记录[405:6888](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6888) / [405:6735](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6735)，空态[405:7078](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7078) / [405:6767](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6767)；[library §9](../../specs/SPEC-library.md#9-回收站与状态恢复)。                                                                                                                      | Card 组合名称、大小、原存储、原可见性、当前处理状态和回收时间；按回收时间倒序、ID 升序读取真实记录，不复制原型 8 条示例。列表及详情不请求任何图片内容，包括 thumbnail、原图和派生版本；无 Lightbox、复制内容链接、下载、新处理或编辑恢复信息入口。成功读取零条才显示空态。                                                                                                                                                                                               |
 | 恢复与当前状态                 | 上述恢复确认；成功[405:7279](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7279) / [405:6810](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6810)，关系失效[405:7292](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7292) / [405:6823](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6823)，最新处理[405:7318](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7318) / [405:6849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6849)。 | 调用既有 POST /api/images/{id}/restore；成功后移出回收查询并重读正常记录，保留 ID、visibility、幸存关系和原加入时间，不重建已删目标或关联同名新目标，不还原旧处理状态。关系提示只依据可取得的真实数据，不从成功响应猜测失效数量。公开 ready 且存储启用的图验证匿名同 URL 恢复可读；private/非 ready 仍服从 delivery 权限，不将恢复当作公开授权。                                                                                                                         |
-| 停用与不可恢复                 | 上述停用恢复节点；不可恢复[405:7331](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7331) / [405:6862](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6862)；[media §11](../specs/SPEC-media.md#11-回收站永久删除与清理恢复)。                                                                                                                                                                                                                                                                                  | 停用允许恢复，明确“记录已恢复，存储仍停用”，正常库仍占位且内容不可读，不自动启用存储。deleting/cleanup_failed 禁止恢复并显示原因；并发进入删除状态按 409 核对记录，不能只依赖按钮禁用。永久删除的启动/任务/重试界面仍归 T-LIB-11。                                                                                                                                                                                                                                       |
-| 加载、失败、结果未知与输入契约 | 恢复失败[405:7344](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7344) / [405:6875](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6875)，待核对[405:7826](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7826) / [405:7992](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7992)；加载和独立读取失败复用主布局及 [共享提示规则](../design/handoff.md#表单提示与操作)的 Spinner、Alert、Button。                                                                             | 读取失败不显示空库，保留错误与重试；提交中禁止重复提交。输入为当前单图 ID，无新增确认短语或表单字段。写接口需要所有者 Cookie 和当前站点 Origin，成功 200 仅返回 imageId/trashedAt（ISO 字符串或 null），不是内容可读或关系明细。401 会话失效、403 来源拒绝、404 不存在、409 删除冲突、500 内部错误分别反馈；失败/断连/响应丢失先重读当前记录，核对失败保留“结果待核对”，不自动重复写入或假报成功。读取与核对接口由 #79 消费 #77 详情契约补齐，现有写接口不提供查询能力。 |
-| 两端、主题、焦点与返回         | 手机独立记录页、固定操作栏；[交接布局](../design/handoff.md#公共页面导航与布局)、[主题语义](../design/handoff.md#视觉基础)与共享状态规则。独立加载/读取失败、回收站全状态深色及更多尺寸没有逐一独立画板，按既有规则组合，不列作整组缺图。                                                                                                                                                                                                                                                                                                         | 360/390/430/768/1440、浅深色覆盖加载/空/错误/成功/禁用。检查键盘 Tab/Esc、取消和关闭归还焦点；成功移走来源记录后提供仍存在的列表焦点目标。手机至少 44px 触控目标，长名称/错误可读，短视口正文与固定底栏不遮挡，减少动态效果。单图流程无文本输入，不新增软键盘触发点；安全区与浏览器验证按[前端共用验收](./execution.md#前端共用验收)，设备实测不作为本任务完成条件，浏览器视口检查不记作设备实测。                                                                       |
+| 停用与不可恢复                 | 上述停用恢复节点；不可恢复[405:7331](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7331) / [405:6862](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6862)；[media §11](../../specs/SPEC-media.md#11-回收站永久删除与清理恢复)。                                                                                                                                                                                                                                                                               | 停用允许恢复，明确“记录已恢复，存储仍停用”，正常库仍占位且内容不可读，不自动启用存储。deleting/cleanup_failed 禁止恢复并显示原因；并发进入删除状态按 409 核对记录，不能只依赖按钮禁用。永久删除的启动/任务/重试界面仍归 T-LIB-11。                                                                                                                                                                                                                                       |
+| 加载、失败、结果未知与输入契约 | 恢复失败[405:7344](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7344) / [405:6875](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-6875)，待核对[405:7826](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7826) / [405:7992](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7992)；加载和独立读取失败复用主布局及 [共享提示规则](../../design/handoff.md#表单提示与操作)的 Spinner、Alert、Button。                                                                          | 读取失败不显示空库，保留错误与重试；提交中禁止重复提交。输入为当前单图 ID，无新增确认短语或表单字段。写接口需要所有者 Cookie 和当前站点 Origin，成功 200 仅返回 imageId/trashedAt（ISO 字符串或 null），不是内容可读或关系明细。401 会话失效、403 来源拒绝、404 不存在、409 删除冲突、500 内部错误分别反馈；失败/断连/响应丢失先重读当前记录，核对失败保留“结果待核对”，不自动重复写入或假报成功。读取与核对接口由 #79 消费 #77 详情契约补齐，现有写接口不提供查询能力。 |
+| 两端、主题、焦点与返回         | 手机独立记录页、固定操作栏；[交接布局](../../design/handoff.md#公共页面导航与布局)、[主题语义](../../design/handoff.md#视觉基础)与共享状态规则。独立加载/读取失败、回收站全状态深色及更多尺寸没有逐一独立画板，按既有规则组合，不列作整组缺图。                                                                                                                                                                                                                                                                                                   | 360/390/430/768/1440、浅深色覆盖加载/空/错误/成功/禁用。检查键盘 Tab/Esc、取消和关闭归还焦点；成功移走来源记录后提供仍存在的列表焦点目标。手机至少 44px 触控目标，长名称/错误可读，短视口正文与固定底栏不遮挡，减少动态效果。单图流程无文本输入，不新增软键盘触发点；安全区与浏览器验证按[前端共用验收](../../tasks/execution.md#前端共用验收)，设备实测不作为本任务完成条件，浏览器视口检查不记作设备实测。                                                             |
 
-本项复用 HeroUI AlertDialog、Button、Card、Alert、Spinner，业务布局遵守[前端实现约束](../design/handoff.md#前端实现约束)，不新增通用控件或依赖。library 负责读取和界面，media 负责状态变更，collections 负责存续关系，storage/delivery 负责存储状态与内容访问。独立读取失败、未知结果核对及恢复后连续数据尚未取得真实证据，责任均为 #79；若实施暴露现有规则无法表达的具体差异，仅该状态回报 DES-06-TRASH。
+本项复用 HeroUI AlertDialog、Button、Card、Alert、Spinner，业务布局遵守[前端实现约束](../../design/handoff.md#前端实现约束)，不新增通用控件或依赖。library 负责读取和界面，media 负责状态变更，collections 负责存续关系，storage/delivery 负责存储状态与内容访问。独立读取失败、未知结果核对及恢复后连续数据尚未取得真实证据，责任均为 #79；若实施暴露现有规则无法表达的具体差异，仅该状态回报 DES-06-TRASH。
 
 #79 须扩展 e2e/library.mjs 和 tests/integration/library/trash.test.ts，验证实际请求、无回收内容读取、回收→原 URL 拒绝→恢复同 URL 可读、停用仍不可读、删除冲突、结果未知及焦点返回。既有 media/delivery 测试不能替代此 UI 闭环。完整筛选/选择/批量/永久删除由 T-LIB-11 承接，关系与封面全量联验保留 DES-06-TRASH；本核对不关闭需求全量责任。
 
@@ -367,21 +369,21 @@ library 只组合读取与界面；版本/任务归 media、存储状态归 stor
 - 任务组：`UPLOAD-QUEUE`
 - 里程碑：M2
 - 需求：R-7.4-01、R-7.4-02、R-7.4-03、R-7.5-01、R-7.5-03、R-7.5-04、A-26.2-06
-- 规格：[upload §3/8–9/12](../specs/SPEC-upload.md)
+- 规格：[upload §3/8–9/12](../../specs/SPEC-upload.md)
 - 直接前置：`T-UP-01`, `T-LIB-02`, `T-LIB-12`, `T-UI-01`, `UPLOAD-V03`, `DG-UPLOAD-BASE`
 - 范围：/upload普通选择文件、本次public/private及默认本地存储，提交时冻结→检查→手动开始→传输/保存/处理→真实结果；依Uppy保留后续队列扩展点，不以单图关闭完整UPLOAD-QUEUE。
 - 预计文件：src/app/upload/、src/components/upload/、e2e/upload.mjs；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：传输100%不显示处理成功；两类失败区分有无imageId，关页不恢复本地队列但服务端继续；终态释放File/Blob，清结果不删图库；复制/打开详情使用真实ID。
-- 验证方法：新增 e2e/upload.mjs 接入运行器；真实File选择、取消交接边界、断连/失败/关闭重开和浏览器引用释放，验证服务器图仍存在；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 e2e/upload.mjs 接入运行器；真实File选择、取消交接边界、断连/失败/关闭重开和浏览器引用释放，验证服务器图仍存在；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：所有者；数据来自session和media任务，未登录指向/login并保留返回目标。[桌面 30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97) / [手机 101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；保存[桌面 316:4802](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4802) / [手机 316:4945](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4945)、结果[桌面 317:4074](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4074) / [手机 317:4225](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4225)、处理失败[桌面 317:4052](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4052) / [手机 317:4063](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4063)。HeroUI Button、Card、ProgressBar、Alert、AlertDialog、Select；Uppy负责文件队列，HeroUI组合业务行；两端固定操作栏，状态列不跳动。
 
-实施与验证记录：[Issue #81 单图上传界面](../verification/upload-81/README.md)。本切片不关闭完整 UPLOAD-QUEUE；执行状态以 GitHub 为准。
+实施与验证记录：[Issue #81 单图上传界面](../../verification/upload-81/README.md)。本切片不关闭完整 UPLOAD-QUEUE；执行状态以 GitHub 为准。
 
 #### DG-UPLOAD-BASE T-UP-02 核对结论（2026-09-25）
 
-[Issue #80](https://github.com/dnslin/ariso-next/issues/80) 仅消费本任务的 `UI-UPLOAD` M2 普通单文件、本地存储与结果流程。既有两端代表状态及交接规则足以表达该范围，文档走查未发现必须补图的具体缺口；不代表真实页面已实现，不关闭 DES-06-UPLOAD、DES-05/07、RG-02/03/07。[核对依据、实际检查与审计记录](./evidence/DG-UPLOAD-BASE/README.md)。
+[Issue #80](https://github.com/dnslin/ariso-next/issues/80) 仅消费本任务的 `UI-UPLOAD` M2 普通单文件、本地存储与结果流程。既有两端代表状态及交接规则足以表达该范围，文档走查未发现必须补图的具体缺口；不代表真实页面已实现，不关闭 DES-06-UPLOAD、DES-05/07、RG-02/03/07。[核对依据、实际检查与审计记录](../../tasks/evidence/DG-UPLOAD-BASE/README.md)。
 
-下表由 **T-UP-02（#81）实施并取得真实证据**；调用方的展示和返回责任留在本任务，处理、详情及回收契约沿用各提供方。节点来自[上传专项两端索引](../archive/preparation-2026-09/design/upload-flow-2026-09-18.md#两端节点)，固定示例数量、照片与计时跳转不作为验收数据。
+下表由 **T-UP-02（#81）实施并取得真实证据**；调用方的展示和返回责任留在本任务，处理、详情及回收契约沿用各提供方。节点来自[上传专项两端索引](../preparation-2026-09/design/upload-flow-2026-09-18.md#两端节点)，固定示例数量、照片与计时跳转不作为验收数据。
 
 | 适用状态               | 桌面节点                                                                                                                                                                                                                                                                                                                               | 手机节点                                                                                                                                                                                                                                                                                                                               | 复用规则与真实验收范围                                                                                                                                                                                                                            |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -397,23 +399,23 @@ library 只组合读取与界面；版本/任务归 media、存储状态归 stor
 
 **组件与页面适用性。** 沿用本任务 HeroUI 组件映射，Uppy 管文件队列，HeroUI 组合业务行；不新增组件库或自制通用控件。通用控件内部细节可按 HeroUI 统一，文件信息、状态和操作列仍保持对齐，无按钮时保留操作列。正常可读图片保留缩略图；终态释放 File/Blob URL/插件引用后改用可读服务端预览，无可读预览才显示格式占位，不能因 processing/failed 一律隐藏已有预览。真实引用释放由 T-UP-02 验证，UPLOAD-V03 的实验不能代替产品验收。
 
-**两端与通用状态。** 主页面和上表状态均适用浅深色，沿用[主题、布局与交互规则](../design/handoff.md)及[前端共用验收](./execution.md#前端共用验收)。T-UP-02 验证 360/390/430/768 与桌面宽度、短视口滚动、固定底栏留白、长文件名/错误/链接、键盘顺序、取消弹窗关闭后的焦点返回、至少 44px 点击目标和减少动态效果。加载适用于提交、保存/处理及结果读取；空适用于未选文件或清空结果；错误分别覆盖输入、未建图、已建图、读取和复制；成功与取消结果分开；禁用覆盖空队列、无可用目标、重复提交和交接后取消。触控、软键盘与安全区保留布局适配及待实施验证责任，本次无页面或设备实测证据，不标通过。
+**两端与通用状态。** 主页面和上表状态均适用浅深色，沿用[主题、布局与交互规则](../../design/handoff.md)及[前端共用验收](../../tasks/execution.md#前端共用验收)。T-UP-02 验证 360/390/430/768 与桌面宽度、短视口滚动、固定底栏留白、长文件名/错误/链接、键盘顺序、取消弹窗关闭后的焦点返回、至少 44px 点击目标和减少动态效果。加载适用于提交、保存/处理及结果读取；空适用于未选文件或清空结果；错误分别覆盖输入、未建图、已建图、读取和复制；成功与取消结果分开；禁用覆盖空队列、无可用目标、重复提交和交接后取消。触控、软键盘与安全区保留布局适配及待实施验证责任，本次无页面或设备实测证据，不标通过。
 
 **无独立代表的组合。** 设置/结果读取失败、真实 public/private 切换、复制拒绝与上传结果进入任意图片后返回，没有在本任务节点中形成完整动态路径；复用外标签、Alert、失败保留输入、完整可选文本及详情返回规则即可表达。T-UP-02 负责这些组合的真实请求/焦点/上下文验收，详情行为提供方为 T-LIB-02；这属于待实现及待验证，不是要求重新设计的表达缺口。若实施发现既有规则仍无法表达某个状态，只将该状态交给 P2-DESIGN / DES-06-UPLOAD 补充，记录具体缺口，不重开整组产品选择。
 
-**现有能力与后续边界。** T-UP-01 已有单文件提交、流式 content、取消和 submission 查询，当前支持静态 JPEG/PNG；Uppy 尚未接入产品页面。接入按[实际接口及验证记录](../verification/upload-73/README.md)，不能把 SPEC 内部接口草案的 begin/complete 或通用 API 错误结构当作现有 Web 契约。当前查询返回 session、image 和本次 job，不含完整版本列表、defaultResolution 或成品链接；结果展示仍需组合 media/library/delivery 的实际能力。#81 仍须等待其全部直接前置；本核对不替代 T-LIB-02 / T-LIB-12 的完成证据。拖拽/粘贴/目录、完整多批和下一组、集合快照编辑、多格式、S3 直传/中转及迟到清理由 T-UP-07、T-UP-03 等原任务及 DG-UPLOAD 承接，本次不验收这些状态、不关闭完整 UPLOAD-QUEUE。
+**现有能力与后续边界。** T-UP-01 已有单文件提交、流式 content、取消和 submission 查询，当前支持静态 JPEG/PNG；Uppy 尚未接入产品页面。接入按[实际接口及验证记录](../../verification/upload-73/README.md)，不能把 SPEC 内部接口草案的 begin/complete 或通用 API 错误结构当作现有 Web 契约。当前查询返回 session、image 和本次 job，不含完整版本列表、defaultResolution 或成品链接；结果展示仍需组合 media/library/delivery 的实际能力。#81 仍须等待其全部直接前置；本核对不替代 T-LIB-02 / T-LIB-12 的完成证据。拖拽/粘贴/目录、完整多批和下一组、集合快照编辑、多格式、S3 直传/中转及迟到清理由 T-UP-07、T-UP-03 等原任务及 DG-UPLOAD 承接，本次不验收这些状态、不关闭完整 UPLOAD-QUEUE。
 
 ### T-ANA-01 本地公开访问内存聚合
 
 - 任务组：`ANALYTICS-COUNT`
 - 里程碑：M2
 - 需求：R-19.2-01、R-19.2-02、R-19.2-03
-- 规格：[analytics §3–4](../specs/SPEC-analytics.md)
+- 规格：[analytics §3–4](../../specs/SPEC-analytics.md)
 - 直接前置：`T-DEL-01`, `T-COL-01`, `EV-ANALYTICS-01`
 - 范围：入口组合消费delivery合格事件，以实际发生时时区形成聚合键；不在每请求写库。
 - 预计文件：src/server/analytics/{collector,schema}.ts、src/app/i/[imageId]/route.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：每次合格GET计一次；owner/private/thumbnail/HEAD/304/失败排除；首块后取消仍一次；聚合错误可诊断不阻断合法内容，时区在事件时确定。
-- 验证方法：新增 tests/unit/analytics/collector.test.ts 与 tests/integration/analytics/count.test.ts；真实本地HTTP事件顺序、时区变更、重复回调和流失败；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 验证方法：新增 tests/unit/analytics/collector.test.ts 与 tests/integration/analytics/count.test.ts；真实本地HTTP事件顺序、时区变更、重复回调和流失败；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
 
 ### T-ANA-02 统计批写、保留与退出刷库
@@ -421,11 +423,11 @@ library 只组合读取与界面；版本/任务归 media、存储状态归 stor
 - 任务组：`ANALYTICS-COUNT`
 - 里程碑：M2
 - 需求：R-19.2-03、R-19.4-01、R-19.4-02
-- 规格：[analytics §4–5/8](../specs/SPEC-analytics.md)
+- 规格：[analytics §4–5/8](../../specs/SPEC-analytics.md)
 - 直接前置：`T-ANA-01`, `EV-ANALYTICS-01`
 - 范围：单例定时批写、UTC事件的时区日期归档、365天清理、积压/漏计状态、关停顺序；不新增逐请求账本。
 - 预计文件：src/server/analytics/{flush,retention}.ts、src/server/startup/server-start.ts；相应模块测试及必要的 `drizzle/` 迁移。
 - 验收条件：每日/单图/累计同事务，成功才扣内存；失败保留增量且有界，重启不重复计数；历史不随时区重算，老化只删每日；正常停止刷完，SIGKILL丢失范围如实记录。
-- 验证方法：新增 tests/integration/analytics/persistence.test.ts；真实Next standalone SIGTERM/SIGKILL、数据库故障与缓冲压力、DST/365天边界/删除后历史写入；运行 [执行约定](./execution.md) 中适用检查，证据记录实际环境、命令与结果。
-- 实施证据：[统计批写、保留与退出刷库验证](../verification/analytics-84/README.md)；实际检查与未完成项以该记录为准。
+- 验证方法：新增 tests/integration/analytics/persistence.test.ts；真实Next standalone SIGTERM/SIGKILL、数据库故障与缓冲压力、DST/365天边界/删除后历史写入；运行 [执行约定](../../tasks/execution.md) 中适用检查，证据记录实际环境、命令与结果。
+- 实施证据：[统计批写、保留与退出刷库验证](../../verification/analytics-84/README.md)；实际检查与未完成项以该记录为准。
 - 界面：无界面：服务端契约或持久数据任务；不借用不相关 Figma 作为前置。
