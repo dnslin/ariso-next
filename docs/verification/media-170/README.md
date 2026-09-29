@@ -1,6 +1,6 @@
 # T-MED-07 完整元数据保存与独立重读
 
-最新结果见[2026-09-30 双角度评审修复](#2026-09-30-双角度评审修复)。之前各轮的失败与草稿状态保留为历史记录。
+最新结果见[同步最新主分支与冲突解决](#同步最新主分支与冲突解决)。之前各轮的失败与草稿状态保留为历史记录。
 
 关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../tasks/m3-m4-platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](../../tasks/execution.md)。
 
@@ -128,7 +128,7 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 本轮没有 UI 改动，设计还原与人工 UI 验收不适用。后续 T-LIB-06 仍须单独完成真实 Figma 对照和用户人工验收。
 
-### 本轮本地验证
+### 评审修复后的本地验证（同步主分支前）
 
 环境仍为 macOS arm64、Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32 与 ExifTool 13.55。先完成生产构建，再执行完整集成；随后单独运行浏览器，减少并行负载。没有新增依赖、修改锁文件或数据库结构。
 
@@ -150,8 +150,36 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 本轮复用 TaskSpace 9；此前一轮 TaskSpace 7 已正常结束。成功后运行器关闭任务空间并清理隔离服务/数据，没有下载浏览器或操作用户预览数据。完整截图和原始报告保留在本 worktree 的 `test-results/browser-170-review-final/`，未重复提交已有界面的数百张回归截图。无新增 UI，因此这些功能回归不作为新设计验收结论。
 
-### 本轮交付状态
+### 同步主分支前的交付状态（历史）
 
 两项 Required / P2 和原子性建议均已修复，统计规模夹具的既有失败也已解决。全部本地适用检查与两项独立复审已完成，满足正式待评审条件；完整命令/退出码见[本轮检查清单](./review-checks.json)。[PR #209](https://github.com/dnslin/ariso-next/pull/209)沿用分支 `codex/170-metadata-reread`，由所有者后续评审与合并。
 
 仓库未配置日常远端 PR 检查，`gh pr checks 209` 返回 `no checks reported`（退出 1），不记为 CI 通过。AMD64/ARM64 镜像和容器验证留在既有 Release 流程，本轮未执行。未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。S3 内容读取、预览队列及详情界面仍由本记录开头的既定后续任务承接。
+
+### 同步最新主分支与冲突解决
+
+修复提交 `4392772` 已推送后，最终 GitHub 核对发现 `main` 新合入 #210（`6c24c07`），PR 为 `CONFLICTING`。立即恢复草稿并合并该主分支，没有把冲突状态作为最终交付。原两项 P2 和原子性修复文件保持不变。
+
+- `src/server/library/queries.ts` 与 analytics usage 夹具沿用新主分支实现；主分支已包含相同的统计规模夹具与本地存储类型修复。
+- 图库的任务摘要移至公共 `query-items.ts` 后，在排名子查询的 WHERE 中保留 `kind='process'`，使列表、状态批读和邻居查询都不会把元数据任务当作图片处理任务。没有恢复旧查询逻辑或复制实现。
+- 扩充既有元数据隔离回归，覆盖详情、列表、状态批读和实际相邻对象。未加过滤时[选定场景失败](./merge-red.txt)，加入排名前过滤后[同场景通过](./merge-green.txt)；其余 6 项按过滤条件未选中，不算完整套件通过。
+- 两位原评审者独立复核合并解决，均 **Approve**，无新增 Required / Optional。质量评审确认新代理不匹配元数据 POST、各入口保持所有者鉴权；结构评审确认新公共模块是正确过滤边界、主分支行为完整保留。两人各自执行选定隔离回归通过，未冒称重跑全套。
+
+同步引入的是主分支已锁定的 `@internationalized/date`，冻结安装按新锁文件执行。本任务没有另行选择或新增依赖。由于实际查询、代理和构建输入变化，重新执行完整适用验证，不仅处理冲突标记。
+
+| 同步主分支后的实际命令                                                                                       | 结果                                                                     |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                             | [通过](./merge-install.txt)                                              |
+| `pnpm run format:check`                                                                                      | [通过](./merge-format.txt)                                               |
+| `pnpm run lint`                                                                                              | [通过](./merge-lint.txt)                                                 |
+| `pnpm run typecheck`                                                                                         | [通过](./merge-typecheck.txt)                                            |
+| `pnpm run test:unit`                                                                                         | [38 文件 / 570 项通过](./merge-unit.txt)                                 |
+| `pnpm run build`                                                                                             | [通过](./merge-build.txt)                                                |
+| `pnpm run test:integration --maxWorkers=2`                                                                   | [88 文件 / 735 项全部通过](./merge-integration.txt)                      |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck` | [安装](./merge-ui-install.txt)、[类型检查](./merge-ui-typecheck.txt)通过 |
+
+合并后的 `EGO_TASK_SPACE=11 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-170-merge pnpm run test:browser` **完整通过，退出 0**；[命令输出](./merge-browser.txt)、[主运行器](./merge-browser-runner.json)、[独立 UI 运行器](./merge-browser-ui-runner.json)均已归档。覆盖与前一完整轮相同，使用合并后的生产包与独立测试数据，未跳过场景或修改断言。截图及原始报告在本 worktree 的 `test-results/browser-170-merge/`。此前成功轮的 TaskSpace 已由运行器关闭，因此合并验证使用新的 TaskSpace 11，并通过既有 `EGO_KEEP_SPACE=1` 保留到最终远端核对结束。运行器已清理临时服务和数据。
+
+合并后的[最终检查清单](./merge-checks.json)记录全部实际命令与退出码：570 项单元、735 项集成、完整浏览器及其他适用检查均通过；两位独立评审者的合并复审也已通过。最终基于 `main@6c24c07` 保留本 Issue 行为，提交和推送合并结果后再次核对 PR 冲突与检查状态。仍无本次 UI 设计变更，设计及人工 UI 验收不适用；发布验证、S3 内容读取、预览与详情界面的既定范围保持不变。
+
+本次仅对本任务文本日志规范终端换行与行尾空白，诊断内容、历史失败与退出码均保留。主分支自带的其他任务证据没有改写。

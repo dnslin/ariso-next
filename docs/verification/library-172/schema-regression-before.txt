@@ -1,0 +1,29 @@
+Already up to date
+Done in 46ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/library-query-172/ariso
+
+ ❯ |unit| tests/unit/library/query.test.ts (30 tests | 2 failed) 21ms
+   × rejects invalid query q=%00not-present 3ms
+   × rejects invalid query __proto__=ignored 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query.test.ts > rejects invalid query q=%00not-present
+ FAIL  |unit| tests/unit/library/query.test.ts > rejects invalid query __proto__=ignored
+AssertionError: expected [Function] to throw an error
+ ❯ tests/unit/library/query.test.ts:59:70
+     57|   'uploadedFrom=2026-01-01',
+     58|   'uploadedFrom=2026-01-02T00:00:00Z&uploadedBefore=2026-01-02T00:00:0…
+     59| ])('rejects invalid query %s', (query) => expect(() => parse(query)).t…
+       |                                                                      ^
+     60|
+     61| it('limits raw status requests to 80 and deduplicates valid IDs', () =…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 28 passed (30)
+   Start at  18:02:20
+   Duration  161ms (import 43%, transform 29%, tests 26%, worker 2%)
