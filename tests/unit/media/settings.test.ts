@@ -13,6 +13,7 @@ describe('media settings full-save validation', () => {
       maxEdge: null,
       jpegBackground: '#FFFFFF',
       watermarkMode: 'off',
+      watermarkAssetId: null,
       defaultLinkVersion: 'compressed',
       defaultVisibility: 'public',
       concurrency: 1,
@@ -87,6 +88,10 @@ describe('media settings full-save validation', () => {
             ...initialMediaSettings,
             compressionEnabled,
             watermarkMode,
+            watermarkAssetId:
+              watermarkMode === 'image'
+                ? '8fde381c-59e5-4c5b-a356-2271897a1398'
+                : null,
             defaultLinkVersion,
           });
           expect(result.success).toBe(valid);
@@ -96,6 +101,15 @@ describe('media settings full-save validation', () => {
       }
     },
   );
+  it('requires a selected asset for image watermark mode', () => {
+    const result = mediaSettingsInputSchema.safeParse({
+      ...initialMediaSettings,
+      watermarkMode: 'image',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success)
+      expect(result.error.issues[0].path).toEqual(['watermarkAssetId']);
+  });
   it('requires the entire settings value rather than silently filling absent fields', () => {
     expect(
       mediaSettingsInputSchema.safeParse({ compressionEnabled: false }).success,
