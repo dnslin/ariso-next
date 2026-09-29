@@ -60,4 +60,6 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 ## PR 状态
 
-待创建草稿 PR 后补链接。适用检查未全部通过，不转正式待评审。不会合并 PR、关闭 Issue、发布、部署或清理分支/worktree。
+已提交并推送实现提交 `98397ea`，创建 [草稿 PR #209](https://github.com/dnslin/ariso-next/pull/209)。通过 `gh pr view 209 --json number,url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup` 核对为 OPEN、草稿、MERGEABLE，`statusCheckRollup=[]`；`gh pr checks 209` 返回 no checks reported，退出 1。没有远端检查，不记为 CI 通过，不等待不存在的工作流。
+
+适用检查未全部通过，不转正式待评审。尚未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。等待范围外最小修复授权后才能继续完整验证。
