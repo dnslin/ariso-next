@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import Database from 'better-sqlite3';
 import { execa } from 'execa';
+import { verifyMediaFormats } from '../dist/cli/verify-media.js';
 
 const fixtures = fileURLToPath(
   new URL('../verification/fixtures/', import.meta.url),
@@ -120,6 +121,12 @@ async function main() {
       sqlite,
       magick,
       exiftool,
+      formats: await verifyMediaFormats(
+        fileURLToPath(
+          new URL('../verification/media-formats/', import.meta.url),
+        ),
+        join(directory, 'formats'),
+      ),
       conversions: [],
       fonts: [],
     };
@@ -154,12 +161,14 @@ async function main() {
     for (const [name, font, text] of [
       [
         'chinese',
-        '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+        process.env.ARISO_VERIFY_CHINESE_FONT ??
+          '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
         '中文图片验证',
       ],
       [
         'latin',
-        '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
+        process.env.ARISO_VERIFY_LATIN_FONT ??
+          '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
         'Ariso 123',
       ],
     ]) {

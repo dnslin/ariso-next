@@ -18,6 +18,7 @@ COPY drizzle ./drizzle
 COPY scripts ./scripts
 COPY docker ./docker
 COPY tests/fixtures/runtime/images ./tests/fixtures/runtime/images
+COPY tests/fixtures/media-formats ./tests/fixtures/media-formats
 RUN pnpm run build
 
 FROM node:24-trixie-slim AS runner

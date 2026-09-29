@@ -218,7 +218,7 @@ export async function readObject(
       const info = await handle.stat();
       if (!info.isFile()) throw new Error(`Not a regular object: ${path}`);
       const stream = handle.createReadStream({ autoClose: true, signal });
-      return { stream, size: info.size, contentType };
+      return { stream, path, size: info.size, contentType };
     } catch (cause) {
       await handle.close();
       throw cause;

@@ -70,3 +70,12 @@ follows ISO/IEC 14496-12 PrimaryItemBox, as implemented in
 Expected preview pixels are all lime, not the four-color item 1. Actual local
 ImageMagick `[0]` decoding selected item 2 for both formats, and ExifTool reported
 `Meta:Main:PrimaryItemReference = 2`.
+
+- `thumbnail.heic`: one primary image with a real 16x12 thumbnail encoded by
+  `heif-enc -L --no-alpha -t 16 source.png -o thumbnail.heic`.
+- `depth.heic`: one primary image and one real encoded 64x48 constant depth
+  plane. The generator changes the unique equal-length auxiliary type in
+  `alpha.heic` from `urn:mpeg:hevc:2015:auxid:1` (alpha) to `:2` (depth).
+  It does not parse or rebuild the container. `heif-info` 1.23.5 independently
+  reports one primary image, no alpha, and one 64x48 8-bit depth channel.
+  Both remain single-primary static images; neither auxiliary item is a page.

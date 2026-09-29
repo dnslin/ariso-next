@@ -23,14 +23,14 @@ import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 if (process.env.IGNORE_TERM) process.on('SIGTERM', () => {});
-const workspace = process.argv.find(arg => arg.startsWith('registry:temporary-path=') || arg.startsWith('ArisoWorkspace=')).split('=').slice(1).join('=');
+const workspace = process.argv.find(arg => arg.startsWith('registry:temporary-path=') || arg.startsWith('ArisoWorkspace=') || arg.startsWith('title=ArisoWorkspace=')).split('ArisoWorkspace=').at(-1).replace('registry:temporary-path=', '');
 if (process.env.SPAWN_DESCENDANT) spawn(process.execPath, ['-e', "const fs=require('node:fs');const path=require('node:path');process.on('SIGTERM',()=>{});fs.writeFileSync(path.join(process.argv[1],'descendant-ready'),String(process.pid));let i=0;setInterval(()=>fs.writeFileSync(path.join(process.argv[1],'descendant-cache'),String(++i)),10)", workspace], {stdio:'ignore'});
 writeFileSync(join(workspace, 'ready'), String(process.pid));
 let count = 0;
 setInterval(() => writeFileSync(join(workspace, 'cache'), String(++count)), 10);
 `;
   await Promise.all(
-    ['magick', 'exiftool'].map((tool) =>
+    ['magick', 'exiftool', 'ffmpeg', 'ffprobe'].map((tool) =>
       writeFile(join(bin, tool), script, { mode: 0o755 }),
     ),
   );
@@ -89,7 +89,7 @@ describe('media tool lifecycle', () => {
     }
   });
 
-  it.each(['magick', 'exiftool'] as const)(
+  it.each(['magick', 'exiftool', 'ffmpeg', 'ffprobe'] as const)(
     'kills %s after cancellation even when it ignores SIGTERM',
     async (command) => {
       const controller = new AbortController();

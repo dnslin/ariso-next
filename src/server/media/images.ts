@@ -141,16 +141,32 @@ export function getImageAccessState(
         // SQLite insertion order resolves jobs submitted within the same millisecond.
         .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
         .get() ?? null;
-    const versions = versionKinds.map((kind) => ({
-      kind,
-      applicable:
+    const versions = versionKinds.map((kind) => {
+      const applicable =
         kind === 'original' || kind === 'thumbnail'
           ? true
           : image.classification === null
             ? null
-            : image.classification === 'static',
-      saved: saved.find((row) => row.version.kind === kind) ?? null,
-    }));
+            : image.classification === 'static';
+      const stored = saved.find((row) => row.version.kind === kind) ?? null;
+      const enabled =
+        kind === 'compressed'
+          ? latestJob?.snapshot.compressionEnabled
+          : kind === 'watermark'
+            ? latestJob?.snapshot.watermarkMode !== 'off'
+            : true;
+      const status = stored
+        ? ('saved' as const)
+        : applicable === false
+          ? ('not_applicable' as const)
+          : enabled === false
+            ? ('disabled' as const)
+            : latestJob?.status === 'failed' &&
+                latestJob.expectedVersions.includes(kind as DerivedVersionKind)
+              ? ('failed' as const)
+              : ('not_generated' as const);
+      return { kind, applicable, saved: stored, status };
+    });
     return { image, versions, latestJob };
   });
 }

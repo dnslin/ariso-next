@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { eq, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { crc32 } from 'node:zlib';
-import * as formats from '../../../src/server/media/formats.ts';
+import * as formats from '../../../src/server/media/file-formats.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import { processMediaJob } from '../../../src/server/media/process.ts';
 import { collectionFixture } from '../collections/helpers.ts';
@@ -116,7 +116,7 @@ describe('real local upload reception and ownership', () => {
   it('keeps accepted work after the request disconnects during actual inspection and processes it to ready', async () => {
     const session = submission().sessions[0];
     const disconnect = new AbortController();
-    const originalInspect = formats.inspectImage;
+    const originalInspect = formats.identifyImageFile;
     let entered!: () => void;
     let release!: () => void;
     const started = new Promise<void>((resolve) => {
@@ -125,7 +125,7 @@ describe('real local upload reception and ownership', () => {
     const gate = new Promise<void>((resolve) => {
       release = resolve;
     });
-    vi.spyOn(formats, 'inspectImage').mockImplementationOnce(
+    vi.spyOn(formats, 'identifyImageFile').mockImplementationOnce(
       async (...args) => {
         entered();
         await gate;

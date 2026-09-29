@@ -1,6 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { createReadStream } from 'node:fs';
-import { inspectImage, requireFirstImageFormat } from '../media/formats.ts';
+import { identifyImageFile } from '../media/file-formats.ts';
 import {
   prepareLocalObjectPath,
   publishLocalObject,
@@ -86,13 +85,13 @@ export async function receiveSession(
       .set({ state: 'validating', byteSize, updatedAt: new Date() })
       .where(eq(uploadSessions.id, id))
       .run();
-    // ExifTool streams the original; no full-file Buffer or second disk copy.
-    const facts = await inspectImage(
-      createReadStream(path),
+    // Signature admission does not decode; the durable media job classifies and renders.
+    const facts = await identifyImageFile(
+      path,
       `${storageRoot}/upload-${id}`,
       signal,
     );
-    const extension = requireFirstImageFormat(facts);
+    const { extension } = facts;
     signal.throwIfAborted();
     const finalKey = `original/${session.candidateImageId}.${extension}`;
     db.update(uploadSessions)

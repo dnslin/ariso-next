@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { assertStaticSvg } from './svg-policy.mjs';
+import { assertStaticSvg } from '../../../scripts/media/svg-policy.mjs';
 import { Resvg } from '@resvg/resvg-js';
 
 const sha256 = (data) => createHash('sha256').update(data).digest('hex');

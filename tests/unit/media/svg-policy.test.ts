@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { assertStaticSvg } from '../../experiments/media-formats/svg-policy.mjs';
+import { assertStaticSvg } from '../../../scripts/media/svg-policy.mjs';
 
 const wrap = (body: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${body}</svg>`;
 
-describe('static SVG experiment policy', () => {
+describe('static SVG admission policy', () => {
   it.each([
     '<rect width="10" height="10" fill="blue"/>',
     '<defs><linearGradient id="g"><stop stop-color="red"/></linearGradient></defs><rect fill="url(#g)"/>',
@@ -36,6 +36,7 @@ describe('static SVG experiment policy', () => {
     "<style>rect {fill: url('https://example.com/a.svg')}</style>",
     '<style><![CDATA[@import url(https://example.com/a.css);]]></style>',
     '<rect style="fill:image-set(\'https://example.com/a.png\' 1x)"/>',
+    '<style>@font-face {font-family: remote; src: url("file:///tmp/private.ttf")}</style>',
     '<rect style="animation:spin 1s infinite"/>',
     '<rect style="-moz-animation:spin 1s infinite"/>',
     '<rect style="--paint:url(file:///tmp/secret);fill:var(--paint)"/>',

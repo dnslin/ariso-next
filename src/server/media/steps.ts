@@ -61,7 +61,13 @@ export function publishMediaVersion(
   jobId: string,
   kind: DerivedVersionKind,
   objectId: string,
-  result: { size: number; width: number; height: number },
+  result: {
+    size: number;
+    width: number;
+    height: number;
+    format: string;
+    mime: string;
+  },
   temporaryObjectId?: string,
 ) {
   db.transaction((tx) => {
@@ -69,8 +75,8 @@ export function publishMediaVersion(
     const now = new Date();
     const details = {
       byteSize: result.size,
-      format: 'WEBP',
-      mime: 'image/webp',
+      format: result.format,
+      mime: result.mime,
     };
     tx.update(mediaObjects)
       .set({ ...details, status: 'stored', error: null, updatedAt: now })
@@ -126,7 +132,9 @@ export async function reconcileMediaObjects(
   signal: AbortSignal,
 ) {
   const { db, storageRoot, logger } = runtime;
-  const { storage } = activeMediaJob(db, jobId);
+  const { storage, job } = activeMediaJob(db, jobId);
+  const outputFormat =
+    kind === 'thumbnail' ? 'webp' : job.snapshot.outputFormat;
   const candidates = db
     .select()
     .from(mediaObjects)
@@ -163,10 +171,10 @@ export async function reconcileMediaObjects(
           signal,
         );
         const facts = await inspectImage(data.stream, workspace, signal);
-        if (facts.mime !== 'image/webp')
+        if (facts.mime !== `image/${outputFormat}`)
           throw mediaError(
             'MEDIA_OUTPUT_INVALID',
-            'Recovered candidate is not WebP',
+            'Recovered candidate has unexpected encoding',
           );
         const full = await readObject(
           storageRoot,
@@ -190,7 +198,7 @@ export async function reconcileMediaObjects(
             '-limit',
             'thread',
             '1',
-            'webp:-',
+            `${outputFormat}:-`,
             'null:',
           ],
           {
@@ -226,6 +234,8 @@ export async function reconcileMediaObjects(
           size: existing.size,
           width: verified.width,
           height: verified.height,
+          format: verified.format,
+          mime: verified.mime,
         });
         continue;
       }

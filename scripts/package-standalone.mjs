@@ -4,6 +4,7 @@ import {
   lstat,
   mkdir,
   readlink,
+  readFile,
   symlink,
 } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -14,7 +15,12 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, '.next/standalone');
 // Reuse Next's tracer for the CLI graph, which is not reachable from Web routes.
 const { fileList, warnings } = await nft.nodeFileTrace(
-  ['dist/cli/prestart.js', 'dist/cli/logging.js', 'dist/cli/shutdown.js'],
+  [
+    'dist/cli/prestart.js',
+    'dist/cli/logging.js',
+    'dist/cli/shutdown.js',
+    'scripts/media/svg-render.mjs',
+  ],
   {
     base: root,
     processCwd: root,
@@ -63,3 +69,15 @@ await copyFile(
   join(root, 'docker/entrypoint.sh'),
   join(output, 'entrypoint.sh'),
 );
+
+const formatFixtures = join(root, 'tests/fixtures/media-formats');
+const formatOutput = join(output, 'verification/media-formats');
+const manifest = JSON.parse(
+  await readFile(join(formatFixtures, 'manifest.json'), 'utf8'),
+);
+await mkdir(formatOutput, { recursive: true });
+for (const file of [
+  'manifest.json',
+  ...manifest.samples.map((sample) => sample.file),
+])
+  await copyFile(join(formatFixtures, file), join(formatOutput, file));
