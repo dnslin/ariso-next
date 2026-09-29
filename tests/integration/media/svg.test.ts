@@ -1,4 +1,3 @@
-import { requireLocalStorage } from '../../../src/server/storage/settings.ts';
 import {
   mkdtemp,
   mkdir,
@@ -20,7 +19,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -95,8 +94,7 @@ describe('isolated static SVG preview', () => {
       migrateRuntimeDatabase(db, resolve('drizzle'));
       prepareInitialStorage(db, { storage: storageRoot });
       db.transaction(prepareInitialMedia);
-      const storage = resolveUploadStorage(db);
-      requireLocalStorage(storage);
+      const storage = resolveLocalUploadStorage(db);
       const plan = planLocalWrite('uploads');
       const bytes = Buffer.from(f.text);
       await writeObject(storageRoot, storage, plan, Readable.from(bytes));

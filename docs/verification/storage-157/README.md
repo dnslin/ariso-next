@@ -120,3 +120,11 @@ HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保�
 | 真实 S3 运行器（完整命令见 JSON）                                | R2 / SeaweedFS 全部通过                                                                                  |
 
 命令环境和结果统一见 [local-checks.json](./local-checks.json)，[交叉审计结论](./review-fixes/audit.json)无剩余修改项。集成日志中的一次性测试 setup code 已脱敏，构建记录摘录全部不同的打包追踪诊断，重复解析栈未提交；完整本地日志路径保留在摘录中。本轮没有 UI 修改，Figma 和人工 UI 验收不适用。无新增 Release、镜像发布或部署；AWS 与双架构容器验证边界沿用前述执行约定。
+
+### 推送后的主分支同步
+
+推送修复后，GitHub 报告与新主分支有冲突。当前 main 已合并 #210（6c24c07），包含同一批既有类型和统计夹具补修。六个冲突文件全部采用主分支版本：媒体 CLI 和三份媒体测试使用现有 resolveLocalUploadStorage，其内部仍调用 resolveUploadStorage 与 requireLocalStorage；analytics 夹具保留类型约束和 extension/coder；规模夹具保持同样的七列显式 INSERT。没有修改主分支图库实现或重做其产品选择。
+
+独立结构审查确认这六文件与 main 完全一致，两项 S3 修复、规格及对应回归与同步前提交保持一致，无行为丢失或未解决冲突。主分支历史验证日志包含行尾空白，本次不改写该证据；差异检查以实际 PR 基线 main 为准。
+
+同步后重新执行冻结安装、格式、lint、类型、572 项全单元及构建，均通过。完整普通/真实工具集成退出 0，88 文件 / 772 项全部通过，见[同步后集成](./review-fixes/main-sync-integration.txt)和[同步后单元](./review-fixes/main-sync-unit.txt)。最终命令继续统一记录于 local-checks.json。同步未改变本任务的 S3 实现或 UI，因此本轮真实 R2/SeaweedFS 与完整 Ego 浏览器结果沿用同步前的实际通过记录，没有把它们写成同步后重新执行；主分支图库的自身验证见 library-172 记录。

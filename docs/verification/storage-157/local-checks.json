@@ -272,5 +272,50 @@
       "release": "No Release/image/container/deployment requested",
       "design": "No UI change; Figma and human UI acceptance not applicable"
     }
+  },
+  "mainSync": {
+    "base": "6c24c07128c1e07f7f28676a5d049083d545eee0",
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=2",
+        "exitCode": 0,
+        "files": 88,
+        "tests": 772,
+        "evidence": "review-fixes/main-sync-integration.txt"
+      }
+    ],
+    "unit": {
+      "files": 39,
+      "tests": 572,
+      "evidence": "review-fixes/main-sync-unit.txt"
+    },
+    "audit": "review-fixes/audit.json#mainSyncReview",
+    "browserAndLive": "Not rerun after adopting the six equivalent main baseline repairs; this task S3 implementation and UI unchanged. Passing pre-sync runs remain explicitly scoped to pre-sync tree.",
+    "fullLocalLogs": "/tmp/ariso-pr211-sync",
+    "diffCheck": "git diff --cached origin/main --check passed; inherited main historical-log whitespace left unchanged"
   }
 }

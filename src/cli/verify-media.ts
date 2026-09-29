@@ -1,4 +1,3 @@
-import { requireLocalStorage } from '../server/storage/settings.ts';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -10,7 +9,7 @@ import { openRuntimeDatabase } from '../server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -67,8 +66,7 @@ export async function verifyMediaFormats(fixtures: string, output: string) {
           createHash('sha256').update(bytes).digest('hex'),
           sample.sha256,
         );
-        const storage = resolveUploadStorage(connection.db);
-        requireLocalStorage(storage);
+        const storage = resolveLocalUploadStorage(connection.db);
         const plan = planLocalWrite('verification');
         await writeObject(
           runtime.storageRoot,

@@ -1,4 +1,3 @@
-import { requireLocalStorage } from '../../../src/server/storage/settings.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -11,7 +10,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -62,8 +61,7 @@ async function accept(
   bytes: Buffer,
   changes: Partial<ProcessingSnapshot> = {},
 ) {
-  const storage = resolveUploadStorage(connection.db);
-  requireLocalStorage(storage);
+  const storage = resolveLocalUploadStorage(connection.db);
   const plan = planLocalWrite('uploads');
   await writeObject(runtime.storageRoot, storage, plan, Readable.from(bytes));
   const snapshot = {
@@ -99,11 +97,9 @@ async function versionBytes(
   kind: 'original' | 'compressed' | 'thumbnail',
 ) {
   const row = state(imageId).versions.find((v) => v.kind === kind)!.saved!;
-  const storage = resolveUploadStorage(connection.db, row.object.storageId);
-  requireLocalStorage(storage);
   const object = await readObject(
     runtime.storageRoot,
-    storage,
+    resolveLocalUploadStorage(connection.db, row.object.storageId),
     row.object.key,
     row.version.mime,
   );

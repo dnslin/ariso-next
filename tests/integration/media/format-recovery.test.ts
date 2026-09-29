@@ -1,4 +1,3 @@
-import { requireLocalStorage } from '../../../src/server/storage/settings.ts';
 import { randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -12,7 +11,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -71,8 +70,7 @@ describe('T-MED-06 compressed-format interruption recovery', () => {
         const original = await readFile(
           resolve('tests/fixtures/media-formats/source.png'),
         );
-        const storage = resolveUploadStorage(connection.db);
-        requireLocalStorage(storage);
+        const storage = resolveLocalUploadStorage(connection.db);
         const originalPlan = planLocalWrite('uploads');
         await writeObject(
           runtime.storageRoot,

@@ -54,5 +54,19 @@
       "notes": "Fixed expectations by service rather than reported result; strict stage, revision, enablement, exact-key, reference and usage assertions. SeaweedFS manual cleanup explicitly not applicable. Did not author runner changes."
     }
   ],
-  "designAcceptance": "Not applicable: no UI change. Existing browser regression is not Figma or human design acceptance."
+  "designAcceptance": "Not applicable: no UI change. Existing browser regression is not Figma or human design acceptance.",
+  "mainSyncReview": {
+    "base": "6c24c07128c1e07f7f28676a5d049083d545eee0",
+    "agent": "pr211_structural_review",
+    "conclusion": "Approve",
+    "conflictedFiles": 6,
+    "resolution": "Use origin/main versions for all six duplicated baseline repairs. Existing resolveLocalUploadStorage keeps the same local-only boundary; analytics types and named columns remain intact.",
+    "verification": [
+      "git diff --cached origin/main -- <six conflict files> is empty",
+      "git ls-files -u is empty",
+      "S3 implementation, specification and probe tests unchanged from pre-merge HEAD",
+      "git diff --cached origin/main --check passes"
+    ],
+    "tests": "Root reruns checks on merged tree; reviewer performs read-only semantic comparison."
+  }
 }
