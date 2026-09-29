@@ -69,3 +69,5 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 [最终总报告](./browser-passed/runner.json)及同目录子报告包含：桌面/手机身份初始化与重启、M2、交互、工作区连续性，图库、公共页面、上传与轮询；[UI 夹具报告](./browser-passed/ui/browser.json)验证浅深色、360/390/430/768/1440 宽度、键盘与焦点、短视口及适用状态。全部原始截图仍保存在本 worktree 的 `test-results/storage-156-browser-retry4/`。本 Issue 没有 UI 改动，本次为既有页面功能回归，不冒充新增设计验收。
 
 此前手机 M2 超时本轮未复现，没有放宽时限、跳过断言或修改产品代码，不能将重试通过表述为已定位或修复间歇超时根因。历史失败报告继续保留。本次适用浏览器验证阻塞已解除，结合此前通过的本地检查和独立代码审计，PR 可转正式待评审。发布容器与双架构检查仍按 Release 流程执行，未标通过。
+
+通过证据整理后，`pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check` 均通过。证据已提交推送，PR #207 已转为正式待评审；`gh pr view` 确认 OPEN、isDraft=false、statusCheckRollup=[]，分支工作流运行列表仍为空，不记为 CI 通过。
