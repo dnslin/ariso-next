@@ -57,7 +57,7 @@
 
 ## PR 与发布范围
 
-适用本地检查与独立代码审计均已通过，PR 待创建。GitHub 检查实际状态待创建 PR 后回读；空列表不视为 CI 通过。AMD64/ARM64 真实镜像与受限挂载仅在 Release 阶段验证，本次未执行。
+适用本地检查与独立代码审计均已通过，已创建正式待评审 [PR #205](https://github.com/dnslin/ariso-next/pull/205)，分支 `codex/media-formats-150`，实现提交 `35a88f9`。2026-09-29 使用 `gh pr view 205 --json url,state,isDraft,mergeable,headRefName,statusCheckRollup` 与 `gh pr checks 205` 回读：OPEN、非草稿、MERGEABLE，检查列表为空，`gh pr checks` 返回 no checks reported（退出 1）。没有远端检查，不记为 CI 通过，也不等待不存在的工作流。AMD64/ARM64 真实镜像与受限挂载仅在 Release 阶段验证，本次未执行。
 
 官方方案依据：[ImageMagick 格式](https://imagemagick.org/formats/)、[FFmpeg 按输出限制帧数](https://ffmpeg.org/ffmpeg.html)、[前置完整实验](../../tasks/evidence/EV-MEDIA-02/README.md)。
 
