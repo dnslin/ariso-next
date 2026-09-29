@@ -1,4 +1,8 @@
-import { parseLibraryQuery } from '../../../src/server/library/query-schema.ts';
+import {
+  encodeLibraryCursor,
+  LibraryQueryError,
+  parseLibraryQuery,
+} from '../../../src/server/library/query-schema.ts';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -244,25 +248,34 @@ it('rejects unsupported, duplicate, malformed, and mismatched query cursors', ()
     'cursor=garbage',
   ])
     expect(() => parseLibraryQuery(new URLSearchParams(query))).toThrow();
-  for (const overrides of [
-    { scope: 'trash' },
-    { sort: 'uploaded_asc' },
-    { pageSize: 80 },
-    { createdAt: 1e20 },
-    { id: '' },
-    { q: 'test' },
+  const filters = parseLibraryQuery(new URLSearchParams()).filters;
+  const validCursor = encodeLibraryCursor(filters, 1, 'x');
+  expect(
+    parseLibraryQuery(new URLSearchParams({ cursor: validCursor })).cursor,
+  ).toMatchObject({ value: 1, id: 'x' });
+  for (const [key, value] of [
+    ['scope', 'trash'],
+    ['sort', 'uploaded_asc'],
+    ['pageSize', '80'],
+    ['q', 'test'],
   ]) {
+    const params = new URLSearchParams({ [key]: value });
+    expect(() => parseLibraryQuery(params)).not.toThrow();
+    params.set('cursor', validCursor);
+    expect(() => parseLibraryQuery(params)).toThrow(LibraryQueryError);
+  }
+  for (const overrides of [{ value: 1e20 }, { id: '' }]) {
     const cursor = Buffer.from(
       JSON.stringify({
-        scope: 'library',
-        sort: 'uploaded_desc',
-        pageSize: 40,
-        createdAt: 1,
+        query: JSON.stringify(filters),
+        value: 1,
         id: 'x',
         ...overrides,
       }),
     ).toString('base64url');
-    expect(() => parseLibraryQuery(new URLSearchParams({ cursor }))).toThrow();
+    expect(() => parseLibraryQuery(new URLSearchParams({ cursor }))).toThrow(
+      LibraryQueryError,
+    );
   }
 });
 
