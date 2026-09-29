@@ -11,7 +11,7 @@ import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.t
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -70,7 +70,7 @@ describe('T-MED-06 compressed-format interruption recovery', () => {
         const original = await readFile(
           resolve('tests/fixtures/media-formats/source.png'),
         );
-        const storage = resolveUploadStorage(connection.db);
+        const storage = resolveLocalUploadStorage(connection.db);
         const originalPlan = planLocalWrite('uploads');
         await writeObject(
           runtime.storageRoot,

@@ -120,7 +120,7 @@ if (process.argv[2] === 'imports') {
   );
   assert.equal(login.status, 200);
   assert.ok(login.headers.get('set-cookie')?.includes('session_token'));
-  runtime.connection.close();
+  await runtime.stop();
 } else {
   const first = await import(`${startup.href}?generation=1`);
   const second = await import(`${startup.href}?generation=2`);
@@ -130,5 +130,5 @@ if (process.argv[2] === 'imports') {
   assert.equal(second.startServer(), runtime);
   assert.equal(first.startServer(), runtime);
   assert.equal(second.getServerRuntime().setup.code, runtime.setup.code);
-  runtime.connection.close();
+  await runtime.stop();
 }

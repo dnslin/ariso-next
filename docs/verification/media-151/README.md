@@ -4,6 +4,10 @@
 
 2026-09-29 回读 Issue、评论和原生 blocked_by/blocking：无评论；#150、#51、#53 均为 CLOSED，交付记录分别见 [media-150](../media-150/README.md)、[media-51](../media-51/README.md)、[identity-53](../identity-53/README.md)。下游 #152、#160 仍为 OPEN。原工作区有其他活动任务，更新远端后从 `origin/main` 的 `00979f5` 创建独立 worktree `/Users/dnslin/.codex/worktrees/watermark-assets/ariso` 与分支 `codex/151-watermark-assets`，未覆盖原目录。
 
+## 最终结论
+
+所有者批准修复基线阻塞后，本地适用检查全部通过：单元 541 项、完整集成 89 文件 / 737 项，无失败或跳过；类型、生产构建、lint、格式和文档检查通过。独立代码审计 Critical 0 / Required 0；本任务无 UI，设计验收不适用。以下保留首轮失败证据，最终交付以授权后复测为准。
+
 ## 实施与剩余边界
 
 - 上传只接受真实静态 PNG/WebP/SVG，最大 5 MiB；拒绝 APNG、动画 WebP、SVG 动画/脚本/外部资源、损坏及不支持内容。复用 ExifTool、ImageMagick、resvg 与 XML/CSS policy；无新增依赖。原始字节不变，每次上传分配新 ID 和目录。
@@ -15,7 +19,7 @@
 
 本任务**没有 UI**，未修改 Figma、公共布局或前端组件；桌面/手机/主题/焦点和设计人工验收不适用。T-MED-08 承接水印渲染及设置 HTTP；T-MED-09 承接真实处理预览并接入预览引用释放；T-MED-12 承接选择与状态界面；T-UP-03 承接完整批次联验。提供引用接口不代表这些后续能力已经实现。
 
-## 实际验证
+## 首轮验证记录（授权修复前）
 
 环境：macOS 26.6.2 arm64；Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32、ExifTool 13.55。命令前设置 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`。全部数据使用临时目录和独立 SQLite，没有修改用户预览数据。
 
@@ -39,7 +43,7 @@
 
 单元、格式、lint 和文档检查原始输出见 [unit](./unit.txt)、[format](./format.txt)、[lint](./lint.txt)、[docs](./docs.txt)。
 
-未运行 `pnpm run test:browser`：本次无 UI，且生产构建尚未通过。真实 HTTP 测试已提供，但没有可用运行包，不能标记通过。未执行设备、容器、AMD64/ARM64、Release 或部署；发布验证沿现有 Release 流程，不为本 PR 发布。
+首轮未运行 `pnpm run test:browser`：本次无 UI，当时生产构建尚未通过。首轮真实 HTTP 测试因缺少运行包受阻；授权修复后的结果以下方复测为准。未执行设备、容器、AMD64/ARM64、Release 或部署；发布验证沿现有 Release 流程，不为本 PR 发布。
 
 ## 代码审计与失败修复
 
@@ -54,14 +58,42 @@ pnpm exec vitest run --project unit tests/unit/media/settings.test.ts tests/unit
 git diff --check
 ```
 
-## 尚未解除的基线阻塞
+## 2026-09-29 授权修复与复测
 
 `origin/main` 本轮修改前已无法构建：`src/cli/verify-media.ts` 把 `resolveUploadStorage` 的通用配置传给仅支持本地的读写函数。最小修复是改用已有 `resolveLocalUploadStorage`。全量类型检查还发现 `tests/integration/media/{formats,format-recovery,svg}.test.ts` 的同类错误，以及 `tests/integration/analytics/usage.test.ts` 的旧格式夹具缺少 coder/extension。
 
-全量集成另发现 `tests/experiments/analytics-scale/fixture.ts:48` 使用无列名的七值 INSERT，而 `storage_configs` 已有 22 列。已核对 `origin/main` 中同样存在该语句，本次没有修改 storage schema。该基线夹具亦未修复。
+全量集成另发现 `tests/experiments/analytics-scale/fixture.ts:48` 使用无列名的七值 INSERT，而 `storage_configs` 已有 22 列。已核对 `origin/main` 中同样存在该语句，本次没有修改 storage schema。本轮已为该 INSERT 显式指定列名，保留原测试数据及断言。
 
-项目规则要求范围外问题未经批准不修改；本轮已提出具体修复请求，当前尚未收到授权。这些文件未改动。PR 保持草稿，任务不标完成；需先获准修复或由基线修复合入，然后重新构建并完成真实 HTTP 与全量集成验证。不能将本次模块测试通过等同于完整交付通过。
+首轮按项目范围规则保留草稿；所有者随后明确回复“批准修复”。本轮仅将 CLI 与三个本地媒体测试改用既有 `resolveLocalUploadStorage`，为 analytics usage 夹具按真实接受接口补齐 coder/extension，并修正上述 scale INSERT。独立审计 Critical 0 / Required 0；类型检查和生产构建已通过。授权后结果见下方复测记录。
+
+### 真实运行包揭示的夹具修复
+
+构建恢复后，第一轮全量集成为 712 通过 / 25 失败，无跳过，见 [复测失败证据](./integration-recheck.txt)。其中 19 项是本次 schema 和运行时变化需要更新的测试夹具：初始化默认对象缺少 `watermarkAssetId: null`；health 的完整表及空表列表缺两张水印表；secret-preflight 与 startup 的手写迁移集合缺少必要 schema。另一个辅助进程直接关闭数据库，未等待后台任务，现改为 `await runtime.stop()`，子进程日志级别设为 error，保留错误及完整初始化码断言，仅抑制正常停止信息。独立审计逐次复核，Required 0；未削弱完整对象、表集合、迁移、回滚或重启断言。
+
+其他 5 项仅在同时有多个 worktree 运行测试时超时；原代码和超时值未修改。串行聚焦重跑 25 项（开发模式重新编译、访问统计、初始化进程生命周期）通过，见 [串行复测](./isolated-recheck.txt)。运行时夹具 21 项通过，见 [启动夹具复测](./runtime-fixtures-after.txt)。初始化真实重启的 1 项亦复测通过。最终全量降低至单 worker，以减少本机资源争用。
+
+### 最终实际命令与结果
+
+| 实际命令                                                                                                                                                                                              | 结果                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `pnpm run typecheck`                                                                                                                                                                                  | 通过，[日志](./typecheck-final.txt)                                                                          |
+| `pnpm run build`                                                                                                                                                                                      | 通过，[日志](./build-final.txt)；现有打包器报告 resvg 可选平台依赖追踪警告，退出码 0，本机真实运行包测试通过 |
+| `pnpm run lint`                                                                                                                                                                                       | 通过，[日志](./lint-final.txt)                                                                               |
+| `pnpm run format:check`                                                                                                                                                                               | 通过，[日志](./format-final.txt)；最终文档随后单独格式检查通过                                               |
+| `pnpm run test:unit`                                                                                                                                                                                  | 37 文件、541 项通过，[日志](./unit-final.txt)                                                                |
+| `pnpm run test:integration --maxWorkers=1`                                                                                                                                                            | 89 文件、737 项全部通过，650.63 秒，无失败或跳过，[日志](./integration-final.txt)                            |
+| `pnpm exec vitest run --project integration tests/integration/analytics/usage.test.ts tests/integration/analytics/scale.test.ts --maxWorkers=2`                                                       | 4 项通过，[日志](./baseline-fixtures-final.txt)                                                              |
+| `pnpm exec vitest run --project integration tests/integration/identity/m1-gate.test.ts --maxWorkers=1`                                                                                                | 1 项通过                                                                                                     |
+| `pnpm exec vitest run --project integration tests/integration/runtime/health.test.ts tests/integration/runtime/secret-preflight.test.ts tests/integration/runtime/startup.test.ts --maxWorkers=1`     | 21 项通过                                                                                                    |
+| `pnpm exec vitest run --project integration tests/integration/identity/setup-lifecycle.test.ts tests/integration/analytics/count.test.ts tests/integration/identity/setup-dev.test.ts --maxWorkers=1` | 25 项通过                                                                                                    |
+| `node docs/tasks/check.mjs` / `git diff --check`                                                                                                                                                      | 通过；120 tasks / 298 requirements，无缺失编号或循环                                                         |
+
+完整集成覆盖新水印 HTTP 7 项、不可变资产及引用 14 项、真实格式验证 22 项、接收/停止/恢复 6 项，也覆盖隔离无密钥构建、打包 CLI 媒体验证和初始化真实重启。独立审计另复核全部追加修复，仍为 Critical 0 / Required 0。
+
+`pnpm run test:browser` 未运行：本任务只改后端模块、HTTP 和测试夹具，无界面或公共 UI 变化，业务真实 HTTP 已覆盖。设备、容器、AMD64/ARM64 镜像检查按既有 Release 流程执行，本轮未运行，不记通过。下游未实现能力仍按本文的任务归属承接。
 
 ## PR 与远端检查
 
-[PR #212](https://github.com/dnslin/ariso-next/pull/212) 已创建为草稿，分支 `codex/151-watermark-assets`。代码提交 `f8e1225`。实际执行 `gh pr view 212 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,baseRefName,mergeStateStatus,statusCheckRollup`，回读 OPEN / isDraft=true / CLEAN / statusCheckRollup=[]；`gh pr checks 212 --repo dnslin/ariso-next` 返回 “no checks reported”。当前没有远端检查，不能记作 CI 通过；以以上本地证据和未解除阻塞为准。未合并、关闭 Issue、发布、部署或删除分支/worktree。
+[PR #212](https://github.com/dnslin/ariso-next/pull/212)，分支 `codex/151-watermark-assets`。首轮因基线失败创建草稿；所有者授权修复后，本地适用检查及独立审计均通过，已满足转正式待评审条件。
+
+实际使用 `gh pr view 212 --repo dnslin/ariso-next --json isDraft,mergeStateStatus,baseRefOid,statusCheckRollup` 和 `gh pr checks 212 --repo dnslin/ariso-next` 核对：当前 main 基线为 `00979f5`，无合并冲突，检查列表为空。仓库没有远端 PR 检查，不能记作 CI 通过。未合并、关闭 Issue、发布、部署或删除分支/worktree。

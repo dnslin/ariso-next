@@ -34,13 +34,13 @@ beforeEach(() => {
   createExperimentResponsibilityTable(fixture.db.$client);
 });
 afterEach(() => fixture.close());
-const facts = {
+const facts: Parameters<typeof acceptSession>[2] = {
   format: 'PNG',
   mime: 'image/png',
   width: 1,
   height: 1,
-  animated: false,
-  pageCount: 1,
+  coder: 'png',
+  extension: 'png',
 };
 const usage = () => aggregateUsage(readUsageObjects(fixture.db.$client));
 function record(overrides: Partial<UsageObject>) {

@@ -62,6 +62,8 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'media_objects' },
         { name: 'media_settings' },
         { name: 'media_versions' },
+        { name: 'media_watermark_assets' },
+        { name: 'media_watermark_preview_refs' },
         { name: 'session' },
         { name: 'site_settings' },
         { name: 'storage_configs' },
@@ -105,6 +107,8 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         'media_objects',
         'media_settings',
         'media_versions',
+        'media_watermark_assets',
+        'media_watermark_preview_refs',
         'upload_sessions',
         'upload_submissions',
       ]) {

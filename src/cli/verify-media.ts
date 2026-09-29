@@ -9,7 +9,7 @@ import { openRuntimeDatabase } from '../server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../server/runtime/migrations.ts';
 import {
   prepareInitialStorage,
-  resolveUploadStorage,
+  resolveLocalUploadStorage,
 } from '../server/storage/defaults.ts';
 import {
   planLocalWrite,
@@ -66,7 +66,7 @@ export async function verifyMediaFormats(fixtures: string, output: string) {
           createHash('sha256').update(bytes).digest('hex'),
           sample.sha256,
         );
-        const storage = resolveUploadStorage(connection.db);
+        const storage = resolveLocalUploadStorage(connection.db);
         const plan = planLocalWrite('verification');
         await writeObject(
           runtime.storageRoot,
