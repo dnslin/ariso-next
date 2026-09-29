@@ -22,7 +22,7 @@ export async function processMetadataJob(
   let workspaceReady = false;
   let toolCleanupFailed = false;
   try {
-    const { image, storage } = activeMediaJob(db, jobId);
+    const { image } = activeMediaJob(db, jobId);
     signal.throwIfAborted();
     await terminateMediaTools(workspace);
     await rm(workspace, { recursive: true, force: true });
@@ -39,6 +39,7 @@ export async function processMetadataJob(
         ),
       )
       .get()!;
+    const { storage } = activeMediaJob(db, jobId);
     const source = await readObject(
       runtime.storageRoot,
       storage,
@@ -56,20 +57,6 @@ export async function processMetadataJob(
       signal,
     );
     if (result.error) throw result.error;
-    db.transaction((tx) => {
-      activeMediaJob(tx, jobId);
-      const now = new Date();
-      tx.update(mediaJobs)
-        .set({
-          status: 'succeeded',
-          step: 'complete',
-          error: null,
-          finishedAt: now,
-          updatedAt: now,
-        })
-        .where(eq(mediaJobs.id, jobId))
-        .run();
-    });
   } catch (error) {
     toolCleanupFailed =
       (error as { code?: string })?.code === 'MEDIA_TOOL_SHUTDOWN_FAILED';

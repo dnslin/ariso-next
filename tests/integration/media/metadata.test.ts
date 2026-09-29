@@ -25,6 +25,7 @@ import {
   readObject,
   writeObject,
 } from '../../../src/server/storage/local.ts';
+import { storageConfigs } from '../../../src/server/storage/schema.ts';
 import {
   acceptOriginal,
   getImageAccessState,
@@ -145,6 +146,20 @@ function imageState(imageId: string) {
       .where(eq(mediaObjects.imageId, imageId))
       .all(),
   };
+}
+
+function originalPath(imageId: string) {
+  const object = imageState(imageId).objects.find(
+    (entry) => entry.purpose === 'original',
+  )!;
+  const storage = resolveLocalUploadStorage(connection.db, object.storageId);
+  return join(
+    runtime.storageRoot,
+    storage.localPath,
+    'ariso',
+    storage.id,
+    object.key,
+  );
 }
 
 function values(data: GroupedMetadata, group: string, tag: string) {
@@ -444,5 +459,150 @@ describe('T-MED-07 complete metadata with real ExifTool and ImageMagick', () => 
         'injected metadata database write failure',
       ),
     });
+  });
+
+  it('retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result', async () => {
+    const { imageId } = await accept(await complexJpeg());
+    await processNext();
+    const before = readMediaMetadata(connection.db, imageId)!;
+    const logs: string[] = [];
+    runtime.logger = createRuntimeLogger('metadata.test', 'info', {
+      write: (message) => {
+        logs.push(message);
+      },
+    });
+    await writeFile(originalPath(imageId), Buffer.alloc(0));
+    requestMetadataRead(connection.db, imageId);
+    const job = await processNext();
+    const failed = readMediaMetadata(connection.db, imageId)!;
+    expect(failed).toMatchObject({
+      status: 'failed',
+      historical: true,
+      data: before.data,
+      photography: before.photography,
+      readAt: before.readAt,
+    });
+    expect.soft(failed.error).toContain('File is empty');
+    expect.soft(logs.join('')).toContain('File is empty');
+    expect
+      .soft(
+        connection.db
+          .select()
+          .from(mediaJobs)
+          .where(eq(mediaJobs.id, job.id))
+          .get(),
+      )
+      .toMatchObject({
+        status: 'failed',
+        error: expect.stringContaining('File is empty'),
+      });
+    const diagnostics = `${failed.error}\n${logs.join('')}`;
+    for (const privateValue of [
+      serial,
+      'GPS:Main:GPSLatitude',
+      '31 deg 12',
+      'ExifTool:Main:ExifToolVersion',
+      '"stdout"',
+      '"stderr"',
+    ]) {
+      expect(diagnostics).not.toContain(privateValue);
+    }
+    expect(imageState(imageId).image!.processingStatus).toBe('ready');
+    expect(await readdir(runtime.temporaryRoot)).toEqual([]);
+  });
+
+  it('rechecks storage disabled during workspace preparation before accessing the original', async () => {
+    const { imageId } = await accept(await complexJpeg());
+    await processNext();
+    const before = readMediaMetadata(connection.db, imageId)!;
+    await rm(originalPath(imageId));
+    requestMetadataRead(connection.db, imageId);
+    const job = claimNextMediaJob(connection.db)!;
+    const pending = processMetadataJob(runtime, job.id);
+    // The worker has read the enabled configuration, then yielded for workspace I/O.
+    // Disabling the real row now must prevent even an attempted read of the missing file.
+    queueMicrotask(() =>
+      connection.db.update(storageConfigs).set({ enabled: false }).run(),
+    );
+    await pending;
+    const failed = readMediaMetadata(connection.db, imageId)!;
+    expect(failed).toMatchObject({
+      status: 'failed',
+      historical: true,
+      data: before.data,
+      photography: before.photography,
+      readAt: before.readAt,
+    });
+    expect.soft(failed.error).toContain('STORAGE_DISABLED');
+    expect.soft(failed.error).not.toContain('STORAGE_OBJECT_MISSING');
+    expect(
+      connection.db
+        .select()
+        .from(mediaJobs)
+        .where(eq(mediaJobs.id, job.id))
+        .get(),
+    ).toMatchObject({
+      status: 'failed',
+      error: expect.stringContaining('STORAGE_DISABLED'),
+    });
+    expect(await readdir(runtime.temporaryRoot)).toEqual([]);
+  });
+
+  it('atomically retains the previous metadata if marking a reread job succeeded fails and later recovers', async () => {
+    const { imageId } = await accept(await complexJpeg());
+    await processNext();
+    const before = readMediaMetadata(connection.db, imageId)!;
+    const oldState = imageState(imageId);
+    await execa('exiftool', [
+      '-overwrite_original',
+      '-EXIF:Make=RecoveryCamera',
+      originalPath(imageId),
+    ]);
+    connection.db.$client.exec(
+      `CREATE TRIGGER reject_metadata_job_success BEFORE UPDATE ON media_jobs WHEN NEW.kind = 'metadata' AND NEW.status = 'succeeded' BEGIN SELECT RAISE(ABORT, 'injected metadata job success failure'); END`,
+    );
+    requestMetadataRead(connection.db, imageId);
+    const job = await processNext();
+    const failed = readMediaMetadata(connection.db, imageId)!;
+    expect(failed).toMatchObject({
+      status: 'failed',
+      historical: true,
+      error: expect.stringContaining('injected metadata job success failure'),
+    });
+    expect.soft(failed.data).toEqual(before.data);
+    expect.soft(failed.photography).toEqual(before.photography);
+    expect.soft(failed.readAt).toEqual(before.readAt);
+    expect(
+      connection.db
+        .select()
+        .from(mediaJobs)
+        .where(eq(mediaJobs.id, job.id))
+        .get(),
+    ).toMatchObject({ status: 'failed' });
+    expect(imageState(imageId)).toEqual(oldState);
+
+    connection.db.$client.exec('DROP TRIGGER reject_metadata_job_success');
+    requestMetadataRead(connection.db, imageId);
+    const recoveredJob = await processNext();
+    const recovered = readMediaMetadata(connection.db, imageId)!;
+    expect(recovered).toMatchObject({
+      status: 'succeeded',
+      historical: false,
+      error: null,
+      photography: { make: 'RecoveryCamera' },
+    });
+    expect(values(recovered.data!, 'IFD0', 'Make')).toContain('RecoveryCamera');
+    expect(recovered.readAt!.getTime()).toBeGreaterThan(
+      before.readAt!.getTime(),
+    );
+    expect(
+      connection.db
+        .select()
+        .from(mediaJobs)
+        .where(eq(mediaJobs.id, recoveredJob.id))
+        .get(),
+    ).toMatchObject({ status: 'succeeded', error: null });
+    expect(imageState(imageId)).toEqual(oldState);
+    expect(await readdir(runtime.temporaryRoot)).toEqual([]);
   });
 });

@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { ExecaError } from 'execa';
 import { and, eq, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { mediaImages, mediaJobs, mediaMetadata } from './schema.ts';
@@ -123,7 +124,7 @@ export function requestMetadataRead(
   );
 }
 
-/** Both the initial processing task and standalone rereads use the exact same bounded read. */
+/** Shares the bounded read; standalone rereads publish data and task success together. */
 export async function readAndStoreMetadata(
   runtime: MediaRuntime,
   jobId: string,
@@ -164,24 +165,37 @@ export async function readAndStoreMetadata(
     );
     const error = await tool.settled;
     if (error) {
-      const failure = error as Error & {
-        shortMessage?: string;
-        isMaxBuffer?: boolean;
-        timedOut?: boolean;
-        code?: string;
-      };
+      if (!(error instanceof ExecaError)) throw error;
       // Execa's full message embeds partial stdout, which may contain private GPS/EXIF.
-      // Preserve tool diagnostics and paths without copying the metadata into task errors/logs.
-      if (failure.shortMessage)
-        throw mediaError(
-          failure.isMaxBuffer
-            ? 'MEDIA_METADATA_OUTPUT_LIMIT'
-            : failure.timedOut
-              ? 'MEDIA_TOOL_TIMEOUT'
-              : (failure.code ?? 'MEDIA_METADATA_READ_FAILED'),
-          failure.shortMessage,
-        );
-      throw error;
+      const diagnostics = [
+        error.shortMessage,
+        Buffer.from(error.stderr ?? '')
+          .toString('utf8')
+          .trim(),
+      ];
+      // An ordinary exit can report its cause only in a complete JSON Error tag.
+      // Never parse stdout truncated by timeout, cancellation or the output limit.
+      if (
+        error.exitCode !== undefined &&
+        !error.isMaxBuffer &&
+        !error.timedOut &&
+        !error.isCanceled
+      ) {
+        try {
+          parseMetadata(Buffer.from(error.stdout ?? '').toString('utf8'));
+        } catch (diagnostic) {
+          if (!(diagnostic instanceof Error)) throw diagnostic;
+          diagnostics.push(diagnostic.message);
+        }
+      }
+      throw mediaError(
+        error.isMaxBuffer
+          ? 'MEDIA_METADATA_OUTPUT_LIMIT'
+          : error.timedOut
+            ? 'MEDIA_TOOL_TIMEOUT'
+            : (error.code ?? 'MEDIA_METADATA_READ_FAILED'),
+        diagnostics.filter(Boolean).join('\n'),
+      );
     }
     data = parseMetadata(
       Buffer.from((await tool.child).stdout).toString('utf8'),
@@ -206,17 +220,29 @@ export async function readAndStoreMetadata(
   }
   // Database/storage validity failures are not extraction failures and must remain visible to the job runner.
   db.transaction((tx) => {
-    activeMediaJob(tx, jobId);
+    const { job } = activeMediaJob(tx, jobId);
+    const now = new Date();
     tx.update(mediaMetadata)
       .set({
         status: 'succeeded',
         data,
         photography: photographyFields(data),
-        readAt: new Date(),
+        readAt: now,
         error: null,
       })
       .where(eq(mediaMetadata.imageId, image.id))
       .run();
+    if (job.kind === 'metadata')
+      tx.update(mediaJobs)
+        .set({
+          status: 'succeeded',
+          step: 'complete',
+          error: null,
+          finishedAt: now,
+          updatedAt: now,
+        })
+        .where(eq(mediaJobs.id, jobId))
+        .run();
   });
   logger.info(
     { imageId: image.id, jobId, step: 'metadata' },

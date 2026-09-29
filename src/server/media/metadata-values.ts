@@ -11,7 +11,16 @@ export type GroupedMetadata = Record<string, MetadataValue>;
 
 /** JSONQ preserves numeric-looking strings, including nested XMP values. */
 export function parseMetadata(output: string): GroupedMetadata {
-  const rows: unknown = JSON.parse(output);
+  let rows: unknown;
+  try {
+    rows = JSON.parse(output);
+  } catch {
+    // Native SyntaxError messages can include private metadata from the input.
+    throw mediaError(
+      'MEDIA_METADATA_INVALID',
+      'ExifTool returned invalid JSON',
+    );
+  }
   if (
     !Array.isArray(rows) ||
     rows.length !== 1 ||

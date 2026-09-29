@@ -1,5 +1,7 @@
 # T-MED-07 完整元数据保存与独立重读
 
+最新结果见[2026-09-30 双角度评审修复](#2026-09-30-双角度评审修复)。之前各轮的失败与草稿状态保留为历史记录。
+
 关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../tasks/m3-m4-platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](../../tasks/execution.md)。
 
 2026-09-29 实际读取 Issue 正文、评论与 GitHub 原生依赖。评论为空；直接前置 #150、#53 均 CLOSED，blocking 为 #171。已核对对应实现和既有验证记录。从已更新的 `origin/main`（`00979f5`）创建独立 worktree `/Users/dnslin/.codex/worktrees/metadata-reread/ariso`，分支 `codex/170-metadata-reread`，不混入其他任务修改。
@@ -42,7 +44,7 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 | 全量 `pnpm run test:integration`、新真实 HTTP 场景、`pnpm run test:browser`                                                                                                                                                                                                               | 尚未执行；依执行约定等待成功构建，不通过跳过类型检查制造产物                                |
 | AMD64/ARM64 镜像、受限容器挂载                                                                                                                                                                                                                                                            | 未执行，按既有 Release 流程验证，不属于本次日常 PR 检查                                     |
 
-## 获批修复后验证
+## 首次获批修复后验证（历史）
 
 仍使用上述 Node 24 / pnpm / macOS arm64 环境。[最终命令与退出码](./final-checks.json)包含失败项，整体不记通过。`pnpm run format:check` 最终[通过](./final-format.txt)。
 
@@ -90,7 +92,7 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 后续完整集成取得 703 / 705 通过，见 [integration-fixture-race.txt](./integration-fixture-race.txt)。除上述基线规模夹具外，新增 HTTP 测试的准备阶段暴露与真实队列的 SQLite 读事务升级竞争。已将初始化图片和预排队元数据这两个测试夹具的外层事务改为 `immediate`：先取得写权限，再读取并写入。沿用现有数据库等待配置，不增加重试、延长超时或削弱断言。独立 agent 读取失败栈、真实队列与 better-sqlite3 嵌套事务实现确认根因；[单文件 6 项复测通过](./http-fixture-recheck.txt)。
 
-## 独立审计
+## 首次独立审计（历史）
 
 独立 agent 使用 `code-review-and-quality` 实际读取规则、Issue、规格、迁移、调用路径、核心实现和新增测试。核对完整值保存、失败隔离、旧成功时间、所有者鉴权、共享并发、恢复、图片状态隔离和工具清理；独立执行元数据单元与队列测试 2 文件 / 18 项通过。测试任务编号与 S3 承接编号建议已修正。
 
@@ -98,8 +100,58 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 
 代码功能结论：无未解决的 Critical/Required 问题，本次元数据真实工具、HTTP、恢复和产物隔离均通过。整体交付结论：唯一既有统计规模夹具仍失败且修复待批准，完整集成不得标通过，PR 保持草稿。设计结论：无 UI 变更，不适用；代码与浏览器回归不替代后续界面的设计及人工验收。
 
-## PR 状态
+## 首次 PR 状态（历史）
 
 已提交并推送实现提交 `98397ea`，创建 [草稿 PR #209](https://github.com/dnslin/ariso-next/pull/209)。通过 `gh pr view 209 --json number,url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup` 核对为 OPEN、草稿、MERGEABLE，`statusCheckRollup=[]`；`gh pr checks 209` 返回 no checks reported，退出 1。没有远端检查，不记为 CI 通过，不等待不存在的工作流。
 
 此前获批的 5 文件基线修复和本次回归修正已完成。统计规模夹具的新增范围外修复仍待批准；适用检查未全部通过时继续保留草稿。本轮修复和实际验证证据追加提交并推送到同一分支。尚未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。
+
+## 2026-09-30 双角度评审修复
+
+用户要求修复本轮评审问题与优化建议，范围包含此前报告的统计规模夹具。历史失败与草稿记录保留；本节记录本轮修复和重新验证，不把历史失败改记为通过。
+
+### 问题与修复
+
+独立 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 评审确认两项 Required / P2，以及一项 Optional / P2 原子性建议。先新增三个真实工具/数据库回归，在未改生产实现时取得[三个失败](./review-red.txt)，再实施修复：
+
+- **ExifTool 诊断**：空文件真实退出 1，具体原因仅出现在 JSON 的 `ExifTool:Main:Error`，原先只保留 `shortMessage` 因而丢失原因。改用现有 `ExecaError` 类型，按 Buffer 解码 stderr 和完整的普通退出输出，通过既有 `parseMetadata` 提取具体错误。超时、取消、输出超限不解析残缺 stdout；不把完整 Execa 异常或元数据 JSON 放入数据库错误或日志。无效 JSON 返回固定诊断，避免原生解析错误带出输入原文。
+- **存储停用窗口**：工作目录异步准备后，在新一次 `readObject` 前调用已有 `activeMediaJob`，重新获取任务和存储。回归在异步窗口停用真实存储并移除原图，结果必须为 `STORAGE_DISABLED`，而非开始读取后的 `STORAGE_OBJECT_MISSING`。
+- **成功发布原子性**：独立重读的数据、摄影字段、成功时间和任务完成状态在已有短事务中一起提交，删除 runner 的第二个成功事务。真实 SQL 触发器拒绝任务完成写入时，新提取值整体回滚，保留旧成功结果；解除故障后再次读取成功。初次处理仍继续派生步骤，不被元数据步骤提前完成。
+- **统计规模夹具**：先[复现 22 列表插入 7 值失败](./review-scale-red.txt)，再为原七个值明确列名。未改变生成数据、业务实现、超时或断言。
+
+[聚焦检查](./review-green.txt)共 3 文件 / 19 项通过，包含三个新回归、规模夹具以及元数据单元测试。测试均使用临时数据库和对象，不改用户数据。
+
+### 独立复审结论
+
+- `pr209_quality_review` 按 `code-review-and-quality` 复核实现、调用路径、故障恢复与测试有效性，结论 **Approve**，无新 Critical / Required / Optional。独立执行 `pnpm exec vitest run --project unit tests/unit/media/metadata.test.ts --project media-tools tests/integration/media/metadata.test.ts`，2 文件 / 18 项通过；`git diff --check` 通过。
+- `pr209_structure_review` 按 `thermo-nuclear-code-quality-review` 复核，结论 **结构评审通过**。两项 Required 与原子性建议均落实。独立运行原先的三个复现，确认具体诊断恢复、读取前拒绝停用存储、任务完成写入失败保留旧成功时间。复核六个修复文件的 `git diff --check` 通过。成功事务中按实际任务种类完成独立重读比引入回调或通用框架更直接，无需继续抽象。
+
+本轮没有 UI 改动，设计还原与人工 UI 验收不适用。后续 T-LIB-06 仍须单独完成真实 Figma 对照和用户人工验收。
+
+### 本轮本地验证
+
+环境仍为 macOS arm64、Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32 与 ExifTool 13.55。先完成生产构建，再执行完整集成；随后单独运行浏览器，减少并行负载。没有新增依赖、修改锁文件或数据库结构。
+
+| 实际命令                                                                                                     | 结果                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                             | [通过](./review-install.txt)                                                                                     |
+| `pnpm run format:check`                                                                                      | [通过](./review-format.txt)；首次发现一个格式问题，[历史输出](./review-format-before.txt)保留，已格式化并重跑    |
+| `pnpm run lint`                                                                                              | [通过](./review-lint.txt)                                                                                        |
+| `pnpm run typecheck`                                                                                         | [通过](./review-typecheck.txt)                                                                                   |
+| `pnpm run test:unit`                                                                                         | [37 文件 / 540 项通过](./review-unit.txt)                                                                        |
+| `pnpm run build`                                                                                             | [通过](./review-build.txt)，完整 standalone 已生成；跨平台原生可选依赖的追踪提示保留在日志，不代表已完成镜像验证 |
+| `pnpm run test:integration --maxWorkers=2`                                                                   | [87 文件 / 708 项全部通过](./review-integration.txt)，无跳过或削弱断言                                           |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck` | [安装](./review-ui-install.txt)、[类型检查](./review-ui-typecheck.txt)通过                                       |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                         | [120 任务 / 298 需求检查](./review-task-check.txt)、[5 项自检](./review-task-selftest.txt)通过                   |
+
+首次执行 `EGO_TASK_SPACE=9 BROWSER_REPORT_DIR=test-results/browser-170-review pnpm run test:browser` 在桌面 PNG 原图下载的 Ego `download.saveAs` 步骤失败：工具报告临时目录有两个文件。之前的桌面 JPG 公开/私有下载字节比对均已通过。保留[命令输出](./review-browser-before.txt)、[主运行器失败记录](./review-browser-before.json)与[下载场景记录](./review-browser-download-before.json)，原截图在 `test-results/browser-170-review/`。同机另一独立工作区当时也在执行浏览器回归，存在下载相互干扰的可能；尚无证据将其归因为本次元数据改动。确认另一个运行器结束后，沿用 TaskSpace 9、原命令及全部断言完整重跑，不改下载实现或测试要求。
+
+完整重跑 `EGO_TASK_SPACE=9 BROWSER_REPORT_DIR=test-results/browser-170-review-final pnpm run test:browser` **退出 0**：[命令输出](./review-browser.txt)、[主运行器](./review-browser-runner.json)、[独立 UI 运行器](./review-browser-ui-runner.json)均通过。覆盖桌面 1440 / 手机 390 的初始化与重启、真实上传/下载字节/匿名访问/回收恢复、图库与相册、队列及后台轮询、交互与跨页连续性；公共外壳及 UI 回归包含 360/390/430/768/1440、浅深色、短视口、焦点与点击目标。未修改下载代码、测试断言或等待预算。首次失败没有被改记通过；并行干扰仅为可能原因，不作已确诊结论。
+
+本轮复用 TaskSpace 9；此前一轮 TaskSpace 7 已正常结束。成功后运行器关闭任务空间并清理隔离服务/数据，没有下载浏览器或操作用户预览数据。完整截图和原始报告保留在本 worktree 的 `test-results/browser-170-review-final/`，未重复提交已有界面的数百张回归截图。无新增 UI，因此这些功能回归不作为新设计验收结论。
+
+### 本轮交付状态
+
+两项 Required / P2 和原子性建议均已修复，统计规模夹具的既有失败也已解决。全部本地适用检查与两项独立复审已完成，满足正式待评审条件；完整命令/退出码见[本轮检查清单](./review-checks.json)。[PR #209](https://github.com/dnslin/ariso-next/pull/209)沿用分支 `codex/170-metadata-reread`，由所有者后续评审与合并。
+
+仓库未配置日常远端 PR 检查，`gh pr checks 209` 返回 `no checks reported`（退出 1），不记为 CI 通过。AMD64/ARM64 镜像和容器验证留在既有 Release 流程，本轮未执行。未合并 PR、关闭 Issue、发布、部署或清理分支/worktree。S3 内容读取、预览队列及详情界面仍由本记录开头的既定后续任务承接。

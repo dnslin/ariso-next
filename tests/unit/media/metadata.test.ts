@@ -27,6 +27,12 @@ describe('complete metadata values', () => {
     expect(() => parseMetadata(output)).toThrow();
   });
 
+  it('does not include private metadata in malformed JSON diagnostics', () => {
+    expect(() =>
+      parseMetadata('[{"GPS:Main:GPSLatitude":"private-location"}'),
+    ).toThrow('ExifTool returned invalid JSON');
+  });
+
   it('converts only explicit photography numbers and preserves textual values', () => {
     const data = {
       'IFD0:Main:Make': 'NIKON',
