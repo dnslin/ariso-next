@@ -55,3 +55,5 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 保留[第二轮总报告](./browser-final/runner.json)、[停点上下文](./browser-final/timeout-context.json)及同目录已完成子报告。手机剩余 M2、重启、交互、工作区连续性与末尾 UI fixture 检查未完成；截图和成功子场景不替代整套通过。因适用浏览器检查未通过，PR 保留草稿，任务尚未达到正式待评审条件。
 
 独立审计者再次只读核对第二轮报告、空阶段日志和运行器，确认当前证据不足以归因；代码审计结论不变，但建议保留草稿，不将浏览器验收标完成。证据整理后重跑 `pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` 和 `git diff --check`，全部通过。
+
+已推送分支 `codex/storage-settings-156` 并创建[草稿 PR #207](https://github.com/dnslin/ariso-next/pull/207)。使用 `gh pr view 207 --json url,state,isDraft,headRefName,statusCheckRollup` 确认 OPEN、isDraft=true、检查列表为空；`gh pr checks 207` 返回 no checks reported，`gh run list --branch codex/storage-settings-156 --json databaseId,status,conclusion,name,url` 返回空数组。当前没有远端检查或工作流运行，不记为 CI 通过，也不等待不存在的检查。
