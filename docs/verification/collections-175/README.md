@@ -105,3 +105,17 @@
 实际执行 `gh pr view 208 --json url,isDraft,state,headRefName,headRefOid,statusCheckRollup,mergeable`，返回 `isDraft=true`、`mergeable=MERGEABLE`、`statusCheckRollup=[]`；`gh run list --branch codex/issue-175-albums --json databaseId,name,event,status,conclusion,headSha` 返回空数组。`gh pr checks 208` 返回 no checks reported。当前没有触发远端检查，不将空列表表述为 CI 通过，也不等待不存在的工作流。
 
 本次未合并、未主动关闭 Issue、未发布或部署，分支和 worktree 保留。最后只补远端状态与证据链接，不改变已验证的应用或测试代码。
+
+## 2026-09-29 人工反馈：搜索图标与分页位置
+
+用户要求在相册搜索框左侧增加搜索图标，并询问分页所在位置。本次仅将搜索输入改为既有 HeroUI InputGroup/Prefix 与 16px Lucide Search 组合，替换此前仅预留的桌面左侧空白。该视觉调整已由本次用户反馈明确授权；不代表整页人工验收已通过。
+
+实际读取当前预览确认分页位于固定底栏：每页数量、上一页、当前/总页数、下一页均存在。1920×874 初次检查中分页矩形 y=810–854，处于可视范围。未移动分页或改动公共外壳。测试只读取既有独立预览相册，不创建、编辑或删除用户验收数据。
+
+独立复核首次发现 360px 内容被撑宽：328px 内容区产生 343px 隐式网格列，见[修复前截图](./search-feedback/before-360-clipped.png)。已将该页网格明确为单列 `minmax(0,1fr)`，输入组合允许收缩，并在相册浏览器布局检查补充内容区不能超出自身列宽的断言。
+
+修复后的[浏览器记录](./search-feedback/report.json)覆盖 360/390/430/768/1440px、浅深色及 390×400 短视口共 12 组，检查图标不遮挡输入、点击图标区域聚焦输入、分页始终位于视口内；真实下一页到 2/2，字面搜索重置到 1/1，清空后恢复 1/2。参见[桌面整页](./search-feedback/light-1440-1080.png)及[手机整页](./search-feedback/light-390-844.png)。
+
+本次执行冻结安装、格式检查、ESLint、类型检查及生产构建；另在更新后的生产预览执行上述定向浏览器验证。未重跑未受影响的后端单元/集成及完整浏览器套件，上一轮完整结果仍按原记录保留。PR 继续保持草稿，等待用户人工验收。
+
+独立复核重新查看 360/390/1440px 浅深色共 6 张最新截图，确认 360px 裁切关闭、右侧恢复 16px 边距，图标不重叠且分页可见；代码与内容列宽断言复核通过，无剩余必修项。

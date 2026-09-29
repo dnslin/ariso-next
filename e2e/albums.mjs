@@ -108,6 +108,9 @@ async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
       const geometry = await page.evaluate(() => ({
         width: innerWidth,
         overflow: document.documentElement.scrollWidth > innerWidth,
+        sectionOverflow:
+          document.querySelector('main section').scrollWidth >
+          document.querySelector('main section').clientWidth,
         mainOverflow:
           document.querySelector('main').scrollWidth >
           document.querySelector('main').clientWidth,
@@ -157,6 +160,11 @@ async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
         geometry.mainOverflow,
         false,
         `${state}/${theme}/${width} main overflow`,
+      );
+      assert.equal(
+        geometry.sectionOverflow,
+        false,
+        `${state}/${theme}/${width} content stays within its padded column`,
       );
       for (const target of geometry.targets)
         assert.ok(

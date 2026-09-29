@@ -6,13 +6,13 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { TextField } from '@heroui/react/textfield';
-import { Input } from '@heroui/react/input';
+import { InputGroup } from '@heroui/react/input-group';
 import { Select } from '@heroui/react/select';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
-import { ArrowLeft, Folder, Plus } from 'lucide-react';
+import { ArrowLeft, Folder, Plus, Search } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { AlbumDialog, type AlbumAction } from './dialog';
@@ -173,7 +173,7 @@ export function AlbumsScreen(props: {
         ) : undefined
       }
     >
-      <section className="grid min-w-0 gap-4">
+      <section className="grid min-w-0 grid-cols-1 gap-4">
         {props.albumId ? (
           <>
             <Link
@@ -252,10 +252,15 @@ export function AlbumsScreen(props: {
                 }}
                 className="min-w-0 flex-1"
               >
-                <Input
-                  placeholder="搜索相册…"
-                  className="h-11 w-full rounded-lg border border-border bg-background px-3 text-base shadow-none md:pl-9 md:text-sm"
-                />
+                <InputGroup className="h-11 w-full min-w-0 rounded-lg border border-border bg-background shadow-none">
+                  <InputGroup.Prefix className="border-0 pr-2 text-muted">
+                    <Search size={16} aria-hidden />
+                  </InputGroup.Prefix>
+                  <InputGroup.Input
+                    placeholder="搜索相册…"
+                    className="h-full min-w-0 py-0 text-base md:text-sm"
+                  />
+                </InputGroup>
               </TextField>
               <Button
                 className="h-11 w-28.5 shrink-0 gap-1 rounded-lg text-sm font-normal md:w-36"
