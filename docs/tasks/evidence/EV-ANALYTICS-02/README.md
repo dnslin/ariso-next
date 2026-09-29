@@ -1,6 +1,6 @@
 # EV-ANALYTICS-02 完整用量交接与规模实验
 
-2026-09-29；[Issue #143](https://github.com/dnslin/ariso-next/issues/143)、[草稿 PR #206](https://github.com/dnslin/ariso-next/pull/206)。依据 [analytics §7/9/11](../../../specs/SPEC-analytics.md)、[任务卡](../../gates.md#ev-analytics-02-完整用量交接与规模实验)及[执行约定](../../execution.md)。
+2026-09-29；[Issue #143](https://github.com/dnslin/ariso-next/issues/143)、[PR #206](https://github.com/dnslin/ariso-next/pull/206)。依据 [analytics §7/9/11](../../../specs/SPEC-analytics.md)、[任务卡](../../gates.md#ev-analytics-02-完整用量交接与规模实验)及[执行约定](../../execution.md)。
 
 ## 当前结论与边界
 
@@ -8,7 +8,7 @@
 
 本地对象交接调用真实 `acceptSession`、`trashImage`、`restoreImage` 和 Local 文件读写删除，使用磁盘 SQLite 与生产迁移。S3/probe/孤儿尚无生产提供方，明确使用 `experimental_usage_responsibility` 实验表验证既定契约，不能描述为完整业务用量已实现。
 
-R2、SeaweedFS 是当前必需服务。两服务的新实验尚待配置及真实运行；本机未找到 #142 使用的 `.data/upload-v01-targets.json`。本地 HTTP 模型只验证实验运行器，不代替提供方验收；历史 #142 报告不冒充本次结果。**真实服务证据未齐前，PR 保持草稿，Issue #143 未完成。** AWS 按既有执行约定取消实测要求，仍记未验证。
+R2、SeaweedFS 是当前必需服务。2026-09-29 所有者提供配置并纠正 R2 Bucket 后，两服务本轮真实实验均通过，原始报告见下文；本地实验、规模基准和独立审计已齐备，满足本工程前置的待评审条件。这里的通过不表示生产扫描器、S3 上传或完整报表已交付。AWS 按既有执行约定取消实测要求，仍记未验证。Issue 关闭和 PR 合并由所有者另行操作。
 
 本次不涉及产品界面，Figma、设计还原评审与用户人工 UI 验收不适用。没有修改冻结 PRD 或设计规范。生产扫描归 #164，完整当前用量归 #168，周期报表归 #169，完整业务联验归 T-QA-04。
 
@@ -92,10 +92,38 @@ node tests/experiments/analytics-usage/run-live.ts --config /absolute/private/up
 
 独立 agent 实际读取 `code-review-and-quality`、相关规格、测试和实现，审计需求覆盖、错误路径、资源生命周期及证据边界。发现首次写报告失败会绕过 SQLite 关闭：将旧实现恢复作反证，`closes SQLite` 用例实际失败（expected close once, got 0）；修复后 5 项远端运行器测试通过。新增 PUT500、清理403 的故障路径，失败保留诊断，不报告成功；报告失败前未尝试的远端 Key 不执行清理。原生 SDK/HTTP 模型测试不算真实云服务证据。
 
-最终独立代码审计通过，无剩余必须修改项。评审者回读原始报告并独立重算三轮各 25 个样本的 p50/p95，确认基线失败、中间未选中索引与最终覆盖查询结论一致，也确认写入、磁盘与 RSS 代价未隐藏。设计验收不适用。真实服务欠缺导致任务验收未完成，与代码审计通过分别记录。
+最终独立代码审计通过，无剩余必须修改项。评审者回读原始报告并独立重算三轮各 25 个样本的 p50/p95，确认基线失败、中间未选中索引与最终覆盖查询结论一致，也确认写入、磁盘与 RSS 代价未隐藏。设计验收不适用。初轮因真实服务配置欠缺保持草稿；随后两服务证据已补齐，见下方续验记录。
 
 首次全套集成失败时，同机可观察到其他工作区并行运行多套测试。负载是排查线索，不替代复跑结果；保留原失败，不将其标成通过。本次新用例均通过。定向 `pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts` 随后 13/13 通过（17.05 秒），未修改测试。完整 `pnpm run test:integration --maxWorkers=1` 重跑 **76 文件、579/579 测试通过**，耗时 493.25 秒，包含普通集成与真实媒体工具组。
 
-## 提交与远端核对
+## 初轮提交与远端核对（续验前）
 
 分支 `codex/issue-143-analytics`，实验代码提交 `315015a`。全部本地实验、独立审计、最终构建和检查记录收齐后提交并推送；真实服务配置缺失，PR #206 保持草稿。`gh pr view 206 --json url,state,isDraft,headRefName,statusCheckRollup` 返回 OPEN、isDraft=true、statusCheckRollup=[]；`gh pr checks 206` 返回 no checks reported（退出 1 表示无检查，不是 CI 失败或通过）。没有等待不存在的工作流。未合并、未关闭 Issue、未发布镜像、未部署，也未删除分支或 worktree。
+
+## 两服务真实续验（2026-09-29）
+
+本轮仅补充真实实验报告、失败诊断和文档，没有改变实验代码、生产代码或依赖。沿用提交 `315015a` 的运行器，Node 24.18.1、macOS arm64；密钥仅存在忽略路径 `.data/analytics-143-targets.json`，不进入报告和提交。未修改 Bucket 配置，测试对象均处于本轮随机 `ariso/analytics-143-<uuid>/` 命名空间。
+
+| 服务            | 实际 Bucket | 本轮结果                                                                                                                              | 原始证据                                                                                     |
+| --------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| SeaweedFS       | `images`    | 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                                             | [报告](./live/seaweedfs.json)                                                                |
+| R2              | `image`     | 用户纠正 Bucket 后 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                          | [报告](./live/r2.json)                                                                       |
+| R2 首次错误配置 | `images`    | 首次 PUT403，清理 DELETE403；HEAD Bucket、限定前缀 LIST、尝试 Key 的 HEAD 也均403。不能宣称这个错误 Bucket 的对象状态已核实或清理成功 | [失败报告](./live/r2-wrong-bucket.json)、[只读诊断](./live/r2-wrong-bucket-diagnostics.json) |
+
+两份成功报告逐阶段对账一致：初始 3 个 writing 对象均待核对；HEAD 确认后 6144 字节；正式 Key 事务交接后仍为 6144；临时对象删除后 4096。2MiB 迟到对象已在远端出现、但提供方尚未扫描发现时仍报告“已登记 4096”，不冒充远端精确总量。限定前缀分页列举发现后为 2101248，删除孤儿后回到 4096，删除 probe 后为 1024。最终再清理原图，成功实验的全部 8 个明确 Key 均确认不存在。
+
+SeaweedFS 删除确认时间为 `02:03:04.643Z`，受控 PUT 发送完成为 `02:03:10.406Z`；R2 分别为 `02:04:51.983Z` 和 `02:04:57.134Z`。日期均为 2026-09-29，PUT 最终响应均 200，后续 HEAD 均确认 2097152 字节。此处证明本轮受控写入的先删除、后完成和用量变化，不证明任意客户端的绝对终态。实验枚举明确的有效引用；生产扫描的引用复核、周期运行和重启恢复仍归 #164。
+
+实际执行：
+
+```sh
+export PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
+export NO_PROXY="${NO_PROXY:+$NO_PROXY,}localhost,127.0.0.1,::1,.localhost"
+export no_proxy="${no_proxy:+$no_proxy,}localhost,127.0.0.1,::1,.localhost"
+node tests/experiments/analytics-usage/run-live.ts --config .data/analytics-143-targets.json
+pnpm install --frozen-lockfile
+```
+
+首条实验命令退出 1：SeaweedFS 通过、R2 错误 Bucket 失败。只读诊断通过 `node --input-type=module` 调用 SDK 的 HeadBucket、限定本轮前缀 ListObjectsV2 和 HeadObject，保留上述403。用户随后明确将 R2 Bucket 改为 `image`；使用 `node --input-type=module` 读取修正配置并直接调用同一 `runUsageService(config, 'test-results/analytics-usage-live/r2-corrected')`，仅重跑 R2，退出 0。没有用其他 Bucket 试写，也没有覆盖首次失败报告。冻结安装通过。
+
+本轮不机械重复未变更代码的构建、单元、完整集成或规模生成；上文记录仍对应当前实验代码。`pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check` 本轮均通过；文档检查为 120 任务、298 需求及 5 个拒绝用例。独立 agent 对照原始与归档 JSON，并重新计算两服务逐阶段用量，最终审计通过、无必须修正项；确认错误 Bucket 的403未被覆盖、真实实验与生产能力边界清楚。证据提交推送后，PR #206 可转正式待评审。GitHub 核对 PR 为 MERGEABLE、没有远端检查，不记作 CI 通过。

@@ -1,0 +1,667 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "startedAt": "2026-09-29T02:04:44.999Z",
+  "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+  "prefix": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/",
+  "keys": [
+    "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+    "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+    "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+    "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin"
+  ],
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "status": "passed",
+  "boundary": "Real S3 protocol with experimental provider records; not production S3 upload or scanner. Registered usage is not a remote real-time total.",
+  "observations": [
+    {
+      "name": "registered-writing-unknown",
+      "at": "2026-09-29T02:04:45.002Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 0,
+            "pendingObjects": 3,
+            "groups": {
+              "recycle": 0,
+              "original": 0,
+              "derived": 0,
+              "pending": 0
+            },
+            "lastConfirmedAt": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "upload-and-probe-confirmed",
+      "at": "2026-09-29T02:04:49.087Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647486634
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647487878
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 6144,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 0,
+              "derived": 0,
+              "pending": 6144
+            },
+            "lastConfirmedAt": 1790647489086
+          }
+        ]
+      }
+    },
+    {
+      "name": "handoff-retains-temporary-and-excludes-upload-audit",
+      "at": "2026-09-29T02:04:49.088Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647487878
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 6144,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 5120
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    },
+    {
+      "name": "temporary-deleted",
+      "at": "2026-09-29T02:04:50.351Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 4096,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 3072
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    },
+    {
+      "name": "delete-confirmed-before-slow-put-finishes",
+      "at": "2026-09-29T02:04:51.983Z",
+      "evidence": {
+        "protocol": {
+          "exists": false,
+          "bytes": null
+        },
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 4096,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 3072
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    },
+    {
+      "name": "late-object-not-yet-discovered-by-provider",
+      "at": "2026-09-29T02:04:58.416Z",
+      "evidence": {
+        "protocol": {
+          "writeResult": {
+            "startedAt": "2026-09-29T02:04:50.358Z",
+            "finishedAt": "2026-09-29T02:04:57.674Z",
+            "bytesSent": 2097152,
+            "bodyFinishedAt": "2026-09-29T02:04:57.134Z",
+            "outcome": "response",
+            "status": 200
+          },
+          "lateHead": {
+            "exists": true,
+            "bytes": 2097152
+          }
+        },
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 4096,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 3072
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    },
+    {
+      "name": "scan-discovers-orphan-and-preserves-live-references",
+      "at": "2026-09-29T02:04:59.253Z",
+      "evidence": {
+        "protocol": [
+          {
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "bytes": 2097152
+          },
+          {
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "bytes": 3072
+          }
+        ],
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "cleanup_pending",
+            "confirmedBytes": 2097152,
+            "confirmedAt": 1790647499253
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 2101248,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 2100224
+            },
+            "lastConfirmedAt": 1790647499253
+          }
+        ]
+      }
+    },
+    {
+      "name": "orphan-deletion-deducts-known-bytes",
+      "at": "2026-09-29T02:05:00.213Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "stored",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647489086
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2097152,
+            "confirmedAt": 1790647500212
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 4096,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 3072
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    },
+    {
+      "name": "probe-deletion-deducts-known-bytes",
+      "at": "2026-09-29T02:05:01.377Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "handed_off",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2048,
+            "confirmedAt": 1790647490350
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 3072,
+            "confirmedAt": 1790647501377
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+            "owner": "media",
+            "group": "original",
+            "state": "stored",
+            "confirmedBytes": 1024,
+            "confirmedAt": 1790647489088
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "deleted",
+            "confirmedBytes": 2097152,
+            "confirmedAt": 1790647500212
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b",
+            "knownBytes": 1024,
+            "pendingObjects": 0,
+            "groups": {
+              "recycle": 0,
+              "original": 1024,
+              "derived": 0,
+              "pending": 0
+            },
+            "lastConfirmedAt": 1790647489088
+          }
+        ]
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/original.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/temporary.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/probe.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-143-71ecb50f-ae75-4328-967b-55d140f84b1b/late.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    }
+  ]
+}

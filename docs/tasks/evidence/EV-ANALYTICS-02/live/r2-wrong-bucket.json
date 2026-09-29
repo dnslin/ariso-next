@@ -1,0 +1,96 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "images",
+  "startedAt": "2026-09-29T02:03:11.941Z",
+  "storageId": "analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329",
+  "prefix": "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/",
+  "keys": [
+    "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/original.bin",
+    "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/temporary.bin",
+    "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/probe.bin",
+    "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/late.bin"
+  ],
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "status": "failed",
+  "boundary": "Real S3 protocol with experimental provider records; not production S3 upload or scanner. Registered usage is not a remote real-time total.",
+  "observations": [
+    {
+      "name": "registered-writing-unknown",
+      "at": "2026-09-29T02:03:11.942Z",
+      "evidence": {
+        "protocol": {},
+        "records": [
+          {
+            "storageId": "analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329",
+            "key": "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/original.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329",
+            "key": "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/temporary.bin",
+            "owner": "upload",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          },
+          {
+            "storageId": "analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329",
+            "key": "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/probe.bin",
+            "owner": "storage",
+            "group": "pending",
+            "state": "writing",
+            "confirmedBytes": null,
+            "confirmedAt": null
+          }
+        ],
+        "usage": [
+          {
+            "storageId": "analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329",
+            "knownBytes": 0,
+            "pendingObjects": 3,
+            "groups": {
+              "recycle": 0,
+              "original": 0,
+              "derived": 0,
+              "pending": 0
+            },
+            "lastConfirmedAt": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "failure",
+      "at": "2026-09-29T02:03:13.019Z",
+      "evidence": {
+        "name": "AccessDenied",
+        "message": "Access Denied",
+        "httpStatusCode": 403,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "key": "ariso/analytics-143-eda38e6d-7f60-4893-8c10-49e3b0279329/original.bin",
+      "error": {
+        "name": "AccessDenied",
+        "message": "Access Denied",
+        "httpStatusCode": 403,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ]
+}

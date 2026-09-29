@@ -1,0 +1,40 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "images",
+  "results": [
+    {
+      "name": "head-bucket",
+      "at": "2026-09-29T02:04:20.431Z",
+      "error": {
+        "name": "Unknown",
+        "message": "UnknownError",
+        "httpStatusCode": 403,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "list-experiment-prefix",
+      "at": "2026-09-29T02:04:20.987Z",
+      "error": {
+        "name": "AccessDenied",
+        "message": "Access Denied",
+        "httpStatusCode": 403,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    },
+    {
+      "name": "head-attempted-key",
+      "at": "2026-09-29T02:04:21.188Z",
+      "error": {
+        "name": "Unknown",
+        "message": "UnknownError",
+        "httpStatusCode": 403,
+        "attempts": 1,
+        "totalRetryDelay": 0
+      }
+    }
+  ]
+}
