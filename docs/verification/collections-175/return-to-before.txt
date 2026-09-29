@@ -1,0 +1,31 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-175-albums/ariso
+
+ ❯ |unit| tests/unit/identity/return-to.test.ts (19 tests | 1 failed) 4ms
+   × returns to delivered album list and details after authentication 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/return-to.test.ts > returns to delivered album list and details after authentication
+AssertionError: expected '/admin' to be '/albums' // Object.is equality
+
+Expected: "/albums"
+Received: "/admin"
+
+ ❯ tests/unit/identity/return-to.test.ts:50:39
+     48|
+     49| it('returns to delivered album list and details after authentication',…
+     50|   expect(loginDestination('/albums')).toBe('/albums');
+       |                                       ^
+     51|   expect(loginDestination('/albums/album-1')).toBe('/albums/album-1');
+     52|   expect(loginDestination('/albums/album-1#main-content')).toBe('/albu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  09:46:18
+   Duration  109ms (transform 48%, import 24%, tests 21%, worker 7%)

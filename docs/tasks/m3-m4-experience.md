@@ -37,6 +37,8 @@
 - 验证方法：SQLite 测删除影响、同名和计数；浏览器连续创建/改名/删除、空列表、保存失败、未知结果核对、手机触摸。
 - 界面：所有者 /albums；读取真实相册和成员数量，写入复用身份/来源检查。桌面[30:473](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-473)、手机[101:1155](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1155)、桌面状态[279:1561](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-1561)、手机状态[279:3816](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-3816)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。同名项显示数量和短 ID；手机列表按可用宽度排列；DG-ALBUMS 对应 DES-04；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 
+- 实施证据：[Issue #175 实施、验证与审计记录](../verification/collections-175/README.md)。UI 人工验收尚未完成，不据此关闭完整需求或后置任务。
+
 #### DG-ALBUMS 对 T-COL-02 的核对结论（2026-09-28）
 
 本项只完成设计适用核对；[Issue #175](https://github.com/dnslin/ariso-next/issues/175) 的真实页面、管理接口和浏览器验收仍待实施。依据 collections §3/7/8 与 DES-04；本次实际读取 Figma 的节点、文字与截图见[核对证据](./evidence/DG-ALBUMS/README.md)。通用外壳、主题、表单、固定底栏和焦点规则继续引用[设计交接](../design/handoff.md)，不另立规则。

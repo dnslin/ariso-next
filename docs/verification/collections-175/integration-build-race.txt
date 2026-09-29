@@ -1,0 +1,22 @@
+ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > owner-only detail HTTP > rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries
+Error: sh: /Users/dnslin/.codex/worktrees/issue-175-albums/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/library/detail.test.ts:364:53
+    362|       await vi.waitFor(
+    363|         async () => {
+    364|           if (server.child.exitCode !== null) throw new Error(server.l…
+       |                                                     ^
+    365|           expect((await fetch(`${origin}/api/health`)).status).toBe(20…
+    366|         },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 74 passed (75)
+      Tests  1 failed | 572 passed (573)
+   Start at  09:40:21
+   Duration  459.24s (tests 98%, import 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

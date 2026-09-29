@@ -289,7 +289,7 @@ export async function verifyUIRefinement({ page, config, report }) {
         deviceScaleFactor: 1,
         mobile: width < 768,
       });
-      for (const path of ['/upload', '/library', '/trash']) {
+      for (const path of ['/upload', '/library', '/trash', '/albums']) {
         await page.goto(`${config.origin}${path}`);
         await page.waitForSelector('main h1');
         await page.waitForSelector('.shell-footer');

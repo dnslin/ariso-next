@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-09-29T01:35:00.722Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-61415.localhost:61415",
+  "taskSpaceId": 1,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    },
+    {
+      "width": 390,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (albums.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-175-albums/ariso/scripts/verify-browser.mjs:264:14)\n    at async file:///Users/dnslin/.codex/worktrees/issue-175-albums/ariso/scripts/verify-browser.mjs:322:7",
+  "finishedAt": "2026-09-29T01:44:21.664Z",
+  "temporaryDirectoryRemoved": true
+}
