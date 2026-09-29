@@ -1,0 +1,2081 @@
+{
+  "recordedAt": "2026-09-29T01:26:49.071Z",
+  "indexMode": "Experimental covering index with explicit INDEXED BY ranking query; production schema unchanged",
+  "candidateIndex": "CREATE INDEX experiment_analytics_date_image_count ON analytics_image_daily(date, image_id, count)",
+  "baseline": {
+    "recordedAt": "2026-09-29T01:19:52.483Z",
+    "environment": {
+      "node": "v24.18.1",
+      "platform": "darwin",
+      "release": "25.6.0",
+      "arch": "arm64",
+      "cpu": "Apple M4",
+      "logicalCpus": 10,
+      "memoryBytes": 17179869184,
+      "freeMemoryBytes": 449134592,
+      "fixtureDirectory": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-analytics-scale-jGK60M",
+      "filesystem": {
+        "type": 26,
+        "blockSize": 4096,
+        "blocks": 59840624,
+        "availableBlocks": 32440609
+      },
+      "diskInfo": "   Device Identifier:         disk3s1\n   Device Node:               /dev/disk3s1\n   Whole:                     No\n   Part of Whole:             disk3\n\n   Volume Name:               Macintosh HD - Data\n   Mounted:                   Yes\n   Mount Point:               /System/Volumes/Data\n\n   Partition Type:            41504653-0000-11AA-AA11-00306543ECAC\n   File System Personality:   APFS\n   Type (Bundle):             apfs\n   Name (User Visible):       APFS\n   Owners:                    Enabled\n\n   OS Can Be Installed:       Yes\n   Booter Disk:               disk3s4\n   Recovery Disk:             disk3s5\n   Media Type:                通用\n   Protocol:                  Apple Fabric\n   SMART Status:              Verified\n   Volume UUID:               93211049-8399-438C-A870-58929B764463\n   Disk / Partition UUID:     93211049-8399-438C-A870-58929B764463\n\n   Disk Size:                 245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Device Block Size:         4096 Bytes\n\n   Volume Used Space:         89.1 GB (89116938240 Bytes) (exactly 174056520 512-Byte-Units)\n   Container Total Space:     245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Container Free Space:      132.9 GB (132876734464 Bytes) (exactly 259524872 512-Byte-Units)\n   Allocation Block Size:     4096 Bytes\n\n   Media OS Use Only:         No\n   Media Read-Only:           No\n   Volume Read-Only:          No\n\n   Device Location:           Internal\n   Removable Media:           Fixed\n\n   Solid State:               Yes\n   Hardware AES Support:      Yes\n\n   This disk is an APFS Volume.  APFS Information:\n   APFS Container:            disk3\n   APFS Physical Store:       disk0s2\n   APFS Volume Group:         93211049-8399-438C-A870-58929B764463\n   FileVault:                 Yes\n   Sealed:                    No\n   Locked:                    No\n\n"
+    },
+    "fixture": {
+      "images": 100000,
+      "days": 365,
+      "dateRange": ["2026-01-01", "2026-12-31"],
+      "distribution": "1% daily hotspot (600/day); 9% weekly (60/active day); 80% every 30 days (6/active day); 10% zero access. Versions 3:2:1; alternating UTC/Asia/Shanghai archived dates.",
+      "seedMs": 85399.705041,
+      "events": 252997080,
+      "rows": {
+        "media_images": 100000,
+        "analytics_daily": 1095,
+        "analytics_image_daily": 1807615,
+        "analytics_image_totals": 90000
+      },
+      "databaseBytes": 246972416
+    },
+    "cacheDefinition": {
+      "cold": "Fresh connection and SQLite page cache; OS cache was NOT evicted and is unknown/warm after fixture generation. Not an OS-cold benchmark.",
+      "warm": "One untimed execution then 25 executions on the same prepared statement/connection; production cache_size unchanged."
+    },
+    "pragmas": {
+      "journalMode": "wal",
+      "cacheSize": -16000,
+      "pageSize": 4096,
+      "sqliteVersion": {
+        "version": "3.53.4"
+      }
+    },
+    "indexes": [
+      {
+        "name": "sqlite_autoindex_analytics_daily_1",
+        "sql": null
+      },
+      {
+        "name": "sqlite_autoindex_analytics_image_daily_1",
+        "sql": null
+      },
+      {
+        "name": "analytics_image_daily_date_image_idx",
+        "sql": "CREATE INDEX `analytics_image_daily_date_image_idx` ON `analytics_image_daily` (`date`,`image_id`)"
+      },
+      {
+        "name": "sqlite_autoindex_analytics_image_totals_1",
+        "sql": null
+      }
+    ],
+    "measurements": [
+      {
+        "name": "trend-7",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["2026-12-25", "2026-12-31"],
+        "rows": 7,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 55,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.05633300000044983,
+        "warm": {
+          "samplesMs": [
+            0.031166000000666827, 0.01679199999489356, 0.015249999996740371,
+            0.012208000000100583, 0.011083000004873611, 0.016042000002926216,
+            0.012624999988474883, 0.01237500000570435, 0.012124999993829988,
+            0.013290999995660968, 0.012291999999433756, 0.011624999999185093,
+            0.011417000001529232, 0.011375000001862645, 0.01095799999893643,
+            0.00991700000304263, 0.009749999997438863, 0.00979199999710545,
+            0.009791000004042871, 0.009833999996772036, 0.009667000005720183,
+            0.009708999990834855, 0.009749999997438863, 0.00958300000638701,
+            0.009624999991501682
+          ],
+          "p50Ms": 0.011375000001862645,
+          "p95Ms": 0.01679199999489356,
+          "maxMs": 0.031166000000666827
+        }
+      },
+      {
+        "name": "versions-7",
+        "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+        "parameters": ["2026-12-25", "2026-12-31"],
+        "rows": 3,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 55,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          },
+          {
+            "id": 18,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          }
+        ],
+        "sqliteColdMs": 0.06391700000676792,
+        "warm": {
+          "samplesMs": [
+            0.016124999994644895, 0.01433299999916926, 0.013625000006868504,
+            0.011625000013737008, 0.011082999990321696, 0.010999999998603016,
+            0.010791000007884577, 0.011207999996258877, 0.010792000000947155,
+            0.010542000003624707, 0.010542000003624707, 0.01037499999802094,
+            0.01037499999802094, 0.010290999998687766, 0.010416999997687526,
+            0.010291999991750345, 0.010290999998687766, 0.010249999992083758,
+            0.010207999992417172, 0.010249999992083758, 0.010209000000031665,
+            0.010290999998687766, 0.010125000000698492, 0.010416999997687526,
+            0.020665999996708706
+          ],
+          "p50Ms": 0.010416999997687526,
+          "p95Ms": 0.016124999994644895,
+          "maxMs": 0.020665999996708706
+        }
+      },
+      {
+        "name": "ranking-7",
+        "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+        "parameters": ["2026-12-25", "2026-12-31"],
+        "rows": 10,
+        "plan": [
+          {
+            "id": 9,
+            "parent": 0,
+            "notused": 151,
+            "detail": "SEARCH analytics_image_daily USING INDEX analytics_image_daily_date_image_idx (date>? AND date<?)"
+          },
+          {
+            "id": 19,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          },
+          {
+            "id": 61,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          }
+        ],
+        "sqliteColdMs": 6.111875000002328,
+        "warm": {
+          "samplesMs": [
+            5.642166999998153, 5.696291000000201, 5.570625000007567,
+            5.561999999990803, 5.46912500000326, 5.62316699999792,
+            5.435624999998254, 5.576166999991983, 5.524374999993597,
+            5.496792000005371, 5.521000000007916, 5.609041999996407,
+            5.653666999991401, 5.6316660000011325, 5.780624999999418,
+            5.633541999995941, 5.492167000003974, 5.564125000004424,
+            5.5295420000038575, 5.483707999999751, 5.502791999999317,
+            5.549416999987443, 5.4583330000023125, 5.529415999990306,
+            5.4994169999990845
+          ],
+          "p50Ms": 5.549416999987443,
+          "p95Ms": 5.696291000000201,
+          "maxMs": 5.780624999999418
+        }
+      },
+      {
+        "name": "image-7",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["image-000000", "2026-12-25", "2026-12-31"],
+        "rows": 7,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 56,
+            "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.057084000000031665,
+        "warm": {
+          "samplesMs": [
+            0.019666000007418916, 0.014917000007699244, 0.013125000012223609,
+            0.012333000006037764, 0.011834000004455447, 0.01166699999885168,
+            0.011457999993581325, 0.011415999993914738, 0.011249999995925464,
+            0.01108399999793619, 0.01120900000387337, 0.011125000004540198,
+            0.010999999998603016, 0.011082999990321696, 0.010917000006884336,
+            0.011041999998269603, 0.011041000005207025, 0.010999999998603016,
+            0.01095799999893643, 0.010999999998603016, 0.01087500000721775,
+            0.01095799999893643, 0.01095799999893643, 0.010916999992332421,
+            0.010958999991999008
+          ],
+          "p50Ms": 0.011082999990321696,
+          "p95Ms": 0.014917000007699244,
+          "maxMs": 0.019666000007418916
+        }
+      },
+      {
+        "name": "trend-30",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["2026-12-02", "2026-12-31"],
+        "rows": 30,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 90,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.03854199999477714,
+        "warm": {
+          "samplesMs": [
+            0.023499999995692633, 0.031000000002677552, 0.036416999995708466,
+            0.026874999995925464, 0.02654199999233242, 0.02262499999778811,
+            0.022500000006402843, 0.022083000003476627, 0.022250000009080395,
+            0.02204199999687262, 0.021999999997206032, 0.02195900000515394,
+            0.021749999999883585, 0.021624999993946403, 0.021875000005820766,
+            0.021957999997539446, 0.019333000003825873, 0.019249999997555278,
+            0.01933399999688845, 0.019041999999899417, 0.01887499999429565,
+            0.019166999991284683, 0.019416000010096468, 0.019249999997555278,
+            0.01904100000683684
+          ],
+          "p50Ms": 0.021957999997539446,
+          "p95Ms": 0.031000000002677552,
+          "maxMs": 0.036416999995708466
+        }
+      },
+      {
+        "name": "versions-30",
+        "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+        "parameters": ["2026-12-02", "2026-12-31"],
+        "rows": 3,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 90,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          },
+          {
+            "id": 18,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          }
+        ],
+        "sqliteColdMs": 0.04425000000628643,
+        "warm": {
+          "samplesMs": [
+            0.025500000003376044, 0.023875000013504177, 0.02312500000698492,
+            0.022708000004058704, 0.022417000000132248, 0.022250000009080395,
+            0.01987500001268927, 0.01950000000942964, 0.019541000001481734,
+            0.019417000003159046, 0.01970900000014808, 0.01958300000114832,
+            0.019249999997555278, 0.01933399999688845, 0.019459000002825633,
+            0.019250000012107193, 0.01945799999521114, 0.019417000003159046,
+            0.01958300000114832, 0.019249999997555278, 0.019458999988273717,
+            0.01950000000942964, 0.01933399999688845, 0.019625000000814907,
+            0.019541000001481734
+          ],
+          "p50Ms": 0.019541000001481734,
+          "p95Ms": 0.023875000013504177,
+          "maxMs": 0.025500000003376044
+        }
+      },
+      {
+        "name": "ranking-30",
+        "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+        "parameters": ["2026-12-02", "2026-12-31"],
+        "rows": 10,
+        "plan": [
+          {
+            "id": 9,
+            "parent": 0,
+            "notused": 218,
+            "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (ANY(image_id) AND date>? AND date<?)"
+          },
+          {
+            "id": 58,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          }
+        ],
+        "sqliteColdMs": 85.84245799999917,
+        "warm": {
+          "samplesMs": [
+            87.34312499999942, 84.15845800000534, 84.4674159999995,
+            85.2817500000092, 84.29091700000572, 84.06816699999035,
+            83.00495800000499, 83.62037500001315, 84.84595799999079,
+            84.38499999999476, 84.27683300001081, 84.02850000000035,
+            84.60429200000362, 84.25916699999652, 84.6949159999931,
+            86.57575000000361, 95.3234999999986, 86.0184159999917,
+            87.77304200000071, 88.99995800000033, 88.24137499999779,
+            86.65137500000128, 87.42387500000768, 86.01325000000361,
+            86.38229200000933
+          ],
+          "p50Ms": 84.84595799999079,
+          "p95Ms": 88.99995800000033,
+          "maxMs": 95.3234999999986
+        }
+      },
+      {
+        "name": "image-30",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["image-000000", "2026-12-02", "2026-12-31"],
+        "rows": 30,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 56,
+            "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.07466699999349657,
+        "warm": {
+          "samplesMs": [
+            0.025332999997772276, 0.022083999996539205, 0.02133299999695737,
+            0.02074999999604188, 0.020208999994792975, 0.018084000010276213,
+            0.017958999989787117, 0.017749999999068677, 0.017749999999068677,
+            0.01787500000500586, 0.01762500000768341, 0.017917000004672445,
+            0.01770899999246467, 0.01762500000768341, 0.018125000002328306,
+            0.01970900000014808, 0.019541999994544312, 0.019582999986596406,
+            0.019417000003159046, 0.0195839999942109, 0.020791999995708466,
+            0.022458999999798834, 0.020208000001730397, 0.019874999998137355,
+            0.02891700000327546
+          ],
+          "p50Ms": 0.019582999986596406,
+          "p95Ms": 0.025332999997772276,
+          "maxMs": 0.02891700000327546
+        }
+      },
+      {
+        "name": "trend-90",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["2026-10-03", "2026-12-31"],
+        "rows": 90,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 106,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.08900000000721775,
+        "warm": {
+          "samplesMs": [
+            0.05233300001418684, 0.05233299999963492, 0.05224999999336433,
+            0.05095799999253359, 0.05141699999512639, 0.05162499999278225,
+            0.050834000008762814, 0.05058300000382587, 0.050624999988940544,
+            0.05070799999521114, 0.05020899999362882, 0.044625000009546056,
+            0.053583000000799075, 0.050040999994962476, 0.050208000000566244,
+            0.04987500001152512, 0.049624999999650754, 0.049750000005587935,
+            0.05012499999429565, 0.049624999999650754, 0.05558299999393057,
+            0.049707999991369434, 0.049958000003243797, 0.04979200000525452,
+            0.04958299999998417
+          ],
+          "p50Ms": 0.05020899999362882,
+          "p95Ms": 0.053583000000799075,
+          "maxMs": 0.05558299999393057
+        }
+      },
+      {
+        "name": "versions-90",
+        "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+        "parameters": ["2026-10-03", "2026-12-31"],
+        "rows": 3,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 106,
+            "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+          },
+          {
+            "id": 18,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          }
+        ],
+        "sqliteColdMs": 0.0801659999997355,
+        "warm": {
+          "samplesMs": [
+            0.05558299999393057, 0.057749999992665835, 0.05758300000161398,
+            0.05629100000078324, 0.05120899999747053, 0.048833000008016825,
+            0.0524159999913536, 0.05699999998614658, 0.05475000001024455,
+            0.05470799999602605, 0.05429099999309983, 0.054083000009995885,
+            0.054292000000714324, 0.05416700000932906, 0.05358299998624716,
+            0.054124999995110556, 0.05420899999444373, 0.05366700000013225,
+            0.054124999995110556, 0.05424999998649582, 0.05441699999209959,
+            0.05362500000046566, 0.04908399999840185, 0.04745900000852998,
+            0.04720899999665562
+          ],
+          "p50Ms": 0.05416700000932906,
+          "p95Ms": 0.05758300000161398,
+          "maxMs": 0.057749999992665835
+        }
+      },
+      {
+        "name": "ranking-90",
+        "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+        "parameters": ["2026-10-03", "2026-12-31"],
+        "rows": 10,
+        "plan": [
+          {
+            "id": 9,
+            "parent": 0,
+            "notused": 225,
+            "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (ANY(image_id) AND date>? AND date<?)"
+          },
+          {
+            "id": 58,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          }
+        ],
+        "sqliteColdMs": 153.24179200000071,
+        "warm": {
+          "samplesMs": [
+            152.97812499999418, 154.2491669999872, 155.3396250000078,
+            155.61137499999313, 161.3468339999963, 163.9181249999965,
+            157.30816600000253, 154.56445900000108, 153.71633400001156,
+            154.34429100000125, 151.29341600000043, 157.55695900000865,
+            168.53970800001116, 161.9822920000006, 161.17787499999395,
+            159.37879200000316, 156.622583999997, 163.7471249999944,
+            179.61837499999092, 175.87237499999173, 179.16558399998758,
+            496.8465419999993, 256.7714169999963, 189.9804579999909,
+            184.2382920000091
+          ],
+          "p50Ms": 161.17787499999395,
+          "p95Ms": 256.7714169999963,
+          "maxMs": 496.8465419999993
+        }
+      },
+      {
+        "name": "image-90",
+        "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+        "parameters": ["image-000000", "2026-10-03", "2026-12-31"],
+        "rows": 90,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 56,
+            "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+          }
+        ],
+        "sqliteColdMs": 0.31170799999381416,
+        "warm": {
+          "samplesMs": [
+            0.05404200000339188, 0.04562499999883585, 0.04220799999893643,
+            0.04104199999710545, 0.04025000000547152, 0.03974999999627471,
+            0.04000000000814907, 0.03954199999861885, 0.039666999990004115,
+            0.040041000000201166, 0.03970800001116004, 0.03979100000287872,
+            0.03954199999861885, 0.03941700000723358, 0.03904099999635946,
+            0.03970900000422262, 0.04158299999835435, 0.039959000001545064,
+            0.039833000002545305, 0.040084000007482246, 0.039625000004889444,
+            0.042417000004206784, 0.05395799998950679, 0.040374999996856786,
+            0.04595800000242889
+          ],
+          "p50Ms": 0.04000000000814907,
+          "p95Ms": 0.05395799998950679,
+          "maxMs": 0.05404200000339188
+        }
+      },
+      {
+        "name": "total",
+        "sql": "SELECT SUM(original_count + compressed_count + watermark_count) AS count FROM analytics_image_totals",
+        "parameters": [],
+        "rows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 177,
+            "detail": "SCAN analytics_image_totals"
+          }
+        ],
+        "sqliteColdMs": 26.45129199999792,
+        "warm": {
+          "samplesMs": [
+            2.639708000002429, 2.5632080000068527, 2.551500000001397,
+            2.464124999998603, 2.635708000001614, 2.4935830000031274,
+            2.5674999999901047, 2.6674590000038734, 2.6380840000056196,
+            2.467833000002429, 2.669625000009546, 2.7442920000030426,
+            3.124207999993814, 5.281084000002011, 2.5218750000058208,
+            2.645582999990438, 2.7535839999909513, 4.2974580000009155,
+            2.742167000003974, 2.7506670000002487, 2.5166250000038417, 2.765625,
+            2.594834000003175, 2.4537080000009155, 2.585791000004974
+          ],
+          "p50Ms": 2.6380840000056196,
+          "p95Ms": 4.2974580000009155,
+          "maxMs": 5.281084000002011
+        }
+      },
+      {
+        "name": "image-total",
+        "sql": "SELECT original_count, compressed_count, watermark_count FROM analytics_image_totals WHERE image_id = ?",
+        "parameters": ["image-000000"],
+        "rows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 39,
+            "detail": "SEARCH analytics_image_totals USING INDEX sqlite_autoindex_analytics_image_totals_1 (image_id=?)"
+          }
+        ],
+        "sqliteColdMs": 0.41954200000327546,
+        "warm": {
+          "samplesMs": [
+            0.005042000004323199, 0.003333000000566244, 0.002833999998983927,
+            0.002666000000317581, 0.0025830000085989013, 0.0024160000029951334,
+            0.0024160000029951334, 0.003540999998222105, 0.003791999988607131,
+            0.003208000009180978, 0.0021249999990686774, 0.0018750000017462298,
+            0.0018750000017462298, 0.0031669999880250543, 0.0019579999934649095,
+            0.0018750000017462298, 0.001791999995475635, 0.0017499999958090484,
+            0.0018749999871943146, 0.001791999995475635, 0.0017499999958090484,
+            0.0018339999951422215, 0.0019170000014128163, 0.0018330000020796433,
+            0.001791999995475635
+          ],
+          "p50Ms": 0.0019579999934649095,
+          "p95Ms": 0.003791999988607131,
+          "maxMs": 0.005042000004323199
+        }
+      }
+    ],
+    "concurrency": {
+      "model": "25 rounds: ranking, production 1000-key flush and production <=1000-row retention queued together in rotating order on the same Node event loop and SQLite connection. queued metrics include time waiting for earlier operations; no worker-thread parallelism claimed.",
+      "deletedRows": 4954,
+      "acceptedEvents": 25000,
+      "health": {
+        "accepted": 25000,
+        "flushed": 25000,
+        "dropped": 0,
+        "incomplete": false,
+        "pendingKeys": 0,
+        "pendingEvents": 0,
+        "lastFlushedAt": 1790644792454,
+        "lastError": null,
+        "nextRetryAt": 0,
+        "status": "idle"
+      },
+      "measurements": {
+        "ranking": {
+          "samplesMs": [
+            179.58283300000767, 203.0200829999958, 185.89054100000067,
+            206.12229200000002, 188.28129099999205, 215.94620799999393,
+            240.9325830000016, 298.87033299999894, 613.5845419999969,
+            340.8482920000097, 255.9380419999943, 194.2089580000029,
+            258.44279200000165, 761.2360829999961, 181.15625,
+            167.16900000000896, 168.8957500000106, 174.3530829999945,
+            185.5918329999986, 168.24550000000454, 179.01879099999496,
+            169.6337910000002, 178.04858299999614, 169.6483329999901,
+            184.8928339999984
+          ],
+          "p50Ms": 185.89054100000067,
+          "p95Ms": 613.5845419999969,
+          "maxMs": 761.2360829999961
+        },
+        "flush": {
+          "samplesMs": [
+            10.993958000006387, 5.872583000003942, 6.602666999999201,
+            5.168042000004789, 5.204083999997238, 6.300500000012107,
+            13.399666999990586, 12.992874999996275, 12.869749999998021,
+            8.333375000001979, 7.1790839999885065, 6.448125000009895,
+            7.9470409999921685, 8.100040999997873, 5.777124999993248,
+            5.686749999993481, 5.565750000008848, 5.343958000012208,
+            5.563708000001498, 5.9444169999915175, 6.187000000005355,
+            9.375874999997905, 7.296208999992814, 6.808541999998852,
+            5.314124999989872
+          ],
+          "p50Ms": 6.448125000009895,
+          "p95Ms": 12.992874999996275,
+          "maxMs": 13.399666999990586
+        },
+        "retention": {
+          "samplesMs": [
+            24.999125000002095, 21.26774999999907, 24.902916999999434,
+            25.54733300000953, 20.99299999998766, 0.5732500000012806,
+            1.0640419999981532, 1.3933749999996508, 0.49233300000196323,
+            1.4482500000012806, 0.7409999999945285, 0.6298749999987194,
+            1.0122919999994338, 0.9694580000068527, 0.4173329999903217,
+            0.4022499999991851, 0.3824170000007143, 0.4616250000108266,
+            0.41816700001072604, 0.3492079999996349, 0.911999999996624,
+            0.7133340000000317, 0.40399999999499414, 0.5599999999976717,
+            0.4088749999937136
+          ],
+          "p50Ms": 0.7133340000000317,
+          "p95Ms": 24.999125000002095,
+          "maxMs": 25.54733300000953
+        },
+        "queuedRanking": {
+          "samplesMs": [
+            180.52341700000397, 230.3529589999962, 210.91683299999568,
+            206.2211249999964, 214.57337499999267, 216.58458399999654,
+            241.0633339999913, 313.393624999997, 614.1612920000043,
+            340.98649999999907, 263.9549580000021, 194.9210000000021,
+            258.5283749999944, 770.4042080000072, 181.6206669999956,
+            167.22787499999686, 174.90683399999398, 174.88862500000687,
+            185.63112499999988, 174.61945800000103, 180.02070799999638,
+            169.70366600000125, 185.84274999999616, 170.27395899999829,
+            184.95708300000115
+          ],
+          "p50Ms": 194.9210000000021,
+          "p95Ms": 614.1612920000043,
+          "maxMs": 770.4042080000072
+        },
+        "queuedFlush": {
+          "samplesMs": [
+            191.59395799999766, 6.019000000000233, 217.56079099999624,
+            211.4026670000021, 5.266875000001164, 222.9005840000027,
+            254.48470899999666, 13.085417000009329, 627.0502089999936,
+            349.3379589999968, 7.247791000001598, 201.38741700000537,
+            266.5004590000026, 8.161542000001646, 187.41658400000597,
+            172.92879199999152, 5.607416999991983, 180.24975000000268,
+            191.2151670000021, 6.008541000002879, 186.23637499999313,
+            179.09437500000058, 7.366208000006736, 177.10325000000012,
+            190.28512499999488
+          ],
+          "p50Ms": 186.23637499999313,
+          "p95Ms": 349.3379589999968,
+          "maxMs": 627.0502089999936
+        },
+        "queuedRetention": {
+          "samplesMs": [
+            216.6921250000014, 27.302834000001894, 25.00587500000256,
+            236.96591699999408, 26.274957999994513, 0.6308339999959571,
+            255.57295899999735, 14.497499999997672, 0.5688340000051539,
+            350.80541699999594, 8.004749999992782, 0.7047500000044238,
+            267.5279589999991, 9.14862500000163, 0.460084000005736,
+            173.34399999999732, 6.003416999999899, 0.5285000000003492,
+            191.6509580000129, 6.367832999996608, 0.9939579999918351,
+            179.8257500000036, 7.785541999997804, 0.6190419999911683,
+            190.70420799999556
+          ],
+          "p50Ms": 14.497499999997672,
+          "p95Ms": 267.5279589999991,
+          "maxMs": 350.80541699999594
+        }
+      }
+    },
+    "resources": {
+      "elapsedMs": 99462.14375,
+      "cpu": {
+        "user": 44337631,
+        "system": 17350113
+      },
+      "memory": {
+        "rss": 205979648,
+        "heapTotal": 155271168,
+        "heapUsed": 62812760,
+        "external": 9220958,
+        "arrayBuffers": 145641
+      },
+      "maxRssKiB": 317504
+    },
+    "thresholds": {
+      "warmP95Ms": 500,
+      "sqliteColdMs": 2000,
+      "pass": true,
+      "concurrentRankingPass": false
+    },
+    "limitations": [
+      "No operating-system cold-cache claim.",
+      "Synthetic distribution; 36.5 million dense daily rows are not this workload.",
+      "No production reporting API or UI implemented.",
+      "Local host only; container and other CPU architecture verification belongs to Release."
+    ],
+    "unhintedCoveringIndex": {
+      "recordedAt": "2026-09-29T01:23:11.156Z",
+      "indexMode": "Experimental covering index; production schema unchanged",
+      "candidateIndex": "CREATE INDEX experiment_analytics_date_image_count ON analytics_image_daily(date, image_id, count)",
+      "environment": {
+        "node": "v24.18.1",
+        "platform": "darwin",
+        "release": "25.6.0",
+        "arch": "arm64",
+        "cpu": "Apple M4",
+        "logicalCpus": 10,
+        "memoryBytes": 17179869184,
+        "freeMemoryBytes": 854376448,
+        "fixtureDirectory": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-analytics-scale-vXGRPx",
+        "filesystem": {
+          "type": 26,
+          "blockSize": 4096,
+          "blocks": 59840624,
+          "availableBlocks": 31919167
+        },
+        "diskInfo": "   Device Identifier:         disk3s1\n   Device Node:               /dev/disk3s1\n   Whole:                     No\n   Part of Whole:             disk3\n\n   Volume Name:               Macintosh HD - Data\n   Mounted:                   Yes\n   Mount Point:               /System/Volumes/Data\n\n   Partition Type:            41504653-0000-11AA-AA11-00306543ECAC\n   File System Personality:   APFS\n   Type (Bundle):             apfs\n   Name (User Visible):       APFS\n   Owners:                    Enabled\n\n   OS Can Be Installed:       Yes\n   Booter Disk:               disk3s4\n   Recovery Disk:             disk3s5\n   Media Type:                通用\n   Protocol:                  Apple Fabric\n   SMART Status:              Verified\n   Volume UUID:               93211049-8399-438C-A870-58929B764463\n   Disk / Partition UUID:     93211049-8399-438C-A870-58929B764463\n\n   Disk Size:                 245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Device Block Size:         4096 Bytes\n\n   Volume Used Space:         91.3 GB (91252674560 Bytes) (exactly 178227880 512-Byte-Units)\n   Container Total Space:     245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Container Free Space:      130.7 GB (130740998144 Bytes) (exactly 255353512 512-Byte-Units)\n   Allocation Block Size:     4096 Bytes\n\n   Media OS Use Only:         No\n   Media Read-Only:           No\n   Volume Read-Only:          No\n\n   Device Location:           Internal\n   Removable Media:           Fixed\n\n   Solid State:               Yes\n   Hardware AES Support:      Yes\n\n   This disk is an APFS Volume.  APFS Information:\n   APFS Container:            disk3\n   APFS Physical Store:       disk0s2\n   APFS Volume Group:         93211049-8399-438C-A870-58929B764463\n   FileVault:                 Yes\n   Sealed:                    No\n   Locked:                    No\n\n"
+      },
+      "fixture": {
+        "images": 100000,
+        "days": 365,
+        "dateRange": ["2026-01-01", "2026-12-31"],
+        "distribution": "1% daily hotspot (600/day); 9% weekly (60/active day); 80% every 30 days (6/active day); 10% zero access. Versions 3:2:1; alternating UTC/Asia/Shanghai archived dates.",
+        "seedMs": 87685.083625,
+        "events": 252997080,
+        "rows": {
+          "media_images": 100000,
+          "analytics_daily": 1095,
+          "analytics_image_daily": 1807615,
+          "analytics_image_totals": 90000
+        },
+        "databaseBytes": 309231616
+      },
+      "cacheDefinition": {
+        "cold": "Fresh connection and SQLite page cache; OS cache was NOT evicted and is unknown/warm after fixture generation. Not an OS-cold benchmark.",
+        "warm": "One untimed execution then 25 executions on the same prepared statement/connection; production cache_size unchanged."
+      },
+      "pragmas": {
+        "journalMode": "wal",
+        "cacheSize": -16000,
+        "pageSize": 4096,
+        "sqliteVersion": {
+          "version": "3.53.4"
+        }
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_analytics_daily_1",
+          "sql": null
+        },
+        {
+          "name": "sqlite_autoindex_analytics_image_daily_1",
+          "sql": null
+        },
+        {
+          "name": "analytics_image_daily_date_image_idx",
+          "sql": "CREATE INDEX `analytics_image_daily_date_image_idx` ON `analytics_image_daily` (`date`,`image_id`)"
+        },
+        {
+          "name": "sqlite_autoindex_analytics_image_totals_1",
+          "sql": null
+        },
+        {
+          "name": "experiment_analytics_date_image_count",
+          "sql": "CREATE INDEX experiment_analytics_date_image_count ON analytics_image_daily(date, image_id, count)"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "trend-7",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["2026-12-25", "2026-12-31"],
+          "rows": 7,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 55,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.1704160000081174,
+          "warm": {
+            "samplesMs": [
+              0.029332999998587184, 0.016749999995226972, 0.01575000000593718,
+              0.01374999999825377, 0.01316699999733828, 0.012875000000349246,
+              0.012791999994078651, 0.07250000000931323, 0.02737499999057036,
+              0.019667000000481494, 0.02391699999861885, 0.014165999993565492,
+              0.01258399999642279, 0.023375000004307367, 0.027249999999185093,
+              0.017458000002079643, 0.014083000001846813, 0.012791000001016073,
+              0.012291999999433756, 0.011708000005455688, 0.011375000001862645,
+              0.011125000004540198, 0.011166999989654869, 0.011249999995925464,
+              0.01095799999893643
+            ],
+            "p50Ms": 0.01374999999825377,
+            "p95Ms": 0.029332999998587184,
+            "maxMs": 0.07250000000931323
+          }
+        },
+        {
+          "name": "versions-7",
+          "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+          "parameters": ["2026-12-25", "2026-12-31"],
+          "rows": 3,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 55,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ],
+          "sqliteColdMs": 0.18791700000292622,
+          "warm": {
+            "samplesMs": [
+              0.017208000004757196, 0.015792000005603768, 0.015625,
+              0.012749999994412065, 0.012416999990819022, 0.012209000007715076,
+              0.011917000010726042, 0.012417000005370937, 0.012166000000433996,
+              0.01583299999765586, 0.011875000011059456, 0.011708999998518266,
+              0.011459000001195818, 0.011542000007466413, 0.01154099999985192,
+              0.011500000007799827, 0.011500000007799827, 0.01145800000813324,
+              0.011416000008466654, 0.01137499998731073, 0.011500000007799827,
+              0.011291000002529472, 0.01129199999559205, 0.011707999990903772,
+              0.012291999999433756
+            ],
+            "p50Ms": 0.011708999998518266,
+            "p95Ms": 0.01583299999765586,
+            "maxMs": 0.017208000004757196
+          }
+        },
+        {
+          "name": "ranking-7",
+          "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+          "parameters": ["2026-12-25", "2026-12-31"],
+          "rows": 10,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 140,
+              "detail": "SEARCH analytics_image_daily USING COVERING INDEX experiment_analytics_date_image_count (date>? AND date<?)"
+            },
+            {
+              "id": 17,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 59,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ],
+          "sqliteColdMs": 5.644625000000815,
+          "warm": {
+            "samplesMs": [
+              5.279499999989639, 5.746207999996841, 6.4739169999957085,
+              5.563041000001249, 5.699792000013986, 5.981291000003694,
+              5.336999999999534, 5.543250000002445, 5.369459000008646,
+              5.215582999997423, 5.500083000006271, 5.328874999991967,
+              5.3307090000016615, 5.741957999998704, 5.742708000005223,
+              5.645166000002064, 5.510791000007885, 5.458666999998968,
+              5.312458000000333, 5.831958000009763, 5.330208999992465,
+              5.394041999999899, 5.347166999999899, 5.206292000002577,
+              5.318374999988009
+            ],
+            "p50Ms": 5.458666999998968,
+            "p95Ms": 5.981291000003694,
+            "maxMs": 6.4739169999957085
+          }
+        },
+        {
+          "name": "image-7",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["image-000000", "2026-12-25", "2026-12-31"],
+          "rows": 7,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 56,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.06475000000500586,
+          "warm": {
+            "samplesMs": [
+              0.019791000013356097, 0.016749999995226972, 0.01600000000325963,
+              0.014540999996825121, 0.013999999995576218, 0.016582999989623204,
+              0.014207999993232079, 0.01366700000653509, 0.013791999997920357,
+              0.013624999992316589, 0.013584000000264496, 0.013374999994994141,
+              0.013458000001264736, 0.013416999994660728, 0.013458000001264736,
+              0.013458000001264736, 0.013416999994660728, 0.013209000011556782,
+              0.013250000003608875, 0.013417000009212643, 0.013250000003608875,
+              0.013332999995327555, 0.01341600000159815, 0.013165999989723787,
+              0.01316699999733828
+            ],
+            "p50Ms": 0.013458000001264736,
+            "p95Ms": 0.016749999995226972,
+            "maxMs": 0.019791000013356097
+          }
+        },
+        {
+          "name": "trend-30",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["2026-12-02", "2026-12-31"],
+          "rows": 30,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 90,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.0639999999984866,
+          "warm": {
+            "samplesMs": [
+              0.05491600000823382, 0.05362500000046566, 0.10066599999845494,
+              0.07891599999857135, 0.07787500000267755, 0.10295899999618996,
+              0.0745829999941634, 0.05712500000663567, 0.052624999996623956,
+              0.05141699999512639, 0.05079200000909623, 0.051042000006418675,
+              0.05029199999989942, 0.05066699998860713, 0.0504170000058366,
+              0.050749999994877726, 0.050333000006503426, 0.05025000000023283,
+              0.0498749999969732, 0.05208299998776056, 0.04979200000525452,
+              0.04958400000759866, 0.049624999999650754, 0.04949999999371357,
+              0.04929100000299513
+            ],
+            "p50Ms": 0.05079200000909623,
+            "p95Ms": 0.10066599999845494,
+            "maxMs": 0.10295899999618996
+          }
+        },
+        {
+          "name": "versions-30",
+          "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+          "parameters": ["2026-12-02", "2026-12-31"],
+          "rows": 3,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 90,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ],
+          "sqliteColdMs": 0.055583000008482486,
+          "warm": {
+            "samplesMs": [
+              0.02833400000235997, 0.025959000005968846, 0.024709000004804693,
+              0.023750000007566996, 0.023583000001963228, 0.023707999993348494,
+              0.0232079999987036, 0.02354199999535922, 0.02345900000364054,
+              0.023208999991766177, 0.02295800000138115, 0.023000000001047738,
+              0.023291999998036772, 0.023542000009911135, 0.02295800000138115,
+              0.02262499999778811, 0.02312500000698492, 0.022834000003058463,
+              0.022916999994777143, 0.022957999986829236, 0.022833000009995885,
+              0.022582999998121522, 0.022458000006736256, 0.02254200000606943,
+              0.02224999999452848
+            ],
+            "p50Ms": 0.02312500000698492,
+            "p95Ms": 0.025959000005968846,
+            "maxMs": 0.02833400000235997
+          }
+        },
+        {
+          "name": "ranking-30",
+          "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+          "parameters": ["2026-12-02", "2026-12-31"],
+          "rows": 10,
+          "plan": [
+            {
+              "id": 9,
+              "parent": 0,
+              "notused": 218,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (ANY(image_id) AND date>? AND date<?)"
+            },
+            {
+              "id": 58,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ],
+          "sqliteColdMs": 98.8729580000072,
+          "warm": {
+            "samplesMs": [
+              95.09258399999817, 94.86350000000675, 92.36962500000664,
+              94.05000000000291, 99.57095799999661, 108.23137500000303,
+              92.74258299999929, 95.61454200001026, 101.96895900000527,
+              108.41658299999835, 100.17158300000301, 98.52350000001024,
+              93.42654200000106, 87.05741699998907, 87.4299580000079,
+              87.46137499999895, 88.50641699999687, 88.9597919999942,
+              90.77825000000303, 90.42558299998927, 89.34087500000896,
+              89.30729100000462, 89.26804199999606, 88.93966699999874,
+              86.69129099999554
+            ],
+            "p50Ms": 92.36962500000664,
+            "p95Ms": 108.23137500000303,
+            "maxMs": 108.41658299999835
+          }
+        },
+        {
+          "name": "image-30",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["image-000000", "2026-12-02", "2026-12-31"],
+          "rows": 30,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 56,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.11174999999639113,
+          "warm": {
+            "samplesMs": [
+              0.03258300000743475, 0.026417000000947155, 0.023707999993348494,
+              0.02262499999778811, 0.024249999987659976, 0.022250000009080395,
+              0.021749999999883585, 0.021999999997206032, 0.02145800000289455,
+              0.02179199999955017, 0.02125000000523869, 0.021124999999301508,
+              0.021166999998968095, 0.021582999994279817, 0.021166999998968095,
+              0.02125000000523869, 0.021416999996290542, 0.020958000008249655,
+              0.021166000005905516, 0.021041999993030913, 0.023417000003973953,
+              0.022666999997454695, 0.021542000002227724, 0.02125000000523869,
+              0.021124999999301508
+            ],
+            "p50Ms": 0.021542000002227724,
+            "p95Ms": 0.026417000000947155,
+            "maxMs": 0.03258300000743475
+          }
+        },
+        {
+          "name": "trend-90",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["2026-10-03", "2026-12-31"],
+          "rows": 90,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 106,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.08058300000266172,
+          "warm": {
+            "samplesMs": [
+              0.056416999999783, 0.052958000000217, 0.052083000002312474,
+              0.050541999997221865, 0.05008299999462906, 0.050708000009763055,
+              0.051042000006418675, 0.05008299999462906, 0.0498749999969732,
+              0.0498749999969732, 0.05012499999429565, 0.049832999997306615,
+              0.05079099998692982, 0.05000000000291038, 0.0503749999916181,
+              0.04979199999070261, 0.04958299999998417, 0.04979200000525452,
+              0.049624999999650754, 0.049375000002328306, 0.049707999991369434,
+              0.050290999992284924, 0.04979200000525452, 0.049583999993046746,
+              0.049750000005587935
+            ],
+            "p50Ms": 0.05000000000291038,
+            "p95Ms": 0.052958000000217,
+            "maxMs": 0.056416999999783
+          }
+        },
+        {
+          "name": "versions-90",
+          "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+          "parameters": ["2026-10-03", "2026-12-31"],
+          "rows": 3,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 106,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ],
+          "sqliteColdMs": 0.08954200000152923,
+          "warm": {
+            "samplesMs": [
+              0.08641599999100436, 0.06395799999882001, 0.0574579999956768,
+              0.057415999996010214, 0.056375000000116415, 0.05537499999627471,
+              0.05574999999953434, 0.05520799999067094, 0.05479199999535922,
+              0.05362500000046566, 0.05324999999720603, 0.05433300000731833,
+              0.05345799999486189, 0.054292000000714324, 0.05433400000038091,
+              0.054166000001714565, 0.053916999997454695, 0.05333299998892471,
+              0.05420800000138115, 0.053375000003143214, 0.05441599999903701,
+              0.05416700000932906, 0.05349999999452848, 0.0545000000129221,
+              0.05420899999444373
+            ],
+            "p50Ms": 0.05433300000731833,
+            "p95Ms": 0.06395799999882001,
+            "maxMs": 0.08641599999100436
+          }
+        },
+        {
+          "name": "ranking-90",
+          "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+          "parameters": ["2026-10-03", "2026-12-31"],
+          "rows": 10,
+          "plan": [
+            {
+              "id": 9,
+              "parent": 0,
+              "notused": 225,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (ANY(image_id) AND date>? AND date<?)"
+            },
+            {
+              "id": 58,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ],
+          "sqliteColdMs": 160.41408400000364,
+          "warm": {
+            "samplesMs": [
+              156.77945799998997, 155.82341599999927, 232.93733300000895,
+              172.05425000000105, 172.34104200000002, 192.33329100000265,
+              169.06979099998716, 181.9620830000058, 158.49629200001073,
+              158.31312500000058, 162.86266699999396, 158.62216700000863,
+              160.765625, 160.88220799999544, 157.99779199999466,
+              162.03983300000255, 164.38474999999744, 164.56991700000071,
+              166.24025000000256, 166.83266600000206, 169.41987499999232,
+              164.60158299999603, 162.8361670000013, 157.6897089999984,
+              161.6384170000092
+            ],
+            "p50Ms": 162.86266699999396,
+            "p95Ms": 192.33329100000265,
+            "maxMs": 232.93733300000895
+          }
+        },
+        {
+          "name": "image-90",
+          "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+          "parameters": ["image-000000", "2026-10-03", "2026-12-31"],
+          "rows": 90,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 56,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+            }
+          ],
+          "sqliteColdMs": 0.18870800000149757,
+          "warm": {
+            "samplesMs": [
+              0.05154099999344908, 0.046875, 0.04695799999171868,
+              0.04383300000336021, 0.0414160000073025, 0.040041000000201166,
+              0.03920800000196323, 0.038957999990088865, 0.03883400000631809,
+              0.03895800000464078, 0.03862500000104774, 0.039041000010911375,
+              0.03870800000731833, 0.03870800000731833, 0.03895800000464078,
+              0.03866699998616241, 0.04325000000244472, 0.03995799999393057,
+              0.03949999999895226, 0.039250000001629815, 0.03954199999861885,
+              0.051332999995793216, 0.04025000000547152, 0.03895899999770336,
+              0.045707999990554526
+            ],
+            "p50Ms": 0.03949999999895226,
+            "p95Ms": 0.051332999995793216,
+            "maxMs": 0.05154099999344908
+          }
+        },
+        {
+          "name": "total",
+          "sql": "SELECT SUM(original_count + compressed_count + watermark_count) AS count FROM analytics_image_totals",
+          "parameters": [],
+          "rows": 1,
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN analytics_image_totals"
+            }
+          ],
+          "sqliteColdMs": 3.3097500000003492,
+          "warm": {
+            "samplesMs": [
+              2.573959000001196, 2.5396250000048894, 2.489458000010927,
+              2.4436660000064876, 2.438125000000582, 2.5213329999969574,
+              2.4882090000028256, 2.5354999999981374, 2.59083400000236,
+              2.643500000005588, 2.5607920000038575, 2.514083000001847,
+              2.5705829999933485, 2.5547500000102445, 2.4753340000024764,
+              2.516957999992883, 2.504666000008001, 2.4915000000037253,
+              2.5110419999982696, 2.4427920000016456, 2.4538329999923008,
+              2.5334580000053393, 2.483791000006022, 2.45108299999265,
+              2.5038339999882737
+            ],
+            "p50Ms": 2.5110419999982696,
+            "p95Ms": 2.59083400000236,
+            "maxMs": 2.643500000005588
+          }
+        },
+        {
+          "name": "image-total",
+          "sql": "SELECT original_count, compressed_count, watermark_count FROM analytics_image_totals WHERE image_id = ?",
+          "parameters": ["image-000000"],
+          "rows": 1,
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH analytics_image_totals USING INDEX sqlite_autoindex_analytics_image_totals_1 (image_id=?)"
+            }
+          ],
+          "sqliteColdMs": 0.0987920000043232,
+          "warm": {
+            "samplesMs": [
+              0.004458000010345131, 0.003125000002910383, 0.002666000000317581,
+              0.0025000000023283064, 0.002374999996391125, 0.002334000004339032,
+              0.0023329999967245385, 0.004207999998470768, 0.003500000006170012,
+              0.005166999995708466, 0.0020840000070165843,
+              0.0018330000020796433, 0.0017499999958090484,
+              0.001791999995475635, 0.0017090000037569553,
+              0.0017499999958090484, 0.001707999996142462,
+              0.0017080000106943771, 0.0017090000037569553,
+              0.001707999996142462, 0.00170899998920504, 0.0017499999958090484,
+              0.0017080000106943771, 0.001707999996142462, 0.0017090000037569553
+            ],
+            "p50Ms": 0.001791999995475635,
+            "p95Ms": 0.004458000010345131,
+            "maxMs": 0.005166999995708466
+          }
+        }
+      ],
+      "concurrency": {
+        "model": "25 rounds: ranking, production 1000-key flush and production <=1000-row retention queued together in rotating order on the same Node event loop and SQLite connection. queued metrics include time waiting for earlier operations; no worker-thread parallelism claimed.",
+        "deletedRows": 4954,
+        "acceptedEvents": 25000,
+        "health": {
+          "accepted": 25000,
+          "flushed": 25000,
+          "dropped": 0,
+          "incomplete": false,
+          "pendingKeys": 0,
+          "pendingEvents": 0,
+          "lastFlushedAt": 1790644991153,
+          "lastError": null,
+          "nextRetryAt": 0,
+          "status": "idle"
+        },
+        "measurements": {
+          "ranking": {
+            "samplesMs": [
+              158.2700829999958, 158.45241600000008, 152.9789160000073,
+              151.10412499999802, 157.17966700000397, 158.23337499999616,
+              157.95249999999942, 167.7989169999928, 165.21291700001166,
+              158.26733299999614, 158.51708400000643, 157.8666249999951,
+              161.57920799999556, 159.77883400001156, 163.35670800000662,
+              155.10175000000163, 161.0480830000015, 191.3023339999927,
+              161.05804100001114, 158.66366600000765, 172.31479099999706,
+              168.3500420000055, 163.0999579999916, 176.67820900000515,
+              187.97233399999095
+            ],
+            "p50Ms": 159.77883400001156,
+            "p95Ms": 187.97233399999095,
+            "maxMs": 191.3023339999927
+          },
+          "flush": {
+            "samplesMs": [
+              7.5946249999979045, 6.169167000000016, 6.03087499999674,
+              5.602167000004556, 5.397500000006403, 6.037083999995957,
+              5.607791999995243, 5.558707999996841, 5.75312500000291,
+              5.649583000005805, 5.304209000008996, 5.97324999999546,
+              5.765125000005355, 5.43650000001071, 5.812665999997989,
+              5.697999999989406, 5.426915999996709, 10.207916999992449,
+              6.328249999991385, 5.677290999999968, 7.966999999989639,
+              5.848708999998053, 260.9320000000007, 5.981583999993745,
+              6.364333999998053
+            ],
+            "p50Ms": 5.812665999997989,
+            "p95Ms": 10.207916999992449,
+            "maxMs": 260.9320000000007
+          },
+          "retention": {
+            "samplesMs": [
+              24.693249999996624, 21.274749999996857, 19.554375000006985,
+              20.726790999993682, 19.570082999998704, 0.4410409999982221,
+              0.41008400000282563, 0.42154199999640696, 0.5113339999952586,
+              0.38037500000791624, 0.2540410000074189, 0.46858299999439623,
+              0.4436659999919357, 0.2716660000005504, 0.40254100000311155,
+              0.37425000000803266, 0.8073329999897396, 0.40954200000851415,
+              0.41158400000131223, 0.3895409999968251, 0.42512499999429565,
+              0.3946670000004815, 0.40691700000024866, 0.5867080000025453,
+              0.39079200000560377
+            ],
+            "p50Ms": 0.42154199999640696,
+            "p95Ms": 21.274749999996857,
+            "maxMs": 24.693249999996624
+          },
+          "queuedRanking": {
+            "samplesMs": [
+              159.36337500000081, 186.00920800000313, 172.62220800000068,
+              151.17604199999187, 182.22145799999998, 158.73162500000035,
+              158.0039170000091, 173.8346659999952, 165.7769169999956,
+              158.30895799999416, 164.1195000000007, 158.40854099999706,
+              161.62862499999756, 165.5322920000035, 163.80675000000338,
+              155.13637500000186, 167.34829100000206, 191.76120899998932,
+              161.1142919999984, 164.80712500000664, 172.8082080000022,
+              168.45383399999992, 424.52895900000294, 177.34995899999922,
+              188.04249999999593
+            ],
+            "p50Ms": 165.5322920000035,
+            "p95Ms": 191.76120899998932,
+            "maxMs": 424.52895900000294
+          },
+          "queuedFlush": {
+            "samplesMs": [
+              167.01670900000317, 6.243124999993597, 178.71987500000978,
+              156.79266700000153, 5.439417000001413, 164.78237499999523,
+              163.62275000000955, 5.595958000005339, 171.5472080000036,
+              163.97366599999077, 5.341333999997005, 164.406415999998,
+              167.40883299999405, 5.47370800000499, 169.63316700000723,
+              160.84737499999756, 5.463625000003958, 202.0049169999984,
+              167.46224999999686, 5.7291669999976875, 180.7974169999943,
+              174.31587500000023, 261.00362499999756, 183.35199999999895,
+              194.4242499999964
+            ],
+            "p50Ms": 164.78237499999523,
+            "p95Ms": 202.0049169999984,
+            "maxMs": 261.00362499999756
+          },
+          "queuedRetention": {
+            "samplesMs": [
+              191.74166700000933, 27.528374999994412, 19.61699999999837,
+              177.52929199999198, 25.019249999997555, 0.4929160000028787,
+              164.04008400000748, 6.029125000000931, 0.5587499999965075,
+              164.36249999998836, 5.5992499999993015, 0.5338750000082655,
+              167.86241600000358, 5.7491250000020955, 0.44637499999953434,
+              161.23058400000446, 6.281958000006853, 0.4545839999918826,
+              167.89187500000116, 6.134042000005138, 0.48875000000407454,
+              174.7228749999922, 261.4233339999919, 0.6623749999998836,
+              194.8269169999985
+            ],
+            "p50Ms": 19.61699999999837,
+            "p95Ms": 194.8269169999985,
+            "maxMs": 261.4233339999919
+          }
+        }
+      },
+      "resources": {
+        "elapsedMs": 101587.10987500001,
+        "cpu": {
+          "user": 43093844,
+          "system": 17977828
+        },
+        "memory": {
+          "rss": 240435200,
+          "heapTotal": 165068800,
+          "heapUsed": 78576824,
+          "external": 9286494,
+          "arrayBuffers": 211177
+        },
+        "maxRssKiB": 318016
+      },
+      "thresholds": {
+        "warmP95Ms": 500,
+        "sqliteColdMs": 2000,
+        "pass": true,
+        "concurrentRankingPass": true
+      },
+      "limitations": [
+        "No operating-system cold-cache claim.",
+        "Synthetic distribution; 36.5 million dense daily rows are not this workload.",
+        "No production reporting API or UI implemented.",
+        "Local host only; container and other CPU architecture verification belongs to Release."
+      ]
+    }
+  },
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "logicalCpus": 10,
+    "memoryBytes": 17179869184,
+    "freeMemoryBytes": 657047552,
+    "fixtureDirectory": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-analytics-scale-yJSM3j",
+    "filesystem": {
+      "type": 26,
+      "blockSize": 4096,
+      "blocks": 59840624,
+      "availableBlocks": 30808936
+    },
+    "diskInfo": "   Device Identifier:         disk3s1\n   Device Node:               /dev/disk3s1\n   Whole:                     No\n   Part of Whole:             disk3\n\n   Volume Name:               Macintosh HD - Data\n   Mounted:                   Yes\n   Mount Point:               /System/Volumes/Data\n\n   Partition Type:            41504653-0000-11AA-AA11-00306543ECAC\n   File System Personality:   APFS\n   Type (Bundle):             apfs\n   Name (User Visible):       APFS\n   Owners:                    Enabled\n\n   OS Can Be Installed:       Yes\n   Booter Disk:               disk3s4\n   Recovery Disk:             disk3s5\n   Media Type:                通用\n   Protocol:                  Apple Fabric\n   SMART Status:              Verified\n   Volume UUID:               93211049-8399-438C-A870-58929B764463\n   Disk / Partition UUID:     93211049-8399-438C-A870-58929B764463\n\n   Disk Size:                 245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Device Block Size:         4096 Bytes\n\n   Volume Used Space:         93.7 GB (93659717632 Bytes) (exactly 182929136 512-Byte-Units)\n   Container Total Space:     245.1 GB (245107195904 Bytes) (exactly 478724992 512-Byte-Units)\n   Container Free Space:      126.2 GB (126187487232 Bytes) (exactly 246459936 512-Byte-Units)\n   Allocation Block Size:     4096 Bytes\n\n   Media OS Use Only:         No\n   Media Read-Only:           No\n   Volume Read-Only:          No\n\n   Device Location:           Internal\n   Removable Media:           Fixed\n\n   Solid State:               Yes\n   Hardware AES Support:      Yes\n\n   This disk is an APFS Volume.  APFS Information:\n   APFS Container:            disk3\n   APFS Physical Store:       disk0s2\n   APFS Volume Group:         93211049-8399-438C-A870-58929B764463\n   FileVault:                 Yes\n   Sealed:                    No\n   Locked:                    No\n\n"
+  },
+  "fixture": {
+    "images": 100000,
+    "days": 365,
+    "dateRange": ["2026-01-01", "2026-12-31"],
+    "distribution": "1% daily hotspot (600/day); 9% weekly (60/active day); 80% every 30 days (6/active day); 10% zero access. Versions 3:2:1; alternating UTC/Asia/Shanghai archived dates.",
+    "seedMs": 161653.633375,
+    "events": 252997080,
+    "rows": {
+      "media_images": 100000,
+      "analytics_daily": 1095,
+      "analytics_image_daily": 1807615,
+      "analytics_image_totals": 90000
+    },
+    "databaseBytes": 309231616
+  },
+  "cacheDefinition": {
+    "cold": "Fresh connection and SQLite page cache; OS cache was NOT evicted and is unknown/warm after fixture generation. Not an OS-cold benchmark.",
+    "warm": "One untimed execution then 25 executions on the same prepared statement/connection; production cache_size unchanged."
+  },
+  "pragmas": {
+    "journalMode": "wal",
+    "cacheSize": -16000,
+    "pageSize": 4096,
+    "sqliteVersion": {
+      "version": "3.53.4"
+    }
+  },
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_analytics_daily_1",
+      "sql": null
+    },
+    {
+      "name": "sqlite_autoindex_analytics_image_daily_1",
+      "sql": null
+    },
+    {
+      "name": "analytics_image_daily_date_image_idx",
+      "sql": "CREATE INDEX `analytics_image_daily_date_image_idx` ON `analytics_image_daily` (`date`,`image_id`)"
+    },
+    {
+      "name": "sqlite_autoindex_analytics_image_totals_1",
+      "sql": null
+    },
+    {
+      "name": "experiment_analytics_date_image_count",
+      "sql": "CREATE INDEX experiment_analytics_date_image_count ON analytics_image_daily(date, image_id, count)"
+    }
+  ],
+  "measurements": [
+    {
+      "name": "trend-7",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["2026-12-25", "2026-12-31"],
+      "rows": 7,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 55,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.2015409999876283,
+      "warm": {
+        "samplesMs": [
+          0.058041000011144206, 0.025167000014334917, 0.0186249999969732,
+          0.015458000008948147, 0.013666999991983175, 0.013375000009546056,
+          0.0130840000056196, 0.01345900000887923, 0.0912090000056196,
+          0.03304099998786114, 0.019250000012107193, 0.01975000000675209,
+          0.013834000012138858, 0.04833399999188259, 0.0306659999769181,
+          0.012832999986130744, 0.012041999987559393, 0.012000000016996637,
+          0.012125000008381903, 0.011541999992914498, 0.011459000001195818,
+          0.011417000001529232, 0.011417000001529232, 0.011374999972758815,
+          0.011249999981373549
+        ],
+        "p50Ms": 0.01345900000887923,
+        "p95Ms": 0.058041000011144206,
+        "maxMs": 0.0912090000056196
+      }
+    },
+    {
+      "name": "versions-7",
+      "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+      "parameters": ["2026-12-25", "2026-12-31"],
+      "rows": 3,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 55,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        }
+      ],
+      "sqliteColdMs": 0.27300000001559965,
+      "warm": {
+        "samplesMs": [
+          0.01829200002248399, 0.01600000000325963, 0.015458000008948147,
+          0.012499999982537702, 0.012375000020256266, 0.012290999991819263,
+          0.01204100000904873, 0.012709000002359971, 0.011999999987892807,
+          0.011916000017663464, 0.011666999984299764, 0.01187499999650754,
+          0.04766599999857135, 0.03370800000266172, 0.018499999976484105,
+          0.014374999998835847, 0.013833000004524365, 0.013666999991983175,
+          0.013875000004190952, 0.012749999994412065, 0.012459000019589439,
+          0.012542000011308119, 0.01204100000904873, 0.012374999991152436,
+          0.013124999997671694
+        ],
+        "p50Ms": 0.012709000002359971,
+        "p95Ms": 0.03370800000266172,
+        "maxMs": 0.04766599999857135
+      }
+    },
+    {
+      "name": "ranking-7",
+      "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily INDEXED BY experiment_analytics_date_image_count WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+      "parameters": ["2026-12-25", "2026-12-31"],
+      "rows": 10,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 140,
+          "detail": "SEARCH analytics_image_daily USING COVERING INDEX experiment_analytics_date_image_count (date>? AND date<?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 59,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "sqliteColdMs": 11.09541700000409,
+      "warm": {
+        "samplesMs": [
+          6.9137920000066515, 12.033458999998402, 8.736166000016965,
+          10.408458999998402, 7.947750000021188, 7.25662500000908,
+          7.008583999995608, 6.548791999986861, 8.11600000000908,
+          7.767749999999069, 6.747042000002693, 6.2292080000042915,
+          7.165084000007482, 7.908209000015631, 9.46099999998114,
+          8.77529200000572, 6.968790999992052, 7.826750000007451,
+          9.336542000004556, 6.961959000007482, 7.214124999998603,
+          7.356291999982204, 7.56654199998593, 9.276584000006551,
+          8.3743329999852
+        ],
+        "p50Ms": 7.767749999999069,
+        "p95Ms": 10.408458999998402,
+        "maxMs": 12.033458999998402
+      }
+    },
+    {
+      "name": "image-7",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["image-000000", "2026-12-25", "2026-12-31"],
+      "rows": 7,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 56,
+          "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.06812499999068677,
+      "warm": {
+        "samplesMs": [
+          0.022415999992517754, 0.018332999985432252, 0.017958000011276454,
+          0.015541000000666827, 0.014875000022584572, 0.014499999990221113,
+          0.014291999978013337, 0.03683399999863468, 0.023041000007651746,
+          0.015041999984532595, 0.02145800000289455, 0.06933399999979883,
+          0.08441599999787286, 0.02650000000721775, 0.0186249999969732,
+          0.01591699998243712, 0.014916999993147328, 0.01445899999816902,
+          0.013957999995909631, 0.013917000003857538, 0.013750000012805685,
+          0.013707999984035268, 0.013584000000264496, 0.013791000004857779,
+          0.013500000000931323
+        ],
+        "p50Ms": 0.015041999984532595,
+        "p95Ms": 0.06933399999979883,
+        "maxMs": 0.08441599999787286
+      }
+    },
+    {
+      "name": "trend-30",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["2026-12-02", "2026-12-31"],
+      "rows": 30,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 90,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.13224999999511056,
+      "warm": {
+        "samplesMs": [
+          0.025916999991750345, 0.02466600001207553, 0.037500000005820766,
+          0.023332999990088865, 0.044625000009546056, 0.04241699998965487,
+          0.029666999995242804, 0.026083000004291534, 0.023875000013504177,
+          0.022792000003391877, 0.022541999991517514, 0.022291000001132488,
+          0.022083999996539205, 0.021708999993279576, 0.021957999997539446,
+          0.021875000005820766, 0.021707999985665083, 0.022167000017361715,
+          0.021665999985998496, 0.022333999979309738, 0.02145800000289455,
+          0.021333000011509284, 0.02154099999461323, 0.02137500001117587,
+          0.02137499998207204
+        ],
+        "p50Ms": 0.022291000001132488,
+        "p95Ms": 0.04241699998965487,
+        "maxMs": 0.044625000009546056
+      }
+    },
+    {
+      "name": "versions-30",
+      "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+      "parameters": ["2026-12-02", "2026-12-31"],
+      "rows": 3,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 90,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        }
+      ],
+      "sqliteColdMs": 0.04916699999012053,
+      "warm": {
+        "samplesMs": [
+          0.027541999996174127, 0.02474999998230487, 0.02391600000555627,
+          0.022957999986829236, 0.02275000000372529, 0.02274999997462146,
+          0.022790999995777383, 0.022790999995777383, 0.02266699998290278,
+          0.022082999988924712, 0.02245799999218434, 0.02291600001626648,
+          0.022583000012673438, 0.02312499997788109, 0.02237500000046566,
+          0.021917000005487353, 0.02220800000941381, 0.022083000018028542,
+          0.02212500001769513, 0.022082999988924712, 0.0221249999885913,
+          0.021999999997206032, 0.02220800000941381, 0.022083000018028542,
+          0.022291000001132488
+        ],
+        "p50Ms": 0.02245799999218434,
+        "p95Ms": 0.02474999998230487,
+        "maxMs": 0.027541999996174127
+      }
+    },
+    {
+      "name": "ranking-30",
+      "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily INDEXED BY experiment_analytics_date_image_count WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+      "parameters": ["2026-12-02", "2026-12-31"],
+      "rows": 10,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 187,
+          "detail": "SEARCH analytics_image_daily USING COVERING INDEX experiment_analytics_date_image_count (date>? AND date<?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 59,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "sqliteColdMs": 32.84420900000259,
+      "warm": {
+        "samplesMs": [
+          26.065499999996973, 27.670249999995576, 30.397750000003725,
+          33.05408400000306, 33.2200840000005, 49.16270899999654,
+          50.85183300002245, 43.033709000010276, 28.53591599999345,
+          28.63087500000256, 30.293834000010975, 38.36833299999125,
+          36.588541999983136, 65.47625000000698, 61.67179199997918,
+          44.95570799999405, 60.50733299998683, 50.48204100001021,
+          48.077625000005355, 36.01274999999441, 31.110832999984268,
+          35.97745800000848, 30.936375000019325, 39.9601669999829,
+          45.86974999998347
+        ],
+        "p50Ms": 36.588541999983136,
+        "p95Ms": 61.67179199997918,
+        "maxMs": 65.47625000000698
+      }
+    },
+    {
+      "name": "image-30",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["image-000000", "2026-12-02", "2026-12-31"],
+      "rows": 30,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 56,
+          "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.11233400000492111,
+      "warm": {
+        "samplesMs": [
+          0.030457999993814155, 0.02549999998882413, 0.0232079999987036,
+          0.022666000004392117, 0.022916999994777143, 0.021916999976383522,
+          0.02166700002271682, 0.02154099999461323, 0.021499999973457307,
+          0.0217500000144355, 0.020916999987093732, 0.148709000000963,
+          0.15062500000931323, 0.02374999999301508, 0.04720799997448921,
+          0.021999999997206032, 0.02137499998207204, 0.021249999990686774,
+          0.02108299999963492, 0.021083999978145584, 0.04620800001430325,
+          0.0225839999911841, 0.020958000008249655, 0.020874999987427145,
+          0.020583000004990026
+        ],
+        "p50Ms": 0.021916999976383522,
+        "p95Ms": 0.148709000000963,
+        "maxMs": 0.15062500000931323
+      }
+    },
+    {
+      "name": "trend-90",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["2026-10-03", "2026-12-31"],
+      "rows": 90,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 106,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.6100409999780823,
+      "warm": {
+        "samplesMs": [
+          0.10208399998373352, 0.058874999987892807, 0.062208999996073544,
+          0.052124999987427145, 0.05058300000382587, 0.049291999981505796,
+          0.07287499998346902, 0.0503749999916181, 0.049125000019557774,
+          0.04891700000735, 0.048540999996475875, 0.048833000008016825,
+          0.04854200000409037, 0.049375000002328306, 0.048540999996475875,
+          0.08462500001769513, 0.06845900000189431, 0.05887500001699664,
+          0.05391699998290278, 0.0528749999939464, 0.05166699999244884,
+          0.05087500001536682, 0.05087499998626299, 0.05095799997798167,
+          0.12079200000152923
+        ],
+        "p50Ms": 0.05095799997798167,
+        "p95Ms": 0.10208399998373352,
+        "maxMs": 0.12079200000152923
+      }
+    },
+    {
+      "name": "versions-90",
+      "sql": "SELECT version, SUM(count) AS count FROM analytics_daily WHERE date BETWEEN ? AND ? GROUP BY version ORDER BY version",
+      "parameters": ["2026-10-03", "2026-12-31"],
+      "rows": 3,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 106,
+          "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        }
+      ],
+      "sqliteColdMs": 0.10445899999467656,
+      "warm": {
+        "samplesMs": [
+          0.06266699999105185, 0.05849999998463318, 0.08941700001014397,
+          0.057874999998603016, 0.05620800002361648, 0.05616599999484606,
+          0.16300000000046566, 0.09775000001536682, 0.06316600000718608,
+          0.0609579999872949, 0.05945800000336021, 0.05850000001373701,
+          0.05737500000395812, 0.06795799999963492, 0.05729199998313561,
+          0.05570799999986775, 0.05662499999743886, 0.05654200000572018,
+          0.056792000017594546, 0.055666000000201166, 0.056084000010741875,
+          0.08454199999687262, 0.08170799998333678, 0.058874999987892807,
+          0.05629199999384582
+        ],
+        "p50Ms": 0.05849999998463318,
+        "p95Ms": 0.09775000001536682,
+        "maxMs": 0.16300000000046566
+      }
+    },
+    {
+      "name": "ranking-90",
+      "sql": "SELECT image_id, SUM(count) AS count FROM analytics_image_daily INDEXED BY experiment_analytics_date_image_count WHERE date BETWEEN ? AND ? GROUP BY image_id ORDER BY count DESC, image_id ASC LIMIT 10",
+      "parameters": ["2026-10-03", "2026-12-31"],
+      "rows": 10,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 205,
+          "detail": "SEARCH analytics_image_daily USING COVERING INDEX experiment_analytics_date_image_count (date>? AND date<?)"
+        },
+        {
+          "id": 17,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 59,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "sqliteColdMs": 88.9537920000148,
+      "warm": {
+        "samplesMs": [
+          88.43954099999974, 82.46487500000512, 122.89650000000256,
+          232.19504200000665, 111.5535830000008, 123.18295799999032,
+          99.47662500001024, 92.07987499999581, 92.7001670000027,
+          100.94054199999664, 105.35050000000047, 212.5389580000192,
+          154.05704100002185, 96.42387500000768, 113.66074999998091,
+          124.50266699999338, 104.36912499999744, 143.60833299998194,
+          135.45737499999814, 95.7546250000014, 89.25654199998826,
+          90.31720900000073, 86.52566600000137, 253.05537499999627,
+          76.14308300000266
+        ],
+        "p50Ms": 104.36912499999744,
+        "p95Ms": 232.19504200000665,
+        "maxMs": 253.05537499999627
+      }
+    },
+    {
+      "name": "image-90",
+      "sql": "SELECT date, SUM(count) AS count FROM analytics_image_daily WHERE image_id = ? AND date BETWEEN ? AND ? GROUP BY date ORDER BY date",
+      "parameters": ["image-000000", "2026-10-03", "2026-12-31"],
+      "rows": 90,
+      "plan": [
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 56,
+          "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+        }
+      ],
+      "sqliteColdMs": 0.19495900001493283,
+      "warm": {
+        "samplesMs": [
+          0.055499999987659976, 0.04854199997498654, 0.043249999987892807,
+          0.04112500001792796, 0.040332999982638285, 0.03979200002504513,
+          0.03941699999268167, 0.03970799999660812, 0.039625000004889444,
+          0.03929199997219257, 0.03937499999301508, 0.0397909999883268,
+          0.039625000004889444, 0.03970900000422262, 0.039625000004889444,
+          0.039250000001629815, 0.0422919999982696, 0.04029100001207553,
+          0.03929100002278574, 0.039416000014171004, 0.04020899999886751,
+          0.04716700001154095, 0.0407499999855645, 0.040542000002460554,
+          0.0403750000114087
+        ],
+        "p50Ms": 0.03979200002504513,
+        "p95Ms": 0.04854199997498654,
+        "maxMs": 0.055499999987659976
+      }
+    },
+    {
+      "name": "total",
+      "sql": "SELECT SUM(original_count + compressed_count + watermark_count) AS count FROM analytics_image_totals",
+      "parameters": [],
+      "rows": 1,
+      "plan": [
+        {
+          "id": 3,
+          "parent": 0,
+          "notused": 177,
+          "detail": "SCAN analytics_image_totals"
+        }
+      ],
+      "sqliteColdMs": 6.561499999981606,
+      "warm": {
+        "samplesMs": [
+          2.609874999994645, 4.156125000008615, 3.4755000000004657,
+          6.170916999981273, 4.3243749999965075, 4.089790999976685,
+          5.497792000009213, 4.456707999983337, 3.7761670000036247,
+          5.396917000005487, 5.351875000022119, 2.7434159999829717,
+          3.8358330000191927, 3.021166999998968, 2.5972919999912847,
+          3.805666999978712, 2.685750000004191, 2.9147499999962747,
+          2.9241669999901205, 2.4965420000080485, 2.613207999995211,
+          3.184957999998005, 2.8887090000207536, 3.3527089999988675,
+          3.204958999995142
+        ],
+        "p50Ms": 3.3527089999988675,
+        "p95Ms": 5.497792000009213,
+        "maxMs": 6.170916999981273
+      }
+    },
+    {
+      "name": "image-total",
+      "sql": "SELECT original_count, compressed_count, watermark_count FROM analytics_image_totals WHERE image_id = ?",
+      "parameters": ["image-000000"],
+      "rows": 1,
+      "plan": [
+        {
+          "id": 3,
+          "parent": 0,
+          "notused": 39,
+          "detail": "SEARCH analytics_image_totals USING INDEX sqlite_autoindex_analytics_image_totals_1 (image_id=?)"
+        }
+      ],
+      "sqliteColdMs": 0.08479200000874698,
+      "warm": {
+        "samplesMs": [
+          0.005499999999301508, 0.0036660000041592866, 0.0029580000264104456,
+          0.0026249999937135726, 0.0025000000023283064, 0.0027500000142026693,
+          0.0024170000106096268, 0.0035840000200551003, 0.003874999994877726,
+          0.0033340000081807375, 0.0020420000073499978, 0.0019589999865274876,
+          0.0017920000245794654, 0.0017499999958090484, 0.0017080000252462924,
+          0.001707999996142462, 0.0017499999958090484, 0.001791000016964972,
+          0.0016670000040903687, 0.0016659999964758754, 0.0017500000249128789,
+          0.001707999996142462, 0.001707999996142462, 0.0016670000040903687,
+          0.0017080000252462924
+        ],
+        "p50Ms": 0.0017920000245794654,
+        "p95Ms": 0.003874999994877726,
+        "maxMs": 0.005499999999301508
+      }
+    }
+  ],
+  "concurrency": {
+    "model": "25 rounds: ranking, production 1000-key flush and production <=1000-row retention queued together in rotating order on the same Node event loop and SQLite connection. queued metrics include time waiting for earlier operations; no worker-thread parallelism claimed.",
+    "deletedRows": 4954,
+    "acceptedEvents": 25000,
+    "health": {
+      "accepted": 25000,
+      "flushed": 25000,
+      "dropped": 0,
+      "incomplete": false,
+      "pendingKeys": 0,
+      "pendingEvents": 0,
+      "lastFlushedAt": 1790645209062,
+      "lastError": null,
+      "nextRetryAt": 0,
+      "status": "idle"
+    },
+    "measurements": {
+      "ranking": {
+        "samplesMs": [
+          87.51004100000137, 79.71770800001104, 65.28408300000592,
+          114.17337500001304, 120.60183299999335, 108.82729200000176,
+          158.55195799999638, 118.01670799998101, 121.30616700000246,
+          108.57200000001467, 160.06124999999884, 95.59375, 121.19054199999664,
+          140.81583400000818, 100.11887500001467, 115.96233300000313,
+          94.35083300000406, 137.8636669999978, 88.83633300001384,
+          147.92141700000502, 148.44325000001118, 109.12137499998789,
+          161.8059169999906, 97.31408399998327, 113.42933300000732
+        ],
+        "p50Ms": 114.17337500001304,
+        "p95Ms": 160.06124999999884,
+        "maxMs": 161.8059169999906
+      },
+      "flush": {
+        "samplesMs": [
+          11.022125000017695, 7.182124999992084, 534.0139579999959,
+          15.898833999992348, 11.097999999998137, 8.995040999987395,
+          11.312375000008615, 8.417209000006551, 11.883666999987327,
+          11.801500000001397, 9.483792000013636, 14.470790999999736,
+          15.663541999994777, 12.167290999990655, 8.89558300000499,
+          8.607499999983702, 9.894624999986263, 6.854499999986729,
+          9.386457999993581, 8.00545900000725, 7.770042000018293,
+          7.598874999996042, 396.0202500000014, 8.319292000000132,
+          15.734291000000667
+        ],
+        "p50Ms": 9.894624999986263,
+        "p95Ms": 396.0202500000014,
+        "maxMs": 534.0139579999959
+      },
+      "retention": {
+        "samplesMs": [
+          30.66524999999092, 29.808625000005122, 27.645374999992782,
+          31.621833000011975, 28.710958000010578, 1.4029589999991003,
+          0.9769169999926817, 0.3760000000183936, 1.1612079999758862,
+          0.8696249999920838, 0.40312500001164153, 0.8056250000081491,
+          0.9249589999963064, 0.444167000008747, 0.45850000000791624,
+          0.41491599997971207, 0.41804099999717437, 0.906457999983104,
+          0.4602090000116732, 0.828417000011541, 0.6515409999992698,
+          1.1735000000044238, 0.9443750000209548, 1.0747909999918193,
+          0.8661250000004657
+        ],
+        "p50Ms": 0.906457999983104,
+        "p95Ms": 30.66524999999092,
+        "maxMs": 31.621833000011975
+      },
+      "queuedRanking": {
+        "samplesMs": [
+          88.81170799999381, 116.84687499998836, 93.02587500002119,
+          114.53254200000083, 160.63937499999884, 110.33920899999794,
+          158.64262500000768, 126.92624999998952, 122.57816599999205,
+          108.6486670000013, 170.01070800001617, 96.56745800000499,
+          121.84295900000143, 153.63012499999604, 100.63270799999009,
+          116.04425000000629, 104.9203330000164, 138.8279169999878,
+          88.91137500002515, 157.4388340000005, 149.18941700001596,
+          109.27150000000256, 558.861459000007, 98.50366700001177,
+          113.5189160000009
+        ],
+        "p50Ms": 116.04425000000629,
+        "p95Ms": 170.01070800001617,
+        "maxMs": 558.861459000007
+      },
+      "queuedFlush": {
+        "samplesMs": [
+          99.91125000000466, 7.273665999993682, 627.0756669999973,
+          130.45933300000615, 11.264374999998836, 119.4527919999964,
+          169.97154100000625, 8.51600000000326, 134.49820800000452,
+          120.46283299999777, 9.530292000010377, 111.0572079999838,
+          137.52304200001527, 12.347374999983003, 109.54616599998553,
+          124.67720800000825, 10.132707999990089, 145.69716700000572,
+          98.31670799999847, 8.665791999985231, 156.9810839999991,
+          116.89100000000326, 396.0834169999871, 106.84116700000595,
+          129.26550000000861
+        ],
+        "p50Ms": 116.89100000000326,
+        "p95Ms": 396.0834169999871,
+        "maxMs": 627.0756669999973
+      },
+      "queuedRetention": {
+        "samplesMs": [
+          130.61149999999907, 37.10145799999009, 27.71620900000562,
+          162.10108299998683, 40.00954199998523, 1.4880000000121072,
+          170.97099999999045, 8.903041000012308, 1.247624999989057,
+          121.37674999999581, 9.943417000002228, 0.961542000004556,
+          138.47979199999827, 12.806958999979543, 0.5092080000031274,
+          125.10470799999894, 10.563750000001164, 0.948792000010144,
+          98.79300000000512, 9.506999999983236, 0.7397500000079162,
+          118.13033300000825, 397.0437089999905, 1.1742089999897871,
+          130.14616599999135
+        ],
+        "p50Ms": 27.71620900000562,
+        "p95Ms": 170.97099999999045,
+        "maxMs": 397.0437089999905
+      }
+    }
+  },
+  "resources": {
+    "elapsedMs": 172156.763458,
+    "cpu": {
+      "user": 51283829,
+      "system": 23876299
+    },
+    "memory": {
+      "rss": 981024768,
+      "heapTotal": 165478400,
+      "heapUsed": 78685688,
+      "external": 9286494,
+      "arrayBuffers": 211177
+    },
+    "maxRssKiB": 961808
+  },
+  "thresholds": {
+    "warmP95Ms": 500,
+    "sqliteColdMs": 2000,
+    "pass": true,
+    "concurrentRankingPass": true
+  },
+  "limitations": [
+    "No operating-system cold-cache claim.",
+    "Synthetic distribution; 36.5 million dense daily rows are not this workload.",
+    "No production reporting API or UI implemented.",
+    "Local host only; container and other CPU architecture verification belongs to Release."
+  ]
+}

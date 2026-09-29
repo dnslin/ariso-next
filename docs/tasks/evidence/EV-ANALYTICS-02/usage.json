@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-09-29T01:19:24.070Z",
+  "node": "v24.18.1",
+  "database": "disk SQLite WAL migrated production schema plus explicitly experimental responsibility table",
+  "normal": [
+    {
+      "storageId": "a8ddff55-be85-4d2a-b5e2-ef5aed389129",
+      "knownBytes": 112,
+      "pendingObjects": 3,
+      "groups": {
+        "recycle": 0,
+        "original": 100,
+        "derived": 4,
+        "pending": 8
+      },
+      "lastConfirmedAt": 1790644764063
+    },
+    {
+      "storageId": "another-storage",
+      "knownBytes": 9,
+      "pendingObjects": 0,
+      "groups": {
+        "recycle": 0,
+        "original": 0,
+        "derived": 0,
+        "pending": 9
+      },
+      "lastConfirmedAt": 1790644764063
+    }
+  ],
+  "recycled": [
+    {
+      "storageId": "a8ddff55-be85-4d2a-b5e2-ef5aed389129",
+      "knownBytes": 112,
+      "pendingObjects": 3,
+      "groups": {
+        "recycle": 104,
+        "original": 0,
+        "derived": 0,
+        "pending": 8
+      },
+      "lastConfirmedAt": 1790644764063
+    },
+    {
+      "storageId": "another-storage",
+      "knownBytes": 9,
+      "pendingObjects": 0,
+      "groups": {
+        "recycle": 0,
+        "original": 0,
+        "derived": 0,
+        "pending": 9
+      },
+      "lastConfirmedAt": 1790644764063
+    }
+  ],
+  "limitations": [
+    "No production S3/probe/orphan provider yet",
+    "Upload finalizing keys remain unknown until provider confirms; progress byte_size is not proof of object existence",
+    "Fixture metadata exercises production acceptance transaction; does not claim HTTP upload or remote scanning"
+  ]
+}

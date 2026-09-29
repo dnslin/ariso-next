@@ -192,6 +192,8 @@
 
 ### EV-ANALYTICS-02 完整用量交接与规模实验
 
+- 实施证据：[用量交接与规模实验](./evidence/EV-ANALYTICS-02/README.md)。本地交接、R2/SeaweedFS 真实对象与规模实验已取得证据；生产扫描与完整业务另由所属任务承接。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[analytics §7/10](../specs/SPEC-analytics.md)
