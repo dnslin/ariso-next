@@ -127,3 +127,5 @@ pnpm install --frozen-lockfile
 首条实验命令退出 1：SeaweedFS 通过、R2 错误 Bucket 失败。只读诊断通过 `node --input-type=module` 调用 SDK 的 HeadBucket、限定本轮前缀 ListObjectsV2 和 HeadObject，保留上述403。用户随后明确将 R2 Bucket 改为 `image`；使用 `node --input-type=module` 读取修正配置并直接调用同一 `runUsageService(config, 'test-results/analytics-usage-live/r2-corrected')`，仅重跑 R2，退出 0。没有用其他 Bucket 试写，也没有覆盖首次失败报告。冻结安装通过。
 
 本轮不机械重复未变更代码的构建、单元、完整集成或规模生成；上文记录仍对应当前实验代码。`pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check` 本轮均通过；文档检查为 120 任务、298 需求及 5 个拒绝用例。独立 agent 对照原始与归档 JSON，并重新计算两服务逐阶段用量，最终审计通过、无必须修正项；确认错误 Bucket 的403未被覆盖、真实实验与生产能力边界清楚。证据提交推送后，PR #206 可转正式待评审。GitHub 核对 PR 为 MERGEABLE、没有远端检查，不记作 CI 通过。
+
+续验提交 `856e5c1` 已推送；首次直连 GitHub 在 75 秒后连接失败，按所有者提供的本机代理重试成功，未修改全局代理。`gh api repos/dnslin/ariso-next/pulls/206` 实际核对 `draft=false`、`state=open`、`mergeable=true`，head 为该续验提交；PR #206 已正式待评审，远端检查列表仍为空。
