@@ -382,13 +382,23 @@ describe('owner-only list HTTP', () => {
         ['?albumId=deleted', 409, { code: 'LIBRARY_STALE_REFERENCE' }],
         ['?q=%00not-present', 400, { code: 'LIBRARY_INVALID_QUERY' }],
         ['?__proto__=ignored', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        ['?%5F%5Fproto%5F%5F=ignored', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        ['?nxtPunknown=ignored', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        [
+          'http-private-failed/neighbors?__proto__=ignored',
+          400,
+          { code: 'LIBRARY_INVALID_QUERY' },
+        ],
         ['?scope=trash&format=png', 400, { code: 'LIBRARY_INVALID_QUERY' }],
       ] as const) {
-        const result = await fetch(`${origin}/api/images/${path}`, {
-          headers: { cookie },
-          redirect: 'follow',
-        });
-        expect(result.status).toBe(status);
+        const result = await fetch(
+          `${origin}/api/images${path.startsWith('?') ? '' : '/'}${path}`,
+          {
+            headers: { cookie },
+            redirect: 'follow',
+          },
+        );
+        expect(result.status, path).toBe(status);
         expect(result.headers.get('cache-control')).toBe('no-store');
         expect(await result.json()).toMatchObject(body);
       }
