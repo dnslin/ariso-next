@@ -25,11 +25,13 @@ export interface LibraryItem {
   thumbnailUrl: string | null;
   activeJob: LibraryJobSummary | null;
   latestFailedJob: LibraryJobSummary | null;
-  trashedAt: null;
-  deletionStatus: null;
+  trashedAt: string | null;
+  deletionStatus: 'deleting' | 'cleanup_failed' | null;
 }
 
 export interface LibraryPage {
+  page?: number;
+  pageSize?: 20 | 40 | 80;
   items: LibraryItem[];
   total: number;
   nextCursor: string | null;

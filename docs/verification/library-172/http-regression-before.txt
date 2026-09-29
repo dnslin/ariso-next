@@ -1,0 +1,36 @@
+Already up to date
+Done in 513ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/library-query-172/ariso
+
+ ❯ |integration| tests/integration/library/base.test.ts (5 tests | 1 failed) 6392ms
+   ❯ owner-only list HTTP (1)
+     × rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 5587ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/base.test.ts > owner-only list HTTP > rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries
+AssertionError: ?__proto__=ignored: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ tests/integration/library/base.test.ts:394:37
+    392|           },
+    393|         );
+    394|         expect(result.status, path).toBe(status);
+       |                                     ^
+    395|         expect(result.headers.get('cache-control')).toBe('no-store');
+    396|         expect(await result.json()).toMatchObject(body);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  20:14:11
+   Duration  7.87s (tests 83%, import 12%, transform 5%)
+
