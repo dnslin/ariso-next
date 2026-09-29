@@ -40,19 +40,19 @@
       "command": "pnpm run typecheck",
       "exitCode": 2,
       "result": "15 baseline errors in 5 existing files",
-      "evidence": "typecheck-failed.log"
+      "evidence": "typecheck-failed.txt"
     },
     {
       "command": "pnpm run build",
       "exitCode": 2,
       "result": "Runtime compilation fails on two baseline verify-media errors",
-      "evidence": "build-failed.log"
+      "evidence": "build-failed.txt"
     },
     {
       "command": "pnpm exec tsc --noEmit --incremental false --project /tmp/ariso-157-baseline.IydoNR/tsconfig.json",
       "exitCode": 2,
       "result": "Unmodified origin/main archive reproduces all 15 existing errors",
-      "evidence": "baseline-typecheck.log"
+      "evidence": "baseline-typecheck.txt"
     },
     {
       "command": "node docs/tasks/check.mjs",

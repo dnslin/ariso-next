@@ -51,7 +51,7 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 | `node docs/tasks/check.mjs --self-test`              | 5 项拒绝自测通过                                           |
 | `git diff --check`                                   | 通过                                                       |
 
-[类型失败](./typecheck-failed.log)、[构建失败](./build-failed.log)和[原样 main 类型复现](./baseline-typecheck.log)均保留。原始输出在本机 `/tmp/ariso-157-*.log`。使用了 using-agent-skills、增量实现、接口设计、测试与代码审计技能；Next API 入口另按 vercel-react-best-practices 核对服务端鉴权、调用顺序和静态路径。
+[类型失败](./typecheck-failed.txt)、[构建失败](./build-failed.txt)和[原样 main 类型复现](./baseline-typecheck.txt)均保留。原始输出在本机 `/tmp/ariso-157-*.log`。使用了 using-agent-skills、增量实现、接口设计、测试与代码审计技能；Next API 入口另按 vercel-react-best-practices 核对服务端鉴权、调用顺序和静态路径。
 
 ## 独立代码审计
 
