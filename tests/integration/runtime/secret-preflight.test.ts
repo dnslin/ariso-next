@@ -40,6 +40,11 @@ function writeMigrations(
       when: 5,
       sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
     },
+    {
+      tag: '0005_storage_probes',
+      when: 6,
+      sql: readFileSync(resolve('drizzle/0011_wise_maria_hill.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -143,6 +148,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { name: 'analytics_image_totals' },
       { name: 'session' },
       { name: 'storage_configs' },
+      { name: 'storage_probes' },
       { name: 'storage_settings' },
       { name: 'upload_sessions' },
       { name: 'upload_settings' },
@@ -158,6 +164,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { created_at: 3 },
       { created_at: 4 },
       { created_at: 5 },
+      { created_at: 6 },
     ]);
   } finally {
     db.close();
@@ -259,6 +266,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { name: 'secret_sample' },
         { name: 'session' },
         { name: 'storage_configs' },
+        { name: 'storage_probes' },
         { name: 'storage_settings' },
         { name: 'upload_sessions' },
         { name: 'upload_settings' },
@@ -272,6 +280,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { created_at: 3 },
         { created_at: 4 },
         { created_at: 5 },
+        { created_at: 6 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

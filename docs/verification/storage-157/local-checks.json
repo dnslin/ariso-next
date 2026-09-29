@@ -1,0 +1,92 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64",
+    "base": "00979f5"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0,
+      "result": "0011_wise_maria_hill.sql generated and reviewed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 1,
+      "result": "Generated migration JSON formatting; fixed and rerun below"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=2",
+      "exitCode": 0,
+      "files": 38,
+      "tests": 542
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/probe-http.test.ts tests/unit/storage/s3-probes.test.ts tests/unit/storage/s3.test.ts --project integration tests/integration/storage/probes.test.ts tests/integration/storage/s3-probe-protocol.test.ts tests/integration/storage/s3.test.ts tests/integration/storage/settings.test.ts tests/integration/runtime/prestart.test.ts",
+      "exitCode": 0,
+      "files": 8,
+      "tests": 117
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 2,
+      "result": "15 baseline errors in 5 existing files",
+      "evidence": "typecheck-failed.log"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 2,
+      "result": "Runtime compilation fails on two baseline verify-media errors",
+      "evidence": "build-failed.log"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --incremental false --project /tmp/ariso-157-baseline.IydoNR/tsconfig.json",
+      "exitCode": 2,
+      "result": "Unmodified origin/main archive reproduces all 15 existing errors",
+      "evidence": "baseline-typecheck.log"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "Final full check after formatting generated migration JSON"
+    }
+  ],
+  "notRun": {
+    "pnpm run test:integration": "Full suite requires successful build; focused tests ran independently",
+    "pnpm run test:browser": "Build prerequisite unmet; no browser downloaded or taskspace created",
+    "release": "No release/image/container/deployment requested"
+  },
+  "audit": {
+    "conclusion": "Code review passed after both Required findings and migration fixture assertions fixed",
+    "independentTests": 66,
+    "fullDelivery": "Blocked by baseline type/build errors"
+  },
+  "redEvidence": [
+    "Missing probe-runtime module before implementation",
+    "Unknown version XML and 201/204 failed before fix",
+    "Original HTTP returned 500 instead of 502/504 (2 failed tests)",
+    "prestart table list lacked storage_probes before correction"
+  ],
+  "liveEvidence": "live/checks.json"
+}

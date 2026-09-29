@@ -1,3 +1,4 @@
+import { startStorageProbeRuntime } from '../storage/probe-runtime.ts';
 import { verifyStorageSecrets } from '../storage/settings.ts';
 import { createSecretCrypto } from '../runtime/crypto.ts';
 import { join, resolve } from 'node:path';
@@ -49,6 +50,11 @@ function initializeServerRuntime() {
       db: connection.db.$client,
       logger: createRuntimeLogger('analytics', config.logLevel),
     });
+    const storageProbes = startStorageProbeRuntime({
+      db: connection.db,
+      secretCrypto: createSecretCrypto(config.encryptionKey),
+      logger: createRuntimeLogger('storage.probes', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -56,6 +62,7 @@ function initializeServerRuntime() {
       setup,
       mediaQueue,
       uploads,
+      storageProbes,
       analytics,
       get stopping() {
         return stopping !== undefined;
@@ -64,6 +71,7 @@ function initializeServerRuntime() {
         return (stopping ??= uploads
           .stop()
           .finally(() => mediaQueue.stop())
+          .finally(() => storageProbes.stop())
           .finally(() => {
             try {
               if (!analytics.stop()) {

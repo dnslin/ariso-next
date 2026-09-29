@@ -70,6 +70,8 @@ it('管理路由拒绝匿名、上传 Token 与跨来源写入', async () => {
     ['/api/storages', 'POST'],
     ['/api/storages/missing', 'GET'],
     ['/api/storages/missing', 'PATCH'],
+    ['/api/storages/missing/test', 'POST'],
+    ['/api/storages/missing/probes/missing/retry-cleanup', 'POST'],
     ['/api/settings/storage', 'GET'],
     ['/api/settings/storage', 'PATCH'],
   ]) {
@@ -372,4 +374,74 @@ it('停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原�
       .prepare('SELECT default_storage_id FROM storage_settings')
       .get(),
   ).toEqual({ default_storage_id: null });
+});
+
+it('探测 HTTP 拒绝伪造通过、过期 revision、错误存储类型与跨来源重试', async () => {
+  const localResponse = await request('/api/storages', 'POST', {
+    type: 'local',
+    name: 'probe local',
+    localPath: 'probe-local',
+  });
+  const local = await localResponse.json();
+  expect(
+    (await request(`/api/storages/${local.id}/test`, 'POST', { revision: 1 }))
+      .status,
+  ).toBe(400);
+  expect(
+    (
+      await request('/api/storages/missing/test', 'POST', {
+        revision: 1,
+        passed: true,
+      })
+    ).status,
+  ).toBe(400);
+  expect(
+    (await request('/api/storages/missing/test', 'POST', { revision: 1 }))
+      .status,
+  ).toBe(404);
+  expect(
+    (
+      await request(
+        '/api/storages/missing/probes/missing/retry-cleanup',
+        'POST',
+        {},
+        { cookie, origin: 'https://other.example' },
+      )
+    ).status,
+  ).toBe(403);
+  const created = await request('/api/storages', 'POST', {
+    type: 's3',
+    name: 'stale probe',
+    endpoint: 'http://127.0.0.1:1',
+    region: 'auto',
+    bucket: 'test',
+    forcePathStyle: true,
+    accessKey: 'key',
+    secretKey: 'secret',
+  });
+  const storage = await created.json();
+  expect(
+    (await request(`/api/storages/${storage.id}/test`, 'POST', { revision: 2 }))
+      .status,
+  ).toBe(409);
+  const failed = await request(`/api/storages/${storage.id}/test`, 'POST', {
+    revision: 1,
+  });
+  expect(failed.status).toBe(200);
+  const report = await failed.json();
+  expect(report).toMatchObject({ passed: false, cleanupPending: true });
+  expect(report.stages[0].status).toBe('failed');
+  const detail = await (await request(`/api/storages/${storage.id}`)).json();
+  expect(detail.connectionStatus).toBe('failed');
+  expect(detail.probes).toHaveLength(1);
+  expect(detail.probes[0].id).toBe(report.probeId);
+  const retry = await request(
+    `/api/storages/${storage.id}/probes/${report.probeId}/retry-cleanup`,
+    'POST',
+  );
+  expect(retry.status).toBe(502);
+  expect(await retry.json()).toMatchObject({
+    code: 'STORAGE_OPERATION_FAILED',
+  });
+  expect(JSON.stringify(detail)).not.toContain('secretKeyEncrypted');
 });
