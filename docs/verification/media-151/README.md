@@ -61,3 +61,7 @@ git diff --check
 全量集成另发现 `tests/experiments/analytics-scale/fixture.ts:48` 使用无列名的七值 INSERT，而 `storage_configs` 已有 22 列。已核对 `origin/main` 中同样存在该语句，本次没有修改 storage schema。该基线夹具亦未修复。
 
 项目规则要求范围外问题未经批准不修改；本轮已提出具体修复请求，当前尚未收到授权。这些文件未改动。PR 保持草稿，任务不标完成；需先获准修复或由基线修复合入，然后重新构建并完成真实 HTTP 与全量集成验证。不能将本次模块测试通过等同于完整交付通过。
+
+## PR 与远端检查
+
+[PR #212](https://github.com/dnslin/ariso-next/pull/212) 已创建为草稿，分支 `codex/151-watermark-assets`。代码提交 `f8e1225`。实际执行 `gh pr view 212 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,baseRefName,mergeStateStatus,statusCheckRollup`，回读 OPEN / isDraft=true / CLEAN / statusCheckRollup=[]；`gh pr checks 212 --repo dnslin/ariso-next` 返回 “no checks reported”。当前没有远端检查，不能记作 CI 通过；以以上本地证据和未解除阻塞为准。未合并、关闭 Issue、发布、部署或删除分支/worktree。
