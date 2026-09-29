@@ -1,13 +1,11 @@
+import { parseLibraryQuery } from '../../../src/server/library/query-schema.ts';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  parseLibraryQuery,
-  readLibraryPage,
-} from '../../../src/server/library/queries.ts';
+import { readLibraryPage } from '../../../src/server/library/queries.ts';
 import {
   albums,
   albumImages,
@@ -238,9 +236,9 @@ it('counts each image once despite multiple album and tag memberships', () => {
 
 it('rejects unsupported, duplicate, malformed, and mismatched query cursors', () => {
   for (const query of [
-    'q=test',
-    'pageSize=20',
-    'sort=uploaded_asc',
+    'q=test&q=other',
+    'pageSize=21',
+    'sort=unknown',
     'cursor=',
     'cursor=x&cursor=y',
     'cursor=garbage',
@@ -343,6 +341,94 @@ describe('owner-only list HTTP', () => {
         nextCursor: null,
         hasMore: false,
       });
+      for (const headers of [
+        {},
+        { authorization: `Bearer ${token}` },
+        { cookie: `ariso.share_token=${token}` },
+      ] as Record<string, string>[]) {
+        for (const [path, method] of [
+          ['http-private-failed/neighbors', 'GET'],
+          ['status', 'POST'],
+        ]) {
+          const denied = await fetch(`${origin}/api/images/${path}`, {
+            method,
+            headers: { ...headers, origin, 'content-type': 'application/json' },
+            ...(method === 'POST'
+              ? { body: JSON.stringify({ ids: ['http-private-failed'] }) }
+              : {}),
+          });
+          expect(denied.status).toBe(401);
+          expect(denied.headers.get('cache-control')).toBe('no-store');
+        }
+      }
+      const page = await fetch(
+        `${origin}/api/images?page=1&pageSize=20&q=${encodeURIComponent('私有')}&status=failed&visibility=private&format=png`,
+        { headers: { cookie } },
+      );
+      expect(await page.json()).toMatchObject({
+        total: 1,
+        page: 1,
+        pageSize: 20,
+        items: [{ id: 'http-private-failed' }],
+      });
+      for (const [path, status, body] of [
+        ['http-private-failed/neighbors', 200, { previous: null, next: null }],
+        ['absent/neighbors', 404, { code: 'IMAGE_NOT_FOUND' }],
+        [
+          'http-private-failed/neighbors?q=other',
+          409,
+          { code: 'LIBRARY_OUTSIDE_QUERY' },
+        ],
+        ['?albumId=deleted', 409, { code: 'LIBRARY_STALE_REFERENCE' }],
+        ['?q=%00not-present', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        ['?__proto__=ignored', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        ['?scope=trash&format=png', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+      ] as const) {
+        const result = await fetch(`${origin}/api/images/${path}`, {
+          headers: { cookie },
+          redirect: 'follow',
+        });
+        expect(result.status).toBe(status);
+        expect(result.headers.get('cache-control')).toBe('no-store');
+        expect(await result.json()).toMatchObject(body);
+      }
+      const poll = (body: string, requestOrigin = origin) =>
+        fetch(`${origin}/api/images/status`, {
+          method: 'POST',
+          headers: {
+            cookie,
+            origin: requestOrigin,
+            'content-type': 'application/json',
+          },
+          body,
+        });
+      const status = await poll(
+        JSON.stringify({
+          ids: ['http-private-failed', 'gone', 'http-private-failed'],
+        }),
+      );
+      expect(status.status).toBe(200);
+      expect(status.headers.get('cache-control')).toBe('no-store');
+      expect(await status.json()).toMatchObject({
+        items: [{ id: 'http-private-failed', processingStatus: 'failed' }],
+        missingIds: ['gone'],
+      });
+      expect((await poll('{')).status).toBe(400);
+      expect(
+        (
+          await poll(
+            JSON.stringify({ ids: Array(81).fill('http-private-failed') }),
+          )
+        ).status,
+      ).toBe(400);
+      expect(
+        (
+          await poll(
+            JSON.stringify({ ids: ['http-private-failed'] }),
+            'https://unrelated.example',
+          )
+        ).status,
+      ).toBe(403);
       expect(
         (
           await fetch(`${origin}/api/images?cursor=bad`, {
