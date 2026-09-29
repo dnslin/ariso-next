@@ -24,7 +24,7 @@
 
 方案依据：[SQLite 滚动窗口查询](https://www.sqlite.org/rowvalue.html)、[React Aria CalendarDate](https://react-aria.adobe.com/internationalized/date/CalendarDate)，同时读取已安装 Drizzle 与日期库类型。排序字段与 ID 使用匹配升降序的边界谓词，避免把混合顺序错误地写成单一元组比较。
 
-## 实际验证与剩余阻塞
+## 实际验证
 
 环境：macOS arm64，Node 24.18.1，pnpm 11.19.0；真实工具由现有 PATH 提供。所有测试和测量使用独立临时数据，未访问用户预览数据。
 
@@ -35,17 +35,29 @@
 | `pnpm run lint`                                                                                                                                  | 通过                                                                                                                                                   |
 | `pnpm run test:unit`                                                                                                                             | 最终37文件 / 562项通过，见[输出](./unit.txt)                                                                                                           |
 | `pnpm exec vitest run --project unit tests/unit/library/query.test.ts`                                                                           | 最终30项通过；两项审计回归先失败、修复后通过，见[失败证据](./schema-regression-before.txt)                                                             |
-| `pnpm run typecheck`                                                                                                                             | 失败；当前与未改基线均有15处相同的媒体/旧夹具类型错误，无本次查询文件错误，见[当前](./typecheck-failure.txt)及[基线](./baseline-typecheck-failure.txt) |
-| `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json`                                                                          | 本次修复完测量脚本类型后复验，剩余15处与基线相同                                                                                                       |
-| `pnpm run build`                                                                                                                                 | 失败；runtime构建在verify-media.ts两处localPath类型报错，见[输出](./build-failure.txt)                                                                 |
+| `pnpm run typecheck`                                                                                                                             | 通过；授权修复前的15处基线错误见[当前失败](./typecheck-failure.txt)及[基线失败](./baseline-typecheck-failure.txt)，最终见[输出](./typecheck-final.txt) |
+| `pnpm exec vitest run --project integration tests/integration/library/base.test.ts`                                                              | 5项通过，含真实HTTP鉴权、筛选、错误、邻居和状态批读，见[输出](./http-final.txt)                                                                        |
+| `pnpm exec vitest run --project integration tests/integration/library/query.test.ts`                                                             | 27项通过，见[输出](./query-focused.txt)                                                                                                                |
+| `pnpm run build`                                                                                                                                 | 通过；包含原始查询入口的最终构建见[输出](./build-final.txt)，初次失败见[历史输出](./build-failure.txt)                                                 |
 | `node --experimental-transform-types tests/experiments/library/production-run.ts --report docs/verification/library-172/sqlite-local-arm64.json` | 13类十万条生产SQLite查询完成，见[原始报告](./sqlite-local-arm64.json)                                                                                  |
 | `node docs/tasks/check.mjs`                                                                                                                      | 120任务 / 298需求通过                                                                                                                                  |
 | `node docs/tasks/check.mjs --self-test`                                                                                                          | 5个拒绝场景通过                                                                                                                                        |
 | `git diff --check`                                                                                                                               | 通过                                                                                                                                                   |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                       | 85文件 / 714项通过；1文件 / 1项失败：主线 analytics-scale 存储夹具未适配表扩展，见[结果](./integration-before-fixture-fix.txt)                         |
+| `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-172 pnpm run test:browser`                                            | 完整回归通过，见[运行报告](./browser-runner.json)、[图库报告](./browser-library.json)、[组件夹具报告](./browser-ui-runner.json)                        |
+| `node --experimental-transform-types test-results/library-172/browser-query-boundary.mts`                                                        | 最终构建的 Ego 实际请求补验通过：匿名401、登录200、正常分页200、4类非法查询400、不存在邻居404，均no-store，见[报告](./browser-query-boundary.json)     |
 
-**构建与集成仍受阻，T-LIB-03 尚未完成。** 从未修改的 `00979f5` 导出源码到独立临时目录，直接执行 Node24 `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.runtime.json` 复现相同构建错误；随后 `node node_modules/next/dist/bin/next typegen` 与 `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` 复现全部15处类型错误。未改基线与当前失败文件集合均为 verify-media.ts、analytics/usage.test.ts、media/format-recovery.test.ts、media/formats.test.ts、media/svg.test.ts。
+**首次交付曾受基线类型错误阻塞，现已获准修复。** 从未修改的 `00979f5` 导出源码到独立临时目录，直接执行 Node24 `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.runtime.json` 复现相同构建错误；随后 `node node_modules/next/dist/bin/next typegen` 与 `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` 复现全部15处类型错误。未改基线与当前失败文件集合均为 verify-media.ts、analytics/usage.test.ts、media/format-recovery.test.ts、media/formats.test.ts、media/svg.test.ts。
 
-按 AGENTS.md 的范围外修改规则，已请求用户授权最小修复本地存储返回类型及旧格式夹具。授权尚未收到，没有擅自修改这些文件、跳过构建或削弱检查。按执行约定，构建完成前未运行 `pnpm run test:integration` 或 `pnpm run test:browser`。新增SQLite组合与HTTP权限测试已编写，仍待实际执行；未将测试代码存在记作通过。Ego Lite 也未启动本轮浏览器验证。无UI变更，不以缺少Figma截图作为额外阻塞。
+用户于 2026-09-29 明确回复“批准修复”。本次仅将上述4处本地媒体调用改用已有 `resolveLocalUploadStorage`，并使 analytics 旧夹具符合 `acceptSession` 的 PNG 识别类型；没有增加类型断言、兼容层或修改测试断言。修复后类型检查和构建通过，随后执行集成及浏览器检查。原始失败记录保留，不能当作最终状态。
+
+HTTP 回归首次暴露另一处真实问题：解析器已拒绝 `__proto__`，但 Next 16.3.5 在创建 Route Handler Request 前的 `normalizeCdnUrl`/查询对象转换中丢弃该键（以及 `nxtP*` 内部前缀参数），导致接口返回200。保留[修复前失败](./http-regression-before.txt)，采用官方支持的 `skipProxyUrlNormalize`，在仅匹配列表和邻居 GET 的 `src/proxy.ts` 复用同一解析器；有效请求仍进入原有所有者鉴权和查询，无效输入直接400/no-store，不读取业务数据。没有修改依赖或建立第二套 schema。原始/编码 `__proto__`、框架前缀和邻居HTTP回归均通过。依据为已安装Next源码及[官方原始URL选项](https://nextjs.org/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags)。
+
+**剩余阻塞：1项主线旧夹具失败，待单独授权修复。** 全量普通集成与真实媒体工具共715项，714项通过。`tests/experiments/analytics-scale/fixture.ts:48` 使用没有字段名的7值 INSERT，而 storage_configs 已扩展为22列，种样本时即失败。该夹具、storage schema 与迁移相对基线 `00979f5` 均无差异，与本次图库实现无关。独立agent只读定位后提出唯一修复：为这条 INSERT 列出原有7个字段名，保留数据及全部断言。截至本轮记录，已向用户单独请求批准，尚未修改该文件；不能以其余714项通过代替全量通过。
+
+浏览器使用现有 Ego Lite / Chromium 152、同一 TaskSpace 6 和独立临时数据。完整回归覆盖桌面1440、手机390、图库360/390/430/768/1440浅深色及既有加载/空/错误/重试、键盘焦点、相册、上传、轮询、工作区连续性；截图与原始详细结果保存在本工作区 `test-results/browser-172/`。本次没有改变界面，以上属于功能回归，不冒充新的Figma设计验收。完整浏览器运行在入口proxy修复前已复制的构建上；修复后的最终构建另用同一Ego空间和新临时数据库完成原始查询入口补验，并通过全部真实HTTP集成断言。临时补验脚本曾因字符串换行生成错误而无法解析，修正脚本后实际请求均通过；该脚本错误不是产品失败。
+
+授权类型修复后的 `pnpm run test:unit` 仍为37文件562项通过。最终原始查询入口代码通过format/lint/typecheck/build；打包命令退出0，但追踪器输出未安装的其他平台可选原生包诊断，已在构建输出保留不同诊断项，未将其称为无警告构建。完整集成中的无密钥、无数据库独立生产构建回归通过。
 
 ## 查询测量
 
@@ -57,16 +69,16 @@
 
 ## 独立代码审计
 
-独立agent使用 `using-agent-skills` 和 `code-review-and-quality`，实际读取需求、测试、实现、调用路径及生产SQL计划。发现两项必改缺陷：NUL使SQLite LIKE截断并扩大匹配；`__proto__` 参数在普通对象赋值时被静默忽略。单元回归先取得2失败/28通过，再分别以精确NUL拒绝和 `Object.fromEntries` 修复，最终30项通过；HTTP层同样补了400回归，待构建后执行。
+独立agent使用 `using-agent-skills` 和 `code-review-and-quality`，实际读取需求、测试、实现、调用路径及生产SQL计划。发现两项必改缺陷：NUL使SQLite LIKE截断并扩大匹配；`__proto__` 参数在普通对象赋值时被静默忽略。单元回归先取得2失败/28通过，再分别以精确NUL拒绝和 `Object.fromEntries` 修复，最终30项通过；HTTP层同样补了400回归，实际执行发现框架归一化问题并进一步修复，见上文。
 
-复审结论：**当前代码无剩余 Critical / Required 问题**。审计者在Node24.18.1独立重跑30项单测并执行 `git diff --check`。确认默认图库调用仍消费同一响应字段，无兼容层；短只读事务、范围绑定、关系失效、四种排序与固定相册顺序、邻居边界、批读上限和所有者权限均符合本切片。审计通过不能替代未完成的类型、构建、集成与浏览器检查。
+复审结论：**当前代码无剩余 Critical / Required 问题**。审计者在Node24.18.1独立重跑30项单测并执行 `git diff --check`。确认默认图库调用仍消费同一响应字段，无兼容层；短只读事务、范围绑定、关系失效、四种排序与固定相册顺序、邻居边界、批读上限和所有者权限均符合本切片。后续独立复审确认5处授权类型修复与原始请求校验均无剩余阻断项，未削弱测试断言；最终交付仍以本页实际验证结果为准。
 
 设计审计不适用：没有产品页面、公共布局、样式或交互变更。后续T-LIB-04/07的真实UI仍需独立Figma对照和用户人工验收。
 
 ## PR 与发布边界
 
-已提交并推送 `codex/library-query-172`，实现提交 `6b60968`，证据提交 `18106f0`，创建[草稿 PR #210](https://github.com/dnslin/ariso-next/pull/210)。由于类型与构建失败、必要集成和浏览器证据缺失，保留草稿，不将任务步骤标为完成。
+分支 `codex/library-query-172` 对应[草稿 PR #210](https://github.com/dnslin/ariso-next/pull/210)。初次提交为 `6b60968`；授权类型修复提交 `90d81ff`，原始查询入口修复提交 `41f9dcf`。当前类型、构建和浏览器阻塞已解除，但统计夹具1项集成失败尚未获准修复，因此PR仍保持草稿，T-LIB-03步骤不勾选为完成。
 
-实际执行 `gh pr view 210 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup`、提交的 `check-runs` API 和 `gh run list --branch codex/library-query-172`：OPEN、草稿、MERGEABLE，检查与运行列表为空。当前没有远端检查，不记为CI通过，也不等待不存在的PR工作流。
+通过 `gh pr view 210 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup`、提交的 `check-runs` API 和 `gh run list --branch codex/library-query-172` 核对实际远端状态。当前没有远端检查，不记为CI通过，也不等待不存在的PR工作流。
 
 本次没有创建Release、发布镜像、部署、合并PR、主动关闭Issue或删除分支/worktree。双架构镜像与真实容器按既有Release流程执行，本次未执行，不构成本地新增门槛。

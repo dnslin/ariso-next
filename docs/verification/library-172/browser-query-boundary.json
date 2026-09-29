@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "taskSpaceId": 6,
+  "checks": {
+    "anonymous": 401,
+    "login": 200,
+    "responses": [
+      {
+        "path": "/api/images?page=1&pageSize=20",
+        "status": 200,
+        "cacheControl": "no-store",
+        "body": {
+          "items": [],
+          "total": 0,
+          "hasMore": false,
+          "nextCursor": null,
+          "page": 1,
+          "pageSize": 20
+        }
+      },
+      {
+        "path": "/api/images?__proto__=ignored",
+        "status": 400,
+        "cacheControl": "no-store",
+        "body": {
+          "code": "LIBRARY_INVALID_QUERY",
+          "message": "Unrecognized key: \"__proto__\""
+        }
+      },
+      {
+        "path": "/api/images?%5F%5Fproto%5F%5F=ignored",
+        "status": 400,
+        "cacheControl": "no-store",
+        "body": {
+          "code": "LIBRARY_INVALID_QUERY",
+          "message": "Unrecognized key: \"__proto__\""
+        }
+      },
+      {
+        "path": "/api/images?nxtPunknown=ignored",
+        "status": 400,
+        "cacheControl": "no-store",
+        "body": {
+          "code": "LIBRARY_INVALID_QUERY",
+          "message": "Unrecognized key: \"nxtPunknown\""
+        }
+      },
+      {
+        "path": "/api/images/missing/neighbors?__proto__=ignored",
+        "status": 400,
+        "cacheControl": "no-store",
+        "body": {
+          "code": "LIBRARY_INVALID_QUERY",
+          "message": "Unrecognized key: \"__proto__\""
+        }
+      },
+      {
+        "path": "/api/images/missing/neighbors",
+        "status": 404,
+        "cacheControl": "no-store",
+        "body": {
+          "code": "IMAGE_NOT_FOUND",
+          "message": "图片不存在"
+        }
+      }
+    ]
+  }
+}
