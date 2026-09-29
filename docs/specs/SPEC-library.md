@@ -1,7 +1,7 @@
 # Spec: library — 图库查询、详情、批量操作与回收站
 
 - 模块 ID：`library`。
-- 状态：产品行为已确认，已按 2026-09-17 用户意见修订；未实现，未安装依赖。
+- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，筛选界面、选择和查看器仍由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[delivery](./SPEC-delivery.md)、[collections](./SPEC-collections.md)的已确认契约。upload 提供入口来源，图库不反向依赖其队列实现。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10、13.4、14、15、16、18、22、23、26.8/26.9/26.11/26.13；[覆盖表](../tasks/coverage.md)。
@@ -19,7 +19,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 
 ## 2. 工程与库能力依据
 
-目前只有 runtime，没有图库路由、业务表或组件。沿用现有 Node/Next、Drizzle、Zod、Pino；PRD 指定的 HeroUI、TanStack Query、nuqs、Yet Another React Lightbox 尚未安装。实施时固定版本并验证 React/Next 兼容性，不用文档示例版本替代实际锁文件。
+当前已实现基础图库、详情和回收恢复。生产沿用 Node/Next、Drizzle、Zod、Pino、HeroUI 和 TanStack Query；nuqs、Yet Another React Lightbox 已在 EV-LIBRARY-01 隔离实验验证，尚未接入完整产品页面。实际版本以所属 package.json 和锁文件为准。
 
 - [TanStack Query 分页](https://tanstack.com/query/latest/docs/framework/react/guides/paginated-queries)用于请求缓存和加载状态。筛选/排序/范围/页码必须进入 query key；切网格与瀑布流不改变数据 key。新查询加载时若暂显旧数据，必须禁用旧数据的选择和操作，不能把旧图当新查询结果。
 - [nuqs 参数选项](https://nuqs.dev/docs/options)用于解析 URL 和浏览器历史。搜索输入先本地编辑，提交搜索、应用筛选和翻页才写一条历史；后退恢复已应用查询，不为每个输入字符创建历史记录。
@@ -193,7 +193,7 @@ Markdown/HTML 的 alt 使用 displayName，按目标语法转义中括号、引�
 
 | 所有者入口（草案）               | 职责                                                                                               |
 | -------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `GET /api/images`                | scope=normal/trash、规范化查询、分页或游标结果；相册范围通过 albumId 表达                          |
+| `GET /api/images`                | scope=normal/album/trash、规范化查询、分页或游标结果；album 范围必须有 albumId                     |
 | `GET /api/images/{id}`           | 详情、版本、关系、任务摘要及可操作原因；回收状态也返回管理记录；内容仅由独立所有者管理预览路由提供 |
 | `GET /api/images/{id}/metadata`  | 完整分组结果及读取状态；失败保留旧数据标记                                                         |
 | `PATCH /api/images/{id}`         | displayName/visibility；调用 media 的字段更新函数                                                  |

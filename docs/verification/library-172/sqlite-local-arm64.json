@@ -1,0 +1,3219 @@
+{
+  "experiment": "T-LIB-03 production SQLite query measurement",
+  "recordedAt": "2026-09-29T10:00:09.668Z",
+  "environment": {
+    "node": "v24.18.1",
+    "configuredPackageManager": "pnpm@11.19.0",
+    "betterSqlite3": "13.0.3",
+    "sqlite": "3.53.4",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": {
+      "model": "Apple M4",
+      "logicalCores": 10
+    },
+    "memory": {
+      "totalBytes": 17179869184,
+      "freeBytesAtStart": 419397632
+    },
+    "disk": {
+      "temporaryDatabasePath": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-library-production-scale-uumKFA/library.db",
+      "filesystemType": 26,
+      "capacityBytes": 245107195904,
+      "availableBytes": 129739583488,
+      "databaseBytes": 176365568,
+      "medium": "Not detected; filesystem capacity is not a disk throughput measurement"
+    },
+    "sqlitePragmas": {
+      "journal_mode": "wal",
+      "page_size": 4096,
+      "cache_size": -16000,
+      "mmap_size": 0,
+      "synchronous": 1
+    }
+  },
+  "distribution": {
+    "images": 100000,
+    "albums": 40,
+    "tags": 128,
+    "albumRelations": 150000,
+    "tagRelations": 249996,
+    "versions": 169998,
+    "objects": 169998,
+    "jobs": 109998,
+    "state": [
+      {
+        "processing_status": "failed",
+        "trashed": 0,
+        "count": 9604
+      },
+      {
+        "processing_status": "failed",
+        "trashed": 1,
+        "count": 400
+      },
+      {
+        "processing_status": "pending",
+        "trashed": 0,
+        "count": 9597
+      },
+      {
+        "processing_status": "pending",
+        "trashed": 1,
+        "count": 400
+      },
+      {
+        "processing_status": "processing",
+        "trashed": 0,
+        "count": 9399
+      },
+      {
+        "processing_status": "processing",
+        "trashed": 1,
+        "count": 602
+      },
+      {
+        "processing_status": "ready",
+        "trashed": 0,
+        "count": 66400
+      },
+      {
+        "processing_status": "ready",
+        "trashed": 1,
+        "count": 3598
+      }
+    ],
+    "versionKinds": [
+      {
+        "kind": "original",
+        "count": 100000
+      },
+      {
+        "kind": "thumbnail",
+        "count": 69998
+      }
+    ],
+    "jobStates": [
+      {
+        "status": "failed",
+        "count": 20002
+      },
+      {
+        "status": "queued",
+        "count": 9997
+      },
+      {
+        "status": "running",
+        "count": 10001
+      },
+      {
+        "status": "succeeded",
+        "count": 69998
+      }
+    ],
+    "topAlbums": [
+      {
+        "album_id": "album-0",
+        "count": 15000
+      },
+      {
+        "album_id": "album-1",
+        "count": 7500
+      },
+      {
+        "album_id": "album-13",
+        "count": 7500
+      },
+      {
+        "album_id": "album-17",
+        "count": 7500
+      },
+      {
+        "album_id": "album-21",
+        "count": 7500
+      },
+      {
+        "album_id": "album-29",
+        "count": 7500
+      },
+      {
+        "album_id": "album-33",
+        "count": 7500
+      },
+      {
+        "album_id": "album-37",
+        "count": 7500
+      }
+    ],
+    "topTags": [
+      {
+        "tag_id": "tag-1",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-3",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-5",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-7",
+        "count": 12500
+      },
+      {
+        "tag_id": "tag-2",
+        "count": 8334
+      },
+      {
+        "tag_id": "tag-0",
+        "count": 8333
+      },
+      {
+        "tag_id": "tag-4",
+        "count": 8333
+      },
+      {
+        "tag_id": "tag-6",
+        "count": 8333
+      }
+    ],
+    "ties": {
+      "uploadRowsPerTimestamp": 8,
+      "sizeBuckets": 2000,
+      "bytesRange": [1024, 2048000]
+    },
+    "generator": "productionImage(i), i=0..99999; 0–3 albums and 0–5 tags per image, hot album and tags; one original per image, ready images have thumbnail; each image has initial job, every seventh ready image has failed reprocessing job. Synthetic, not measured user density."
+  },
+  "schemaBoundary": "Only committed runtime migrations and production tables/indexes; queries call the actual readLibraryPage implementation.",
+  "measurementMethod": {
+    "rows": 100000,
+    "warmRuns": 25,
+    "includes": "Production short read transaction, reference checks, count, page, saved versions and job summaries; cursor preparation excluded from timed samples.",
+    "firstRead": "First query on a fresh SQLite connection; SQLite page cache is new, OS cache is already warm from fixture generation/earlier scenarios. NOT an OS cold-cache benchmark. First query includes SQL logger capture overhead.",
+    "p95": "Nearest rank ceil(25 × .95), milliseconds",
+    "limitations": [
+      "Synthetic metadata/relationship density, no media bytes or S3",
+      "Single-process sequential reads, no concurrent writes or OS cache eviction",
+      "No HTTP/network/browser latency; local measurements do not establish container/deployment latency"
+    ]
+  },
+  "measurements": [
+    {
+      "name": "uploaded_desc",
+      "params": "sort=uploaded_desc",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-099992",
+      "lastId": "image-099953",
+      "firstNewConnectionMs": 61.95600000000013,
+      "warmP95Ms": 54.300792,
+      "warmSamplesMs": [
+        51.36687499999971, 48.83070899999984, 49.384375000000546,
+        46.3163340000001, 48.79258299999947, 49.870750000000044,
+        53.59541699999954, 49.48499999999967, 48.317041000000245,
+        46.554541999999856, 50.012291000000005, 46.68683400000009,
+        49.46387500000037, 48.39912499999991, 47.16375000000062,
+        50.94683299999997, 47.46720800000003, 47.38654199999928,
+        45.94291700000031, 47.81220899999971, 61.65229199999976, 54.300792,
+        50.60387499999979, 47.74108299999989, 50.75929199999973
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 43,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099992",
+            "image-099993",
+            "image-099994",
+            "image-099995",
+            "image-099996",
+            "image-099997",
+            "image-099998",
+            "image-099999",
+            "image-099984",
+            "image-099985",
+            "image-099986",
+            "image-099987",
+            "image-099988",
+            "image-099989",
+            "image-099990",
+            "image-099991",
+            "image-099976",
+            "image-099977",
+            "image-099978",
+            "image-099979",
+            "image-099981",
+            "image-099982",
+            "image-099983",
+            "image-099968",
+            "image-099969",
+            "image-099970",
+            "image-099971",
+            "image-099972",
+            "image-099973",
+            "image-099974",
+            "image-099975",
+            "image-099961",
+            "image-099962",
+            "image-099963",
+            "image-099964",
+            "image-099965",
+            "image-099966",
+            "image-099967",
+            "image-099952",
+            "image-099953",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099992",
+            "image-099993",
+            "image-099994",
+            "image-099995",
+            "image-099996",
+            "image-099997",
+            "image-099998",
+            "image-099999",
+            "image-099984",
+            "image-099985",
+            "image-099986",
+            "image-099987",
+            "image-099988",
+            "image-099989",
+            "image-099990",
+            "image-099991",
+            "image-099976",
+            "image-099977",
+            "image-099978",
+            "image-099979",
+            "image-099981",
+            "image-099982",
+            "image-099983",
+            "image-099968",
+            "image-099969",
+            "image-099970",
+            "image-099971",
+            "image-099972",
+            "image-099973",
+            "image-099974",
+            "image-099975",
+            "image-099961",
+            "image-099962",
+            "image-099963",
+            "image-099964",
+            "image-099965",
+            "image-099966",
+            "image-099967",
+            "image-099952",
+            "image-099953",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uploaded_asc",
+      "params": "sort=uploaded_asc",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-000042",
+      "firstNewConnectionMs": 16.92200000000048,
+      "warmP95Ms": 15.811208000000079,
+      "warmSamplesMs": [
+        13.365000000000691, 12.718250000000808, 12.825958999999784,
+        14.995750000000044, 13.92754100000002, 13.948582999999417,
+        14.004917000000205, 14.043749999999818, 13.818041000000449,
+        13.786291999999776, 14.600832999999511, 12.959583999999268,
+        12.695958000000246, 14.004292000000532, 12.925167000000329,
+        12.737291999999798, 12.92804200000046, 12.39416700000038,
+        15.811208000000079, 16.55529200000001, 13.696332999999868,
+        12.57183299999997, 12.967792000000372, 12.792082999999366,
+        12.345041999999921
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) order by \"media_images\".\"created_at\" asc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 43,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-000001",
+            "image-000002",
+            "image-000003",
+            "image-000004",
+            "image-000005",
+            "image-000006",
+            "image-000007",
+            "image-000008",
+            "image-000009",
+            "image-000010",
+            "image-000011",
+            "image-000012",
+            "image-000013",
+            "image-000014",
+            "image-000015",
+            "image-000016",
+            "image-000017",
+            "image-000018",
+            "image-000019",
+            "image-000021",
+            "image-000022",
+            "image-000023",
+            "image-000024",
+            "image-000025",
+            "image-000026",
+            "image-000027",
+            "image-000028",
+            "image-000029",
+            "image-000030",
+            "image-000031",
+            "image-000032",
+            "image-000033",
+            "image-000034",
+            "image-000035",
+            "image-000036",
+            "image-000037",
+            "image-000038",
+            "image-000039",
+            "image-000041",
+            "image-000042",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-000001",
+            "image-000002",
+            "image-000003",
+            "image-000004",
+            "image-000005",
+            "image-000006",
+            "image-000007",
+            "image-000008",
+            "image-000009",
+            "image-000010",
+            "image-000011",
+            "image-000012",
+            "image-000013",
+            "image-000014",
+            "image-000015",
+            "image-000016",
+            "image-000017",
+            "image-000018",
+            "image-000019",
+            "image-000021",
+            "image-000022",
+            "image-000023",
+            "image-000024",
+            "image-000025",
+            "image-000026",
+            "image-000027",
+            "image-000028",
+            "image-000029",
+            "image-000030",
+            "image-000031",
+            "image-000032",
+            "image-000033",
+            "image-000034",
+            "image-000035",
+            "image-000036",
+            "image-000037",
+            "image-000038",
+            "image-000039",
+            "image-000041",
+            "image-000042",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "size_desc",
+      "params": "sort=size_desc",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-001999",
+      "lastId": "image-079999",
+      "firstNewConnectionMs": 16.61316700000043,
+      "warmP95Ms": 16.56266599999981,
+      "warmSamplesMs": [
+        13.655291999999463, 12.904125000000931, 16.56266599999981,
+        13.118791999999303, 13.055374999999913, 13.0971669999999,
+        13.110500000000684, 13.878042000000278, 13.206707999999708,
+        13.507417000000714, 12.806958999999551, 13.46416599999975,
+        12.734042000000045, 13.22766700000102, 12.822250000001077,
+        12.127457999999024, 15.761625000001004, 14.00604100000055,
+        14.654207999999926, 17.808875000000626, 13.679792000000816,
+        13.62433400000009, 12.761500000000524, 12.873665999999503,
+        12.677915999998731
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"byte_size\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) order by \"media_images\".\"byte_size\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 43,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-001999",
+            "image-003999",
+            "image-005999",
+            "image-007999",
+            "image-009999",
+            "image-011999",
+            "image-013999",
+            "image-015999",
+            "image-017999",
+            "image-019999",
+            "image-021999",
+            "image-023999",
+            "image-025999",
+            "image-027999",
+            "image-029999",
+            "image-031999",
+            "image-033999",
+            "image-035999",
+            "image-037999",
+            "image-039999",
+            "image-041999",
+            "image-043999",
+            "image-045999",
+            "image-047999",
+            "image-049999",
+            "image-051999",
+            "image-053999",
+            "image-055999",
+            "image-057999",
+            "image-059999",
+            "image-061999",
+            "image-063999",
+            "image-065999",
+            "image-067999",
+            "image-069999",
+            "image-071999",
+            "image-073999",
+            "image-075999",
+            "image-077999",
+            "image-079999",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-001999",
+            "image-003999",
+            "image-005999",
+            "image-007999",
+            "image-009999",
+            "image-011999",
+            "image-013999",
+            "image-015999",
+            "image-017999",
+            "image-019999",
+            "image-021999",
+            "image-023999",
+            "image-025999",
+            "image-027999",
+            "image-029999",
+            "image-031999",
+            "image-033999",
+            "image-035999",
+            "image-037999",
+            "image-039999",
+            "image-041999",
+            "image-043999",
+            "image-045999",
+            "image-047999",
+            "image-049999",
+            "image-051999",
+            "image-053999",
+            "image-055999",
+            "image-057999",
+            "image-059999",
+            "image-061999",
+            "image-063999",
+            "image-065999",
+            "image-067999",
+            "image-069999",
+            "image-071999",
+            "image-073999",
+            "image-075999",
+            "image-077999",
+            "image-079999",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "size_asc",
+      "params": "sort=size_asc",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-000001",
+      "lastId": "image-078001",
+      "firstNewConnectionMs": 15.663666999998895,
+      "warmP95Ms": 21.379166999999143,
+      "warmSamplesMs": [
+        12.89324999999917, 13.665584000000308, 13.439125000000786,
+        13.845624999999927, 14.120249999999942, 13.052666999999929,
+        14.706833000000188, 14.267665999999736, 13.24804199999926,
+        15.797457999999097, 13.14024999999856, 13.689792000001034,
+        13.998250000000553, 13.572249999999258, 13.304833000000144,
+        14.345665999999255, 17.332624999999098, 17.19312499999978,
+        19.52099999999882, 18.295082999999067, 21.379166999999143,
+        26.512124999999287, 21.100916999999754, 15.176665999999386,
+        15.058874999998807
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"byte_size\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) order by \"media_images\".\"byte_size\" asc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 43,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-000001",
+            "image-002001",
+            "image-004001",
+            "image-006001",
+            "image-008001",
+            "image-010001",
+            "image-012001",
+            "image-014001",
+            "image-016001",
+            "image-018001",
+            "image-020001",
+            "image-022001",
+            "image-024001",
+            "image-026001",
+            "image-028001",
+            "image-030001",
+            "image-032001",
+            "image-034001",
+            "image-036001",
+            "image-038001",
+            "image-040001",
+            "image-042001",
+            "image-044001",
+            "image-046001",
+            "image-048001",
+            "image-050001",
+            "image-052001",
+            "image-054001",
+            "image-056001",
+            "image-058001",
+            "image-060001",
+            "image-062001",
+            "image-064001",
+            "image-066001",
+            "image-068001",
+            "image-070001",
+            "image-072001",
+            "image-074001",
+            "image-076001",
+            "image-078001",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-000001",
+            "image-002001",
+            "image-004001",
+            "image-006001",
+            "image-008001",
+            "image-010001",
+            "image-012001",
+            "image-014001",
+            "image-016001",
+            "image-018001",
+            "image-020001",
+            "image-022001",
+            "image-024001",
+            "image-026001",
+            "image-028001",
+            "image-030001",
+            "image-032001",
+            "image-034001",
+            "image-036001",
+            "image-038001",
+            "image-040001",
+            "image-042001",
+            "image-044001",
+            "image-046001",
+            "image-048001",
+            "image-050001",
+            "image-052001",
+            "image-054001",
+            "image-056001",
+            "image-058001",
+            "image-060001",
+            "image-062001",
+            "image-064001",
+            "image-066001",
+            "image-068001",
+            "image-070001",
+            "image-072001",
+            "image-074001",
+            "image-076001",
+            "image-078001",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deep-offset-2000",
+      "params": "page=2000",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 98.8724170000005,
+      "warmP95Ms": 99.84804099999928,
+      "warmSamplesMs": [
+        101.96416599999975, 99.84804099999928, 92.05383299999994,
+        91.73791600000004, 83.59258399999999, 84.3610839999983,
+        93.5500839999986, 99.24579199999971, 85.97633400000086,
+        84.9935000000005, 83.89374999999927, 88.2027909999997,
+        87.71995799999968, 84.2562080000007, 84.91637499999888,
+        82.83679200000006, 89.02224999999999, 85.08612499999981,
+        86.20779199999924, 93.4119580000006, 92.70904099999825,
+        86.05683400000089, 85.68079100000068, 85.96262500000012,
+        87.41612499999974
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ? offset ?",
+          "parameters": [41, 79960],
+          "plan": [
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 17,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 46,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-015824",
+            "image-015825",
+            "image-015826",
+            "image-015827",
+            "image-015828",
+            "image-015829",
+            "image-015830",
+            "image-015831",
+            "image-015816",
+            "image-015817",
+            "image-015818",
+            "image-015819",
+            "image-015821",
+            "image-015822",
+            "image-015823",
+            "image-015808",
+            "image-015809",
+            "image-015810",
+            "image-015811",
+            "image-015812",
+            "image-015813",
+            "image-015814",
+            "image-015815",
+            "image-015801",
+            "image-015802",
+            "image-015803",
+            "image-015804",
+            "image-015805",
+            "image-015806",
+            "image-015807",
+            "image-015792",
+            "image-015793",
+            "image-015794",
+            "image-015795",
+            "image-015796",
+            "image-015797",
+            "image-015798",
+            "image-015799",
+            "image-015784",
+            "image-015785",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-015824",
+            "image-015825",
+            "image-015826",
+            "image-015827",
+            "image-015828",
+            "image-015829",
+            "image-015830",
+            "image-015831",
+            "image-015816",
+            "image-015817",
+            "image-015818",
+            "image-015819",
+            "image-015821",
+            "image-015822",
+            "image-015823",
+            "image-015808",
+            "image-015809",
+            "image-015810",
+            "image-015811",
+            "image-015812",
+            "image-015813",
+            "image-015814",
+            "image-015815",
+            "image-015801",
+            "image-015802",
+            "image-015803",
+            "image-015804",
+            "image-015805",
+            "image-015806",
+            "image-015807",
+            "image-015792",
+            "image-015793",
+            "image-015794",
+            "image-015795",
+            "image-015796",
+            "image-015797",
+            "image-015798",
+            "image-015799",
+            "image-015784",
+            "image-015785",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deep-cursor-2000",
+      "params": "cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcIlwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6NDB9IiwidmFsdWUiOjE3NjcyMjc1NzkwMDAsImlkIjoiaW1hZ2UtMDE1ODM5In0",
+      "total": 95000,
+      "returned": 40,
+      "firstId": "image-015824",
+      "lastId": "image-015785",
+      "firstNewConnectionMs": 17.772750000000087,
+      "warmP95Ms": 16.293209000001298,
+      "warmSamplesMs": [
+        14.666459000000032, 16.223374999999578, 15.90637500000048,
+        14.799167000001034, 15.744791999999507, 14.173124999999345,
+        16.091667000000598, 15.225499999998647, 16.293209000001298,
+        15.093292000001384, 14.884125000000495, 14.583042000000205,
+        15.09008299999914, 15.59770799999933, 15.635416999999507,
+        16.201583000000028, 15.332875000000058, 16.045874999999796,
+        16.187541999999667, 16.61137499999859, 15.108791999999085,
+        14.944167000001471, 14.835374999998749, 14.946083000000726,
+        14.712374999999156
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null)",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and (\"media_images\".\"created_at\" < ? or (\"media_images\".\"created_at\" = ? and \"media_images\".\"id\" > ?))) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [1767227579000, 1767227579000, "image-015839", 41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 20,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 49,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-015824",
+            "image-015825",
+            "image-015826",
+            "image-015827",
+            "image-015828",
+            "image-015829",
+            "image-015830",
+            "image-015831",
+            "image-015816",
+            "image-015817",
+            "image-015818",
+            "image-015819",
+            "image-015821",
+            "image-015822",
+            "image-015823",
+            "image-015808",
+            "image-015809",
+            "image-015810",
+            "image-015811",
+            "image-015812",
+            "image-015813",
+            "image-015814",
+            "image-015815",
+            "image-015801",
+            "image-015802",
+            "image-015803",
+            "image-015804",
+            "image-015805",
+            "image-015806",
+            "image-015807",
+            "image-015792",
+            "image-015793",
+            "image-015794",
+            "image-015795",
+            "image-015796",
+            "image-015797",
+            "image-015798",
+            "image-015799",
+            "image-015784",
+            "image-015785",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-015824",
+            "image-015825",
+            "image-015826",
+            "image-015827",
+            "image-015828",
+            "image-015829",
+            "image-015830",
+            "image-015831",
+            "image-015816",
+            "image-015817",
+            "image-015818",
+            "image-015819",
+            "image-015821",
+            "image-015822",
+            "image-015823",
+            "image-015808",
+            "image-015809",
+            "image-015810",
+            "image-015811",
+            "image-015812",
+            "image-015813",
+            "image-015814",
+            "image-015815",
+            "image-015801",
+            "image-015802",
+            "image-015803",
+            "image-015804",
+            "image-015805",
+            "image-015806",
+            "image-015807",
+            "image-015792",
+            "image-015793",
+            "image-015794",
+            "image-015795",
+            "image-015796",
+            "image-015797",
+            "image-015798",
+            "image-015799",
+            "image-015784",
+            "image-015785",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single-album",
+      "params": "albumId=album-0",
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 59.77445799999987,
+      "warmP95Ms": 68.55945799999972,
+      "warmSamplesMs": [
+        58.71937500000058, 58.130041999998866, 58.170083999999406,
+        55.170625000000655, 62.18449999999939, 59.390708000000814,
+        64.88958400000047, 58.65770800000064, 58.335916, 56.33829100000003,
+        56.413666999998895, 59.38508299999921, 65.73587499999849,
+        144.55012500000157, 68.55945799999972, 55.04358300000058,
+        55.25812500000029, 55.27691700000105, 57.1549159999995,
+        55.92487500000061, 57.26704100000097, 58.6541670000006,
+        57.186916999999085, 57.42729199999849, 60.38574999999946
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select \"id\" from \"albums\" where \"albums\".\"id\" = ?",
+          "parameters": ["album-0"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH albums USING COVERING INDEX sqlite_autoindex_albums_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?)))",
+          "parameters": ["album-0"],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?))) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": ["album-0", 41],
+          "plan": [
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 17,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            },
+            {
+              "id": 24,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 54,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099995",
+            "image-099985",
+            "image-099990",
+            "image-099970",
+            "image-099975",
+            "image-099965",
+            "image-099955",
+            "image-099945",
+            "image-099950",
+            "image-099930",
+            "image-099935",
+            "image-099925",
+            "image-099915",
+            "image-099905",
+            "image-099910",
+            "image-099890",
+            "image-099895",
+            "image-099885",
+            "image-099875",
+            "image-099865",
+            "image-099870",
+            "image-099850",
+            "image-099855",
+            "image-099845",
+            "image-099835",
+            "image-099825",
+            "image-099830",
+            "image-099810",
+            "image-099815",
+            "image-099805",
+            "image-099795",
+            "image-099785",
+            "image-099790",
+            "image-099770",
+            "image-099775",
+            "image-099765",
+            "image-099755",
+            "image-099745",
+            "image-099750",
+            "image-099730",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099995",
+            "image-099985",
+            "image-099990",
+            "image-099970",
+            "image-099975",
+            "image-099965",
+            "image-099955",
+            "image-099945",
+            "image-099950",
+            "image-099930",
+            "image-099935",
+            "image-099925",
+            "image-099915",
+            "image-099905",
+            "image-099910",
+            "image-099890",
+            "image-099895",
+            "image-099885",
+            "image-099875",
+            "image-099865",
+            "image-099870",
+            "image-099850",
+            "image-099855",
+            "image-099845",
+            "image-099835",
+            "image-099825",
+            "image-099830",
+            "image-099810",
+            "image-099815",
+            "image-099805",
+            "image-099795",
+            "image-099785",
+            "image-099790",
+            "image-099770",
+            "image-099775",
+            "image-099765",
+            "image-099755",
+            "image-099745",
+            "image-099750",
+            "image-099730",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "album-fixed-order",
+      "params": "scope=album&albumId=album-0",
+      "total": 15000,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-099730",
+      "firstNewConnectionMs": 37.50575000000026,
+      "warmP95Ms": 37.12629100000049,
+      "warmSamplesMs": [
+        27.141332999999577, 24.307291999999507, 23.096584000000803,
+        23.51354199999878, 24.230000000001382, 24.180500000000393,
+        25.200458999999682, 24.246957999999722, 24.040375000000495,
+        24.20024999999987, 24.23370799999975, 24.450541999998677,
+        24.544667000000118, 25.83179199999904, 24.46283300000141,
+        23.801375000000917, 24.345417000000452, 24.87908300000163,
+        24.929833000000144, 27.203083000000333, 37.12629100000049,
+        34.72004099999867, 32.95837500000016, 39.769500000000335,
+        28.19404200000099
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select \"id\" from \"albums\" where \"albums\".\"id\" = ?",
+          "parameters": ["album-0"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH albums USING COVERING INDEX sqlite_autoindex_albums_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?)))",
+          "parameters": ["album-0"],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"album_images\".\"joined_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" inner join \"album_images\" on (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?) where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?))) order by \"album_images\".\"joined_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": ["album-0", "album-0", 41],
+          "plan": [
+            {
+              "id": 13,
+              "parent": 0,
+              "notused": 154,
+              "detail": "SEARCH album_images USING COVERING INDEX album_images_album_joined_image (album_id=?)"
+            },
+            {
+              "id": 19,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_images USING INDEX sqlite_autoindex_media_images_1 (id=?)"
+            },
+            {
+              "id": 28,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            },
+            {
+              "id": 35,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099990",
+            "image-099995",
+            "image-099985",
+            "image-099970",
+            "image-099975",
+            "image-099965",
+            "image-099950",
+            "image-099955",
+            "image-099935",
+            "image-099945",
+            "image-099925",
+            "image-099930",
+            "image-099915",
+            "image-099905",
+            "image-099910",
+            "image-099895",
+            "image-099885",
+            "image-099890",
+            "image-099870",
+            "image-099875",
+            "image-099865",
+            "image-099850",
+            "image-099855",
+            "image-099845",
+            "image-099825",
+            "image-099830",
+            "image-099835",
+            "image-099815",
+            "image-099805",
+            "image-099810",
+            "image-099795",
+            "image-099785",
+            "image-099790",
+            "image-099770",
+            "image-099775",
+            "image-099765",
+            "image-099750",
+            "image-099755",
+            "image-099745",
+            "image-099730",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099990",
+            "image-099995",
+            "image-099985",
+            "image-099970",
+            "image-099975",
+            "image-099965",
+            "image-099950",
+            "image-099955",
+            "image-099935",
+            "image-099945",
+            "image-099925",
+            "image-099930",
+            "image-099915",
+            "image-099905",
+            "image-099910",
+            "image-099895",
+            "image-099885",
+            "image-099890",
+            "image-099870",
+            "image-099875",
+            "image-099865",
+            "image-099850",
+            "image-099855",
+            "image-099845",
+            "image-099825",
+            "image-099830",
+            "image-099835",
+            "image-099815",
+            "image-099805",
+            "image-099810",
+            "image-099795",
+            "image-099785",
+            "image-099790",
+            "image-099770",
+            "image-099775",
+            "image-099765",
+            "image-099750",
+            "image-099755",
+            "image-099745",
+            "image-099730",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "any-tags",
+      "params": "tagId=tag-1&tagId=tag-14&tagId=tag-27",
+      "total": 13333,
+      "returned": 40,
+      "firstId": "image-099993",
+      "lastId": "image-099705",
+      "firstNewConnectionMs": 245.75495799999953,
+      "warmP95Ms": 114.77629200000047,
+      "warmSamplesMs": [
+        94.02599999999984, 76.421792000001, 74.30862500000148,
+        79.51683400000002, 85.39045900000019, 79.63212500000009,
+        85.0439580000002, 75.03845799999908, 82.23504200000025,
+        83.65887499999917, 86.04791600000135, 90.8471669999999,
+        114.77629200000047, 94.1297910000012, 98.63433299999997,
+        84.48395799999889, 532.3445420000007, 82.81787499999882,
+        79.3035830000008, 77.43445900000006, 88.23083300000144,
+        102.01645899999858, 101.51933300000019, 87.63220899999942,
+        82.45529200000237
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select \"id\" from \"tags\" where \"tags\".\"id\" in (?, ?, ?)",
+          "parameters": ["tag-1", "tag-14", "tag-27"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 47,
+              "detail": "SEARCH tags USING COVERING INDEX sqlite_autoindex_tags_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"image_tags\" where (\"image_tags\".\"image_id\" = \"media_images\".\"id\" and \"image_tags\".\"tag_id\" in (?, ?, ?))))",
+          "parameters": ["tag-1", "tag-14", "tag-27"],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 60,
+              "detail": "SEARCH image_tags EXISTS USING COVERING INDEX sqlite_autoindex_image_tags_1 (image_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"image_tags\" where (\"image_tags\".\"image_id\" = \"media_images\".\"id\" and \"image_tags\".\"tag_id\" in (?, ?, ?)))) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": ["tag-1", "tag-14", "tag-27", 41],
+          "plan": [
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 17,
+              "parent": 0,
+              "notused": 60,
+              "detail": "SEARCH image_tags EXISTS USING COVERING INDEX sqlite_autoindex_image_tags_1 (image_id=? AND tag_id=?)"
+            },
+            {
+              "id": 41,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 72,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099993",
+            "image-099985",
+            "image-099977",
+            "image-099969",
+            "image-099961",
+            "image-099953",
+            "image-099959",
+            "image-099945",
+            "image-099937",
+            "image-099929",
+            "image-099921",
+            "image-099913",
+            "image-099905",
+            "image-099897",
+            "image-099889",
+            "image-099881",
+            "image-099873",
+            "image-099865",
+            "image-099857",
+            "image-099849",
+            "image-099841",
+            "image-099833",
+            "image-099839",
+            "image-099825",
+            "image-099817",
+            "image-099809",
+            "image-099801",
+            "image-099793",
+            "image-099785",
+            "image-099777",
+            "image-099769",
+            "image-099761",
+            "image-099753",
+            "image-099745",
+            "image-099737",
+            "image-099729",
+            "image-099721",
+            "image-099713",
+            "image-099719",
+            "image-099705",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099993",
+            "image-099985",
+            "image-099977",
+            "image-099969",
+            "image-099961",
+            "image-099953",
+            "image-099959",
+            "image-099945",
+            "image-099937",
+            "image-099929",
+            "image-099921",
+            "image-099913",
+            "image-099905",
+            "image-099897",
+            "image-099889",
+            "image-099881",
+            "image-099873",
+            "image-099865",
+            "image-099857",
+            "image-099849",
+            "image-099841",
+            "image-099833",
+            "image-099839",
+            "image-099825",
+            "image-099817",
+            "image-099809",
+            "image-099801",
+            "image-099793",
+            "image-099785",
+            "image-099777",
+            "image-099769",
+            "image-099761",
+            "image-099753",
+            "image-099745",
+            "image-099737",
+            "image-099729",
+            "image-099721",
+            "image-099713",
+            "image-099719",
+            "image-099705",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "failed-disabled-storage",
+      "params": "status=failed&storageId=storage-3",
+      "total": 3001,
+      "returned": 40,
+      "firstId": "image-099995",
+      "lastId": "image-098807",
+      "firstNewConnectionMs": 17.378790999999183,
+      "warmP95Ms": 15.016457999998238,
+      "warmSamplesMs": [
+        13.16162500000064, 13.873790999998164, 14.244834000000992,
+        11.539874999998574, 11.955708000001323, 12.680834000002505,
+        12.19604099999924, 12.606917000000976, 15.016457999998238,
+        12.254790999999386, 12.968541999998706, 12.23924999999872,
+        16.106166999998095, 12.569125000001804, 11.720084000000497,
+        11.963291000000027, 12.095291999998153, 11.804250000001048,
+        13.954583999999159, 13.99554199999693, 12.504915999998047,
+        11.311541999999463, 11.801250000000437, 11.562957999998616,
+        11.17949999999837
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select \"id\" from \"storage_configs\" where \"storage_configs\".\"id\" = ?",
+          "parameters": ["storage-3"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH storage_configs USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and \"media_images\".\"storage_id\" = ? and \"media_images\".\"processing_status\" = ?)",
+          "parameters": ["storage-3", "failed"],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and \"media_images\".\"storage_id\" = ? and \"media_images\".\"processing_status\" = ?) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": ["storage-3", "failed", 41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 48,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099995",
+            "image-099943",
+            "image-099899",
+            "image-099891",
+            "image-099847",
+            "image-099839",
+            "image-099795",
+            "image-099787",
+            "image-099743",
+            "image-099735",
+            "image-099691",
+            "image-099683",
+            "image-099639",
+            "image-099631",
+            "image-099587",
+            "image-099579",
+            "image-099535",
+            "image-099527",
+            "image-099483",
+            "image-099431",
+            "image-099379",
+            "image-099327",
+            "image-099275",
+            "image-099223",
+            "image-099179",
+            "image-099171",
+            "image-099127",
+            "image-099119",
+            "image-099075",
+            "image-099067",
+            "image-099023",
+            "image-099015",
+            "image-098971",
+            "image-098963",
+            "image-098919",
+            "image-098911",
+            "image-098867",
+            "image-098859",
+            "image-098815",
+            "image-098807",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099995",
+            "image-099943",
+            "image-099899",
+            "image-099891",
+            "image-099847",
+            "image-099839",
+            "image-099795",
+            "image-099787",
+            "image-099743",
+            "image-099735",
+            "image-099691",
+            "image-099683",
+            "image-099639",
+            "image-099631",
+            "image-099587",
+            "image-099579",
+            "image-099535",
+            "image-099527",
+            "image-099483",
+            "image-099431",
+            "image-099379",
+            "image-099327",
+            "image-099275",
+            "image-099223",
+            "image-099179",
+            "image-099171",
+            "image-099127",
+            "image-099119",
+            "image-099075",
+            "image-099067",
+            "image-099023",
+            "image-099015",
+            "image-098971",
+            "image-098963",
+            "image-098919",
+            "image-098911",
+            "image-098867",
+            "image-098859",
+            "image-098815",
+            "image-098807",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "literal-substring",
+      "params": "q=100%25_%E7%9C%9F%E5%AE%9E",
+      "total": 941,
+      "returned": 40,
+      "firstId": "image-099990",
+      "lastId": "image-095849",
+      "firstNewConnectionMs": 23.927958000000217,
+      "warmP95Ms": 19.66395900000134,
+      "warmSamplesMs": [
+        18.372709000002942, 17.098792000000685, 17.07800000000134,
+        19.432958999997936, 18.594042000000627, 19.66395900000134,
+        16.34191699999792, 16.603290999999444, 17.67804099999921,
+        17.857749999999214, 16.80054200000086, 16.679417000003014,
+        17.216083999999682, 18.609958000000915, 17.982457999998587,
+        18.122290999999677, 19.57470900000044, 21.84729199999856,
+        18.098165999999765, 18.241040999997495, 17.370874999996886,
+        17.47112500000003, 18.06779099999767, 17.763958000003186,
+        17.169041999997717
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and (\"media_images\".\"display_name\" like ? escape '!' or \"media_images\".\"original_name\" like ? escape '!'))",
+          "parameters": ["%100!%!_真实%", "%100!%!_真实%"],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"created_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and (\"media_images\".\"display_name\" like ? escape '!' or \"media_images\".\"original_name\" like ? escape '!')) order by \"media_images\".\"created_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": ["%100!%!_真实%", "%100!%!_真实%", 41],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 20,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 49,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099990",
+            "image-099889",
+            "image-099788",
+            "image-099687",
+            "image-099586",
+            "image-099485",
+            "image-099384",
+            "image-099283",
+            "image-099182",
+            "image-099081",
+            "image-098879",
+            "image-098778",
+            "image-098677",
+            "image-098576",
+            "image-098475",
+            "image-098374",
+            "image-098273",
+            "image-098172",
+            "image-098071",
+            "image-097970",
+            "image-097869",
+            "image-097768",
+            "image-097667",
+            "image-097566",
+            "image-097465",
+            "image-097364",
+            "image-097263",
+            "image-097162",
+            "image-097061",
+            "image-096859",
+            "image-096758",
+            "image-096657",
+            "image-096556",
+            "image-096455",
+            "image-096354",
+            "image-096253",
+            "image-096152",
+            "image-096051",
+            "image-095950",
+            "image-095849",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099990",
+            "image-099889",
+            "image-099788",
+            "image-099687",
+            "image-099586",
+            "image-099485",
+            "image-099384",
+            "image-099283",
+            "image-099182",
+            "image-099081",
+            "image-098879",
+            "image-098778",
+            "image-098677",
+            "image-098576",
+            "image-098475",
+            "image-098374",
+            "image-098273",
+            "image-098172",
+            "image-098071",
+            "image-097970",
+            "image-097869",
+            "image-097768",
+            "image-097667",
+            "image-097566",
+            "image-097465",
+            "image-097364",
+            "image-097263",
+            "image-097162",
+            "image-097061",
+            "image-096859",
+            "image-096758",
+            "image-096657",
+            "image-096556",
+            "image-096455",
+            "image-096354",
+            "image-096253",
+            "image-096152",
+            "image-096051",
+            "image-095950",
+            "image-095849",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "complex-filters",
+      "params": "albumId=album-0&storageId=storage-3&visibility=private&status=ready&format=avif&uploadedFrom=2026-01-01T00%3A01%3A40.000Z&uploadedBefore=2026-01-01T03%3A20%3A00.000Z&sort=size_desc&tagId=tag-3&tagId=tag-5&tagId=tag-7",
+      "total": 1079,
+      "returned": 40,
+      "firstId": "image-001995",
+      "lastId": "image-055935",
+      "firstNewConnectionMs": 34.71808299999975,
+      "warmP95Ms": 30.05108399999881,
+      "warmSamplesMs": [
+        27.615584000002855, 27.79162499999802, 28.04620799999975,
+        29.990750000000844, 30.201874999998836, 27.97808299999815,
+        28.909707999999227, 28.15179200000057, 29.19300000000294,
+        28.72454199999993, 29.38575000000128, 27.88562500000262,
+        28.563500000000204, 28.237542000002577, 27.584875000000466,
+        27.494417000001704, 28.449832999998762, 28.837125000001834,
+        30.05108399999881, 26.584999999999127, 27.477582999999868,
+        26.549958999999944, 26.40650000000096, 26.029207999999926,
+        25.243749999997817
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select \"id\" from \"albums\" where \"albums\".\"id\" = ?",
+          "parameters": ["album-0"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH albums USING COVERING INDEX sqlite_autoindex_albums_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"id\" from \"storage_configs\" where \"storage_configs\".\"id\" = ?",
+          "parameters": ["storage-3"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH storage_configs USING COVERING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"id\" from \"tags\" where \"tags\".\"id\" in (?, ?, ?)",
+          "parameters": ["tag-3", "tag-5", "tag-7"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 47,
+              "detail": "SEARCH tags USING COVERING INDEX sqlite_autoindex_tags_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"media_images\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?)) and exists (select \"image_id\" from \"image_tags\" where (\"image_tags\".\"image_id\" = \"media_images\".\"id\" and \"image_tags\".\"tag_id\" in (?, ?, ?))) and \"media_images\".\"created_at\" >= ? and \"media_images\".\"created_at\" < ? and \"media_images\".\"format\" = ? and \"media_images\".\"storage_id\" = ? and \"media_images\".\"visibility\" = ? and \"media_images\".\"processing_status\" = ?)",
+          "parameters": [
+            "album-0",
+            "tag-3",
+            "tag-5",
+            "tag-7",
+            1767225700000,
+            1767237600000,
+            "AVIF",
+            "storage-3",
+            "private",
+            "ready"
+          ],
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 25,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            },
+            {
+              "id": 32,
+              "parent": 0,
+              "notused": 60,
+              "detail": "SEARCH image_tags EXISTS USING COVERING INDEX sqlite_autoindex_image_tags_1 (image_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"byte_size\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where ((\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) and exists (select \"image_id\" from \"album_images\" where (\"album_images\".\"image_id\" = \"media_images\".\"id\" and \"album_images\".\"album_id\" = ?)) and exists (select \"image_id\" from \"image_tags\" where (\"image_tags\".\"image_id\" = \"media_images\".\"id\" and \"image_tags\".\"tag_id\" in (?, ?, ?))) and \"media_images\".\"created_at\" >= ? and \"media_images\".\"created_at\" < ? and \"media_images\".\"format\" = ? and \"media_images\".\"storage_id\" = ? and \"media_images\".\"visibility\" = ? and \"media_images\".\"processing_status\" = ?) order by \"media_images\".\"byte_size\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [
+            "album-0",
+            "tag-3",
+            "tag-5",
+            "tag-7",
+            1767225700000,
+            1767237600000,
+            "AVIF",
+            "storage-3",
+            "private",
+            "ready",
+            41
+          ],
+          "plan": [
+            {
+              "id": 12,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 36,
+              "parent": 0,
+              "notused": 46,
+              "detail": "SEARCH album_images EXISTS USING COVERING INDEX sqlite_autoindex_album_images_1 (album_id=? AND image_id=?)"
+            },
+            {
+              "id": 43,
+              "parent": 0,
+              "notused": 60,
+              "detail": "SEARCH image_tags EXISTS USING COVERING INDEX sqlite_autoindex_image_tags_1 (image_id=? AND tag_id=?)"
+            },
+            {
+              "id": 94,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-001995",
+            "image-007995",
+            "image-019995",
+            "image-025995",
+            "image-037995",
+            "image-043995",
+            "image-055995",
+            "image-061995",
+            "image-073995",
+            "image-079995",
+            "image-091995",
+            "image-009975",
+            "image-015975",
+            "image-027975",
+            "image-033975",
+            "image-045975",
+            "image-051975",
+            "image-063975",
+            "image-069975",
+            "image-081975",
+            "image-087975",
+            "image-011955",
+            "image-017955",
+            "image-029955",
+            "image-035955",
+            "image-047955",
+            "image-053955",
+            "image-065955",
+            "image-071955",
+            "image-077955",
+            "image-083955",
+            "image-089955",
+            "image-095955",
+            "image-001935",
+            "image-007935",
+            "image-019935",
+            "image-025935",
+            "image-037935",
+            "image-043935",
+            "image-055935",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 101,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-001995",
+            "image-007995",
+            "image-019995",
+            "image-025995",
+            "image-037995",
+            "image-043995",
+            "image-055995",
+            "image-061995",
+            "image-073995",
+            "image-079995",
+            "image-091995",
+            "image-009975",
+            "image-015975",
+            "image-027975",
+            "image-033975",
+            "image-045975",
+            "image-051975",
+            "image-063975",
+            "image-069975",
+            "image-081975",
+            "image-087975",
+            "image-011955",
+            "image-017955",
+            "image-029955",
+            "image-035955",
+            "image-047955",
+            "image-053955",
+            "image-065955",
+            "image-071955",
+            "image-077955",
+            "image-083955",
+            "image-089955",
+            "image-095955",
+            "image-001935",
+            "image-007935",
+            "image-019935",
+            "image-025935",
+            "image-037935",
+            "image-043935",
+            "image-055935",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 97,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 183,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 210,
+              "parent": 2,
+              "notused": 68,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 265,
+              "parent": 0,
+              "notused": 68,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trash",
+      "params": "scope=trash&pageSize=80",
+      "total": 5000,
+      "returned": 80,
+      "firstId": "image-099980",
+      "lastId": "image-098400",
+      "firstNewConnectionMs": 14.697124999998778,
+      "warmP95Ms": 9.099083000000974,
+      "warmSamplesMs": [
+        8.335374999998749, 9.036874999997963, 8.597374999997555,
+        8.88579199999731, 8.281707999998616, 8.184833999999682,
+        8.25391700000182, 8.599957999998878, 8.71704200000022,
+        9.125832999998238, 8.594208000002254, 8.321541999997862,
+        8.068291999999929, 8.30395800000042, 8.512000000002445,
+        8.349417000001267, 8.136625000002823, 8.621833000001061,
+        8.10133400000268, 8.417790999999852, 9.079792000000452,
+        9.099083000000974, 9.07708300000013, 8.163040999999794,
+        8.063500000000204
+      ],
+      "targets": {
+        "warmP95Ms": 500,
+        "firstNewConnectionMs": 2000
+      },
+      "observedWithinTargets": true,
+      "statements": [
+        {
+          "sql": "select count(*) from \"media_images\" where \"media_images\".\"trashed_at\" is not null",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"id\", \"media_images\".\"display_name\", \"media_images\".\"original_name\", \"media_images\".\"byte_size\", \"media_images\".\"format\", \"media_images\".\"width\", \"media_images\".\"height\", \"media_images\".\"visibility\", \"media_images\".\"processing_status\", \"media_images\".\"created_at\", \"media_images\".\"trashed_at\", \"media_images\".\"deletion_status\", \"storage_configs\".\"id\", \"storage_configs\".\"name\", \"storage_configs\".\"enabled\", \"media_images\".\"trashed_at\" from \"media_images\" inner join \"storage_configs\" on \"media_images\".\"storage_id\" = \"storage_configs\".\"id\" where \"media_images\".\"trashed_at\" is not null order by \"media_images\".\"trashed_at\" desc, \"media_images\".\"id\" asc limit ?",
+          "parameters": [81],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 180,
+              "detail": "SCAN media_images"
+            },
+            {
+              "id": 12,
+              "parent": 0,
+              "notused": 28,
+              "detail": "SEARCH storage_configs USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+            },
+            {
+              "id": 41,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_versions\".\"image_id\", \"media_versions\".\"kind\" from \"media_versions\" inner join \"media_objects\" on \"media_versions\".\"object_id\" = \"media_objects\".\"id\" where (\"media_versions\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_objects\".\"status\" = ?)",
+          "parameters": [
+            "image-099980",
+            "image-099960",
+            "image-099940",
+            "image-099920",
+            "image-099900",
+            "image-099880",
+            "image-099860",
+            "image-099840",
+            "image-099820",
+            "image-099800",
+            "image-099780",
+            "image-099760",
+            "image-099740",
+            "image-099720",
+            "image-099700",
+            "image-099680",
+            "image-099660",
+            "image-099640",
+            "image-099620",
+            "image-099600",
+            "image-099580",
+            "image-099560",
+            "image-099540",
+            "image-099520",
+            "image-099500",
+            "image-099480",
+            "image-099460",
+            "image-099440",
+            "image-099420",
+            "image-099400",
+            "image-099380",
+            "image-099360",
+            "image-099340",
+            "image-099320",
+            "image-099300",
+            "image-099280",
+            "image-099260",
+            "image-099240",
+            "image-099220",
+            "image-099200",
+            "image-099180",
+            "image-099160",
+            "image-099140",
+            "image-099120",
+            "image-099100",
+            "image-099080",
+            "image-099060",
+            "image-099040",
+            "image-099020",
+            "image-099000",
+            "image-098980",
+            "image-098960",
+            "image-098940",
+            "image-098920",
+            "image-098900",
+            "image-098880",
+            "image-098860",
+            "image-098840",
+            "image-098820",
+            "image-098800",
+            "image-098780",
+            "image-098760",
+            "image-098740",
+            "image-098720",
+            "image-098700",
+            "image-098680",
+            "image-098660",
+            "image-098640",
+            "image-098620",
+            "image-098600",
+            "image-098580",
+            "image-098560",
+            "image-098540",
+            "image-098520",
+            "image-098500",
+            "image-098480",
+            "image-098460",
+            "image-098440",
+            "image-098420",
+            "image-098400",
+            "stored"
+          ],
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 111,
+              "detail": "SEARCH media_versions USING INDEX sqlite_autoindex_media_versions_1 (image_id=?)"
+            },
+            {
+              "id": 258,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH media_objects USING INDEX sqlite_autoindex_media_objects_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", \"job_rank\" from (select \"image_id\", \"id\", \"status\", \"scope\", \"step\", \"error\", row_number() over (partition by \"image_id\", (\"status\" = 'failed') order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where (\"media_jobs\".\"image_id\" in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and \"media_jobs\".\"status\" in (?, ?, ?))) \"ranked_jobs\" where \"job_rank\" = ?",
+          "parameters": [
+            "image-099980",
+            "image-099960",
+            "image-099940",
+            "image-099920",
+            "image-099900",
+            "image-099880",
+            "image-099860",
+            "image-099840",
+            "image-099820",
+            "image-099800",
+            "image-099780",
+            "image-099760",
+            "image-099740",
+            "image-099720",
+            "image-099700",
+            "image-099680",
+            "image-099660",
+            "image-099640",
+            "image-099620",
+            "image-099600",
+            "image-099580",
+            "image-099560",
+            "image-099540",
+            "image-099520",
+            "image-099500",
+            "image-099480",
+            "image-099460",
+            "image-099440",
+            "image-099420",
+            "image-099400",
+            "image-099380",
+            "image-099360",
+            "image-099340",
+            "image-099320",
+            "image-099300",
+            "image-099280",
+            "image-099260",
+            "image-099240",
+            "image-099220",
+            "image-099200",
+            "image-099180",
+            "image-099160",
+            "image-099140",
+            "image-099120",
+            "image-099100",
+            "image-099080",
+            "image-099060",
+            "image-099040",
+            "image-099020",
+            "image-099000",
+            "image-098980",
+            "image-098960",
+            "image-098940",
+            "image-098920",
+            "image-098900",
+            "image-098880",
+            "image-098860",
+            "image-098840",
+            "image-098820",
+            "image-098800",
+            "image-098780",
+            "image-098760",
+            "image-098740",
+            "image-098720",
+            "image-098700",
+            "image-098680",
+            "image-098660",
+            "image-098640",
+            "image-098620",
+            "image-098600",
+            "image-098580",
+            "image-098560",
+            "image-098540",
+            "image-098520",
+            "image-098500",
+            "image-098480",
+            "image-098460",
+            "image-098440",
+            "image-098420",
+            "image-098400",
+            "queued",
+            "running",
+            "failed",
+            1
+          ],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked_jobs"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 107,
+              "detail": "SEARCH media_jobs USING INDEX media_jobs_image_created (image_id=?)"
+            },
+            {
+              "id": 303,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 3 TERMS OF ORDER BY"
+            },
+            {
+              "id": 330,
+              "parent": 2,
+              "notused": 78,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 385,
+              "parent": 0,
+              "notused": 78,
+              "detail": "SCAN ranked_jobs"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "wallMs": 18253.520916,
+    "cpuMicroseconds": {
+      "user": 15166247,
+      "system": 1878186
+    },
+    "processMemoryBytes": {
+      "rss": 276496384,
+      "heapTotal": 174997504,
+      "heapUsed": 103865208,
+      "external": 9459604,
+      "arrayBuffers": 405779
+    },
+    "maxRssBytes": 331202560
+  },
+  "correctness": {
+    "deepCursorMatchesOffset": true,
+    "duplicateIdsAbsentInMeasuredWindows": true,
+    "savedVersionProjectionPresent": true
+  }
+}
