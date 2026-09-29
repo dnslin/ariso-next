@@ -43,7 +43,7 @@
 | `node docs/tasks/check.mjs`                                                                                                                      | 120任务 / 298需求通过                                                                                                                                  |
 | `node docs/tasks/check.mjs --self-test`                                                                                                          | 5个拒绝场景通过                                                                                                                                        |
 | `git diff --check`                                                                                                                               | 通过                                                                                                                                                   |
-| `pnpm run test:integration --maxWorkers=2`                                                                                                       | 85文件 / 714项通过；1文件 / 1项失败：主线 analytics-scale 存储夹具未适配表扩展，见[结果](./integration-before-fixture-fix.txt)                         |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                       | 最终86文件 / 715项通过，见[结果](./integration-final.txt)；修复前714通过/1失败见[历史结果](./integration-before-fixture-fix.txt)                       |
 | `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-172 pnpm run test:browser`                                            | 完整回归通过，见[运行报告](./browser-runner.json)、[图库报告](./browser-library.json)、[组件夹具报告](./browser-ui-runner.json)                        |
 | `node --experimental-transform-types test-results/library-172/browser-query-boundary.mts`                                                        | 最终构建的 Ego 实际请求补验通过：匿名401、登录200、正常分页200、4类非法查询400、不存在邻居404，均no-store，见[报告](./browser-query-boundary.json)     |
 
@@ -53,7 +53,7 @@
 
 HTTP 回归首次暴露另一处真实问题：解析器已拒绝 `__proto__`，但 Next 16.3.5 在创建 Route Handler Request 前的 `normalizeCdnUrl`/查询对象转换中丢弃该键（以及 `nxtP*` 内部前缀参数），导致接口返回200。保留[修复前失败](./http-regression-before.txt)，采用官方支持的 `skipProxyUrlNormalize`，在仅匹配列表和邻居 GET 的 `src/proxy.ts` 复用同一解析器；有效请求仍进入原有所有者鉴权和查询，无效输入直接400/no-store，不读取业务数据。没有修改依赖或建立第二套 schema。原始/编码 `__proto__`、框架前缀和邻居HTTP回归均通过。依据为已安装Next源码及[官方原始URL选项](https://nextjs.org/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags)。
 
-**剩余阻塞：1项主线旧夹具失败，待单独授权修复。** 全量普通集成与真实媒体工具共715项，714项通过。`tests/experiments/analytics-scale/fixture.ts:48` 使用没有字段名的7值 INSERT，而 storage_configs 已扩展为22列，种样本时即失败。该夹具、storage schema 与迁移相对基线 `00979f5` 均无差异，与本次图库实现无关。独立agent只读定位后提出唯一修复：为这条 INSERT 列出原有7个字段名，保留数据及全部断言。截至本轮记录，已向用户单独请求批准，尚未修改该文件；不能以其余714项通过代替全量通过。
+**最后一项夹具阻塞已获准修复，全量集成通过。** 用户随后明确要求“修剩余的问题”，并要求两个agent从不同角度重新评审整个PR。`tests/experiments/analytics-scale/fixture.ts:48` 的7值 INSERT 现已列出原有7个字段名；表的其余字段采用生产默认值/null。样本值、统计流程及全部断言不变，没有修改生产schema。原测试先取得失败证据，修复后[定向1项通过](./analytics-scale-final.txt)，全量普通集成与真实媒体工具最终86文件715项全部通过。
 
 浏览器使用现有 Ego Lite / Chromium 152、同一 TaskSpace 6 和独立临时数据。完整回归覆盖桌面1440、手机390、图库360/390/430/768/1440浅深色及既有加载/空/错误/重试、键盘焦点、相册、上传、轮询、工作区连续性；截图与原始详细结果保存在本工作区 `test-results/browser-172/`。本次没有改变界面，以上属于功能回归，不冒充新的Figma设计验收。完整浏览器运行在入口proxy修复前已复制的构建上；修复后的最终构建另用同一Ego空间和新临时数据库完成原始查询入口补验，并通过全部真实HTTP集成断言。临时补验脚本曾因字符串换行生成错误而无法解析，修正脚本后实际请求均通过；该脚本错误不是产品失败。
 
@@ -69,15 +69,22 @@ HTTP 回归首次暴露另一处真实问题：解析器已拒绝 `__proto__`，
 
 ## 独立代码审计
 
-独立agent使用 `using-agent-skills` 和 `code-review-and-quality`，实际读取需求、测试、实现、调用路径及生产SQL计划。发现两项必改缺陷：NUL使SQLite LIKE截断并扩大匹配；`__proto__` 参数在普通对象赋值时被静默忽略。单元回归先取得2失败/28通过，再分别以精确NUL拒绝和 `Object.fromEntries` 修复，最终30项通过；HTTP层同样补了400回归，实际执行发现框架归一化问题并进一步修复，见上文。
+初轮审计发现NUL使SQLite LIKE截断，以及 `__proto__` 参数在普通对象赋值时被静默忽略；回归先取得2失败/28通过，再分别以精确NUL拒绝和 `Object.fromEntries` 修复，最终30项通过。真实HTTP回归进一步发现Next归一化丢失原始键的问题，修复与证据见上文。此前5处授权类型修复和原始请求入口均已独立复审。
 
-复审结论：**当前代码无剩余 Critical / Required 问题**。审计者在Node24.18.1独立重跑30项单测并执行 `git diff --check`。确认默认图库调用仍消费同一响应字段，无兼容层；短只读事务、范围绑定、关系失效、四种排序与固定相册顺序、邻居边界、批读上限和所有者权限均符合本切片。后续独立复审确认5处授权类型修复与原始请求校验均无剩余阻断项，未削弱测试断言；最终交付仍以本页实际验证结果为准。
+用户随后要求两名独立agent重新检查整个PR，二者均实际读取Issue #172、规格、AGENTS、变更、调用路径和验证证据，没有仅接受实现者总结：
+
+| 评审                                                            | 重点与结论                                                                                                                                                                                                                                                                                        | 实际验证                                                                                                                     |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `pr210_behavior_review` / `code-review-and-quality`             | **通过，无 Critical / Required。** 核对需求覆盖、标签任一/条件交集、游标绑定和锚点删除、邻居边界、鉴权、短事务、批读与数据不泄露。发现1项Optional：旧集成测试使用旧游标结构，不能证明每个错配字段。已改为从合法新游标逐项变异，先证明查询本身有效，再验证错配；复审通过。                         | 独立执行查询单元30项、SQLite27项、`git diff --check`，全部通过。测试改进后主agent执行真实HTTP5项，全部通过。                 |
+| `pr210_structure_review` / `thermo-nuclear-code-quality-review` | **通过，无 Critical / Required。** schema、SQL谓词/排序、批量投影、读取编排职责清晰；分页和邻居复用边界，列表和total复用谓词，没有重复协议或兼容层。新增代码文件均未越过1000行；大型JSON是原始证据。原始URL入口复用规范解析器，由已复现框架行为支撑，未发现应删除的多余抽象或明显可消除的复杂度。 | 实际核对原实现消费路径、Next原始URL选项、日期依赖类型/锁文件及显式INSERT修复；`git diff --check`通过。没有冒充执行全量测试。 |
+
+最终采纳的评审改进仅涉及测试，没有改变生产行为。本轮旧夹具修复仅涉及测试数据生成；生产构建、单元562项和完整Ego浏览器证据沿用本页已实际取得的同一生产实现结果。新的全量集成包含无密钥、无数据库独立生产构建回归；格式/lint/typecheck与受影响HTTP检查另行重跑。
 
 设计审计不适用：没有产品页面、公共布局、样式或交互变更。后续T-LIB-04/07的真实UI仍需独立Figma对照和用户人工验收。
 
 ## PR 与发布边界
 
-分支 `codex/library-query-172` 对应[草稿 PR #210](https://github.com/dnslin/ariso-next/pull/210)。初次提交为 `6b60968`；授权类型修复提交 `90d81ff`，原始查询入口修复提交 `41f9dcf`。当前类型、构建和浏览器阻塞已解除，但统计夹具1项集成失败尚未获准修复，因此PR仍保持草稿，T-LIB-03步骤不勾选为完成。
+分支 `codex/library-query-172` 对应[PR #210](https://github.com/dnslin/ariso-next/pull/210)。初次提交为 `6b60968`；授权类型修复提交 `90d81ff`，原始查询入口修复提交 `41f9dcf`。所有本地适用检查、两名独立agent评审及后续复审均已完成，统计夹具阻塞已消除，T-LIB-03两项实施步骤已完成，可转为正式待评审。
 
 通过 `gh pr view 210 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup`、提交的 `check-runs` API 和 `gh run list --branch codex/library-query-172` 核对实际远端状态。当前没有远端检查，不记为CI通过，也不等待不存在的PR工作流。
 
