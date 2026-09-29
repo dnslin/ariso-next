@@ -328,54 +328,6 @@ it('输入和持久化错误保留诊断但不回显凭据，失败后可重试'
   expect((await request('/api/storages', 'POST', input)).status).toBe(201);
 });
 
-it('停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变', async () => {
-  const created = await request('/api/storages', 'POST', {
-    type: 's3',
-    name: '预检',
-    endpoint: 'https://no-network.example.test',
-    region: 'auto',
-    bucket: 'preflight-bucket',
-    pathPrefix: '',
-    forcePathStyle: false,
-    accessKey: 'preflight-access',
-    secretKey: 'preflight-secret',
-  });
-  expect(created.status).toBe(201);
-  await stop(server.child, server.closed);
-  const before = connection.db.$client
-    .prepare('SELECT * FROM storage_configs ORDER BY id')
-    .all();
-  const run = (key: string) =>
-    spawnSync(process.execPath, ['dist/cli/prestart.js'], {
-      cwd: process.cwd(),
-      env: { ...process.env, ...env, ARISO_ENCRYPTION_KEY: key },
-      encoding: 'utf8',
-      timeout: 10000,
-    });
-  const wrong = run(randomBytes(32).toString('hex'));
-  expect(wrong.status).toBe(1);
-  expect(wrong.stdout + wrong.stderr).toContain('密文认证失败');
-  for (const secret of ['preflight-access', 'preflight-secret'])
-    expect(wrong.stdout + wrong.stderr).not.toContain(secret);
-  expect(
-    connection.db.$client
-      .prepare('SELECT * FROM storage_configs ORDER BY id')
-      .all(),
-  ).toEqual(before);
-  const correct = run(env.ARISO_ENCRYPTION_KEY);
-  expect(correct.status, correct.stdout + correct.stderr).toBe(0);
-  expect(
-    connection.db.$client
-      .prepare('SELECT * FROM storage_configs ORDER BY id')
-      .all(),
-  ).toEqual(before);
-  expect(
-    connection.db.$client
-      .prepare('SELECT default_storage_id FROM storage_settings')
-      .get(),
-  ).toEqual({ default_storage_id: null });
-});
-
 it('探测 HTTP 拒绝伪造通过、过期 revision、错误存储类型与跨来源重试', async () => {
   const localResponse = await request('/api/storages', 'POST', {
     type: 'local',
@@ -444,4 +396,52 @@ it('探测 HTTP 拒绝伪造通过、过期 revision、错误存储类型与跨�
     code: 'STORAGE_OPERATION_FAILED',
   });
   expect(JSON.stringify(detail)).not.toContain('secretKeyEncrypted');
+});
+
+it('停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变', async () => {
+  const created = await request('/api/storages', 'POST', {
+    type: 's3',
+    name: '预检',
+    endpoint: 'https://no-network.example.test',
+    region: 'auto',
+    bucket: 'preflight-bucket',
+    pathPrefix: '',
+    forcePathStyle: false,
+    accessKey: 'preflight-access',
+    secretKey: 'preflight-secret',
+  });
+  expect(created.status).toBe(201);
+  await stop(server.child, server.closed);
+  const before = connection.db.$client
+    .prepare('SELECT * FROM storage_configs ORDER BY id')
+    .all();
+  const run = (key: string) =>
+    spawnSync(process.execPath, ['dist/cli/prestart.js'], {
+      cwd: process.cwd(),
+      env: { ...process.env, ...env, ARISO_ENCRYPTION_KEY: key },
+      encoding: 'utf8',
+      timeout: 10000,
+    });
+  const wrong = run(randomBytes(32).toString('hex'));
+  expect(wrong.status).toBe(1);
+  expect(wrong.stdout + wrong.stderr).toContain('密文认证失败');
+  for (const secret of ['preflight-access', 'preflight-secret'])
+    expect(wrong.stdout + wrong.stderr).not.toContain(secret);
+  expect(
+    connection.db.$client
+      .prepare('SELECT * FROM storage_configs ORDER BY id')
+      .all(),
+  ).toEqual(before);
+  const correct = run(env.ARISO_ENCRYPTION_KEY);
+  expect(correct.status, correct.stdout + correct.stderr).toBe(0);
+  expect(
+    connection.db.$client
+      .prepare('SELECT * FROM storage_configs ORDER BY id')
+      .all(),
+  ).toEqual(before);
+  expect(
+    connection.db.$client
+      .prepare('SELECT default_storage_id FROM storage_settings')
+      .get(),
+  ).toEqual({ default_storage_id: null });
 });

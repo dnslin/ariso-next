@@ -1,0 +1,82 @@
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+    118| }
+    119|
+    120| it.each(['original', 'compressed', 'watermark'])(
+       |                                                 ^
+    121|   'counts each %s GET and download once without database writes',
+    122|   async (version) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:183:1
+    181| });
+    182|
+    183| it('reads committed timezone after response preparation and keeps alre…
+       | ^
+    184|   const ready = Promise.withResolvers<void>();
+    185|   const release = Promise.withResolvers<void>();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |integration| tests/integration/analytics/scale.test.ts > seeds deterministic sparse history and queries periods without losing timezone segments or cumulative history
+SqliteError: table storage_configs has 23 columns but 7 values were supplied
+ ❯ Database.prepare node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21
+ ❯ createScaleFixture tests/experiments/analytics-scale/fixture.ts:48:8
+     46|     );
+     47|     const db = connection.db.$client;
+     48|     db.prepare(
+       |        ^
+     49|       'INSERT INTO storage_configs (id, name, type, enabled, local_pat…
+     50|     ).run(
+ ❯ tests/integration/analytics/scale.test.ts:16:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |integration| tests/integration/identity/auth.test.ts > initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/auth.test.ts:200:3
+    198|   });
+    199|
+    200|   it('production constraints reject invalid owners and duplicate provi…
+       |   ^
+    201|     for (const value of ['NULL', '0', '2']) {
+    202|       expect(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  |integration| tests/integration/storage/settings-http.test.ts > 探测 HTTP 拒绝伪造通过、过期 revision、错误存储类型与跨来源重试
+TypeError: fetch failed
+Caused by: Error: connect ECONNREFUSED 127.0.0.1:55704
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -61, code: 'ECONNREFUSED', syscall: 'connect', address: '127.0.0.1', port: 55704 }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  4 failed | 83 passed (87)
+      Tests  6 failed | 730 passed (736)
+   Start at  20:14:44
+   Duration  548.67s (tests 97%, import 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.

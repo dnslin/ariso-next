@@ -1,3 +1,4 @@
+import { requireLocalStorage } from '../../../src/server/storage/settings.ts';
 import {
   mkdtemp,
   mkdir,
@@ -95,6 +96,7 @@ describe('isolated static SVG preview', () => {
       prepareInitialStorage(db, { storage: storageRoot });
       db.transaction(prepareInitialMedia);
       const storage = resolveUploadStorage(db);
+      requireLocalStorage(storage);
       const plan = planLocalWrite('uploads');
       const bytes = Buffer.from(f.text);
       await writeObject(storageRoot, storage, plan, Readable.from(bytes));

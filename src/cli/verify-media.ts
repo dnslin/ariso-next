@@ -1,3 +1,4 @@
+import { requireLocalStorage } from '../server/storage/settings.ts';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -67,6 +68,7 @@ export async function verifyMediaFormats(fixtures: string, output: string) {
           sample.sha256,
         );
         const storage = resolveUploadStorage(connection.db);
+        requireLocalStorage(storage);
         const plan = planLocalWrite('verification');
         await writeObject(
           runtime.storageRoot,

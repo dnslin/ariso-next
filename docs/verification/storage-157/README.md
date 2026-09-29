@@ -1,6 +1,8 @@
 # T-STO-04 私有性连接测试与探测清理恢复
 
-关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[草稿 PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
+关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
+
+当前结论：所有者授权补修后，适用本地验证已完成，独立代码复审无剩余 Required。首轮失败和复测分别保留在本记录；最终结果见末节。本任务没有 UI 改动。
 
 ## 范围与接口
 
@@ -26,15 +28,15 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 
 本地真实 HTTP + SQLite 测试覆盖：匿名公开、字节不符、删除失败、配置并发与旧回包、取消 PUT、planned/writing/stored 用量、最多三次重试、旧 probe 清理不覆盖新报告，以及真实子进程 SIGKILL 后恢复。远端错误凭据测试不冒充“PUT 已接受但 DELETE 故障”的云端故障注入，后者目前由本地真实 HTTP 故障服务验证。迟到远端对象扫描继续由 #164 承接。
 
-## 本地验证与当前阻塞
+## 首轮验证与基线失败（历史）
 
 冻结安装与迁移生成已执行。初始新增探测测试因生产模块尚不存在而失败，实现后 12 项通过。全单元首轮 37 文件 / 540 项通过，lint 通过；后续审计修复的最终命令另见本节末尾汇总。
 
 `pnpm run typecheck` 和 `pnpm run build` 均实际失败。主分支 `00979f5` 的原样源码快照通过 `pnpm exec tsc --noEmit --incremental false --project <baseline>/tsconfig.runtime.json` 复现同一错误：`src/cli/verify-media.ts` 把可能为 S3 的配置直接传给本地文件读写，`localPath` 类型为 `string | null`。全仓类型检查另报三个媒体测试同类错误，以及 analytics usage 夹具缺少当前格式契约的 extension/coder。未用类型断言、跳过检查或修改构建配置掩盖错误。
 
-这些错误不是本次新增探测路径造成；按 AGENTS.md 的范围限制，已向所有者请求允许最小修正，答复前不修改范围外文件。构建未完成，因此完整普通/真实工具集成、真实 HTTP 路由及浏览器检查仍未完成。独立审计尝试 HTTP 测试时也因 `.next/standalone/entrypoint.sh` 不存在而初始化失败，6 项未执行，不能计为通过。
+这些错误不是本次新增探测路径造成；首轮按 AGENTS.md 的范围限制，向所有者请求允许最小修正，答复前未修改范围外文件。当时构建未完成，因此完整普通/真实工具集成、真实 HTTP 路由及浏览器检查未完成。独立审计尝试 HTTP 测试时也因 `.next/standalone/entrypoint.sh` 不存在而初始化失败，6 项未执行，不能计为通过。
 
-最终实际命令汇总见 [local-checks.json](./local-checks.json)。
+首轮实际命令汇总见 [local-checks.json](./local-checks.json)。
 
 | 命令                                                 | 结果                                                       |
 | ---------------------------------------------------- | ---------------------------------------------------------- |
@@ -57,7 +59,7 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 
 独立 agent 实际读取 `code-review-and-quality`、规格、测试和实现，核对模块边界、资源生命周期、并发 revision、持久清理、引用/用量和权限。
 
-首轮发现两项 Required：未知 200 XML 版本响应被 SDK 解释为未版本化；手动清理远端失败缺少 502/504 分类。两项均补失败回归后修复。版本检查仅接受 200 且 XML 根正确，拒绝未知/空响应和 201/204；手动清理返回 502/504 并保留诊断。审计复核还发现迁移夹具遗漏新表断言，已补齐严格表清单和迁移时间断言。最终独立复审通过，所有 Required 关闭；审计者自行运行 5 文件 / 66 项通过及差异检查通过。代码审计通过不替代尚未完成的交付验证。
+首轮发现两项 Required：未知 200 XML 版本响应被 SDK 解释为未版本化；手动清理远端失败缺少 502/504 分类。两项均补失败回归后修复。版本检查仅接受 200 且 XML 根正确，拒绝未知/空响应和 201/204；手动清理返回 502/504 并保留诊断。审计复核还发现迁移夹具遗漏新表断言，已补齐严格表清单和迁移时间断言。最终独立复审通过，所有 Required 关闭；审计者自行运行 5 文件 / 66 项通过及差异检查通过。代码审计与完整交付验证分别记录。
 
 ## 未实现与交付边界
 
@@ -65,8 +67,22 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 
 AWS 实测要求按执行约定取消，保持未验证。AMD64/ARM64 镜像与容器验证留在 Release 流程，本次未创建 Release、发布镜像或部署。未合并 PR、关闭 Issue、删除分支或 worktree。适用检查仍有失败或缺证据时保持草稿，不以 PR 已创建代替验收完成。
 
-## PR 状态
+## PR 首次创建记录
 
 已提交并推送 `codex/issue-157-storage-probes`，创建草稿 PR #211。首次直连 GitHub 推送在 75 秒后连接失败；按用户提供的命令级代理重试成功，未修改全局代理。`gh pr view 211 --json url,state,isDraft,headRefName,statusCheckRollup` 确認 OPEN、isDraft=true、检查为空；`gh pr checks 211` 报 no checks，分支 `gh run list` 返回空数组。没有远端检查不记作 CI 通过，也不等待不存在的工作流。
 
-草稿原因是上文已复现的 main 类型/构建失败及其下游验证缺口。范围外修正授权问题仍待用户答复；本次可独立完成的实现、故障与真实服务验证、审计、提交和 PR 操作已完成。完整交付验收仍未完成。
+首轮因已复现的 main 类型/构建失败及其下游验证缺口保留草稿。随后所有者明确回复“批准修复”，授权下述最小修正。
+
+## 授权补修与最终验证
+
+2026-09-29 所有者批准修复五个文件的既有类型错误。`verify-media.ts` 与 formats、format-recovery、svg 测试在本地读写前复用 `requireLocalStorage`；analytics usage 夹具补齐 extension/coder，以 `satisfies Parameters<typeof acceptSession>[2]` 绑定当前契约。没有修改生产业务边界、弱化断言或增加依赖。
+
+首轮完整集成另发现新增探测 HTTP 用例位于共享服务器停服用例之后，真实请求因此连接被拒绝。已把探测用例移到停服之前，所有断言原样保留；[六项 HTTP 检查](./approved-repair/storage-http.txt)全部通过。
+
+独立 agent 再次审计补修，结论无剩余 Required；媒体及 analytics 四文件全部通过。审计者还从 `.next/standalone` 导入 `dist/cli/verify-media.js` 调用 `verifyMediaFormats`，使用真实媒体夹具和独立临时目录，[全部 26 种样本通过](./approved-repair/packaged-media.json)，含 SVG/resvg。构建退出码为 0；打包追踪器报告其他平台 resvg 可选依赖无法解析，本机打包行为已实际验证，其他架构仍按 Release 流程验收。
+
+完整普通/真实工具集成共 87 文件 / 736 项，首轮 730 通过、6 失败。除上述 HTTP 顺序问题，还复现规模统计夹具按旧表位置写入 7 列、与当前 23 列不符；已改为显式七列写入，保留统计生成逻辑和全部断言，独立复审无 Required。另四项为身份/访问计数的 5000ms 超时；没有修改相关实现、超时或断言。降低到 `--maxWorkers=1` 复跑四个失败文件，36/37 通过；最后单独复跑访问计数文件，13/13 全部通过。因此完整测试集合均已取得通过结果，首轮失败和复测记录均保留；不声称首轮完整命令退出成功。见[首轮失败](./approved-repair/integration-first.txt)、[四文件复测](./approved-repair/integration-recheck.txt)、[访问计数复测](./approved-repair/count-recheck.txt)。
+
+`pnpm run test:browser` 最终退出 0；现有 Ego Lite / Chromium 152，仅使用 TaskSpace 8，成功后由运行器关闭。覆盖首页、真实读取失败重试、公共外壳、两端初始化/身份、图库/详情/回收站、相册、上传/轮询、M2 上传下载与进程重启、交互与页面切换、公共组件夹具；360/390/430/768/1440 浅深色及短视口/键盘场景由现有脚本执行。[运行器结果](./approved-repair/browser-runner.json)确认临时目录已删除，[分项断言](./approved-repair/browser-checks.json)保留逐组实际结果。原始报告和截图在本机工作区 `test-results/browser/`；本次为已有页面回归，不冒充新增 UI 的 Figma 对照或人工设计验收。
+
+最终命令及环境继续统一见 [local-checks.json](./local-checks.json)：Node 24.18.1 / pnpm 11.19.0 / macOS ARM64；冻结安装、格式、lint、类型、542 项单元、构建及浏览器命令成功；完整 736 项集成集合经保留断言的失败文件复测收齐通过证据。真实 R2/SeaweedFS 结果沿用本分支此前最终运行，本轮未修改 S3/probe 生产代码，无需重复远端写入。AMD64/ARM64 镜像仍按 Release 流程验证；AWS 未实测，按既有约定不再作为本任务门槛。

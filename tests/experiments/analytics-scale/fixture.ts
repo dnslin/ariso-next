@@ -45,15 +45,9 @@ export function createScaleFixture(path: string, images = 100_000, days = 365) {
       fileURLToPath(new URL('../../../drizzle', import.meta.url)),
     );
     const db = connection.db.$client;
-    db.prepare('INSERT INTO storage_configs VALUES (?, ?, ?, ?, ?, ?, ?)').run(
-      'scale',
-      'Scale fixture',
-      'local',
-      1,
-      '/scale-fixture',
-      0,
-      0,
-    );
+    db.prepare(
+      'INSERT INTO storage_configs (id, name, type, enabled, local_path, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    ).run('scale', 'Scale fixture', 'local', 1, '/scale-fixture', 0, 0);
     const image = db.prepare(`INSERT INTO media_images
       (id, storage_id, original_name, display_name, visibility, format, mime, width, height, byte_size, processing_status, created_at, updated_at)
       VALUES (?, 'scale', 'fixture.jpg', 'Fixture', 'public', 'jpeg', 'image/jpeg', 100, 100, 1000, 'ready', 0, 0)`);

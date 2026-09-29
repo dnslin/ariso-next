@@ -39,9 +39,9 @@ const facts = {
   mime: 'image/png',
   width: 1,
   height: 1,
-  animated: false,
-  pageCount: 1,
-};
+  extension: 'png',
+  coder: 'png',
+} satisfies Parameters<typeof acceptSession>[2];
 const usage = () => aggregateUsage(readUsageObjects(fixture.db.$client));
 function record(overrides: Partial<UsageObject>) {
   const value: UsageObject = {
