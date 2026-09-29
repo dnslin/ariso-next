@@ -1,0 +1,145 @@
+{
+  "status": "failed",
+  "checks": [],
+  "layouts": [
+    {
+      "state": "create-unknown",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "stage": "unknown creation",
+  "error": "AssertionError [ERR_ASSERTION]: An unknown creation can be explicitly ended without reloading the page\n\nfalse !== true\n\n    at file:////[eval2]:302:10",
+  "failureSnapshot": "[p1 \"Ariso\" | space \"Ariso P2 regression\"(5): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container \"后台侧栏\"\n    anchor \"Ariso 首页\" [ref=10, url=http://ariso-50753.localhost:50753/]\n      text \"Ariso\"\n    button \"收起侧栏\" [ref=11, loc=css:button[aria-label=\"收起侧栏\"]]\n      svg_root\n    container \"后台导航\"\n      svg_root\n      text \"总览\"\n      text \"尚未开放\"\n      anchor \"上传\" [ref=12, loc=css:a[aria-label=\"上传\"], url=http://ariso-50753.localhost:50753/upload]\n        svg_root\n        text \"上传\"\n      anchor \"图库\" [ref=13, loc=css:a[aria-label=\"图库\"], url=http://ariso-50753.localhost:50753/library]\n        svg_root\n        text \"图库\"\n      anchor \"相册\" [ref=14, loc=css:a[aria-label=\"相册\"], url=http://ariso-50753.localhost:50753/albums]\n        svg_root\n        text \"相册\"\n      svg_root\n      text \"标签\"\n      text \"尚未开放\"\n      svg_root\n      text \"分享管理\"\n      text \"尚未开放\"\n      anchor \"回收站\" [ref=15, loc=css:a[aria-label=\"回收站\"], url=http://ariso-50753.localhost:50753/trash]\n        svg_root\n        text \"回收站\"\n      paragraph\n        text \"管理\"\n      svg_root\n      text \"访问统计\"\n      text \"尚未开放\"\n      svg_root\n      text \"存储管理\"\n      text \"尚未开放\"\n      svg_root\n      text \"站点设置\"\n      text \"尚未开放\"\n    button \"账号菜单\" [ref=16, loc=css:button[aria-label=\"账号菜单\"]]\n      text \"O\"\n      text \"Owner\"\n      text \"站点所有者\"\n  container\n    heading\n      text \"相册\"\n    paragraph\n      text \"用相册整理图片，一张图片可以出现在多个相册。\"\n    svg_root\n    textbox \"搜索相册\" [ref=17, loc=css:input[placeholder=\"搜索相册…\"]]\n      text \"搜索相册…\"\n    button [ref=18]\n      svg_root\n      text \"新建相册\"\n    anchor [ref=19, loc=href:/albums/a5b71b73-75f4-4a55-89f2-611d07bbe7b1, url=http://ariso-50753.localhost:50753/albums/a5b71b73-75f4-4a55-89f2-611d07bbe7b1]\n      text \"结果待核对\"\n      text \"0\"\n      text \"张图片 · #\"\n      text \"a5b71b73\"\n      text \"· 封面尚未开放\"\n  container\n    status\n      text \"共 1 本相册\"\n    button \"每页相册数 40 本 / 页 40 本 / 页\" [ref=20]\n      text \"40\"\n      text \"本 / 页\"\n      svg_root\n    navigation \"相册分页\"\n      unordered_list\n        list_item\n          button [ref=21]\n            text \"上一页\"\n        list_item\n          text \"1\"\n          text \"/\"\n          text \"1\"\n        list_item\n          button [ref=22]\n            text \"下一页\"\n  dialog \"提交结果未知\" [ref=23, loc=role:dialog[name=\"提交结果未知\"]]\n    container\n      heading\n        text \"提交结果未知\"\n      button \"关闭\" [ref=24, loc=css:button[aria-label=\"关闭\"]]\n        svg_root\n    form\n      container\n        paragraph\n          text \"名称可以重复，稍后可补充描述。\"\n        container\n          text \"相册名称\"\n          textbox \"相册名称\" [ref=25, loc=css:input[name=\"album-name\"]]\n            text \"结果待核对\"\n        text \"列表已重新读取，但同名相册不能证明本次创建成功。输入已保留，请返回列表核对，勿重复创建。\"\n      container\n        button [ref=26]\n          text \"返回核对\"\n        button [ref=27]\n          text \"重新核对\"\n"
+}

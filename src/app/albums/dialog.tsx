@@ -16,6 +16,12 @@ import { albumRequest, AlbumRequestError, albumUrl, type Album } from './api';
 export type AlbumAction =
   { kind: 'create' } | { kind: 'edit' | 'menu' | 'delete'; album: Album };
 
+type AlbumOutcome =
+  | { kind: 'idle' }
+  | { kind: 'failed' | 'unknown' | 'missing'; message: string }
+  | { kind: 'updated'; album: Album }
+  | { kind: 'deleted' };
+
 export function AlbumDialog({
   action,
   isOpen,
@@ -45,20 +51,20 @@ export function AlbumDialog({
       mounted.current = false;
     };
   }, []);
-  const [feedback, setFeedback] = useState<{
-    kind: 'failed' | 'unknown' | 'missing';
-    message: string;
-  } | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [savedAlbum, setSavedAlbum] = useState<Album | null>(null);
+  const [outcome, setOutcome] = useState<AlbumOutcome>({ kind: 'idle' });
+  const succeeded = outcome.kind === 'updated' || outcome.kind === 'deleted';
   const isForm = mode === 'create' || mode === 'edit';
   const title =
-    success ??
-    (feedback?.kind === 'unknown'
+    (outcome.kind === 'updated'
+      ? '相册已更新'
+      : outcome.kind === 'deleted'
+        ? '相册已删除'
+        : null) ??
+    (outcome.kind === 'unknown'
       ? '提交结果未知'
-      : feedback?.kind === 'missing'
+      : outcome.kind === 'missing'
         ? '相册已不存在'
-        : feedback?.kind === 'failed'
+        : outcome.kind === 'failed'
           ? mode === 'delete'
             ? '删除失败'
             : '保存失败'
@@ -74,7 +80,7 @@ export function AlbumDialog({
     if (mode === 'create') {
       await onCheckList();
       if (!mounted.current) return;
-      setFeedback({
+      setOutcome({
         kind: 'unknown',
         message:
           '列表已重新读取，但同名相册不能证明本次创建成功。输入已保留，请返回列表核对，勿重复创建。',
@@ -91,11 +97,9 @@ export function AlbumDialog({
         current.album.name === input.data.name &&
         current.album.description === input.data.description
       ) {
-        setSavedAlbum(current.album);
-        setSuccess('相册已更新');
-        setFeedback(null);
+        setOutcome({ kind: 'updated', album: current.album });
       } else {
-        setFeedback({
+        setOutcome({
           kind: 'failed',
           message:
             mode === 'delete'
@@ -111,10 +115,9 @@ export function AlbumDialog({
       }
       if (error instanceof AlbumRequestError && error.status === 404) {
         if (mode === 'delete') {
-          setSuccess('相册已删除');
-          setFeedback(null);
+          setOutcome({ kind: 'deleted' });
         } else
-          setFeedback({
+          setOutcome({
             kind: 'missing',
             message: '相册已不存在，输入内容已保留，无法继续保存。',
           });
@@ -132,7 +135,7 @@ export function AlbumDialog({
       await verify();
     } catch (error) {
       if (!mounted.current) return;
-      setFeedback({
+      setOutcome({
         kind: 'unknown',
         message: `暂时无法核对结果。${error instanceof Error ? error.message : '请稍后重新核对。'}`,
       });
@@ -145,8 +148,8 @@ export function AlbumDialog({
   async function submit() {
     if (
       inFlight.current ||
-      feedback?.kind === 'unknown' ||
-      feedback?.kind === 'missing'
+      outcome.kind === 'unknown' ||
+      outcome.kind === 'missing'
     )
       return;
     const input = albumInputSchema.safeParse({ name, description });
@@ -164,7 +167,7 @@ export function AlbumDialog({
     inFlight.current = true;
     setPending(true);
     setErrors({});
-    setFeedback(null);
+    setOutcome({ kind: 'idle' });
     try {
       const response = await albumRequest<{ album?: Album; deleted?: boolean }>(
         mode === 'create' ? '/api/albums' : albumUrl(album!.id),
@@ -186,8 +189,11 @@ export function AlbumDialog({
         onComplete(response.album!);
         return;
       }
-      setSavedAlbum(response.album ?? null);
-      setSuccess(mode === 'delete' ? '相册已删除' : '相册已更新');
+      setOutcome(
+        mode === 'delete'
+          ? { kind: 'deleted' }
+          : { kind: 'updated', album: response.album! },
+      );
     } catch (error) {
       if (!mounted.current) return;
       if (error instanceof AlbumRequestError && error.status === 401) {
@@ -196,30 +202,30 @@ export function AlbumDialog({
       }
       if (error instanceof AlbumRequestError && error.status === 404) {
         if (mode === 'delete') {
-          setSuccess('相册已删除');
+          setOutcome({ kind: 'deleted' });
           return;
         }
-        setFeedback({
+        setOutcome({
           kind: 'missing',
           message: '相册已不存在，无法继续操作。',
         });
         return;
       }
       if (error instanceof AlbumRequestError && error.status < 500) {
-        setFeedback({
+        setOutcome({
           kind: 'failed',
           message: `${error.message}。输入内容已保留。`,
         });
         return;
       }
-      setFeedback({
+      setOutcome({
         kind: 'unknown',
         message: '未收到可确认的操作结果，正在重新读取并核对。请勿重复提交。',
       });
       try {
         await verify();
       } catch (readError) {
-        setFeedback({
+        setOutcome({
           kind: 'unknown',
           message: `暂时无法核对结果。${readError instanceof Error ? readError.message : '请稍后重新核对。'}`,
         });
@@ -232,11 +238,12 @@ export function AlbumDialog({
 
   function close() {
     if (pending) return;
-    if (success) onComplete(savedAlbum);
-    else onClose(feedback?.kind === 'unknown');
+    if (outcome.kind === 'updated') onComplete(outcome.album);
+    else if (outcome.kind === 'deleted') onComplete(null);
+    else onClose(outcome.kind === 'unknown');
   }
   let body: ReactNode;
-  if (success)
+  if (succeeded)
     body = (
       <p>
         {mode === 'delete'
@@ -248,8 +255,8 @@ export function AlbumDialog({
     body = (
       <>
         <p className="text-muted">
-          {feedback?.kind === 'failed'
-            ? feedback.message
+          {outcome.kind === 'failed'
+            ? outcome.message
             : mode === 'create'
               ? '名称可以重复，稍后可补充描述。'
               : '名称可以重复。描述仅展示文字。'}
@@ -259,7 +266,7 @@ export function AlbumDialog({
           value={name}
           onChange={setName}
           isInvalid={!!errors.name}
-          isDisabled={pending || feedback?.kind === 'unknown'}
+          isDisabled={pending || outcome.kind === 'unknown'}
           validationBehavior="aria"
           className="gap-1.5"
         >
@@ -278,7 +285,7 @@ export function AlbumDialog({
               value={description}
               onChange={setDescription}
               isInvalid={!!errors.description}
-              isDisabled={pending || feedback?.kind === 'unknown'}
+              isDisabled={pending || outcome.kind === 'unknown'}
               validationBehavior="aria"
               className="gap-1.5"
             >
@@ -290,7 +297,7 @@ export function AlbumDialog({
               />
               <FieldError>{errors.description}</FieldError>
             </TextField>
-            {!feedback ? (
+            {outcome.kind === 'idle' ? (
               <p className="text-xs text-muted">
                 名称 1–100 字 · 描述最多 2,000 字
               </p>
@@ -368,31 +375,34 @@ export function AlbumDialog({
             >
               <Modal.Body className="m-0 grid gap-4 overflow-visible p-0 text-sm leading-normal text-foreground [overflow-wrap:anywhere]">
                 {body}
-                {!success && feedback && feedback.kind !== 'failed' ? (
+                {outcome.kind === 'unknown' || outcome.kind === 'missing' ? (
                   <Alert
-                    status={feedback.kind === 'unknown' ? 'warning' : 'danger'}
+                    status={outcome.kind === 'unknown' ? 'warning' : 'danger'}
                   >
                     <Alert.Content>
-                      <Alert.Description>{feedback.message}</Alert.Description>
+                      <Alert.Description>
+                        {outcome.message}
+                        {outcome.kind === 'unknown' && mode === 'create'
+                          ? '结束本次操作会清除本次输入，不会撤销或重新提交创建。'
+                          : null}
+                      </Alert.Description>
                     </Alert.Content>
                   </Alert>
                 ) : null}
-                {!success &&
-                feedback?.kind === 'failed' &&
-                mode === 'delete' ? (
-                  <p role="alert">{feedback.message}</p>
+                {outcome.kind === 'failed' && mode === 'delete' ? (
+                  <p role="alert">{outcome.message}</p>
                 ) : null}
               </Modal.Body>
-              {mode !== 'menu' || success ? (
+              {mode !== 'menu' || succeeded ? (
                 <Modal.Footer className="mt-0 grid grid-cols-2 gap-2.5">
-                  {success ? (
+                  {succeeded ? (
                     <Button
                       className="col-span-2 h-12 w-full rounded-lg font-normal"
                       onPress={close}
                     >
                       {mode === 'delete' ? '返回相册列表' : '返回相册'}
                     </Button>
-                  ) : feedback?.kind === 'unknown' ? (
+                  ) : outcome.kind === 'unknown' ? (
                     <>
                       <Button
                         variant="outline"
@@ -411,21 +421,33 @@ export function AlbumDialog({
                       >
                         重新核对
                       </Button>
+                      {mode === 'create' ? (
+                        <Button
+                          variant="outline"
+                          className="col-span-2 h-12 w-full rounded-lg font-normal"
+                          isDisabled={pending}
+                          onPress={() => onClose()}
+                        >
+                          结束本次操作
+                        </Button>
+                      ) : null}
                     </>
-                  ) : feedback?.kind === 'missing' ? (
+                  ) : outcome.kind === 'missing' ? (
                     <Button
                       className="col-span-2 h-12 w-full rounded-lg font-normal"
                       onPress={() => onClose()}
                     >
                       关闭
                     </Button>
-                  ) : feedback?.kind === 'failed' ? (
+                  ) : outcome.kind === 'failed' ? (
                     <Button
                       type={mode === 'delete' ? 'button' : 'submit'}
                       className="col-span-2 h-12 w-full rounded-lg font-normal"
                       isDisabled={pending}
                       onPress={
-                        mode === 'delete' ? () => setFeedback(null) : undefined
+                        mode === 'delete'
+                          ? () => setOutcome({ kind: 'idle' })
+                          : undefined
                       }
                     >
                       {pending
@@ -456,9 +478,7 @@ export function AlbumDialog({
                             ? '创建'
                             : mode === 'delete'
                               ? '删除相册'
-                              : feedback
-                                ? '重试保存'
-                                : '保存'}
+                              : '保存'}
                       </Button>
                     </>
                   )}

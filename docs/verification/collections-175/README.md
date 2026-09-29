@@ -129,3 +129,29 @@ Node 24.18.1 / pnpm 11.19.0：`pnpm install --frozen-lockfile`、`pnpm run forma
 Ego Lite 实际检查生产预览：详情链接文本为“返回”、目标为 `/albums`，点击后列表出现。浅色 [1440×900](./search-feedback/return-1440.png) 与 [390×900](./search-feedback/return-390.png) 实图显示文字及箭头正常，无换行或裁切。沿用详情节点 279:1781 / 279:3957；本次文案差异由用户明确指定，无布局或主题样式变更，不将局部复核描述为重新完成全部 Figma 验收。PR 继续草稿，等待用户人工验收。
 
 独立代码复核发现删除成功弹窗仍使用“返回相册列表”，其测试选择器不能随顶部链接一并改动；已撤销该测试修改，保留原回归断言。评审者实际查看两张截图，顶部“返回”显示正常。
+
+## 2026-09-29 P2 修复与结果状态简化
+
+原 P2 在旧生产构建中实际复现：真实 POST 已落库后丢弃响应，自动核对仅能确认列表已读，普通关闭后保留旧输入；再次“新建相册”仍打开不可提交的旧操作。[RED 报告](./p2-recovery/red.json) 的“unknown creation can be explicitly ended”断言失败，[旧界面](./p2-recovery/red-albums-failed.png)没有终结入口。
+
+本次在创建结果未知时提供显式“结束本次操作”。它只清理旧输入和操作状态，不撤销已创建相册、不重发请求；普通关闭／返回核对仍保留未知状态。结束后焦点回到新建入口，可在同一页面创建另一本相册。`AlbumOutcome` 联合状态取代独立的 feedback、success、savedAlbum：更新成功携带相册，删除成功不再用空值表达结果，错误与成功不能同时存在。没有新增依赖或通用状态框架。
+
+[GREEN 报告](./p2-recovery/green.json)已通过：原创建和后续新建各只有一条；重新核对只读、不重复创建；结束后无刷新即可新建。390×400 下使用真实 Tab 到达结束按钮，按钮自动滚入视口；Enter 结束后焦点返回“新建相册”，再 Enter 打开空表单并成功创建。初次短视口检查用程序 focus 没有触发滚动，改用实际键盘路径验证后通过，没有改弱断言。
+
+本轮还捕获本 PR 前次搜索图标改动的实际输入点击区仅 42px：组合框44px中的边框压缩了 h-full 输入。已给输入明确44px高度，保留外框尺寸；完整相册布局测试继续执行原44px断言。
+
+设计实际读取 Figma 新建弹窗桌面 `37:304`、手机 `102:3243` 的设计信息与截图。未知结果没有独立画板，按任务卡既有容器／Alert组合规范及本次用户授权增加结束路径。对照 [桌面浅色](./p2-recovery/green-albums-create-unknown-light-1440.png)、[桌面深色](./p2-recovery/green-albums-create-unknown-dark-1440.png)、[手机浅色](./p2-recovery/green-albums-create-unknown-light-390.png)、[手机深色](./p2-recovery/green-albums-create-unknown-dark-390.png)及[短视口焦点](./p2-recovery/green-albums-create-unknown-short-focused.png)：公共区域不变；弹窗沿用480/358px宽度、24/16px横向留白、20px标题、12px圆角；结束按钮复用48px高／8px圆角的描边样式，上下间距10px。解释文本完整，短视口可滚动且焦点环可见，不宣称未知状态逐像素对照通过。
+
+两个独立 agent 分别按 code-review-and-quality 与 thermo-nuclear-code-quality-review 复审本轮差异：原 P2 关闭，状态合并确实减少互斥状态与关联更新，无新增必修项。另由独立评审者实际读取上述 Figma 信息及5张真实截图完成局部设计复核，无本次新增视觉问题。用户人工验收未完成，PR继续草稿。
+
+实际环境 Node 24.18.1、pnpm 11.19.0、macOS ARM64、现有 Ego Lite。冻结安装、格式、lint、类型、构建退出0；单元35文件526项、集成75文件573项通过。集成使用 `pnpm run test:integration --maxWorkers=4`，包含真实工具组。构建保留原有可选依赖追踪警告。浏览器独立临时数据库运行，没有更改用户预览数据。最终完整浏览器结果见下方。
+
+首次完整 `pnpm run test:browser` 的 runtime、两端身份与桌面公共流程、图库已通过，在相册短视口等待处失败，见[原始报告](./p2-recovery/full-initial-albums.json)。Tab 已聚焦结束按钮，但立即测量仍处于滚动前位置；稳定页面再次 Tab 实际滚入视口。仅在测试补充 `waitForFunction` 等待同一“按钮聚焦且完整可见”结果，不加固定延时、不放宽原断言、不修改业务滚动。独立完整相册重跑[通过](./p2-recovery/albums-final.json)，覆盖创建、更新、删除的成功／失败／未知／缺失、分页搜索与响应式。
+
+随后最终全量同一场景仍失败，排除了“只等待 Tab 后滚动即可”的初步判断。进一步直接测得 CDP 将窗口缩到400px时 `innerHeight=400`，但 HeroUI 的 `--visual-viewport-height` 仍为1080px、弹窗仍高467px；这时键盘认为控件可见而不滚动，随后弹窗才变为368px。测试改为先等弹窗实际高度适配当前视口，再执行Tab，并保留按钮聚焦及完全位于视口内的原断言；不加固定延时、不改业务布局，不把此前局部通过当作全量通过。
+
+[第二次全量失败](./p2-recovery/full-second-albums.json)、[视口同步诊断](./p2-recovery/viewport-diagnosis.json)与修正等待后的[完整相册通过报告](./p2-recovery/albums-stable.json)均保留。独立审计复核等待条件，确认没有强制滚动或放宽可见性断言。
+
+最终完整浏览器命令 `EGO_TASK_SPACE=5 BROWSER_REPORT_DIR=test-results/collections-175/p2-browser-complete node scripts/verify-browser.mjs` 退出0：复用本轮 `pnpm run test:browser` 已成功构建且未改动的shell/UI夹具，完整重跑所有浏览器脚本，不跳过前序或失败检查。[主运行器](./p2-recovery/runner.json)、[相册完整报告](./p2-recovery/full-albums-passed.json)、[UI运行器](./p2-recovery/ui-runner.json)、[UI报告](./p2-recovery/ui-browser.json)均为passed；包括runtime、两端身份/M2/交互/页面连续性、图库、相册9组业务/70组布局、上传及轮询、UI/组件库。测试空间5已由UI套件finish关闭，独立临时服务与数据已清理。
+
+本轮最终命令汇总：`pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration --maxWorkers=4`、上述完整浏览器运行器，以及 `node docs/tasks/check.mjs` / `git diff --check`。相册预览仍为 `http://ariso-175.localhost:3175/albums`，已重启到本轮生产构建。未运行Release双架构镜像或容器验证，未发布、部署或合并。人工UI验收仍待用户完成。

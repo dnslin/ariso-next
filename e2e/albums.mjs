@@ -493,9 +493,82 @@ try {
     ),
     false,
   );
-  await page.keyboard.press('Escape');
+  assert.equal(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('button')].some(
+        (node) => node.textContent.trim() === '结束本次操作' && !node.disabled,
+      ),
+    ),
+    true,
+    'An unknown creation can be explicitly ended without reloading the page',
+  );
+  await resize(390, 400);
+  // HeroUI updates its visual-viewport CSS variable after the CDP viewport.
+  // Wait for the actual dialog to shrink before testing native Tab scrolling.
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[role="dialog"]').getBoundingClientRect()
+        .height <=
+      innerHeight - 32,
+  );
+  await page.focus(button('返回核对'));
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Tab');
+  await page.waitForFunction(() => {
+    const active = document.activeElement;
+    const rect = active?.getBoundingClientRect();
+    return (
+      active?.textContent.trim() === '结束本次操作' &&
+      rect.top >= 0 &&
+      rect.bottom <= innerHeight
+    );
+  });
+  const ending = await page.evaluate(() => {
+    const active = document.activeElement;
+    const rect = active.getBoundingClientRect();
+    return {
+      focused: active.textContent.trim(),
+      top: rect.top,
+      bottom: rect.bottom,
+      height: innerHeight,
+    };
+  });
+  assert.equal(ending.focused, '结束本次操作');
+  assert.ok(
+    ending.top >= 0 && ending.bottom <= ending.height,
+    'The explicit ending control scrolls into a short viewport for keyboard use',
+  );
+  await shot('create-unknown-short-focused');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+  await page.waitForFunction(
+    () => document.activeElement?.textContent.trim() === '新建相册',
+  );
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[role="dialog"] input');
+  assert.equal(
+    await page.evaluate(() => document.querySelector('#album-name').value),
+    '',
+  );
+  await fillForm('核对后的另一相册', '独立的新建操作');
+  await page.click(button('创建'));
+  await page.waitForFunction(() => /^\/albums\/[^/]+$/.test(location.pathname));
+  await page.waitForSelector(button('编辑相册'));
+  assert.equal(
+    (
+      await sql(
+        "SELECT count(*) AS n FROM albums WHERE name='核对后的另一相册'",
+      )
+    )[0].n,
+    1,
+  );
+  assert.equal(
+    (await sql("SELECT count(*) AS n FROM albums WHERE name='结果待核对'"))[0]
+      .n,
+    1,
+  );
   report.checks.push(
-    'A lost POST response retains the unknown-result state and disables Create; rechecking only reads and never duplicates the committed album.',
+    'A lost POST response retains inputs and disables Create across closing and reopening; rechecking never duplicates the album. The ending control is reachable in a short viewport, restores keyboard focus to New Album, and allows a fresh creation in the same page while retaining exactly one original album.',
   );
 
   report.stage = 'pagination and literal search';

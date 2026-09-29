@@ -258,7 +258,7 @@ export function AlbumsScreen(props: {
                   </InputGroup.Prefix>
                   <InputGroup.Input
                     placeholder="搜索相册…"
-                    className="h-full min-w-0 py-0 text-base md:text-sm"
+                    className="h-11 min-w-0 py-0 text-base md:text-sm"
                   />
                 </InputGroup>
               </TextField>
