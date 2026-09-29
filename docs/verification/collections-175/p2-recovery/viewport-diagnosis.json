@@ -1,0 +1,30 @@
+{
+  "cause": "CDP changes innerHeight before HeroUI synchronizes --visual-viewport-height; a keyboard focus taken against the old tall dialog does not scroll after the dialog later shrinks.",
+  "failedState": {
+    "activeTag": "BUTTON",
+    "activeText": "结束本次操作",
+    "activeRect": { "top": 410, "bottom": 458, "height": 48 },
+    "dialogHeight": 368,
+    "dialogClientHeight": 366,
+    "dialogScrollTop": 0,
+    "innerHeight": 400,
+    "visualViewportHeight": 400,
+    "visualViewportCSSVariable": "400px"
+  },
+  "reproduction": {
+    "transition": "1440x1080 to 390x400",
+    "immediatelyAfterCDP": {
+      "innerHeight": 400,
+      "dialogHeight": 467,
+      "visualViewportCSSVariable": "1080px"
+    },
+    "afterWaitingForDialogHeightAndUsingTab": {
+      "activeText": "结束本次操作",
+      "top": 311,
+      "bottom": 359,
+      "dialogHeight": 368,
+      "dialogScrollTop": 99
+    }
+  },
+  "testFix": "Wait for actual dialog height <= innerHeight - 32 before native Tab navigation; retain the full focus and visibility assertions, without fixed delays."
+}

@@ -45,3 +45,13 @@ it('returns to the delivered upload page after authentication', () => {
   expect(loginDestination('/upload/unknown')).toBe('/admin');
   expect(loginDestination('https://evil.test/upload')).toBe('/admin');
 });
+
+it('returns to delivered album list and details after authentication', () => {
+  expect(loginDestination('/albums')).toBe('/albums');
+  expect(loginDestination('/albums/album-1')).toBe('/albums/album-1');
+  expect(loginDestination('/albums/album-1#main-content')).toBe(
+    '/albums/album-1#main-content',
+  );
+  expect(loginDestination('/albums/album-1/unknown')).toBe('/admin');
+  expect(loginDestination('https://evil.test/albums/album-1')).toBe('/admin');
+});

@@ -1,0 +1,9 @@
+Read-only diagnosis, Node 24.18.1.
+Compared against origin/main: tests/integration/analytics/count.test.ts, tests/integration/analytics/count-fixture.ts, src/app/i, src/server/analytics, src/server/delivery, src/server/media, src/server/storage, src/server/runtime, src/server/site, vitest.config.ts, pnpm-lock.yaml
+Diff output: EMPTY (identical)
+
+Unmodified isolated command: pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts
+Result: PASS 13/13; duration 16.65s. See analytics-isolated.txt.
+Earlier run: 1 timeout at count.test.ts:151, duration 27.27s; all-suite run had 2 timeouts at lines 151,208.
+Concurrent host process snapshot observed issue-143-analytics Vitest worker (PID 5865, parent 5845) at 140.5% CPU plus several Node workers and XProtect at 94.8%. These processes disappeared from top CPU list after isolated run. Other task processes were not interrupted.
+Inference: host resource contention contributed to timeout; isolated rerun passed without assertion/time-limit/application change. No deterministic functional failure reproduced. No fresh checkout required because touched collections module is not imported by this analytics/delivery path and all tested path files equal origin/main.

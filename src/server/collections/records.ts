@@ -5,13 +5,13 @@ import { albums, tags } from './schema.ts';
 import type { CollectionsTransaction } from './types.ts';
 import { albumInputSchema, tagNamesSchema } from './validation.ts';
 
-export function createAlbum(
-  tx: CollectionsTransaction,
-  input: { name: string; description?: string },
-) {
+export function createAlbum(tx: CollectionsTransaction, input: unknown) {
   const parsed = albumInputSchema.safeParse(input);
   if (!parsed.success) {
-    throw new CollectionError('COLLECTION_INVALID_INPUT', parsed.error.message);
+    throw new CollectionError(
+      'COLLECTION_INVALID_INPUT',
+      parsed.error.issues.map((issue) => issue.message).join('；'),
+    );
   }
   const now = new Date();
   return tx
@@ -24,6 +24,31 @@ export function createAlbum(
     })
     .returning()
     .get();
+}
+
+export function updateAlbum(
+  tx: CollectionsTransaction,
+  id: string,
+  input: unknown,
+) {
+  const parsed = albumInputSchema.safeParse(input);
+  if (!parsed.success)
+    throw new CollectionError(
+      'COLLECTION_INVALID_INPUT',
+      parsed.error.issues.map((issue) => issue.message).join('；'),
+    );
+  const row = tx
+    .update(albums)
+    .set({ ...parsed.data, updatedAt: new Date() })
+    .where(eq(albums.id, id))
+    .returning()
+    .get();
+  if (!row)
+    throw new CollectionError(
+      'COLLECTION_TARGET_NOT_FOUND',
+      '相册不存在或已被删除',
+    );
+  return row;
 }
 
 /** Caller owns the write transaction. Only normalized-key conflicts are matches. */
