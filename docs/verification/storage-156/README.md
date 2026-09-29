@@ -57,3 +57,7 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 独立审计者再次只读核对第二轮报告、空阶段日志和运行器，确认当前证据不足以归因；代码审计结论不变，但建议保留草稿，不将浏览器验收标完成。证据整理后重跑 `pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` 和 `git diff --check`，全部通过。
 
 已推送分支 `codex/storage-settings-156` 并创建[草稿 PR #207](https://github.com/dnslin/ariso-next/pull/207)。使用 `gh pr view 207 --json url,state,isDraft,headRefName,statusCheckRollup` 确认 OPEN、isDraft=true、检查列表为空；`gh pr checks 207` 返回 no checks reported，`gh run list --branch codex/storage-settings-156 --json databaseId,status,conclusion,name,url` 返回空数组。当前没有远端检查或工作流运行，不记为 CI 通过，也不等待不存在的检查。
+
+## 用户要求重试：测试空间缺失
+
+再次执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry3 pnpm run test:browser`，外壳与 UI 夹具构建完成，但浏览器启动即返回 `task space not found: 2`，退出 1，尚未进入业务验证。`ego-browser nodejs` 中调用 `listTaskSpaces()` 返回空列表。保留[第三次报告](./browser-retry3/runner.json)与[Ego 错误](./browser-retry3/ego.log)。按 ego-browser 技能要求，未自行新建空间恢复，已请求用户允许新建测试空间；PR 保持草稿，历史验证结论不变。

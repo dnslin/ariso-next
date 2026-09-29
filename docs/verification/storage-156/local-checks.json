@@ -161,6 +161,13 @@
       "log": "/tmp/ariso-156-browser-final.log",
       "report": "browser-final/runner.json",
       "result": "Desktop suites and mobile identity/library/upload pass; mobile M2 before phase aborted at unchanged 300000ms script timeout. Exact blocked operation unresolved; remaining browser checks not run."
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry3 pnpm run test:browser",
+      "exitCode": 1,
+      "report": "browser-retry3/runner.json",
+      "log": "/tmp/ariso-156-browser-retry3.log",
+      "result": "Original Ego TaskSpace 2 no longer exists; listTaskSpaces returns []; business browser scenarios not started. Awaiting authorization to create a replacement space per skill."
     }
   ],
   "notRun": [
