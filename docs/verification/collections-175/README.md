@@ -100,4 +100,8 @@
 
 封面、完整相册内容/筛选、批量成员和分享完整联验继续由上文承接任务负责。没有新增假接口、固定示例图片或模拟成功结果。未执行物理手机、AMD64/ARM64 镜像和容器验证；按现有执行约定不为日常 PR 创建 Release、发布镜像或部署。
 
-分支：`codex/issue-175-albums`。PR 与实际远端检查状态在推送后回读。
+分支：`codex/issue-175-albums`。实施提交 `547791f` 已推送，[PR #208](https://github.com/dnslin/ariso-next/pull/208) 为 OPEN、草稿，等待用户人工 UI 验收。
+
+实际执行 `gh pr view 208 --json url,isDraft,state,headRefName,headRefOid,statusCheckRollup,mergeable`，返回 `isDraft=true`、`mergeable=MERGEABLE`、`statusCheckRollup=[]`；`gh run list --branch codex/issue-175-albums --json databaseId,name,event,status,conclusion,headSha` 返回空数组。`gh pr checks 208` 返回 no checks reported。当前没有触发远端检查，不将空列表表述为 CI 通过，也不等待不存在的工作流。
+
+本次未合并、未主动关闭 Issue、未发布或部署，分支和 worktree 保留。最后只补远端状态与证据链接，不改变已验证的应用或测试代码。
