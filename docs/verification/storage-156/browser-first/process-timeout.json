@@ -1,0 +1,32 @@
+[
+  {
+    "time": "2026-09-29T01:24:41.002Z",
+    "module": "media.queue",
+    "jobId": "f848fee8-cdd9-4d38-92ca-35baaa6f9e3f",
+    "step": "identify",
+    "message": "Cannot inspect media tool processes",
+    "code": "MEDIA_TOOL_SHUTDOWN_FAILED",
+    "cause": {
+      "command": "ps -axww -o pid=,pgid=,stat=,command=",
+      "durationMs": 1126.287542,
+      "timedOut": true,
+      "signal": "SIGTERM",
+      "isMaxBuffer": false
+    }
+  },
+  {
+    "time": "2026-09-29T01:24:41.004Z",
+    "module": "media.queue",
+    "jobId": "f848fee8-cdd9-4d38-92ca-35baaa6f9e3f",
+    "step": null,
+    "message": "Cannot inspect media tool processes",
+    "code": "MEDIA_TOOL_SHUTDOWN_FAILED",
+    "cause": {
+      "command": "ps -axww -o pid=,pgid=,stat=,command=",
+      "durationMs": 1126.287542,
+      "timedOut": true,
+      "signal": "SIGTERM",
+      "isMaxBuffer": false
+    }
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "startedAt": "2026-09-29T01:40:47.242Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-51084.localhost:51084",
+  "taskSpaceId": 2,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    },
+    {
+      "width": 390,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "uploadPolling": "passed",
+  "upload": "passed",
+  "library": "passed",
+  "error": "AbortError: The operation was aborted\n    at AbortSignal.abortListener (node:events:1025:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:776:26)\n    at runAbort (node:internal/abort_controller:547:10)\n    at abortSignal (node:internal/abort_controller:518:3)\n    at AbortController.abort (node:internal/abort_controller:566:5)\n    at Timeout.interrupt (file:///Users/dnslin/.codex/worktrees/storage-settings-156/ariso/scripts/verify-browser.mjs:93:14)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)",
+  "finishedAt": "2026-09-29T01:57:10.616Z",
+  "temporaryDirectoryRemoved": true
+}
