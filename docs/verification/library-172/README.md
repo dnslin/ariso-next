@@ -65,6 +65,8 @@
 
 ## PR 与发布边界
 
-准备提交并创建草稿PR。由于类型与构建失败、必要集成和浏览器证据缺失，保留草稿，不将任务步骤标为完成。远端检查将在PR创建后用gh回读，不把空检查列表当作CI通过。
+已提交并推送 `codex/library-query-172`，实现提交 `6b60968`，证据提交 `18106f0`，创建[草稿 PR #210](https://github.com/dnslin/ariso-next/pull/210)。由于类型与构建失败、必要集成和浏览器证据缺失，保留草稿，不将任务步骤标为完成。
+
+实际执行 `gh pr view 210 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup`、提交的 `check-runs` API 和 `gh run list --branch codex/library-query-172`：OPEN、草稿、MERGEABLE，检查与运行列表为空。当前没有远端检查，不记为CI通过，也不等待不存在的PR工作流。
 
 本次没有创建Release、发布镜像、部署、合并PR、主动关闭Issue或删除分支/worktree。双架构镜像与真实容器按既有Release流程执行，本次未执行，不构成本地新增门槛。
