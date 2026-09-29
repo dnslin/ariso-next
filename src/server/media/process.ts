@@ -1,12 +1,15 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import { mkdir, rm } from 'node:fs/promises';
+import { once } from 'node:events';
 import { sep } from 'node:path';
 import { createMediaResources } from './resources.ts';
 import { startMediaTool, terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import { readObject, writeObject } from '../storage/local.ts';
-import { inspectImage, requireFirstImageFormat } from './formats.ts';
+import { inspectImage } from './formats.ts';
+import { inspectImageFile } from './file-formats.ts';
+import { startSvgPreview } from './svg.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { planDerivedObject } from './objects.ts';
 import {
@@ -73,29 +76,10 @@ export async function processMediaJob(
         storageDirectory: `${storageRoot}${sep}${storage.localPath}`,
       });
     const { snapshot } = job;
-    if (
-      job.scope !== 'all' ||
-      snapshot.watermarkMode !== 'off' ||
-      (snapshot.compressionEnabled && snapshot.outputFormat !== 'webp')
-    ) {
+    if (job.scope !== 'all' || snapshot.watermarkMode !== 'off') {
       throw mediaError(
         'MEDIA_SETTINGS_UNSUPPORTED',
-        'First-image processing supports WebP compression and no watermark',
-      );
-    }
-    const expected = snapshot.compressionEnabled
-      ? ['compressed', 'thumbnail']
-      : ['thumbnail'];
-    if (
-      job.expectedVersions.length !== expected.length ||
-      expected.some(
-        (kind) =>
-          !job.expectedVersions.includes(kind as 'compressed' | 'thumbnail'),
-      )
-    ) {
-      throw mediaError(
-        'MEDIA_PLAN_INVALID',
-        'Expected versions do not match the processing snapshot',
+        'Watermark processing is not implemented (T-MED-08/T-MED-09)',
       );
     }
     const original = db
@@ -123,10 +107,20 @@ export async function processMediaJob(
     budget = beginStep();
     let stepSignal = AbortSignal.any([signal, budget.signal]);
     const source = await openOriginal();
-    const facts = await inspectImage(source.stream, workspace, stepSignal);
-    budget.close();
-    budget = undefined;
-    const coder = requireFirstImageFormat(facts);
+    source.stream.destroy();
+    await once(source.stream, 'close');
+    const facts = await inspectImageFile(
+      source.path,
+      workspace,
+      stepSignal,
+      budget.diskLimitBytes,
+    );
+    const expected =
+      facts.classification === 'static' && snapshot.compressionEnabled
+        ? (['compressed', 'thumbnail'] as const)
+        : (['thumbnail'] as const);
+    // Classification resolves applicability; the immutable settings snapshot stays unchanged.
+    job.expectedVersions = [...expected];
     db.transaction((tx) => {
       activeMediaJob(tx, jobId);
       const details = {
@@ -138,9 +132,9 @@ export async function processMediaJob(
       tx.update(mediaImages)
         .set({
           ...details,
-          animated: false,
-          pageCount: 1,
-          classification: 'static',
+          animated: facts.animated,
+          pageCount: facts.pageCount,
+          classification: facts.classification,
           updatedAt: new Date(),
         })
         .where(eq(mediaImages.id, image.id))
@@ -158,9 +152,85 @@ export async function processMediaJob(
         .set({ format: facts.format, mime: facts.mime, updatedAt: new Date() })
         .where(eq(mediaObjects.id, original.media_objects.id))
         .run();
+      tx.update(mediaJobs)
+        .set({ expectedVersions: job.expectedVersions })
+        .where(eq(mediaJobs.id, jobId))
+        .run();
       if (job.step === 'identify')
         advanceMediaStep(tx, jobId, job.expectedVersions[0] ?? 'complete');
     });
+
+    let previewInput = `${facts.coder}:${source.path}[0]`;
+    if (facts.format === 'SVG') {
+      const previewPath = `${workspace}${sep}preview.png`;
+      const tool = startSvgPreview(
+        source.path,
+        previewPath,
+        workspace,
+        stepSignal,
+      );
+      const error = await tool.settled;
+      if (error) throw error;
+      const dimensions = JSON.parse((await tool.child).stdout) as {
+        width: number;
+        height: number;
+      };
+      facts.width = dimensions.width;
+      facts.height = dimensions.height;
+      previewInput = `png:${previewPath}`;
+    } else if (facts.animated && ['PNG', 'AVIF'].includes(facts.format)) {
+      const previewPath = `${workspace}${sep}preview.png`;
+      const tool = startMediaTool(
+        'ffmpeg',
+        [
+          '-v',
+          'error',
+          '-nostdin',
+          '-y',
+          '-threads',
+          '1',
+          ...(facts.format === 'PNG' ? ['-f', 'apng'] : []),
+          '-i',
+          source.path,
+          '-map',
+          '0:v:0',
+          '-frames:v',
+          '1',
+          '-threads',
+          '1',
+          '-f',
+          'image2',
+          '-vcodec',
+          'png',
+          previewPath,
+        ],
+        { workspace, cancelSignal: stepSignal, timeout: 120_000 },
+      );
+      const error = await tool.settled;
+      if (error) throw error;
+      previewInput = `png:${previewPath}`;
+    }
+
+    if (facts.format === 'SVG')
+      db.transaction((tx) => {
+        activeMediaJob(tx, jobId);
+        const dimensions = { width: facts.width, height: facts.height };
+        tx.update(mediaImages)
+          .set(dimensions)
+          .where(eq(mediaImages.id, image.id))
+          .run();
+        tx.update(mediaVersions)
+          .set(dimensions)
+          .where(
+            and(
+              eq(mediaVersions.imageId, image.id),
+              eq(mediaVersions.kind, 'original'),
+            ),
+          )
+          .run();
+      });
+    budget.close();
+    budget = undefined;
 
     for (const kind of job.expectedVersions) {
       step = kind;
@@ -194,7 +264,7 @@ export async function processMediaJob(
           .run();
         return candidate;
       });
-      const input = await openOriginal();
+      activeMediaJob(db, jobId);
       const controller = new AbortController();
       const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
       const edge = kind === 'thumbnail' ? 640 : snapshot.maxEdge;
@@ -213,18 +283,28 @@ export async function processMediaJob(
           '-limit',
           'thread',
           '1',
-          `${coder}:-`,
+          previewInput,
+          ...(facts.animated && facts.format === 'GIF' ? ['-coalesce'] : []),
           '-auto-orient',
           '-colorspace',
           'sRGB',
           ...(edge === null ? [] : ['-resize', `${edge}x${edge}>`]),
+          ...(kind !== 'thumbnail' && snapshot.outputFormat === 'jpeg'
+            ? [
+                '-background',
+                snapshot.jpegBackground,
+                '-alpha',
+                'remove',
+                '-alpha',
+                'off',
+              ]
+            : []),
           '-strip',
           '-quality',
           String(kind === 'thumbnail' ? 80 : snapshot.quality),
-          'webp:-',
+          `${kind === 'thumbnail' ? 'webp' : snapshot.outputFormat}:-`,
         ],
         {
-          input: input.stream,
           buffer: { stdout: false, stderr: true },
           workspace,
           env: { MAGICK_TEMPORARY_PATH: workspace },
@@ -276,10 +356,9 @@ export async function processMediaJob(
         signal,
       );
       const result = await inspectImage(output.stream, workspace, stepSignal);
-      if (
-        result.mime !== 'image/webp' ||
-        !['WEBP', 'Extended WEBP'].includes(result.format)
-      )
+      const outputFormat =
+        kind === 'thumbnail' ? 'webp' : snapshot.outputFormat;
+      if (result.mime !== `image/${outputFormat}`)
         throw mediaError(
           'MEDIA_OUTPUT_INVALID',
           `Unexpected derived encoding: ${result.format}`,
@@ -289,7 +368,13 @@ export async function processMediaJob(
         jobId,
         kind,
         plan.objectId,
-        { size: saved.size, width: result.width, height: result.height },
+        {
+          size: saved.size,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+          mime: result.mime,
+        },
         plan.temporaryObjectId,
       );
       plan = undefined;

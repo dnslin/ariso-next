@@ -630,7 +630,7 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
     },
   );
 
-  it.each([{ outputFormat: 'jpeg' }, { watermarkMode: 'text' }] as const)(
+  it.each([{ watermarkMode: 'text' }, { watermarkMode: 'image' }] as const)(
     'reports unsupported settings rather than silently creating another version: %j',
     async (changes) => {
       const accepted = await accept(

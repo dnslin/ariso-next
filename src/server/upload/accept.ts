@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { attachAcceptedImage } from '../collections/memberships.ts';
 import { acceptOriginal } from '../media/images.ts';
-import type { inspectImage } from '../media/formats.ts';
+import type { identifyImageFile } from '../media/file-formats.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
 import { getSession, requireSessionStorage } from './sessions.ts';
 import { UploadError } from './errors.ts';
@@ -11,7 +11,7 @@ import { UploadError } from './errors.ts';
 export function acceptSession(
   db: BetterSQLite3Database,
   id: string,
-  facts: Awaited<ReturnType<typeof inspectImage>>,
+  facts: Awaited<ReturnType<typeof identifyImageFile>>,
 ) {
   return db.transaction(
     (tx) => {
@@ -41,7 +41,6 @@ export function acceptSession(
         key: session.finalKey,
         byteSize: session.byteSize,
         ...facts,
-        classification: 'static',
         snapshot: submission.snapshot,
         expectedVersions: submission.snapshot.compressionEnabled
           ? ['compressed', 'thumbnail']

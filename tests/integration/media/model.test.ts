@@ -352,6 +352,32 @@ describe('T-MED-01 persistent asset contract', () => {
     });
   });
 
+  it('reports disabled, pending, failed, inapplicable and saved independently', () => {
+    accept();
+    const compressed = () =>
+      state().versions.find((v) => v.kind === 'compressed')!;
+    expect(compressed().status).toBe('not_generated');
+    const job = state().latestJob!;
+    connection.db
+      .update(mediaJobs)
+      .set({ snapshot: { ...job.snapshot, compressionEnabled: false } })
+      .run();
+    expect(compressed().status).toBe('disabled');
+    connection.db
+      .update(mediaJobs)
+      .set({ snapshot: job.snapshot, status: 'failed' })
+      .run();
+    expect(compressed().status).toBe('failed');
+    connection.db
+      .update(mediaImages)
+      .set({ classification: 'preview_only' })
+      .run();
+    expect(compressed().status).toBe('not_applicable');
+    expect(state().versions.find((v) => v.kind === 'original')!.status).toBe(
+      'saved',
+    );
+  });
+
   it('distinguishes unknown/inapplicable/missing/saved versions from the latest task result', () => {
     accept();
     expect(getImageAccessState(connection.db, 'missing')).toBeNull();

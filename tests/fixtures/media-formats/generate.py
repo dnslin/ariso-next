@@ -40,6 +40,15 @@ run('magick','source.png','-alpha','set','-channel','A','-evaluate','set','50%',
 for suffix in ('jpg','webp','avif','bmp','tiff'):
     run('magick','source.png','-quality','95',f'static.{suffix}')
 run('heif-enc','-L','alpha.png','-o','alpha.heic')
+run('heif-enc','-L','--no-alpha','-t','16','source.png','-o','thumbnail.heic')
+# A real encoded monochrome auxiliary plane becomes a constant depth map by
+# changing only its standardized auxiliary type, with no container parser.
+# libheif recognizes auxid:2 as depth (heif-info reports one 64x48 depth image).
+alpha_bytes = (ROOT/'alpha.heic').read_bytes()
+alpha_type = b'urn:mpeg:hevc:2015:auxid:1'
+assert alpha_bytes.count(alpha_type) == 1
+(ROOT/'depth.heic').write_bytes(alpha_bytes.replace(alpha_type, b'urn:mpeg:hevc:2015:auxid:2'))
+
 run('heif-enc','-A','-L','alpha.png','-o','alpha.avif')
 run('heif-enc','-L','--no-alpha','--rotate-cw','90','source.png','-o','oriented.heic')
 run('heif-enc','-L','--no-alpha','--flip-h','source.png','-o','mirrored.heic')
@@ -77,6 +86,8 @@ def add(file, fmt, classification='static', **expected):
     return entry
 add('source.png','PNG')
 for ext,fmt in [('jpg','JPEG'),('webp','WEBP'),('avif','AVIF'),('bmp','BMP'),('tiff','TIFF')]: add('static.'+ext,fmt)
+add('thumbnail.heic','HEIC',primaryImages=1,thumbnails=1)
+add('depth.heic','HEIC',primaryImages=1,auxiliaryImages=1,depthImages=1)
 s=add('alpha.heic','HEIC',primaryImages=1,auxiliaryImages=1)
 for p in s['preview']['pixels']: p['rgba'][3]=128
 for file,fmt in [('multiple.heic','HEIC'),('multiple.avif','AVIF')]: add(file,fmt,'container',primaryImages=2,auxiliaryImages=0,pages=2)
@@ -108,6 +119,7 @@ s['preview']['coalesce']=True
 # These expectations derive from the generation instructions above, not tool output.
 # ExifTool calls belong to verification and must never rewrite this oracle.
 FILE_TYPES = {
+    'depth.heic': 'HEIF', 'thumbnail.heic': 'HEIF',
     'source.png': 'PNG', 'static.jpg': 'JPEG', 'static.webp': 'WEBP',
     'static.avif': 'AVIF', 'static.bmp': 'BMP', 'static.tiff': 'TIFF',
     'alpha.heic': 'HEIF', 'multiple.heic': 'HEIF', 'multiple.avif': 'AVIF',
@@ -118,6 +130,7 @@ FILE_TYPES = {
     'offset.gif': 'GIF', 'primary-second.heic': 'HEIF', 'primary-second.avif': 'AVIF',
 }
 EXTRA_TAGS = {
+    'depth.heic': {'QuickTime:Doc1:AuxiliaryImageType': 'urn:mpeg:hevc:2015:auxid:2'},
     'animated.png': {'PNG:Main:AnimationFrames': 2},
     'poster.png': {'PNG:Main:AnimationFrames': 2},
     'animated.gif': {'GIF:Main:FrameCount': 2},

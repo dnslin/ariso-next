@@ -1159,6 +1159,114 @@
           }
         ]
       }
+    },
+    {
+      "id": "depth-heic",
+      "file": "depth.heic",
+      "source": "Original Ariso geometric artwork; reproducible with generate.py (ImageMagick 7.1.2-32 / libheif 1.23.5).",
+      "license": "CC0-1.0",
+      "sha256": "a4f9684de4706c3c3874ec26f70822ed4436eae469876b466037adc0eacd3684",
+      "expected": {
+        "format": "HEIC",
+        "width": 64,
+        "height": 48,
+        "classification": "static",
+        "primaryImages": 1,
+        "nativeTags": {
+          "File:Main:FileType": "HEIF",
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:HandlerType": "pict",
+          "Meta:Main:PrimaryItemReference": 1,
+          "QuickTime:Doc1:AuxiliaryImageType": "urn:mpeg:hevc:2015:auxid:2"
+        },
+        "decodedImages": 1,
+        "auxiliaryImages": 1,
+        "depthImages": 1
+      },
+      "preview": {
+        "input": "depth.heic[0]",
+        "width": 64,
+        "height": 48,
+        "pixels": [
+          {
+            "x": 8,
+            "y": 8,
+            "rgba": [255, 0, 0, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 48,
+            "y": 8,
+            "rgba": [0, 255, 0, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 8,
+            "y": 36,
+            "rgba": [0, 0, 255, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 48,
+            "y": 36,
+            "rgba": [255, 255, 255, 255],
+            "tolerance": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "thumbnail-heic",
+      "file": "thumbnail.heic",
+      "source": "Original Ariso geometric artwork; reproducible with generate.py (ImageMagick 7.1.2-32 / libheif 1.23.5).",
+      "license": "CC0-1.0",
+      "sha256": "26726ca88c1b2107daca48406aaaae640421b6b4dc639f5415e5bc7ef3292420",
+      "expected": {
+        "format": "HEIC",
+        "width": 64,
+        "height": 48,
+        "classification": "static",
+        "primaryImages": 1,
+        "nativeTags": {
+          "File:Main:FileType": "HEIF",
+          "QuickTime:Main:MajorBrand": "heix",
+          "QuickTime:Main:HandlerType": "pict",
+          "Meta:Main:PrimaryItemReference": 1
+        },
+        "decodedImages": 1,
+        "thumbnails": 1
+      },
+      "preview": {
+        "input": "thumbnail.heic[0]",
+        "width": 64,
+        "height": 48,
+        "pixels": [
+          {
+            "x": 8,
+            "y": 8,
+            "rgba": [255, 0, 0, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 48,
+            "y": 8,
+            "rgba": [0, 255, 0, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 8,
+            "y": 36,
+            "rgba": [0, 0, 255, 255],
+            "tolerance": 20
+          },
+          {
+            "x": 48,
+            "y": 36,
+            "rgba": [255, 255, 255, 255],
+            "tolerance": 20
+          }
+        ]
+      }
     }
   ]
 }

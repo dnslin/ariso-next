@@ -6,10 +6,7 @@ import { Readable } from 'node:stream';
 import { crc32 } from 'node:zlib';
 import { execa } from 'execa';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import {
-  inspectImage,
-  requireFirstImageFormat,
-} from '../../../src/server/media/formats.ts';
+import { inspectImage } from '../../../src/server/media/formats.ts';
 
 let directory: string;
 beforeEach(async () => {
@@ -124,12 +121,11 @@ describe('native container identification through tool stdin', () => {
         animated: false,
         pageCount: 1,
       });
-      expect(requireFirstImageFormat(facts)).toBe(format);
       expect(await readFile(file)).toEqual(bytes);
     },
   );
 
-  it('rejects a valid single-frame APNG instead of treating its one frame as static PNG', async () => {
+  it('identifies a valid single-frame APNG rather than treating it as static PNG', async () => {
     const bytes = singleFrameApng(await raster('png'));
     const { stdout } = await execa(
       'exiftool',
@@ -154,12 +150,9 @@ describe('native container identification through tool stdin', () => {
       height: 12,
       animated: true,
     });
-    expect(() => requireFirstImageFormat(facts)).toThrow(
-      'static JPEG/PNG only',
-    );
   });
 
-  it('reads the actual MPF image count from stdin and rejects two-image MPO', async () => {
+  it('reads the actual MPF image count from stdin for two-image MPO', async () => {
     const first = await raster('jpeg');
     const second = await raster('jpeg', 'blue');
     const bytes = twoImageMpo(first, second);
@@ -179,8 +172,5 @@ describe('native container identification through tool stdin', () => {
     expect(Buffer.from(extracted.stdout)).toEqual(second);
     const facts = await inspectImage(Readable.from(bytes), directory);
     expect(facts.pageCount).toBe(2);
-    expect(() => requireFirstImageFormat(facts)).toThrow(
-      'static JPEG/PNG only',
-    );
   });
 });

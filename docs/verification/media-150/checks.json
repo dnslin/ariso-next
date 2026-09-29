@@ -1,0 +1,85 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "status": "passed",
+      "files": 34,
+      "tests": 525
+    },
+    {
+      "command": "pnpm run build",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "status": "failed",
+      "passed": 646,
+      "failed": 2,
+      "reason": "analytics/count timeout; runtime/build copied unstaged deleted path"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts tests/integration/runtime/build.test.ts --maxWorkers=1",
+      "status": "passed",
+      "files": 2,
+      "tests": 14
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "status": "passed",
+      "files": 78,
+      "tests": 650
+    },
+    {
+      "command": "pnpm run test:browser",
+      "status": "passed",
+      "report": "browser-runner.json"
+    },
+    {
+      "command": "node scripts/verify-image.mjs --output-dir ../../../test-results/image-150",
+      "cwd": ".next/standalone",
+      "status": "passed",
+      "formats": 26,
+      "report": "image-local-arm64.json"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "status": "passed",
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "status": "passed",
+      "scenarios": 5
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "codeAudit": "passed; no Required/Critical findings",
+  "designReview": "not applicable; no UI changes",
+  "releaseImages": "not run; existing Release workflow"
+}

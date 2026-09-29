@@ -107,22 +107,3 @@ export async function inspectImage(
     pageCount: facts['MPF0:NumberOfImages'] ?? 1,
   };
 }
-
-export function requireFirstImageFormat(
-  facts: Awaited<ReturnType<typeof inspectImage>>,
-) {
-  if (
-    facts.animated ||
-    facts.pageCount !== 1 ||
-    !(
-      (facts.format === 'JPEG' && facts.mime === 'image/jpeg') ||
-      (facts.format === 'PNG' && facts.mime === 'image/png')
-    )
-  ) {
-    throw mediaError(
-      'MEDIA_FORMAT_UNSUPPORTED',
-      `First-image processing supports static JPEG/PNG only: ${facts.format}`,
-    );
-  }
-  return facts.format === 'JPEG' ? 'jpeg' : 'png';
-}

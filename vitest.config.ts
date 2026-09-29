@@ -17,6 +17,11 @@ export default defineConfig({
           include: ['tests/integration/**/*.test.ts'],
           exclude: [
             'tests/integration/media/process.test.ts',
+            'tests/integration/media/formats.test.ts',
+            'tests/integration/media/format-recovery.test.ts',
+            'tests/integration/upload/formats.test.ts',
+            'tests/integration/media/file-formats.test.ts',
+            'tests/integration/media/svg.test.ts',
             'tests/integration/media/formats-tools.test.ts',
             'tests/integration/media/recovery-tools.test.ts',
             'tests/integration/upload/local.test.ts',
@@ -30,6 +35,11 @@ export default defineConfig({
           environment: 'node',
           include: [
             'tests/integration/media/process.test.ts',
+            'tests/integration/media/formats.test.ts',
+            'tests/integration/media/format-recovery.test.ts',
+            'tests/integration/upload/formats.test.ts',
+            'tests/integration/media/file-formats.test.ts',
+            'tests/integration/media/svg.test.ts',
             'tests/integration/media/formats-tools.test.ts',
             'tests/integration/media/recovery-tools.test.ts',
             'tests/integration/upload/local.test.ts',

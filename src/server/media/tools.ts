@@ -101,7 +101,7 @@ export async function terminateMediaTools(workspace: string) {
 type TextToolOptions = Extract<Options, { encoding?: 'utf8' | 'utf16le' }>;
 
 export function startMediaTool<const ToolOptions extends TextToolOptions>(
-  command: 'magick' | 'exiftool',
+  command: 'magick' | 'exiftool' | 'ffmpeg' | 'ffprobe' | 'node',
   args: string[],
   options: ToolOptions & { workspace: string },
 ) {
@@ -109,12 +109,26 @@ export function startMediaTool<const ToolOptions extends TextToolOptions>(
   const marker =
     command === 'magick'
       ? ['-define', `registry:temporary-path=${workspace}`]
-      : ['-userParam', `ArisoWorkspace=${workspace}`];
-  const child = execa(command, [...marker, ...args], {
-    ...executionOptions,
-    detached: true,
-    forceKillAfterDelay: graceMs,
-  });
+      : command === 'ffmpeg'
+        ? ['-metadata', `ArisoWorkspace=${workspace}`]
+        : command === 'ffprobe'
+          ? ['-user_agent', `ArisoWorkspace=${workspace}`]
+          : ['-userParam', `ArisoWorkspace=${workspace}`];
+  const toolArgs =
+    command === 'node'
+      ? [...args, '--', `ArisoWorkspace=${workspace}`]
+      : command === 'ffmpeg'
+        ? [...args.slice(0, -1), ...marker, ...args.slice(-1)]
+        : [...marker, ...args];
+  const child = execa(
+    command === 'node' ? process.execPath : command,
+    toolArgs,
+    {
+      ...executionOptions,
+      detached: true,
+      forceKillAfterDelay: graceMs,
+    },
+  );
   let termination: Promise<Error | undefined> | undefined;
   const terminate = () => {
     termination ??=

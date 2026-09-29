@@ -75,7 +75,7 @@ function inspectCss(source, context) {
   });
 }
 
-// Experiment-only admission policy. XML/CSS libraries parse grammar and escapes;
+// XML/CSS libraries parse grammar and escapes;
 // this function applies the SPEC-media static/no-external-resource requirements.
 // It does not rewrite input or claim the renderer itself is a sandbox.
 export function assertStaticSvg(source) {
