@@ -240,6 +240,7 @@ for (const service of selected) {
       { secretKey: invalidSecret },
       context,
     );
+    assert.equal(changed.configRevision, stored.configRevision + 1);
     assert.equal(changed.enabled, false);
     assert.equal(changed.connectionStatus, 'untested');
     const rejected = await runtime.test(stored.id, {
@@ -254,15 +255,61 @@ for (const service of selected) {
     report.pendingUsage = readProbeUsage(connection.db);
     await save();
     assert.equal(rejected.passed, false);
-    assert.equal(rejected.cleanupPending, true);
-    assert.ok(
-      rejected.stages.some((stage) => stage.error?.httpStatusCode === 403),
+    assert.equal(rejected.stale, false);
+    assert.equal(rejected.cleanupPending, service === 'r2');
+    assert.deepEqual(
+      rejected.stages.map(({ stage, status }) => ({ stage, status })),
+      service === 'r2'
+        ? [
+            { stage: 'configuration', status: 'passed' },
+            { stage: 'write', status: 'failed' },
+            { stage: 'read', status: 'skipped' },
+            { stage: 'anonymous', status: 'skipped' },
+            { stage: 'delete', status: 'failed' },
+          ]
+        : [
+            { stage: 'configuration', status: 'failed' },
+            { stage: 'write', status: 'skipped' },
+            { stage: 'read', status: 'skipped' },
+            { stage: 'anonymous', status: 'skipped' },
+            { stage: 'delete', status: 'skipped' },
+          ],
     );
+    const credentialError = rejected.stages.find(
+      ({ stage }) => stage === (service === 'r2' ? 'write' : 'configuration'),
+    )?.error;
+    assert.equal(credentialError?.httpStatusCode, 403);
+    assert.equal(credentialError?.serviceCode, 'SignatureDoesNotMatch');
+    const deletion = rejected.stages.find(({ stage }) => stage === 'delete');
+    if (service === 'r2') {
+      assert.equal(deletion?.error?.httpStatusCode, 403);
+      assert.equal(deletion?.error?.serviceCode, 'SignatureDoesNotMatch');
+      assert.deepEqual(readProbeReferences(connection.db, stored.id), [
+        {
+          probeId: rejected.probeId,
+          storageId: stored.id,
+          key: `probes/${rejected.probeId}`,
+          state: 'cleanup',
+        },
+      ]);
+      assert.deepEqual(readProbeUsage(connection.db), [
+        {
+          storageId: stored.id,
+          knownBytes: 0,
+          unconfirmedObjects: 1,
+          confirmedAt: null,
+        },
+      ]);
+    } else {
+      assert.equal(deletion?.error, undefined);
+      assert.deepEqual(readProbeReferences(connection.db, stored.id), []);
+      assert.deepEqual(readProbeUsage(connection.db), []);
+    }
     assert.equal(
       readStorage(connection.db, stored.id).connectionStatus,
       'failed',
     );
-    assert.equal(readProbeReferences(connection.db, stored.id).length, 1);
+    assert.equal(readStorage(connection.db, stored.id).enabled, false);
     assert.throws(
       () => updateStorage(connection.db, stored.id, { enabled: true }, context),
       { code: 'STORAGE_TEST_REQUIRED' },
@@ -273,7 +320,26 @@ for (const service of selected) {
       { secretKey: target.credentials.secretAccessKey },
       context,
     );
-    await runtime.retryCleanup(stored.id, rejected.probeId);
+    assert.equal(restored.configRevision, changed.configRevision + 1);
+    assert.equal(restored.connectionStatus, 'untested');
+    assert.equal(restored.enabled, false);
+    assert.throws(
+      () => updateStorage(connection.db, stored.id, { enabled: true }, context),
+      { code: 'STORAGE_TEST_REQUIRED' },
+    );
+    if (service === 'r2') {
+      await runtime.retryCleanup(stored.id, rejected.probeId);
+      report.credentialRecoveryCleanup = {
+        status: 'passed',
+        probeId: rejected.probeId,
+      };
+    } else {
+      report.credentialRecoveryCleanup = {
+        status: 'not-applicable',
+        reason:
+          'Configuration failed before PUT; no remote object operation or cleanup responsibility was created',
+      };
+    }
     assert.equal(
       await verifier.inspectObject(`probes/${rejected.probeId}`, {
         signal: AbortSignal.timeout(30_000),
@@ -300,6 +366,19 @@ for (const service of selected) {
     report.retriedKey = `ariso/${stored.id}/probes/${retried.probeId}`;
     await save();
     assert.equal(retried.passed, true);
+    assert.equal(retried.revision, restored.configRevision);
+    assert.equal(retried.stale, false);
+    assert.equal(retried.cleanupPending, false);
+    assert.deepEqual(
+      retried.stages.map(({ stage, status }) => ({ stage, status })),
+      [
+        { stage: 'configuration', status: 'passed' },
+        { stage: 'write', status: 'passed' },
+        { stage: 'read', status: 'passed' },
+        { stage: 'anonymous', status: 'passed' },
+        { stage: 'delete', status: 'passed' },
+      ],
+    );
     assert.equal(
       await verifier.inspectObject(`probes/${retried.probeId}`, {
         signal: AbortSignal.timeout(30_000),
@@ -316,9 +395,17 @@ for (const service of selected) {
     report.recoveryAssertions = {
       credentialEditInvalidatesPassedResult: true,
       realServiceRejectedCredentials: true,
-      failedCleanupRetainsExactKey: true,
-      manualCleanupAfterCredentialRestorePassed: true,
-      cleanupDoesNotRestoreConnectionPassed: true,
+      ...(service === 'r2'
+        ? {
+            failedCleanupRetainsExactKeyAndUnconfirmedUsage: true,
+            manualCleanupAfterCredentialRestorePassed: true,
+            cleanupDoesNotRestoreConnectionPassed: true,
+          }
+        : {
+            configurationFailureSkipsWriteAndDelete: true,
+            noCleanupResponsibilityOrUsageCreated: true,
+          }),
+      restoringCredentialsDoesNotRestorePassed: true,
       newRevisionRequiresFullRetest: true,
       finalReferencesAndUsageReleased: true,
       recoveryKeysAbsent: true,

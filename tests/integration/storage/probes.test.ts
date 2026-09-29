@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path';
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { eq } from 'drizzle-orm';
 import {
@@ -35,6 +36,8 @@ let deleteFails: boolean;
 let corruptRead: boolean;
 let holdWrite: boolean;
 let releaseWrite: (() => void) | undefined;
+let versioning: 'Enabled' | 'Suspended' | undefined;
+const requests: { method: string; path: string }[] = [];
 const objects = new Map<string, Buffer>();
 const secretCrypto = createSecretCrypto(Buffer.alloc(32, 37));
 const context = () => ({ storageRoot: directory, secretCrypto });
@@ -49,15 +52,22 @@ beforeEach(async () => {
   corruptRead = false;
   holdWrite = false;
   releaseWrite = undefined;
+  versioning = undefined;
+  requests.length = 0;
   server = createServer(async (req, res) => {
     const url = new URL(req.url!, 'http://localhost');
+    requests.push({ method: req.method!, path: req.url! });
     res.setHeader('x-amz-request-id', 'probe-request');
     const error = (status: number, code: string) => {
       res.writeHead(status, { 'content-type': 'application/xml' });
       res.end(`<Error><Code>${code}</Code><Message>${code}</Message></Error>`);
     };
     if (url.searchParams.has('versioning'))
-      return res.end('<VersioningConfiguration/>');
+      return res.end(
+        versioning
+          ? `<VersioningConfiguration><Status>${versioning}</Status></VersioningConfiguration>`
+          : '<VersioningConfiguration/>',
+      );
     if (url.searchParams.has('object-lock'))
       return error(404, 'ObjectLockConfigurationNotFoundError');
     if (req.method === 'PUT') {
@@ -73,6 +83,14 @@ beforeEach(async () => {
     }
     if (req.method === 'DELETE') {
       if (deleteFails) return error(403, 'AccessDenied');
+      if (versioning) {
+        res.writeHead(204, {
+          'x-amz-delete-marker': 'true',
+          'x-amz-version-id': randomUUID(),
+        });
+        res.end();
+        return;
+      }
       objects.delete(url.pathname);
       res.writeHead(204);
       res.end();
@@ -138,6 +156,133 @@ it('真实四阶段通过后才允许启用，清理成功释放引用与占用'
     updateStorage(connection.db, storageId, { enabled: true }, context())
       .enabled,
   ).toBe(true);
+});
+it.each(['Enabled', 'Suspended'] as const)(
+  '版本检查拒绝 %s 后不写入、不删除，也不留下清理引用',
+  async (status) => {
+    versioning = status;
+    const report = await runtime.test(storageId, { revision: 1 });
+    expect(requests).toEqual([
+      { method: 'GET', path: '/test-bucket/?versioning=' },
+    ]);
+    expect(report).toMatchObject({ passed: false, cleanupPending: false });
+    expect(report.stages).toEqual([
+      expect.objectContaining({
+        stage: 'configuration',
+        status: 'failed',
+        error: expect.objectContaining({ code: 'STORAGE_BUCKET_UNSUPPORTED' }),
+      }),
+      ...(['write', 'read', 'anonymous', 'delete'] as const).map((stage) => ({
+        stage,
+        status: 'skipped',
+      })),
+    ]);
+    expect(readProbeReferences(connection.db, storageId)).toEqual([]);
+    expect(readProbeUsage(connection.db)).toEqual([]);
+    expect(readStorage(connection.db, storageId)).toMatchObject({
+      connectionStatus: 'failed',
+      enabled: false,
+      connectionReport: { cleanupPending: false },
+    });
+  },
+);
+
+function insertPlannedProbe(stage: 'configuration' | 'delete') {
+  const id = randomUUID();
+  const now = new Date();
+  connection.db
+    .insert(storageProbes)
+    .values({
+      id,
+      storageId,
+      purpose: 'connection',
+      configRevision: 1,
+      key: `probes/${id}`,
+      state: stage === 'configuration' ? 'running' : 'cleanup',
+      stage,
+      objectState: 'planned',
+      cleanupAttempts: stage === 'configuration' ? 0 : 1,
+      nextCleanupAt: now,
+      report: {
+        probeId: id,
+        storageId,
+        revision: 1,
+        passed: false,
+        stale: false,
+        cleanupPending: true,
+        stages: (
+          ['configuration', 'write', 'read', 'anonymous', 'delete'] as const
+        ).map((name) => ({
+          stage: name,
+          status:
+            stage === 'configuration'
+              ? 'pending'
+              : name === 'configuration' || name === 'delete'
+                ? 'failed'
+                : 'skipped',
+        })),
+        deploymentRequirement: 'Bucket 必须保持私有',
+        testedAt: now.toISOString(),
+        ownerConfirmation: {
+          wholeBucketHasNoLockRules: false,
+          confirmedAt: null,
+        },
+      },
+      createdAt: now,
+      updatedAt: now,
+    })
+    .run();
+  return id;
+}
+
+it('重启恢复尚未写入的 planned 探测时，不访问远端并释放引用', async () => {
+  await runtime.stop();
+  insertPlannedProbe('configuration');
+  connection.close();
+  connection = openRuntimeDatabase(join(directory, 'ariso.db'));
+  runtime = startStorageProbeRuntime({
+    db: connection.db,
+    secretCrypto,
+    logger,
+  });
+  await runtime.stop();
+  expect(requests).toEqual([]);
+  expect(readProbeReferences(connection.db, storageId)).toEqual([]);
+  expect(readProbeUsage(connection.db)).toEqual([]);
+  expect(readStorage(connection.db, storageId)).toMatchObject({
+    connectionStatus: 'failed',
+    enabled: false,
+    connectionReport: {
+      passed: false,
+      cleanupPending: false,
+      stages: expect.arrayContaining([
+        expect.objectContaining({
+          stage: 'configuration',
+          error: expect.objectContaining({ code: 'STORAGE_TEST_INTERRUPTED' }),
+        }),
+      ]),
+    },
+  });
+});
+
+it('重启不得仅凭 planned 状态释放曾删除失败的历史清理责任', async () => {
+  await runtime.stop();
+  versioning = 'Enabled';
+  const id = insertPlannedProbe('delete');
+  connection.close();
+  connection = openRuntimeDatabase(join(directory, 'ariso.db'));
+  runtime = startStorageProbeRuntime({
+    db: connection.db,
+    secretCrypto,
+    logger,
+  });
+  await runtime.stop();
+  expect(readProbeReferences(connection.db, storageId)).toMatchObject([
+    { probeId: id, state: 'cleanup' },
+  ]);
+  expect(
+    connection.db.select().from(storageProbes).get()?.report,
+  ).toMatchObject({ cleanupPending: true });
 });
 it.each(['public', 'corrupt'] as const)(
   '%s 对象不通过且始终清理',

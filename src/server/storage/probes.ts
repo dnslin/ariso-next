@@ -314,17 +314,27 @@ export async function testStorageConnection(
         if (item.status === 'pending' && item.stage !== 'delete')
           item.status = 'skipped';
     }
-    // The local PUT has settled. Cleanup has its own budget even if the HTTP caller disconnected.
-    try {
-      await perform('delete', () =>
-        storage.deleteObject(key, { signal: AbortSignal.timeout(30_000) }),
-      );
+    const probe = context.db
+      .select()
+      .from(storageProbes)
+      .where(eq(storageProbes.id, report.probeId))
+      .get()!;
+    if (probe.objectState === 'planned') {
+      report.stages[4].status = 'skipped';
       report.cleanupPending = false;
-    } catch (error) {
-      Object.assign(report.stages[4], {
-        status: 'failed',
-        error: stageError(error, secrets),
-      });
+    } else {
+      // PUT was attempted and has settled. Cleanup keeps its own budget.
+      try {
+        await perform('delete', () =>
+          storage.deleteObject(key, { signal: AbortSignal.timeout(30_000) }),
+        );
+        report.cleanupPending = false;
+      } catch (error) {
+        Object.assign(report.stages[4], {
+          status: 'failed',
+          error: stageError(error, secrets),
+        });
+      }
     }
     report.passed = report.stages.every((item) => item.status === 'passed');
     report.testedAt = new Date().toISOString();
@@ -404,7 +414,7 @@ export function recoverProbes(context: ProbeContext) {
       .all()) {
       const report = probe.report;
       report.passed = false;
-      report.cleanupPending = true;
+      report.cleanupPending = probe.objectState !== 'planned';
       report.testedAt = new Date().toISOString();
       const stage = report.stages.find((item) => item.stage === probe.stage)!;
       Object.assign(stage, {
@@ -417,12 +427,18 @@ export function recoverProbes(context: ProbeContext) {
       for (const item of report.stages)
         if (item.status === 'pending') item.status = 'skipped';
       saveReport(context, report);
-      updateProbe(context, probe.id, {
-        state: 'cleanup',
-        report,
-        error: '连接测试被进程重启中断',
-        nextCleanupAt: new Date(),
-      });
+      if (report.cleanupPending)
+        updateProbe(context, probe.id, {
+          state: 'cleanup',
+          report,
+          error: '连接测试被进程重启中断',
+          nextCleanupAt: new Date(),
+        });
+      else
+        context.db
+          .delete(storageProbes)
+          .where(eq(storageProbes.id, probe.id))
+          .run();
     }
   });
 }
