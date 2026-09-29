@@ -151,6 +151,7 @@ export function createS3Storage(config: S3StorageConfig) {
     cause: unknown,
     key: string,
     operation: string,
+    signal: AbortSignal,
     responseMetadata?: GetObjectCommandOutput['$metadata'],
   ) {
     const error = cause as Error & {
@@ -158,6 +159,11 @@ export function createS3Storage(config: S3StorageConfig) {
       $metadata?: GetObjectCommandOutput['$metadata'];
     };
     if (error?.code === 'STORAGE_DISABLED') return error;
+    const reason = signal.reason as
+      { name?: string; code?: string } | undefined;
+    const timedOut =
+      signal.aborted &&
+      (reason?.name === 'TimeoutError' || reason?.code === 'STORAGE_TIMEOUT');
     // S3 may echo credentials or a signed request in any error field.
     function redact(value: string) {
       let safe = value.replace(
@@ -186,9 +192,10 @@ export function createS3Storage(config: S3StorageConfig) {
         { cause: safeCause },
       ),
       {
-        code:
-          error?.code === 'STORAGE_BUCKET_UNSUPPORTED' ||
-          error?.code === 'STORAGE_TIMEOUT'
+        code: timedOut
+          ? 'STORAGE_TIMEOUT'
+          : error?.code === 'STORAGE_BUCKET_UNSUPPORTED' ||
+              error?.code === 'STORAGE_TIMEOUT'
             ? error.code
             : metadata?.httpStatusCode === 412
               ? 'STORAGE_OBJECT_CHANGED'
@@ -220,21 +227,7 @@ export function createS3Storage(config: S3StorageConfig) {
       request.signal.throwIfAborted();
       return await perform(request.signal, request.abort);
     } catch (cause) {
-      const reason = request.signal.reason as
-        { name?: string; code?: string } | undefined;
-      if (
-        request.signal.aborted &&
-        (reason?.name === 'TimeoutError' || reason?.code === 'STORAGE_TIMEOUT')
-      ) {
-        throw failure(
-          Object.assign(new Error('S3 operation timed out', { cause }), {
-            code: 'STORAGE_TIMEOUT',
-          }),
-          key,
-          operation,
-        );
-      }
-      throw failure(cause, key, operation);
+      throw failure(cause, key, operation, request.signal);
     } finally {
       request.close();
     }
@@ -563,7 +556,9 @@ export function createS3Storage(config: S3StorageConfig) {
         });
         body.once('end', () => request.close());
         body.once('error', (cause) =>
-          stream.destroy(failure(cause, key, 'read', result.$metadata)),
+          stream.destroy(
+            failure(cause, key, 'read', request.signal, result.$metadata),
+          ),
         );
         body.pipe(stream);
         return {
@@ -575,7 +570,7 @@ export function createS3Storage(config: S3StorageConfig) {
         };
       } catch (cause) {
         request.close();
-        throw failure(cause, key, 'read');
+        throw failure(cause, key, 'read', request.signal);
       }
     },
     /** Maintenance HEAD is also needed after disabling a configuration. */

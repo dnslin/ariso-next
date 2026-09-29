@@ -12,6 +12,7 @@ const errorXml = (code: string, message = 'Protocol error') =>
 async function withEndpoint(
   respond: (request: IncomingMessage, response: ServerResponse) => void,
   run: (store: ReturnType<typeof createS3Storage>) => Promise<void>,
+  enabled = false,
 ) {
   const server = createServer(respond);
   server.listen(0, '127.0.0.1');
@@ -21,7 +22,7 @@ async function withEndpoint(
     throw new Error('Expected TCP address');
   const store = createS3Storage({
     id: 'probe-config',
-    enabled: false,
+    enabled,
     endpoint: `http://127.0.0.1:${address.port}`,
     region: 'us-east-1',
     bucket: 'private',
@@ -322,6 +323,72 @@ it('匿名 XML 超时返回 STORAGE_TIMEOUT', async () => {
     },
   );
 });
+
+it.each(['headers', 'body'] as const)(
+  '鉴权读取 %s 超时返回 STORAGE_TIMEOUT',
+  async (phase) => {
+    await withEndpoint(
+      (_request, response) => {
+        if (phase === 'body') {
+          response.writeHead(200, {
+            'content-type': 'application/octet-stream',
+            'content-length': '64',
+          });
+          response.write('a');
+        }
+      },
+      async (store) => {
+        const signal = AbortSignal.timeout(100);
+        const reading = store.readObject('probes/id', { signal });
+        const pending =
+          phase === 'headers' ? reading : (await reading).stream.toArray();
+        await expect(pending).rejects.toMatchObject({
+          operation: 'read',
+          code: 'STORAGE_TIMEOUT',
+        });
+      },
+      true,
+    );
+  },
+);
+
+it.each(['headers', 'body'] as const)(
+  '主动取消鉴权读取 %s 不误报超时',
+  async (phase) => {
+    let started!: () => void;
+    const receiving = new Promise<void>((resolve) => {
+      started = resolve;
+    });
+    await withEndpoint(
+      (_request, response) => {
+        if (phase === 'body') {
+          response.writeHead(200, {
+            'content-type': 'application/octet-stream',
+            'content-length': '64',
+          });
+          response.write('a');
+        }
+        started();
+      },
+      async (store) => {
+        const controller = new AbortController();
+        const reading = store.readObject('probes/id', {
+          signal: controller.signal,
+        });
+        const pending =
+          phase === 'headers' ? reading : (await reading).stream.toArray();
+        const rejected = expect(pending).rejects.toMatchObject({
+          operation: 'read',
+          code: 'STORAGE_OPERATION_FAILED',
+        });
+        await receiving;
+        controller.abort(new Error('caller disconnected'));
+        await rejected;
+      },
+      true,
+    );
+  },
+);
 
 it.each([201, 204])(
   '版本接口非标准成功状态 %s 不能证明未版本化',
