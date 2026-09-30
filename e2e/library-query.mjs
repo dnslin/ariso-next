@@ -9,6 +9,10 @@ const { verifyLibraryFilters } = await import(
 const { verifyLibrarySelection } = await import(
   new URL('./library-selection.mjs', config.libraryDetailScript).href
 );
+const { verifyLibrarySelectionReconciliation } = await import(
+  new URL('./library-selection-reconciliation.mjs', config.libraryDetailScript)
+    .href
+);
 const { verifyLibraryScale } = await import(
   new URL('./library-query-scale.mjs', config.libraryDetailScript).href
 );
@@ -217,6 +221,8 @@ try {
     await verifyLibraryFeedback({ page, config, sql, report });
   } else if (phase === 'selection') {
     await verifyLibrarySelection({ page, config, report });
+  } else if (phase === 'selection-reconciliation') {
+    await verifyLibrarySelectionReconciliation({ page, config, sql, report });
   } else if (phase === 'filters') {
     await verifyLibraryFilters({ page, config, sql, report });
   } else if (phase === 'scale') {

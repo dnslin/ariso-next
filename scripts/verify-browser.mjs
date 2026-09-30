@@ -23,6 +23,7 @@ for (const name of [
   'library-query.json',
   'library-feedback.json',
   'library-selection.json',
+  'library-selection-reconciliation.json',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -340,6 +341,7 @@ try {
       for (const phase of [
         'feedback',
         'selection',
+        'selection-reconciliation',
         'query',
         'filters',
         'scale',
