@@ -89,6 +89,31 @@ export function LibrarySelectionMenu({
       ?.querySelector<HTMLInputElement>('input');
     requestAnimationFrame(() => search?.focus({ preventScroll: true }));
   }
+  function openPanel() {
+    const element = trigger.current;
+    if (pages > 1 && element && boundary) {
+      const anchor = element.getBoundingClientRect();
+      const bounds = boundary.getBoundingClientRect();
+      // 44px heading + 44px footer + 60px row + gaps/padding and placement margin.
+      const minimumHeight = 224;
+      if (
+        Math.max(anchor.top - bounds.top, bounds.bottom - anchor.bottom) <
+        minimumHeight
+      ) {
+        element.scrollIntoView({
+          block: 'start',
+          inline: 'nearest',
+          behavior: 'instant',
+        });
+        // React Aria closes overlays on ancestor scroll; open after that event.
+        requestAnimationFrame(() => setOpen(true));
+        setPage(1);
+        return;
+      }
+    }
+    setPage(1);
+    setOpen(true);
+  }
   function close() {
     setOpen(false);
     trigger.current?.focus({ preventScroll: true });
@@ -154,10 +179,8 @@ export function LibrarySelectionMenu({
                 : []
             }
             onAction={(key) => {
-              if (key === 'view') {
-                setPage(1);
-                setOpen(true);
-              } else if (key === 'open') {
+              if (key === 'view') openPanel();
+              else if (key === 'open') {
                 const id = selection.selected.keys().next().value;
                 const target = contextMenu?.target ?? trigger.current;
                 if (id && target) onOpen(id, target);

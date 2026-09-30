@@ -207,6 +207,85 @@ describe('explicit library selection', () => {
     ]);
   });
 
+  it('reconciles only the checked snapshot, retaining moved and newly selected IDs', () => {
+    let snapshot!: Map<
+      string,
+      import('../../../src/app/library/use-library-selection').SelectedLibraryItem
+    >;
+    const updated = {
+      ...item('a'),
+      displayName: '新名称',
+      storage: { id: 'local', name: '新存储名', enabled: false },
+    };
+    run([
+      {
+        items: [item('a'), item('b')],
+        act: (selection) => selection.selectCurrent(),
+      },
+      {
+        items: [item('c')],
+        act: (selection) => {
+          snapshot = new Map(selection.selected);
+          selection.toggle(item('c'));
+        },
+      },
+      {
+        items: [],
+        act: (selection) => selection.reconcile(snapshot, [updated]),
+      },
+      {
+        items: [],
+        check: (selection) => {
+          expect(ids(selection)).toEqual(['a', 'c']);
+          expect(selection.selected.get('a')).toEqual({
+            id: 'a',
+            displayName: '新名称',
+            thumbnailUrl: '/i/a?type=thumbnail',
+            storage: updated.storage,
+          });
+          expect(selection.currentCount).toBe(0);
+          expect(selection.otherCount).toBe(2);
+        },
+      },
+    ]);
+  });
+
+  it('ignores a late reconciliation after clearing, reselecting or changing query', () => {
+    let snapshot!: Map<
+      string,
+      import('../../../src/app/library/use-library-selection').SelectedLibraryItem
+    >;
+    run([
+      { items: [item('a')], act: (selection) => selection.selectCurrent() },
+      {
+        items: [item('a')],
+        act: (selection) => {
+          snapshot = new Map(selection.selected);
+          selection.clear();
+          selection.toggle(item('a'));
+        },
+      },
+      { items: [], act: (selection) => selection.reconcile(snapshot, []) },
+      {
+        items: [],
+        check: (selection) => expect(ids(selection)).toEqual(['a']),
+      },
+      {
+        identity: 'new-query',
+        items: [item('b')],
+        act: (selection) => {
+          selection.toggle(item('b'));
+          selection.reconcile(snapshot, [item('a')]);
+        },
+      },
+      {
+        identity: 'new-query',
+        items: [],
+        check: (selection) => expect(ids(selection)).toEqual(['b']),
+      },
+    ]);
+  });
+
   it('renders no selection actions until an explicit selection exists', () => {
     function EmptyMenu() {
       const selection = useLibrarySelection('query', [item('a')]);

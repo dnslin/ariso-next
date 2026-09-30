@@ -3,12 +3,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { LibraryItem } from '../../server/library/types';
 
-export type SelectedLibraryItem = Pick<
-  LibraryItem,
-  'id' | 'displayName' | 'thumbnailUrl' | 'storage'
->;
+import type { SelectedLibraryItem } from '../../server/library/selection-types';
+export type { SelectedLibraryItem } from '../../server/library/selection-types';
 
-function selectedItem(item: LibraryItem): SelectedLibraryItem {
+function selectedItem(item: SelectedLibraryItem): SelectedLibraryItem {
   return {
     id: item.id,
     displayName: item.displayName,
@@ -102,11 +100,33 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
       return { identity, selected: next };
     });
   }, [identity, currentIds]);
+  const reconcile = useCallback(
+    (
+      snapshot: Map<string, SelectedLibraryItem>,
+      valid: SelectedLibraryItem[],
+    ) => {
+      setState((previous) => {
+        if (previous.identity !== identity) return previous;
+        const byId = new Map(valid.map((item) => [item.id, item]));
+        const next = new Map(previous.selected);
+        for (const [id, checked] of snapshot) {
+          // A removed/reselected item belongs to a newer user action.
+          if (next.get(id) !== checked) continue;
+          const updated = byId.get(id);
+          if (updated) next.set(id, selectedItem(updated));
+          else next.delete(id);
+        }
+        return { identity, selected: next };
+      });
+    },
+    [identity],
+  );
   const currentCount = [...currentIds].filter((id) => selected.has(id)).length;
 
   return {
     selected,
     currentIds,
+    reconcile,
     toggle,
     selectIds,
     remove,

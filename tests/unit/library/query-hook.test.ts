@@ -228,3 +228,49 @@ it('Back and Forward resolve the entry mode rather than the latest preference', 
   expect(mount(client).loadingMode).toBe('pages');
   client.clear();
 });
+
+it('removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors', () => {
+  context.search = 'q=photo&pageSize=20&page=2';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const other = parseLibraryLocation(
+    new URLSearchParams('q=other&pageSize=20'),
+  ).filters;
+  const client = new QueryClient();
+  const first = libraryListKey(filters, 'pages', 1);
+  const second = libraryListKey(filters, 'pages', 2);
+  const more = libraryListKey(filters, 'more', 1);
+  const different = libraryListKey(other, 'pages', 1);
+  client.setQueryData(first, page(['a', 'b'], null), { updatedAt: 123 });
+  client.setQueryData(second, page(['c', 'd'], null), { updatedAt: 456 });
+  client.setQueryData(
+    more,
+    { pages: [page(['a', 'b'], 'after-b')], pageParams: [null] },
+    { updatedAt: 789 },
+  );
+  client.setQueryData(different, page(['a'], null));
+  const fetcher = vi.fn();
+  vi.stubGlobal('fetch', fetcher);
+  mount(client).onSelectionInvalid(['a', 'c']);
+  expect(
+    client.getQueryData<LibraryPage>(first)!.items.map((item) => item.id),
+  ).toEqual(['b']);
+  expect(
+    client.getQueryData<LibraryPage>(second)!.items.map((item) => item.id),
+  ).toEqual(['d']);
+  const infinite = client.getQueryData<InfiniteData<LibraryPage>>(more)!;
+  expect(infinite.pages[0].items.map((item) => item.id)).toEqual(['b']);
+  expect(infinite.pages[0].nextCursor).toBe('after-b');
+  expect(infinite.pageParams).toEqual([null]);
+  expect(
+    client.getQueryData<LibraryPage>(different)!.items.map((item) => item.id),
+  ).toEqual(['a']);
+  expect(
+    [first, second, more].map(
+      (key) => client.getQueryState(key)!.dataUpdatedAt,
+    ),
+  ).toEqual([123, 456, 789]);
+  expect(fetcher).not.toHaveBeenCalled();
+  client.clear();
+});

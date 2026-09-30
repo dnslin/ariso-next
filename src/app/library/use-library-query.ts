@@ -286,6 +286,33 @@ export function useLibraryQuery(
     if (!enabled) return;
     await client.resetQueries({ queryKey, exact: true });
   }
+  function onSelectionInvalid(ids: string[]) {
+    if (!ids.length || !filters) return;
+    const invalid = new Set(ids);
+    const prune = (page: LibraryPage) => ({
+      ...page,
+      items: page.items.filter((item) => !invalid.has(item.id)),
+    });
+    for (const mode of ['pages', 'more'] as const) {
+      for (const cached of client.getQueryCache().findAll({
+        queryKey: ['library', mode, filters],
+      })) {
+        const data = cached.state.data as
+          LibraryPage | InfiniteData<LibraryPage> | undefined;
+        if (!data) continue;
+        const updated =
+          'pages' in data
+            ? { ...data, pages: data.pages.map(prune) }
+            : prune(data);
+        // Preserve the last server-read timestamp: pruning is not a new list response.
+        // Total and ordering remain the last query snapshot until explicit refresh.
+        client.setQueryData(cached.queryKey, updated, {
+          updatedAt: cached.state.dataUpdatedAt,
+        });
+      }
+    }
+    setRefreshAvailable(true);
+  }
   async function onItemRemoved(id: string) {
     await client.cancelQueries({ queryKey: ['library'] });
     client.setQueriesData<InfiniteData<LibraryPage>>(
@@ -315,6 +342,7 @@ export function useLibraryQuery(
   }
   return {
     filters,
+    dataUpdatedAt: active.dataUpdatedAt,
     queryError,
     layout,
     loadingMode,
@@ -353,5 +381,6 @@ export function useLibraryQuery(
     refresh,
     refreshAvailable,
     onItemRemoved,
+    onSelectionInvalid,
   };
 }
