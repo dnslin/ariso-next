@@ -1,0 +1,158 @@
+{
+  "date": "2026-09-30",
+  "issue": {
+    "number": 141,
+    "title": "[DG-UPLOAD] 任意文件/批次/取消/交接及真实结果设计适用核对",
+    "state": "open",
+    "html_url": "https://github.com/dnslin/ariso-next/issues/141",
+    "body": "任务 ID：`DG-UPLOAD`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-UPLOAD；核对任意文件/批次/取消/交接及真实结果。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+    "comments": []
+  },
+  "blocked_by": [],
+  "blocking": [
+    {
+      "number": 159,
+      "title": "[T-UP-07] 目录、拖拽、粘贴与独立文件身份",
+      "state": "open",
+      "html_url": "https://github.com/dnslin/ariso-next/issues/159",
+      "body": "任务 ID：`T-UP-07`\n\n- 任务组：`UPLOAD-QUEUE`\n- 里程碑：M3\n- 范围：扩展基本文件选择，接入递归目录分段扫描/取消、拖拽、剪贴板图片和无名截图，保留能力缺失的普通选择入口。\n- 规格与预计文件：SPEC-upload §3、UP-01/02/24；`src/app/upload/`输入适配、文件名称规则和浏览器测试。\n- 直接前置：`T-UP-02`、`UPLOAD-V03`、`DG-UPLOAD`\n- 验收条件：同名/重复选择同文件独立队列ID；不保留目录不建相册，空目录不产生记录；混合格式、权限错误和超剩余名额有汇总，已加入项保留。SVG不内联执行、无法预览格式不误拒绝；无名截图及隐藏名规范一致；扫描可取消，入队不自动上传。\n- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 新增真实目录/剪贴板浏览器用例；验证支持与缺失能力浏览器，混合目录、重复文件、取消和大队列内存释放。\n- 界面：`/upload`，仅所有者；原生File/Clipboard/目录API输入进入同一Uppy队列。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [316:4259](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4259)、手机 [316:4268](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4268)；降级 桌面 [316:4327](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4327)、手机 [316:4336](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4336)。HeroUI：Button、ProgressBar、Alert、Modal、Card。文件扫描是Uppy/原生能力业务适配，无对应通用HeroUI能力；队列基础控件继续复用。手机保留完整普通上传，拖拽/目录缺失有明确说明。\n- 需求：`R-7.1-01`、`R-7.1-02`、`R-7.2-02`、`R-7.4-01`、`R-7.5-03`、`R-10.1-01`、`R-22.1-01`\n- 实施步骤：\n  - [ ] 1. 拖拽/粘贴与重复文件独立身份：入队不自动上传。\n  - [ ] 2. 目录分段扫描及取消：名额、权限失败汇总，能力缺失保留普通入口。\n\n## 执行与依赖\n\n直接前置：#81、#72、#141。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "blocked_by": [
+        {
+          "number": 81,
+          "title": "[T-UP-02] 手动上传单图与结果界面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/81"
+        },
+        {
+          "number": 72,
+          "title": "[UPLOAD-V03] Uppy 与流式解析固定版本",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/72"
+        },
+        {
+          "number": 141,
+          "title": "[DG-UPLOAD] 任意文件/批次/取消/交接及真实结果设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/141"
+        }
+      ]
+    },
+    {
+      "number": 160,
+      "title": "[T-UP-03] 完整批次快照、取消与结果队列",
+      "state": "open",
+      "html_url": "https://github.com/dnslin/ariso-next/issues/160",
+      "body": "任务 ID：`T-UP-03`\n\n- 任务组：`UPLOAD-QUEUE`\n- 里程碑：M3\n- 范围：补全submission拆批、统一设置/关系/素材引用、快速创建、下一提交编辑、传输取消和结果操作；本地流程完整交付，S3共享调度在T-UP-04联验。交付 GET/PATCH /api/settings/upload：默认50 MiB/20/500，大小以正整数MiB保存，前后端使用同一配置字节值，批次1–200、队列100–2000且批次不大于队列；上传限制界面由站点设置任务接入。\n- 规格与预计文件：SPEC-upload §4/5/8/9、UP-04–06/12/14–16/21；`src/server/upload/settings.ts`、`src/app/api/settings/upload/route.ts`、`src/server/upload/submissions.ts`、会话交接与`src/app/upload/`、队列集成/浏览器测试。\n- 直接前置：`T-UP-02`、`T-UP-07`、`T-COL-01`、`T-MED-10`、`T-MED-13`、`T-LIB-02`、`UPLOAD-V02`、`UPLOAD-V03`、`DG-UPLOAD`\n- 验收条件：45项20/20/5同一快照，跨提交传输总并发3；集合/素材删除与交接同事务核对。修改限制仅影响新submission，旧提交沿用已核验快照，服务端独立拒绝非法范围；队列含终态结果占名额，清空只清页面；无存储禁用，缺默认要求选。交接前取消与完成只一方成功，交接后不可取消；关闭页面不恢复浏览器队列、已交接后台继续。区分无资产失败与处理失败；终态释放File/Blob/Uppy引用，重传重新选文件；同ID重处理、回收、默认/固定版复制和真实详情返回可用。\n- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/upload/submissions.test.ts`、浏览器队列测试覆盖设置/素材中途改变、目标并发删除、取消竞态、页面关闭、结果丢失核对与真实剪贴板。\n- 界面：`/upload`，所有者；数据来自submissions/sessions、collections和media jobs。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [317:4617](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4617)、手机 [317:4776](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4776)；取消竞争 桌面 [317:4016](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4016)、手机 [317:4025](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4025)；失败 桌面 [317:4052](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4052)、手机 [317:4063](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4063)；快速相册 桌面 [37:304](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=37-304)、手机 [102:3243](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3243)、标签 桌面 [37:313](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=37-313)、手机 [102:3729](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3729)。HeroUI：Table/Card、ComboBox、TagGroup、Select、RadioGroup、ProgressBar、Button、AlertDialog、Modal、Alert。队列和批次栏以HeroUI组合Uppy，专有取消/快照状态由业务控制；手机名称/大小/状态分行，固定开始栏，不缩桌面。\n- 需求：`R-7.2-01`、`R-7.2-02`、`R-7.3-01`、`R-7.3-02`、`R-7.3-03`、`R-7.4-01`、`R-7.4-02`、`R-7.4-03`、`R-7.5-01`、`R-7.5-02`、`R-7.5-03`、`R-7.5-04`、`R-11.2-03`、`A-26.5-02`、`A-26.7-06`、`A-26.7-07`\n- 实施步骤：\n  - [ ] 1. 上传限制 API 与完整提交快照：45项拆为20/20/5且旧提交不变。\n  - [ ] 2. 完整队列与快速关系创建：下一提交编辑、总并发3、终态占名额。\n  - [ ] 3. 取消/交接/结果操作：同ID重试、未知结果核对及File/Blob释放。\n\n## 执行与依赖\n\n直接前置：#81、#159、#66、#153、#151、#77、#71、#72、#141。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "blocked_by": [
+        {
+          "number": 81,
+          "title": "[T-UP-02] 手动上传单图与结果界面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/81"
+        },
+        {
+          "number": 159,
+          "title": "[T-UP-07] 目录、拖拽、粘贴与独立文件身份",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/159"
+        },
+        {
+          "number": 66,
+          "title": "[T-COL-01] 相册标签模型与上传关联事务",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/66"
+        },
+        {
+          "number": 153,
+          "title": "[T-MED-10] 重处理范围与候选版本原子发布",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/153"
+        },
+        {
+          "number": 151,
+          "title": "[T-MED-13] 不可变水印素材与快照引用生命周期",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/151"
+        },
+        {
+          "number": 77,
+          "title": "[T-LIB-02] 基础详情与链接复制下载",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/77"
+        },
+        {
+          "number": 71,
+          "title": "[UPLOAD-V02] 共同容量与传输超时",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/71"
+        },
+        {
+          "number": 72,
+          "title": "[UPLOAD-V03] Uppy 与流式解析固定版本",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/72"
+        },
+        {
+          "number": 141,
+          "title": "[DG-UPLOAD] 任意文件/批次/取消/交接及真实结果设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/141"
+        }
+      ]
+    },
+    {
+      "number": 162,
+      "title": "[T-UP-04] S3 直传、中转、条件交接与最终清理",
+      "state": "open",
+      "html_url": "https://github.com/dnslin/ariso-next/issues/162",
+      "body": "任务 ID：`T-UP-04`\n\n- 任务组：`UPLOAD-S3`\n- 里程碑：M4\n- 范围：Web begin时选直传或中转；固定原图、交接、会话到期/取消/响应不确定恢复、确切Key清理及迟到孤儿扫描交接；提供完整上传引用和用量查询。\n- 规格与预计文件：SPEC-upload §6–8/11、UP-07–13/23；`src/server/upload/s3.ts`、流接收/cleanup/usage与sessions路由、上传组件。\n- 直接前置：`T-UP-03`、`T-STO-05`、`T-DEL-02`、`UPLOAD-V01`、`UPLOAD-V02`、`UPLOAD-V03`、`DG-UPLOAD`\n- 验收条件：名额可用才签900秒临时PUT，进行中不切链路。HEAD/条件GET校实际字节/格式并条件Copy至新正式Key；源变或200内部错误明确失败；重复complete只一图。S3中转流式、跨盘发布正确，写前登记责任，正式交接同事务转移；断连接收未完清理，接收完仅结束等待。取消/到期后结束本地活动并清理已知Key，业务终态不复活；之后迟到和旧签名重写由T-STO-06定期扫描收尾。本任务交付引用/用量与交接测试，不反向依赖扫描器实现，也不以HEAD404证明永久不再写入；readUploadUsage与media交接不重算且tmp不归配置存储。\n- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/upload/s3.test.ts` 三服务真实直传/中转、源变化、Copy响应丢失、慢网/大文件/代理、到期前开始到期后完成、旧签名重写、重启与最终对象清单；`pnpm run test:browser` 验证混合插件总并发3和链路提示。\n- 界面：`/upload` 及既有存储清理区域，只限所有者；采用真实sessions/cleanup结果。桌面 [30:97](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-97)、手机 [101:1014](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1014)；状态桌面 [316:4784](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4784)、手机 [316:4793](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=316-4793)；待清理 桌面 [317:4335](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4335)、手机 [317:4326](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4326)；失败 桌面 [317:4344](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4344)、手机 [317:4353](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=317-4353)。HeroUI：Alert、ProgressBar、Spinner、Button、Table/Card，沿用T-UP-03队列；传完显示“正在保存”而非假处理百分比。手机完整链路和清理重试可用。\n- 需求：`R-8.1-01`、`R-8.1-02`、`R-8.1-03`、`R-8.1-04`、`R-8.3-01`、`R-8.3-02`、`R-11.8-01`、`R-9.4-01`、`R-19.1-01`、`A-26.4-03`、`A-26.4-04`、`A-26.4-06`\n- 实施步骤：\n  - [ ] 1. S3 中转接收与交接：字节校验、重复 complete 只生成一图。\n  - [ ] 2. 单 PUT 直传选路与条件固定：名额可用才签名，源变化明确失败。\n  - [ ] 3. 取消/到期终态不复活；本地活动结束及已知对象清理后释放引用，提供扫描交接测试，完整周期扫描归 #164。\n\n## 执行与依赖\n\n直接前置：#160、#158、#161、#142、#71、#72、#141。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。当前必需真实服务为 R2、SeaweedFS；AWS 未验证，不记通过，按执行约定中的对象存储验证目标调整执行。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。\n\n方案与证据：[UPLOAD-V01 当前记录](https://github.com/dnslin/ariso-next/blob/codex/issue-142-late-put/docs/tasks/evidence/UPLOAD-V01/README.md)，关联 PR #202。生产扫描器尚未实现；原生依赖保持，未提前标记任务完成。\n",
+      "comments": [],
+      "blocked_by": [
+        {
+          "number": 160,
+          "title": "[T-UP-03] 完整批次快照、取消与结果队列",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/160"
+        },
+        {
+          "number": 158,
+          "title": "[T-STO-05] 真实浏览器 CORS 检测与 origin 失效",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/158"
+        },
+        {
+          "number": 161,
+          "title": "[T-DEL-02] S3 内容访问、特殊格式和附件联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/161"
+        },
+        {
+          "number": 142,
+          "title": "[UPLOAD-V01] 迟到 PUT 最终收尾",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/142"
+        },
+        {
+          "number": 71,
+          "title": "[UPLOAD-V02] 共同容量与传输超时",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/71"
+        },
+        {
+          "number": 72,
+          "title": "[UPLOAD-V03] Uppy 与流式解析固定版本",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/72"
+        },
+        {
+          "number": 141,
+          "title": "[DG-UPLOAD] 任意文件/批次/取消/交接及真实结果设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/141"
+        }
+      ]
+    }
+  ]
+}
