@@ -21,7 +21,10 @@ import { LibraryDetail } from '../../components/library/detail';
 import { LibraryFooter, LibraryToolbar } from './library-controls';
 import { LibraryFiltersBar } from './library-filters';
 import { LibraryGallery } from './library-gallery';
-import { LibrarySelectionMenu } from './library-selection-menu';
+import {
+  LibrarySelectionMenu,
+  type LibraryContextMenu,
+} from './library-selection-menu';
 import { useLibrarySelection } from './use-library-selection';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
@@ -44,11 +47,22 @@ export function LibraryScreen(props: {
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
   const [client] = useState(() => new QueryClient());
   const query = useLibraryQuery(client, { albumId: props.albumId });
-  const selection = useLibrarySelection(
-    JSON.stringify([props.albumId, query.filters, query.loadingMode]),
-    query.items,
-  );
+  const selectionIdentity = JSON.stringify([
+    props.albumId,
+    query.filters,
+    query.loadingMode,
+  ]);
+  const selection = useLibrarySelection(selectionIdentity, query.items);
   const [notice, setNotice] = useState('');
+  const [contextMenu, setContextMenu] = useState<
+    (LibraryContextMenu & { identity: string }) | null
+  >(null);
+  if (
+    contextMenu &&
+    (contextMenu.identity !== selectionIdentity || !selection.selected.size)
+  ) {
+    setContextMenu(null);
+  }
   const moreRef = useRef<HTMLButtonElement>(null);
   const endRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => () => client.clear(), [client]);
@@ -129,8 +143,10 @@ export function LibraryScreen(props: {
             selectionMenu={
               selection.selected.size ? (
                 <LibrarySelectionMenu
-                  key={JSON.stringify([query.filters, query.loadingMode])}
+                  key={selectionIdentity}
                   selection={selection}
+                  contextMenu={contextMenu}
+                  onContextMenuClose={() => setContextMenu(null)}
                   loadingMode={query.loadingMode}
                   disabled={!query.canOperate}
                   onOpen={detail.open}
@@ -240,6 +256,9 @@ export function LibraryScreen(props: {
                 disabled={!query.canOperate || !!detail.imageId}
                 selection={selection}
                 onOpen={detail.open}
+                onContextMenu={(menu) =>
+                  setContextMenu({ ...menu, identity: selectionIdentity })
+                }
               />
             ) : null}
             {query.hasMore ? (

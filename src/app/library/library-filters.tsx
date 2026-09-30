@@ -125,11 +125,11 @@ function Choice<T extends string>({
       onChange={(value) => onChange(value ? (String(value) as T) : null)}
     >
       <Label className="sr-only">{label}</Label>
-      <Select.Trigger className="h-11 min-h-11 w-full gap-2 rounded-lg border-0 bg-transparent px-3 text-sm shadow-none">
+      <Select.Trigger className="h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 py-0 pe-11 text-sm shadow-none">
         <span className="shrink-0 text-muted">{label}</span>
-        <Select.Value className="truncate" />
-        <Select.Indicator>
-          <ChevronDown className="size-4" aria-hidden="true" />
+        <Select.Value className="min-w-0 truncate text-sm text-foreground" />
+        <Select.Indicator className="end-3.5 size-4">
+          <ChevronDown aria-hidden="true" />
         </Select.Indicator>
       </Select.Trigger>
       <Select.Popover className="rounded-xl border border-border bg-surface">
@@ -426,7 +426,7 @@ export function LibraryFiltersBar({
         <Button
           ref={attachDateTrigger}
           variant="ghost"
-          className="min-h-11 min-w-0 gap-2 px-3 text-sm"
+          className="h-11 min-h-11 min-w-0 gap-2 px-3 py-0 pe-3.5 text-sm"
           aria-label="编辑上传日期"
         >
           <span className="shrink-0 text-muted">上传日期</span>

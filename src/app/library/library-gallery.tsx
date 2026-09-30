@@ -10,6 +10,7 @@ import {
 import { LibraryCard } from './library-card';
 import { GalleryDragSelection } from './gallery-drag-selection';
 import type { LibrarySelection } from './use-library-selection';
+import type { LibraryContextMenu } from './library-selection-menu';
 
 export function LibraryGallery({
   items,
@@ -18,6 +19,7 @@ export function LibraryGallery({
   disabled,
   selection,
   onOpen,
+  onContextMenu,
 }: {
   items: LibraryItem[];
   layout: GalleryLayout;
@@ -25,8 +27,10 @@ export function LibraryGallery({
   disabled: boolean;
   selection: LibrarySelection;
   onOpen: (id: string, element: HTMLElement) => void;
+  onContextMenu: (menu: LibraryContextMenu) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
+  const dragged = useRef(false);
   const [viewport, setViewport] = useState({
     width: 0,
     windowWidth: 0,
@@ -81,6 +85,28 @@ export function LibraryGallery({
     focusedIndex,
     items.length,
   );
+  function openContextMenu(
+    target: EventTarget | null,
+    point?: { x: number; y: number },
+  ) {
+    if (disabled || !(target instanceof Element)) return false;
+    const card = target.closest<HTMLElement>('[data-image-id]');
+    const item = items.find((item) => item.id === card?.dataset.imageId);
+    if (!item && !selection.selected.size) return false;
+    if (item && !selection.selected.has(item.id))
+      selection.selectIds([item.id]);
+    const origin =
+      card?.querySelector<HTMLElement>('[data-library-open]') ??
+      container.current!;
+    origin.focus({ preventScroll: true });
+    const rect = origin.getBoundingClientRect();
+    onContextMenu({
+      x: point?.x ?? rect.left + rect.width / 2,
+      y: point?.y ?? rect.top + Math.min(rect.height / 2, 40),
+      target: origin,
+    });
+    return true;
+  }
   return (
     <div
       ref={container}
@@ -91,6 +117,32 @@ export function LibraryGallery({
       data-layout={layout}
       data-columns={positions.lanes.length}
       className="relative w-full"
+      onPointerDownCapture={(event) => {
+        if (event.button === 0) dragged.current = false;
+      }}
+      onKeyDownCapture={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') dragged.current = false;
+        if (
+          (event.key === 'ContextMenu' ||
+            (event.shiftKey && event.key === 'F10')) &&
+          openContextMenu(event.target)
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      onClickCapture={(event) => {
+        if (dragged.current) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      onContextMenu={(event) => {
+        if (
+          openContextMenu(event.target, { x: event.clientX, y: event.clientY })
+        )
+          event.preventDefault();
+      }}
       style={{ height: viewport.width ? positions.height : 210 }}
     >
       <GalleryDragSelection
@@ -99,6 +151,9 @@ export function LibraryGallery({
         items={items}
         selection={selection}
         disabled={disabled}
+        onDragStart={() => {
+          dragged.current = true;
+        }}
       />
       {viewport.width
         ? indexes.map((index) => {
@@ -121,13 +176,14 @@ export function LibraryGallery({
               >
                 <LibraryCard
                   item={item}
-                  squareMobileTop={!album}
                   album={album}
                   imageHeight={slot.imageHeight}
                   isDisabled={disabled}
                   isSelected={selection.selected.has(item.id)}
                   onToggle={selection.toggle}
-                  onOpen={onOpen}
+                  onOpen={(id, element) => {
+                    if (!dragged.current) onOpen(id, element);
+                  }}
                 />
               </div>
             );

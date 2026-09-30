@@ -590,3 +590,71 @@ describe('production library queries', () => {
     });
   });
 });
+
+describe('thumbnail display dimensions', () => {
+  it.each([
+    [427, 640, 'stored', { width: 427, height: 640 }],
+    [null, null, 'stored', null],
+    [427, null, 'stored', null],
+    [427, 640, 'writing', null],
+  ] as const)(
+    'returns saved thumbnail %s×%s (%s) separately from the original dimensions',
+    (width, height, status, expected) => {
+      // EXIF orientation 6 retains the 1200×800 source but produces a 427×640
+      // thumbnail, as verified by the real media processing orientation tests.
+      seed('rotated', { width: 1200, height: 800 });
+      connection.db
+        .insert(mediaObjects)
+        .values({
+          id: 'rotated-thumbnail',
+          imageId: 'rotated',
+          storageId: 'storage-0',
+          key: 'private-key/rotated-thumbnail',
+          purpose: 'thumbnail',
+          status,
+          byteSize: 10,
+          format: 'WEBP',
+          mime: 'image/webp',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .run();
+      connection.db
+        .insert(mediaVersions)
+        .values({
+          imageId: 'rotated',
+          kind: 'thumbnail',
+          objectId: 'rotated-thumbnail',
+          byteSize: 10,
+          format: 'WEBP',
+          mime: 'image/webp',
+          width,
+          height,
+          createdAt: new Date(),
+        })
+        .run();
+      const page = read();
+      expect(page.items[0]).toMatchObject({
+        width: 1200,
+        height: 800,
+        thumbnailDimensions: expected,
+      });
+      expect(
+        readLibraryStatus(connection.db, { ids: ['rotated'] }).items[0],
+      ).toMatchObject({
+        width: 1200,
+        height: 800,
+        thumbnailDimensions: expected,
+      });
+    },
+  );
+
+  it('returns null when no thumbnail is saved rather than copying original dimensions', () => {
+    seed('original-only', { width: 1200, height: 800 });
+    expect(read().items[0]).toMatchObject({
+      width: 1200,
+      height: 800,
+      thumbnailDimensions: null,
+    });
+  });
+});

@@ -20,6 +20,7 @@ for (const name of [
   'error-recovery.json',
   'library.json',
   'library-query.json',
+  'library-feedback.json',
   'library-selection.json',
   'library-filters.json',
   'library-scale.json',
@@ -323,7 +324,13 @@ try {
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
     if (width === 390) {
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
-      for (const phase of ['selection', 'query', 'filters', 'scale']) {
+      for (const phase of [
+        'feedback',
+        'selection',
+        'query',
+        'filters',
+        'scale',
+      ]) {
         await runBrowser(
           '../e2e/library-query.mjs',
           { ...identityConfig, libraryQueryPhase: phase },

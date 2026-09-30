@@ -19,7 +19,6 @@ export function LibraryCard({
   item,
   onOpen,
   imageHeight,
-  squareMobileTop = false,
   album = false,
   isDisabled = false,
   isSelected = false,
@@ -27,7 +26,6 @@ export function LibraryCard({
 }: {
   item: LibraryItem;
   imageHeight?: number;
-  squareMobileTop?: boolean;
   album?: boolean;
   isDisabled?: boolean;
   isSelected?: boolean;
@@ -48,7 +46,7 @@ export function LibraryCard({
       data-testid="library-card"
       data-image-id={item.id}
       data-selected={isSelected || undefined}
-      className={`group relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none data-[selected=true]:ring-2 data-[selected=true]:ring-accent has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border' : 'border border-border'} ${squareMobileTop ? 'rounded-t-none min-[1200px]:rounded-t-2xl' : ''}`}
+      className={`group relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none data-[selected=true]:ring-2 data-[selected=true]:ring-accent has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border' : 'border border-border'}`}
     >
       {onToggle ? (
         <Checkbox
@@ -67,6 +65,7 @@ export function LibraryCard({
       ) : null}
       <Button
         variant="ghost"
+        data-library-open
         isDisabled={isDisabled}
         className="absolute inset-0 z-10 h-full w-full rounded-2xl bg-transparent p-0 hover:bg-transparent"
         aria-label={`查看图片：${item.displayName}`}
@@ -92,7 +91,7 @@ export function LibraryCard({
               loading="lazy"
               decoding="async"
               draggable={false}
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
               onLoad={() => setLoaded(true)}
               onError={() => setFailed(true)}
             />

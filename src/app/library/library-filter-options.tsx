@@ -117,15 +117,15 @@ export function LibraryFilterOptionsField({
       placeholder="全部"
     >
       <Label className="sr-only">{label}</Label>
-      <Autocomplete.Trigger className="h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11">
+      <Autocomplete.Trigger className="h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 py-0 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11">
         <span className="shrink-0 text-sm text-muted">
           {kind === 'tags' ? '标签' : label}
         </span>
         <Autocomplete.Value className="min-w-0 truncate text-sm text-foreground">
           {names.length ? names.join('、') : '全部'}
         </Autocomplete.Value>
-        <Autocomplete.Indicator>
-          <ChevronDown className="size-4" aria-hidden="true" />
+        <Autocomplete.Indicator className="end-3.5 size-4">
+          <ChevronDown aria-hidden="true" />
         </Autocomplete.Indicator>
       </Autocomplete.Trigger>
       <Autocomplete.Popover className="max-h-80 min-w-64 max-w-[calc(100vw-32px)] overflow-y-auto rounded-xl border border-border bg-surface p-2">

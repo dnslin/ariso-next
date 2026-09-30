@@ -1,6 +1,61 @@
 # T-LIB-04 / Issue #173：四种布局加载组合与筛选历史
 
-本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。2026-09-30 人工验收提出裁切、工具栏空白、筛选弹窗、刷新提示和选择交互问题，本轮已按反馈实现并完成独立代码与设计复评，整套浏览器回归通过，待再次人工验收。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)，首轮证据在下方历史区保留。
+本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。最新结果见下方2026-10-01第二轮返修；2026-09-30记录保留为历史，不能代替本轮验证。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)。最终 UI 仍待人工验收。
+
+## 第二轮人工反馈返修（2026-10-01）
+
+本轮针对筛选错位、图片右键无菜单、框选难触发、卡片上沿截断感和缩略图侧边留白。用户要求的交互调整归入[现有设计交接](../../design/handoff.md#图库卡片与右键操作返修2026-10-01人工反馈)，未修改 Figma 或冻结 PRD。
+
+- 统一六类条件的44px高度、14px文字、16px图标与垂直居中。修复 HeroUI Indicator 对子图标样式的覆盖；复用现有 Select/Autocomplete，不另写控件。
+- 图片表面即可开始框选，移动达到5px才进入框选；普通点击、Enter/Space仍打开详情，Checkbox独立操作。继续使用已有 Air 拖选库。
+- 右键已选图片保留整组，右键未选图片切换到该项；同一 HeroUI Dropdown 在鼠标位置显示，Shift+F10/菜单键也可打开。Escape回到原卡片；查询变化或清空选择后不会重新冒出旧菜单。
+- 移除小于1200px时强制上角直角的旧分支，图库卡片四角统一16px。返修前960px实际测得上角为0，下角16；卡片内容没有溢出，截图中的“断头感”来自这条样式。
+- 网格按比例铺满并居中裁切边缘；瀑布流按真实缩略图比例决定高度，完整显示，不拉伸。列表新增可空的 `thumbnailDimensions`，从现有批量版本查询读取，原图 `width/height` 含义不变。EXIF旋转后缩略图比例可能不同，不能用原图尺寸排布缩略图。缺少完整已保存缩略图尺寸时只保留明确占位高度，不伪造尺寸。
+
+这类展示方案遵循成熟图库的比例处理方式：[PhotoSwipe](https://photoswipe.com/getting-started/)支持裁切缩略图与明确图片尺寸，[Masonry](https://masonry.desandro.com/layout)要求图片尺寸参与布局。没有新增依赖或批量业务操作；#174仍只提前实现选择子集，不能称为全量完成。图库和相册内容共用同一实现，公共外壳未改。
+
+### 失败证据与行为验证
+
+独立 `feedback173.localhost:3174` 测试副本和完整运行器使用独立数据，不修改人工预览中的240张测试图片。
+
+- [返修前几何](./round2/before.json)与[截图](./round2/before.png)：960px卡片上角0，缩略图 contain 留边。
+- [实际鼠标失败](./round2/interaction-before.json)：从图片开始拖动未选中，右键未出现菜单；[旧构建回归失败](./round2/library-feedback-before.json)记录期望两项而未选中的断言。
+- 新增键盘验证先取得[Shift+F10失败](./round2/keyboard-context-before.json)，再接入与鼠标共用的菜单打开逻辑；同一断言复验通过。
+- [返修专项](./round2/library-feedback.json)：3项行为组与24个布局/主题/宽度组合通过。真实横向/纵向缩略图文件写入隔离数据，检查解码尺寸与瀑布流比例，不伪造接口响应。覆盖原生拖动、右键保留/替换选择、Escape回焦、清空后再选、键盘打开详情、菜单打开时后退及六类条件对齐。
+- [菜单边界专项](./round2/context-edges.json)：浅/深色 × 桌面1440×600、手机390×844及390×560全部通过。右下角菜单保持在正文边界内，每项可见并保持桌面36px/手机44px点击高度，Escape回到原卡片。
+
+### 设计逐项对照
+
+实现者及独立评审实际重新读取 Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 的桌面/手机网格 `30:285/98:748`、瀑布流 `37:392/505:10077` 的设计信息与截图，先核对整页和公共区，再核对卡片与控件。人工反馈批准的圆角、比例和交互调整优先于旧节点表现。
+
+| 范围                 | 实际视口、主题与截图                                                                                                                                                                                                                                                            | 对照结果                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 整页、公共区域及筛选 | [1440浅色网格](./round2/library-feedback-light-1440-grid.png)、[深色](./round2/library-feedback-dark-1440-grid.png)，均1440×1080                                                                                                                                                | 品牌、侧栏、账号、正文与底栏保持统一；六类条件文字、图标和移除按钮对齐，无额外工具行。 |
+| 卡片上沿与填充       | [960浅色网格](./round2/library-feedback-light-960-grid.png)、[深色](./round2/library-feedback-dark-960-grid.png)，均960×1080                                                                                                                                                    | 四角16px，信息区完整；横/纵图片均铺满，比例不变，边缘允许裁切。                        |
+| 瀑布流完整比例       | [1440浅色](./round2/library-feedback-light-1440-masonry.png)、[390深色](./round2/library-feedback-dark-390-masonry.png)，高度均1080                                                                                                                                             | 按已保存缩略图比例排布，横/纵图片完整且无 contain 侧边空白。                           |
+| 窄屏布局             | [390浅色网格](./round2/library-feedback-light-390-grid.png)、[390浅色瀑布流](./round2/library-feedback-light-390-masonry.png)，均390×1080                                                                                                                                       | 条件按行换行，间距与图标一致；卡片内容无裁切、无水平溢出。这组不是390×844证据。        |
+| 右键操作             | [桌面选中组右键](./round2/library-feedback-right-click-selection.png)，1440×1080                                                                                                                                                                                                | 已选效果和菜单保留整组选择，复用原操作入口，不新增假的批量功能。                       |
+| 边缘与短视口菜单     | [1440×600浅色](./round2/library-feedback-menu-edge-light-1440x600.png)、[390×844深色](./round2/library-feedback-menu-edge-dark-390x844.png)、[390×560浅色](./round2/library-feedback-menu-edge-light-390x560.png)、[深色](./round2/library-feedback-menu-edge-dark-390x560.png) | 自动调整菜单位置，正文边界与固定底栏互不遮挡；文字、焦点和操作项完整。                 |
+
+### 本轮检查状态
+
+环境：macOS ARM64，Node24.18.1、pnpm11.19.0、现有 Ego Lite。同一TaskSpace2，不下载浏览器。所有命令在本分支工作区运行。
+
+- `pnpm install --frozen-lockfile`：通过。
+- `pnpm run lint`、`pnpm run typecheck`：通过。
+- `pnpm run test:unit`：50文件、674项通过。
+- `pnpm run build`：通过；既有可选跨平台resvg追踪诊断不影响本机构建。
+- `pnpm run test:integration --maxWorkers=1`：96文件、861项通过，547.66s；生产构建完成后执行。
+- `EGO_TASK_SPACE=2 EGO_KEEP_SPACE=1 pnpm run test:browser`：完整通过，退出码0，25分53秒；[运行器](./round2/browser/runner.json)与[分组摘要](./round2/browser/summary.json)。返修、选择、查询、筛选、规模五阶段均接入必跑链。
+- 图库五个必跑阶段全部通过：[返修](./round2/browser/library-feedback.json)、[选择](./round2/browser/library-selection.json)、[查询](./round2/browser/library-query.json)、[筛选](./round2/browser/library-filters.json)、[规模](./round2/browser/library-scale.json)，合计35项检查、36个组合，包含2400项选择。认证、公共外壳、相册、上传及手机交互/状态恢复也全部通过。原始截图与日志保留于工作区 `test-results/browser/`；本目录上表为独立设计复评实际读取的代表截图。
+- [独立代码审计](./round2/code-review.json)：Critical0、Required0。实际执行相关44项单元、32项查询集成与局部ESLint/diff检查；已修复查询变化后遗留右键菜单状态。
+- [独立设计复评](./round2/design-review.json)：本轮范围通过，无未解决Required；实际读取Figma与19张页面截图，包括最后六张边缘菜单截图。人工验收尚未进行，PR保持草稿。
+
+`pnpm run format:check`、`node docs/tasks/check.mjs`（120任务/298需求）和 `git diff --check`通过。[命令摘要](./round2/local-checks.json)统一记录结果。
+
+已用最终构建重启[人工预览](http://issue173.localhost:3173/library)，保留账户与240张原测试图片；[最终预览截图](./round2/preview-final.png)为1440×1080浅色，实际缩略图cover、卡片上角16px，已在Ego中打开并交还用户。最终取图时曾错误等待所有虚拟挂载的懒加载图，包括视口外2869px图片；现场确认可见图片已加载，直接记录可见页面，不修改生产代码或完整回归断言。
+
+物理手机、软键盘、非零安全区及AMD64/ARM64容器未执行；沿现有执行约定保留待发布验证范围，不将未执行项算作通过。
 
 ## 人工反馈后的返修（2026-09-30）
 

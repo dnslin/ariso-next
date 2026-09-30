@@ -27,12 +27,14 @@ export function GalleryDragSelection({
   items,
   selection,
   disabled,
+  onDragStart,
 }: {
   container: RefObject<HTMLDivElement | null>;
   slots: GallerySlot[];
   items: LibraryItem[];
   selection: LibrarySelection;
   disabled: boolean;
+  onDragStart: () => void;
 }) {
   const { selectIds } = selection;
   const lastBox = useRef<Box | null>(null);
@@ -61,7 +63,9 @@ export function GalleryDragSelection({
       if (
         !(target instanceof Element) ||
         !container.current?.contains(target) ||
-        target.closest('button, input, label, [role="checkbox"]')
+        target.closest(
+          'input, label, [role="checkbox"], button:not([data-library-open])',
+        )
       )
         return false;
       bodyStyle.current = {
@@ -72,6 +76,7 @@ export function GalleryDragSelection({
     },
     onSelectionStart: (event) => {
       dragging.current = true;
+      onDragStart();
       before.current = [...selection.selected.keys()];
       retained.current = before.current.filter(
         (id) =>
@@ -83,9 +88,9 @@ export function GalleryDragSelection({
     },
     isValidSelectionStart: (box) => {
       // Air supplies every local box here, including a drag shrunk below its
-      // starting threshold. Keep its default threshold and final geometry.
+      // starting threshold. Retain final geometry and require a deliberate drag.
       lastBox.current = box;
-      return box.width * box.height > 10;
+      return Math.hypot(box.width, box.height) >= 5;
     },
     onSelectionChange: () => {
       if (lastBox.current) applyLocalBox(lastBox.current);

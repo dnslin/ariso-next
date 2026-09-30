@@ -387,7 +387,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
       'Current-page select/deselect and Back preserve other-page IDs; the paged selected list renders 20 rows and removes an actual second-page entry.',
     );
     report.checks.push(
-      'Within one browser task, a large drag shrunk below the 10px area threshold and immediately released clears current-page hits while retaining all 39 other-page IDs.',
+      'Within one browser task, a large drag shrunk below the 5px movement threshold and immediately released clears current-page hits while retaining all 39 other-page IDs.',
     );
 
     await search('issue173-alpha');

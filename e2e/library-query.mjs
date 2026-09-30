@@ -12,6 +12,9 @@ const { verifyLibrarySelection } = await import(
 const { verifyLibraryScale } = await import(
   new URL('./library-query-scale.mjs', config.libraryDetailScript).href
 );
+const { verifyLibraryFeedback } = await import(
+  new URL('./library-feedback.mjs', config.libraryDetailScript).href
+);
 const { signInToLibrary } = await import(
   new URL('./library-login.mjs', config.libraryDetailScript).href
 );
@@ -164,7 +167,9 @@ try {
   await visit();
   await loaded(40);
   await resize(1440);
-  if (phase === 'selection') {
+  if (phase === 'feedback') {
+    await verifyLibraryFeedback({ page, config, sql, report });
+  } else if (phase === 'selection') {
     await verifyLibrarySelection({ page, config, report });
   } else if (phase === 'filters') {
     await verifyLibraryFilters({ page, config, sql, report });

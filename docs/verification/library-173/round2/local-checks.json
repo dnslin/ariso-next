@@ -1,0 +1,67 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS ARM64",
+    "browser": "existing Ego Lite Chromium",
+    "taskSpace": 2
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "result": "passed",
+      "files": 50,
+      "tests": 674
+    },
+    {
+      "command": "pnpm run build",
+      "result": "passed",
+      "note": "Optional cross-platform resvg tracing diagnostics remain; native standalone build exited 0."
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "result": "passed",
+      "files": 96,
+      "tests": 861,
+      "seconds": 547.66
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "passed"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "result": "passed",
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 EGO_KEEP_SPACE=1 pnpm run test:browser",
+      "result": "passed",
+      "exitCode": 0,
+      "seconds": 1553.339,
+      "report": "./browser/runner.json"
+    }
+  ],
+  "notRun": [
+    "Physical mobile device/keyboard/nonzero safe area",
+    "AMD64/ARM64 image and container verification; Release workflow only"
+  ],
+  "humanAcceptance": "pending"
+}

@@ -12,6 +12,12 @@ import type {
   SelectedLibraryItem,
 } from './use-library-selection';
 
+export interface LibraryContextMenu {
+  x: number;
+  y: number;
+  target: HTMLElement;
+}
+
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
@@ -39,13 +45,19 @@ export function LibrarySelectionMenu({
   loadingMode,
   disabled,
   onOpen,
+  contextMenu,
+  onContextMenuClose,
 }: {
   selection: LibrarySelection;
   loadingMode: LibraryLoadingMode;
   disabled: boolean;
   onOpen: (id: string, element: HTMLElement) => void;
+  contextMenu?: LibraryContextMenu | null;
+  onContextMenuClose?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const contextAnchor = useRef<HTMLSpanElement>(null);
   const [page, setPage] = useState(1);
   const trigger = useRef<HTMLButtonElement>(null);
   const [boundary, setBoundary] = useState<HTMLElement | null>(null);
@@ -91,7 +103,21 @@ export function LibrarySelectionMenu({
         共选 {total} 张：{currentLabel} {selection.currentCount} 张
         {loadingMode === 'pages' ? `，其他页 ${selection.otherCount} 张` : ''}
       </p>
-      <Dropdown>
+      {contextMenu ? (
+        <span
+          ref={contextAnchor}
+          aria-hidden
+          className="pointer-events-none fixed size-px"
+          style={{ left: contextMenu.x, top: contextMenu.y }}
+        />
+      ) : null}
+      <Dropdown
+        isOpen={!!contextMenu || menuOpen}
+        onOpenChange={(next) => {
+          setMenuOpen(next);
+          if (!next) onContextMenuClose?.();
+        }}
+      >
         <Button
           ref={attachTrigger}
           variant="outline"
@@ -102,7 +128,12 @@ export function LibrarySelectionMenu({
           已选 {total} 张
           <ChevronDown size={16} aria-hidden />
         </Button>
-        <Dropdown.Popover className="rounded-xl border border-border bg-background dark:bg-surface">
+        <Dropdown.Popover
+          triggerRef={contextMenu ? contextAnchor : trigger}
+          boundaryElement={boundary ?? undefined}
+          placement="bottom start"
+          className="rounded-xl border border-border bg-background dark:bg-surface"
+        >
           <p className="px-3 pt-2 pb-1 text-xs text-muted">
             {currentLabel} {selection.currentCount} 张
             {loadingMode === 'pages'
@@ -128,7 +159,8 @@ export function LibrarySelectionMenu({
                 setOpen(true);
               } else if (key === 'open') {
                 const id = selection.selected.keys().next().value;
-                if (id && trigger.current) onOpen(id, trigger.current);
+                const target = contextMenu?.target ?? trigger.current;
+                if (id && target) onOpen(id, target);
               } else if (key === 'select-current') selection.selectCurrent();
               else if (key === 'deselect-current') {
                 if (!selection.otherCount) focusSearch();

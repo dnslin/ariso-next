@@ -71,6 +71,7 @@ const item = (id: string): LibraryItem => ({
     watermark: false,
   },
   thumbnailUrl: null,
+  thumbnailDimensions: null,
   activeJob: null,
   latestFailedJob: null,
   trashedAt: null,

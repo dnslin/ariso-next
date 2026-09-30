@@ -28,6 +28,7 @@ function item(id: string): LibraryItem {
       watermark: false,
     },
     thumbnailUrl: `/i/${id}?type=thumbnail`,
+    thumbnailDimensions: { width: 640, height: 480 },
     activeJob: null,
     latestFailedJob: null,
     trashedAt: null,

@@ -46,8 +46,9 @@ export function layoutGallery(
   let rowHeight = 0;
   items.forEach((item, index) => {
     const imageHeight =
-      layout === 'masonry' && item.width && item.height
-        ? ((cardWidth - (album ? 0 : 2)) * item.height) / item.width
+      layout === 'masonry' && item.thumbnailDimensions
+        ? ((cardWidth - (album ? 0 : 2)) * item.thumbnailDimensions.height) /
+          item.thumbnailDimensions.width
         : desktop
           ? 190
           : 130;

@@ -25,6 +25,7 @@ const image: LibraryItem = {
     watermark: false,
   },
   thumbnailUrl: '/i/image?type=thumbnail',
+  thumbnailDimensions: { width: 640, height: 480 },
   activeJob: null,
   latestFailedJob: null,
   trashedAt: null,
@@ -79,10 +80,10 @@ describe('gallery layout', () => {
     expect(result.height).toBe(result.slots[5].top + result.slots[5].height);
   });
 
-  it('uses source aspect ratios even before a thumbnail loads and stacks in the shortest lane', () => {
+  it('uses thumbnail aspect ratios even before it loads and stacks in the shortest lane', () => {
     const items = images(5);
-    items[0].height = 1280;
-    items[1].height = 320;
+    items[0].thumbnailDimensions = { width: 640, height: 1280 };
+    items[1].thumbnailDimensions = { width: 640, height: 320 };
     const result = layoutGallery(items, 'masonry', 358, 390);
     expect(result.slots[0].imageHeight).toBe(342);
     expect(result.slots[1].imageHeight).toBe(85.5);
@@ -99,7 +100,7 @@ describe('gallery layout', () => {
 
   it('uses the design placeholder dimensions when dimensions have not been identified', () => {
     const result = layoutGallery(
-      [{ ...image, width: null, height: null }],
+      [{ ...image, thumbnailDimensions: null }],
       'masonry',
       358,
       390,
@@ -139,7 +140,7 @@ describe('gallery render window', () => {
 
   it('includes very tall visible masonry cards even when their start is above the window', () => {
     const items = images(100);
-    items[0].height = 100_000;
+    items[0].thumbnailDimensions = { width: 640, height: 100_000 };
     const result = layoutGallery(items, 'masonry', 358, 390);
     const indexes = visibleGalleryIndexes(
       result.lanes,
@@ -207,3 +208,17 @@ it.each(['grid', 'masonry'] as const)(
     ).toHaveLength(2400);
   },
 );
+
+it('uses the saved thumbnail ratio after orientation without changing the grid height', () => {
+  const rotated = {
+    ...image,
+    width: 1200,
+    height: 800,
+    thumbnailDimensions: { width: 427, height: 640 },
+  };
+  const masonry = layoutGallery([rotated], 'masonry', 358, 390);
+  expect(masonry.slots[0].imageHeight).toBeCloseTo((171 * 640) / 427);
+  expect(layoutGallery([rotated], 'grid', 358, 390).slots[0].imageHeight).toBe(
+    130,
+  );
+});

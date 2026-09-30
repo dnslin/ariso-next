@@ -35,6 +35,7 @@ type LibraryRow = Omit<
   | 'trashedAt'
   | 'versions'
   | 'thumbnailUrl'
+  | 'thumbnailDimensions'
   | 'activeJob'
   | 'latestFailedJob'
 > & { createdAt: Date; trashedAt: Date | null };
@@ -47,7 +48,12 @@ export function readLibraryItems(
   if (!rows.length) return [];
   const ids = rows.map((row) => row.id);
   const saved = db
-    .select({ imageId: mediaVersions.imageId, kind: mediaVersions.kind })
+    .select({
+      imageId: mediaVersions.imageId,
+      kind: mediaVersions.kind,
+      width: mediaVersions.width,
+      height: mediaVersions.height,
+    })
     .from(mediaVersions)
     .innerJoin(mediaObjects, eq(mediaVersions.objectId, mediaObjects.id))
     .where(
@@ -87,8 +93,18 @@ export function readLibraryItems(
       thumbnail: false,
       watermark: false,
     };
-    for (const version of saved)
-      if (version.imageId === row.id) versions[version.kind] = true;
+    let thumbnailDimensions: LibraryItem['thumbnailDimensions'] = null;
+    for (const version of saved) {
+      if (version.imageId !== row.id) continue;
+      versions[version.kind] = true;
+      if (
+        version.kind === 'thumbnail' &&
+        version.width !== null &&
+        version.height !== null
+      ) {
+        thumbnailDimensions = { width: version.width, height: version.height };
+      }
+    }
     const summary = (failed: boolean): LibraryJobSummary | null => {
       const job = jobs.find(
         (job) => job.imageId === row.id && (job.status === 'failed') === failed,
@@ -116,6 +132,7 @@ export function readLibraryItems(
       storage: row.storage,
       createdAt: row.createdAt.toISOString(),
       versions,
+      thumbnailDimensions,
       thumbnailUrl:
         row.storage.enabled && !row.deletionStatus && versions.thumbnail
           ? row.trashedAt

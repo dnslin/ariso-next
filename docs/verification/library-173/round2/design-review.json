@@ -1,0 +1,257 @@
+{
+  "date": "2026-10-01",
+  "reviewer": "independent design_audit agent",
+  "baseline_commit": "c2ebb6f",
+  "scope": "Issue #173 second manual feedback: condition alignment, context menu, image-surface drag selection, card corners and image fit",
+  "basis": {
+    "rules": [
+      "AGENTS.md",
+      "docs/design/handoff.md#图库卡片与右键操作返修（2026-10-01，人工反馈）",
+      "docs/tasks/execution.md"
+    ],
+    "figma_file": "74sT9Hrf8G4czcWeTkET5b",
+    "figma_nodes_context_and_screenshot_actually_read": [
+      "30:285",
+      "98:748",
+      "37:392",
+      "505:10077"
+    ],
+    "approved_overrides": [
+      "All card corners16px at every width",
+      "Grid fixed image area uses centered proportional cover; masonry uses full actual thumbnail aspect ratio",
+      "Condition44px/14px text/16px centered indicators",
+      "Image surface supports5px threshold drag; right-click and Shift+F10 share selection Dropdown"
+    ]
+  },
+  "method": "Read actual Figma contexts/screenshots and full-page Ego screenshots; compare shell first, then toolbar, cards and menu. Browser run executed by root exclusively; reviewer read reports and images, did not operate Ego or edit production code/Figma.",
+  "before_evidence": [
+    "test-results/issue-173/round2/before.png",
+    "test-results/issue-173/round2/before.json",
+    "test-results/issue-173/round2/interaction-before.json",
+    "test-results/issue-173/round2/keyboard-context-before.json",
+    "test-results/issue-173/round2/library-feedback-before.json"
+  ],
+  "before_findings": [
+    "960px viewport had top corner0px/bottom16px and visible image-side contain gutters.",
+    "Condition triggers had mixed24px indicator/14px remove icons; group outer46px/control44px.",
+    "Image-surface drag/right-click probe selected0 and had no menu.",
+    "Actual Shift+F10 initially timed out waiting for selection menu; failure preserved before explicit keyboard entry fix."
+  ],
+  "visual_checks": [
+    {
+      "item": "Full-page/public shell",
+      "result": "pass for reviewed scope",
+      "detail": "1440 desktop sidebar232/main inset32, mobile/tablet brand+menu and16px content inset, title and fixed footer remain unified with Figma baseline and previously approved changes. No new shell discrepancy found."
+    },
+    {
+      "item": "Filter alignment",
+      "result": "pass",
+      "detail": "Across actual390/960/1440 light/dark captures, text baselines, arrow centers and remove controls align; all six categories wrap without overlap. The native report confirms44px controls/14px text/16px indicators."
+    },
+    {
+      "item": "Grid photo gutters/corners",
+      "result": "pass",
+      "detail": "Landscape and rotated portrait thumbnails proportionally fill the fixed image area, with centered edge cropping and no side strips. Upper corners now visibly continuous16px, matching10/1 manual requirement. Name/status areas remain fully readable."
+    },
+    {
+      "item": "Masonry natural proportion",
+      "result": "pass",
+      "detail": "Actual decoded landscape/portrait checker thumbnails show their entire pattern at correct orientation and aspect without stretching or side gutters, in390/960/1440 light/dark views. Image and information regions remain joined."
+    },
+    {
+      "item": "Pointer context menu and boundary/short states",
+      "result": "pass",
+      "detail": "Central right-click-selected group retains2 cards and shows shared actions near pointer. Additional6 actual light/dark screenshots at1440x600,390x844,390x560 show every action inside main without reaching fixed brand/header or footer. Mobile menu right377 stays within390 viewport;390x560 menu y78..346 stays between header64 and footer456. Both themes use consistent background/surface, border, rounded corners and readable action text. Escape/card-focus and target-size success is supported by the actually read native context-edges report."
+    }
+  ],
+  "reviewed_screenshots": [
+    {
+      "path": "test-results/issue-173/round2/library-feedback-right-click-selection.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-390-grid.png",
+      "viewport": {
+        "width": 390,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-390-masonry.png",
+      "viewport": {
+        "width": 390,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-960-grid.png",
+      "viewport": {
+        "width": 960,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-960-masonry.png",
+      "viewport": {
+        "width": 960,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-1440-grid.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-light-1440-masonry.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-390-grid.png",
+      "viewport": {
+        "width": 390,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-390-masonry.png",
+      "viewport": {
+        "width": 390,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-960-grid.png",
+      "viewport": {
+        "width": 960,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-960-masonry.png",
+      "viewport": {
+        "width": 960,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-1440-grid.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-dark-1440-masonry.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "reviewed": true
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-light-1440x600.png",
+      "viewport": {
+        "width": 1440,
+        "height": 600
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-light-390x844.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-light-390x560.png",
+      "viewport": {
+        "width": 390,
+        "height": 560
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-dark-1440x600.png",
+      "viewport": {
+        "width": 1440,
+        "height": 600
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-dark-390x844.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    },
+    {
+      "path": "test-results/issue-173/round2/library-feedback-menu-edge-dark-390x560.png",
+      "viewport": {
+        "width": 390,
+        "height": 560
+      },
+      "reviewed": true,
+      "result": "pass for menu boundary/appearance; scroll offsets differ across some theme captures and are not treated as a layout regression"
+    }
+  ],
+  "functional_report": {
+    "path": "test-results/issue-173/round2/library-feedback.json",
+    "status": "passed",
+    "check_count": 3,
+    "combination_count": 24,
+    "conclusion": "Targeted feedback report passed3 check groups and24 theme/width/layout combinations. Additionalcontext-edges report passed right/bottom pointer-menu fit, action target/reachability and Escape source-focus across1440x600,390x844/560 in both themes. Whole browser regression for current changed build remains unverified here."
+  },
+  "design_conclusion": "Pass for the complete reviewed second-round scope. Figma baseline plus10/1 user-approved changes verified against actual screenshots: condition alignment, four16px corners, centered proportional grid cover, masonry actual thumbnail aspect ratio, selection/context-menu appearance and applicable desktop/mobile short boundary states. No unresolved Required design finding. User manual acceptance still pending; PR remains draft.",
+  "required_pending": [],
+  "limits": [
+    "Full browser regression for current round not yet independently verified.",
+    "Manual UI acceptance pending; PR remains draft.",
+    "No physical-device testing by reviewer.",
+    "Existing sidebar slogan discrepancy from prior baseline is outside this change."
+  ],
+  "context_edge_report": {
+    "path": "test-results/issue-173/round2/context-edges.json",
+    "status": "passed",
+    "checks": [
+      "Right/bottom context menus fit the main boundary at desktop 1440×600 and mobile 390×844/560 in both themes; every action is visible with its required target size and Escape restores the card."
+    ],
+    "functional_scope": "Targeted native boundary/reachability/Escape recovery passed; reviewer independently inspected6 generated screenshots rather than re-running browser interactions."
+  },
+  "final_status": {
+    "in_scope_design_review": "passed",
+    "targeted_functional_evidence": "passed",
+    "whole_browser_regression": "pending",
+    "human_acceptance": "pending",
+    "pr": "draft"
+  }
+}
