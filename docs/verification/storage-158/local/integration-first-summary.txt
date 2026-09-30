@@ -1,0 +1,144 @@
+Source: test-results/issue-158/integration.txt
+Command: pnpm run test:integration --maxWorkers=2
+Exit: 1
+ ❯ |integration| tests/integration/runtime/migrations.test.ts (13 tests | 2 failed) 58ms
+   ❯ runtime forward migrations (13)
+     × 真实存储探测数据库升级到元数据迁移时保留水印、存储、探测记录和历史进度，重跑不重放 20ms
+     × 从 main 水印迁移升级探测表时保留水印、存储数据与历史进度，重复升级不重放 11ms
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 1 failed) 29398ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 6654ms
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 4 failed) 65427ms
+   × 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 15018ms
+   × wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15014ms
+   × invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15016ms
+   × tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15009ms
+ ❯ |integration| tests/integration/runtime/prestart.test.ts (9 tests | 6 failed) 2742ms
+   ❯ compiled prestart CLI (9)
+     × 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接 452ms
+     × 重启保留清空默认和删除配置，不重新创建默认目录 353ms
+     × 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值 322ms
+     × 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放 311ms
+     × 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接 357ms
+     × preflight 返回或抛错前已关闭真实连接（故障=true） 310ms
+ ❯ |integration| tests/integration/runtime/startup.test.ts (13 tests | 13 failed) 189113ms
+   ❯ 完整生产入口的失败与恢复 (13)
+     × BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动 15628ms
+     × BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动 15903ms
+     × ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动 15547ms
+     × ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动 15436ms
+     × PORT=0：拒绝配置且不监听，修复后同目录启动 15782ms
+     × PORT=65536：拒绝配置且不监听，修复后同目录启动 15317ms
+     × PORT=3.5：拒绝配置且不监听，修复后同目录启动 15331ms
+     × PORT=abc：拒绝配置且不监听，修复后同目录启动 15321ms
+     × LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动 15440ms
+     × 真实不可写目录保留权限、路径和文件，恢复写权限后启动 15478ms
+     × 占用生产端口时退出而不换端口，释放后原端口可启动 599ms
+     × 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 15023ms
+     × 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件 15020ms
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+ ❯ tests/integration/analytics/count.test.ts:151:1
+ FAIL  |integration| tests/integration/runtime/migrations.test.ts > runtime forward migrations > 真实存储探测数据库升级到元数据迁移时保留水印、存储、探测记录和历史进度，重跑不重放
+ ❯ tests/integration/runtime/migrations.test.ts:153:28
+ FAIL  |integration| tests/integration/runtime/migrations.test.ts > runtime forward migrations > 从 main 水印迁移升级探测表时保留水印、存储数据与历史进度，重复升级不重放
+ ❯ tests/integration/runtime/migrations.test.ts:240:63
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接
+ ❯ tests/integration/runtime/prestart.test.ts:111:44
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 重启保留清空默认和删除配置，不重新创建默认目录
+ ❯ tests/integration/runtime/prestart.test.ts:136:26
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值
+ ❯ tests/integration/runtime/prestart.test.ts:162:27
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放
+ ❯ tests/integration/runtime/prestart.test.ts:195:26
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接
+ ❯ tests/integration/runtime/prestart.test.ts:232:26
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > preflight 返回或抛错前已关闭真实连接（故障=true）
+ ❯ tests/integration/runtime/prestart.test.ts:256:30
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:59
+ ❯ tests/integration/runtime/secret-preflight.test.ts:144:11
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:144:5
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:59
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:11
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:5
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:59
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:11
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:5
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:59
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:11
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:111:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:199:5
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=0：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=65536：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=3.5：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=abc：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:229:21
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实不可写目录保留权限、路径和文件，恢复写权限后启动
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:249:19
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:249:19
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 占用生产端口时退出而不换端口，释放后原端口可启动
+ ❯ tests/integration/runtime/startup.test.ts:260:26
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:285:19
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:285:19
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件
+ ❯ healthy tests/integration/runtime/startup.test.ts:188:6
+ ❯ tests/integration/runtime/startup.test.ts:343:19
+ ❯ healthy tests/integration/runtime/startup.test.ts:172:3
+ ❯ tests/integration/runtime/startup.test.ts:343:19
+ Test Files  5 failed | 90 passed (95)
+      Tests  26 failed | 837 passed (863)
+   Duration  466.75s (tests 97%, import 2%)
+Runtime failure: no such column: cors_report. Full stacks remain in the source log.
+Migration failures: historical row equality expected old columns only.
+Analytics failure: tests/integration/analytics/count.test.ts:151 exceeded unchanged 5000ms timeout.

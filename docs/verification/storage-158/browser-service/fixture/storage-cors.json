@@ -1,0 +1,541 @@
+{
+  "status": "passed",
+  "taskSpaceId": 1,
+  "checks": [
+    "local-http-fixture: actual browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "Leaving without completion and controlled persisted expiry invokes the real server maintenance cleanup and preserves a failed result",
+    "Real CORS refusal never passes; DELETE failure persists cleanup responsibility; retry empties the exact fixture object list"
+  ],
+  "services": [
+    {
+      "service": "local-http-fixture",
+      "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+      "probes": [
+        {
+          "key": "probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:29:12.094Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            },
+            {
+              "method": "GET",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            },
+            {
+              "method": "HEAD",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            }
+          ],
+          "report": {
+            "probeId": "8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:29:12.756Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "failed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "failed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "failed",
+                "error": {
+                  "message": "Storage read failed: eef3308a-8f69-42f3-ad77-a9482373cd9a, probes/8f894f6e-c515-465b-8ef9-326580a33fb1: NoSuchKey",
+                  "code": "STORAGE_OBJECT_MISSING",
+                  "serviceCode": "NoSuchKey",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 404
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+          "report": {
+            "probeId": "4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-09-30T06:29:13.055Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "failed",
+                "error": {
+                  "message": "Storage delete failed: eef3308a-8f69-42f3-ad77-a9482373cd9a, probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902: AccessDenied",
+                  "code": "STORAGE_OPERATION_FAILED",
+                  "serviceCode": "AccessDenied",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 403
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+          "report": {
+            "probeId": "bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:29:44.411Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "error": {
+                  "code": "STORAGE_CORS_EXPIRED",
+                  "message": "浏览器未在签名到期前完成直传检测"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "skipped"
+              },
+              {
+                "stage": "browser-head",
+                "status": "skipped"
+              },
+              {
+                "stage": "verify",
+                "status": "skipped"
+              },
+              {
+                "stage": "delete",
+                "status": "skipped"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "24683989-3db5-438a-93ee-768396805f57",
+        "storageId": "eef3308a-8f69-42f3-ad77-a9482373cd9a",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "http://127.0.0.1:49625/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/24683989-3db5-438a-93ee-768396805f57",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "cors-browser-fixture",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "cors-browser-fixture",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T06:29:07.172Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      },
+      "fixture": {
+        "mode": "normal",
+        "objects": [],
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/24683989-3db5-438a-93ee-768396805f57",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/24683989-3db5-438a-93ee-768396805f57",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/24683989-3db5-438a-93ee-768396805f57",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/24683989-3db5-438a-93ee-768396805f57",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/e86b76a1-6497-4380-8f07-ea57bb9dbe10",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/8f894f6e-c515-465b-8ef9-326580a33fb1",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/4e9b1640-80fb-47e9-8bb0-96dd364d8902",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "origin": "http://127.0.0.1:47070",
+            "signed": true
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/eef3308a-8f69-42f3-ad77-a9482373cd9a/probes/bbac434a-9eab-40c8-97fb-e930f469ae6f",
+            "origin": null,
+            "signed": false
+          }
+        ]
+      }
+    }
+  ]
+}

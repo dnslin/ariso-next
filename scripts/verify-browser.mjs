@@ -8,6 +8,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
+import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const output = resolve(
@@ -22,6 +23,7 @@ for (const name of [
   'albums.json',
   'upload.json',
   'upload-polling.json',
+  'storage-cors.json',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -48,6 +50,7 @@ await writeFile(
 let server;
 let browser;
 let shellServer;
+let corsFixture;
 let shellLogs = '';
 let logs = '';
 const secrets = [];
@@ -318,6 +321,15 @@ try {
     );
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
     if (width === 390) {
+      corsFixture = await startCorsFixture(origin);
+      await runBrowser(
+        '../e2e/storage-cors.mjs',
+        { ...identityConfig, corsFixture: corsFixture.endpoint },
+        'storage-cors.log',
+      );
+      report.storageCors = 'passed';
+      await corsFixture.close();
+      corsFixture = undefined;
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
@@ -381,6 +393,7 @@ try {
   await stop(browser);
   await stop(server);
   await stop(shellServer);
+  await corsFixture?.close();
   await writeFile(join(output, 'shell-server.log'), shellLogs);
   await writeFile(join(output, 'server.log'), redact(logs));
   await rm(temporary, { recursive: true, force: true });

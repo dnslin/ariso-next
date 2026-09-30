@@ -33,6 +33,10 @@ EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 pnpm run test:browser
 
 将 22 替换为本任务首次输出的 ID。默认独立运行成功即关闭空间；连续任务设置 `EGO_KEEP_SPACE=1`，完成后调用一次 `task.finish({ keep: [] })`。不得新建空间绕过失败。
 
+`e2e/storage-cors.mjs` 使用手机初始化后的同一隔离数据库和 TaskSpace，通过真实管理接口创建独立 S3 配置，再在浏览器中发起签名 PUT、GET、HEAD。运行器启动独立 HTTP 故障服务，核对浏览器可读响应、完整小样本、服务端复核/清理、刷新后的持久结果、缺失 CORS 头、删除失败和手动重试。离开页面后不提交完成回调，并只提前该临时 probe 的数据库期限，由生产维护循环清理并保存失败结果。最终要求故障服务的对象列表为空。报告为 `storage-cors.json`；HTTP 故障服务不验证真实 S3 签名或云服务兼容性。
+
+真实 Cloudflare R2 与 SeaweedFS 验证复用 `tests/experiments/storage-s3/verify-cors-browser.mjs`。该入口需要已初始化的独立应用、私有服务配置和临时所有者账号文件，通过 `EGO_TASK_SPACE` 复用现有空间；不会创建或关闭空间、修改 Bucket CORS 或启动另一个应用。使用与 Bucket CORS 一致的 `--origin`，例如既有实验的 `http://127.0.0.1:47070`。参数 `--r2-no-lock-evidence` 必须指向同一 Bucket 已有的所有者无锁确认。浏览器完成后再以真实 SDK 核对本轮每个 Key 的 HEAD 404 和独立存储前缀的空对象列表。真实环境缺失或任一步失败均非零退出，不能用本地故障服务代替两服务验收。
+
 `e2e/m2.mjs` / `e2e/m2-core.mjs` 在两个空目录初始化环境分别执行桌面和手机的 JPEG/PNG × 公私有上传矩阵，使用真实文件选择、复制、下载、回收和恢复。匿名页使用同一 TaskSpace 的独立主机隔离 Cookie；这不是第二浏览器引擎。原图核对磁盘和下载字节，三张统计表在实际周期刷库和生产 stop/start 后精确复核。重启夹具仅持有实际上传任务的调度，恢复后要求同一任务、快照和原图对象，且每个版本只存在一次。输出 `m2-1440.json`、`m2-390.json` 及前后阶段日志；本切片范围和独立双浏览器证据见 [M2 报告](../docs/verification/m2-85/README.md)。
 
 设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。

@@ -42,7 +42,7 @@ const migrate = (folder: string) =>
   migrateRuntimeDatabase(connection.db, folder);
 
 describe('runtime forward migrations', () => {
-  it('真实存储探测数据库升级到元数据迁移时保留水印、存储、探测记录和历史进度，重跑不重放', () => {
+  it('真实存储探测数据库升级元数据和 CORS 字段时保留历史数据，新列默认值正确，重跑不重放', () => {
     const currentFolder = resolve('drizzle');
     const journal = JSON.parse(
       readFileSync(join(currentFolder, 'meta/_journal.json'), 'utf8'),
@@ -119,6 +119,25 @@ describe('runtime forward migrations', () => {
       probes: db.prepare('SELECT * FROM storage_probes').all(),
     });
     const retainedData = existingData();
+    const expectedUpgradedData = {
+      ...retainedData,
+      storage: retainedData.storage.map((row) => ({
+        ...(row as Record<string, unknown>),
+        cors_report: null,
+      })),
+      probes: retainedData.probes.map((row) => ({
+        ...(row as Record<string, unknown>),
+        origin: null,
+        invalidated: 0,
+        expires_at: null,
+      })),
+    };
+    expect(() =>
+      db.prepare('SELECT cors_report FROM storage_configs'),
+    ).toThrow();
+    expect(() =>
+      db.prepare('SELECT origin, invalidated, expires_at FROM storage_probes'),
+    ).toThrow();
     const originalProgress = progress();
     expect(originalProgress).toHaveLength(previousEntries.length);
     expect(
@@ -132,6 +151,10 @@ describe('runtime forward migrations', () => {
       (entry) => entry.tag === '0013_magenta_colonel_america',
     )!;
     expect(metadataEntry.when).toBeGreaterThan(previousEntries.at(-1)!.when);
+    const corsEntry = journal.entries.find(
+      (entry) => entry.tag === '0014_silent_shiva',
+    )!;
+    expect(corsEntry.when).toBeGreaterThan(metadataEntry.when);
     const upgradedProgress = progress();
     expect(upgradedProgress).toHaveLength(journal.entries.length);
     expect(upgradedProgress.slice(0, originalProgress.length)).toEqual(
@@ -150,12 +173,18 @@ describe('runtime forward migrations', () => {
         )
         .all(),
     ).toEqual([]);
-    expect(existingData()).toEqual(retainedData);
+    expect(upgradedProgress).toContainEqual({
+      hash: createHash('sha256')
+        .update(readFileSync(join(currentFolder, `${corsEntry.tag}.sql`)))
+        .digest('hex'),
+      created_at: corsEntry.when,
+    });
+    expect(existingData()).toEqual(expectedUpgradedData);
     expect(db.pragma('foreign_key_check')).toEqual([]);
 
     migrate(currentFolder);
     expect(progress()).toEqual(upgradedProgress);
-    expect(existingData()).toEqual(retainedData);
+    expect(existingData()).toEqual(expectedUpgradedData);
     expect(db.prepare('SELECT * FROM media_metadata').all()).toEqual([]);
     expect(db.pragma('foreign_key_check')).toEqual([]);
   });
@@ -240,6 +269,7 @@ describe('runtime forward migrations', () => {
     expect(db.prepare('SELECT * FROM storage_configs').get()).toEqual({
       ...(storageBefore as Record<string, unknown>),
       connection_report: null,
+      cors_report: null,
     });
     expect(db.prepare('SELECT * FROM media_watermark_assets').all()).toEqual(
       watermarkBefore,

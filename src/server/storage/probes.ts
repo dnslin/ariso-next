@@ -27,7 +27,7 @@ export type ProbeInput = {
 export function probeError(code: string, message: string, status = 409) {
   return Object.assign(new Error(message), { code, status });
 }
-function configuration(
+export function configuration(
   context: ProbeContext,
   storageId: string,
 ): StorageConfig {
@@ -42,7 +42,7 @@ function configuration(
     throw probeError('STORAGE_INVALID_INPUT', '连接探测仅用于 S3 存储', 400);
   return config;
 }
-function clientConfig(
+export function clientConfig(
   context: ProbeContext,
   config: StorageConfig,
 ): S3StorageConfig {
@@ -68,7 +68,7 @@ function clientConfig(
     },
   };
 }
-function stageError(
+export function stageError(
   error: unknown,
   secrets: string[] = [],
 ): NonNullable<ProbeStageResult['error']> {
@@ -95,7 +95,7 @@ function stageError(
     httpStatusCode: detail?.httpStatusCode,
   };
 }
-function updateProbe(
+export function updateProbe(
   context: ProbeContext,
   id: string,
   values: Partial<typeof storageProbes.$inferInsert>,
@@ -372,6 +372,12 @@ export async function cleanupProbe(context: ProbeContext, probe: StorageProbe) {
     context.db.transaction((tx) => {
       tx.delete(storageProbes).where(eq(storageProbes.id, probe.id)).run();
       const config = configuration({ ...context, db: tx }, probe.storageId);
+      if (probe.purpose === 'cors' && config.corsReport?.probeId === probe.id) {
+        tx.update(storageConfigs)
+          .set({ corsReport: { ...config.corsReport, cleanupPending: false } })
+          .where(eq(storageConfigs.id, probe.storageId))
+          .run();
+      }
       if (
         config.connectionReport?.probeId === probe.id &&
         config.configRevision === probe.configRevision
@@ -412,7 +418,7 @@ export function recoverProbes(context: ProbeContext) {
         ),
       )
       .all()) {
-      const report = probe.report;
+      const report = probe.report as ConnectionReport;
       report.passed = false;
       report.cleanupPending = probe.objectState !== 'planned';
       report.testedAt = new Date().toISOString();

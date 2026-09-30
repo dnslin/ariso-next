@@ -1,0 +1,44 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "browser": "Existing Ego Lite; taskSpace 1",
+    "origin": "http://127.0.0.1:47070",
+    "application": "Next.js development server, isolated initialized database in worktree .data/issue-158-preview/data"
+  },
+  "commands": [
+    {
+      "command": "node --env-file=.data/issue-158-preview/env src/cli/prestart.ts",
+      "exitCode": 0,
+      "purpose": "Apply committed migrations to independent test data before restarting the preview"
+    },
+    {
+      "command": "node --input-type=module (inline orchestration imports e2e/storage-cors-fixture.mjs, starts fixture, passes private initialized account and database paths to ego-browser nodejs with e2e/storage-cors.mjs, then closes fixture)",
+      "exitCode": 0,
+      "evidence": "fixture/storage-cors.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 node tests/experiments/storage-s3/verify-cors-browser.mjs --config /Volumes/data/project/ariso/.data/upload-v02.json --credentials .data/issue-158-preview/credentials.json --origin http://127.0.0.1:47070 --output docs/verification/storage-158/browser-service/live-origin --r2-no-lock-evidence 'docs/tasks/evidence/EV-STORAGE-01/README.md records owner confirmation for the same R2 image bucket; reused in the authorized Issue 158 test'",
+      "exitCode": 0,
+      "evidence": ["live-origin/storage-cors.json", "live-origin/live.json"]
+    },
+    {
+      "command": "pnpm exec eslint e2e/storage-cors.mjs e2e/storage-cors-fixture.mjs tests/experiments/storage-s3/verify-cors-browser.mjs scripts/verify-browser.mjs --max-warnings=0",
+      "exitCode": 0
+    }
+  ],
+  "results": {
+    "fixture": "Native browser CORS PUT/GET/HEAD; byte equality; server verification; persisted passed result; missing CORS rejects; failed DELETE preserves exact cleanup responsibility; retry succeeds; leaving without completion followed by controlled persisted expiry invokes real server maintenance and ends with an empty object list.",
+    "realServices": "R2 and SeaweedFS connection tests passed. Authenticated wrong-Origin HTTP requests were rejected before creating probes. Native browser PUT/GET/HEAD all returned readable cors responses. Server verification/delete, reload persistence, exact-key HEAD 404 and empty storage-prefix ListObjects all passed.",
+    "credentialScan": "All 9 JSON/log evidence files across fixture and both real-service rounds contain no configured credential values or complete signed URLs."
+  },
+  "limitations": [
+    "API-driven browser probe proves protocol and application endpoints. It does not invoke the production React cors-transport via UI clicks and is not UI/design acceptance.",
+    "Failure and expiry injection was local HTTP fixture plus the disposable database; cloud Bucket policies were not changed.",
+    "The fixture does not validate AWS signatures. Only R2 and SeaweedFS runs prove the real-service signature/browser protocol.",
+    "Current task UI requires separate approved design integration, real page screenshots, independent design review and human acceptance.",
+    "Physical devices, alternative browser engines, release images and AMD64/ARM64 containers were not tested."
+  ]
+}

@@ -1,5 +1,13 @@
 export type ProbeStage =
-  'configuration' | 'write' | 'read' | 'anonymous' | 'delete';
+  | 'configuration'
+  | 'write'
+  | 'read'
+  | 'anonymous'
+  | 'delete'
+  | 'browser-put'
+  | 'browser-get'
+  | 'browser-head'
+  | 'verify';
 export type ProbeStageResult = {
   stage: ProbeStage;
   status: 'pending' | 'passed' | 'failed' | 'skipped';

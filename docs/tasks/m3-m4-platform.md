@@ -194,6 +194,7 @@
 
 - 任务组：`STORAGE-CORS`
 - 里程碑：M4
+- 实施记录：[Issue #158 进行中证据](../verification/storage-158/README.md)；后端与真实浏览器协议已实现，产品页面、设计批准及人工验收尚未完成，任务不标记完成。
 - 范围：交付CORS示例、浏览器PUT探测、服务器内容复核与清理，以及site修改origin同事务调用的失效函数。
 - 规格与预计文件：SPEC-storage §7、ST-08/09/15；`src/server/storage/cors.ts`、cors-tests路由、CORS检测组件与浏览器测试。
 - 直接前置：`T-STO-04`、`T-UI-01`、`UPLOAD-V01`、`DG-STORAGE`

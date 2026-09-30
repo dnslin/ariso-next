@@ -1,0 +1,543 @@
+{
+  "status": "passed",
+  "taskSpaceId": 1,
+  "checks": [
+    "local-http-fixture: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "local-http-fixture: actual browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "Leaving without completion and controlled persisted expiry invokes the real server maintenance cleanup and preserves a failed result",
+    "Real CORS refusal never passes; DELETE failure persists cleanup responsibility; retry empties the exact fixture object list"
+  ],
+  "services": [
+    {
+      "service": "local-http-fixture",
+      "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+      "probes": [
+        {
+          "key": "probes/40377c90-7ae4-412c-b217-438e16aebe72",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "40377c90-7ae4-412c-b217-438e16aebe72",
+            "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+            "revision": 1,
+            "origin": "http://ariso-56110.localhost:56110",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:57:57.884Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            },
+            {
+              "method": "GET",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            },
+            {
+              "method": "HEAD",
+              "status": 0,
+              "responseType": "error",
+              "error": "Failed to fetch"
+            }
+          ],
+          "report": {
+            "probeId": "89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+            "revision": 1,
+            "origin": "http://ariso-56110.localhost:56110",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:57:58.031Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "failed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "failed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "Failed to fetch"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "failed",
+                "error": {
+                  "message": "Storage read failed: 9212f7f4-cfed-4229-be0f-924f1319206d, probes/89d1ad0d-29c4-48d2-8e76-6c180544f533: NoSuchKey",
+                  "code": "STORAGE_OBJECT_MISSING",
+                  "serviceCode": "NoSuchKey",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 404
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+          "report": {
+            "probeId": "babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+            "revision": 1,
+            "origin": "http://ariso-56110.localhost:56110",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-09-30T06:57:58.058Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "failed",
+                "error": {
+                  "message": "Storage delete failed: 9212f7f4-cfed-4229-be0f-924f1319206d, probes/babd4434-d4d6-45e9-a89b-41217f9c23dd: AccessDenied",
+                  "code": "STORAGE_OPERATION_FAILED",
+                  "serviceCode": "AccessDenied",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 403
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+          "report": {
+            "probeId": "11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+            "revision": 1,
+            "origin": "http://ariso-56110.localhost:56110",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:58:10.391Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "error": {
+                  "code": "STORAGE_CORS_EXPIRED",
+                  "message": "浏览器未在签名到期前完成直传检测"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "skipped"
+              },
+              {
+                "stage": "browser-head",
+                "status": "skipped"
+              },
+              {
+                "stage": "verify",
+                "status": "skipped"
+              },
+              {
+                "stage": "delete",
+                "status": "skipped"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "f949ae8b-2e82-473d-83b2-070bf4d6321f",
+        "storageId": "9212f7f4-cfed-4229-be0f-924f1319206d",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "http://127.0.0.1:57759/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/f949ae8b-2e82-473d-83b2-070bf4d6321f",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "cors-browser-fixture",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "cors-browser-fixture",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T06:57:57.795Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      },
+      "fixture": {
+        "mode": "normal",
+        "objects": [],
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/f949ae8b-2e82-473d-83b2-070bf4d6321f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/f949ae8b-2e82-473d-83b2-070bf4d6321f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/f949ae8b-2e82-473d-83b2-070bf4d6321f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/f949ae8b-2e82-473d-83b2-070bf4d6321f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/40377c90-7ae4-412c-b217-438e16aebe72",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/89d1ad0d-29c4-48d2-8e76-6c180544f533",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/babd4434-d4d6-45e9-a89b-41217f9c23dd",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "origin": "http://ariso-56110.localhost:56110",
+            "signed": true
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/9212f7f4-cfed-4229-be0f-924f1319206d/probes/11b5e46c-594c-4e45-82e6-d1e999f31010",
+            "origin": null,
+            "signed": false
+          }
+        ]
+      }
+    }
+  ],
+  "loginRetrySeconds": [7]
+}

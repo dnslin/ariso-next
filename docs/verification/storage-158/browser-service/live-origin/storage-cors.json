@@ -1,0 +1,315 @@
+{
+  "status": "passed",
+  "taskSpaceId": 1,
+  "checks": [
+    "seaweedfs: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "seaweedfs: actual browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "r2: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "r2: actual browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result"
+  ],
+  "services": [
+    {
+      "service": "seaweedfs",
+      "storageId": "ba292bba-1154-4f70-8185-33834e5c1583",
+      "probes": [
+        {
+          "key": "probes/899c5c24-6564-42dc-92f2-2c6c66d67b32",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "899c5c24-6564-42dc-92f2-2c6c66d67b32",
+            "storageId": "ba292bba-1154-4f70-8185-33834e5c1583",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:32:02.556Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "3c5e43e0-8c63-4489-9804-3afdb30c48c2",
+        "storageId": "ba292bba-1154-4f70-8185-33834e5c1583",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DA0590AB678C4859BCBA24",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "18DA0590B13D8201B047E85E",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DA0590B73ACAC9E3BA8D8A",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DA0590BD2235F3B21DEA3B",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://fs.447654.xyz/images/ariso/ba292bba-1154-4f70-8185-33834e5c1583/probes/3c5e43e0-8c63-4489-9804-3afdb30c48c2",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "18DA0590D5431F4B514D7B54",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DA0590DB6B7F6AB3B3BDA6",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T06:32:01.428Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    },
+    {
+      "service": "r2",
+      "storageId": "a1bfc552-caac-4903-8dc2-ac43bc398bdb",
+      "probes": [
+        {
+          "key": "probes/3d4d8595-fbf7-4676-b800-53a2110663da",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "3d4d8595-fbf7-4676-b800-53a2110663da",
+            "storageId": "a1bfc552-caac-4903-8dc2-ac43bc398bdb",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T06:32:05.769Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "d5c9f792-5245-4e66-901b-98f7a873a69e",
+        "storageId": "a1bfc552-caac-4903-8dc2-ac43bc398bdb",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/a1bfc552-caac-4903-8dc2-ac43bc398bdb/probes/d5c9f792-5245-4e66-901b-98f7a873a69e",
+              "httpStatusCode": 400,
+              "serviceCode": "InvalidArgument",
+              "basis": "r2-authorization-required"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T06:32:04.346Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-09-30T06:32:02.855Z"
+        }
+      }
+    }
+  ]
+}
