@@ -1,12 +1,8 @@
-import { and, eq, ne, inArray } from 'drizzle-orm';
+import { and, eq, ne } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
+import { markUnpublishedMediaObjects } from './objects.ts';
 import { analyzeMediaError } from './errors.ts';
-import {
-  mediaImages,
-  mediaJobs,
-  mediaObjects,
-  mediaMetadata,
-} from './schema.ts';
+import { mediaImages, mediaJobs, mediaMetadata } from './schema.ts';
 
 export function settleMediaFailure(
   db: BetterSQLite3Database,
@@ -98,19 +94,11 @@ export function recoverMediaJobs(db: BetterSQLite3Database) {
           .where(eq(mediaJobs.id, job.id))
           .run();
         if (exhausted)
-          tx.update(mediaObjects)
-            .set({
-              status: 'cleanup_pending',
-              error: `${job.step}: MEDIA_RECOVERY_EXHAUSTED`,
-              updatedAt: now,
-            })
-            .where(
-              and(
-                eq(mediaObjects.jobId, job.id),
-                inArray(mediaObjects.status, ['planned', 'writing']),
-              ),
-            )
-            .run();
+          markUnpublishedMediaObjects(
+            tx,
+            job.id,
+            `${job.step}: MEDIA_RECOVERY_EXHAUSTED`,
+          );
         if (job.kind === 'metadata')
           tx.update(mediaMetadata)
             .set({

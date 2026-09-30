@@ -6,6 +6,8 @@ import { analyzeMediaError, mediaError } from './errors.ts';
 import { readObject, inspectObject, deleteObject } from '../storage/local.ts';
 import type { MediaRuntime } from './process.ts';
 import { startMediaTool } from './tools.ts';
+import { markUnpublishedMediaObjects } from './objects.ts';
+import { mediaJobSteps } from './reprocess.ts';
 import { advanceMediaStep } from './recovery.ts';
 import {
   mediaImages,
@@ -36,27 +38,26 @@ export function activeMediaJob(db: BetterSQLite3Database, jobId: string) {
   return { job, image, storage };
 }
 
-export function savedMediaVersion(
+export function savedMediaCandidate(
   db: BetterSQLite3Database,
   jobId: string,
   kind: DerivedVersionKind,
 ) {
   return db
     .select()
-    .from(mediaVersions)
-    .innerJoin(mediaObjects, eq(mediaObjects.id, mediaVersions.objectId))
+    .from(mediaObjects)
     .where(
       and(
         eq(mediaObjects.jobId, jobId),
-        eq(mediaVersions.kind, kind),
+        eq(mediaObjects.purpose, kind),
         eq(mediaObjects.status, 'stored'),
       ),
     )
     .get();
 }
 
-/** Publication and progress are committed together; recovery never publishes a saved step twice. */
-export function publishMediaVersion(
+/** Persist candidate facts and progress together; ready images publish only on completion. */
+export function saveMediaCandidate(
   db: BetterSQLite3Database,
   jobId: string,
   kind: DerivedVersionKind,
@@ -75,6 +76,8 @@ export function publishMediaVersion(
     const now = new Date();
     const details = {
       byteSize: result.size,
+      width: result.width,
+      height: result.height,
       format: result.format,
       mime: result.mime,
     };
@@ -87,22 +90,101 @@ export function publishMediaVersion(
         .set({ status: 'deleted', byteSize: 0, updatedAt: now })
         .where(eq(mediaObjects.id, temporaryObjectId))
         .run();
-    tx.insert(mediaVersions)
-      .values({
-        imageId: image.id,
-        kind,
-        objectId,
-        ...details,
-        width: result.width,
-        height: result.height,
-        createdAt: now,
+    if (
+      image.processingStatus !== 'ready' &&
+      job.expectedVersions.includes(kind)
+    )
+      replaceMediaVersion(tx, image.id, kind, objectId, details, now);
+    const steps = mediaJobSteps(job);
+    advanceMediaStep(tx, jobId, steps[steps.indexOf(kind) + 1] ?? 'complete');
+  });
+}
+
+/** Current references and cleanup ownership switch in the caller's short transaction. */
+export function replaceMediaVersion(
+  db: BetterSQLite3Database,
+  imageId: string,
+  kind: DerivedVersionKind,
+  objectId: string,
+  details: {
+    byteSize: number;
+    width: number | null;
+    height: number | null;
+    format: string;
+    mime: string;
+  },
+  now: Date,
+) {
+  const previous = db
+    .select()
+    .from(mediaVersions)
+    .where(
+      and(eq(mediaVersions.imageId, imageId), eq(mediaVersions.kind, kind)),
+    )
+    .get();
+  db.insert(mediaVersions)
+    .values({ imageId, kind, objectId, ...details, createdAt: now })
+    .onConflictDoUpdate({
+      target: [mediaVersions.imageId, mediaVersions.kind],
+      set: { objectId, ...details, createdAt: now },
+    })
+    .run();
+  if (previous && previous.objectId !== objectId)
+    markMediaCandidates(
+      db,
+      [previous.objectId],
+      'Replaced by a newly published version',
+    );
+}
+
+export function completeMediaJob(db: BetterSQLite3Database, jobId: string) {
+  db.transaction((tx) => {
+    const { job, image } = activeMediaJob(tx, jobId);
+    const candidates = job.expectedVersions.map((kind) => ({
+      kind,
+      object: savedMediaCandidate(tx, jobId, kind),
+    }));
+    if (candidates.some(({ object }) => !object))
+      throw mediaError(
+        'MEDIA_VERSIONS_MISSING',
+        `Missing saved versions for ${jobId}`,
+      );
+    const now = new Date();
+    if (image.processingStatus === 'ready')
+      for (const { kind, object } of candidates) {
+        replaceMediaVersion(
+          tx,
+          image.id,
+          kind,
+          object!.id,
+          {
+            byteSize: object!.byteSize!,
+            width: object!.width,
+            height: object!.height,
+            format: object!.format!,
+            mime: object!.mime!,
+          },
+          now,
+        );
+      }
+    tx.update(mediaJobs)
+      .set({
+        status: 'succeeded',
+        step: 'complete',
+        error: null,
+        finishedAt: now,
+        updatedAt: now,
       })
+      .where(eq(mediaJobs.id, jobId))
       .run();
-    advanceMediaStep(
+    tx.update(mediaImages)
+      .set({ processingStatus: 'ready', updatedAt: now })
+      .where(eq(mediaImages.id, image.id))
+      .run();
+    markUnpublishedMediaObjects(
       tx,
       jobId,
-      job.expectedVersions[job.expectedVersions.indexOf(kind) + 1] ??
-        'complete',
+      'Unpublished processing intermediate',
     );
   });
 }
@@ -159,7 +241,7 @@ export async function reconcileMediaObjects(
       existing &&
       candidate.purpose === kind &&
       candidate.status === 'writing' &&
-      !savedMediaVersion(db, jobId, kind)
+      !savedMediaCandidate(db, jobId, kind)
     ) {
       let verified: Awaited<ReturnType<typeof inspectImage>> | undefined;
       try {
@@ -230,7 +312,7 @@ export async function reconcileMediaObjects(
         markMediaCandidates(db, [candidate.id], analysis.diagnostic);
       }
       if (verified) {
-        publishMediaVersion(db, jobId, kind, candidate.id, {
+        saveMediaCandidate(db, jobId, kind, candidate.id, {
           size: existing.size,
           width: verified.width,
           height: verified.height,
