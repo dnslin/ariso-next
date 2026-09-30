@@ -1,6 +1,6 @@
 # T-LIB-04 / Issue #173：四种布局加载组合与筛选历史
 
-本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173)。实现、本地检查与独立代码/设计评审已完成；用户人工 UI 验收待完成，PR 保持草稿。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)，不在此另定义验收标准。
+本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。实现、本地检查与独立代码/设计评审已完成；用户人工 UI 验收待完成，PR 保持草稿。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)，不在此另定义验收标准。
 
 ## 范围与前置
 
@@ -99,3 +99,7 @@
 集成测试锁冲突只读审计：失败在既有 `delivery/local-fixture.ts` 的读后写事务；同一测试启动的服务包含定期写事务，两者可能竞争。夹具、媒体队列和数据库相关代码相对 main 未变，本次筛选接口未进入此失败路径。未将此判断写成已定位唯一持锁语句，也未修改范围外实现。
 
 响应式检查时机回归：CDP 从1440切到360后，`innerWidth`已为360，但图库ResizeObserver/下一帧测量尚未更新，现场记录为main=360、scrollWidth=1160、columns=4；两次animation frame后为360/360/2。测试resize等待布局绘制后再执行原无溢出/列数/点击目标断言，不修改生产布局或放宽断言。
+
+## PR 状态
+
+2026-09-30 已提交并推送 `codex/issue-173-library-query`，PR #218 为 OPEN/DRAFT，GitHub 显示可合并。`gh pr view 218 --json statusCheckRollup` 返回空数组，`gh pr checks 218` 明确报告没有检查；这表示未触发远端检查，不表示 CI 通过。本地适用检查结果见上文。未合并、关闭 Issue、发布镜像、部署或清理 worktree。
