@@ -1,0 +1,39 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/watermark-assets/ariso
+
+ ❯ |media-tools| tests/integration/media/watermark-assets.test.ts (14 tests | 1 failed | 13 skipped) 46ms
+   × persists the resource failure that cancelled decoding rather than a generic abort 45ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark-assets.test.ts > persists the resource failure that cancelled decoding rather than a generic abort
+AssertionError: expected { …(12) } to match object { status: 'cleanup_pending', …(1) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": "Insufficient disk space at watermark workspace",
++   "error": "Command was canceled: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-watermark-eQtsD0/watermarks/c9f9eb12-968c-4499-a1b6-e71e0d68886f' -json -a -G1 -n -FileType -MIMEType -ImageWidth -ImageHeight -AnimationFrames -AnimationLoopCount -FrameCount -PageCount -ImageCount -NumberOfImages -MajorBrand -CompatibleBrands -HandlerType -Error /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-watermark-eQtsD0/watermarks/c9f9eb12-968c-4499-a1b6-e71e0d68886f/source
++ Insufficient disk space at watermark workspace",
+    "status": "cleanup_pending",
+  }
+
+ ❯ tests/integration/media/watermark-assets.test.ts:510:67
+    508|   };
+    509|   await expect(createWatermarkAsset({ ...context(), resources }, readF…
+    510|   expect(connection.db.select().from(mediaWatermarkAssets).get()).toMa…
+       |                                                                   ^
+    511| });
+    512|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  18:02:08
+   Duration  408ms (import 61%, transform 26%, tests 13%)

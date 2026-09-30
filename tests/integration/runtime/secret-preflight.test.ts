@@ -41,9 +41,22 @@ function writeMigrations(
       sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
     },
     {
-      tag: '0005_storage_probes',
+      tag: '0005_media_settings',
       when: 6,
-      sql: readFileSync(resolve('drizzle/0011_wise_maria_hill.sql'), 'utf8'),
+      sql: readFileSync(resolve('drizzle/0003_wealthy_hydra.sql'), 'utf8'),
+    },
+    {
+      tag: '0006_watermark_assets',
+      when: 7,
+      sql: readFileSync(
+        resolve('drizzle/0011_little_shinko_yamashiro.sql'),
+        'utf8',
+      ),
+    },
+    {
+      tag: '0007_storage_probes',
+      when: 8,
+      sql: readFileSync(resolve('drizzle/0012_storage_probes.sql'), 'utf8'),
     },
     ...migrations,
   ]);
@@ -146,6 +159,9 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { name: 'analytics_daily' },
       { name: 'analytics_image_daily' },
       { name: 'analytics_image_totals' },
+      { name: 'media_settings' },
+      { name: 'media_watermark_assets' },
+      { name: 'media_watermark_preview_refs' },
       { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_probes' },
@@ -165,6 +181,8 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { created_at: 4 },
       { created_at: 5 },
       { created_at: 6 },
+      { created_at: 7 },
+      { created_at: 8 },
     ]);
   } finally {
     db.close();
@@ -263,6 +281,9 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { name: 'analytics_daily' },
         { name: 'analytics_image_daily' },
         { name: 'analytics_image_totals' },
+        { name: 'media_settings' },
+        { name: 'media_watermark_assets' },
+        { name: 'media_watermark_preview_refs' },
         { name: 'secret_sample' },
         { name: 'session' },
         { name: 'storage_configs' },
@@ -281,6 +302,8 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { created_at: 4 },
         { created_at: 5 },
         { created_at: 6 },
+        { created_at: 7 },
+        { created_at: 8 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

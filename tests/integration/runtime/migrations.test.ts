@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { inspect } from 'node:util';
@@ -59,6 +59,89 @@ describe('runtime forward migrations', () => {
     migrate(folder);
     expect(values()).toEqual([{ value: 'original' }, { value: 'upgrade' }]);
     expect(progress()).toHaveLength(2);
+  });
+
+  it('从 main 水印迁移升级探测表时保留水印、存储数据与历史进度，重复升级不重放', () => {
+    const journal = JSON.parse(
+      readFileSync(resolve('drizzle/meta/_journal.json'), 'utf8'),
+    ) as { entries: { tag: string; when: number }[] };
+    const mainEntries = journal.entries.slice(0, 12);
+    expect(mainEntries.at(-1)?.tag).toBe('0011_little_shinko_yamashiro');
+    expect(journal.entries[12].tag).toBe('0012_storage_probes');
+    const mainFolder = writeMigrations(
+      join(directory, 'main-sql'),
+      mainEntries.map((entry) => ({
+        ...entry,
+        sql: readFileSync(resolve('drizzle', `${entry.tag}.sql`), 'utf8'),
+      })),
+    );
+    migrate(mainFolder);
+    const db = connection.db.$client;
+    db.exec(`
+      INSERT INTO media_watermark_assets
+        (id, path, format, mime, width, height, byte_size, status, created_at, updated_at)
+        VALUES ('watermark-before-upgrade', 'watermarks/existing.png', 'PNG', 'image/png', 32, 16, 512, 'ready', 1000, 2000);
+      INSERT INTO media_watermark_preview_refs (preview_id, asset_id)
+        VALUES ('preview-before-upgrade', 'watermark-before-upgrade');
+      INSERT INTO media_settings
+        (id, compression_enabled, output_format, quality, jpeg_background, watermark_mode, watermark_asset_id, default_link_version, default_visibility, concurrency, updated_at)
+        VALUES (1, 1, 'webp', 82, '#FFFFFF', 'image', 'watermark-before-upgrade', 'watermark', 'private', 2, 2000);
+      INSERT INTO storage_configs
+        (id, name, type, enabled, local_path, created_at, updated_at)
+        VALUES ('storage-before-upgrade', 'Existing storage', 'local', 1, 'existing', 1000, 2000);
+    `);
+    const watermarkBefore = db
+      .prepare('SELECT * FROM media_watermark_assets')
+      .all();
+    const previewRefsBefore = db
+      .prepare('SELECT * FROM media_watermark_preview_refs')
+      .all();
+    const settingsBefore = db.prepare('SELECT * FROM media_settings').all();
+    const storageBefore = db.prepare('SELECT * FROM storage_configs').get();
+    const progressBefore = progress();
+    expect(progressBefore).toHaveLength(12);
+    expect(
+      db
+        .prepare("SELECT name FROM sqlite_master WHERE name = 'storage_probes'")
+        .get(),
+    ).toBeUndefined();
+    expect(() =>
+      db.prepare('SELECT connection_report FROM storage_configs'),
+    ).toThrow();
+
+    migrate(resolve('drizzle'));
+    expect(db.prepare('SELECT * FROM storage_probes').all()).toEqual([]);
+    expect(db.prepare('SELECT * FROM storage_configs').get()).toEqual({
+      ...(storageBefore as Record<string, unknown>),
+      connection_report: null,
+    });
+    expect(db.prepare('SELECT * FROM media_watermark_assets').all()).toEqual(
+      watermarkBefore,
+    );
+    expect(
+      db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
+    ).toEqual(previewRefsBefore);
+    expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
+      settingsBefore,
+    );
+    const upgradedProgress = progress();
+    expect(upgradedProgress.slice(0, 12)).toEqual(progressBefore);
+    expect(upgradedProgress).toHaveLength(journal.entries.length);
+    expect(upgradedProgress[12]).toMatchObject({
+      created_at: journal.entries[12].when,
+    });
+
+    migrate(resolve('drizzle'));
+    expect(progress()).toEqual(upgradedProgress);
+    expect(db.prepare('SELECT * FROM media_watermark_assets').all()).toEqual(
+      watermarkBefore,
+    );
+    expect(
+      db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
+    ).toEqual(previewRefsBefore);
+    expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
+      settingsBefore,
+    );
   });
 
   it('故障回滚整批 SQL 和进度，保留已提交数据，修复后继续', () => {

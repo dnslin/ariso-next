@@ -16,7 +16,7 @@
 - `readProbeReferences(db, storageId)` 供组合入口取得 Key/活动责任；`readProbeUsage(db)` 按存储返回已确认字节、待核对对象数和确认时间。planned 不贡献已知占用，writing 计待核对，stored 持续计入；已尝试写入的责任在删除成功或确认不存在后释放，未尝试写入的失败按末节直接释放。
 - Web 进程单例启动恢复未结束探测，将其标为失败，依据持久对象状态释放未写入记录或继续清理；预启动不等待远端网络。自动清理最多三次，重启不重置次数，保留错误与下次时间。手动重试可重新尝试。停用不阻止维护清理，进程退出先等待本地操作及清理收尾再关闭数据库。
 
-迁移 `0011_wise_maria_hill.sql` 新增 `storage_probes` 及配置 `connection_report`，外键保留清理引用。复用现有 AWS SDK、xmldom、Zod、Drizzle 与 Web 启动机制，无新增依赖。已核对 SDK 命令与 middleware 类型、[AWS 版本接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html)、[对象锁接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectLockConfiguration.html)和 [R2 兼容表](https://developers.cloudflare.com/r2/api/s3/api/)。官方资料不是实测证据。
+迁移 `0012_storage_probes.sql`（合并前从未发布的 0011 顺延）新增 `storage_probes` 及配置 `connection_report`，外键保留清理引用。复用现有 AWS SDK、xmldom、Zod、Drizzle 与 Web 启动机制，无新增依赖。已核对 SDK 命令与 middleware 类型、[AWS 版本接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html)、[对象锁接口](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectLockConfiguration.html)和 [R2 兼容表](https://developers.cloudflare.com/r2/api/s3/api/)。官方资料不是实测证据。
 
 ## 首轮真实服务与故障验证（历史）
 
@@ -128,3 +128,11 @@ HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保�
 独立结构审查确认这六文件与 main 完全一致，两项 S3 修复、规格及对应回归与同步前提交保持一致，无行为丢失或未解决冲突。主分支历史验证日志包含行尾空白，本次不改写该证据；差异检查以实际 PR 基线 main 为准。
 
 同步后重新执行冻结安装、格式、lint、类型、572 项全单元及构建，均通过。完整普通/真实工具集成退出 0，88 文件 / 772 项全部通过，见[同步后集成](./review-fixes/main-sync-integration.txt)和[同步后单元](./review-fixes/main-sync-unit.txt)。最终命令继续统一记录于 local-checks.json。同步未改变本任务的 S3 实现或 UI，因此本轮真实 R2/SeaweedFS 与完整 Ego 浏览器结果沿用同步前的实际通过记录，没有把它们写成同步后重新执行；主分支图库的自身验证见 library-172 记录。
+
+### 合并前同步水印模块
+
+所有者授权合并 PR、关闭 Issue 并清理分支后，main 已合入 #212（2b261d3），与本任务的 0011 迁移及服务启动组合产生冲突。保留 main 已发布的 0011 水印迁移，基于合并后的 schema 生成 0012_storage_probes；新 SQL 仍只创建 storage_probes、索引及 connection_report 字段，不重放水印建表。新快照 prevId 指向 main 0011，journal 时间递增。
+
+启动入口同时保留水印与存储探测实例；两者都在关闭 SQLite 前完成停止，水印继续复用现有媒体资源对象。启动、密钥预检和 prestart 夹具更新迁移引用及完整顺序断言。独立 agent 增加从真实 main 迁移集升级的回归：水印资产、预览引用、媒体设置、存储配置及旧迁移进度保持不变，第二次升级幂等；12 项迁移专项通过。另一 agent 实施启动组合后，由未参与该实现的 agent 复审，确认无实例或停止流程遗漏。
+
+本轮合并前冻结安装、格式、lint、类型、构建与 600 项单元全部通过；完整普通/真实工具集成 92 文件 / 823 项全部通过，退出 0，见[合并前集成](./merge-preparation/integration.txt)。迁移生成器复查没有额外 schema 变更。实际命令和结果记录于 local-checks.json 的 mergePreparation。此前的浏览器和真实云服务验证不改写为本轮重跑。原始浏览器截图与日志已复制保留到 /Users/dnslin/.codex/exports/ariso-issue-157.ynnt8G，供 worktree 清理后查阅。

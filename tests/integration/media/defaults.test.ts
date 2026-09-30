@@ -150,6 +150,7 @@ describe('T-MED-02 real SQLite defaults', () => {
       maxEdge: null,
       jpegBackground: '#FFFFFF',
       watermarkMode: 'off',
+      watermarkAsset: null,
       defaultVisibility: 'public',
     });
     update({

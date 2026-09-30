@@ -1,4 +1,7 @@
 import { startStorageProbeRuntime } from '../storage/probe-runtime.ts';
+import { createMediaResources } from '../media/resources.ts';
+import { startWatermarkRuntime } from '../media/watermark-runtime.ts';
+import { hasUploadWatermarkReference } from '../upload/watermark-references.ts';
 import { verifyStorageSecrets } from '../storage/settings.ts';
 import { createSecretCrypto } from '../runtime/crypto.ts';
 import { join, resolve } from 'node:path';
@@ -34,17 +37,26 @@ function initializeServerRuntime() {
         `${JSON.stringify({ time: new Date().toISOString(), level: 'info', module: 'identity.setup', event: 'setup-code', code: setup.code, msg: '请使用初始化码完成 setup' })}\n`,
       );
     }
+    const mediaResources = createMediaResources();
     const mediaQueue = startMediaQueue({
       db: connection.db,
       // DATA_DIR is absolute; keep runtime data paths absolute for output tracing.
       storageRoot: resolve(config.dataDir, 'storage'),
       temporaryRoot: resolve(config.dataDir, 'tmp'),
+      resources: mediaResources,
       logger: createRuntimeLogger('media.queue', config.logLevel),
     });
     const uploads = startUploadRuntime({
       db: connection.db,
       storageRoot: resolve(config.dataDir, 'storage'),
       logger: createRuntimeLogger('upload', config.logLevel),
+    });
+    const watermarks = startWatermarkRuntime({
+      db: connection.db,
+      watermarksRoot: resolve(config.dataDir, 'assets', 'watermarks'),
+      hasUploadReference: hasUploadWatermarkReference,
+      resources: mediaResources,
+      logger: createRuntimeLogger('media.watermark', config.logLevel),
     });
     const analytics = startAnalyticsRuntime({
       db: connection.db.$client,
@@ -63,6 +75,7 @@ function initializeServerRuntime() {
       mediaQueue,
       uploads,
       storageProbes,
+      watermarks,
       analytics,
       get stopping() {
         return stopping !== undefined;
@@ -71,6 +84,7 @@ function initializeServerRuntime() {
         return (stopping ??= uploads
           .stop()
           .finally(() => mediaQueue.stop())
+          .finally(() => watermarks.stop())
           .finally(() => storageProbes.stop())
           .finally(() => {
             try {

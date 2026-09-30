@@ -44,7 +44,7 @@ function writeMigrations(
     {
       tag: '0003_storage_probes',
       when: 4,
-      sql: readFileSync(resolve('drizzle/0011_wise_maria_hill.sql'), 'utf8'),
+      sql: readFileSync(resolve('drizzle/0012_storage_probes.sql'), 'utf8'),
     },
     ...migrations,
   ]);

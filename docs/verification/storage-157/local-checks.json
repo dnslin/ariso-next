@@ -317,5 +317,73 @@
     "browserAndLive": "Not rerun after adopting the six equivalent main baseline repairs; this task S3 implementation and UI unchanged. Passing pre-sync runs remain explicitly scoped to pre-sync tree.",
     "fullLocalLogs": "/tmp/ariso-pr211-sync",
     "diffCheck": "git diff --cached origin/main --check passed; inherited main historical-log whitespace left unchanged"
+  },
+  "mergePreparation": {
+    "base": "2b261d3aa232cfe82556677a5b028032d12f7927",
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 1
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm exec drizzle-kit generate --config=drizzle.config.ts --name storage_probes",
+        "exitCode": 0,
+        "result": "Generated and audited 0012_storage_probes.sql and combined snapshot"
+      },
+      {
+        "command": "pnpm run db:generate",
+        "exitCode": 0,
+        "result": "No schema changes, nothing to migrate"
+      }
+    ],
+    "formatFirstFailure": "Migration regression was still being edited; its final formatting and full format check passed.",
+    "migration": "Preserve main watermark 0011; generated 0012_storage_probes and audited SQL/snapshot/journal continuity. pnpm run db:generate subsequently reports no schema changes.",
+    "migrationUpgrade": {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "tests": 12,
+      "evidence": "merge-preparation/migration-upgrade.txt"
+    },
+    "audit": {
+      "migration": "Independent review confirms only probe table/index and connection_report added; previous main migrations unchanged; actual upgrade preserves existing data.",
+      "runtime": "Cross-review confirms singleton watermark and probe runtime, shared media resources and full stop chain before DB close."
+    },
+    "unit": {
+      "files": 41,
+      "tests": 600,
+      "evidence": "merge-preparation/unit.txt"
+    },
+    "integration": {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "exitCode": 0,
+      "files": 92,
+      "tests": 823,
+      "evidence": "merge-preparation/integration.txt"
+    },
+    "artifactExport": "/Users/dnslin/.codex/exports/ariso-issue-157.ynnt8G"
   }
 }

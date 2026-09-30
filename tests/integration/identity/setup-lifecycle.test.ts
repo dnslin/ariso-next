@@ -56,6 +56,8 @@ beforeEach(() => {
   directory = mkdtempSync(join(tmpdir(), 'ariso-setup-lifecycle-'));
   env = {
     ...process.env,
+    // Keep child output focused on setup codes and failures, not normal shutdown info.
+    LOG_LEVEL: 'error',
     DATA_DIR: join(directory, 'data'),
     BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
     ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),

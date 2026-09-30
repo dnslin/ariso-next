@@ -1,3 +1,7 @@
+import {
+  adoptWatermarkAsset,
+  watermarkAssetSnapshot,
+} from './watermark-assets.ts';
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { MediaTransaction } from './images.ts';
@@ -33,12 +37,19 @@ export function prepareInitialMedia(tx: MediaTransaction) {
   return requireMediaSettings(tx);
 }
 
-/** Internal full-save contract; HTTP authorization and watermark assets belong to later tasks. */
-export function updateMediaSettings(tx: MediaTransaction, input: unknown) {
+/** Internal full-save contract; the caller owns the transaction and HTTP authorization. */
+export function updateMediaSettings(
+  tx: MediaTransaction,
+  input: unknown,
+  now = new Date(),
+) {
   const settings = mediaSettingsInputSchema.parse(input);
+  requireMediaSettings(tx);
+  if (settings.watermarkAssetId)
+    adoptWatermarkAsset(tx, settings.watermarkAssetId, now);
   const saved = tx
     .update(mediaSettings)
-    .set({ ...settings, updatedAt: new Date() })
+    .set({ ...settings, updatedAt: now })
     .where(eq(mediaSettings.id, 1))
     .returning()
     .get();
@@ -62,6 +73,10 @@ export function createProcessingSnapshot(
     maxEdge: settings.maxEdge,
     jpegBackground: settings.jpegBackground,
     watermarkMode: settings.watermarkMode,
+    watermarkAsset:
+      settings.watermarkMode === 'image'
+        ? watermarkAssetSnapshot(tx, settings.watermarkAssetId!)
+        : null,
     defaultVisibility: settings.defaultVisibility,
   };
 }
