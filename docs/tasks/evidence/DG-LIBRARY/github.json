@@ -1,0 +1,209 @@
+{
+  "date": "2026-09-30",
+  "issue": {
+    "body": "任务 ID：`DG-LIBRARY`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-LIBRARY、RG-01/02/04/06；核对完整元数据树、任意查询选择、版本/大图返回及独立读取失败。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+    "comments": [],
+    "number": 131,
+    "state": "OPEN",
+    "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+    "url": "https://github.com/dnslin/ariso-next/issues/131",
+    "blockedBy": []
+  },
+  "consumers": [
+    {
+      "body": "任务 ID：`T-LIB-06`\n\n- 任务组：`LIBRARY-BASE`\n- 里程碑：M3\n- 需求：`R-13.4-01`、`R-13.4-02`、`R-15.4-01`、`R-15.4-02`、`A-26.7-04`、`A-26.9-02`、`A-26.9-03`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §5/8；扩展 T-LIB-02 的详情、完整元数据分组/搜索、displayName/visibility/关系编辑、重读与已存版本下载。\n- 直接前置：`T-LIB-02`、`T-MED-07`、`T-MED-10`、`T-COL-01`、`DG-LIBRARY`\n- 验收条件：显示真实四版本/实际编码/状态；失败步骤、媒体任务和存储停用独立。displayName 1–255码点不改 originalName/ID/Key；回收详情只读。元数据重读错误标旧值、不触发重处理；公开原图复制下载提示 GPS 风险且不阻止；已有版本按 delivery 下载。\n- 验证方法：真实字段修改、元数据失败/旧数据、会话失效清缓存、活动状态≤80批读终态停轮询；浏览器字段树搜索、失败保留输入、原图与每版本下载、停用/failed状态矩阵。\n- 界面：所有者 /library?image=<id>、/albums/{albumId}?image=<id>；library 详情聚合 media/collections/delivery；元数据独立 API。桌面[36:312](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=36-312)、手机[102:3228](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3228)、桌面状态[388:5946](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-5946)、手机状态[388:6159](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6159)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Select](https://heroui.com/en/docs/react/components/select)、[Accordion](https://heroui.com/en/docs/react/components/accordion)、[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。元数据树组合Accordion，DG-LIBRARY 在开工前核对完整字段树及单图 visibility 尚未逐项连通范围；手机详情独立页面；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 详情真实版本及单图字段/关系编辑：回收只读，失败保留输入。\n  - [ ] 2. 完整元数据树与重读：旧值标记、GPS提示和版本下载。\n  - [ ] 3. 单图重处理与状态更新：终态停轮询、会话失效清缓存。\n\n## 执行与依赖\n\n直接前置：#77、#170、#153、#66、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 171,
+      "state": "OPEN",
+      "title": "[T-LIB-06] 完整详情、元数据与单图编辑",
+      "url": "https://github.com/dnslin/ariso-next/issues/171",
+      "blockedBy": [
+        {
+          "number": 77,
+          "title": "[T-LIB-02] 基础详情与链接复制下载",
+          "state": "closed"
+        },
+        {
+          "number": 170,
+          "title": "[T-MED-07] 完整元数据保存与独立重读",
+          "state": "closed"
+        },
+        {
+          "number": 153,
+          "title": "[T-MED-10] 重处理范围与候选版本原子发布",
+          "state": "open"
+        },
+        {
+          "number": 66,
+          "title": "[T-COL-01] 相册标签模型与上传关联事务",
+          "state": "closed"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-04`\n\n- 任务组：`LIBRARY-QUERY`\n- 里程碑：M3\n- 需求：`R-15.1-01`、`R-15.1-02`、`R-15.2-01`、`R-15.3-01`、`R-15.3-02`、`A-26.9-01`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §3/4；src/app/library/、相册内容及共享列表。接 Query/nuqs、浏览器偏好、所有筛选、分页与加载更多、有界渲染。\n- 直接前置：`T-LIB-03`、`T-UI-01`、`DG-LIBRARY`\n- 验收条件：默认网格+加载更多，20/40/80；切布局无新增列表请求且保留查询，切加载方式/筛选/排序回首批。已应用查询写 URL 与历史；加载旧数据时禁用旧图操作；迟到响应不覆盖新查询；外部变化、无效 cursor 有刷新恢复。\n- 验证方法：真实浏览器四组合×三数量，网络次数、前进后退/复制链接、DST 日期、localStorage 不可用；持续加载测 DOM/内存并查键盘顺序。\n- 界面：所有者 /library、/albums/{albumId}；T-LIB-03 API 与 collections/storage 筛选项。桌面[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)、手机[98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)、桌面状态[43:428](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=43-428)、手机状态[102:4306](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4306)。HeroUI：[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Select](https://heroui.com/en/docs/react/components/select)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[ToggleButtonGroup](https://heroui.com/en/docs/react/components/toggle-button-group)、[Alert](https://heroui.com/en/docs/react/components/alert)。瀑布流/分段渲染无通用控件对应，采用专用业务布局；手机双列与固定分页栏；DG-LIBRARY 对应 DES-06-LIBRARY/RG-02；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 网格查询/分页/历史：URL回放和迟到响应隔离。\n  - [ ] 2. 瀑布流及加载更多组合：布局切换无请求，有界渲染与返回位置。\n\n## 执行与依赖\n\n直接前置：#172、#57、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 173,
+      "state": "OPEN",
+      "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+      "url": "https://github.com/dnslin/ariso-next/issues/173",
+      "blockedBy": [
+        {
+          "number": 172,
+          "title": "[T-LIB-03] 完整查询、分页与邻居接口",
+          "state": "closed"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-05`\n\n- 任务组：`LIBRARY-QUERY`\n- 里程碑：M3\n- 需求：`R-15.6-01`、`A-26.9-04`、`A-26.9-05`、`A-26.9-06`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §7；列表选择状态、固定工具栏及已选清单。只保存明确 ID 和轻量信息。\n- 直接前置：`T-LIB-04`、`DG-LIBRARY`\n- 验收条件：本页全选/取消仅改本页，翻页/历史保留其他页；加载新项不自动选。显示总数/当前/其他页和清空；筛选/排序/加载方式重建查询清空，布局保留；失效图移除，数据位置改变保留仍有效选择。\n- 验证方法：浏览器以超过两页和超过200个显式选择验证选择守恒、历史/布局、失效清理和任意清单行移除；不得预读全库或图片文件。\n- 界面：所有者 /library、/albums/{albumId}；T-LIB-04 当前查询与显式选择清单。桌面[389:7582](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7582)、手机[389:7886](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7886)、桌面状态[388:2608](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-2608)、手机状态[388:5896](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-5896)。HeroUI：[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Toolbar](https://heroui.com/en/docs/react/components/toolbar)、[Table](https://heroui.com/en/docs/react/components/table)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Button](https://heroui.com/en/docs/react/components/button)。已选清单桌面/手机可逐项查看移除；DG-LIBRARY 核对 RG-01 的任意行及当前页全选；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 跨页显式选择及当前页全选：过滤清空而布局保留。\n  - [ ] 2. 已选清单逐项移除与失效清理：超过200项不预读全库。\n\n## 执行与依赖\n\n直接前置：#173、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 174,
+      "state": "OPEN",
+      "title": "[T-LIB-05] 跨页显式选择与已选清单",
+      "url": "https://github.com/dnslin/ariso-next/issues/174",
+      "blockedBy": [
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "open"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-08`\n\n- 任务组：`LIBRARY-BATCH`\n- 里程碑：M3\n- 需求：`R-15.7-01`、`R-16.2-01`、`R-18.1-02`、`R-18.2-01`、`R-18.2-02`、`A-26.11-03`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §7；/api/images/batch 编排与操作/结果面板，调用 media/collections，不复制其校验。\n- 直接前置：`T-LIB-05`、`T-COL-02`、`T-COL-03`、`T-MED-05`、`DG-LIBRARY`\n- 验收条件：多相册添加/移出、增删标签、公开私有、回收恢复均按显式ID；>200分批且逐图短事务。每次复核查询归属；changed/unchanged/accepted移出选择，有效失败项跨页保留。未知结果先核对；恢复只保留幸存关系和原加入时间。\n- 验证方法：真实模块混合成功/失败/无变化、目标并发删除、响应丢失、201+跨页项及失败再次重试；操作前后比对关系/ID/文件数量。\n- 界面：所有者 /library、/albums/{albumId}、/trash 的批量入口；选择快照与真实逐图结果。桌面[522:13055](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13055)、手机[522:13688](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13688)、桌面状态[522:13173](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13173)、手机状态[522:13729](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=522-13729)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[Select](https://heroui.com/en/docs/react/components/select)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Table](https://heroui.com/en/docs/react/components/table)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。多个目标选择由HeroUI组合；手机结果正文滚动不遮底部操作；DG-LIBRARY 核对 RG-04 的四种关系动作与动态数量；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 批量关系和可见性：201+显式ID拆批、逐图结果及失败保留。\n  - [ ] 2. 批量回收恢复：未知结果核对，关系和原加入时间保持。\n\n## 执行与依赖\n\n直接前置：#174、#175、#176、#67、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 177,
+      "state": "OPEN",
+      "title": "[T-LIB-08] 批量关系、可见性和回收恢复",
+      "url": "https://github.com/dnslin/ariso-next/issues/177",
+      "blockedBy": [
+        {
+          "number": 174,
+          "title": "[T-LIB-05] 跨页显式选择与已选清单",
+          "state": "open"
+        },
+        {
+          "number": 175,
+          "title": "[T-COL-02] 相册列表与创建编辑删除",
+          "state": "closed"
+        },
+        {
+          "number": 176,
+          "title": "[T-COL-03] 标签创建重命名删除与图库入口",
+          "state": "open"
+        },
+        {
+          "number": 67,
+          "title": "[T-MED-05] 回收与恢复服务契约",
+          "state": "closed"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-07`\n\n- 任务组：`LIBRARY-QUERY`\n- 里程碑：M3\n- 需求：`R-15.5-01`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §6；共用 YARL 查看组件和管理版入口，接相邻图片 API。\n- 直接前置：`T-LIB-04`、`T-LIB-06`、`EV-LIBRARY-01`、`DG-LIBRARY`\n- 验收条件：默认预览独立外链；动画原图、SVG既有预览，明确选版不回退。按当前查询跨页、首尾不循环，只预载相邻各一张，不改列表页码/选择；直达详情无列表上下文仅看当前。缩放平移全屏/能力降级有效；下载留详情，无分享/幻灯片；关闭恢复焦点滚动。\n- 验证方法：真实格式/解码与多页查询、同图四版本、移动双指/平移手势、键盘与全屏支持；删除当前图/邻居失败/迟到响应，断言不通过图片优化代理绕 delivery。\n- 界面：所有者图库/相册详情的大图入口；T-LIB-03 neighbors 与 delivery 内容地址。桌面[390:6943](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6943)、手机[390:6996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6996)、桌面状态[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、手机状态[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Select](https://heroui.com/en/docs/react/components/select)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。HeroUI 无专用图片缩放平移查看器，复用已选 YARL 及 Zoom/Fullscreen；DG-LIBRARY 对应 RG-02/06，手机紧凑版本选择器；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 同图选版与缩放全屏：真实格式，明确选版不回退。\n  - [ ] 2. 当前查询跨页邻居：仅预载两张、删除恢复和关闭归焦。\n\n## 执行与依赖\n\n直接前置：#173、#171、#75、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 185,
+      "state": "OPEN",
+      "title": "[T-LIB-07] 大图查看、同图选版与上下文恢复",
+      "url": "https://github.com/dnslin/ariso-next/issues/185",
+      "blockedBy": [
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "open"
+        },
+        {
+          "number": 171,
+          "title": "[T-LIB-06] 完整详情、元数据与单图编辑",
+          "state": "open"
+        },
+        {
+          "number": 75,
+          "title": "[EV-LIBRARY-01] 查询与查看器接入验证",
+          "state": "closed"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-09`\n\n- 任务组：`LIBRARY-BATCH`\n- 里程碑：M3\n- 需求：`R-15.7-01`、`R-15.7-02`、`A-26.9-07`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §7；在批量入口增加逐图媒体任务受理、实际进度/失败与重试结果。\n- 直接前置：`T-LIB-08`、`T-MED-10`、`DG-LIBRARY`\n- 验收条件：每图独立任务，failed只允许全部派生，ready遵守四范围；混合选仅水印不偷改failed范围。每次受理用最新设置快照，跨请求不伪造整批快照；受理与完成分开，断网先查taskId避免重复建任务，关闭页面不取消已受理任务。\n- 验证方法：混合状态/适用格式及并发任务冲突，分批间改设置，注入受理响应丢失；检查快照、旧版本、任务数量、部分失败不阻断其他项。\n- 界面：所有者图库/相册批量重新处理；media任务受理与状态 API。桌面[387:6074](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6074)、手机[387:6018](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-6018)、桌面状态[388:7246](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-7246)、手机状态[388:7454](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-7454)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[RadioGroup](https://heroui.com/en/docs/react/components/radio-group)、[Table](https://heroui.com/en/docs/react/components/table)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。手机展示全部范围及逐项冲突；DG-LIBRARY 核对 RG-05 与首次失败仅全部派生；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 批量范围选择及重处理受理：逐图真实任务与不适用拒绝。\n  - [ ] 2. 结果核对及失败重试：未知结果不重复提交，保留有效失败选择。\n\n## 执行与依赖\n\n直接前置：#177、#153、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 186,
+      "state": "OPEN",
+      "title": "[T-LIB-09] 批量重处理与结果核对",
+      "url": "https://github.com/dnslin/ariso-next/issues/186",
+      "blockedBy": [
+        {
+          "number": 177,
+          "title": "[T-LIB-08] 批量关系、可见性和回收恢复",
+          "state": "open"
+        },
+        {
+          "number": 153,
+          "title": "[T-MED-10] 重处理范围与候选版本原子发布",
+          "state": "open"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-10`\n\n- 任务组：`LIBRARY-BATCH`\n- 里程碑：M3\n- 需求：`R-15.8-01`、`R-15.8-02`、`R-13.4-02`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §8；/api/images/copy、输出转义及复制界面。默认/具体版本与 URL/Markdown/HTML 组合。\n- 直接前置：`T-LIB-05`、`T-DEL-01`、`DG-LIBRARY`\n- 验收条件：>200显式项跨请求按完整查询顺序合并、一图一行、统一模式；默认不带type，明确版本缺失不回退。每项校验查询/版本/存储；不可复制列表有原因，其余继续。Markdown/HTML按displayName转义；全失败不覆盖剪贴板；权限提示不授予匿名访问；复制不GET/签名/计数。\n- 验证方法：构造跨页跨批乱序响应、同排序值/特殊名称/混合私有failed停用/缺失版本；拦截网络证明无内容请求；浏览器拒绝Clipboard转可选文本并验证实际复制内容。\n- 界面：所有者图库/相册批量复制面板；delivery解析与服务端已转义行、完整排序键。桌面[387:5769](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5769)、手机[387:5709](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5709)、桌面状态[388:6482](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6482)、手机状态[388:6690](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-6690)。HeroUI：[Modal](https://heroui.com/en/docs/react/components/modal)、[Select](https://heroui.com/en/docs/react/components/select)、[TextArea](https://heroui.com/en/docs/react/components/text-area)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。手动复制状态 [387:5972](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5972) / [387:5928](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=387-5928)；DG-LIBRARY 核对全部输出格式×选版组合，手机长文本完整可选；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 按显式选择顺序生成多格式链接：默认/固定版本及不可用原因。\n  - [ ] 2. 真实剪贴板和手动复制：失败保留完整文本，两端长内容可用。\n\n## 执行与依赖\n\n直接前置：#174、#69、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 187,
+      "state": "OPEN",
+      "title": "[T-LIB-10] 跨页批量复制与剪贴板降级",
+      "url": "https://github.com/dnslin/ariso-next/issues/187",
+      "blockedBy": [
+        {
+          "number": 174,
+          "title": "[T-LIB-05] 跨页显式选择与已选清单",
+          "state": "open"
+        },
+        {
+          "number": 69,
+          "title": "[T-DEL-01] 本地稳定图片访问与下载",
+          "state": "closed"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "open"
+        }
+      ]
+    }
+  ]
+}
