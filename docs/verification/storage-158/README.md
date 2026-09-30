@@ -2,9 +2,9 @@
 
 关联 [Issue #158](https://github.com/dnslin/ariso-next/issues/158) 与 [PR #217](https://github.com/dnslin/ariso-next/pull/217)。2026-09-30 从 `origin/main` 的 `117c66a` 创建独立 worktree `/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso`，分支 `codex/issue-158-storage-cors`。原工作区另有任务使用，本次没有修改它。本记录遵守[任务执行约定](../../tasks/execution.md)与[设计交接](../../design/handoff.md)，不改写冻结 PRD。
 
-**当前 #158 产品页面、专项生产验证、完整浏览器第三轮、独立代码审计与设计还原评审均已通过；PR 保留草稿，等待用户人工 UI 验收。** 2026-09-30 用户批准此前提出的按钮位置及独立 CORS 页面组合，并限定只实现 #158。人工 UI 验收仍须由用户完成。没有扩大到 #198 存储管理、#162 上传链路、#164 孤儿扫描或 #194 站点设置。
+**当前 #158 产品页面、专项生产验证、完整浏览器第三轮、独立代码审计与设计还原评审均已通过；用户人工 UI 验收也已通过，已满足正式待评审条件。** 2026-09-30 用户批准此前提出的按钮位置及独立 CORS 页面组合，并限定只实现 #158。2026-09-30 用户查看交付预览后确认“我看了一下这个页面，没什么问题”，本页人工 UI 验收通过。没有扩大到 #198 存储管理、#162 上传链路、#164 孤儿扫描或 #194 站点设置。
 
-2026-09-30 已提交并推送产品实现 `903fd01`。实际通过 `gh pr view 217 --repo dnslin/ariso-next --json url,isDraft,state,headRefName,headRefOid,mergeable,statusCheckRollup` 回读：PR 为 OPEN / Draft、可合并，检查列表为空。没有远端 PR 检查，不记为 CI 通过，也不等待不存在的工作流。没有合并、关闭 Issue、发布镜像或部署；用户人工 UI 验收仍待完成。
+2026-09-30 已提交并推送产品实现 `903fd01`。实际通过 `gh pr view 217 --repo dnslin/ariso-next --json url,isDraft,state,headRefName,headRefOid,mergeable,statusCheckRollup` 首次交付时回读：PR 为 OPEN / Draft、可合并，检查列表为空。没有远端 PR 检查，不记为 CI 通过，也不等待不存在的工作流。人工验收通过后解除草稿门槛；没有合并、关闭 Issue、发布镜像或部署。
 
 ## 前置与实现边界
 
@@ -48,7 +48,7 @@
 1. 在示例 JSON/来源说明下方、原返回按钮上方增加 48px 描边按钮；复制失败时在按钮前保留错误与完整可选文本。影响示例及来源错误四个节点的操作区域高度。
 2. 在 #198 编辑页不存在期间，以 `/settings/storage/:id` 直接承载已设计的 CORS 页面；管理与返回入口显示尚未开放，公共存储导航仍不可用。本页不增加配置列表或编辑能力，后续由 #198 承接完整管理入口。
 
-**本轮设计结论：独立评审通过，人工验收待用户完成。** [设计评审记录](./design-review.md)包含 16 个实际读取的 Figma 节点、同视口真实页面、逐项对照结论、修前证据与本轮修复结果。不是以源设计截图或功能断言替代视觉验收。
+**本轮设计结论：独立评审与用户人工验收均通过。** [设计评审记录](./design-review.md)包含 16 个实际读取的 Figma 节点、同视口真实页面、逐项对照结论、修前证据与本轮修复结果。不是以源设计截图或功能断言替代视觉验收。
 
 ## 本轮 UI 实施与验证（批准后）
 
@@ -83,7 +83,7 @@
 | `pnpm run format:check`、`git diff --check`                                                                                                                                                                                                                                                                                                                                                                                                               | 最终通过；新增归档 JSON 的格式问题已修正。                                       |
 | `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                                                                                                                                                                                                                                                                                                                                                                      | 120 任务 / 298 需求、5 项拒绝自测通过。                                          |
 
-[完整回归首轮失败](./ui/regressions/full-browser-first/runner.json)及[具体场景](./ui/regressions/full-browser-first/storage-cors.json)已保留。该轮临时库已由运行器回收，未保存失败瞬间的持久 state，不能断言其具体终态。追加[真实导航诊断](./ui/regressions/navigation-completion-attempt.json)记录到 complete 请求确实被尝试发出，但这一诊断中服务器仍为 running；结合生产代码可确认“导航必然没有完成回报”不是可靠前置，不能将首轮失败直接认定为产品清理缺陷。修正只在测试中明确拒绝生产 POST /complete 请求，其他请求保持真实，断言中断回报确已尝试、原 probe 仍 running，再由实际维护循环处理到期并核对对象为空。未修改生产实现或降低原后端断言。第二轮 [CORS 报告](./ui/full-browser/storage-cors.json)已实际通过，记录到一次失败完成回报、持久 running、同一 probe 的到期失败报告和最终对象为空；第二轮整体随后在既有相册套件末尾失败，见下文。静态设计截图保留第 9 轮同版本布局的 [统一索引](./design-review.md#真实截图索引)，第二轮完整截图留在本地 `test-results/issue-158/ui/full-browser-2/`，避免重复提交相同布局图。[第二轮运行器](./ui/regressions/full-browser-second/runner.json)与[相册失败记录](./ui/regressions/full-browser-second/albums.json)显示：相册主要操作及首次退出/重新登录均通过，衔接上传套件的第二次退出未确认会话已清空，随后等待登录表单超时。此处认证实现与相册测试本次未修改；报告未保存该次会话复核 HTTP 响应，不能断言原因或宣称已修复。按范围约定只记录，第三轮原样重跑，不修改相册/认证产品逻辑或放宽检查。第三轮 [相册报告](./ui/full-browser/albums-third.json)已实际通过，包括此前失败的登出衔接；这是原样重跑未重现，不是问题已修复的证据。第三轮[完整运行器](./ui/full-browser/runner-third.json)最终 passed，所有身份、M2、交互、连续性、CORS、图库、相册、上传及上传轮询检查均通过；[第三轮 CORS 明细](./ui/full-browser/storage-cors-third.json)再次保留同一强断言和最终清理证据。前两轮失败原样保留，不把第三轮通过解释为范围外登出问题已修复。没有因本次验证创建 Release、发布镜像或部署。人工 UI 验收仍须由用户执行；PR 保持草稿。
+[完整回归首轮失败](./ui/regressions/full-browser-first/runner.json)及[具体场景](./ui/regressions/full-browser-first/storage-cors.json)已保留。该轮临时库已由运行器回收，未保存失败瞬间的持久 state，不能断言其具体终态。追加[真实导航诊断](./ui/regressions/navigation-completion-attempt.json)记录到 complete 请求确实被尝试发出，但这一诊断中服务器仍为 running；结合生产代码可确认“导航必然没有完成回报”不是可靠前置，不能将首轮失败直接认定为产品清理缺陷。修正只在测试中明确拒绝生产 POST /complete 请求，其他请求保持真实，断言中断回报确已尝试、原 probe 仍 running，再由实际维护循环处理到期并核对对象为空。未修改生产实现或降低原后端断言。第二轮 [CORS 报告](./ui/full-browser/storage-cors.json)已实际通过，记录到一次失败完成回报、持久 running、同一 probe 的到期失败报告和最终对象为空；第二轮整体随后在既有相册套件末尾失败，见下文。静态设计截图保留第 9 轮同版本布局的 [统一索引](./design-review.md#真实截图索引)，第二轮完整截图留在本地 `test-results/issue-158/ui/full-browser-2/`，避免重复提交相同布局图。[第二轮运行器](./ui/regressions/full-browser-second/runner.json)与[相册失败记录](./ui/regressions/full-browser-second/albums.json)显示：相册主要操作及首次退出/重新登录均通过，衔接上传套件的第二次退出未确认会话已清空，随后等待登录表单超时。此处认证实现与相册测试本次未修改；报告未保存该次会话复核 HTTP 响应，不能断言原因或宣称已修复。按范围约定只记录，第三轮原样重跑，不修改相册/认证产品逻辑或放宽检查。第三轮 [相册报告](./ui/full-browser/albums-third.json)已实际通过，包括此前失败的登出衔接；这是原样重跑未重现，不是问题已修复的证据。第三轮[完整运行器](./ui/full-browser/runner-third.json)最终 passed，所有身份、M2、交互、连续性、CORS、图库、相册、上传及上传轮询检查均通过；[第三轮 CORS 明细](./ui/full-browser/storage-cors-third.json)再次保留同一强断言和最终清理证据。前两轮失败原样保留，不把第三轮通过解释为范围外登出问题已修复。没有因本次验证创建 Release、发布镜像或部署。用户随后已确认预览页面没有问题，人工 UI 验收通过；实现范围和既有未验证项不变。
 
 ## 首轮代码审计与检查（UI 接入前）
 
@@ -114,4 +114,8 @@
 
 P2 显示问题的[失败证据](./local/cleanup-render-red.txt)和[修复后证据](./local/cleanup-render-green.txt)保留；新断言先因缺少“已删除”失败，修复后通过。不能把单个聚焦测试通过写成完整检查通过。
 
-AWS S3 按现行约定不要求实测，本次未验证。物理设备不在当前要求内；其他浏览器引擎未验证。AMD64/ARM64 镜像与容器留给 Release 流程，本次未创建 Release、发布镜像或部署。PR 保持草稿，不合并、不主动关闭 Issue，不删除分支或 worktree。
+AWS S3 按现行约定不要求实测，本次未验证。物理设备不在当前要求内；其他浏览器引擎未验证。AMD64/ARM64 镜像与容器留给 Release 流程，本次未创建 Release、发布镜像或部署。首轮交付时 PR 保持草稿；当前验收状态见本文开头。不合并、不主动关闭 Issue，不删除分支或 worktree。
+
+## 人工验收后的文档更新
+
+2026-09-30 仅更新本记录、设计评审状态及 T-STO-05 实施记录，未修改产品代码或测试。运行 `pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` 与 `git diff --check`；均通过（任务检查 120 项 / 298 条需求，自测 5 项拒绝用例），原业务验证结果保留。
