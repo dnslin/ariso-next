@@ -1,0 +1,40 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/metadata-reread/ariso
+
+ ❯ |integration| tests/integration/library/detail.test.ts (7 tests | 1 failed | 6 skipped) 27ms
+   × does not let metadata jobs replace processing or version summaries 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > does not let metadata jobs replace processing or version summaries
+AssertionError: expected { id: 'metadata-running', …(4) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "error": "thumbnail failed",
+  "id": "metadata-running",
+  "scope": "all",
+  "status": "running",
+  "step": "identify",
+}
+
+ ❯ tests/integration/library/detail.test.ts:481:30
+    479|   expect(neighbor.id).toBe('metadata-isolation');
+    480|   for (const record of [detail, item, status, neighbor]) {
+    481|     expect(record.activeJob).toBeNull();
+       |                              ^
+    482|     expect(record.latestFailedJob).toMatchObject({
+    483|       id: process.id,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  00:57:41
+   Duration  450ms (import 68%, transform 25%, tests 7%)

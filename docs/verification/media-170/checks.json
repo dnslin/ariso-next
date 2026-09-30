@@ -1,0 +1,49 @@
+{
+  "platform": "macOS arm64",
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "checks": [
+    {
+      "command": ["pnpm", "run", "format:check"],
+      "exitCode": 0,
+      "durationSeconds": 13.25,
+      "output": "format.txt"
+    },
+    {
+      "command": ["pnpm", "run", "lint"],
+      "exitCode": 0,
+      "durationSeconds": 6.79,
+      "output": "lint.txt"
+    },
+    {
+      "command": ["pnpm", "run", "typecheck"],
+      "exitCode": 2,
+      "durationSeconds": 8.63,
+      "output": "typecheck.txt"
+    },
+    {
+      "command": ["pnpm", "run", "test:unit"],
+      "exitCode": 0,
+      "durationSeconds": 3.97,
+      "output": "unit.txt"
+    },
+    {
+      "command": ["node", "docs/tasks/check.mjs"],
+      "exitCode": 0,
+      "durationSeconds": 0.19,
+      "output": "task-check.txt"
+    },
+    {
+      "command": ["node", "docs/tasks/check.mjs", "--self-test"],
+      "exitCode": 0,
+      "durationSeconds": 0.04,
+      "output": "task-self-test.txt"
+    },
+    {
+      "command": ["git", "diff", "--check"],
+      "exitCode": 0,
+      "durationSeconds": 0.01,
+      "output": "diff.txt"
+    }
+  ]
+}

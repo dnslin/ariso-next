@@ -137,7 +137,9 @@ export function getImageAccessState(
       tx
         .select()
         .from(mediaJobs)
-        .where(eq(mediaJobs.imageId, imageId))
+        .where(
+          and(eq(mediaJobs.imageId, imageId), eq(mediaJobs.kind, 'process')),
+        )
         // SQLite insertion order resolves jobs submitted within the same millisecond.
         .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
         .get() ?? null;

@@ -1,7 +1,12 @@
 import { and, eq, ne, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { analyzeMediaError } from './errors.ts';
-import { mediaImages, mediaJobs, mediaObjects } from './schema.ts';
+import {
+  mediaImages,
+  mediaJobs,
+  mediaObjects,
+  mediaMetadata,
+} from './schema.ts';
 
 export function settleMediaFailure(
   db: BetterSQLite3Database,
@@ -31,18 +36,38 @@ export function settleMediaFailure(
       })
       .where(eq(mediaJobs.id, jobId))
       .run();
-    tx.update(mediaImages)
-      .set({
-        processingStatus: retry ? 'processing' : 'failed',
-        updatedAt: now,
-      })
-      .where(
-        and(
-          eq(mediaImages.id, job.imageId),
-          ne(mediaImages.processingStatus, 'ready'),
-        ),
-      )
-      .run();
+    if (job.kind === 'metadata')
+      tx.update(mediaMetadata)
+        .set({
+          status: retry ? 'queued' : 'failed',
+          error: diagnostic,
+          attemptedAt: now,
+        })
+        .where(eq(mediaMetadata.imageId, job.imageId))
+        .run();
+    if (job.kind === 'process')
+      tx.update(mediaMetadata)
+        .set({ status: 'failed', error: diagnostic })
+        .where(
+          and(
+            eq(mediaMetadata.imageId, job.imageId),
+            eq(mediaMetadata.status, 'running'),
+          ),
+        )
+        .run();
+    if (job.kind === 'process')
+      tx.update(mediaImages)
+        .set({
+          processingStatus: retry ? 'processing' : 'failed',
+          updatedAt: now,
+        })
+        .where(
+          and(
+            eq(mediaImages.id, job.imageId),
+            ne(mediaImages.processingStatus, 'ready'),
+          ),
+        )
+        .run();
   });
   return diagnostic;
 }
@@ -86,7 +111,32 @@ export function recoverMediaJobs(db: BetterSQLite3Database) {
               ),
             )
             .run();
-        if (exhausted)
+        if (job.kind === 'metadata')
+          tx.update(mediaMetadata)
+            .set({
+              status: exhausted ? 'failed' : 'queued',
+              error: exhausted
+                ? 'metadata: MEDIA_RECOVERY_EXHAUSTED: Interrupted without progress; manually reread metadata'
+                : 'metadata: MEDIA_INTERRUPTED: Resuming the saved task',
+              attemptedAt: now,
+            })
+            .where(eq(mediaMetadata.imageId, job.imageId))
+            .run();
+        if (exhausted && job.kind === 'process')
+          tx.update(mediaMetadata)
+            .set({
+              status: 'failed',
+              error:
+                'metadata: MEDIA_RECOVERY_EXHAUSTED: Interrupted without progress',
+            })
+            .where(
+              and(
+                eq(mediaMetadata.imageId, job.imageId),
+                eq(mediaMetadata.status, 'running'),
+              ),
+            )
+            .run();
+        if (exhausted && job.kind === 'process')
           tx.update(mediaImages)
             .set({ processingStatus: 'failed', updatedAt: now })
             .where(

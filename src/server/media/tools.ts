@@ -98,14 +98,12 @@ export async function terminateMediaTools(workspace: string) {
 }
 
 /** The caller awaits settled before removing the workspace or releasing its disk budget. */
-type TextToolOptions = Extract<Options, { encoding?: 'utf8' | 'utf16le' }>;
-
-export function startMediaTool<const ToolOptions extends TextToolOptions>(
+export function startMediaTool<const ToolOptions extends Options>(
   command: 'magick' | 'exiftool' | 'ffmpeg' | 'ffprobe' | 'node',
   args: string[],
   options: ToolOptions & { workspace: string },
 ) {
-  const { workspace, ...executionOptions } = options;
+  const { workspace } = options;
   const marker =
     command === 'magick'
       ? ['-define', `registry:temporary-path=${workspace}`]
@@ -124,7 +122,7 @@ export function startMediaTool<const ToolOptions extends TextToolOptions>(
     command === 'node' ? process.execPath : command,
     toolArgs,
     {
-      ...executionOptions,
+      ...options,
       detached: true,
       forceKillAfterDelay: graceMs,
     },

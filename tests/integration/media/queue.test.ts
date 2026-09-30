@@ -15,11 +15,22 @@ import {
   mediaJobs,
   mediaObjects,
   mediaVersions,
+  mediaMetadata,
 } from '../../../src/server/media/schema.ts';
 import {
   createProcessingSnapshot,
   prepareInitialMedia,
 } from '../../../src/server/media/settings.ts';
+import {
+  requestMetadataRead,
+  readMediaMetadata,
+} from '../../../src/server/media/metadata.ts';
+import {
+  recoverMediaJobs,
+  settleMediaFailure,
+} from '../../../src/server/media/recovery.ts';
+import * as processing from '../../../src/server/media/process.ts';
+import * as metadataProcessing from '../../../src/server/media/metadata-job.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
@@ -47,6 +58,7 @@ beforeEach(() => {
 afterEach(async () => {
   await queue?.stop();
   queue = undefined;
+  vi.restoreAllMocks();
   connection.close();
   rmSync(directory, { recursive: true, force: true });
 });
@@ -213,5 +225,97 @@ describe('persistent media queue', () => {
       'queue database failed',
     );
     expect(connection.db.select().from(mediaJobs).get()!.status).toBe('queued');
+  });
+});
+
+describe('metadata scheduling and recovery', () => {
+  function finishedImage() {
+    const accepted = enqueue();
+    connection.db
+      .update(mediaJobs)
+      .set({ status: 'failed' })
+      .where(eq(mediaJobs.id, accepted.jobId))
+      .run();
+    connection.db
+      .update(mediaImages)
+      .set({ processingStatus: 'failed' })
+      .where(eq(mediaImages.id, accepted.imageId))
+      .run();
+    return accepted;
+  }
+
+  it('shares the configured concurrency slots with processing work', async () => {
+    const image = finishedImage();
+    const metadata = requestMetadataRead(connection.db, image.imageId);
+    const process = enqueue();
+    const releases: (() => void)[] = [];
+    const block = async (_runtime: unknown, id: string) => {
+      await new Promise<void>((resolve) => releases.push(resolve));
+      connection.db
+        .update(mediaJobs)
+        .set({ status: 'succeeded' })
+        .where(eq(mediaJobs.id, id))
+        .run();
+    };
+    const metadataSpy = vi
+      .spyOn(metadataProcessing, 'processMetadataJob')
+      .mockImplementation(block);
+    const processSpy = vi
+      .spyOn(processing, 'processMediaJob')
+      .mockImplementation(block);
+    start();
+    try {
+      await vi.waitFor(() => expect(metadataSpy).toHaveBeenCalledOnce());
+      await setTimeout(100);
+      expect(processSpy).not.toHaveBeenCalled();
+      expect(job(metadata.jobId).status).toBe('running');
+      expect(job(process.jobId).status).toBe('queued');
+      releases.shift()!();
+      await vi.waitFor(() => expect(processSpy).toHaveBeenCalledOnce());
+    } finally {
+      for (const release of releases) release();
+    }
+  });
+
+  it('keeps failed image state and successful metadata through retries and exhausted restart recovery', () => {
+    const image = finishedImage();
+    const { jobId } = requestMetadataRead(connection.db, image.imageId);
+    const readAt = new Date(12345);
+    const data = { 'IFD0:Main:Artist': '1.10' };
+    connection.db.update(mediaMetadata).set({ data, readAt }).run();
+    const before = connection.db.select().from(mediaImages).get();
+    expect(claimNextMediaJob(connection.db)!.id).toBe(jobId);
+    settleMediaFailure(
+      connection.db,
+      jobId,
+      'metadata',
+      Object.assign(new Error('temporary read error'), { code: 'EIO' }),
+    );
+    expect(job(jobId)).toMatchObject({ status: 'queued', retryCount: 1 });
+    expect(readMediaMetadata(connection.db, image.imageId)).toMatchObject({
+      status: 'queued',
+      historical: true,
+      data,
+      readAt,
+    });
+    connection.db
+      .update(mediaJobs)
+      .set({ nextAttemptAt: null })
+      .where(eq(mediaJobs.id, jobId))
+      .run();
+    for (let attempt = 0; attempt < 3; attempt++) {
+      expect(claimNextMediaJob(connection.db)!.id).toBe(jobId);
+      expect(recoverMediaJobs(connection.db)).toEqual([jobId]);
+    }
+    expect(job(jobId)).toMatchObject({ status: 'failed', recoveryCount: 2 });
+    expect(readMediaMetadata(connection.db, image.imageId)).toMatchObject({
+      status: 'failed',
+      historical: true,
+      data,
+      readAt,
+      error: expect.stringContaining('MEDIA_RECOVERY_EXHAUSTED'),
+    });
+    expect(connection.db.select().from(mediaImages).get()).toEqual(before);
+    expect(connection.db.select().from(mediaObjects).all()).toHaveLength(1);
   });
 });

@@ -1,4 +1,12 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import {
+  copyFileSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { inspect } from 'node:util';
@@ -34,6 +42,124 @@ const migrate = (folder: string) =>
   migrateRuntimeDatabase(connection.db, folder);
 
 describe('runtime forward migrations', () => {
+  it('真实存储探测数据库升级到元数据迁移时保留水印、存储、探测记录和历史进度，重跑不重放', () => {
+    const currentFolder = resolve('drizzle');
+    const journal = JSON.parse(
+      readFileSync(join(currentFolder, 'meta/_journal.json'), 'utf8'),
+    ) as {
+      version: string;
+      dialect: string;
+      entries: { idx: number; tag: string; when: number }[];
+    };
+    const storageProbeIndex = journal.entries.findIndex(
+      (entry) => entry.tag === '0012_storage_probes',
+    );
+    expect(storageProbeIndex).toBeGreaterThanOrEqual(0);
+    const previousEntries = journal.entries.slice(0, storageProbeIndex + 1);
+    const previousFolder = join(directory, 'storage-probe-release');
+    mkdirSync(join(previousFolder, 'meta'), { recursive: true });
+    // Preserve the committed SQL and journal entries; only limit the release's endpoint.
+    writeFileSync(
+      join(previousFolder, 'meta/_journal.json'),
+      JSON.stringify({ ...journal, entries: previousEntries }),
+    );
+    for (const entry of previousEntries)
+      copyFileSync(
+        join(currentFolder, `${entry.tag}.sql`),
+        join(previousFolder, `${entry.tag}.sql`),
+      );
+    migrate(previousFolder);
+    const db = connection.db.$client;
+    db.exec(`
+      INSERT INTO media_watermark_assets
+        (id, path, format, mime, width, height, byte_size, status, expires_at, error, created_at, updated_at)
+      VALUES ('retained-asset', 'watermarks/retained.png', 'PNG', 'image/png', 120, 60, 2048, 'ready', NULL, NULL, 1000, 2000);
+      INSERT INTO media_watermark_preview_refs (preview_id, asset_id)
+      VALUES ('retained-preview', 'retained-asset');
+      INSERT INTO media_settings
+        (id, compression_enabled, output_format, quality, max_edge, jpeg_background, watermark_mode, watermark_asset_id, default_link_version, default_visibility, concurrency, updated_at)
+      VALUES (1, 1, 'jpeg', 80, 1920, '#ffffff', 'image', 'retained-asset', 'watermark', 'private', 2, 2000);
+    `);
+    const report = JSON.stringify({
+      probeId: 'retained-probe',
+      storageId: 'retained-storage',
+      revision: 3,
+      passed: false,
+      stale: false,
+      cleanupPending: true,
+      stages: [
+        {
+          stage: 'delete',
+          status: 'failed',
+          error: 'retained cleanup failure',
+        },
+      ],
+      deploymentRequirement: 'Bucket 必须保持私有',
+      testedAt: '2026-09-30T00:00:00.000Z',
+      ownerConfirmation: {
+        wholeBucketHasNoLockRules: true,
+        confirmedAt: '2026-09-30T00:00:00.000Z',
+      },
+    });
+    db.prepare(
+      `INSERT INTO storage_configs
+      (id, name, type, enabled, endpoint, region, bucket, config_revision, connection_status, connection_revision, connection_report, created_at, updated_at)
+      VALUES ('retained-storage', 'Existing S3 storage', 's3', 0, 'https://storage.example.invalid', 'auto', 'existing-bucket', 3, 'failed', 3, ?, 1000, 2000)`,
+    ).run(report);
+    db.prepare(
+      `INSERT INTO storage_probes
+      (id, storage_id, purpose, config_revision, key, state, stage, object_state, byte_size, confirmed_at, cleanup_attempts, next_cleanup_at, error, report, created_at, updated_at)
+      VALUES ('retained-probe', 'retained-storage', 'connection', 3, 'probes/retained-probe', 'cleanup', 'delete', 'stored', 256, 1000, 2, 10000, 'retained cleanup failure', ?, 1000, 2000)`,
+    ).run(report);
+    const existingData = () => ({
+      assets: db.prepare('SELECT * FROM media_watermark_assets').all(),
+      previews: db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
+      settings: db.prepare('SELECT * FROM media_settings').all(),
+      storage: db.prepare('SELECT * FROM storage_configs').all(),
+      probes: db.prepare('SELECT * FROM storage_probes').all(),
+    });
+    const retainedData = existingData();
+    const originalProgress = progress();
+    expect(originalProgress).toHaveLength(previousEntries.length);
+    expect(
+      db
+        .prepare("SELECT name FROM sqlite_master WHERE name = 'media_metadata'")
+        .get(),
+    ).toBeUndefined();
+
+    migrate(currentFolder);
+    const metadataEntry = journal.entries.find(
+      (entry) => entry.tag === '0013_magenta_colonel_america',
+    )!;
+    expect(metadataEntry.when).toBeGreaterThan(previousEntries.at(-1)!.when);
+    const upgradedProgress = progress();
+    expect(upgradedProgress).toHaveLength(journal.entries.length);
+    expect(upgradedProgress.slice(0, originalProgress.length)).toEqual(
+      originalProgress,
+    );
+    expect(upgradedProgress).toContainEqual({
+      hash: createHash('sha256')
+        .update(readFileSync(join(currentFolder, `${metadataEntry.tag}.sql`)))
+        .digest('hex'),
+      created_at: metadataEntry.when,
+    });
+    expect(
+      db
+        .prepare(
+          'SELECT image_id, data, photography, read_at FROM media_metadata',
+        )
+        .all(),
+    ).toEqual([]);
+    expect(existingData()).toEqual(retainedData);
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+
+    migrate(currentFolder);
+    expect(progress()).toEqual(upgradedProgress);
+    expect(existingData()).toEqual(retainedData);
+    expect(db.prepare('SELECT * FROM media_metadata').all()).toEqual([]);
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+  });
+
   it('空 journal 可重复执行且没有业务表', () => {
     const folder = writeMigrations(join(directory, 'empty-sql'), []);
     migrate(folder);

@@ -6,6 +6,7 @@ import { terminateMediaTools } from './tools.ts';
 import { and, asc, eq, ne, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { processMediaJob, type MediaRuntime } from './process.ts';
+import { processMetadataJob } from './metadata-job.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 import { readMediaSettings } from './settings.ts';
 import { recoverMediaJobs } from './recovery.ts';
@@ -41,15 +42,16 @@ export function claimNextMediaJob(db: BetterSQLite3Database) {
         .returning()
         .get();
       if (!claimed) return null;
-      tx.update(mediaImages)
-        .set({ processingStatus: 'processing', updatedAt: now })
-        .where(
-          and(
-            eq(mediaImages.id, job.imageId),
-            ne(mediaImages.processingStatus, 'ready'),
-          ),
-        )
-        .run();
+      if (job.kind === 'process')
+        tx.update(mediaImages)
+          .set({ processingStatus: 'processing', updatedAt: now })
+          .where(
+            and(
+              eq(mediaImages.id, job.imageId),
+              ne(mediaImages.processingStatus, 'ready'),
+            ),
+          )
+          .run();
       return claimed;
     },
     { behavior: 'immediate' },
@@ -92,7 +94,9 @@ export function startMediaQueue(runtime: MediaRuntime) {
         while (!signal.aborted && active.size < limit) {
           const job = claimNextMediaJob(runtime.db);
           if (!job) break;
-          const execution = processMediaJob(runtime, job.id, signal)
+          const run =
+            job.kind === 'metadata' ? processMetadataJob : processMediaJob;
+          const execution = run(runtime, job.id, signal)
             .catch((err: unknown) => {
               failure ??= err;
               runtime.logger.error(

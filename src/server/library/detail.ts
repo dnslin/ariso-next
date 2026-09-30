@@ -90,6 +90,7 @@ export function readLibraryDetail(
         .where(
           and(
             eq(mediaJobs.imageId, imageId),
+            eq(mediaJobs.kind, 'process'),
             inArray(mediaJobs.status, statuses),
           ),
         )

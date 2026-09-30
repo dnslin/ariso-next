@@ -10,6 +10,7 @@ import {
   unique,
 } from 'drizzle-orm/sqlite-core';
 import { storageConfigs } from '../storage/schema.ts';
+import type { GroupedMetadata, PhotographyFields } from './metadata-values.ts';
 import type { ProcessingSnapshot } from './validation.ts';
 
 export const versionKinds = [
@@ -134,7 +135,7 @@ export const mediaJobs = sqliteTable(
     imageId: text('image_id')
       .notNull()
       .references(() => mediaImages.id),
-    kind: text('kind', { enum: ['process'] }).notNull(),
+    kind: text('kind', { enum: ['process', 'metadata'] }).notNull(),
     scope: text('scope', {
       enum: ['all', 'compressed', 'thumbnail', 'watermark'],
     }).notNull(),
@@ -244,3 +245,19 @@ export const mediaVersions = sqliteTable(
     ),
   ],
 );
+
+/** One latest attempt and one last successful result per image. */
+export const mediaMetadata = sqliteTable('media_metadata', {
+  imageId: text('image_id')
+    .primaryKey()
+    .notNull()
+    .references(() => mediaImages.id),
+  status: text('status', {
+    enum: ['queued', 'running', 'succeeded', 'failed'],
+  }).notNull(),
+  data: text('data', { mode: 'json' }).$type<GroupedMetadata>(),
+  photography: text('photography', { mode: 'json' }).$type<PhotographyFields>(),
+  readAt: integer('read_at', { mode: 'timestamp_ms' }),
+  attemptedAt: integer('attempted_at', { mode: 'timestamp_ms' }),
+  error: text('error'),
+});

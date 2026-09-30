@@ -7,6 +7,7 @@ import { startMediaTool, terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import { readObject, writeObject } from '../storage/local.ts';
+import { readAndStoreMetadata } from './metadata.ts';
 import { inspectImage } from './formats.ts';
 import { inspectImageFile } from './file-formats.ts';
 import { startSvgPreview } from './svg.ts';
@@ -159,6 +160,10 @@ export async function processMediaJob(
       if (job.step === 'identify')
         advanceMediaStep(tx, jobId, job.expectedVersions[0] ?? 'complete');
     });
+
+    step = 'metadata';
+    await readAndStoreMetadata(runtime, jobId, source.path, workspace, signal);
+    step = 'identify';
 
     let previewInput = `${facts.coder}:${source.path}[0]`;
     if (facts.format === 'SVG') {

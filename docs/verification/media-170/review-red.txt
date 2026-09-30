@@ -1,0 +1,295 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/metadata-reread/ariso
+
+ ❯ |media-tools| tests/integration/media/metadata.test.ts (10 tests | 3 failed | 7 skipped) 3135ms
+   ❯ T-MED-07 complete metadata with real ExifTool and ImageMagick (10)
+     × retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result 1050ms
+     × rechecks storage disabled during workspace preparation before accessing the original 914ms
+     × atomically retains the previous metadata if marking a reread job succeeded fails and later recovers 1170ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result
+AssertionError: expected 'metadata: MEDIA_METADATA_READ_FAILED:…' to contain 'File is empty'
+
+Expected: "File is empty"
+Received: "metadata: MEDIA_METADATA_READ_FAILED: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300"
+
+ ❯ tests/integration/media/metadata.test.ts:485:31
+    483|       readAt: before.readAt,
+    484|     });
+    485|     expect.soft(failed.error).toContain('File is empty');
+       |                               ^
+    486|     expect.soft(logs.join('')).toContain('File is empty');
+    487|     expect
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result
+AssertionError: expected '{"level":"error","time":"2026-09-29T1…' to contain 'File is empty'
+
+- Expected
++ Received
+
+- File is empty
++ {"level":"error","time":"2026-09-29T16:16:25.954Z","module":"metadata.test","err":{"type":"Error","message":"Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300","stack":"Error: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300\n    at mediaError (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/errors.ts:2:24)\n    at readAndStoreMetadata (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/metadata.ts:176:15)\n    at processMetadataJob (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/metadata-job.ts:51:20)\n    at processNext (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/tests/integration/media/metadata.test.ts:106:3)\n    at /Users/dnslin/.codex/worktrees/metadata-reread/ariso/tests/integration/media/metadata.test.ts:476:17\n    at file:///Users/dnslin/.codex/worktrees/metadata-reread/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:20","code":"MEDIA_METADATA_READ_FAILED"},"imageId":"2639983a-4b9b-4dcb-8bec-07dda7eea549","jobId":"b6ac4313-e50d-462a-83e5-70f7640736d6","step":"metadata","diagnostic":"metadata: MEDIA_METADATA_READ_FAILED: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300","msg":"Metadata read failed"}
++ {"level":"error","time":"2026-09-29T16:16:25.957Z","module":"metadata.test","err":{"type":"Error","message":"Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300","stack":"Error: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300\n    at mediaError (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/errors.ts:2:24)\n    at readAndStoreMetadata (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/metadata.ts:176:15)\n    at processMetadataJob (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/src/server/media/metadata-job.ts:51:20)\n    at processNext (/Users/dnslin/.codex/worktrees/metadata-reread/ariso/tests/integration/media/metadata.test.ts:106:3)\n    at /Users/dnslin/.codex/worktrees/metadata-reread/ariso/tests/integration/media/metadata.test.ts:476:17\n    at file:///Users/dnslin/.codex/worktrees/metadata-reread/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:20","code":"MEDIA_METADATA_READ_FAILED"},"jobId":"b6ac4313-e50d-462a-83e5-70f7640736d6","step":"metadata","diagnostic":"metadata: MEDIA_METADATA_READ_FAILED: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300","msg":"Metadata task interrupted or failed"}
++
+
+ ❯ tests/integration/media/metadata.test.ts:486:32
+    484|     });
+    485|     expect.soft(failed.error).toContain('File is empty');
+    486|     expect.soft(logs.join('')).toContain('File is empty');
+       |                                ^
+    487|     expect
+    488|       .soft(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result
+AssertionError: expected { …(16) } to match object { status: 'failed', …(1) }
+(21 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "File is empty",
++   "error": "metadata: MEDIA_METADATA_READ_FAILED: Command failed with exit code 1: exiftool -userParam 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/tmp/media-b6ac4313-e50d-462a-83e5-70f7640736d6' -json -a '-G1:3:4' -struct -api 'structformat=jsonq' /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-1hXLpG/storage/default/ariso/7da4fe7d-298a-4ced-b7b8-34661ef8ddde/uploads/9870bbc6-8312-4350-8d63-5edc49353300",
+    "status": "failed",
+  }
+
+ ❯ tests/integration/media/metadata.test.ts:495:8
+    493|           .get(),
+    494|       )
+    495|       .toMatchObject({
+       |        ^
+    496|         status: 'failed',
+    497|         error: expect.stringContaining('File is empty'),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > rechecks storage disabled during workspace preparation before accessing the original
+AssertionError: expected 'metadata: STORAGE_OBJECT_MISSING: Sto…' to contain 'STORAGE_DISABLED'
+
+Expected: "STORAGE_DISABLED"
+Received: "metadata: STORAGE_OBJECT_MISSING: Storage read failed: e24853e1-173d-411b-bd61-ed5e1899f2d9, uploads/bb98a0aa-7312-44fe-bbfd-cf2c19bd5073"
+
+ ❯ tests/integration/media/metadata.test.ts:536:31
+    534|       readAt: before.readAt,
+    535|     });
+    536|     expect.soft(failed.error).toContain('STORAGE_DISABLED');
+       |                               ^
+    537|     expect.soft(failed.error).not.toContain('STORAGE_OBJECT_MISSING');
+    538|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > rechecks storage disabled during workspace preparation before accessing the original
+AssertionError: expected 'metadata: STORAGE_OBJECT_MISSING: Sto…' not to contain 'STORAGE_OBJECT_MISSING'
+
+Expected: "STORAGE_OBJECT_MISSING"
+Received: "metadata: STORAGE_OBJECT_MISSING: Storage read failed: e24853e1-173d-411b-bd61-ed5e1899f2d9, uploads/bb98a0aa-7312-44fe-bbfd-cf2c19bd5073"
+
+ ❯ tests/integration/media/metadata.test.ts:537:35
+    535|     });
+    536|     expect.soft(failed.error).toContain('STORAGE_DISABLED');
+    537|     expect.soft(failed.error).not.toContain('STORAGE_OBJECT_MISSING');
+       |                                   ^
+    538|     expect(
+    539|       connection.db
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > rechecks storage disabled during workspace preparation before accessing the original
+AssertionError: expected { …(16) } to match object { status: 'failed', …(1) }
+(21 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "STORAGE_DISABLED",
++   "error": "metadata: STORAGE_OBJECT_MISSING: Storage read failed: e24853e1-173d-411b-bd61-ed5e1899f2d9, uploads/bb98a0aa-7312-44fe-bbfd-cf2c19bd5073",
+    "status": "failed",
+  }
+
+ ❯ tests/integration/media/metadata.test.ts:544:7
+    542|         .where(eq(mediaJobs.id, job.id))
+    543|         .get(),
+    544|     ).toMatchObject({
+       |       ^
+    545|       status: 'failed',
+    546|       error: expect.stringContaining('STORAGE_DISABLED'),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers
+AssertionError: expected { …(159) } to deeply equal { …(196) }
+
+- Expected
++ Received
+
+@@ -1,8 +1,7 @@
+  {
+    "Composite:Main:Aperture": "9.4",
+-   "Composite:Main:AutoFocus": "On",
+    "Composite:Main:FocalLength35efl": "8.6 mm",
+    "Composite:Main:GPSLatitude": "31 deg 12' 0.00\" N",
+    "Composite:Main:GPSLongitude": "121 deg 30' 0.00\" E",
+    "Composite:Main:GPSPosition": "31 deg 12' 0.00\" N, 121 deg 30' 0.00\" E",
+    "Composite:Main:ImageSize": "32x16",
+@@ -24,17 +23,17 @@
+    "ExifIFD:Main:Copy1:FNumber": "9.4",
+    "ExifIFD:Main:Copy1:FileSource": "Digital Camera",
+    "ExifIFD:Main:Copy1:Flash": "No Flash",
+    "ExifIFD:Main:Copy1:FlashpixVersion": "0100",
+    "ExifIFD:Main:Copy1:FocalLength": "8.6 mm",
++   "ExifIFD:Main:Copy1:ISO": "100",
+    "ExifIFD:Main:Copy1:LightSource": "Unknown",
+    "ExifIFD:Main:Copy1:MaxApertureValue": "3.4",
+    "ExifIFD:Main:Copy1:MeteringMode": "Multi-segment",
+    "ExifIFD:Main:Copy1:SceneType": "Directly photographed",
+    "ExifIFD:Main:Copy1:SerialNumber": "123456789012345678901234567890",
+    "ExifIFD:Main:Copy1:UserComment": "",
+-   "ExifIFD:Main:Copy2:ISO": "100",
+    "ExifIFD:Main:CreateDate": "2001:08:01 12:57:23",
+    "ExifIFD:Main:DateTimeOriginal": "2001:08:01 12:57:23",
+    "ExifIFD:Main:ExifImageHeight": "1200",
+    "ExifIFD:Main:ExifImageWidth": "1600",
+    "ExifIFD:Main:ExifVersion": "0210",
+@@ -112,21 +111,21 @@
+    "ICC_Profile:Main:Technology": "Cathode Ray Tube Display",
+    "ICC_Profile:Main:ViewingCondDesc": "Reference Viewing Condition in IEC 61966-2-1",
+    "IFD0:Main:Artist": "second",
+    "IFD0:Main:Copy1:Artist": "first",
+    "IFD0:Main:Copy1:ImageDescription": "1.10",
+-   "IFD0:Main:Copy1:Make": "NIKON",
++   "IFD0:Main:Copy1:Make": "RecoveryCamera",
+    "IFD0:Main:Copy1:Model": "E775",
+    "IFD0:Main:Copy1:ModifyDate": "2001:08:01 12:57:23",
+    "IFD0:Main:Copy1:Orientation": "Rotate 90 CW",
+    "IFD0:Main:Copy1:Software": "E775v1.3u",
+    "IFD0:Main:Copy1:YCbCrPositioning": "Centered",
+    "IFD0:Main:Copy3:ResolutionUnit": "inches",
+    "IFD0:Main:Copy3:XResolution": "300",
+    "IFD0:Main:Copy3:YResolution": "300",
+    "IFD0:Main:ImageDescription": "1.10",
+-   "IFD0:Main:Make": "NIKON",
++   "IFD0:Main:Make": "RecoveryCamera",
+    "IFD0:Main:Model": "E775",
+    "IFD0:Main:ModifyDate": "2001:08:01 12:57:23",
+    "IFD0:Main:Orientation": "Rotate 90 CW",
+    "IFD0:Main:ResolutionUnit": "inches",
+    "IFD0:Main:Software": "E775v1.3u",
+@@ -143,46 +142,10 @@
+    "IFD1:Main:Copy4:YResolution": "300",
+    "JFIF:Main:Copy2:ResolutionUnit": "None",
+    "JFIF:Main:Copy2:XResolution": "1",
+    "JFIF:Main:Copy2:YResolution": "1",
+    "JFIF:Main:JFIFVersion": "1.01",
+-   "Nikon:Main:AFAreaMode": "Single Area",
+-   "Nikon:Main:AFPoint": "Center",
+-   "Nikon:Main:AFPointsInFocus": "(none)",
+-   "Nikon:Main:AuxiliaryLens": "Off",
+-   "Nikon:Main:ColorMode": "Color",
+-   "Nikon:Main:Copy1:AFAreaMode": "Single Area",
+-   "Nikon:Main:Copy1:AFPoint": "Center",
+-   "Nikon:Main:Copy1:AFPointsInFocus": "(none)",
+-   "Nikon:Main:Copy1:AuxiliaryLens": "Off",
+-   "Nikon:Main:Copy1:ColorMode": "Color",
+-   "Nikon:Main:Copy1:DataDump": "(Binary data 122 bytes, use -b option to extract)",
+-   "Nikon:Main:Copy1:DigitalZoom": "1",
+-   "Nikon:Main:Copy1:FlashSetting": "",
+-   "Nikon:Main:Copy1:FocusMode": "AF-C",
+-   "Nikon:Main:Copy1:ISO": "0",
+-   "Nikon:Main:Copy1:ISOSelection": "Auto",
+-   "Nikon:Main:Copy1:ImageAdjustment": "Normal",
+-   "Nikon:Main:Copy1:MakerNoteVersion": "1.00",
+-   "Nikon:Main:Copy1:ManualFocusDistance": "undef",
+-   "Nikon:Main:Copy1:Quality": "Fine",
+-   "Nikon:Main:Copy1:SceneMode": "",
+-   "Nikon:Main:Copy1:Sharpness": "Auto",
+-   "Nikon:Main:Copy1:WhiteBalance": "Auto",
+-   "Nikon:Main:Copy3:ISO": "0",
+-   "Nikon:Main:DataDump": "(Binary data 122 bytes, use -b option to extract)",
+-   "Nikon:Main:DigitalZoom": "1",
+-   "Nikon:Main:FlashSetting": "",
+-   "Nikon:Main:FocusMode": "AF-C",
+-   "Nikon:Main:ISOSelection": "Auto",
+-   "Nikon:Main:ImageAdjustment": "Normal",
+-   "Nikon:Main:MakerNoteVersion": "1.00",
+-   "Nikon:Main:ManualFocusDistance": "undef",
+-   "Nikon:Main:Quality": "Fine",
+-   "Nikon:Main:SceneMode": "",
+-   "Nikon:Main:Sharpness": "Auto",
+-   "Nikon:Main:WhiteBalance": "Auto",
+    "PrintIM:Main:Copy1:PrintIMVersion": "0100",
+    "PrintIM:Main:PrintIMVersion": "0100",
+    "SourceFile": "/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-mYQDYP/storage/default/ariso/62416437-a6d4-49da-b3c5-ea8807852611/uploads/efeea76c-058f-49ab-a369-b176ba598baa",
+    "System:Main:Directory": "/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-metadata-mYQDYP/storage/default/ariso/62416437-a6d4-49da-b3c5-ea8807852611/uploads",
+    "System:Main:FileAccessDate": "2026:09:30 00:16:27+08:00",
+
+ ❯ tests/integration/media/metadata.test.ts:572:30
+    570|       error: expect.stringContaining('injected metadata job success fa…
+    571|     });
+    572|     expect.soft(failed.data).toEqual(before.data);
+       |                              ^
+    573|     expect.soft(failed.photography).toEqual(before.photography);
+    574|     expect.soft(failed.readAt).toEqual(before.readAt);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers
+AssertionError: expected { make: 'RecoveryCamera', …(11) } to deeply equal { make: 'NIKON', model: 'E775', …(10) }
+
+- Expected
++ Received
+
+@@ -7,8 +7,8 @@
+    "latitude": null,
+    "latitudeRef": "North",
+    "lens": null,
+    "longitude": null,
+    "longitudeRef": "East",
+-   "make": "NIKON",
++   "make": "RecoveryCamera",
+    "model": "E775",
+  }
+
+ ❯ tests/integration/media/metadata.test.ts:573:37
+    571|     });
+    572|     expect.soft(failed.data).toEqual(before.data);
+    573|     expect.soft(failed.photography).toEqual(before.photography);
+       |                                     ^
+    574|     expect.soft(failed.readAt).toEqual(before.readAt);
+    575|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers
+AssertionError: expected 2026-09-29T16:16:27.909Z to deeply equal 2026-09-29T16:16:27.485Z
+
+- Expected
++ Received
+
+- 2026-09-29T16:16:27.485Z
++ 2026-09-29T16:16:27.909Z
+
+ ❯ tests/integration/media/metadata.test.ts:574:32
+    572|     expect.soft(failed.data).toEqual(before.data);
+    573|     expect.soft(failed.photography).toEqual(before.photography);
+    574|     expect.soft(failed.readAt).toEqual(before.readAt);
+       |                                ^
+    575|     expect(
+    576|       connection.db
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 skipped (10)
+   Start at  00:16:24
+   Duration  3.59s (tests 89%, import 7%, transform 4%)
