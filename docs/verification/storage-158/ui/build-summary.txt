@@ -1,0 +1,68 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 81ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1587ms
+  Running TypeScript ...
+  Finished TypeScript in 2.8s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/14) ...
+  Generating static pages using 9 workers (3/14)
+  Generating static pages using 9 workers (6/14)
+  Generating static pages using 9 workers (10/14)
+✓ Generating static pages using 9 workers (14/14) in 182ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /albums
+├ ƒ /albums/[albumId]
+├ ƒ /api/albums
+├ ƒ /api/albums/[id]
+├ ƒ /api/auth/[...all]
+├ ƒ /api/health
+├ ƒ /api/images
+├ ƒ /api/images/[id]
+├ ƒ /api/images/[id]/metadata/read
+├ ƒ /api/images/[id]/neighbors
+├ ƒ /api/images/[id]/restore
+├ ƒ /api/images/[id]/trash
+├ ƒ /api/images/status
+├ ƒ /api/media/watermark-assets
+├ ƒ /api/settings/storage
+├ ƒ /api/setup
+├ ƒ /api/storages
+├ ƒ /api/storages/[id]
+├ ƒ /api/storages/[id]/cors-tests
+├ ƒ /api/storages/[id]/cors-tests/[probeId]/complete
+├ ƒ /api/storages/[id]/probes/[probeId]/retry-cleanup
+├ ƒ /api/storages/[id]/test
+├ ƒ /api/trash
+├ ƒ /api/trash/[id]/preview
+├ ƒ /api/uploads/cleanup
+├ ƒ /api/uploads/sessions/[id]
+├ ƒ /api/uploads/sessions/[id]/content
+├ ƒ /api/uploads/submissions
+├ ƒ /api/uploads/submissions/[id]
+├ ƒ /i/[imageId]
+├ ƒ /library
+├ ƒ /login
+├ ƒ /settings/storage/[id]
+├ ƒ /setup
+├ ƒ /trash
+├ ƒ /upload
+└ ƒ /upload/settings
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Existing optional-native dependency diagnostics are listed in local-checks.json. Build exited 0.

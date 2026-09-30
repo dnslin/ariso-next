@@ -17,7 +17,7 @@ import {
 import { runCorsSample } from './cors-transport';
 
 export function useCorsTest(storageId: string) {
-  const [busy, setBusy] = useState(false);
+  const [operation, setOperation] = useState<'test' | 'cleanup' | null>(null);
   const [message, setMessage] = useState('');
   const inFlight = useRef(false);
   const mounted = useRef(false);
@@ -40,9 +40,7 @@ export function useCorsTest(storageId: string) {
     retry: false,
     networkMode: 'always',
     refetchInterval: (current) =>
-      current.state.data?.state.probes.some((p) => p.state === 'running')
-        ? 2000
-        : false,
+      current.state.data?.state.probes.length ? 2000 : false,
   });
   useEffect(() => {
     mounted.current = true;
@@ -83,7 +81,7 @@ export function useCorsTest(storageId: string) {
   async function start() {
     if (inFlight.current || !query.data || query.isError) return;
     inFlight.current = true;
-    setBusy(true);
+    setOperation('test');
     setMessage('');
     const abort = new AbortController();
     controller.current = abort;
@@ -113,7 +111,7 @@ export function useCorsTest(storageId: string) {
     } finally {
       if (mounted.current) {
         await client.invalidateQueries({ queryKey });
-        setBusy(false);
+        setOperation(null);
       }
       inFlight.current = false;
       controller.current = null;
@@ -123,7 +121,7 @@ export function useCorsTest(storageId: string) {
   async function retryCleanup(probeId: string) {
     if (inFlight.current) return;
     inFlight.current = true;
-    setBusy(true);
+    setOperation('cleanup');
     setMessage('');
     try {
       await corsRequest(
@@ -135,10 +133,18 @@ export function useCorsTest(storageId: string) {
     } finally {
       if (mounted.current) {
         await client.invalidateQueries({ queryKey });
-        setBusy(false);
+        setOperation(null);
       }
       inFlight.current = false;
     }
   }
-  return { query, busy, message, start, refresh, retryCleanup };
+  return {
+    query,
+    busy: operation !== null,
+    testing: operation === 'test',
+    message,
+    start,
+    refresh,
+    retryCleanup,
+  };
 }

@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
   S3Client,
@@ -43,6 +44,7 @@ const config = {
   corsTargets: targets,
   r2NoLockEvidence: values['r2-no-lock-evidence'],
   output,
+  storageCorsUiScript: pathToFileURL(resolve('e2e/storage-cors-ui.mjs')).href,
 };
 const secrets = [
   credentials.password,

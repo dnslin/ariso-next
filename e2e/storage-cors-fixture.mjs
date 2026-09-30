@@ -7,6 +7,7 @@ export async function startCorsFixture(origin) {
   const objects = new Map();
   const requests = [];
   let mode = 'normal';
+  const heldPuts = new Set();
   const server = createServer(async (request, response) => {
     const url = new URL(request.url, 'http://localhost');
     if (url.pathname === '/_control') {
@@ -14,6 +15,10 @@ export async function startCorsFixture(origin) {
         let body = '';
         for await (const chunk of request) body += chunk;
         mode = JSON.parse(body).mode;
+        if (mode !== 'hold-put') {
+          for (const held of heldPuts) held.end();
+          heldPuts.clear();
+        }
       }
       response.setHeader('content-type', 'application/json');
       response.end(
@@ -55,6 +60,11 @@ export async function startCorsFixture(origin) {
       const chunks = [];
       for await (const chunk of request) chunks.push(chunk);
       objects.set(url.pathname, Buffer.concat(chunks));
+      if (mode === 'hold-put' && url.searchParams.has('X-Amz-Signature')) {
+        heldPuts.add(response);
+        response.once('close', () => heldPuts.delete(response));
+        return;
+      }
       response.end();
     } else if (request.method === 'DELETE') {
       if (mode === 'delete-failure') return error(403, 'AccessDenied');

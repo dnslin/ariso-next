@@ -194,7 +194,7 @@
 
 - 任务组：`STORAGE-CORS`
 - 里程碑：M4
-- 实施记录：[Issue #158 进行中证据](../verification/storage-158/README.md)；后端与真实浏览器协议已实现，产品页面、设计批准及人工验收尚未完成，任务不标记完成。
+- 实施记录：[Issue #158 进行中证据](../verification/storage-158/README.md)；后端与 #158 产品页面已实现，设计组合已获批准，独立代码与设计评审已完成；全量验证记录见入口，用户人工 UI 验收仍待完成，任务不标记完成。
 - 范围：交付CORS示例、浏览器PUT探测、服务器内容复核与清理，以及site修改origin同事务调用的失效函数。
 - 规格与预计文件：SPEC-storage §7、ST-08/09/15；`src/server/storage/cors.ts`、cors-tests路由、CORS检测组件与浏览器测试。
 - 直接前置：`T-STO-04`、`T-UI-01`、`UPLOAD-V01`、`DG-STORAGE`
@@ -203,8 +203,8 @@
 - 界面：`/settings/storage/:id` 的检测区域，仅所有者；数据来自持久probe与当前site origin。桌面 [346:4712](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4712)、手机 [346:4807](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4807)；状态桌面 [346:5348](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5348)、手机 [346:5361](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-5361)；示例 桌面 [346:4865](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4865)、手机 [346:4876](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=346-4876)。HeroUI：Button、Alert、Card、Spinner、Accordion、可选中只读TextArea；复制失败提供完整可选文本。桌面嵌于编辑页、手机完整页，长origin/JSON可横向查看且操作可触达。
 - 需求：`R-8.2-01`、`R-8.2-02`、`R-8.3-02`、`R-5.4-04`、`A-26.4-04`
 - 实施步骤：
-  - [ ] 1. 浏览器真实 PUT/GET/HEAD 探测：报告必需头及具体错误。
-  - [ ] 2. origin/revision 改变后失效与探测清理：重新检测才更新结果。
+  - [x] 1. 浏览器真实 PUT/GET/HEAD 探测：报告必需头及具体错误。
+  - [x] 2. origin/revision 改变后失效与探测清理：重新检测才更新结果。
 
 #### DG-STORAGE 对 T-STO-05 的核对结论（2026-09-30）
 

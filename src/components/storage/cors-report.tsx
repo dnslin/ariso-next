@@ -14,12 +14,12 @@ export function CorsRows({
   rows: { label: string; value: ReactNode; detail: ReactNode }[];
 }) {
   return (
-    <Card className="gap-3 rounded-2xl border border-border bg-background px-3 py-4 shadow-none md:px-5">
+    <Card className="gap-3 rounded-2xl border border-border bg-surface px-3 py-4 shadow-none min-[1200px]:px-5">
       <dl className="grid gap-3 text-sm leading-normal">
         {rows.map((row) => (
           <div
             key={row.label}
-            className="grid min-h-18 content-start gap-y-0 min-[1200px]:grid-cols-3 min-[1200px]:items-center min-[1200px]:gap-4"
+            className="grid min-h-18 content-start gap-y-0 min-[1200px]:content-center min-[1200px]:grid-cols-3 min-[1200px]:items-center min-[1200px]:gap-4"
           >
             <dt>{row.label}</dt>
             <dd className="min-w-0 [overflow-wrap:anywhere]">
@@ -85,13 +85,22 @@ export function CorsReportRows({
               : '等待浏览器可读响应'),
         },
         {
-          label: '服务器核验',
-          value: status(verification?.status),
+          label: !busy && report && !report.passed ? '失败原因' : '服务器核验',
+          value:
+            !busy && report && !report.passed
+              ? browserFailed
+                ? '尚不能唯一确定'
+                : verification?.status === 'failed'
+                  ? '服务器核验失败'
+                  : '测试对象清理失败'
+              : status(verification?.status),
           detail:
-            verification?.error?.message ??
-            (verification?.status === 'passed'
-              ? '对象内容正确'
-              : '检查对象和内容'),
+            browserFailed && !busy
+              ? `可能涉及 CORS、DNS 或网络${verification?.error ? `；服务器核验：${verification.error.message}` : ''}`
+              : (verification?.error?.message ??
+                (verification?.status === 'passed'
+                  ? '对象内容正确'
+                  : '检查对象和内容')),
         },
         {
           label: '测试对象清理',
@@ -101,11 +110,11 @@ export function CorsReportRows({
             : (cleanup?.error?.message ??
               (report?.cleanupPending ? '保留清理引用，可重试' : '检查后清理')),
         },
-        ...(!busy && browserPassed
+        ...(!busy && report?.passed
           ? [
               {
                 label: '检测来源',
-                value: report?.stale ? '已失效' : '当前站点',
+                value: report?.stale ? '已失效' : '配置站点',
                 detail: report?.origin ?? state.origin,
               },
             ]

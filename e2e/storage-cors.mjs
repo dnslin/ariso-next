@@ -34,54 +34,6 @@ const control = async (mode) => {
   assert.equal(response.status, 200);
   return response.json();
 };
-async function start(storage) {
-  return request(`/api/storages/${storage.id}/cors-tests`, 'POST', {
-    revision: storage.configRevision,
-  });
-}
-async function perform(session) {
-  // These are native browser fetches: preflight, CORS and readable response
-  // semantics are enforced by the actual browser, not a Node request.
-  return page.evaluate(async (session) => {
-    const results = [];
-    for (const signature of [session.upload, session.get, session.head]) {
-      try {
-        const response = await fetch(signature.url, {
-          method: signature.method,
-          headers: signature.headers,
-          mode: 'cors',
-          credentials: 'omit',
-          ...(signature.method === 'PUT' ? { body: session.payload } : {}),
-        });
-        const mismatch =
-          signature.method === 'GET' &&
-          response.ok &&
-          (await response.text()) !== session.payload;
-        results.push({
-          method: signature.method,
-          status: response.status,
-          responseType: response.type,
-          ...(mismatch ? { error: 'Browser GET payload mismatch' } : {}),
-        });
-      } catch (error) {
-        results.push({
-          method: signature.method,
-          status: 0,
-          responseType: 'error',
-          error: error.message,
-        });
-      }
-    }
-    return results;
-  }, session);
-}
-async function complete(storage, session, results) {
-  return request(
-    `/api/storages/${storage.id}/cors-tests/${session.probeId}/complete`,
-    'POST',
-    { results },
-  );
-}
 try {
   await page.goto(config.origin);
   // The preceding identity suite deliberately exhausts the real login window.
@@ -110,6 +62,12 @@ try {
     200,
     `CORS verification login: HTTP ${login.status} ${login.body}`,
   );
+  if (config.corsFixture) {
+    const { verifyCorsAccessBoundaries } = await import(
+      config.storageCorsUiScript
+    );
+    await verifyCorsAccessBoundaries(page, config, request, report);
+  }
   const targets = config.corsTargets ?? [
     {
       service: 'local-http-fixture',
@@ -189,8 +147,24 @@ try {
     report.checks.push(
       `${target.service}: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)`,
     );
-    const session = await start(storage);
-    const results = await perform(session);
+    const {
+      openCorsUi,
+      runCorsUiSample,
+      verifyCorsUiFailures,
+      verifyCorsLayouts,
+    } = await import(config.storageCorsUiScript);
+    await openCorsUi(page, config, storage.id);
+    await verifyCorsLayouts(
+      page,
+      config,
+      `${target.service}-overview`,
+      report,
+      [1440, 390],
+    );
+    const completed = await runCorsUiSample(page, storage.id);
+    const results = completed.stages
+      .filter((stage) => stage.stage.startsWith('browser-'))
+      .map((stage) => stage.evidence);
     assert.deepEqual(
       results.map((result) => result.method),
       ['PUT', 'GET', 'HEAD'],
@@ -200,98 +174,48 @@ try {
         (result) =>
           result.responseType === 'cors' &&
           result.status >= 200 &&
-          result.status < 300 &&
-          !result.error,
+          result.status < 300,
       ),
-      JSON.stringify(results),
     );
-    const completed = await complete(storage, session, results);
-    entry.probes.push({ key: session.upload.key, results, report: completed });
+    entry.probes.push({
+      key: `probes/${completed.probeId}`,
+      results,
+      report: completed,
+    });
     assert.equal(completed.passed, true);
     assert.equal(completed.cleanupPending, false);
     await page.reload();
+    await page.waitForSelector(
+      '[data-testid="storage-cors"][data-state="passed"]',
+    );
     const persisted = await request(`/api/storages/${storage.id}/cors-tests`);
     assert.equal(persisted.status, 'passed');
-    assert.equal(persisted.report.probeId, session.probeId);
+    assert.equal(persisted.report.probeId, completed.probeId);
     assert.equal(persisted.probes.length, 0);
     report.checks.push(
-      `${target.service}: actual browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result`,
+      `${target.service}: real UI activation invokes production browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result`,
     );
     if (config.corsFixture) {
-      await control('deny-cors');
-      const failedSession = await start(storage);
-      const failedResults = await perform(failedSession);
-      assert.ok(
-        failedResults.some((result) => result.responseType === 'error'),
-      );
-      const failed = await complete(storage, failedSession, failedResults);
-      entry.probes.push({
-        key: failedSession.upload.key,
-        results: failedResults,
-        report: failed,
-      });
-      assert.equal(failed.passed, false);
-      assert.equal(
-        (await request(`/api/storages/${storage.id}/cors-tests`)).status,
-        'failed',
-      );
-      await control('delete-failure');
-      const dirtySession = await start(storage);
-      const dirty = await complete(
-        storage,
-        dirtySession,
-        await perform(dirtySession),
-      );
-      entry.probes.push({ key: dirtySession.upload.key, report: dirty });
-      assert.equal(dirty.passed, false);
-      assert.equal(dirty.cleanupPending, true);
-      await control('normal');
-      await request(
-        `/api/storages/${storage.id}/probes/${dirtySession.probeId}/retry-cleanup`,
-        'POST',
-        {},
-      );
-      assert.equal(
-        (await request(`/api/storages/${storage.id}/cors-tests`)).probes.length,
-        0,
-      );
-      const abandoned = await start(storage);
-      assert.ok(
-        (await perform(abandoned)).every(
-          (result) => result.status >= 200 && result.status < 300,
-        ),
-      );
-      // Leave without completion and advance only this disposable probe's
-      // deadline. The production maintenance loop must own cleanup.
-      await page.goto(`${config.origin}/`);
-      const { identitySql } = await import(config.identitySessionScript);
-      await identitySql(
+      await verifyCorsUiFailures({
+        page,
         config,
-        `UPDATE storage_probes SET expires_at = 1 WHERE id = '${abandoned.probeId}'`,
-      );
-      await page.waitForFunction(
-        async (storageId) => {
-          const response = await fetch(`/api/storages/${storageId}/cors-tests`);
-          if (!response.ok) return false;
-          const state = await response.json();
-          return state.probes.length === 0 && state.status === 'failed';
-        },
-        storage.id,
-        { timeout: 75000 },
-      );
-      const expired = await request(`/api/storages/${storage.id}/cors-tests`);
-      assert.equal(expired.report.passed, false);
-      assert.equal(expired.report.probeId, abandoned.probeId);
-      entry.probes.push({ key: abandoned.upload.key, report: expired.report });
-      report.checks.push(
-        'Leaving without completion and controlled persisted expiry invokes the real server maintenance cleanup and preserves a failed result',
-      );
+        storage,
+        control,
+        request,
+        report,
+        entry,
+      });
       const fixture = await control();
       assert.deepEqual(fixture.objects, []);
       assert.ok(fixture.requests.some((item) => item.method === 'OPTIONS'));
       entry.fixture = fixture;
-      report.checks.push(
-        'Real CORS refusal never passes; DELETE failure persists cleanup responsibility; retry empties the exact fixture object list',
+    } else {
+      await verifyCorsLayouts(
+        page,
+        config,
+        `${target.service}-passed`,
+        report,
+        [1440, 390],
       );
     }
   }

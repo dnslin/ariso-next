@@ -1,0 +1,18 @@
+{
+  "source": "production-fixture-8",
+  "viewport": {
+    "width": 390,
+    "height": 480
+  },
+  "geometry": {
+    "scrollWidth": 390,
+    "top": 16,
+    "bottom": 464,
+    "fieldBottom": 355,
+    "footerTop": 327,
+    "fieldHeight": 156,
+    "fieldScrollHeight": 156
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Long JSON field must not overlap the footer\n    at verifyLongCorsOrigin (file:///Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/e2e/storage-cors-origin.mjs:102:12)\n    at async verifyCorsUiFailures (file:///Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/e2e/storage-cors-ui.mjs:306:3)\n    at async file:////[eval2]:200:7",
+  "screenshot": "cors-long-origin-example-short-390.png"
+}
