@@ -160,7 +160,12 @@ it('preserves selected image parameters while off/text but omits unused assets f
     connection.db.transaction((tx) =>
       updateMediaSettings(
         tx,
-        { ...initialMediaSettings, watermarkMode, watermarkAssetId: a.id },
+        {
+          ...initialMediaSettings,
+          watermarkMode,
+          watermarkText: '水印',
+          watermarkAssetId: a.id,
+        },
         now,
       ),
     );

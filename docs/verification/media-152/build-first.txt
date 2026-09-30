@@ -1,0 +1,37 @@
+Already up to date
+Done in 72ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 3.0s
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.9s
+  Running TypeScript ...
+tests/integration/media/settings-http.test.ts(105,52): error TS2322: Type '{ authorization?: undefined; cookie?: undefined; } | { authorization: string; cookie?: undefined; } | { cookie: string; authorization?: undefined; }' is not assignable to type 'HeadersInit | undefined'.
+  Type '{ authorization?: undefined; cookie?: undefined; }' is not assignable to type 'HeadersInit | undefined'.
+    Type '{ authorization?: undefined; cookie?: undefined; }' is not assignable to type 'Record<string, string>'.
+      Property 'authorization' is incompatible with index signature.
+        Type 'undefined' is not assignable to type 'string'.
+tests/integration/media/settings-http.test.ts(109,47): error TS2345: Argument of type '{ origin: string; authorization?: undefined; cookie?: undefined; } | { origin: string; authorization: string; cookie?: undefined; } | { origin: string; cookie: string; authorization?: undefined; }' is not assignable to parameter of type 'Record<string, string> | undefined'.
+  Type '{ origin: string; authorization?: undefined; cookie?: undefined; }' is not assignable to type 'Record<string, string>'.
+    Property 'authorization' is incompatible with index signature.
+      Type 'undefined' is not assignable to type 'string'.
+tests/integration/media/settings-http.test.ts(116,52): error TS2345: Argument of type '{ cookie: string; origin?: undefined; } | { cookie: string; origin: string; }' is not assignable to parameter of type 'Record<string, string> | undefined'.
+  Type '{ cookie: string; origin?: undefined; }' is not assignable to type 'Record<string, string>'.
+    Property 'origin' is incompatible with index signature.
+      Type 'undefined' is not assignable to type 'string'.
+tests/integration/media/watermark.test.ts(200,5): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; watermarksRoot: string; }' is not assignable to parameter of type 'WatermarkContext'.
+  Property 'hasUploadReference' is missing in type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; watermarksRoot: string; }' but required in type 'WatermarkContext'.
+tests/integration/storage/settings.test.ts(509,9): error TS2322: Type '{ compressionEnabled: boolean; outputFormat: "webp"; quality: number; maxEdge: null; jpegBackground: string; watermarkMode: "off"; watermarkAsset: null; defaultVisibility: "public"; }' is not assignable to type 'ProcessingSnapshot'.
+  Type '{ compressionEnabled: boolean; outputFormat: "webp"; quality: number; maxEdge: null; jpegBackground: string; watermarkMode: "off"; watermarkAsset: null; defaultVisibility: "public"; }' is missing the following properties from type 'Omit<{ compressionEnabled: boolean; outputFormat: "jpeg" | "webp" | "avif"; quality: number; maxEdge: number | null; jpegBackground: string; watermarkMode: "text" | "image" | "off"; watermarkAssetId: string | null; ... 12 more ...; concurrency: number; }, "watermarkAssetId" | ... 1 more ... | "concurrency">': watermarkText, watermarkFont, watermarkFontSize, watermarkColor, and 6 more.
+tests/integration/storage/settings.test.ts(516,8): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(value: { id: string | SQL<unknown> | Placeholder<string, any>; createdAt: SQL<unknown> | Date | Placeholder<string, any>; storageId: string | SQL<unknown> | Placeholder<...>; ... 10 more ...; lastActivityAt: SQL<...> | ... 1 more ... | Placeholder<...>; }): SQLiteInsertBase<...>', gave the following error.
+    Type '{ compressionEnabled: boolean; outputFormat: "webp"; quality: number; maxEdge: null; jpegBackground: string; watermarkMode: "off"; watermarkAsset: null; defaultVisibility: "public"; }' is not assignable to type 'SQL<unknown> | Placeholder<string, any> | (Omit<{ compressionEnabled: boolean; outputFormat: "jpeg" | "webp" | "avif"; quality: number; maxEdge: number | null; jpegBackground: string; ... 14 more ...; concurrency: number; }, "watermarkAssetId" | ... 1 more ... | "concurrency"> & { ...; })'.
+      Type '{ compressionEnabled: boolean; outputFormat: "webp"; quality: number; maxEdge: null; jpegBackground: string; watermarkMode: "off"; watermarkAsset: null; defaultVisibility: "public"; }' is not assignable to type 'Omit<{ compressionEnabled: boolean; outputFormat: "jpeg" | "webp" | "avif"; quality: number; maxEdge: number | null; jpegBackground: string; watermarkMode: "text" | "image" | "off"; ... 13 more ...; concurrency: number; }, "watermarkAssetId" | ... 1 more ... | "concurrency"> & { ...; }'.
+        Type '{ compressionEnabled: boolean; outputFormat: "webp"; quality: number; maxEdge: null; jpegBackground: string; watermarkMode: "off"; watermarkAsset: null; defaultVisibility: "public"; }' is missing the following properties from type 'Omit<{ compressionEnabled: boolean; outputFormat: "jpeg" | "webp" | "avif"; quality: number; maxEdge: number | null; jpegBackground: string; watermarkMode: "text" | "image" | "off"; watermarkAssetId: string | null; ... 12 more ...; concurrency: number; }, "watermarkAssetId" | ... 1 more ... | "concurrency">': watermarkText, watermarkFont, watermarkFontSize, watermarkColor, and 6 more.
+  Overload 2 of 2, '(values: { id: string | SQL<unknown> | Placeholder<string, any>; createdAt: SQL<unknown> | Date | Placeholder<string, any>; storageId: string | SQL<unknown> | Placeholder<...>; ... 10 more ...; lastActivityAt: SQL<...> | ... 1 more ... | Placeholder<...>; }[]): SQLiteInsertBase<...>', gave the following error.
+    Object literal may only specify known properties, and 'id' does not exist in type '{ id: string | SQL<unknown> | Placeholder<string, any>; createdAt: SQL<unknown> | Date | Placeholder<string, any>; storageId: string | SQL<unknown> | Placeholder<...>; ... 10 more ...; lastActivityAt: SQL<...> | ... 1 more ... | Placeholder<...>; }[]'.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

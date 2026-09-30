@@ -107,7 +107,7 @@ async function readFacts(
   const format =
     native === 'APNG'
       ? 'PNG'
-      : native === 'Extended WEBP'
+      : native === 'Extended WEBP' || native === 'WEBP (lossless)'
         ? 'WEBP'
         : native === 'HEIF'
           ? 'HEIC'
