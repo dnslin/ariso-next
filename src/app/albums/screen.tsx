@@ -13,6 +13,7 @@ import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
 import { ArrowLeft, Folder, Plus, Search } from 'lucide-react';
+import { LibraryScreen } from '../library/library-screen';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { AlbumDialog, type AlbumAction } from './dialog';
@@ -31,6 +32,7 @@ export function AlbumsScreen(props: {
   ownerName: string;
   initialSidebarCollapsed: boolean;
   albumId?: string;
+  timeZone?: string;
 }) {
   const router = useRouter();
   const resetUpload = useResetUpload();
@@ -83,7 +85,7 @@ export function AlbumsScreen(props: {
     resetUpload();
     client.clear();
     window.location.replace(
-      `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname)}`,
+      `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
   }
   useEffect(() => {
@@ -91,12 +93,95 @@ export function AlbumsScreen(props: {
     resetUpload();
     client.clear();
     window.location.replace(
-      `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname)}`,
+      `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
   }, [expired, resetUpload, client]);
   const data = !list.isError ? list.data : undefined;
   const album = !detail.isError ? detail.data?.album : undefined;
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
+  const albumDialog = action ? (
+    <AlbumDialog
+      action={action}
+      isOpen={dialogOpen}
+      onClose={closeAction}
+      onExpire={expire}
+      onCheckList={async () => {
+        const result = await list.refetch();
+        if (result.error) throw result.error;
+      }}
+      onComplete={(saved) => {
+        closeAction();
+        if (saved) {
+          client.setQueryData(['album', saved.id], { album: saved });
+          if (!props.albumId) router.push(`/albums/${saved.id}`);
+        } else router.push('/albums');
+        void client.invalidateQueries({ queryKey: ['albums'] });
+      }}
+    />
+  ) : null;
+  if (props.albumId && album)
+    return (
+      <LibraryScreen
+        {...props}
+        timeZone={props.timeZone!}
+        onImageRemoved={() => {
+          void client.invalidateQueries({ queryKey: ['album', props.albumId] });
+        }}
+        header={
+          <>
+            <Link
+              href="/albums"
+              className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
+            >
+              <ArrowLeft size={16} />
+              返回相册列表
+            </Link>
+
+            <h1
+              id="library-title"
+              tabIndex={-1}
+              className="text-[26px] font-medium leading-normal break-words md:text-[30px]"
+            >
+              {album.name}
+            </h1>
+            <p className="text-sm text-muted">
+              {album.imageCount} 张图片 · 相册 #{album.id.slice(0, 8)}
+            </p>
+            {album.description ? (
+              <p className="text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
+                {album.description}
+              </p>
+            ) : null}
+            <div className="grid w-full grid-cols-3 gap-2.5 md:max-w-130">
+              <Button
+                variant="outline"
+                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                onPress={() => openAction({ kind: 'edit', album })}
+              >
+                编辑相册
+              </Button>
+              <Button
+                variant="outline"
+                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                isDisabled
+                aria-label="设置封面，尚未开放"
+              >
+                设置封面
+              </Button>
+              <Button
+                variant="outline"
+                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                onPress={() => openAction({ kind: 'menu', album })}
+              >
+                更多
+              </Button>
+            </div>
+          </>
+        }
+      >
+        {albumDialog}
+      </LibraryScreen>
+    );
   return (
     <OwnerShell
       {...props}
@@ -175,65 +260,9 @@ export function AlbumsScreen(props: {
     >
       <section className="grid min-w-0 grid-cols-1 gap-4">
         {props.albumId ? (
-          <>
-            <Link
-              href="/albums"
-              className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
-            >
-              <ArrowLeft size={16} />
-              返回
-            </Link>
-            {album ? (
-              <>
-                <h1 className="text-[26px] font-medium leading-normal break-words md:text-[30px]">
-                  {album.name}
-                </h1>
-                <p className="text-sm text-muted">
-                  {album.imageCount} 张图片 · 相册 #{album.id.slice(0, 8)}
-                </p>
-                {album.description ? (
-                  <p className="text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
-                    {album.description}
-                  </p>
-                ) : null}
-                <div className="grid w-full grid-cols-3 gap-2.5 md:max-w-130">
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                    onPress={() => openAction({ kind: 'edit', album })}
-                  >
-                    编辑相册
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                    isDisabled
-                    aria-label="设置封面，尚未开放"
-                  >
-                    设置封面
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                    onPress={() => openAction({ kind: 'menu', album })}
-                  >
-                    更多
-                  </Button>
-                </div>
-                <div className="grid min-h-80 content-center justify-items-center gap-4 text-center md:min-h-120">
-                  <div className="grid size-18 place-items-center rounded-3xl bg-default md:size-22">
-                    <Folder size={36} aria-hidden />
-                  </div>
-                  <h2 className="text-[22px] font-medium md:text-[26px]">
-                    相册内容尚未开放
-                  </h2>
-                  <p className="max-w-105 text-sm text-muted">
-                    现在可以管理相册名称与描述。图片内容、搜索与封面将在后续开放。
-                  </p>
-                </div>
-              </>
-            ) : null}
-          </>
+          <Link href="/albums" className="min-h-11 w-fit">
+            返回相册列表
+          </Link>
         ) : (
           <>
             <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
@@ -364,26 +393,7 @@ export function AlbumsScreen(props: {
           </Alert>
         ) : null}
       </section>
-      {action ? (
-        <AlbumDialog
-          action={action}
-          isOpen={dialogOpen}
-          onClose={closeAction}
-          onExpire={expire}
-          onCheckList={async () => {
-            const result = await list.refetch();
-            if (result.error) throw result.error;
-          }}
-          onComplete={(saved) => {
-            closeAction();
-            if (saved) {
-              client.setQueryData(['album', saved.id], { album: saved });
-              if (!props.albumId) router.push(`/albums/${saved.id}`);
-            } else router.push('/albums');
-            void client.invalidateQueries({ queryKey: ['albums'] });
-          }}
-        />
-      ) : null}
+      {albumDialog}
     </OwnerShell>
   );
 }

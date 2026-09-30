@@ -11,6 +11,7 @@ export class DetailReadError extends Error {
 export async function readDetail(
   imageId: string,
   signal: AbortSignal,
+  albumId?: string,
 ): Promise<Detail> {
   let response: Response;
   try {
@@ -31,5 +32,11 @@ export async function readDetail(
       response.status,
     );
   }
-  return response.json();
+  const detail: Detail = await response.json();
+  if (albumId && !detail.albums.some((album) => album.id === albumId))
+    throw new DetailReadError(
+      '这张图片已不在当前相册，可返回相册或前往图库查看。',
+      404,
+    );
+  return detail;
 }

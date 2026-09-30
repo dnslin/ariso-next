@@ -7,6 +7,7 @@ import { Chip } from '@heroui/react/chip';
 import { Skeleton } from '@heroui/react/skeleton';
 import { ImageOff } from 'lucide-react';
 import type { LibraryItem } from '../../server/library/types';
+import { hasCardDiagnostics } from './gallery-layout';
 
 import {
   processingLabels as statuses,
@@ -16,8 +17,16 @@ import {
 export function LibraryCard({
   item,
   onOpen,
+  imageHeight,
+  squareMobileTop = false,
+  album = false,
+  isDisabled = false,
 }: {
   item: LibraryItem;
+  imageHeight?: number;
+  squareMobileTop?: boolean;
+  album?: boolean;
+  isDisabled?: boolean;
   onOpen?: (id: string, element: HTMLElement) => void;
 }) {
   const [failed, setFailed] = useState(false);
@@ -33,10 +42,11 @@ export function LibraryCard({
     <Card
       data-testid="library-card"
       data-image-id={item.id}
-      className="relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0 shadow-none"
+      className={`relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border' : 'border border-border'} ${squareMobileTop ? 'rounded-t-none min-[1200px]:rounded-t-2xl' : ''}`}
     >
       <Button
         variant="ghost"
+        isDisabled={isDisabled}
         className="absolute inset-0 z-10 h-full w-full rounded-2xl bg-transparent p-0 hover:bg-transparent"
         aria-label={`查看图片：${item.displayName}`}
         onPress={(event) => {
@@ -44,8 +54,11 @@ export function LibraryCard({
             onOpen?.(item.id, event.target);
         }}
       />
-      <div className="relative flex h-32.5 shrink-0 items-center justify-center bg-default xl:h-47.5">
-        {item.thumbnailUrl && !failed ? (
+      <div
+        className="relative flex h-32.5 shrink-0 items-center justify-center bg-default min-[1200px]:h-47.5"
+        style={imageHeight === undefined ? undefined : { height: imageHeight }}
+      >
+        {item.storage.enabled && item.thumbnailUrl && !failed ? (
           <>
             {!loaded ? (
               <Skeleton aria-hidden className="absolute inset-0 size-full" />
@@ -69,31 +82,52 @@ export function LibraryCard({
           </div>
         )}
       </div>
-      <Card.Content className="grid content-start gap-1.5 p-2.5 text-xs xl:p-3.5 xl:text-sm">
-        <p className="break-words">{item.displayName}</p>
-        <div className="flex flex-wrap items-center gap-1.5 text-[11px] xl:text-xs">
-          <Chip size="sm" variant="soft">
+      <Card.Content
+        className={`grid min-w-0 content-start gap-1.5 px-2.5 pt-3 pb-3 text-xs leading-normal min-[1200px]:px-3.5 min-[1200px]:text-sm ${album ? 'min-[1200px]:pb-0' : ''}`}
+      >
+        <p className="truncate" title={item.displayName}>
+          {item.displayName}
+        </p>
+        <div className="flex min-w-0 items-center gap-1 text-[11px] leading-normal min-[1200px]:gap-1.5 min-[1200px]:text-xs">
+          <Chip
+            size="sm"
+            variant="soft"
+            className="h-auto shrink-0 rounded-full bg-secondary px-1 py-0 text-[11px] leading-normal min-[1200px]:px-1.5 min-[1200px]:text-xs"
+          >
             {item.visibility === 'private' ? '私有' : '公开'}
           </Chip>
-          <span>
+          <span className="truncate">
             {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}
             {statuses[item.processingStatus]}
           </span>
         </div>
-        <p className="text-[11px] text-muted xl:text-xs">
-          {item.format === 'unknown' ? '格式待识别' : item.format.toUpperCase()}{' '}
-          · {item.storage.name}
-          {!item.storage.enabled ? '（已停用）' : ''}
-        </p>
+        {hasCardDiagnostics(item) ? (
+          <p
+            className="truncate text-[11px] leading-4 text-muted min-[1200px]:text-xs"
+            title={`${item.format === 'unknown' ? '格式待识别' : item.format.toUpperCase()} · ${item.storage.name}${!item.storage.enabled ? '（已停用）' : ''}`}
+          >
+            {item.format === 'unknown'
+              ? '格式待识别'
+              : item.format.toUpperCase()}{' '}
+            · {item.storage.name}
+            {!item.storage.enabled ? '（已停用）' : ''}
+          </p>
+        ) : null}
         {item.activeJob ? (
-          <p className="text-[11px] xl:text-xs">
+          <p
+            className="truncate text-[11px] leading-4 min-[1200px]:text-xs"
+            title={`当前任务：${item.activeJob.status === 'queued' ? '等待执行' : '执行中'} · ${stepLabels[item.activeJob.step] ?? item.activeJob.step}`}
+          >
             当前任务：
             {item.activeJob.status === 'queued' ? '等待执行' : '执行中'} ·{' '}
             {stepLabels[item.activeJob.step] ?? item.activeJob.step}
           </p>
         ) : null}
         {item.latestFailedJob ? (
-          <p className="text-[11px] text-danger xl:text-xs">
+          <p
+            className="truncate text-[11px] leading-4 text-danger min-[1200px]:text-xs"
+            title={`最近任务失败 · ${stepLabels[item.latestFailedJob.step] ?? item.latestFailedJob.step}`}
+          >
             最近任务失败 ·{' '}
             {stepLabels[item.latestFailedJob.step] ?? item.latestFailedJob.step}
           </p>

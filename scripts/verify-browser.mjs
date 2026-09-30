@@ -19,6 +19,7 @@ for (const name of [
   'shell-browser.json',
   'error-recovery.json',
   'library.json',
+  'library-query.json',
   'albums.json',
   'upload.json',
   'upload-polling.json',
@@ -319,6 +320,12 @@ try {
     report.identity.push({ width, setup: 'passed', restart: 'passed' });
     if (width === 390) {
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+      await runBrowser(
+        '../e2e/library-query.mjs',
+        identityConfig,
+        'library-query.log',
+      );
+      report.libraryQuery = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');

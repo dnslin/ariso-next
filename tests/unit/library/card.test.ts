@@ -81,3 +81,34 @@ it('offers one named full-card action while retaining readable image diagnostics
   expect(html).toContain('本地存储');
   expect(html).toContain('处理中');
 });
+
+it('keeps ready cards compact while retaining abnormal format and storage diagnostics', () => {
+  const ready = { ...item, processingStatus: 'ready' as const };
+  const html = renderToStaticMarkup(jsx(LibraryCard, { item: ready }));
+  expect(html).not.toContain('本地存储');
+  expect(html).toContain('已就绪');
+  expect(
+    renderToStaticMarkup(
+      jsx(LibraryCard, { item: { ...ready, format: 'unknown' } }),
+    ),
+  ).toContain('格式待识别');
+  const disabledStorage = renderToStaticMarkup(
+    jsx(LibraryCard, {
+      item: {
+        ...ready,
+        storage: { ...ready.storage, enabled: false },
+        thumbnailUrl: '/i/image?type=thumbnail',
+      },
+    }),
+  );
+  expect(disabledStorage).toContain('存储已停用');
+  expect(disabledStorage).not.toContain('<img');
+});
+
+it('disables old query cards and reserves their supplied image height', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, { item, isDisabled: true, imageHeight: 237 }),
+  );
+  expect(html).toMatch(/<button[^>]*disabled/);
+  expect(html).toContain('height:237px');
+});

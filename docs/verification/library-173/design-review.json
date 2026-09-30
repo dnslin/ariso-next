@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "scope": "相册桌面手机卡片底部裁切与图库键盘焦点复核",
+  "figmaNodes": ["38:378", "102:4002", "30:285", "98:748"],
+  "album": {
+    "desktop": {
+      "viewport": [1440, 1080],
+      "height": 247,
+      "borderLayoutWidth": 0,
+      "titleLineHeight": 21,
+      "statusLineHeight": 18,
+      "statusBottom": 644,
+      "cardBottom": 644,
+      "glyphClipping": false
+    },
+    "mobile": {
+      "viewport": [390, 844],
+      "height": 194.5,
+      "borderLayoutWidth": 0,
+      "titleLineHeight": 18,
+      "statusLineHeight": 16.5,
+      "statusBottom": 609.5,
+      "cardBottom": 621.5,
+      "glyphClipping": false
+    }
+  },
+  "focus": {
+    "method": "筛选按钮后实际Tab三次到首张图片",
+    "active": "查看图片：forest-light.jpg",
+    "outerRingWidth": 2,
+    "outerRingColor": "rgb(40, 126, 121)",
+    "visible": true
+  },
+  "screenshots": [
+    "final-desktop-light-album-grid.png",
+    "final-mobile-light-album-grid.png",
+    "final-desktop-light-grid.png",
+    "final-mobile-light-grid.png"
+  ],
+  "userAcceptance": "待用户人工验收"
+}
