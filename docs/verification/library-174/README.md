@@ -81,4 +81,8 @@ macOS ARM64；Node 24.18.1；pnpm 11.19.0；ImageMagick 7.1.2-32；ExifTool 13.5
 
 ## PR 状态
 
-待本轮适用检查和证据收齐后提交、推送并创建草稿 PR，随后用 gh 核对实际远端检查。
+已提交并推送 `codex/issue-174-selection`，创建关联 #174 的[草稿 PR #222](https://github.com/dnslin/ariso-next/pull/222)。用户人工 UI 验收待完成，不转为正式待评审。工作区保留，未合并、关闭 Issue 或清理分支/worktree。
+
+实际运行 `gh pr view 222 --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,mergeable,statusCheckRollup` 与 `gh pr checks 222`。首次创建的[状态快照](./pr-created-state.json)为 OPEN / draft / MERGEABLE、base main，`statusCheckRollup=[]`；[检查输出](./pr-checks.txt)为 no checks reported。当前无远端检查，不记为 CI 通过，也不等待不存在的 PR 工作流。`ci.yml` 只接受 workflow_call，发布流程仍由 `images.yml` 的 Release 触发。
+
+两次初始推送没有完成；检查进程后确认 `git-credential-osxkeychain get` 卡住，已中止本任务对应进程。最终以当前命令的代理和现有 gh 登录凭据成功推送：`git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin codex/issue-174-selection`。未修改全局代理或 Git 凭据配置。PR 状态文档补充后再次提交推送并核对远端分支。
