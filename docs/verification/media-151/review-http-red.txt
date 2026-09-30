@@ -1,0 +1,109 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/watermark-assets/ariso
+
+ ❯ |unit| tests/unit/media/watermark-route.test.ts (15 tests | 8 failed) 20ms
+   ❯ POST /api/media/watermark-assets (15)
+     × returns 422 for MEDIA_WATERMARK_INVALID 3ms
+     × returns 422 for MEDIA_FORMAT_UNSUPPORTED 0ms
+     × returns 422 for MEDIA_IDENTIFICATION_FAILED 0ms
+     × returns 422 for MEDIA_RESOURCE_LIMIT 0ms
+     × returns 507 with the canonical disk error and diagnostic: Error: ENOSPC: no space left on device, write /data/assets/watermarks/source 2ms
+     × returns 507 with the canonical disk error and diagnostic: Error: Insufficient disk space at /data/assets/watermarks 0ms
+     × returns 507 with the canonical disk error and diagnostic: Error: Command failed with exit code 1: magick
+magick: unable to write pixel cache: No space left on device 0ms
+     × classifies a real-shaped magick cache failure as resource exhaustion with 422 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 422 for MEDIA_WATERMARK_INVALID
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 422 for MEDIA_FORMAT_UNSUPPORTED
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 422 for MEDIA_IDENTIFICATION_FAILED
+AssertionError: expected 415 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 415
+
+ ❯ expectFailure tests/unit/media/watermark-route.test.ts:35:27
+     33| async function expectFailure(error: Error, code: string, status: numbe…
+     34|   const response = await POST(request());
+     35|   expect(response.status).toBe(status);
+       |                           ^
+     36|   expect(response.headers.get('cache-control')).toBe('no-store');
+     37|   const body = await response.json();
+ ❯ tests/unit/media/watermark-route.test.ts:101:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 422 for MEDIA_RESOURCE_LIMIT
+AssertionError: expected 500 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 500
+
+ ❯ expectFailure tests/unit/media/watermark-route.test.ts:35:27
+     33| async function expectFailure(error: Error, code: string, status: numbe…
+     34|   const response = await POST(request());
+     35|   expect(response.status).toBe(status);
+       |                           ^
+     36|   expect(response.headers.get('cache-control')).toBe('no-store');
+     37|   const body = await response.json();
+ ❯ tests/unit/media/watermark-route.test.ts:101:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 507 with the canonical disk error and diagnostic: Error: ENOSPC: no space left on device, write /data/assets/watermarks/source
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 507 with the canonical disk error and diagnostic: Error: Insufficient disk space at /data/assets/watermarks
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > returns 507 with the canonical disk error and diagnostic: Error: Command failed with exit code 1: magick
+magick: unable to write pixel cache: No space left on device
+AssertionError: expected 500 to be 507 // Object.is equality
+
+- Expected
++ Received
+
+- 507
++ 500
+
+ ❯ expectFailure tests/unit/media/watermark-route.test.ts:35:27
+     33| async function expectFailure(error: Error, code: string, status: numbe…
+     34|   const response = await POST(request());
+     35|   expect(response.status).toBe(status);
+       |                           ^
+     36|   expect(response.headers.get('cache-control')).toBe('no-store');
+     37|   const body = await response.json();
+ ❯ tests/unit/media/watermark-route.test.ts:125:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > classifies a real-shaped magick cache failure as resource exhaustion with 422
+AssertionError: expected 500 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 500
+
+ ❯ expectFailure tests/unit/media/watermark-route.test.ts:35:27
+     33| async function expectFailure(error: Error, code: string, status: numbe…
+     34|   const response = await POST(request());
+     35|   expect(response.status).toBe(status);
+       |                           ^
+     36|   expect(response.headers.get('cache-control')).toBe('no-store');
+     37|   const body = await response.json();
+ ❯ tests/unit/media/watermark-route.test.ts:141:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 7 passed (15)
+   Start at  00:20:42
+   Duration  123ms (transform 40%, tests 36%, import 20%, worker 4%)

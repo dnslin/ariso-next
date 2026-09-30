@@ -1,0 +1,40 @@
+Already up to date
+Done in 90ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/watermark-assets/ariso
+
+ ❯ |unit| tests/unit/media/watermark-route.test.ts (16 tests | 1 failed) 39ms
+   ❯ POST /api/media/watermark-assets (16)
+     × retains the watermark validation code while preserving its identification cause in diagnostics 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/media/watermark-route.test.ts > POST /api/media/watermark-assets > retains the watermark validation code while preserving its identification cause in diagnostics
+AssertionError: expected { …(3) } to deeply equal { …(3) }
+
+- Expected
++ Received
+
+  {
+-   "code": "MEDIA_WATERMARK_INVALID",
++   "code": "MEDIA_IDENTIFICATION_FAILED",
+    "message": "Invalid watermark image",
+    "requestId": "3e994309-6875-44ef-881d-8149ea13a2f8",
+  }
+
+ ❯ expectFailure tests/unit/media/watermark-route.test.ts:38:16
+     36|   expect(response.headers.get('cache-control')).toBe('no-store');
+     37|   const body = await response.json();
+     38|   expect(body).toEqual({
+       |                ^
+     39|     code,
+     40|     message: error.message,
+ ❯ tests/unit/media/watermark-route.test.ts:111:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  00:23:43
+   Duration  309ms (transform 55%, tests 27%, import 15%, worker 3%)

@@ -1,6 +1,6 @@
 # T-MED-07 完整元数据保存与独立重读
 
-最新结果见[同步最新主分支与冲突解决](#同步最新主分支与冲突解决)。之前各轮的失败与草稿状态保留为历史记录。
+最新结果见[合并水印迁移后的最终验证](#合并水印迁移后的最终验证)。之前各轮的失败与草稿状态保留为历史记录。
 
 关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../tasks/m3-m4-platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](../../tasks/execution.md)。
 
@@ -183,3 +183,34 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 合并后的[最终检查清单](./merge-checks.json)记录全部实际命令与退出码：570 项单元、735 项集成、完整浏览器及其他适用检查均通过；两位独立评审者的合并复审也已通过。最终基于 `main@6c24c07` 保留本 Issue 行为，提交和推送合并结果后再次核对 PR 冲突与检查状态。仍无本次 UI 设计变更，设计及人工 UI 验收不适用；发布验证、S3 内容读取、预览与详情界面的既定范围保持不变。
 
 本次仅对本任务文本日志规范终端换行与行尾空白，诊断内容、历史失败与退出码均保留。主分支自带的其他任务证据没有改写。
+
+### 合并水印迁移后的最终验证
+
+2026-09-30 所有者授权合并 PR、清理本地分支与 worktree、关闭 Issue。执行前发现 main 已推进到 `2b261d3`（水印资源 PR #212），与本分支新增的 `0011` 迁移冲突，因此先恢复草稿并解决合并。
+
+完整保留主分支 `0011_little_shinko_yamashiro.sql`、快照和 journal 历史条目；通过 `pnpm run db:generate` 将本次元数据表重新生成为 `0012_slow_cable.sql`。SQL 仅创建 `media_metadata`，快照正确承接水印快照；再次生成确认没有 schema 差异。没有修改已合并的水印迁移或加入兼容机制。
+
+新增真实升级回归使用仓库 SQL 和 journal 建立截至水印迁移的旧数据库，写入水印资产、预览引用和关联设置，再迁移到元数据版本，验证旧数据、历史迁移记录、外键和重复执行。独立测试 agent 完整运行迁移测试 12 项通过。质量评审者另行运行该升级场景 1 项通过（其余 11 项未选中）。
+
+两位原评审者分别按 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 独立复审本次合并，均 **Approve**，没有新的 Required 问题。核对迁移链、自动合并的 schema/健康检查、启动/设置/水印资源文件，以及元数据任务和水印引用的生命周期。结构评审者还用真实工具复测诊断、停用存储检查和原子回滚，均符合预期。没有新增界面或设计变更。
+
+生成器输出的两个 JSON 文件首次格式检查未通过，已按项目 Prettier 格式化后复查通过；[失败记录](./watermark-merge-format-before.txt)保留。完整集成已通过 92 个文件 / 786 项，完整浏览器回归也已通过。
+
+清理前将各轮被 Git 忽略的真实浏览器截图与原始报告保留在主工作区 `/Volumes/data/project/ariso/test-results/media-170-archive/`，各轮目录名保持不变。提交的命令日志与结论继续由本目录集中维护。
+
+| 本轮实际命令                                                                                                 | 结果                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                             | [通过](./watermark-merge-install.txt)                                                                        |
+| `pnpm run db:generate`（生成与再次核对）                                                                     | [生成](./watermark-merge-generate.txt)、[无后续差异](./watermark-merge-generate-recheck.txt)                 |
+| `pnpm run format:check`                                                                                      | [通过](./watermark-merge-format.txt)                                                                         |
+| `pnpm run lint`                                                                                              | [通过](./watermark-merge-lint.txt)                                                                           |
+| `pnpm run typecheck`                                                                                         | [通过](./watermark-merge-typecheck.txt)                                                                      |
+| `pnpm run test:unit`                                                                                         | [40 文件 / 598 项通过](./watermark-merge-unit.txt)                                                           |
+| `pnpm run build`                                                                                             | [通过](./watermark-merge-build.txt)                                                                          |
+| `pnpm run test:integration --maxWorkers=2`                                                                   | [92 文件 / 786 项通过](./watermark-merge-integration.txt)，在 build 完成后执行                               |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck` | [安装](./watermark-merge-ui-install.txt)、[类型检查](./watermark-merge-ui-typecheck.txt)通过                 |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                         | [120 任务 / 298 需求](./watermark-merge-task-check.txt)、[5 项自检](./watermark-merge-task-selftest.txt)通过 |
+
+`EGO_TASK_SPACE=12 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-170-watermark-merge pnpm run test:browser` 完整退出 0：[命令输出](./watermark-merge-browser.txt)、[主运行器](./watermark-merge-browser-runner.json)、[独立 UI 运行器](./watermark-merge-browser-ui-runner.json)均通过。本轮使用 Node 24.18.1、pnpm 11.19.0、macOS arm64 和现有 Ego Lite；覆盖桌面/手机初始化与重启、图库/详情/回收恢复、相册、真实上传下载、匿名访问、队列轮询、交互和跨页连续性，以及公共组件多视口与浅深色回归。成功后运行器清理隔离数据和临时服务，TaskSpace 保留至最终远端核对后关闭。
+
+本轮完整截图与原始报告已复制到 `/Volumes/data/project/ariso/test-results/media-170-archive/browser-170-watermark-merge/`，此前各轮也保存在同一父目录。生成和格式修复后没有业务代码修改。基于 `main@2b261d3` 的本地适用验证与双角度复审均通过，可执行所有者已授权的合并和清理。没有远端 PR 检查，不记为 CI 通过。双架构镜像与容器验证仍由 Release 流程执行；本次没有发布或部署。

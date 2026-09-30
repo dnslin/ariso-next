@@ -1,4 +1,12 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import {
+  copyFileSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { inspect } from 'node:util';
@@ -34,6 +42,91 @@ const migrate = (folder: string) =>
   migrateRuntimeDatabase(connection.db, folder);
 
 describe('runtime forward migrations', () => {
+  it('真实水印数据库升级到元数据迁移时保留水印数据和历史进度，重跑不重放', () => {
+    const currentFolder = resolve('drizzle');
+    const journal = JSON.parse(
+      readFileSync(join(currentFolder, 'meta/_journal.json'), 'utf8'),
+    ) as {
+      version: string;
+      dialect: string;
+      entries: { idx: number; tag: string; when: number }[];
+    };
+    const watermarkIndex = journal.entries.findIndex(
+      (entry) => entry.tag === '0011_little_shinko_yamashiro',
+    );
+    expect(watermarkIndex).toBeGreaterThanOrEqual(0);
+    const previousEntries = journal.entries.slice(0, watermarkIndex + 1);
+    const previousFolder = join(directory, 'watermark-release');
+    mkdirSync(join(previousFolder, 'meta'), { recursive: true });
+    // Preserve the committed SQL and journal entries; only limit the release's endpoint.
+    writeFileSync(
+      join(previousFolder, 'meta/_journal.json'),
+      JSON.stringify({ ...journal, entries: previousEntries }),
+    );
+    for (const entry of previousEntries)
+      copyFileSync(
+        join(currentFolder, `${entry.tag}.sql`),
+        join(previousFolder, `${entry.tag}.sql`),
+      );
+    migrate(previousFolder);
+    const db = connection.db.$client;
+    db.exec(`
+      INSERT INTO media_watermark_assets
+        (id, path, format, mime, width, height, byte_size, status, expires_at, error, created_at, updated_at)
+      VALUES ('retained-asset', 'watermarks/retained.png', 'PNG', 'image/png', 120, 60, 2048, 'ready', NULL, NULL, 1000, 2000);
+      INSERT INTO media_watermark_preview_refs (preview_id, asset_id)
+      VALUES ('retained-preview', 'retained-asset');
+      INSERT INTO media_settings
+        (id, compression_enabled, output_format, quality, max_edge, jpeg_background, watermark_mode, watermark_asset_id, default_link_version, default_visibility, concurrency, updated_at)
+      VALUES (1, 1, 'jpeg', 80, 1920, '#ffffff', 'image', 'retained-asset', 'watermark', 'private', 2, 2000);
+    `);
+    const watermarkData = () => ({
+      assets: db.prepare('SELECT * FROM media_watermark_assets').all(),
+      previews: db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
+      settings: db.prepare('SELECT * FROM media_settings').all(),
+    });
+    const retainedData = watermarkData();
+    const originalProgress = progress();
+    expect(originalProgress).toHaveLength(previousEntries.length);
+    expect(
+      db
+        .prepare("SELECT name FROM sqlite_master WHERE name = 'media_metadata'")
+        .get(),
+    ).toBeUndefined();
+
+    migrate(currentFolder);
+    const metadataEntry = journal.entries.find(
+      (entry) => entry.tag === '0012_slow_cable',
+    )!;
+    expect(metadataEntry.when).toBeGreaterThan(previousEntries.at(-1)!.when);
+    const upgradedProgress = progress();
+    expect(upgradedProgress).toHaveLength(journal.entries.length);
+    expect(upgradedProgress.slice(0, originalProgress.length)).toEqual(
+      originalProgress,
+    );
+    expect(upgradedProgress).toContainEqual({
+      hash: createHash('sha256')
+        .update(readFileSync(join(currentFolder, `${metadataEntry.tag}.sql`)))
+        .digest('hex'),
+      created_at: metadataEntry.when,
+    });
+    expect(
+      db
+        .prepare(
+          'SELECT image_id, data, photography, read_at FROM media_metadata',
+        )
+        .all(),
+    ).toEqual([]);
+    expect(watermarkData()).toEqual(retainedData);
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+
+    migrate(currentFolder);
+    expect(progress()).toEqual(upgradedProgress);
+    expect(watermarkData()).toEqual(retainedData);
+    expect(db.prepare('SELECT * FROM media_metadata').all()).toEqual([]);
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+  });
+
   it('空 journal 可重复执行且没有业务表', () => {
     const folder = writeMigrations(join(directory, 'empty-sql'), []);
     migrate(folder);

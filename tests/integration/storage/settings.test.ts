@@ -479,10 +479,23 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
       VALUES ('existing-storage', '原有本地', 'local', 1, 'existing', 1000, 1000);
       INSERT INTO storage_settings (id, default_storage_id) VALUES (1, 'existing-storage');
     `);
-    const snapshot = previous.db.transaction((tx) => {
-      prepareInitialMedia(tx);
-      return createProcessingSnapshot(tx);
-    });
+    // Freeze the predecessor schema fixture; current settings helpers include
+    // watermark_asset_id, which does not exist before migration 0011.
+    previous.db.$client.exec(`
+      INSERT INTO media_settings (id, compression_enabled, output_format, quality, max_edge,
+        jpeg_background, watermark_mode, default_link_version, default_visibility, concurrency, updated_at)
+      VALUES (1, 1, 'webp', 82, NULL, '#FFFFFF', 'off', 'compressed', 'public', 1, 1000);
+    `);
+    const snapshot = {
+      compressionEnabled: true,
+      outputFormat: 'webp' as const,
+      quality: 82,
+      maxEdge: null,
+      jpegBackground: '#FFFFFF',
+      watermarkMode: 'off' as const,
+      watermarkAsset: null,
+      defaultVisibility: 'public' as const,
+    };
     const accepted = previous.db.transaction((tx) =>
       acceptOriginal(tx, {
         imageId: 'existing-image',

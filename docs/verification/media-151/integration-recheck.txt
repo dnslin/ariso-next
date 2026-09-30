@@ -1,0 +1,347 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/watermark-assets/ariso
+
+ ❯ |integration| tests/integration/identity/m1-gate.test.ts (1 test | 1 failed) 1214ms
+   × M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes 1212ms
+ ❯ |integration| tests/integration/runtime/health.test.ts (4 tests | 1 failed) 15155ms
+   × 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接 2855ms
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 4 failed) 13108ms
+   × 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 2360ms
+   × wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 1943ms
+   × invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 2198ms
+   × tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 1851ms
+ ❯ |integration| tests/integration/identity/setup-dev.test.ts (1 test | 1 failed) 120010ms
+   × real Next dev recompilation retains the startup code and the original code creates a login-capable owner 120009ms
+{"time":"2026-09-29T12:16:28.825Z","level":"info","module":"identity.setup","event":"setup-code","code":"akxWIn5DuKCRGprfVOx6N9cPMcrGYoZd","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-29T12:16:28.912Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 4 failed) 46656ms
+   × counts each original GET and download once without database writes 7412ms
+   × counts each compressed GET and download once without database writes 6722ms
+   × counts each watermark GET and download once without database writes 8079ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 6881ms
+{"time":"2026-09-29T12:16:29.665Z","level":"info","module":"identity.setup","event":"setup-code","code":"v-4JJ8w_l8WAS6ACsOXu5MT4gxaNrg8V","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-29T12:16:29.669Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/watermark-assets/ariso/tests/integration/identity/setup-lifecycle.test.ts:120:40\n    at file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/watermark-assets/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-wCeBws/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-29T12:16:29.673Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-29T12:16:30.436Z","level":"info","module":"identity.setup","event":"setup-code","code":"DaCGn7gE1eclnEQZeLP_E49dtLoji8Ub","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-29T12:16:30.499Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/identity/setup-lifecycle.test.ts (11 tests | 1 failed) 28374ms
+   ❯ setup process lifecycle (2)
+     × prestart prepares storage without issuing a code; real module reloads share one startup code 2865ms
+ ❯ |integration| tests/integration/runtime/startup.test.ts (13 tests | 13 failed) 213925ms
+   ❯ 完整生产入口的失败与恢复 (13)
+     × BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动 16061ms
+     × BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动 16381ms
+     × ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动 15664ms
+     × ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动 17034ms
+     × PORT=0：拒绝配置且不监听，修复后同目录启动 15909ms
+     × PORT=65536：拒绝配置且不监听，修复后同目录启动 16277ms
+     × PORT=3.5：拒绝配置且不监听，修复后同目录启动 16235ms
+     × PORT=abc：拒绝配置且不监听，修复后同目录启动 16818ms
+     × LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动 16218ms
+     × 真实不可写目录保留权限、路径和文件，恢复写权限后启动 16864ms
+     × 占用生产端口时退出而不换端口，释放后原端口可启动 16734ms
+     × 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 15028ms
+     × 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件 15040ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 25 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+    118| }
+    119|
+    120| it.each(['original', 'compressed', 'watermark'])(
+       |                                                 ^
+    121|   'counts each %s GET and download once without database writes',
+    122|   async (version) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/25]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/25]⎯
+
+ FAIL  |integration| tests/integration/identity/m1-gate.test.ts > M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes
+AssertionError: expected { id: 1, …(11) } to deeply equal { id: 1, …(10) }
+
+- Expected
++ Received
+
+@@ -7,7 +7,8 @@
+    "jpegBackground": "#FFFFFF",
+    "maxEdge": null,
+    "outputFormat": "webp",
+    "quality": 82,
+    "updatedAt": 2026-09-29T12:12:49.068Z,
++   "watermarkAssetId": null,
+    "watermarkMode": "off",
+  }
+
+ ❯ tests/integration/identity/m1-gate.test.ts:102:19
+    100|       timeZone: 'Asia/Shanghai',
+    101|     });
+    102|     expect(media).toEqual({
+       |                   ^
+    103|       id: 1,
+    104|       compressionEnabled: true,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/25]⎯
+
+ FAIL  |integration| tests/integration/identity/setup-dev.test.ts > real Next dev recompilation retains the startup code and the original code creates a login-capable owner
+Error: Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/setup-dev.test.ts:13:1
+     11| import { email, password } from './auth-fixture.ts';
+     12|
+     13| it('real Next dev recompilation retains the startup code and the origi…
+       | ^
+     14|   const directory = await mkdtemp(join(tmpdir(), 'ariso-setup-dev-'));
+     15|   const port = await unusedPort();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/25]⎯
+
+ FAIL  |integration| tests/integration/identity/setup-lifecycle.test.ts > setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code
+AssertionError: expected [ { …(6) }, { level: 'error', …(4) } ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/integration/identity/setup-lifecycle.test.ts:94:20
+     92|       }),
+     93|     ]);
+     94|     expect(second).toHaveLength(1);
+       |                    ^
+     95|     expect(second[0].code).not.toBe(first[0].code);
+     96|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts > 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接
+AssertionError: expected [ { name: 'account' }, …(23) ] to deeply equal [ { name: 'account' }, …(21) ]
+
+- Expected
++ Received
+
+@@ -34,10 +34,16 @@
+    },
+    {
+      "name": "media_versions",
+    },
+    {
++     "name": "media_watermark_assets",
++   },
++   {
++     "name": "media_watermark_preview_refs",
++   },
++   {
+      "name": "session",
+    },
+    {
+      "name": "site_settings",
+    },
+
+ ❯ tests/integration/runtime/health.test.ts:52:9
+     50|           )
+     51|           .all(),
+     52|       ).toEqual([
+       |         ^
+     53|         { name: 'account' },
+     54|         { name: 'album_images' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:97:27
+     96|   await rm(directory, { recursive: true, force: true });
+     97| });
+     98| afterAll(async () => rm(root, { recursive: true, force: true }));
+       |                       ^
+     99|
+    100| async function start(overrides: Record<string, string> = {}) {
+ ❯ tests/integration/runtime/secret-preflight.test.ts:126:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:97:27
+     96|   await rm(directory, { recursive: true, force: true });
+     97| });
+     98| afterAll(async () => rm(root, { recursive: true, force: true }));
+       |                       ^
+     99|
+    100| async function start(overrides: Record<string, string> = {}) {
+ ❯ tests/integration/runtime/secret-preflight.test.ts:174:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=0：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=65536：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=3.5：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=abc：拒绝配置且不监听，修复后同目录启动
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:186:6
+    184|       },
+    185|       { timeout: 15000 },
+    186|     )
+       |      ^
+    187|     .toBe(200);
+    188|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:227:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:170:3
+ ❯ tests/integration/runtime/startup.test.ts:227:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实不可写目录保留权限、路径和文件，恢复写权限后启动
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:186:6
+    184|       },
+    185|       { timeout: 15000 },
+    186|     )
+       |      ^
+    187|     .toBe(200);
+    188|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:247:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:170:3
+ ❯ tests/integration/runtime/startup.test.ts:247:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 占用生产端口时退出而不换端口，释放后原端口可启动
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:186:6
+    184|       },
+    185|       { timeout: 15000 },
+    186|     )
+       |      ^
+    187|     .toBe(200);
+    188|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:278:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:170:3
+ ❯ tests/integration/runtime/startup.test.ts:278:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:186:6
+    184|       },
+    185|       { timeout: 15000 },
+    186|     )
+       |      ^
+    187|     .toBe(200);
+    188|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:283:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:170:3
+ ❯ tests/integration/runtime/startup.test.ts:283:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/25]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:186:6
+    184|       },
+    185|       { timeout: 15000 },
+    186|     )
+       |      ^
+    187|     .toBe(200);
+    188|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:339:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:170:3
+ ❯ tests/integration/runtime/startup.test.ts:339:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/25]⎯
+
+
+ Test Files  7 failed | 82 passed (89)
+      Tests  25 failed | 712 passed (737)
+   Start at  20:12:38
+   Duration  305.66s (tests 97%, import 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

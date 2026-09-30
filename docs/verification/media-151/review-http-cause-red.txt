@@ -1,0 +1,37 @@
+Already up to date
+Done in 68ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/watermark-assets/ariso
+
+ ❯ |media-tools| tests/integration/media/watermark-http.test.ts (8 tests | 1 failed) 18860ms
+   × rejects animation and invalid image bytes without exposing a ready asset 2161ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > rejects animation and invalid image bytes without exposing a ready asset
+AssertionError: expected { …(3) } to match object { code: 'MEDIA_WATERMARK_INVALID' }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "MEDIA_WATERMARK_INVALID",
++   "code": "MEDIA_IDENTIFICATION_FAILED",
+  }
+
+ ❯ tests/integration/media/watermark-http.test.ts:201:35
+    199|     const response = await upload(fileForm(bytes));
+    200|     expect(response.status, await response.clone().text()).toBe(422);
+    201|     expect(await response.json()).toMatchObject({
+       |                                   ^
+    202|       code: 'MEDIA_WATERMARK_INVALID',
+    203|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  00:22:39
+   Duration  19.97s (tests 95%, import 3%, transform 1%)

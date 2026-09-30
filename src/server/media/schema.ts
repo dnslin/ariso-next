@@ -22,6 +22,34 @@ export const versionKinds = [
 export type VersionKind = (typeof versionKinds)[number];
 export type DerivedVersionKind = Exclude<VersionKind, 'original'>;
 
+export const mediaWatermarkAssets = sqliteTable('media_watermark_assets', {
+  id: text('id').primaryKey().notNull(),
+  path: text('path').notNull().unique(),
+  format: text('format', { enum: ['PNG', 'WEBP', 'SVG'] }),
+  mime: text('mime'),
+  width: integer('width'),
+  height: integer('height'),
+  byteSize: integer('byte_size').notNull(),
+  status: text('status', {
+    enum: ['writing', 'ready', 'cleanup_pending', 'cleanup_failed', 'deleted'],
+  }).notNull(),
+  expiresAt: integer('expires_at', { mode: 'timestamp_ms' }),
+  error: text('error'),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+});
+
+// Preview owns release after work has settled, including cancellation and recovery.
+export const mediaWatermarkPreviewRefs = sqliteTable(
+  'media_watermark_preview_refs',
+  {
+    previewId: text('preview_id').primaryKey().notNull(),
+    assetId: text('asset_id')
+      .notNull()
+      .references(() => mediaWatermarkAssets.id),
+  },
+);
+
 export const mediaSettings = sqliteTable(
   'media_settings',
   {
@@ -38,6 +66,9 @@ export const mediaSettings = sqliteTable(
     watermarkMode: text('watermark_mode', {
       enum: ['off', 'text', 'image'],
     }).notNull(),
+    watermarkAssetId: text('watermark_asset_id').references(
+      () => mediaWatermarkAssets.id,
+    ),
     defaultLinkVersion: text('default_link_version', {
       enum: ['original', 'compressed', 'watermark'],
     }).notNull(),

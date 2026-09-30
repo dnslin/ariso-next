@@ -263,6 +263,16 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 
 接口名为本稿提议，实施时保持既有项目命名风格。核心规则只在 media 实现一次；批量选择范围归 library，其提交后必须逐项报告结果，不把整批部分失败说成全部成功。
 
+### 水印素材提供方契约（T-MED-13）
+
+- `POST /api/media/watermark-assets` 接收 `multipart/form-data`，仅一个 `file`，不接收其他字段；成功返回 `201`，包含素材 `id/path/format/mime/width/height/byteSize/expiresAt`。按实际字节识别，文件最多 5 MiB；表单整体另保留 64 KiB 信封空间。所有者会话及当前站点 Origin 校验先于读取文件。
+- 原文件放在 `${DATA_DIR}/assets/watermarks/<id>/source`，每次上传分配新 ID。`path` 相对 watermarks 目录，仅是内部素材路径，不是公开 URL。数据库在写入前登记所属目录，校验成功才进入 `ready`；SVG 校验预览位于同一所属目录。
+- `updateMediaSettings(tx, input)` 的完整输入增加可空 `watermarkAssetId`。图片模式必须选择素材；切为关闭/文字模式可以保留已选素材，设置本身仍持有引用。采用与设置更新同事务，采用清空一小时到期时间；清空选择后才释放该设置引用。
+- `createProcessingSnapshot(tx)` 仅在图片模式写入 `watermarkAsset` 的不可变 ID、路径与实际属性，其他模式为 null。历史任务保留这些属性，但只有 queued/running 内容任务阻止清理；自动重试仍为 queued。
+- upload 导出 `hasUploadWatermarkReference(tx, assetId)`，查询提交快照及 queued/receiving/validating/finalizing 会话；由启动组合入口注入 media 清理器。现有交接在同一事务建立 media 任务并结束 upload 引用。完整批次联验归 T-UP-03。
+- 预览调用方在创建预览事务中调用 `retainPreviewWatermark(tx, previewId, assetId)`，在工作已结束后调用 `releasePreviewWatermark(tx, previewId)`；失败、取消、到期与恢复均由预览所有者接入释放。引用持久化且不随素材自身到期消失；本任务不提供预览执行器，实际接入归 T-MED-09。
+- Web runtime 启动恢复中断的素材写入，每分钟检查到期临时素材、无引用正式素材和待清理项。清理事务先检查全部引用并标记 `cleanup_pending`，再删除已登记的素材所属目录；此时不能再采用或建立新预览引用。失败保留路径和诊断，下轮/重启重试，成功标记 deleted。停止时等待正在接收和校验的上传结算。
+
 ### 12.2 所有者 HTTP 入口
 
 | 入口                                                           | 行为                                                   |

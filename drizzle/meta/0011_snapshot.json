@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e34f8f19-fbe7-4176-8e2a-5994335e14c7",
+  "id": "e147130b-938d-4f90-8cf4-f12088f3282b",
   "prevId": "3123fd30-3306-4c60-8759-7fb6287cefc6",
   "tables": {
     "analytics_daily": {
@@ -1048,75 +1048,6 @@
         }
       }
     },
-    "media_metadata": {
-      "name": "media_metadata",
-      "columns": {
-        "image_id": {
-          "name": "image_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "data": {
-          "name": "data",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "photography": {
-          "name": "photography",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "read_at": {
-          "name": "read_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "attempted_at": {
-          "name": "attempted_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "error": {
-          "name": "error",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "media_metadata_image_id_media_images_id_fk": {
-          "name": "media_metadata_image_id_media_images_id_fk",
-          "tableFrom": "media_metadata",
-          "tableTo": "media_images",
-          "columnsFrom": ["image_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "media_objects": {
       "name": "media_objects",
       "columns": {
@@ -1306,6 +1237,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "watermark_asset_id": {
+          "name": "watermark_asset_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "default_link_version": {
           "name": "default_link_version",
           "type": "text",
@@ -1336,7 +1274,17 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "media_settings_watermark_asset_id_media_watermark_assets_id_fk": {
+          "name": "media_settings_watermark_asset_id_media_watermark_assets_id_fk",
+          "tableFrom": "media_settings",
+          "tableTo": "media_watermark_assets",
+          "columnsFrom": ["watermark_asset_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {
@@ -1447,6 +1395,140 @@
           "value": "\"media_versions\".\"kind\" in ('original', 'compressed', 'thumbnail', 'watermark')"
         }
       }
+    },
+    "media_watermark_assets": {
+      "name": "media_watermark_assets",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "path": {
+          "name": "path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "format": {
+          "name": "format",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mime": {
+          "name": "mime",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "byte_size": {
+          "name": "byte_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "media_watermark_assets_path_unique": {
+          "name": "media_watermark_assets_path_unique",
+          "columns": ["path"],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "media_watermark_preview_refs": {
+      "name": "media_watermark_preview_refs",
+      "columns": {
+        "preview_id": {
+          "name": "preview_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "asset_id": {
+          "name": "asset_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "media_watermark_preview_refs_asset_id_media_watermark_assets_id_fk": {
+          "name": "media_watermark_preview_refs_asset_id_media_watermark_assets_id_fk",
+          "tableFrom": "media_watermark_preview_refs",
+          "tableTo": "media_watermark_assets",
+          "columnsFrom": ["asset_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "site_settings": {
       "name": "site_settings",
