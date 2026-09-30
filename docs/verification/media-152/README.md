@@ -54,3 +54,9 @@
 T-MED-12 承接设置表单、九宫格及输出界面并由用户人工验收；T-MED-09 承接临时预览和取消/到期；T-MED-10 承接重处理范围及候选版本原子发布。本任务没有用模拟页面关闭这些能力。当前处理流水线沿用已有本地存储边界，没有扩展对象存储执行。
 
 本次未执行 AMD64/ARM64 镜像、Linux 容器、物理设备、Release、镜像发布或部署，按现有执行约定在实际 Release 阶段取得相应证据。未合并 PR、主动关闭 Issue 或删除分支/worktree。
+
+## PR 交付
+
+已提交并推送分支 `codex/issue-152-watermark`，创建正式待评审 [PR #216](https://github.com/dnslin/ariso-next/pull/216)，关联 #152。`gh pr view 216 --json url,state,isDraft,mergeable,headRefName,headRefOid,statusCheckRollup` 确认 OPEN、非草稿、MERGEABLE；`statusCheckRollup` 为空，`gh pr checks 216` 返回没有检查。本仓库本次未触发远端检查，不能记为 CI 通过，交付依据为上述本地适用检查与独立审计。
+
+推送时系统钥匙串凭据助手没有返回；仅在当前命令改用已有 `gh auth git-credential` 和用户提供的本机代理后推送成功，未修改全局配置。保留分支与独立 worktree，未合并或关闭 Issue。
