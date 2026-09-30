@@ -59,3 +59,11 @@
 按[纯文档适用检查](../../execution.md#适用检查)，本轮无业务或构建输入变化，不运行应用 lint、类型、单元/集成、构建、浏览器或真实服务测试，不添加空测试。无真实页面变化，页面功能与设计还原验收本轮不适用，未伪造截图。浅深色、响应式、键盘/焦点、短视口和各状态的真实验证以及用户人工验收仍由后续 UI 任务完成。物理设备与 AMD64/ARM64 镜像/容器未测；不创建 Release、不发布镜像、不部署。
 
 本次不合并 PR、不主动关闭 Issue、不删除分支或 worktree。
+
+## PR 与远端回读
+
+已提交 `120147219989aea1a4684e7a33bfc297074f119a`、推送 `codex/issue-137-storage-design` 并创建正式待评审 [PR #213](https://github.com/dnslin/ariso-next/pull/213)，使用 `Refs #137` 关联，不自动关闭 Issue。本段为后续交付记录。
+
+首次普通推送及命令级代理重试均停在 `git credential-osxkeychain get`，已终止本任务的挂起推送。随后在用户提供的命令级代理环境中执行 `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin codex/issue-137-storage-design` 成功，未更改全局 Git/代理配置；保留并补充 localhost 的 NO_PROXY/no_proxy。
+
+实际执行 `gh pr view 213 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --repo dnslin/ariso-next --branch codex/issue-137-storage-design --json databaseId,status,conclusion,workflowName`、`gh pr checks 213 --repo dnslin/ariso-next`，并读取实施提交的 `check-runs` 与 `status` API。PR 为 OPEN、非草稿、CLEAN；检查汇总、Actions、check-runs、commit statuses 均为空。`gh pr checks` 返回 1 且提示 no checks，不是失败的检查；commit 聚合 pending 没有对应执行任务。不将空检查列表记为 CI 通过，也不等待不存在的工作流。仓库仅 Release 触发镜像工作流，本轮未触发发布。
