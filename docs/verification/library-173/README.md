@@ -1,6 +1,27 @@
 # T-LIB-04 / Issue #173：四种布局加载组合与筛选历史
 
-本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。最新结果见下方2026-10-01第二轮返修；2026-09-30记录保留为历史，不能代替本轮验证。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)。最终 UI 仍待人工验收。
+本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[PR #218](https://github.com/dnslin/ariso-next/pull/218)。2026-10-01用户已确认第二轮 UI 人工验收通过；随后两个独立agent审查整个PR，发现的两项P2已按下述记录修复。历史记录保留当时结论，不代表当前仍待UI验收。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)。
+
+## 人工验收后的代码评审修复（2026-10-01）
+
+用户明确要求只修复两项问题、避免重复验证和过度设计。本轮不改布局、样式或产品交互设计；保留已通过的人工 UI 验收。
+
+- [正确性评审](./review-fixes/correctness-review.md)发现真实变更通知缺少生产者、加载方式偏好覆盖旧历史条目两项P2。[结构评审](./review-fixes/structure-review.md)独立确认后者，没有其他结构阻塞。
+- 上传controller确认图片入库或处理状态变化后发布领域通知；回收/恢复沿既有读回核对成功路径发布。使用原生BroadcastChannel覆盖同文档及其他同源上下文，只传变化信号。订阅卸载时关闭，重复轮询、失败和取消的迟到响应不误报。图库只标记刷新图标，不自动更换当前列表。
+- 浏览器偏好只用于首次初始化：偏好分页且没有显式页码时，以replace规范化为`page=1`，完成前不请求错误的加载模式。之后由历史条目是否带`page`决定模式；后退不会再套用最新偏好。没有新增公开URL参数或第二套历史状态容器。
+- 现有E2E里的人工window事件改为实际BroadcastChannel传输，并准确标为通知接收检查。真实生产者分别用实际UploadController与TrashAction异步流程回归覆盖，不把模拟通知写成真实上传端到端验证。
+
+本轮环境仍为Node24.18.1 / pnpm11.19.0 / macOS ARM64 /现有Ego Lite，复用隔离测试数据，未修改人工预览数据。已沿用原失败探针证据，不重复制造相同失败。
+
+| 实际检查                                                                                                                                                  | 结果                                                                                                                                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-state.test.ts tests/unit/library/query-cache.test.ts` | 3文件、28项通过；包含加载模式Back/Forward回归。                                                                                                                                                                               |
+| `pnpm exec vitest run --project unit tests/unit/library/changes.test.ts tests/unit/library/trash-changes.test.ts tests/unit/upload/controller.test.ts`    | 3文件、32项通过；真实BroadcastChannel同上下文/独立worker传输和退订、上传成功与失败/重复状态、回收与恢复核对。                                                                                                                 |
+| `pnpm exec eslint` 本轮变更的10个TS/TSX/E2E文件，`--max-warnings=0`                                                                                       | 通过。                                                                                                                                                                                                                        |
+| `pnpm run build`、`pnpm run typecheck`                                                                                                                    | 通过。构建先发现mode返回值被推断为string，补显式LibraryLoadingMode后通过；保留既有可选跨平台resvg追踪诊断。                                                                                                                   |
+| `ego-browser nodejs < test-results/issue-173/pr-review/run-history.mjs`                                                                                   | 只运行已有查询脚本新增`libraryQueryPhase: history`分支，退出0。[实际报告](./review-fixes/history-browser.json)：首次分页偏好规范化、80项加载缓存与滚动恢复、Forward分页、零额外列表请求全部通过。无截图/主题/响应式重复验收。 |
+
+[增量独立复审](./review-fixes/fix-review.md)无Critical/Required遗留。浏览器初始化时序由上述实际定向检查补齐。原完整套件在`c960399`通过的证据保留在下方；本轮没有重跑全量unit/integration或整套浏览器流程，没有重新安装未改变的依赖。物理设备和发布容器仍未执行，不记为通过。本轮变更文件的Prettier检查、`node docs/tasks/check.mjs`（120任务/298需求）、`git diff --check`均通过。人工预览3173已更新到最终构建并保留原账户/数据；本轮不要求重复UI人工验收。
 
 ## 第二轮人工反馈返修（2026-10-01）
 

@@ -12,6 +12,7 @@ import {
 } from 'react';
 import { usePathname } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
+import { notifyLibraryChanged } from '../library/library-changes';
 import { DetailReadError } from '../library/read-detail';
 import { UploadController } from './controller';
 import type { UploadSettings } from './settings';
@@ -101,6 +102,7 @@ function useUploadLifetime() {
       maxFileBytes,
       queueLimit,
       onUnauthorized: expire,
+      onLibraryChanged: notifyLibraryChanged,
     });
     ownedController.current = instance;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Publish the external store owned by this effect, including StrictMode setup/cleanup.

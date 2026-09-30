@@ -28,6 +28,7 @@ type Entry = {
   batch?: Batch;
   groupIndex?: number;
   readVersion: number;
+  notifiedLibraryState?: string;
   transferState: 'idle' | 'active' | 'finished';
 };
 type Batch = {
@@ -54,6 +55,7 @@ export class UploadController {
       request?: typeof fetch;
       createTransport?: CreateUploadTransport;
       onUnauthorized?: () => void;
+      onLibraryChanged?: () => void;
     },
   ) {
     this.request = options.request ?? fetch.bind(globalThis);
@@ -167,6 +169,13 @@ export class UploadController {
         this.update(entry, {
           state: job.status === 'queued' ? 'processing-queued' : 'processing',
         });
+      if (session.imageId) {
+        const state = `${session.imageId}:${job?.status ?? 'queued'}`;
+        if (entry.notifiedLibraryState !== state) {
+          entry.notifiedLibraryState = state;
+          this.options.onLibraryChanged?.();
+        }
+      }
     } else if (session.state === 'cancelled') {
       this.release(entry);
       this.update(entry, { state: 'cancelled' });

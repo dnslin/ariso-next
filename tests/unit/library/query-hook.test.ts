@@ -206,3 +206,25 @@ it('more mode applies a filter without a page parameter and mode switching remov
   expect(mount(client).loadingMode).toBe('more');
   client.clear();
 });
+
+it('Back and Forward resolve the entry mode rather than the latest preference', async () => {
+  context.search = 'q=photo&pageSize=20';
+  const moreUrl = context.search;
+  const filters = parseLibraryLocation(new URLSearchParams(moreUrl)).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  const data = {
+    pages: [page(['a', 'b'], 'after-b'), page(['c', 'd'], null)],
+    pageParams: [null, 'after-b'],
+  };
+  client.setQueryData(key, data);
+  await mount(client).setLoadingMode('pages');
+  const pagesUrl = context.search;
+  expect(context.mode).toBe('pages');
+  context.search = moreUrl;
+  expect(mount(client).loadingMode).toBe('more');
+  expect(client.getQueryData(key)).toEqual(data);
+  context.search = pagesUrl;
+  expect(mount(client).loadingMode).toBe('pages');
+  client.clear();
+});

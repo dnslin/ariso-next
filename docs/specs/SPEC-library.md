@@ -1,7 +1,7 @@
 # Spec: library — 图库查询、详情、批量操作与回收站
 
 - 模块 ID：`library`。
-- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，四种布局/加载组合、筛选界面及历史恢复的实施与验证见[Issue #173 记录](../verification/library-173/README.md)，用户人工 UI 验收待完成；选择和查看器由后续任务承接。
+- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，四种布局/加载组合、筛选界面及历史恢复的实施与验证见[Issue #173 记录](../verification/library-173/README.md)，用户已于2026-10-01确认 UI 人工验收通过；选择完整能力和查看器由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[delivery](./SPEC-delivery.md)、[collections](./SPEC-collections.md)的已确认契约。upload 提供入口来源，图库不反向依赖其队列实现。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10、13.4、14、15、16、18、22、23、26.8/26.9/26.11/26.13；[覆盖表](../tasks/coverage.md)。

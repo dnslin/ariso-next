@@ -18,6 +18,7 @@ import {
 } from '@tanstack/react-query';
 import type { LibraryPage } from '../../server/library/types';
 import type { LibraryFilters } from '../../server/library/query-schema';
+import { subscribeLibraryChanges } from '../../components/library/library-changes';
 import {
   libraryListKey,
   libraryRequestParams,
@@ -130,12 +131,32 @@ export function useLibraryQuery(
   } catch (error) {
     queryError = error instanceof Error ? error : new Error(String(error));
   }
-  // A page in a copied link is navigation state, so it takes precedence over a
-  // different browser's loading preference, including a return to page one.
-  const loadingMode =
-    !queryError && params.has('page') ? 'pages' : preferredLoadingMode;
+  const [initializing, setInitializing] = useState(true);
+  const hasPage = params.has('page');
+  // Resolve the saved preference once, using the existing page encoding. Later
+  // history entries must not be reinterpreted when that preference changes.
+  useEffect(() => {
+    if (!initializing || preferences === null) return;
+    if (!queryError && !hasPage && preferredLoadingMode === 'pages') {
+      void setParams({ page: '1' }, { history: 'replace' });
+      return;
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Finish URL initialization after the navigation adapter has published it.
+    setInitializing(false);
+  }, [
+    initializing,
+    preferences,
+    queryError,
+    hasPage,
+    preferredLoadingMode,
+    setParams,
+  ]);
+  const loadingMode: LibraryLoadingMode = hasPage ? 'pages' : 'more';
   const queryKey = libraryListKey(filters, loadingMode, page);
-  const enabled = preferences !== null && filters !== null;
+  const enabled =
+    preferences !== null &&
+    filters !== null &&
+    !(initializing && !hasPage && preferredLoadingMode === 'pages');
   const paged = useQuery(
     {
       ...cacheOptions,
@@ -181,13 +202,7 @@ export function useLibraryQuery(
     [pages],
   );
   const [refreshAvailable, setRefreshAvailable] = useState(false);
-  useEffect(() => {
-    const changed = () => setRefreshAvailable(true);
-    window.addEventListener('ariso:library-changed', changed);
-    return () => {
-      window.removeEventListener('ariso:library-changed', changed);
-    };
-  }, []);
+  useEffect(() => subscribeLibraryChanges(() => setRefreshAvailable(true)), []);
 
   // History restores cached pages and their scroll without replaying cursor requests.
   const scrollPositions = useRef(new Map<string, number>());

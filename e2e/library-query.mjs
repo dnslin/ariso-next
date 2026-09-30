@@ -56,6 +56,50 @@ async function select(label, option) {
   await page.click(`loc=role:button[name*="${label}"]`);
   await page.click(`loc=role:option[name="${option}"]`);
 }
+async function verifyModeHistory() {
+  await select('图片加载方式', '分页');
+  await loaded(40);
+  // A fresh entry adopts the preference once, without adding a history entry.
+  await page.goto(`${config.origin}/library?q=issue173-&pageSize=40`);
+  await page.waitForFunction(
+    () => new URL(location.href).searchParams.get('page') === '1',
+  );
+  await loaded(40);
+  assert.equal((await state()).loadingMode, 'pages');
+  await select('图片加载方式', '加载更多');
+  await loaded(40);
+  await page.click('[data-testid="library-load-more"]');
+  await loaded(80);
+  await page.evaluate(() =>
+    document.querySelector('.shell-content').scrollTo(0, 500),
+  );
+  await page.waitForFunction(
+    () => document.querySelector('.shell-content').scrollTop >= 490,
+  );
+  const offset = await page.evaluate(
+    () => document.querySelector('.shell-content').scrollTop,
+  );
+  await monitor();
+  await select('图片加载方式', '分页');
+  await loaded(40);
+  const requests = (await state()).requests;
+  await page.evaluate(() => history.back());
+  await loaded(80);
+  assert.equal((await state()).loadingMode, 'more');
+  await page.waitForFunction(
+    (offset) =>
+      Math.abs(document.querySelector('.shell-content').scrollTop - offset) < 2,
+    offset,
+  );
+  assert.equal((await state()).requests, requests);
+  await page.evaluate(() => history.forward());
+  await loaded(40);
+  assert.equal((await state()).loadingMode, 'pages');
+  assert.equal((await state()).requests, requests);
+  report.checks.push(
+    'Saved pagination preference initializes a fresh entry as page=1; more→pages→Back restores 80 cached items and scroll, and Forward restores pagination without new list requests.',
+  );
+}
 async function search(q, count) {
   await page.fill('input[aria-label="搜索图片名称"]', q);
   await page.press('input[aria-label="搜索图片名称"]', 'Enter');
@@ -167,7 +211,9 @@ try {
   await visit();
   await loaded(40);
   await resize(1440);
-  if (phase === 'feedback') {
+  if (phase === 'history') {
+    await verifyModeHistory();
+  } else if (phase === 'feedback') {
     await verifyLibraryFeedback({ page, config, sql, report });
   } else if (phase === 'selection') {
     await verifyLibrarySelection({ page, config, report });
@@ -176,7 +222,7 @@ try {
   } else if (phase === 'scale') {
     await verifyLibraryScale({ page, config, sql, report });
   } else {
-    await monitor();
+    await verifyModeHistory();
 
     // Every combination uses the real endpoint and the dedicated 93-row query.
     for (const mode of ['more', 'pages']) {
@@ -466,9 +512,11 @@ try {
       'Returning to the window does not imply that library data changed',
     );
     assert.equal((await state()).requests, beforeExternal);
-    await page.evaluate(() =>
-      window.dispatchEvent(new Event('ariso:library-changed')),
-    );
+    await page.evaluate(() => {
+      const channel = new BroadcastChannel('ariso:library-changed');
+      channel.postMessage('changed');
+      channel.close();
+    });
     await page.waitForFunction(
       () => !!document.querySelector('[data-refresh-available="true"]'),
     );
@@ -477,7 +525,7 @@ try {
     await page.click(button('刷新图库'));
     await loaded(40);
     report.checks.push(
-      'A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; external change notification retains cards until explicit refresh.',
+      'A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; receiving a cross-context change notification only marks the toolbar and retains cards until explicit refresh (producer paths are covered separately).',
     );
 
     ({ identifier: blockedStorageScript } = await page.cdp(
