@@ -1,8 +1,10 @@
 # T-STO-05 真实浏览器 CORS 检测与 origin 失效
 
-关联 [Issue #158](https://github.com/dnslin/ariso-next/issues/158)。2026-09-30 从 `origin/main` 的 `117c66a` 创建独立 worktree `/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso`，分支 `codex/issue-158-storage-cors`。原工作区另有任务使用，本次没有修改它。本记录遵守[任务执行约定](../../tasks/execution.md)与[设计交接](../../design/handoff.md)，不改写冻结 PRD。
+关联 [Issue #158](https://github.com/dnslin/ariso-next/issues/158) 与 [PR #217](https://github.com/dnslin/ariso-next/pull/217)。2026-09-30 从 `origin/main` 的 `117c66a` 创建独立 worktree `/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso`，分支 `codex/issue-158-storage-cors`。原工作区另有任务使用，本次没有修改它。本记录遵守[任务执行约定](../../tasks/execution.md)与[设计交接](../../design/handoff.md)，不改写冻结 PRD。
 
 **当前 #158 产品页面、专项生产验证、完整浏览器第三轮、独立代码审计与设计还原评审均已通过；PR 保留草稿，等待用户人工 UI 验收。** 2026-09-30 用户批准此前提出的按钮位置及独立 CORS 页面组合，并限定只实现 #158。人工 UI 验收仍须由用户完成。没有扩大到 #198 存储管理、#162 上传链路、#164 孤儿扫描或 #194 站点设置。
+
+2026-09-30 已提交并推送产品实现 `903fd01`。实际通过 `gh pr view 217 --repo dnslin/ariso-next --json url,isDraft,state,headRefName,headRefOid,mergeable,statusCheckRollup` 回读：PR 为 OPEN / Draft、可合并，检查列表为空。没有远端 PR 检查，不记为 CI 通过，也不等待不存在的工作流。没有合并、关闭 Issue、发布镜像或部署；用户人工 UI 验收仍待完成。
 
 ## 前置与实现边界
 
