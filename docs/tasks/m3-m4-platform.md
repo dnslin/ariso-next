@@ -316,7 +316,7 @@
 
 #### DG-UPLOAD 对 T-UP-07 的核对结论（2026-09-30）
 
-2026-10-01 的本次实现、实际检查和独立审计统一记录在 [Issue #159 验证记录](../verification/upload-159/README.md)。目录、拖拽与粘贴扩展现有队列；完整批次能力仍由 T-UP-03 承接。人工 UI 验收尚未进行，DES/RG 不因代码提交自动关闭。
+2026-10-01 的本次实现已提交 [草稿 PR #221](https://github.com/dnslin/ariso-next/pull/221)，实际检查和独立审计统一记录在 [Issue #159 验证记录](../verification/upload-159/README.md)。目录、拖拽与粘贴扩展现有队列；完整批次能力仍由 T-UP-03 承接。人工 UI 验收尚未进行，DES/RG 不因代码提交自动关闭。
 
 [Issue #141 读取与验证证据](./evidence/DG-UPLOAD/README.md)。UI-UPLOAD；DES-06-UPLOAD / RG-06。责任人为 T-UP-07 实施者；以下只核对适用设计，不表示真实输入已验收。
 

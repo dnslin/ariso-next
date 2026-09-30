@@ -78,4 +78,8 @@
 
 ## 提交与PR
 
-分支：`codex/issue-159-upload-input`。PR创建后回读状态与实际检查；没有远端检查不能记为CI通过。保持草稿，不合并、不关闭Issue、不发布、不部署、不删除分支或worktree。
+分支：`codex/issue-159-upload-input`；实现提交：`d0f0fda`；[PR #221](https://github.com/dnslin/ariso-next/pull/221) 已创建并通过 `Refs #159` 关联 Issue。
+
+实际执行 `gh pr view 221 --repo dnslin/ariso-next --json number,url,isDraft,state,headRefName,baseRefName,statusCheckRollup,mergeStateStatus`，回读为OPEN、draft=true，head为本分支、base=main、statusCheckRollup=[]。当前没有远端检查，不记为CI通过，也不等待不存在的工作流。`gh issue view 159 --repo dnslin/ariso-next --json number,state,url` 回读仍OPEN。
+
+推送首次阻塞于macOS凭据助手，取消等待后仅在当前命令使用已有 `gh auth git-credential` 及用户提供的本机代理成功推送，未修改全局凭据或代理配置。PR保持草稿；不合并、不关闭Issue、不发布、不部署、不删除分支或worktree。独立测试实例与临时数据已清理；截图、报告和原工作区保留。
