@@ -89,4 +89,8 @@
 
 ## 交付边界
 
-代码审计通过；已实现范围的独立设计复核没有未解决的本次必修偏差。选择页身份位置批准与用户人工 UI 验收尚未完成，因此 T-COL-04 保持未完成，PR 保留草稿。分支、worktree 和 Issue 均保留。PR 与实际远端检查情况在创建后回读补充。
+代码审计通过；已实现范围的独立设计复核没有未解决的本次必修偏差。选择页身份位置批准与用户人工 UI 验收尚未完成，因此 T-COL-04 保持未完成，[PR #223](https://github.com/dnslin/ariso-next/pull/223) 保留草稿。分支为 `codex/issue-180-album-cover`，worktree 和 Issue 均保留。实现与证据提交为 `917e36b`。
+
+已使用 `gh pr view 223 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,mergeable,statusCheckRollup` 与 `gh pr checks 223` 实际回读：OPEN、isDraft=true、base=main、MERGEABLE，statusCheckRollup=[]，没有远端检查。没有把空列表记作 CI 通过，也不等待不存在的工作流；日常 PR 依据上述本地适用检查。没有合并、关闭 Issue、发布镜像或部署。
+
+首次推送因系统钥匙串凭据读取阻塞而停止；本机代理连接检查返回 HTTP 200。后续仅在当前命令设置用户提供的代理及保留 localhost 的 NO_PROXY，并用 `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push --set-upstream origin codex/issue-180-album-cover` 成功推送。全局代理和 Git 凭据配置未改。Ego 空间 7 已结束，本任务临时预览及测试进程已停止，证据保留。
