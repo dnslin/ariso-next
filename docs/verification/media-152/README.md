@@ -6,7 +6,7 @@
 
 ## 最终结论
 
-本地适用检查全部通过：630 项单元、879 项完整集成，无失败或跳过；冻结安装、迁移复查、格式、lint、类型、生产构建、运行包图片验证与 Ego Lite 浏览器全套通过。独立审计 Critical 0、未解决 Required 0。本任务无 UI，设计还原验收不适用。
+追加评审的两项 P2 已修复，局部编排优化已完成；两个独立 agent 均复核通过。最终 632 项单元、881 项完整集成、生产构建、格式、lint、类型与 Ego Lite 全套回归通过，详见“评审后修复与优化”。初次交付结果仍保留于下表。本任务无 UI，设计还原验收不适用。
 
 ## 实际交付
 
@@ -54,6 +54,38 @@
 T-MED-12 承接设置表单、九宫格及输出界面并由用户人工验收；T-MED-09 承接临时预览和取消/到期；T-MED-10 承接重处理范围及候选版本原子发布。本任务没有用模拟页面关闭这些能力。当前处理流水线沿用已有本地存储边界，没有扩展对象存储执行。
 
 本次未执行 AMD64/ARM64 镜像、Linux 容器、物理设备、Release、镜像发布或部署，按现有执行约定在实际 Release 阶段取得相应证据。未合并 PR、主动关闭 Issue 或删除分支/worktree。
+
+## 评审后修复与优化
+
+范围仅含本轮已复现的文字边界与水印局部编排，不涉及 UI、数据库结构或新依赖。
+
+- [x] 先取得失败证据：CR/LF/CRLF 实际像素对照；NUL 设置字段拒绝和 HTTP 原子保存回归。
+- [x] 渲染前归一化 CR/CRLF；设置保存时明确拒绝 NUL；再将水印输入参数与共同透明度处理合并，删除中间 PNG 重读和一次工具启动。
+- [x] 执行 Node 24 冻结安装、格式、lint、类型、单元、生产构建、完整集成与 Ego Lite 回归；两个独立 agent 复核并更新证据。修复继续交付至原 PR #216。
+
+2026-09-30 在 `fc2442a` 上分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 的两个独立 agent 复审。行为评审发现两项 P2：裸 CR 被校验为换行但渲染丢掉后续文字；NUL 可保存却被 execa 参数拒绝。结构评审通过，并提出合并 overlay 与透明度处理的可选建议。本次已采用三项建议，未扩大为任意控制字符清洗。
+
+先增加回归，确认 4 项真实失败（NUL off/text、HTTP 200 而非 422、CR 高度 46 而非 LF 的 92），见[失败记录](./review-red.txt)。该轮用 `-t 'NUL|CR and CRLF'` 聚焦，81 项未选中；最终完整检查没有跳过。测试开发中已将 execa 返回的 Uint8Array 转成 Buffer 后做像素等价比较，未削弱断言。保存及快照仍保留原文本；CR 归一化仅发生于渲染。NUL 在保存边界返回字段错误，HTTP 回归同时修改质量并比较整份保存前后结果，证明没有部分更新。
+
+修复后和简化后依次运行聚焦测试，均为 3 文件/84 项通过，分别见[修复结果](./review-fix-green.txt)、[简化结果](./review-refactor-green.txt)。水印准备从三次 ImageMagick 调用减少到两次；最终编码及 SVG 栅格化调用不变，资源预算、取消和错误传播仍沿用原机制。
+
+环境仍为上文 Node 24.18.1 / pnpm 11.19.0 / macOS arm64。实际执行：
+
+| 命令                                                                                                                                                                                      | 本轮结果                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                          | [通过](./review-install.txt)，锁文件未改                                     |
+| `pnpm exec vitest run --project unit --project media-tools tests/unit/media/settings.test.ts tests/unit/media/watermark.test.ts tests/integration/media/watermark.test.ts --maxWorkers=1` | 修复及简化后各 84 项通过                                                     |
+| `pnpm run test:unit`                                                                                                                                                                      | [43 文件/632 项通过](./review-unit.txt)                                      |
+| `pnpm run lint`                                                                                                                                                                           | [通过](./review-lint.txt)                                                    |
+| `pnpm run typecheck`                                                                                                                                                                      | [通过](./review-typecheck.txt)                                               |
+| `pnpm run build`                                                                                                                                                                          | [通过](./review-build.txt)，仍有原有跨平台 resvg 可选包追踪警告              |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                                                                | 最终构建后运行，[96 文件/881 项通过](./review-integration.txt)，无失败或跳过 |
+
+`pnpm run format:check` 全量通过，见[格式](./review-format.txt)；`node docs/tasks/check.mjs` 和 `node docs/tasks/check.mjs --self-test` 通过（120 tasks / 298 requirements、5 个拒绝用例），见[文档检查](./review-docs.txt)。本轮未改 schema，不新增迁移。
+
+两个原评审 agent 独立复核最终源码：行为评审 Approve，两项 Required 均关闭；结构评审 Approve，无新增必须项。行为评审者独立运行上述 84 项聚焦测试并通过，读取本轮完整集成结果；结构评审者独立运行 2 文件/54 项单元并通过。两者均执行 `git diff --check` 通过。未将本地结果表述为 Linux 容器或双架构发布验证。
+
+`pnpm run test:browser` 最终全套通过，Ego Lite TaskSpace 4，桌面 1440 / 手机 390，包含登录/重启、图库、相册、上传与轮询、公共交互及工作区连续性；临时目录已清理。见[运行器](./review-browser-runner.json)、[UI 夹具运行器](./review-browser-ui-runner.json)。本轮无 UI 变更，这些是既有界面回归证据，不代替后续设置界面的人工验收。
 
 ## PR 交付
 

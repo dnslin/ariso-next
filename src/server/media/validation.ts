@@ -27,6 +27,7 @@ export const mediaSettingsInputSchema = z
     watermarkAssetId: z.string().uuid().nullable(),
     watermarkText: z
       .string()
+      .refine((value) => !value.includes('\0'), '水印文字不能包含 NUL 字符')
       .refine(
         (value) =>
           Array.from(value).length <= 200 &&

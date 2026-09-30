@@ -571,6 +571,46 @@ it('renders percent expressions, readable file paths, backslashes and newlines a
   expect(await dimensions(actualPath)).toEqual(await dimensions(expectedPath));
 });
 
+it('renders CR and CRLF line breaks with the same pixels as LF', async () => {
+  const render = async (watermarkText: string) => {
+    connection.db.transaction((tx) =>
+      updateMediaSettings(tx, {
+        ...initialMediaSettings,
+        watermarkMode: 'text',
+        watermarkText,
+        watermarkFont: 'latin',
+        watermarkFontSize: 10,
+        watermarkOpacity: 100,
+      }),
+    );
+    await prepareWatermark({
+      sourceArgs: ['-size', '400x400', 'xc:white'],
+      snapshot: connection.db.transaction(createProcessingSnapshot),
+      workspace: runtime.temporaryRoot,
+      diskLimitBytes: 64 * 1024 * 1024,
+      signal: new AbortController().signal,
+    });
+    const path = join(runtime.temporaryRoot, 'watermark-overlay.png');
+    return {
+      dimensions: (
+        await execa('magick', ['identify', '-format', '%w %h', path])
+      ).stdout,
+      pixels: (
+        await execa('magick', [path, '-depth', '8', 'rgba:-'], {
+          encoding: 'buffer',
+        })
+      ).stdout,
+    };
+  };
+  const expected = await render('A\nB');
+  expect(expected).not.toEqual(await render('A'));
+  for (const text of ['A\r\nB', 'A\rB']) {
+    const actual = await render(text);
+    expect(actual.dimensions).toBe(expected.dimensions);
+    expect(Buffer.from(actual.pixels).equals(expected.pixels)).toBe(true);
+  }
+});
+
 it('renders actual Chinese glyphs instead of the missing-glyph box', async () => {
   connection.db.transaction((tx) =>
     updateMediaSettings(tx, {

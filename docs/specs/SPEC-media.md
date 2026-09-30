@@ -277,7 +277,7 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 
 - `GET /api/settings/media` 返回当前完整设置；`PATCH` 接受部分设置字段，在同一同步事务中合并现值、校验完整结果并采用素材。拒绝未知字段；默认版本与开关联动错误返回 422 和 `fields`，整次保存不生效。所有者 Cookie 与修改请求 Origin 先于解析请求体校验，响应 `no-store`。
 - 文字字段为 `watermarkText`、`watermarkFont`（`chinese/latin`）、`watermarkFontSize`、`watermarkColor`、`watermarkStrokeColor`、`watermarkStrokeWidth`；图片字段为 `watermarkAssetId` 与 `watermarkWidth`；共用 `watermarkOpacity`、`watermarkPosition`、`watermarkMargin`。范围与计算单位沿用 §4.2，百分比和描边接受小数；Unicode 字符按码点计数。文字模式不能为空，其余模式允许空串并保留已填参数。
-- 位置使用 `top-left/top-center/top-right/center-left/center/center-right/bottom-left/bottom-center/bottom-right`。字号和边距取整为画布像素；图片尺寸同时受宽高限制，避免按宽度取整后越出边距。文字放不下以 `MEDIA_WATERMARK_TOO_LARGE` 结束任务，不缩字号或裁切文字。
+- 位置使用 `top-left/top-center/top-right/center-left/center/center-right/bottom-left/bottom-center/bottom-right`。字号和边距取整为画布像素；图片尺寸同时受宽高限制，避免按宽度取整后越出边距。文字放不下以 `MEDIA_WATERMARK_TOO_LARGE` 结束任务，不缩字号或裁切文字。保存时拒绝编码器不能接收的 NUL 字符并返回 `watermarkText` 字段错误；CR、CRLF 和 LF 在渲染时统一为换行，保存的文字及快照不被改写。
 - `createProcessingSnapshot` 包含全部渲染参数与当前模式素材属性。`prepareWatermark` 接受当前处理画布、快照、素材目录、任务工作目录、磁盘预算和取消信号，输出供最终编码使用的合成参数；调用方持有工作目录直到子进程结算。正式处理复用该函数，临时预览调用归 T-MED-09。
 - 本任务只接入现有初次处理流水线与设置 HTTP。设置界面、临时预览和四范围重处理分别归 T-MED-12、T-MED-09、T-MED-10。实际结果见 [T-MED-08 验证记录](../verification/media-152/README.md)。
 

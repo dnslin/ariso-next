@@ -148,6 +148,19 @@ it.each(['', '字'.repeat(201), 'a\nb\nc\nd\ne\nf'])(
     ).toBe(false);
   },
 );
+it.each(['off', 'text'] as const)(
+  'rejects NUL text with a field error even in %s mode',
+  (watermarkMode) => {
+    const result = mediaSettingsInputSchema.safeParse({
+      ...initialMediaSettings,
+      watermarkMode,
+      watermarkText: 'A\0B',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success)
+      expect(result.error.issues[0].path).toEqual(['watermarkText']);
+  },
+);
 it('counts Unicode characters rather than UTF-16 units and preserves literal text', () => {
   const watermarkText = '😀'.repeat(200);
   expect(

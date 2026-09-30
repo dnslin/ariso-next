@@ -19,6 +19,7 @@ export const watermarkFonts =
 /** ImageMagick label: interprets these independently of shell argument escaping. */
 export function escapeWatermarkText(text: string) {
   return text
+    .replace(/\r\n?/g, '\n')
     .replaceAll('\\', '\\\\')
     .replaceAll('%', '\\%')
     .replace(/^@/, '\\@');
@@ -100,8 +101,9 @@ export async function prepareWatermark(input: {
   const [width, height] = dimensions.split(' ').map(Number);
   const shortEdge = Math.min(width, height);
   const margin = Math.round((shortEdge * snapshot.watermarkMargin) / 100);
+  let overlayArgs: string[];
   if (snapshot.watermarkMode === 'text') {
-    await run([
+    overlayArgs = [
       '-background',
       'none',
       '-density',
@@ -119,8 +121,7 @@ export async function prepareWatermark(input: {
       '-strokewidth',
       String(snapshot.watermarkStrokeWidth),
       `label:${escapeWatermarkText(snapshot.watermarkText)}`,
-      `png:${overlay}`,
-    ]);
+    ];
   } else {
     const asset = snapshot.watermarkAsset;
     if (!asset || !input.watermarksRoot)
@@ -152,18 +153,16 @@ export async function prepareWatermark(input: {
       if (error) throw error;
       assetInput = `png:${raster}`;
     }
-    await run([
+    overlayArgs = [
       assetInput,
       '-colorspace',
       'sRGB',
       '-resize',
       `${targetWidth}x${height - 2 * margin}`,
-      '-strip',
-      `png:${overlay}`,
-    ]);
+    ];
   }
   const size = await run([
-    `png:${overlay}`,
+    ...overlayArgs,
     '-alpha',
     'set',
     '-channel',
@@ -172,6 +171,7 @@ export async function prepareWatermark(input: {
     'multiply',
     String(snapshot.watermarkOpacity / 100),
     '+channel',
+    '-strip',
     '-write',
     `png:${overlay}`,
     '-format',

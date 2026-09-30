@@ -170,3 +170,22 @@ it('validates the complete merged save, preserves mode parameters and returns fi
   });
   expect(malformed.status).toBe(400);
 });
+
+it('rejects NUL text before saving any part of the settings patch', async () => {
+  const before = await request('/api/settings/media', { headers: { cookie } });
+  const saved = await before.json();
+  const response = await settingsRequest({
+    watermarkMode: 'text',
+    watermarkText: 'A\0B',
+    quality: 10,
+  });
+  expect(response.status).toBe(422);
+  expect(await response.json()).toMatchObject({
+    code: 'MEDIA_SETTINGS_INVALID',
+    fields: expect.arrayContaining([
+      expect.objectContaining({ field: 'watermarkText' }),
+    ]),
+  });
+  const after = await request('/api/settings/media', { headers: { cookie } });
+  expect(await after.json()).toEqual(saved);
+});
