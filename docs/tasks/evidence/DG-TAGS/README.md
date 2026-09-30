@@ -76,4 +76,20 @@
 
 ## PR 与远端验证
 
-完成本地适用检查和独立复核后提交推送，创建关联#138的PR并回读实际检查。日常PR没有远端检查时不称CI通过，不等待不存在的工作流；不合并、不主动关闭Issue、不发布、不部署、不删除分支或worktree。
+实施提交 `904c12bf0081bd6ad71fb69cc46e91b94e06ff86` 已推送，创建并关联 [PR #219](https://github.com/dnslin/ariso-next/pull/219)。本次是纯文档且适用检查/两项独立复核通过，PR为正式待评审；用户后续UI人工验收责任继续保留，不据此声称产品UI通过。
+
+实际回读：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 219 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --repo dnslin/ariso-next --branch codex/issue-138-tags-design --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/904c12bf0081bd6ad71fb69cc46e91b94e06ff86/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/904c12bf0081bd6ad71fb69cc46e91b94e06ff86/status --jq '{state,total_count}'
+```
+
+结果：PR OPEN、isDraft=false、CLEAN；statusCheckRollup、分支Actions运行列表为空，check-runs与commit status均0。status API聚合为pending且没有具体状态，不代表有待等的检查，也不称CI通过。最终证据提交推送后按实际HEAD再回读PR、运行列表及上述两个commit接口。
+
+已读取当前 `.github/workflows/ci.yml` 的 workflow_call 与 `images.yml` 的 release.published 规则；日常PR按本地适用检查交付，不触发Release/镜像或等待不存在的PR工作流。使用本次命令环境的用户指定代理和gh已登录凭据推送成功；未改全局代理/Git设置。
+
+没有合并PR、主动关闭Issue、发布镜像或部署。分支和worktree保留供用户后续处理。
