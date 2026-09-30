@@ -6,6 +6,7 @@ import { Readable } from 'node:stream';
 import { crc32 } from 'node:zlib';
 import { execa } from 'execa';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { inspectImageFile } from '../../../src/server/media/file-formats.ts';
 import { inspectImage } from '../../../src/server/media/formats.ts';
 
 let directory: string;
@@ -172,5 +173,21 @@ describe('native container identification through tool stdin', () => {
     expect(Buffer.from(extracted.stdout)).toEqual(second);
     const facts = await inspectImage(Readable.from(bytes), directory);
     expect(facts.pageCount).toBe(2);
+  });
+});
+
+it('identifies quality 100 lossless WebP output in stream and file paths', async () => {
+  const file = join(directory, 'lossless.webp');
+  await execa('magick', ['-size', '16x12', 'xc:red', '-quality', '100', file]);
+  expect(await inspectImage(createReadStream(file), directory)).toMatchObject({
+    mime: 'image/webp',
+    width: 16,
+    height: 12,
+  });
+  expect(await inspectImageFile(file, directory)).toMatchObject({
+    format: 'WEBP',
+    width: 16,
+    height: 12,
+    classification: 'static',
   });
 });

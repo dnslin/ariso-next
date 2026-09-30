@@ -9,6 +9,7 @@ import { mediaSettings } from './schema.ts';
 import {
   initialMediaSettings,
   mediaSettingsInputSchema,
+  mediaSettingsPatchSchema,
   type ProcessingSnapshot,
 } from './validation.ts';
 
@@ -61,6 +62,19 @@ export function updateMediaSettings(
   return saved;
 }
 
+/** Merge and validate within the same write transaction, including asset adoption. */
+export function patchMediaSettings(db: BetterSQLite3Database, input: unknown) {
+  const patch = mediaSettingsPatchSchema.parse(input);
+  return db.transaction((tx) => {
+    const current: Partial<ReturnType<typeof requireMediaSettings>> = {
+      ...requireMediaSettings(tx),
+    };
+    delete current.id;
+    delete current.updatedAt;
+    return updateMediaSettings(tx, { ...current, ...patch });
+  });
+}
+
 /** A fresh value for each upload batch. Delivery and scheduling read live settings instead. */
 export function createProcessingSnapshot(
   tx: MediaTransaction,
@@ -73,6 +87,16 @@ export function createProcessingSnapshot(
     maxEdge: settings.maxEdge,
     jpegBackground: settings.jpegBackground,
     watermarkMode: settings.watermarkMode,
+    watermarkText: settings.watermarkText,
+    watermarkFont: settings.watermarkFont,
+    watermarkFontSize: settings.watermarkFontSize,
+    watermarkColor: settings.watermarkColor,
+    watermarkStrokeColor: settings.watermarkStrokeColor,
+    watermarkStrokeWidth: settings.watermarkStrokeWidth,
+    watermarkOpacity: settings.watermarkOpacity,
+    watermarkPosition: settings.watermarkPosition,
+    watermarkMargin: settings.watermarkMargin,
+    watermarkWidth: settings.watermarkWidth,
     watermarkAsset:
       settings.watermarkMode === 'image'
         ? watermarkAssetSnapshot(tx, settings.watermarkAssetId!)

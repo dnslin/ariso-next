@@ -7,6 +7,11 @@ import { parseArgs } from 'node:util';
 import Database from 'better-sqlite3';
 import { execa } from 'execa';
 import { verifyMediaFormats } from '../dist/cli/verify-media.js';
+import {
+  prepareWatermark,
+  watermarkFonts,
+} from '../dist/server/media/watermark.js';
+import { initialMediaSettings } from '../dist/server/media/validation.js';
 
 const fixtures = fileURLToPath(
   new URL('../verification/fixtures/', import.meta.url),
@@ -193,7 +198,44 @@ async function main() {
       const output = `${name}.png`;
       await render(font, text, join(directory, output), '640x96');
       await metadata(join(directory, output), 'PNG', 640, 96);
-      report.fonts.push({ font, text, output, glyphs });
+      const watermarkOutput = `${name}-watermark.webp`;
+      const composite = await prepareWatermark({
+        sourceArgs: ['-size', '640x320', 'xc:white'],
+        snapshot: {
+          ...initialMediaSettings,
+          watermarkAsset: null,
+          watermarkMode: 'text',
+          watermarkText: text,
+          watermarkFont: name,
+          watermarkFontSize: 10,
+          watermarkOpacity: 100,
+          watermarkColor: '#000000',
+        },
+        workspace: directory,
+        diskLimitBytes: 512 * 1024 * 1024,
+        signal: new AbortController().signal,
+      });
+      const watermarkPath = join(directory, watermarkOutput);
+      await execa('magick', [
+        ...composite,
+        '-strip',
+        '-quality',
+        '82',
+        watermarkPath,
+      ]);
+      await metadata(watermarkPath, 'WEBP', 640, 320);
+      assert.ok(
+        (await pixels(watermarkPath)).some((value) => value < 128),
+        `${name}: watermark has visible ink`,
+      );
+      report.fonts.push({
+        font,
+        text,
+        output,
+        glyphs,
+        watermarkFont: watermarkFonts[name],
+        watermarkOutput,
+      });
     }
     await writeFile(
       join(directory, 'report.json'),

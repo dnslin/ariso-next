@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -5,13 +6,17 @@ import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
-import { mediaSettings } from '../../../src/server/media/schema.ts';
+import {
+  mediaSettings,
+  mediaWatermarkAssets,
+} from '../../../src/server/media/schema.ts';
 import {
   createProcessingSnapshot,
   prepareInitialMedia,
   readMediaSettings,
   requireMediaSettings,
   updateMediaSettings,
+  patchMediaSettings,
 } from '../../../src/server/media/settings.ts';
 import { initialMediaSettings } from '../../../src/server/media/validation.ts';
 
@@ -117,13 +122,20 @@ describe('T-MED-02 real SQLite defaults', () => {
     const watermark = update({
       ...initialMediaSettings,
       watermarkMode: 'text',
+      watermarkText: '水印',
       defaultLinkVersion: 'watermark',
     });
-    expect(() => update({ ...watermark, watermarkMode: 'off' })).toThrow();
+    const watermarkInput = {
+      ...initialMediaSettings,
+      watermarkMode: 'text',
+      watermarkText: '水印',
+      defaultLinkVersion: 'watermark',
+    };
+    expect(() => update({ ...watermarkInput, watermarkMode: 'off' })).toThrow();
     expect(requireMediaSettings(connection.db)).toEqual(watermark);
     expect(
       update({
-        ...watermark,
+        ...watermarkInput,
         watermarkMode: 'off',
         defaultLinkVersion: 'compressed',
       }),
@@ -150,6 +162,16 @@ describe('T-MED-02 real SQLite defaults', () => {
       maxEdge: null,
       jpegBackground: '#FFFFFF',
       watermarkMode: 'off',
+      watermarkText: initialMediaSettings.watermarkText,
+      watermarkFont: initialMediaSettings.watermarkFont,
+      watermarkFontSize: initialMediaSettings.watermarkFontSize,
+      watermarkColor: initialMediaSettings.watermarkColor,
+      watermarkStrokeColor: initialMediaSettings.watermarkStrokeColor,
+      watermarkStrokeWidth: initialMediaSettings.watermarkStrokeWidth,
+      watermarkOpacity: initialMediaSettings.watermarkOpacity,
+      watermarkPosition: initialMediaSettings.watermarkPosition,
+      watermarkMargin: initialMediaSettings.watermarkMargin,
+      watermarkWidth: initialMediaSettings.watermarkWidth,
       watermarkAsset: null,
       defaultVisibility: 'public',
     });
@@ -221,4 +243,106 @@ describe('T-MED-02 real SQLite defaults', () => {
     });
     expect(requireMediaSettings(connection.db)).toEqual(saved);
   });
+});
+
+it('merges partial saves atomically and retains inactive text and fractional rendering parameters', () => {
+  initialize();
+  const patch = (value: unknown) => patchMediaSettings(connection.db, value);
+  const text = {
+    watermarkMode: 'text',
+    watermarkText: '%[filename] @/tmp/private\\n 你好',
+    watermarkFont: 'latin',
+    watermarkFontSize: 4.5,
+    watermarkColor: '#112233',
+    watermarkStrokeColor: '#334455',
+    watermarkStrokeWidth: 1.5,
+    watermarkOpacity: 70.5,
+    watermarkPosition: 'top-center',
+    watermarkMargin: 5.5,
+    watermarkWidth: 30.5,
+    defaultLinkVersion: 'watermark',
+  };
+  patch(text);
+  const old = snapshot();
+  const rendering: Partial<typeof text> = { ...text };
+  delete rendering.defaultLinkVersion;
+  expect(old).toMatchObject(rendering);
+  const saved = requireMediaSettings(connection.db);
+  expect(() => patch({ watermarkMode: 'off', quality: 10 })).toThrow();
+  expect(requireMediaSettings(connection.db)).toEqual(saved);
+  patch({ watermarkMode: 'off', defaultLinkVersion: 'original' });
+  patch({ watermarkMode: 'text' });
+  expect(snapshot()).toEqual(old);
+  patch({ watermarkText: '新的文字', watermarkOpacity: 20 });
+  expect(old.watermarkText).toBe(text.watermarkText);
+  expect(old.watermarkOpacity).toBe(70.5);
+  expect(snapshot().watermarkText).toBe('新的文字');
+});
+it('adopts only selectable assets atomically and freezes the exact selected asset in snapshots', () => {
+  initialize();
+  const now = new Date();
+  const insert = (
+    expiresAt: Date | null,
+    status: 'ready' | 'cleanup_pending' = 'ready',
+  ) => {
+    const id = randomUUID();
+    connection.db
+      .insert(mediaWatermarkAssets)
+      .values({
+        id,
+        path: `${id}/source`,
+        format: 'PNG',
+        mime: 'image/png',
+        width: 20,
+        height: 10,
+        byteSize: 80,
+        status,
+        expiresAt,
+        createdAt: now,
+        updatedAt: now,
+      })
+      .run();
+    return id;
+  };
+  const patch = (value: unknown) => patchMediaSettings(connection.db, value);
+  const assetId = insert(new Date(now.getTime() + 3600000));
+  expect(() =>
+    patch({
+      watermarkAssetId: assetId,
+      watermarkMode: 'image',
+      compressionEnabled: false,
+    }),
+  ).toThrow();
+  expect(
+    connection.db.select().from(mediaWatermarkAssets).get()!.expiresAt,
+  ).not.toBeNull();
+  patch({ watermarkAssetId: assetId, watermarkMode: 'image' });
+  const old = snapshot();
+  expect(old.watermarkAsset).toMatchObject({
+    id: assetId,
+    path: `${assetId}/source`,
+    width: 20,
+    height: 10,
+  });
+  expect(
+    connection.db.select().from(mediaWatermarkAssets).get()!.expiresAt,
+  ).toBeNull();
+  const saved = requireMediaSettings(connection.db);
+  for (const id of [
+    randomUUID(),
+    insert(new Date(now.getTime() - 1)),
+    insert(null, 'cleanup_pending'),
+  ]) {
+    expect(() => patch({ watermarkAssetId: id })).toThrowError(
+      expect.objectContaining({ code: 'MEDIA_WATERMARK_UNAVAILABLE' }),
+    );
+    expect(requireMediaSettings(connection.db)).toEqual(saved);
+  }
+  const nextId = insert(null);
+  patch({ watermarkAssetId: nextId });
+  expect(snapshot().watermarkAsset!.id).toBe(nextId);
+  expect(old.watermarkAsset!.id).toBe(assetId);
+  patch({ watermarkMode: 'off' });
+  expect(snapshot().watermarkAsset).toBeNull();
+  expect(requireMediaSettings(connection.db).watermarkAssetId).toBe(nextId);
 });

@@ -1,0 +1,13 @@
+Already up to date
+Done in 60ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-152
+
+{"level":"error","time":"2026-09-30T06:41:16.585Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso-issue-152/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso-issue-152/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso-issue-152/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-09-30T06:41:16.592Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso-issue-152/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso-issue-152/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso-issue-152/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+
+ Test Files  43 passed (43)
+      Tests  630 passed (630)
+   Start at  14:41:15
+   Duration  1.66s (tests 41%, import 36%, transform 21%, worker 1%)

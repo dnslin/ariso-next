@@ -88,7 +88,7 @@ export async function inspectImage(
   const group =
     format === 'PNG' || format === 'APNG'
       ? 'PNG'
-      : format === 'WEBP' || format === 'Extended WEBP'
+      : ['WEBP', 'Extended WEBP', 'WEBP (lossless)'].includes(format)
         ? 'RIFF'
         : 'File';
   const width = facts[`${group}:ImageWidth`];

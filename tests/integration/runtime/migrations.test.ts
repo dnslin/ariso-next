@@ -20,6 +20,19 @@ import {
   writeMigrations,
 } from '../../fixtures/runtime/migrations';
 
+const watermarkDefaults = {
+  watermark_text: '',
+  watermark_font: 'chinese',
+  watermark_font_size: 3,
+  watermark_color: '#FFFFFF',
+  watermark_stroke_color: '#000000',
+  watermark_stroke_width: 0,
+  watermark_opacity: 50,
+  watermark_position: 'bottom-right',
+  watermark_margin: 2,
+  watermark_width: 20,
+};
+
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
 beforeEach(() => {
@@ -150,12 +163,24 @@ describe('runtime forward migrations', () => {
         )
         .all(),
     ).toEqual([]);
-    expect(existingData()).toEqual(retainedData);
+    expect(existingData()).toEqual({
+      ...retainedData,
+      settings: retainedData.settings.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
+    });
     expect(db.pragma('foreign_key_check')).toEqual([]);
 
     migrate(currentFolder);
     expect(progress()).toEqual(upgradedProgress);
-    expect(existingData()).toEqual(retainedData);
+    expect(existingData()).toEqual({
+      ...retainedData,
+      settings: retainedData.settings.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
+    });
     expect(db.prepare('SELECT * FROM media_metadata').all()).toEqual([]);
     expect(db.pragma('foreign_key_check')).toEqual([]);
   });
@@ -248,7 +273,10 @@ describe('runtime forward migrations', () => {
       db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
     ).toEqual(previewRefsBefore);
     expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
-      settingsBefore,
+      settingsBefore.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
     );
     const upgradedProgress = progress();
     expect(upgradedProgress.slice(0, 12)).toEqual(progressBefore);
@@ -266,7 +294,10 @@ describe('runtime forward migrations', () => {
       db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
     ).toEqual(previewRefsBefore);
     expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
-      settingsBefore,
+      settingsBefore.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
     );
   });
 

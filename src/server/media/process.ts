@@ -11,6 +11,7 @@ import { readAndStoreMetadata } from './metadata.ts';
 import { inspectImage } from './formats.ts';
 import { inspectImageFile } from './file-formats.ts';
 import { startSvgPreview } from './svg.ts';
+import { prepareWatermark } from './watermark.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { planDerivedObject } from './objects.ts';
 import {
@@ -32,6 +33,7 @@ export type MediaRuntime = {
   db: ReturnType<typeof openRuntimeDatabase>['db'];
   storageRoot: string;
   temporaryRoot: string;
+  watermarksRoot?: string;
   logger: Pick<Logger, 'info' | 'error'>;
   resources?: ReturnType<typeof createMediaResources>;
 };
@@ -77,10 +79,10 @@ export async function processMediaJob(
         storageDirectory: `${storageRoot}${sep}${storage.localPath}`,
       });
     const { snapshot } = job;
-    if (job.scope !== 'all' || snapshot.watermarkMode !== 'off') {
+    if (job.scope !== 'all') {
       throw mediaError(
         'MEDIA_SETTINGS_UNSUPPORTED',
-        'Watermark processing is not implemented (T-MED-08/T-MED-09)',
+        'Scoped reprocessing is not implemented (T-MED-10)',
       );
     }
     const original = db
@@ -116,10 +118,12 @@ export async function processMediaJob(
       stepSignal,
       budget.diskLimitBytes,
     );
-    const expected =
-      facts.classification === 'static' && snapshot.compressionEnabled
-        ? (['compressed', 'thumbnail'] as const)
-        : (['thumbnail'] as const);
+    const expected: typeof job.expectedVersions = [];
+    if (facts.classification === 'static' && snapshot.compressionEnabled)
+      expected.push('compressed');
+    expected.push('thumbnail');
+    if (facts.classification === 'static' && snapshot.watermarkMode !== 'off')
+      expected.push('watermark');
     // Classification resolves applicability; the immutable settings snapshot stays unchanged.
     job.expectedVersions = [...expected];
     db.transaction((tx) => {
@@ -273,6 +277,54 @@ export async function processMediaJob(
       const controller = new AbortController();
       const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
       const edge = kind === 'thumbnail' ? 640 : snapshot.maxEdge;
+      let sourceArgs = [
+        previewInput,
+        ...(facts.animated && facts.format === 'GIF' ? ['-coalesce'] : []),
+        '-auto-orient',
+        '-colorspace',
+        'sRGB',
+        ...(edge === null ? [] : ['-resize', `${edge}x${edge}>`]),
+        ...(kind !== 'thumbnail' && snapshot.outputFormat === 'jpeg'
+          ? [
+              '-background',
+              snapshot.jpegBackground,
+              '-alpha',
+              'remove',
+              '-alpha',
+              'off',
+            ]
+          : []),
+      ];
+      if (kind === 'watermark') {
+        if (snapshot.compressionEnabled) {
+          const compressed = savedMediaVersion(db, jobId, 'compressed');
+          if (!compressed)
+            throw mediaError(
+              'MEDIA_VERSIONS_MISSING',
+              '本次任务压缩结果尚未生成',
+            );
+          const { storage } = activeMediaJob(db, jobId);
+          const content = await readObject(
+            storageRoot,
+            storage,
+            compressed.media_objects.key,
+            compressed.media_versions.mime,
+            cancelSignal,
+          );
+          content.stream.destroy();
+          await once(content.stream, 'close');
+          sourceArgs = [`${snapshot.outputFormat}:${content.path}`];
+        }
+        sourceArgs = await prepareWatermark({
+          sourceArgs,
+          snapshot,
+          watermarksRoot: runtime.watermarksRoot,
+          workspace,
+          diskLimitBytes: budget.diskLimitBytes,
+          signal: cancelSignal,
+        });
+        activeMediaJob(db, jobId);
+      }
       const { child, settled } = startMediaTool(
         'magick',
         [
@@ -288,22 +340,7 @@ export async function processMediaJob(
           '-limit',
           'thread',
           '1',
-          previewInput,
-          ...(facts.animated && facts.format === 'GIF' ? ['-coalesce'] : []),
-          '-auto-orient',
-          '-colorspace',
-          'sRGB',
-          ...(edge === null ? [] : ['-resize', `${edge}x${edge}>`]),
-          ...(kind !== 'thumbnail' && snapshot.outputFormat === 'jpeg'
-            ? [
-                '-background',
-                snapshot.jpegBackground,
-                '-alpha',
-                'remove',
-                '-alpha',
-                'off',
-              ]
-            : []),
+          ...sourceArgs,
           '-strip',
           '-quality',
           String(kind === 'thumbnail' ? 80 : snapshot.quality),

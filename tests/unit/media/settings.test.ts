@@ -14,6 +14,16 @@ describe('media settings full-save validation', () => {
       jpegBackground: '#FFFFFF',
       watermarkMode: 'off',
       watermarkAssetId: null,
+      watermarkText: '',
+      watermarkFont: 'chinese',
+      watermarkFontSize: 3,
+      watermarkColor: '#FFFFFF',
+      watermarkStrokeColor: '#000000',
+      watermarkStrokeWidth: 0,
+      watermarkOpacity: 50,
+      watermarkPosition: 'bottom-right',
+      watermarkMargin: 2,
+      watermarkWidth: 20,
       defaultLinkVersion: 'compressed',
       defaultVisibility: 'public',
       concurrency: 1,
@@ -88,6 +98,7 @@ describe('media settings full-save validation', () => {
             ...initialMediaSettings,
             compressionEnabled,
             watermarkMode,
+            watermarkText: '水印',
             watermarkAssetId:
               watermarkMode === 'image'
                 ? '8fde381c-59e5-4c5b-a356-2271897a1398'
@@ -115,4 +126,70 @@ describe('media settings full-save validation', () => {
       mediaSettingsInputSchema.safeParse({ compressionEnabled: false }).success,
     ).toBe(false);
   });
+});
+
+it('rejects unknown save fields instead of silently discarding them', () => {
+  expect(
+    mediaSettingsInputSchema.safeParse({
+      ...initialMediaSettings,
+      unknown: true,
+    }).success,
+  ).toBe(false);
+});
+it.each(['', '字'.repeat(201), 'a\nb\nc\nd\ne\nf'])(
+  'rejects invalid active watermark text %j',
+  (watermarkText) => {
+    expect(
+      mediaSettingsInputSchema.safeParse({
+        ...initialMediaSettings,
+        watermarkMode: 'text',
+        watermarkText,
+      }).success,
+    ).toBe(false);
+  },
+);
+it('counts Unicode characters rather than UTF-16 units and preserves literal text', () => {
+  const watermarkText = '😀'.repeat(200);
+  expect(
+    mediaSettingsInputSchema.parse({
+      ...initialMediaSettings,
+      watermarkMode: 'text',
+      watermarkText,
+    }).watermarkText,
+  ).toBe(watermarkText);
+});
+it.each([
+  ['watermarkFont', 'arbitrary-path'],
+  ['watermarkFontSize', 0.9],
+  ['watermarkFontSize', 20.1],
+  ['watermarkColor', '#fff'],
+  ['watermarkStrokeColor', 'black'],
+  ['watermarkStrokeWidth', -1],
+  ['watermarkStrokeWidth', 10.1],
+  ['watermarkOpacity', -1],
+  ['watermarkOpacity', 101],
+  ['watermarkPosition', 'left'],
+  ['watermarkMargin', -1],
+  ['watermarkMargin', 20.1],
+  ['watermarkWidth', 0.9],
+  ['watermarkWidth', 100.1],
+])('rejects watermark %s=%s', (field, value) => {
+  expect(
+    mediaSettingsInputSchema.safeParse({
+      ...initialMediaSettings,
+      [field]: value,
+    }).success,
+  ).toBe(false);
+});
+it('accepts fractional watermark dimensions and opacity', () => {
+  const fractional = {
+    watermarkFontSize: 1.5,
+    watermarkStrokeWidth: 0.5,
+    watermarkOpacity: 40.5,
+    watermarkMargin: 2.5,
+    watermarkWidth: 20.5,
+  };
+  expect(
+    mediaSettingsInputSchema.parse({ ...initialMediaSettings, ...fractional }),
+  ).toMatchObject(fractional);
 });

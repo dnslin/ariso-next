@@ -630,13 +630,17 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
     },
   );
 
-  it.each([{ watermarkMode: 'text' }, { watermarkMode: 'image' }] as const)(
-    'reports unsupported settings rather than silently creating another version: %j',
-    async (changes) => {
+  it.each(['compressed', 'thumbnail', 'watermark'] as const)(
+    'reports unimplemented scoped reprocessing rather than silently changing scope: %s',
+    async (scope) => {
       const accepted = await accept(
         await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
-        changes,
       );
+      connection.db
+        .update(mediaJobs)
+        .set({ scope })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
       await processNext();
       expect(state(accepted.imageId).latestJob!.error).toContain(
         'MEDIA_SETTINGS_UNSUPPORTED',

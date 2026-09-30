@@ -5,13 +5,14 @@ import {
   index,
   integer,
   primaryKey,
+  real,
   sqliteTable,
   text,
   unique,
 } from 'drizzle-orm/sqlite-core';
 import { storageConfigs } from '../storage/schema.ts';
 import type { GroupedMetadata, PhotographyFields } from './metadata-values.ts';
-import type { ProcessingSnapshot } from './validation.ts';
+import { watermarkPositions, type ProcessingSnapshot } from './validation.ts';
 
 export const versionKinds = [
   'original',
@@ -69,6 +70,22 @@ export const mediaSettings = sqliteTable(
     watermarkAssetId: text('watermark_asset_id').references(
       () => mediaWatermarkAssets.id,
     ),
+    watermarkText: text('watermark_text').notNull().default(''),
+    watermarkFont: text('watermark_font', { enum: ['chinese', 'latin'] })
+      .notNull()
+      .default('chinese'),
+    watermarkFontSize: real('watermark_font_size').notNull().default(3),
+    watermarkColor: text('watermark_color').notNull().default('#FFFFFF'),
+    watermarkStrokeColor: text('watermark_stroke_color')
+      .notNull()
+      .default('#000000'),
+    watermarkStrokeWidth: real('watermark_stroke_width').notNull().default(0),
+    watermarkOpacity: real('watermark_opacity').notNull().default(50),
+    watermarkPosition: text('watermark_position', { enum: watermarkPositions })
+      .notNull()
+      .default('bottom-right'),
+    watermarkMargin: real('watermark_margin').notNull().default(2),
+    watermarkWidth: real('watermark_width').notNull().default(20),
     defaultLinkVersion: text('default_link_version', {
       enum: ['original', 'compressed', 'watermark'],
     }).notNull(),

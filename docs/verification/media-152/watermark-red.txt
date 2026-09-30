@@ -1,0 +1,42 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-152
+
+ ❯ |integration| tests/integration/media/watermark.test.ts (4 tests | 2 failed) 1094ms
+   ❯ T-MED-08 real watermark pipeline (4)
+     × creates exactly the selected versions (compression=false, watermark=text) 45ms
+     × creates exactly the selected versions (compression=true, watermark=text) 45ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/watermark.test.ts > T-MED-08 real watermark pipeline > creates exactly the selected versions (compression=false, watermark=text)
+ FAIL  |integration| tests/integration/media/watermark.test.ts > T-MED-08 real watermark pipeline > creates exactly the selected versions (compression=true, watermark=text)
+AssertionError: expected { …(16) } to match object { status: 'succeeded', error: null }
+(32 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": null,
+-   "status": "succeeded",
++   "error": "identify: MEDIA_SETTINGS_UNSUPPORTED: Watermark processing is not implemented (T-MED-08/T-MED-09)",
++   "status": "failed",
+  }
+
+ ❯ tests/integration/media/watermark.test.ts:92:47
+     90|     const accepted = await accept(bytes, { compressionEnabled, waterma…
+     91|     await processNext();
+     92|     expect(state(accepted.imageId).latestJob).toMatchObject({ status: …
+       |                                               ^
+     93|     expect(state(accepted.imageId).image.processingStatus).toBe('ready…
+     94|     expect(state(accepted.imageId).versions.filter((version) => versio…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  14:21:09
+   Duration  1.70s (tests 67%, import 25%, transform 8%)

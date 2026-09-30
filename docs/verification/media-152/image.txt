@@ -1,0 +1,247 @@
+Verification temporary directory: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-verify-image-1yT8U9
+Verification samples exported: /Volumes/data/project/ariso-issue-152/docs/verification/media-152/outputs
+{
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "sqlite": {
+    "version": "3.53.4",
+    "answer": 42
+  },
+  "magick": "Version: ImageMagick 7.1.2-32 Q16-HDRI aarch64 68f8d115a:20260926 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/license/\nFeatures: Cipher DPC HDRI Modules \nDelegates (built-in): bzlib freetype heic jng jpeg lcms ltdl lzma png tiff webp xml zlib zstd\nCompiler: clang (21.0.0)",
+  "exiftool": "13.55",
+  "formats": [
+    {
+      "id": "source-png",
+      "status": "passed"
+    },
+    {
+      "id": "static-jpg",
+      "status": "passed"
+    },
+    {
+      "id": "static-webp",
+      "status": "passed"
+    },
+    {
+      "id": "static-avif",
+      "status": "passed"
+    },
+    {
+      "id": "static-bmp",
+      "status": "passed"
+    },
+    {
+      "id": "static-tiff",
+      "status": "passed"
+    },
+    {
+      "id": "alpha-heic",
+      "status": "passed"
+    },
+    {
+      "id": "multiple-heic",
+      "status": "passed"
+    },
+    {
+      "id": "multiple-avif",
+      "status": "passed"
+    },
+    {
+      "id": "animated-avif",
+      "status": "passed"
+    },
+    {
+      "id": "animated-gif",
+      "status": "passed"
+    },
+    {
+      "id": "animated-webp",
+      "status": "passed"
+    },
+    {
+      "id": "multiple-tiff",
+      "status": "passed"
+    },
+    {
+      "id": "multiple-ico",
+      "status": "passed"
+    },
+    {
+      "id": "animated-png",
+      "status": "passed"
+    },
+    {
+      "id": "poster-png",
+      "status": "passed"
+    },
+    {
+      "id": "static-svg",
+      "status": "passed"
+    },
+    {
+      "id": "static-gif",
+      "status": "passed"
+    },
+    {
+      "id": "alpha-avif",
+      "status": "passed"
+    },
+    {
+      "id": "oriented-heic",
+      "status": "passed"
+    },
+    {
+      "id": "mirrored-heic",
+      "status": "passed"
+    },
+    {
+      "id": "offset-gif",
+      "status": "passed"
+    },
+    {
+      "id": "primary-second-heic",
+      "status": "passed"
+    },
+    {
+      "id": "primary-second-avif",
+      "status": "passed"
+    },
+    {
+      "id": "depth-heic",
+      "status": "passed"
+    },
+    {
+      "id": "thumbnail-heic",
+      "status": "passed"
+    }
+  ],
+  "conversions": [
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.webp",
+      "format": "WEBP",
+      "width": 64,
+      "height": 48,
+      "meanError": 5.551215277777778
+    },
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.jpg",
+      "format": "JPEG",
+      "width": 64,
+      "height": 48,
+      "meanError": 5.125868055555555
+    },
+    {
+      "input": "sample.jpg",
+      "output": "sample.jpg.avif",
+      "format": "AVIF",
+      "width": 64,
+      "height": 48,
+      "meanError": 6.234700520833333
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.webp",
+      "format": "WEBP",
+      "width": 64,
+      "height": 48,
+      "meanError": 15.379991319444445
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.jpg",
+      "format": "JPEG",
+      "width": 64,
+      "height": 48,
+      "meanError": 0.8640407986111112
+    },
+    {
+      "input": "sample.png",
+      "output": "sample.png.avif",
+      "format": "AVIF",
+      "width": 64,
+      "height": 48,
+      "meanError": 1.7962239583333333
+    }
+  ],
+  "fonts": [
+    {
+      "font": "/System/Library/Fonts/STHeiti Medium.ttc",
+      "text": "中文图片验证",
+      "output": "chinese.png",
+      "glyphs": [
+        {
+          "character": "中",
+          "ink": 550
+        },
+        {
+          "character": "文",
+          "ink": 557
+        },
+        {
+          "character": "图",
+          "ink": 770
+        },
+        {
+          "character": "片",
+          "ink": 510
+        },
+        {
+          "character": "验",
+          "ink": 751
+        },
+        {
+          "character": "证",
+          "ink": 666
+        }
+      ],
+      "watermarkFont": "/System/Library/Fonts/STHeiti Medium.ttc",
+      "watermarkOutput": "chinese-watermark.webp"
+    },
+    {
+      "font": "/System/Library/Fonts/Supplemental/Arial.ttf",
+      "text": "Ariso 123",
+      "output": "latin.png",
+      "glyphs": [
+        {
+          "character": "A",
+          "ink": 356
+        },
+        {
+          "character": "r",
+          "ink": 142
+        },
+        {
+          "character": "i",
+          "ink": 120
+        },
+        {
+          "character": "s",
+          "ink": 252
+        },
+        {
+          "character": "o",
+          "ink": 260
+        },
+        {
+          "character": "1",
+          "ink": 181
+        },
+        {
+          "character": "2",
+          "ink": 310
+        },
+        {
+          "character": "3",
+          "ink": 296
+        }
+      ],
+      "watermarkFont": "/System/Library/Fonts/Supplemental/Arial.ttf",
+      "watermarkOutput": "latin-watermark.webp"
+    }
+  ]
+}
+Image verification passed
+Verification temporary directory removed: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-verify-image-1yT8U9
