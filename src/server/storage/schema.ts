@@ -1,3 +1,4 @@
+import type { CorsReport } from './cors-types.ts';
 import type { ConnectionReport } from './probe-types.ts';
 import { sql } from 'drizzle-orm';
 import {
@@ -37,6 +38,7 @@ export const storageConfigs = sqliteTable('storage_configs', {
   })
     .notNull()
     .default('untested'),
+  corsReport: text('cors_report', { mode: 'json' }).$type<CorsReport>(),
   corsRevision: integer('cors_revision'),
   corsOrigin: text('cors_origin'),
   corsTestedAt: integer('cors_tested_at', { mode: 'timestamp_ms' }),
@@ -66,6 +68,11 @@ export const storageProbes = sqliteTable(
       .references(() => storageConfigs.id),
     purpose: text('purpose', { enum: ['connection', 'cors'] }).notNull(),
     configRevision: integer('config_revision').notNull(),
+    origin: text('origin'),
+    invalidated: integer('invalidated', { mode: 'boolean' })
+      .notNull()
+      .default(false),
+    expiresAt: integer('expires_at', { mode: 'timestamp_ms' }),
     key: text('key').notNull(),
     state: text('state', { enum: ['running', 'cleanup'] }).notNull(),
     stage: text('stage').notNull(),
@@ -78,7 +85,7 @@ export const storageProbes = sqliteTable(
     nextCleanupAt: integer('next_cleanup_at', { mode: 'timestamp_ms' }),
     error: text('error'),
     report: text('report', { mode: 'json' })
-      .$type<ConnectionReport>()
+      .$type<ConnectionReport | CorsReport>()
       .notNull(),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),

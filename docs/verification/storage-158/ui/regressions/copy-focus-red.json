@@ -1,0 +1,15 @@
+{
+  "status": "reproduced-product-failure",
+  "application": "Production standalone at http://127.0.0.1:47070",
+  "taskSpaceId": 1,
+  "viewport": { "width": 1440, "height": 480 },
+  "steps": [
+    "Open CORS example dialog",
+    "Focus 复制 CORS 示例",
+    "Press Enter",
+    "Observe 已复制到剪贴板"
+  ],
+  "before": { "tag": "BUTTON", "text": "复制 CORS 示例" },
+  "after": { "tag": "BODY", "insideDialog": false },
+  "screenshot": "cors-copy-focus-failure-1440.png"
+}

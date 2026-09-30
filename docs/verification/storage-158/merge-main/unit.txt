@@ -1,0 +1,32 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso
+
+{"level":"error","time":"2026-09-30T13:53:06.184Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-09-30T13:53:06.192Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+ ❯ |unit| tests/unit/runtime/verify-image.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/verify-image.test.ts [ tests/unit/runtime/verify-image.test.ts ]
+Error: Cannot find module '../dist/server/media/watermark.js' imported from /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/scripts/verify-image.mjs
+ ❯ scripts/verify-image.mjs:10:1
+      8| import { execa } from 'execa';
+      9| import { verifyMediaFormats } from '../dist/cli/verify-media.js';
+     10| import {
+       | ^
+     11|   prepareWatermark,
+     12|   watermarkFonts,
+ ❯ tests/unit/runtime/verify-image.test.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 45 passed (46)
+      Tests  640 passed (640)
+   Start at  21:53:05
+   Duration  2.08s (tests 40%, import 38%, transform 20%, worker 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.

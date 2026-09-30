@@ -1,0 +1,13 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+$ vitest run --project unit --maxWorkers=2
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso
+
+{"level":"error","time":"2026-09-30T06:31:41.756Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-09-30T06:31:41.768Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+
+ Test Files  45 passed (45)
+      Tests  621 passed (621)
+   Start at  14:31:36
+   Duration  6.30s (import 44%, tests 42%, transform 12%, worker 2%)

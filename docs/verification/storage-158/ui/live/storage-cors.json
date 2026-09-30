@@ -1,0 +1,637 @@
+{
+  "status": "passed",
+  "taskSpaceId": 1,
+  "checks": [
+    "seaweedfs: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "seaweedfs: real UI activation invokes production browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "r2: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "r2: real UI activation invokes production browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result"
+  ],
+  "services": [
+    {
+      "service": "seaweedfs",
+      "storageId": "67f34482-c8ea-49b6-ac37-f97b62194bbd",
+      "probes": [
+        {
+          "key": "probes/569d8a37-331d-4c14-8788-37a5afe558b1",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "569d8a37-331d-4c14-8788-37a5afe558b1",
+            "storageId": "67f34482-c8ea-49b6-ac37-f97b62194bbd",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T08:05:23.916Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "dcf79bbf-e357-4934-a494-4a65a396ef21",
+        "storageId": "67f34482-c8ea-49b6-ac37-f97b62194bbd",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DA0AA862CE9ECDEA6184D1",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "18DA0AA86822C5FD34348813",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DA0AA86D9357E3A3750FE8",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DA0AA8731A1D810CA97EF8",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://fs.447654.xyz/images/ariso/67f34482-c8ea-49b6-ac37-f97b62194bbd/probes/dcf79bbf-e357-4934-a494-4a65a396ef21",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "18DA0AA88B21F2048ED848BD",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DA0AA890C75C4A64D6A089",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T08:05:20.918Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    },
+    {
+      "service": "r2",
+      "storageId": "fbf5667b-702c-4df9-9fa6-a9e6303e66ba",
+      "probes": [
+        {
+          "key": "probes/1ab64f76-2768-4b61-81e6-71f6bd32770f",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "1ab64f76-2768-4b61-81e6-71f6bd32770f",
+            "storageId": "fbf5667b-702c-4df9-9fa6-a9e6303e66ba",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-09-30T08:05:34.548Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "8b47f8a5-6766-47ad-ba80-f7a7f5f26a01",
+        "storageId": "fbf5667b-702c-4df9-9fa6-a9e6303e66ba",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/fbf5667b-702c-4df9-9fa6-a9e6303e66ba/probes/8b47f8a5-6766-47ad-ba80-f7a7f5f26a01",
+              "httpStatusCode": 400,
+              "serviceCode": "InvalidArgument",
+              "basis": "r2-authorization-required"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-30T08:05:27.988Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-09-30T08:05:25.867Z"
+        }
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "seaweedfs-overview",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-overview-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-overview",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-overview-light-390.png"
+    },
+    {
+      "state": "seaweedfs-overview",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-overview-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-overview",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-overview-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-passed-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-passed-light-390.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-passed-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-seaweedfs-passed-dark-390.png"
+    },
+    {
+      "state": "r2-overview",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-overview-light-1440.png"
+    },
+    {
+      "state": "r2-overview",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-overview-light-390.png"
+    },
+    {
+      "state": "r2-overview",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-overview-dark-1440.png"
+    },
+    {
+      "state": "r2-overview",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-overview-dark-390.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-passed-light-1440.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-passed-light-390.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-passed-dark-1440.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储（尚未开放）",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-r2-passed-dark-390.png"
+    }
+  ]
+}

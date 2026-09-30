@@ -46,6 +46,11 @@ function writeMigrations(
       when: 4,
       sql: readFileSync(resolve('drizzle/0012_storage_probes.sql'), 'utf8'),
     },
+    {
+      tag: '0004_storage_cors',
+      when: 5,
+      sql: readFileSync(resolve('drizzle/0015_fluffy_venus.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }

@@ -1,0 +1,121 @@
+[
+  {
+    "iteration": 0,
+    "before": {
+      "origin": "http://127.0.0.1:47070",
+      "example": [
+        {
+          "AllowedOrigins": ["http://127.0.0.1:47070"],
+          "AllowedMethods": ["PUT", "GET", "HEAD"],
+          "AllowedHeaders": ["content-type"]
+        }
+      ],
+      "status": "untested",
+      "report": null,
+      "probes": [
+        {
+          "probeId": "1de65d29-e31f-42bc-824c-b0fed7decd34",
+          "state": "running",
+          "stage": "browser",
+          "key": "probes/1de65d29-e31f-42bc-824c-b0fed7decd34",
+          "invalidated": false,
+          "expiresAt": "2026-09-30T08:21:12.000Z",
+          "error": null,
+          "report": {
+            "probeId": "1de65d29-e31f-42bc-824c-b0fed7decd34",
+            "storageId": "f172c8ac-b47e-43ff-aeea-9a459f9ed1ea",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-09-30T08:16:12.550Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-get",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-head",
+                "status": "pending"
+              },
+              {
+                "stage": "verify",
+                "status": "pending"
+              },
+              {
+                "stage": "delete",
+                "status": "pending"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "after": {
+      "origin": "http://127.0.0.1:47070",
+      "example": [
+        {
+          "AllowedOrigins": ["http://127.0.0.1:47070"],
+          "AllowedMethods": ["PUT", "GET", "HEAD"],
+          "AllowedHeaders": ["content-type"]
+        }
+      ],
+      "status": "untested",
+      "report": null,
+      "probes": [
+        {
+          "probeId": "1de65d29-e31f-42bc-824c-b0fed7decd34",
+          "state": "running",
+          "stage": "browser",
+          "key": "probes/1de65d29-e31f-42bc-824c-b0fed7decd34",
+          "invalidated": false,
+          "expiresAt": "2026-09-30T08:21:12.000Z",
+          "error": null,
+          "report": {
+            "probeId": "1de65d29-e31f-42bc-824c-b0fed7decd34",
+            "storageId": "f172c8ac-b47e-43ff-aeea-9a459f9ed1ea",
+            "revision": 1,
+            "origin": "http://127.0.0.1:47070",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-09-30T08:16:12.550Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-get",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-head",
+                "status": "pending"
+              },
+              {
+                "stage": "verify",
+                "status": "pending"
+              },
+              {
+                "stage": "delete",
+                "status": "pending"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "trace": [
+      {
+        "event": "complete-request",
+        "at": 1790756172638
+      }
+    ]
+  }
+]

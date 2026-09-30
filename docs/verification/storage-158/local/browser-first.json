@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-09-30T06:32:55.213Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-53533.localhost:53533",
+  "taskSpaceId": 1,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    },
+    {
+      "width": 390,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (storage-cors.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/scripts/verify-browser.mjs:267:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/scripts/verify-browser.mjs:325:7",
+  "finishedAt": "2026-09-30T06:38:40.893Z",
+  "temporaryDirectoryRemoved": true
+}

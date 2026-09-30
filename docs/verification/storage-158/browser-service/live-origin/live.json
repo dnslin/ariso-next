@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "origin": "http://127.0.0.1:47070",
+  "taskSpaceId": 1,
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "services": [
+    {
+      "service": "seaweedfs",
+      "storageId": "ba292bba-1154-4f70-8185-33834e5c1583",
+      "exactKeysAbsent": [
+        "ariso/ba292bba-1154-4f70-8185-33834e5c1583/probes/899c5c24-6564-42dc-92f2-2c6c66d67b32"
+      ],
+      "finalList": {
+        "prefix": "ariso/ba292bba-1154-4f70-8185-33834e5c1583/",
+        "objects": [],
+        "truncated": false
+      }
+    },
+    {
+      "service": "r2",
+      "storageId": "a1bfc552-caac-4903-8dc2-ac43bc398bdb",
+      "exactKeysAbsent": [
+        "ariso/a1bfc552-caac-4903-8dc2-ac43bc398bdb/probes/3d4d8595-fbf7-4676-b800-53a2110663da"
+      ],
+      "finalList": {
+        "prefix": "ariso/a1bfc552-caac-4903-8dc2-ac43bc398bdb/",
+        "objects": [],
+        "truncated": false
+      }
+    }
+  ]
+}

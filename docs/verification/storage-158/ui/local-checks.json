@@ -1,0 +1,128 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "os": "darwin",
+    "arch": "arm64",
+    "release": "25.6.0"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "summary": " Test Files  45 passed (45)\n      Tests  621 passed (621)\n   Start at  16:03:30\n   Duration  2.60s (import 44%, tests 38%, transform 16%, worker 1%)"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "existingOptionalNativeDependencyDiagnostics": [
+        "Error: Failed to resolve dependency \"./resvgjs.android-arm64.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.android-arm-eabi.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.win32-x64-msvc.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.win32-ia32-msvc.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.win32-arm64-msvc.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.darwin-x64.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.darwin-universal.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.darwin-arm64.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.freebsd-x64.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-x64-musl.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-x64-gnu.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-arm64-musl.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-arm64-gnu.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-arm-gnueabihf.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-riscv64-musl.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-s390x-gnu.node\":",
+        "Error: Failed to resolve dependency \"./resvgjs.linux-riscv64-gnu.node\":",
+        "Error: Failed to resolve dependency \"@opentelemetry/api\":",
+        "Error: Failed to resolve dependency \"\u001a/server/\u001a\":",
+        "Error: Failed to resolve dependency \"/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-android-arm-eabi\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-android-arm64\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-win32-ia32-msvc\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-win32-arm64-msvc\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-win32-x64-msvc\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-darwin-universal\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-x64-gnu\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-darwin-x64\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-arm64-musl\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-arm64-gnu\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-arm-gnueabihf\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-riscv64-musl\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-riscv64-gnu\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-s390x-gnu\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-linux-x64-musl\":",
+        "Error: Failed to resolve dependency \"@resvg/resvg-js-freebsd-x64\":",
+        "Error: Failed to resolve dependency \"critters\":",
+        "Error: Failed to resolve dependency \"\u001a/server/middleware.js\":",
+        "Error: Failed to resolve dependency \"react-server-dom-webpack/server\":",
+        "Error: Failed to resolve dependency \"react-server-dom-webpack/client\":",
+        "Error: Failed to resolve dependency \"react-server-dom-webpack/static\":",
+        "Error: Failed to resolve dependency \"react-server-dom-turbopack/client\":",
+        "Error: Failed to resolve dependency \"react-server-dom-turbopack/static\":",
+        "Error: Failed to resolve dependency \"react-server-dom-turbopack/server\":",
+        "Error: Failed to resolve dependency \"react-server-dom-webpack/server.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-libvips-dev/include\":",
+        "Error: Failed to resolve dependency \"@img/sharp-libvips-dev/cplusplus\":",
+        "Error: Failed to resolve dependency \"@img/sharp-wasm32/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-wasm32/versions\":",
+        "Error: Failed to resolve dependency \"@img/sharp-darwin-x64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-arm/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-arm64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-ppc64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-s390x/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-riscv64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linux-x64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linuxmusl-arm64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-freebsd-wasm32/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-win32-x64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-win32-ia32/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-win32-arm64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-linuxmusl-x64/sharp.node\":",
+        "Error: Failed to resolve dependency \"@img/sharp-libvips-\u001a/package\":",
+        "Error: Failed to resolve dependency \"@img/sharp-webcontainers-wasm32/sharp.node\":",
+        "Error: Failed to resolve dependency \"@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts\":",
+        "Error: Failed to resolve dependency \"@next/swc/native/next-swc.\u001a.node\":",
+        "Error: Failed to resolve dependency \"\u001a/package.json\":"
+      ]
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0,
+      "summary": " Test Files  95 passed (95)\n      Tests  863 passed (863)\n   Start at  15:35:34\n   Duration  516.00s (tests 97%, import 3%)"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "summary": "Final pass after formatting the newly archived regression JSON."
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "summary": "120 tasks, 298 requirements, no missing IDs or cycles."
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "summary": "5 rejection cases passed."
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-158/ui/full-browser-3 pnpm run test:browser",
+      "exitCode": 0,
+      "report": "full-browser/runner-third.json",
+      "previousFailures": "regressions/full-browser-first and regressions/full-browser-second retained; the second was outside the change scope and did not recur in the unchanged third run."
+    }
+  ],
+  "scope": "Integration ran after the initial UI build; subsequent fixes changed only UI and browser verification. Final production build and UI regressions were rerun."
+}

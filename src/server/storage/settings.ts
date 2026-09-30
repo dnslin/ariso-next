@@ -143,6 +143,7 @@ export function updateStorage(
         connectionTestedAt: null,
         connectionReport: null,
         corsStatus: 'invalidated',
+        corsReport: null,
         corsRevision: null,
         corsOrigin: null,
         corsTestedAt: null,

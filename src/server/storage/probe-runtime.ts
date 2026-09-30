@@ -1,3 +1,10 @@
+import {
+  createCorsTest,
+  finishCorsTest,
+  expireCorsProbes,
+  recoverCorsProbes,
+} from './cors.ts';
+import type { CorsBrowserResult } from './cors-types.ts';
 import { setTimeout as delay } from 'node:timers/promises';
 import { and, eq, lte } from 'drizzle-orm';
 import type { Logger } from 'pino';
@@ -19,12 +26,13 @@ export function startStorageProbeRuntime(
     string,
     {
       controller: AbortController;
-      promise: ReturnType<typeof testStorageConnection>;
+      promise: Promise<unknown>;
     }
   >();
   const cleaning = new Map<string, Promise<void>>();
   const stopping = new AbortController();
   recoverProbes(context);
+  recoverCorsProbes(context);
   function clean(id: string) {
     const existing = cleaning.get(id);
     if (existing) return existing;
@@ -42,12 +50,12 @@ export function startStorageProbeRuntime(
   }
   const maintenance = (async () => {
     while (!stopping.signal.aborted) {
+      expireCorsProbes(context);
       const pending = context.db
         .select()
         .from(storageProbes)
         .where(
           and(
-            eq(storageProbes.purpose, 'connection'),
             eq(storageProbes.state, 'cleanup'),
             lte(storageProbes.nextCleanupAt, new Date()),
           ),
@@ -80,7 +88,37 @@ export function startStorageProbeRuntime(
   void maintenance.catch((err: unknown) =>
     context.logger.error({ err }, 'Storage probe maintenance stopped'),
   );
+  function corsOperation<T>(
+    storageId: string,
+    operation: (signal: AbortSignal) => Promise<T>,
+  ) {
+    if (stopping.signal.aborted)
+      throw probeError('STORAGE_STOPPING', '服务正在停止', 503);
+    if (active.has(storageId))
+      throw probeError('STORAGE_IN_USE', '该存储正在执行探测');
+    const controller = new AbortController();
+    const promise = operation(controller.signal).finally(() =>
+      active.delete(storageId),
+    );
+    active.set(storageId, { controller, promise });
+    return promise;
+  }
   return {
+    startCors(storageId: string, revision: number, origin: string | null) {
+      return corsOperation(storageId, () =>
+        createCorsTest(context, storageId, revision, origin),
+      );
+    },
+    finishCors(
+      storageId: string,
+      probeId: string,
+      origin: string | null,
+      results: CorsBrowserResult[],
+    ) {
+      return corsOperation(storageId, (signal) =>
+        finishCorsTest(context, storageId, probeId, origin, results, signal),
+      );
+    },
     test(storageId: string, input: ProbeInput, signal?: AbortSignal) {
       if (stopping.signal.aborted)
         throw probeError('STORAGE_STOPPING', '服务正在停止', 503);
@@ -120,11 +158,7 @@ export function startStorageProbeRuntime(
         )
         .get();
       if (!probe) throw probeError('STORAGE_NOT_FOUND', '探测记录不存在', 404);
-      if (
-        probe.purpose !== 'connection' ||
-        probe.state !== 'cleanup' ||
-        active.has(storageId)
-      )
+      if (probe.state !== 'cleanup' || active.has(storageId))
         throw probeError('STORAGE_IN_USE', '探测仍在执行或由其他流程负责');
       if (!cleaning.has(probeId))
         context.db
