@@ -85,4 +85,21 @@
 
 ## PR 与远端验证
 
-待提交推送后记录 PR 和实际检查。已读取 `.github/workflows/ci.yml`（workflow_call）及 `images.yml`（release.published）；当前日常 PR 以本地适用检查为准。无检查不等于 CI 通过，不等待不存在的工作流。不合并、不主动关闭 Issue、不创建 Release、不部署、不删除分支或 worktree。
+已提交并推送实施提交 `66f0e20799f165b84618691dba613951a9104c46`，创建 [PR #214](https://github.com/dnslin/ariso-next/pull/214)，完成适用检查和两项独立复核后已转为正式待评审。当前没有本 Issue 文档范围内未完成项；T-LIB-06 的设计表达缺口及其他消费任务的真实实现/验收保持开放。
+
+推送最初停在 `git credential-osxkeychain get`。终止该次命令后，在当前命令使用用户提供的代理，并通过 `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin codex/issue-131-library-design` 使用已登录 gh 的凭据成功推送，未修改全局代理或 Git 配置。远端分支尚未建立时第一次 PR 创建被 GitHub 拒绝；推送确认后重试成功，仅创建了一个 PR。
+
+实际回读命令：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 214 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --repo dnslin/ariso-next --branch codex/issue-131-library-design --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/66f0e20/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/66f0e20/status --jq '{state,total_count}'
+gh pr ready 214 --repo dnslin/ariso-next
+```
+
+回读结果：PR OPEN、isDraft=false、CLEAN；statusCheckRollup 与分支 Actions 运行列表为空，check-runs 和 commit status 数量均为 0。status API 的聚合 pending 没有对应运行，不算 CI 通过或待等的检查。最终证据提交推送后再按其实际 SHA 复查。
+
+已读取 `.github/workflows/ci.yml`（workflow_call）及 `images.yml`（release.published）；当前日常 PR 以本地适用检查为准。无检查不等于 CI 通过，不等待不存在的工作流。不合并、不主动关闭 Issue、不创建 Release、不部署、不删除分支或 worktree。
