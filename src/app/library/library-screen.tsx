@@ -38,6 +38,8 @@ export function LibraryScreen(props: {
   albumId?: string;
   header?: ReactNode;
   children?: ReactNode;
+  afterToolbar?: ReactNode;
+  onRefresh?: () => void;
   onImageRemoved?: () => void;
 }) {
   const resetUpload = useResetUpload();
@@ -138,7 +140,13 @@ export function LibraryScreen(props: {
         )}
         <div className="grid min-w-0 gap-2">
           <LibraryToolbar
-            query={query}
+            query={{
+              ...query,
+              refresh: async () => {
+                await query.refresh();
+                props.onRefresh?.();
+              },
+            }}
             album={!!props.albumId}
             selectionMenu={
               selection.selected.size ? (
@@ -164,6 +172,7 @@ export function LibraryScreen(props: {
             />
           ) : null}
         </div>
+        {props.afterToolbar}
         {query.expired ? (
           <p role="alert">登录已失效，正在返回登录页。</p>
         ) : (

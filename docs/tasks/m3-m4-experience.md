@@ -86,6 +86,8 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
   - [ ] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
   - [ ] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
 
+实施与验证记录：[T-COL-04 / Issue #180](../verification/collections-180/README.md)。封面身份、读写与真实页面已完成本地适用检查和独立审计；选择页身份上下文位置批准和用户人工验收尚未完成，本卡不标记完成。成员批量操作与匿名分享仍由各自后置任务承接。
+
 #### DG-ALBUMS 对 T-COL-04 的核对结论（2026-09-28）
 
 依据 collections §5–8 / COL-07/11/12，沿用本卡需求编号与模块边界。[Issue #180](https://github.com/dnslin/ariso-next/issues/180) 的完整内容、封面读写与真实组合尚未实施；T-COL-02、T-LIB-04 仍开放，本核对不解除这些前置。[实时 Figma 核对证据](./evidence/DG-ALBUMS/README.md)只证明代表设计可复用。

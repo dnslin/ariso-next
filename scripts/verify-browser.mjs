@@ -26,6 +26,7 @@ for (const name of [
   'library-filters.json',
   'library-scale.json',
   'albums.json',
+  'album-cover.json',
   'upload.json',
   'upload-polling.json',
   'storage-cors.json',
@@ -353,6 +354,12 @@ try {
       report.libraryQuery = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
+      await runBrowser(
+        '../e2e/album-cover.mjs',
+        identityConfig,
+        'album-cover.log',
+      );
+      report.albumCover = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
       await runBrowser(
         '../e2e/upload-polling.mjs',

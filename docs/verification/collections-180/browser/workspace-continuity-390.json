@@ -1,0 +1,193 @@
+{
+  "status": "passed",
+  "width": 390,
+  "height": 844,
+  "checks": [
+    "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+    "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+    "Hard reload still warns for unsent work and starts a fresh document with no persisted queue.",
+    "Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.",
+    "A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held."
+  ],
+  "background": {
+    "network": {
+      "submissions": [
+        {
+          "id": "260192e2-0078-4fae-ba1a-ed973eaea639",
+          "storageId": "b2c6b397-00e8-49a7-a139-241c444d8c67",
+          "visibility": "private",
+          "maxFileBytes": 52428800,
+          "sessions": [
+            {
+              "id": "daca3ca0-f728-4c1a-95ab-e7b78c01dc1e",
+              "queueItemId": "419e92b3-acc5-4b9e-a956-8b409ae6c044",
+              "groupIndex": 0,
+              "originalName": "sample.jpg",
+              "declaredSize": 638,
+              "state": "queued",
+              "imageId": null,
+              "jobId": null,
+              "byteSize": null,
+              "errorCode": null,
+              "error": null,
+              "cleanupStatus": "none",
+              "image": null,
+              "job": null
+            }
+          ]
+        }
+      ],
+      "reads": [
+        {
+          "pathname": "/library",
+          "body": {
+            "id": "260192e2-0078-4fae-ba1a-ed973eaea639",
+            "storageId": "b2c6b397-00e8-49a7-a139-241c444d8c67",
+            "visibility": "private",
+            "maxFileBytes": 52428800,
+            "sessions": [
+              {
+                "id": "daca3ca0-f728-4c1a-95ab-e7b78c01dc1e",
+                "queueItemId": "419e92b3-acc5-4b9e-a956-8b409ae6c044",
+                "groupIndex": 0,
+                "originalName": "sample.jpg",
+                "declaredSize": 638,
+                "state": "accepted",
+                "imageId": "ab6dd65b-34aa-4638-9652-3500cb310186",
+                "jobId": "4e6dd2c7-919e-4d2f-9f9a-cf1a8096a3a8",
+                "byteSize": 638,
+                "errorCode": null,
+                "error": null,
+                "cleanupStatus": "none",
+                "image": {
+                  "id": "ab6dd65b-34aa-4638-9652-3500cb310186",
+                  "storageId": "b2c6b397-00e8-49a7-a139-241c444d8c67",
+                  "originalName": "sample.jpg",
+                  "displayName": "sample",
+                  "visibility": "private",
+                  "format": "JPEG",
+                  "mime": "image/jpeg",
+                  "width": 64,
+                  "height": 48,
+                  "byteSize": 638,
+                  "animated": false,
+                  "pageCount": 1,
+                  "classification": "static",
+                  "processingStatus": "ready",
+                  "trashedAt": null,
+                  "deletionStatus": null,
+                  "createdAt": "2026-09-30T20:18:39.088Z",
+                  "updatedAt": "2026-09-30T20:18:39.491Z"
+                },
+                "job": {
+                  "id": "4e6dd2c7-919e-4d2f-9f9a-cf1a8096a3a8",
+                  "imageId": "ab6dd65b-34aa-4638-9652-3500cb310186",
+                  "kind": "process",
+                  "scope": "all",
+                  "snapshot": {
+                    "compressionEnabled": true,
+                    "outputFormat": "webp",
+                    "quality": 82,
+                    "maxEdge": null,
+                    "jpegBackground": "#FFFFFF",
+                    "watermarkMode": "off",
+                    "watermarkText": "",
+                    "watermarkFont": "chinese",
+                    "watermarkFontSize": 3,
+                    "watermarkColor": "#FFFFFF",
+                    "watermarkStrokeColor": "#000000",
+                    "watermarkStrokeWidth": 0,
+                    "watermarkOpacity": 50,
+                    "watermarkPosition": "bottom-right",
+                    "watermarkMargin": 2,
+                    "watermarkWidth": 20,
+                    "watermarkAsset": null,
+                    "defaultVisibility": "public"
+                  },
+                  "expectedVersions": ["compressed", "thumbnail"],
+                  "status": "succeeded",
+                  "error": null,
+                  "step": "complete",
+                  "retryCount": 0,
+                  "recoveryCount": 0,
+                  "nextAttemptAt": null,
+                  "startedAt": "2026-09-30T20:18:39.104Z",
+                  "finishedAt": "2026-09-30T20:18:39.491Z",
+                  "createdAt": "2026-09-30T20:18:39.088Z",
+                  "updatedAt": "2026-09-30T20:18:39.491Z"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "heldReadPaths": ["/upload"]
+    },
+    "returned": {
+      "document": "f1eb3309-7f0d-4eb8-8123-3a9df864b5ce",
+      "rows": [
+        {
+          "id": "419e92b3-acc5-4b9e-a956-8b409ae6c044",
+          "image": "ab6dd65b-34aa-4638-9652-3500cb310186"
+        }
+      ]
+    },
+    "persisted": [
+      {
+        "queue_item_id": "419e92b3-acc5-4b9e-a956-8b409ae6c044",
+        "image_id": "ab6dd65b-34aa-4638-9652-3500cb310186",
+        "state": "accepted"
+      }
+    ]
+  },
+  "hardRefresh": {
+    "document": "da1e9e4d-6c71-42c3-9a4a-b9072d5021a7",
+    "trace": {
+      "revoked": [
+        "blob:http://ariso-64759.localhost:64759/01079ce3-bfb4-4d5a-befc-2b1a246973f4"
+      ],
+      "unloads": [
+        {
+          "prevented": true,
+          "document": "f1eb3309-7f0d-4eb8-8123-3a9df864b5ce"
+        }
+      ]
+    }
+  },
+  "logout": {
+    "revoked": [
+      "blob:http://ariso-64759.localhost:64759/01079ce3-bfb4-4d5a-befc-2b1a246973f4",
+      "blob:http://ariso-64759.localhost:64759/ef791699-fa0b-4947-b9a5-eeaeebb2a74f"
+    ],
+    "unloads": [
+      {
+        "prevented": true,
+        "document": "f1eb3309-7f0d-4eb8-8123-3a9df864b5ce"
+      }
+    ]
+  },
+  "expiry": {
+    "revoked": [
+      "blob:http://ariso-64759.localhost:64759/01079ce3-bfb4-4d5a-befc-2b1a246973f4",
+      "blob:http://ariso-64759.localhost:64759/ef791699-fa0b-4947-b9a5-eeaeebb2a74f",
+      "blob:http://ariso-64759.localhost:64759/e4dc4cd2-6dc2-4b59-8795-44dcd462a7fb"
+    ],
+    "unloads": [
+      {
+        "prevented": true,
+        "document": "f1eb3309-7f0d-4eb8-8123-3a9df864b5ce"
+      }
+    ]
+  },
+  "result401": {
+    "imageId": "52a00ea7-9032-4b83-8179-c937f648f4e4",
+    "reads": [
+      {
+        "path": "/api/images/52a00ea7-9032-4b83-8179-c937f648f4e4",
+        "status": 401
+      }
+    ],
+    "sessionChecksHeld": 3,
+    "beforeUnload": [false]
+  }
+}
