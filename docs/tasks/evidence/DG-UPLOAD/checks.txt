@@ -1,0 +1,23 @@
+2026-09-30 Asia/Shanghai | Darwin arm64 | Node 24.18.1 | pnpm 11.19.0
+
+$ pnpm run format:check
+Already up to date
+Done in 56ms using pnpm v11.19.0
+$ prettier . --check
+Checking formatting...
+All matched files use Prettier code style!
+
+$ node docs/tasks/check.mjs
+PASS: 120 tasks, 298 requirements, no missing IDs or cycles.
+exit=0
+
+$ node docs/tasks/check.mjs --self-test
+Self-test: 5 rejection cases passed.
+exit=0
+
+$ git diff --check
+exit=0
+
+$ python3 /tmp/ariso-141-check-evidence.py
+PASS: 166 relative file links, 20 new anchors, 46 referenced Figma IDs, 64 unique nodes, 12 PNG dimensions, 3 native consumers.
+exit=0
