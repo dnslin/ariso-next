@@ -6,11 +6,19 @@ const { identitySql } = await import(config.identitySessionScript);
 const { verifyLibraryFilters } = await import(
   new URL('./library-query-filters.mjs', config.libraryDetailScript).href
 );
+const { verifyLibrarySelection } = await import(
+  new URL('./library-selection.mjs', config.libraryDetailScript).href
+);
 const { verifyLibraryScale } = await import(
   new URL('./library-query-scale.mjs', config.libraryDetailScript).href
 );
+const { signInToLibrary } = await import(
+  new URL('./library-login.mjs', config.libraryDetailScript).href
+);
 const page = (await taskSpace(config.spaceId)).page('p1');
+const phase = config.libraryQueryPhase ?? 'query';
 const report = {
+  phase,
   status: 'failed',
   checks: [],
   combinations: [],
@@ -121,26 +129,7 @@ try {
       !!document.querySelector('[data-testid="library-list"]'),
   );
   if (new URL(await page.url()).pathname === '/login') {
-    await page.waitForSelector('#email');
-    await page.fill('#email', config.credentials.email);
-    await page.fill('#password', config.credentials.password);
-    await page.click(button('登录'));
-    await page.waitForFunction(
-      () =>
-        location.pathname === '/library' ||
-        document
-          .querySelector('[role="alert"]')
-          ?.textContent.includes('HTTP 429'),
-    );
-    if (new URL(await page.url()).pathname === '/login') {
-      await page.waitForFunction(
-        () => !document.querySelector('button[type="submit"]').disabled,
-        undefined,
-        { timeout: 15000 },
-      );
-      await page.click(button('登录'));
-    }
-    await page.waitForSelector('[data-testid="library-list"]');
+    await signInToLibrary(page, config, report);
   }
   savedPreference = await page.evaluate(
     (key) => localStorage.getItem(key),
@@ -175,175 +164,162 @@ try {
   await visit();
   await loaded(40);
   await resize(1440);
-  await monitor();
+  if (phase === 'selection') {
+    await verifyLibrarySelection({ page, config, report });
+  } else if (phase === 'filters') {
+    await verifyLibraryFilters({ page, config, sql, report });
+  } else if (phase === 'scale') {
+    await verifyLibraryScale({ page, config, sql, report });
+  } else {
+    await monitor();
 
-  // Every combination uses the real endpoint and the dedicated 93-row query.
-  for (const mode of ['more', 'pages']) {
-    await select('图片加载方式', mode === 'more' ? '加载更多' : '分页');
-    await page.waitForFunction(
-      (mode) =>
-        document.querySelector('[data-testid="library-list"]').dataset
-          .loadingMode === mode,
-      mode,
-    );
-    await loaded(
-      Number(new URL(await page.url()).searchParams.get('pageSize')),
-    );
-    for (const layout of ['grid', 'masonry']) {
-      const before = (await state()).requests;
-      await page.click(button(layout === 'grid' ? '网格' : '瀑布流'));
+    // Every combination uses the real endpoint and the dedicated 93-row query.
+    for (const mode of ['more', 'pages']) {
+      await select('图片加载方式', mode === 'more' ? '加载更多' : '分页');
       await page.waitForFunction(
-        (layout) =>
+        (mode) =>
           document.querySelector('[data-testid="library-list"]').dataset
-            .layout === layout,
-        layout,
+            .loadingMode === mode,
+        mode,
       );
-      await settle();
-      assert.equal(
-        (await state()).requests,
-        before,
-        'Layout change must not request images',
+      await loaded(
+        Number(new URL(await page.url()).searchParams.get('pageSize')),
       );
-      for (const size of [20, 40, 80]) {
-        await select('每批图片数', `${size} 张 / 批`);
-        await loaded(size);
-        assert.equal(
-          new URL(await page.url()).searchParams.get('pageSize'),
-          String(size),
-        );
-        assert.match((await state()).count, new RegExp(`93.*${size}`));
-        if (mode === 'more') {
-          await page.click('[data-testid="library-load-more"]');
-          await loaded(Math.min(size * 2, 93));
-          await page.click(button('刷新图库'));
-          await loaded(size);
-        } else {
-          await page.click(button('下一页'));
-          await page.waitForFunction(
-            () => new URL(location.href).searchParams.get('page') === '2',
-          );
-          await loaded(Math.min(size, 93 - size));
-          await page.click(button('上一页'));
-          await page.waitForFunction(
-            () => new URL(location.href).searchParams.get('page') === '1',
-          );
-          await loaded(size);
-        }
-        report.combinations.push({
+      for (const layout of ['grid', 'masonry']) {
+        const before = (await state()).requests;
+        await page.click(button(layout === 'grid' ? '网格' : '瀑布流'));
+        await page.waitForFunction(
+          (layout) =>
+            document.querySelector('[data-testid="library-list"]').dataset
+              .layout === layout,
           layout,
-          mode,
-          pageSize: size,
-          status: 'passed',
-        });
-      }
-      for (const width of [1440, 390]) {
-        await resize(width);
-        await shot(`${layout}-${mode}-${width}`);
-        assert.equal(
-          await page.evaluate(() => {
-            const main = document.querySelector('main');
-            return (
-              main.scrollWidth <= main.clientWidth &&
-              document.documentElement.scrollWidth <= innerWidth
-            );
-          }),
-          true,
-          'Gallery has no horizontal overflow',
         );
+        await settle();
+        assert.equal(
+          (await state()).requests,
+          before,
+          'Layout change must not request images',
+        );
+        for (const size of [20, 40, 80]) {
+          await select('每批图片数', `${size} 张 / 批`);
+          await loaded(size);
+          assert.equal(
+            new URL(await page.url()).searchParams.get('pageSize'),
+            String(size),
+          );
+          assert.match((await state()).count, new RegExp(`93.*${size}`));
+          if (mode === 'more') {
+            await page.click('[data-testid="library-load-more"]');
+            await loaded(Math.min(size * 2, 93));
+            await page.click(button('刷新图库'));
+            await loaded(size);
+          } else {
+            await page.click(button('下一页'));
+            await page.waitForFunction(
+              () => new URL(location.href).searchParams.get('page') === '2',
+            );
+            await loaded(Math.min(size, 93 - size));
+            await page.click(button('上一页'));
+            await page.waitForFunction(
+              () => new URL(location.href).searchParams.get('page') === '1',
+            );
+            await loaded(size);
+          }
+          report.combinations.push({
+            layout,
+            mode,
+            pageSize: size,
+            status: 'passed',
+          });
+        }
+        for (const width of [1440, 390]) {
+          await resize(width);
+          await shot(`${layout}-${mode}-${width}`);
+          assert.equal(
+            await page.evaluate(() => {
+              const main = document.querySelector('main');
+              return (
+                main.scrollWidth <= main.clientWidth &&
+                document.documentElement.scrollWidth <= innerWidth
+              );
+            }),
+            true,
+            'Gallery has no horizontal overflow',
+          );
+        }
+        await resize(1440);
       }
-      await resize(1440);
     }
-  }
-  report.checks.push(
-    'All four layout/loading combinations execute 20/40/80 against real SQLite; layout produces zero list requests; page size restarts at the beginning.',
-  );
+    report.checks.push(
+      'All four layout/loading combinations execute 20/40/80 against real SQLite; layout produces zero list requests; page size restarts at the beginning.',
+    );
 
-  await select('每批图片数', '20 张 / 批');
-  await loaded(20);
-  const beforeDraft = await state();
-  await page.fill('input[aria-label="搜索图片名称"]', 'issue173-alpha');
-  await settle();
-  assert.equal((await state()).requests, beforeDraft.requests);
-  assert.equal((await state()).history, beforeDraft.history);
-  assert.equal((await state()).pushes, beforeDraft.pushes);
-  assert.equal((await state()).url, beforeDraft.url);
-  await page.press('input[aria-label="搜索图片名称"]', 'Enter');
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('q') === 'issue173-alpha',
-  );
-  await loaded(20);
-  assert.equal((await state()).pushes, beforeDraft.pushes + 1);
-  assert.match((await state()).count, /47.*20/);
-  await page.evaluate(() => history.back());
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('q') === 'issue173-',
-  );
-  await loaded(20);
-  await page.evaluate(() => history.forward());
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('q') === 'issue173-alpha',
-  );
-  await loaded(20);
-  await page.click(button('下一页'));
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('page') === '2',
-  );
-  await loaded(20);
-  const linked = await page.url();
-  // A copied page link must work in a browser whose saved mode is still "more".
-  await page.evaluate(
-    (key) =>
-      localStorage.setItem(
-        key,
-        JSON.stringify({ layout: 'grid', loadingMode: 'more' }),
-      ),
-    preferenceKey,
-  );
-  await page.goto(linked);
-  await loaded(20);
-  assert.equal(new URL(await page.url()).searchParams.get('page'), '2');
-  assert.equal((await state()).loadingMode, 'pages');
-  assert.equal(
-    await page.evaluate(
-      () =>
-        document.querySelector('[data-testid="library-card"]').dataset.imageId,
-    ),
-    'issue173-040',
-  );
-  await monitor();
-  await page.evaluate(() =>
-    document.querySelector('.shell-content').scrollTo(0, 500),
-  );
-  await page.waitForFunction(
-    () => document.querySelector('.shell-content').scrollTop >= 490,
-  );
-  await page.click(button('下一页'));
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('page') === '3',
-  );
-  await loaded(7);
-  const beforeBack = (await state()).requests;
-  await page.evaluate(() => history.back());
-  await page.waitForFunction(
-    () => new URL(location.href).searchParams.get('page') === '2',
-  );
-  await loaded(20);
-  await page.waitForFunction(
-    () => document.querySelector('.shell-content').scrollTop >= 490,
-  );
-  assert.equal(
-    (await state()).requests,
-    beforeBack,
-    'Back restores cached page without another list request',
-  );
-  // Cached short pages must not let their late scroll-to-zero event overwrite
-  // the taller destination's saved offset during rapid Back/Forward traversal.
-  for (let round = 0; round < 3; round++) {
+    await select('每批图片数', '20 张 / 批');
+    await loaded(20);
+    const beforeDraft = await state();
+    await page.fill('input[aria-label="搜索图片名称"]', 'issue173-alpha');
+    await settle();
+    assert.equal((await state()).requests, beforeDraft.requests);
+    assert.equal((await state()).history, beforeDraft.history);
+    assert.equal((await state()).pushes, beforeDraft.pushes);
+    assert.equal((await state()).url, beforeDraft.url);
+    await page.press('input[aria-label="搜索图片名称"]', 'Enter');
+    await page.waitForFunction(
+      () => new URL(location.href).searchParams.get('q') === 'issue173-alpha',
+    );
+    await loaded(20);
+    assert.equal((await state()).pushes, beforeDraft.pushes + 1);
+    assert.match((await state()).count, /47.*20/);
+    await page.evaluate(() => history.back());
+    await page.waitForFunction(
+      () => new URL(location.href).searchParams.get('q') === 'issue173-',
+    );
+    await loaded(20);
     await page.evaluate(() => history.forward());
+    await page.waitForFunction(
+      () => new URL(location.href).searchParams.get('q') === 'issue173-alpha',
+    );
+    await loaded(20);
+    await page.click(button('下一页'));
+    await page.waitForFunction(
+      () => new URL(location.href).searchParams.get('page') === '2',
+    );
+    await loaded(20);
+    const linked = await page.url();
+    // A copied page link must work in a browser whose saved mode is still "more".
+    await page.evaluate(
+      (key) =>
+        localStorage.setItem(
+          key,
+          JSON.stringify({ layout: 'grid', loadingMode: 'more' }),
+        ),
+      preferenceKey,
+    );
+    await page.goto(linked);
+    await loaded(20);
+    assert.equal(new URL(await page.url()).searchParams.get('page'), '2');
+    assert.equal((await state()).loadingMode, 'pages');
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="library-card"]').dataset
+            .imageId,
+      ),
+      'issue173-040',
+    );
+    await monitor();
+    await page.evaluate(() =>
+      document.querySelector('.shell-content').scrollTo(0, 500),
+    );
+    await page.waitForFunction(
+      () => document.querySelector('.shell-content').scrollTop >= 490,
+    );
+    await page.click(button('下一页'));
     await page.waitForFunction(
       () => new URL(location.href).searchParams.get('page') === '3',
     );
     await loaded(7);
+    const beforeBack = (await state()).requests;
     await page.evaluate(() => history.back());
     await page.waitForFunction(
       () => new URL(location.href).searchParams.get('page') === '2',
@@ -352,145 +328,188 @@ try {
     await page.waitForFunction(
       () => document.querySelector('.shell-content').scrollTop >= 490,
     );
-  }
-  assert.equal(
-    (await state()).requests,
-    beforeBack,
-    'Repeated cached history restoration must not refetch',
-  );
-  report.checks.push(
-    'Back and repeated Forward/Back restore the previous cached page and the actual main-container scroll offset.',
-  );
-  const beforeImage = (await state()).requests;
-  await page.click('[data-testid="library-card"] button >> nth=0');
-  await page.waitForSelector('loc=role:dialog[name="图片详情"]');
-  await page.click(button('关闭图片详情'));
-  await page.waitForFunction(
-    () => !new URL(location.href).searchParams.has('image'),
-  );
-  assert.equal((await state()).requests, beforeImage);
-  report.checks.push(
-    'Search drafts change neither URL nor request/history count; submit adds one history entry; Back/Forward restores filters; copied pages restore their real items; image-only navigation causes no list request.',
-  );
+    assert.equal(
+      (await state()).requests,
+      beforeBack,
+      'Back restores cached page without another list request',
+    );
+    // Cached short pages must not let their late scroll-to-zero event overwrite
+    // the taller destination's saved offset during rapid Back/Forward traversal.
+    for (let round = 0; round < 3; round++) {
+      await page.evaluate(() => history.forward());
+      await page.waitForFunction(
+        () => new URL(location.href).searchParams.get('page') === '3',
+      );
+      await loaded(7);
+      await page.evaluate(() => history.back());
+      await page.waitForFunction(
+        () => new URL(location.href).searchParams.get('page') === '2',
+      );
+      await loaded(20);
+      await page.waitForFunction(
+        () => document.querySelector('.shell-content').scrollTop >= 490,
+      );
+    }
+    assert.equal(
+      (await state()).requests,
+      beforeBack,
+      'Repeated cached history restoration must not refetch',
+    );
+    report.checks.push(
+      'Back and repeated Forward/Back restore the previous cached page and the actual main-container scroll offset.',
+    );
+    const beforeImage = (await state()).requests;
+    await page.click('[data-testid="library-card"] button >> nth=0');
+    await page.waitForSelector('loc=role:dialog[name="图片详情"]');
+    await page.click(button('关闭图片详情'));
+    await page.waitForFunction(
+      () => !new URL(location.href).searchParams.has('image'),
+    );
+    assert.equal((await state()).requests, beforeImage);
+    report.checks.push(
+      'Search drafts change neither URL nor request/history count; submit adds one history entry; Back/Forward restores filters; copied pages restore their real items; image-only navigation causes no list request.',
+    );
 
-  await page.evaluate(() => {
-    window.__queryFault = 'hold';
-  });
-  await page.fill('input[aria-label="搜索图片名称"]', 'issue173-beta');
-  await page.press('input[aria-label="搜索图片名称"]', 'Enter');
-  await page.waitForFunction(() => typeof window.__queryRelease === 'function');
-  assert.equal(
-    await page.evaluate(() =>
-      [
-        ...document.querySelectorAll('[data-testid="library-card"] button'),
-      ].every((node) => node.disabled),
-    ),
-    true,
-    'Previous query cards are absent or disabled',
-  );
-  await search('issue173-alpha', 20);
-  await page.evaluate(() => window.__queryRelease());
-  await settle();
-  assert.match((await state()).count, /47.*20/);
-  assert.equal(
-    await page.evaluate(() =>
-      [...document.querySelectorAll('[data-testid="library-card"]')].every(
-        (node) => node.textContent.includes('issue173-alpha'),
+    await page.evaluate(() => {
+      window.__queryFault = 'hold';
+    });
+    await page.fill('input[aria-label="搜索图片名称"]', 'issue173-beta');
+    await page.press('input[aria-label="搜索图片名称"]', 'Enter');
+    await page.waitForFunction(
+      () => typeof window.__queryRelease === 'function',
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        [
+          ...document.querySelectorAll('[data-testid="library-card"] button'),
+        ].every((node) => node.disabled),
       ),
-    ),
-    true,
-  );
-  report.checks.push(
-    'A held real beta response arriving after a newer alpha query never replaces alpha results or exposes old-query actions.',
-  );
+      true,
+      'Previous query cards are absent or disabled',
+    );
+    await search('issue173-alpha', 20);
+    await page.evaluate(() => window.__queryRelease());
+    await settle();
+    assert.match((await state()).count, /47.*20/);
+    assert.equal(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('[data-testid="library-card"]')].every(
+          (node) => node.textContent.includes('issue173-alpha'),
+        ),
+      ),
+      true,
+    );
+    report.checks.push(
+      'A held real beta response arriving after a newer alpha query never replaces alpha results or exposes old-query actions.',
+    );
 
-  await visit(
-    'q=issue173-&tagId=issue173-a&tagId=issue173-b&tagId=issue173-a&pageSize=20&page=1',
-  );
-  await loaded(2);
-  assert.match((await state()).count, /2 张图片/);
-  await visit('q=issue173-&tagId=issue173-deleted');
-  await page.waitForSelector('[data-testid="library-error"]');
-  assert.equal(
-    new URL(await page.url()).searchParams.get('tagId'),
-    'issue173-deleted',
-  );
-  assert.equal((await state()).loadedCount, '0');
-  await shot('invalid-reference');
-  await visit('pageSize=41&sort=invalid');
-  await page.waitForSelector('[data-testid="library-error"]');
-  await page.click(button('重置查询'));
-  await page.waitForFunction(
-    () =>
-      !document.querySelector('[data-testid="library-error"]') &&
-      Number(
-        document.querySelector('[data-testid="library-list"]').dataset
-          .loadedCount,
-      ) > 0,
-  );
-  report.checks.push(
-    'Repeated tag IDs retain any-tag matching without duplicate images; a removed tag keeps its URL and shows an explicit failure; malformed URL has a working reset.',
-  );
+    await visit(
+      'q=issue173-&tagId=issue173-a&tagId=issue173-b&tagId=issue173-a&pageSize=20&page=1',
+    );
+    await loaded(2);
+    assert.match((await state()).count, /2 张图片/);
+    await visit('q=issue173-&tagId=issue173-deleted');
+    await page.waitForSelector('[data-testid="library-error"]');
+    assert.equal(
+      new URL(await page.url()).searchParams.get('tagId'),
+      'issue173-deleted',
+    );
+    assert.equal((await state()).loadedCount, '0');
+    await shot('invalid-reference');
+    await visit('pageSize=41&sort=invalid');
+    await page.waitForSelector('[data-testid="library-error"]');
+    await page.click(button('重置查询'));
+    await page.waitForFunction(
+      () =>
+        !document.querySelector('[data-testid="library-error"]') &&
+        Number(
+          document.querySelector('[data-testid="library-list"]').dataset
+            .loadedCount,
+        ) > 0,
+    );
+    report.checks.push(
+      'Repeated tag IDs retain any-tag matching without duplicate images; a removed tag keeps its URL and shows an explicit failure; malformed URL has a working reset.',
+    );
 
-  await search('issue173-', 40);
-  await select('图片加载方式', '加载更多');
-  await loaded(40);
-  await monitor();
-  await page.evaluate(() => {
-    window.__queryFault = 'cursor';
-  });
-  await page.click('[data-testid="library-load-more"]');
-  await page.waitForSelector('[data-testid="library-error"]');
-  await loaded(40);
-  await page.click(button('重试加载'));
-  await loaded(40);
-  await page.waitForFunction(
-    () => !document.querySelector('[data-testid="library-error"]'),
-  );
-  await page.click('[data-testid="library-load-more"]');
-  await loaded(80);
-  const beforeExternal = (await state()).requests;
-  await page.evaluate(() =>
-    window.dispatchEvent(new Event('ariso:library-changed')),
-  );
-  await page.waitForFunction(() =>
-    document.body.textContent.includes('图片列表可能已变化'),
-  );
-  assert.equal((await state()).requests, beforeExternal);
-  assert.equal((await state()).loadedCount, '80');
-  await page.click(button('刷新图库'));
-  await loaded(40);
-  report.checks.push(
-    'A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; external change notification retains cards until explicit refresh.',
-  );
+    await search('issue173-', 40);
+    await select('图片加载方式', '加载更多');
+    await loaded(40);
+    await monitor();
+    await page.evaluate(() => {
+      window.__queryFault = 'cursor';
+    });
+    await page.click('[data-testid="library-load-more"]');
+    await page.waitForSelector('[data-testid="library-error"]');
+    await loaded(40);
+    await page.click(button('重试加载'));
+    await loaded(40);
+    await page.waitForFunction(
+      () => !document.querySelector('[data-testid="library-error"]'),
+    );
+    await page.click('[data-testid="library-load-more"]');
+    await loaded(80);
+    const beforeExternal = (await state()).requests;
+    await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(resolve)),
+    );
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-refresh-available="true"]'),
+      ),
+      false,
+      'Returning to the window does not imply that library data changed',
+    );
+    assert.equal((await state()).requests, beforeExternal);
+    await page.evaluate(() =>
+      window.dispatchEvent(new Event('ariso:library-changed')),
+    );
+    await page.waitForFunction(
+      () => !!document.querySelector('[data-refresh-available="true"]'),
+    );
+    assert.equal((await state()).requests, beforeExternal);
+    assert.equal((await state()).loadedCount, '80');
+    await page.click(button('刷新图库'));
+    await loaded(40);
+    report.checks.push(
+      'A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; external change notification retains cards until explicit refresh.',
+    );
 
-  await verifyLibraryFilters({ page, config, sql, report });
-  await verifyLibraryScale({ page, config, sql, report });
-
-  ({ identifier: blockedStorageScript } = await page.cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    {
-      source: `(() => { const get = Storage.prototype.getItem; const set = Storage.prototype.setItem; Storage.prototype.getItem = function(key) { if (key === '${preferenceKey}') throw new DOMException('Controlled unavailable preference storage', 'SecurityError'); return get.call(this, key); }; Storage.prototype.setItem = function(key, value) { if (key === '${preferenceKey}') throw new DOMException('Controlled unavailable preference storage', 'SecurityError'); return set.call(this, key, value); }; })();`,
-    },
-  ));
-  await visit();
-  await loaded(40);
-  assert.equal((await state()).layout, 'grid');
-  assert.equal((await state()).loadingMode, 'more');
-  await page.click(button('瀑布流'));
-  await select('图片加载方式', '分页');
-  await loaded(40);
-  assert.equal((await state()).layout, 'masonry');
-  assert.equal((await state()).loadingMode, 'pages');
-  await search('issue173-alpha', 40);
-  assert.equal((await state()).layout, 'masonry');
-  assert.equal((await state()).loadingMode, 'pages');
-  report.checks.push(
-    'When only the library preference key is unavailable, defaults load real images and changed layout/loading preferences survive subsequent in-session queries.',
-  );
+    ({ identifier: blockedStorageScript } = await page.cdp(
+      'Page.addScriptToEvaluateOnNewDocument',
+      {
+        source: `(() => { const get = Storage.prototype.getItem; const set = Storage.prototype.setItem; Storage.prototype.getItem = function(key) { if (key === '${preferenceKey}') throw new DOMException('Controlled unavailable preference storage', 'SecurityError'); return get.call(this, key); }; Storage.prototype.setItem = function(key, value) { if (key === '${preferenceKey}') throw new DOMException('Controlled unavailable preference storage', 'SecurityError'); return set.call(this, key, value); }; })();`,
+      },
+    ));
+    await visit();
+    await loaded(40);
+    assert.equal((await state()).layout, 'grid');
+    assert.equal((await state()).loadingMode, 'more');
+    await page.click(button('瀑布流'));
+    await select('图片加载方式', '分页');
+    await loaded(40);
+    assert.equal((await state()).layout, 'masonry');
+    assert.equal((await state()).loadingMode, 'pages');
+    await search('issue173-alpha', 40);
+    assert.equal((await state()).layout, 'masonry');
+    assert.equal((await state()).loadingMode, 'pages');
+    report.checks.push(
+      'When only the library preference key is unavailable, defaults load real images and changed layout/loading preferences survive subsequent in-session queries.',
+    );
+  }
   report.status = 'passed';
 } catch (error) {
   report.error = String(error.stack ?? error);
+  report.failureState = await page.evaluate(() => ({
+    url: location.href,
+    readyState: document.readyState,
+    hasLibrary: !!document.querySelector('[data-testid="library-list"]'),
+    alerts: [...document.querySelectorAll('[role="alert"]')].map(
+      (node) => node.textContent,
+    ),
+    loginBusy: document.querySelector('button[type="submit"]')?.disabled,
+  }));
+  await shot('failure');
   throw error;
 } finally {
   if (blockedStorageScript)
@@ -512,7 +531,7 @@ try {
       { key: preferenceKey, value: savedPreference },
     );
   await writeFile(
-    join(config.output, 'library-query.json'),
+    join(config.output, `library-${phase}.json`),
     `${JSON.stringify(report, null, 2)}\n`,
   );
 }

@@ -3,6 +3,7 @@
 import {
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -160,26 +161,30 @@ export function useLibraryQuery(
   const active = loadingMode === 'pages' ? paged : infinite;
   const expired =
     active.error instanceof LibraryReadError && active.error.status === 401;
-  const pages =
-    !enabled || expired
-      ? []
-      : loadingMode === 'pages'
-        ? paged.data
-          ? [paged.data]
-          : []
-        : (infinite.data?.pages ?? []);
-  const items = [
-    ...new Map(
-      pages.flatMap((entry) => entry.items).map((item) => [item.id, item]),
-    ).values(),
-  ];
+  const pages = useMemo(
+    () =>
+      !enabled || expired
+        ? []
+        : loadingMode === 'pages'
+          ? paged.data
+            ? [paged.data]
+            : []
+          : (infinite.data?.pages ?? []),
+    [enabled, expired, loadingMode, paged.data, infinite.data],
+  );
+  const items = useMemo(
+    () => [
+      ...new Map(
+        pages.flatMap((entry) => entry.items).map((item) => [item.id, item]),
+      ).values(),
+    ],
+    [pages],
+  );
   const [refreshAvailable, setRefreshAvailable] = useState(false);
   useEffect(() => {
     const changed = () => setRefreshAvailable(true);
-    window.addEventListener('focus', changed);
     window.addEventListener('ariso:library-changed', changed);
     return () => {
-      window.removeEventListener('focus', changed);
       window.removeEventListener('ariso:library-changed', changed);
     };
   }, []);

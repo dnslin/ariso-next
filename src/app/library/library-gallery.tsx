@@ -8,18 +8,22 @@ import {
   type GalleryLayout,
 } from './gallery-layout';
 import { LibraryCard } from './library-card';
+import { GalleryDragSelection } from './gallery-drag-selection';
+import type { LibrarySelection } from './use-library-selection';
 
 export function LibraryGallery({
   items,
   layout,
   album = false,
   disabled,
+  selection,
   onOpen,
 }: {
   items: LibraryItem[];
   layout: GalleryLayout;
   album?: boolean;
   disabled: boolean;
+  selection: LibrarySelection;
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
@@ -89,6 +93,13 @@ export function LibraryGallery({
       className="relative w-full"
       style={{ height: viewport.width ? positions.height : 210 }}
     >
+      <GalleryDragSelection
+        container={container}
+        slots={positions.slots}
+        items={items}
+        selection={selection}
+        disabled={disabled}
+      />
       {viewport.width
         ? indexes.map((index) => {
             const slot = positions.slots[index];
@@ -114,6 +125,8 @@ export function LibraryGallery({
                   album={album}
                   imageHeight={slot.imageHeight}
                   isDisabled={disabled}
+                  isSelected={selection.selected.has(item.id)}
+                  onToggle={selection.toggle}
                   onOpen={onOpen}
                 />
               </div>

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { verifyLargeLibrarySelection } from './library-selection.mjs';
 
 /** Real disposable SQLite records and the existing production list endpoint. */
 export async function verifyLibraryScale({ page, config, sql, report }) {
@@ -248,7 +249,9 @@ export async function verifyLibraryScale({ page, config, sql, report }) {
       false,
       'Next keyboard target initially lies outside the mounted window',
     );
-    await page.focus(`[data-image-id="${id(boundary)}"] button`);
+    await page.focus(
+      `[data-image-id="${id(boundary)}"] button[aria-label^="查看图片"]`,
+    );
     for (let offset = 1; offset <= 3; offset++) {
       await page.keyboard.press('Tab');
       await page.waitForFunction(
@@ -257,9 +260,35 @@ export async function verifyLibraryScale({ page, config, sql, report }) {
             .imageId === expected,
         id(boundary + offset),
       );
-      record.keyboard.push({ direction: 'Tab', id: id(boundary + offset) });
+      assert.equal(
+        await page.evaluate(() => document.activeElement?.getAttribute('type')),
+        'checkbox',
+      );
+      await page.keyboard.press('Tab');
+      assert.match(
+        await page.evaluate(() =>
+          document.activeElement?.getAttribute('aria-label'),
+        ),
+        /^查看图片/,
+      );
+      assert.equal(
+        await page.evaluate(
+          () =>
+            document.activeElement?.closest('[data-image-id]')?.dataset.imageId,
+        ),
+        id(boundary + offset),
+      );
+      record.keyboard.push({
+        direction: 'Tab checkbox/detail',
+        id: id(boundary + offset),
+      });
     }
     for (let offset = 2; offset >= 0; offset--) {
+      await page.keyboard.press('Shift+Tab');
+      assert.equal(
+        await page.evaluate(() => document.activeElement?.getAttribute('type')),
+        'checkbox',
+      );
       await page.keyboard.press('Shift+Tab');
       await page.waitForFunction(
         (expected) =>
@@ -297,6 +326,7 @@ export async function verifyLibraryScale({ page, config, sql, report }) {
       path: join(config.output, 'library-query-scale-2400.png'),
     });
     report.screenshots?.push('library-query-scale-2400.png');
+    await verifyLargeLibrarySelection({ page, config, report, count, prefix });
     record.status = 'passed';
     report.checks.push(
       '2,400 real SQLite images load in 30 exact 80-item requests; sampled virtual DOM stays bounded; post-GC heap growth is recorded without an invented limit; Tab/Shift+Tab cross the virtual-window boundary in item order.',

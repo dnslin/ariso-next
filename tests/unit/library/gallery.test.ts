@@ -4,6 +4,7 @@ import {
   layoutGallery,
   visibleGalleryIndexes,
 } from '../../../src/app/library/gallery-layout';
+import { intersectingGalleryIds } from '../../../src/app/library/gallery-drag-selection';
 
 const image: LibraryItem = {
   id: 'image',
@@ -172,3 +173,37 @@ it('retains the data boundaries for Tab entry from the toolbar and reverse Tab f
   expect(indexes[0]).toBe(0);
   expect(indexes.at(-1)).toBe(99);
 });
+
+it.each(['grid', 'masonry'] as const)(
+  'box-selects loaded %s cards outside the rendered window without selecting gaps',
+  (layout) => {
+    const items = images(2400);
+    const result = layoutGallery(items, layout, 1144, 1440);
+    const target = result.slots[1200];
+    expect(
+      visibleGalleryIndexes(result.lanes, 0, 600, -1, items.length),
+    ).not.toContain(1200);
+    expect(
+      intersectingGalleryIds(
+        { left: target.left + 10, top: target.top + 10, width: 10, height: 10 },
+        result.slots,
+        items,
+      ),
+    ).toEqual(['1200']);
+    const first = result.slots[0];
+    expect(
+      intersectingGalleryIds(
+        { left: first.width + 2, top: 10, width: 5, height: 5 },
+        result.slots,
+        items,
+      ),
+    ).toEqual([]);
+    expect(
+      intersectingGalleryIds(
+        { left: 0, top: 0, width: 1144, height: result.height },
+        result.slots,
+        items,
+      ),
+    ).toHaveLength(2400);
+  },
+);

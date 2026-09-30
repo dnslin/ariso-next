@@ -1,6 +1,59 @@
 # T-LIB-04 / Issue #173：四种布局加载组合与筛选历史
 
-本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。实现、本地检查与独立代码/设计评审已完成；用户人工 UI 验收待完成，PR 保持草稿。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)，不在此另定义验收标准。
+本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[草稿 PR #218](https://github.com/dnslin/ariso-next/pull/218)。2026-09-30 人工验收提出裁切、工具栏空白、筛选弹窗、刷新提示和选择交互问题，本轮已按反馈实现并完成独立代码与设计复评，整套浏览器回归通过，待再次人工验收。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)，首轮证据在下方历史区保留。
+
+## 人工反馈后的返修（2026-09-30）
+
+用户明确要求先完成优化与新交互，再用 Ego Lite 验证，最后重新打开预览人工验收。批准依据已归入[设计交接最新修订](../../design/handoff.md#图库查询与选择交互返修2026-09-30用户批准)，下面首轮证据保留为历史，不能代替本轮结果。
+
+- 修复图片裁切、搜索重复内边距与排序空位；用 Lucide 图标、HeroUI ToggleButton/Tooltip 展示网格和瀑布流。
+- 删除整组筛选 Modal，按需添加条件并即时应用，可单独移除。日期用小 Popover，保留部分输入校验、时区与实际时间边界；清除条件保留名称搜索。
+- 删除因窗口 focus 触发的刷新横幅；真实变更只标记工具栏刷新图标。列表排序仍由显式刷新更新。
+- 删除禁用的“选择图片”。HeroUI Checkbox 支持单选/逐项多选，桌面悬停或焦点时显示，已选和触屏常显。`@air/react-drag-to-select@5.0.11` 提供鼠标框选与相交算法，消费所有已加载记录的布局位置，包括不在 DOM 的卡片；不自行实现拖动引擎。
+- 跨页保留轻量 ID/名称/来源/缩略图。新加载项不自动选中；查询/排序/加载方式变化清空，布局/详情返回保留。已选 Dropdown 和每页20项清单只提供真正实现的选择管理、查看和移除；本轮自己的删除流程移除已选 ID。
+- 相册内容直接复用相同工具栏，避免勾选后没有操作入口。未改公共侧栏/账号/导航实现。
+
+本轮按用户要求提前接入 #174 的选择交互子集。其他途径造成失效的完整同步清理、该任务全量验收及批量业务操作仍由相应任务承接，不把 #174 标为完成。新增库已先核对实际版本 README、类型与实现，HeroUI Checkbox/Dropdown/Popover 已读 MCP 文档与本地类型。
+
+### 返修验证与审计
+
+环境仍为本机 Node 24.18.1 / pnpm 11.19.0 / Ego Lite。代表页面与新交互先在独立 `feedback173.localhost:3174` 测试副本验证，人工预览 `issue173.localhost:3173` 的数据未改动。
+
+- `pnpm install --frozen-lockfile`：通过。
+- `pnpm run lint`、`pnpm run typecheck`：通过。
+- `pnpm run test:unit`：50文件、673项通过。
+- `pnpm run build`：通过；可选跨平台 resvg 追踪诊断与首轮相同。
+- `pnpm run test:integration --maxWorkers=1`：96文件、856项通过，546.63s；构建完成后串行执行。
+- `pnpm run format:check`：证据表格格式整理后通过。
+- `EGO_TASK_SPACE=2 EGO_KEEP_SPACE=1 pnpm run test:browser`：完整通过，退出码0，22分55秒；[运行器](./feedback/browser/runner.json)与[分组摘要](./feedback/browser/summary.json)。执行器将选择、查询、筛选、规模分为四个必跑阶段，各自准备/清理夹具和写报告，保留原300000ms单组时限；2400项选择仍在规模阶段执行。
+- [独立代码审计](./feedback/code-review.json)：Critical 0、Required 0。实际执行相关单元49项、后续选择相关38项及最终日期增量6项通过；最终增量另执行ESLint与diff检查。已修复 Air 取消后的迟到更新、缩回小框立即释放、相册选择入口、最后一项移除后的焦点、非午夜日期边界说明及两种Popover的正文边界。
+- [独立设计复评](./feedback/design-review.json)：实际重新读取 Figma 网格 `30:285/98:748` 与选择 `389:7582/389:7886` 的 context 和 screenshot，再核对同视口真实截图。本轮范围内 Required 全部关闭；人工验收待完成。
+
+短视口已取得[清单压到底栏的失败截图](./feedback/selection-short-before.png)，修正使用 HeroUI Popover 的正文边界与内部滚动，相同断言及独立截图复核已通过。跨页数量在展开菜单中可见，不只保留读屏说明。已修复[360宽度选择计数撑宽](./feedback/selection-count-before.png)：手机控件减少内边距，排序允许收缩，44px命中区域保留；2400条选择在360/390/430/768/1440下均无横向溢出且默认排序完整可见。独立规模探针验证全选2400条、真实第201项移除后2399条，清单20行、卡片挂载21个，无新增列表请求；最终完整运行器亦通过；[规模报告](./feedback/browser/library-scale.json)包含实际请求数、DOM和内存采样。
+
+日期新增短视口检查取得[浮层下沿压到底栏的失败证据](./feedback/date-footer-before.png)，已修复为正文边界内定位、单层间距与内部滚动。390×844、390×480复验通过，所有日期分段与操作按钮聚焦后均可见，两个操作保留44px点击高度，Escape回到日期入口且精确时间不变。尺寸采样等待展开动画结束，不将变换中的43.xpx误判为控件不足，也未降低44px断言。筛选独立探针13项通过。完整运行曾在重登录后的图库等待处失败。补充取证后，[失败报告](./feedback/login-transition-failure.json)与[实际页面](./feedback/login-session-rate-limit.png)明确显示：登录请求成功后，会话核对端点返回HTTP 429。测试共享登录步骤观测两个实际认证端点的重试响应头，仅在真实429时等待服务端窗口后重新通过UI登录；不改认证实现、限流设置或成功断言，并保留目标URL和文档加载核对。[真实限流恢复探针](./feedback/login-limit-probe.json)通过：第101次会话读取触发429，随后实际登录观察到9秒重试窗口，等待后由原按钮成功进入完整查询地址。最终完整回归通过；四个必跑专项为[选择](./feedback/browser/library-selection.json)、[查询](./feedback/browser/library-query.json)、[筛选](./feedback/browser/library-filters.json)、[规模](./feedback/browser/library-scale.json)，合计31项检查与12个组合。
+
+### 本轮设计对照
+
+Figma基线与人工批准的改动分别记录；本次未修改Figma。组件复用HeroUI Checkbox/Dropdown/Popover/Select，图标来自现有Lucide依赖，公共OwnerShell与账号/导航统一复用。
+
+| 范围 / 节点                                 | 视口与主题、实际证据                                                                                                                                                                                                            | 逐项结论                                                                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 整页、公共区域；`30:285/98:748`             | [桌面代表页](./feedback/representative-desktop.png)，1440×1080深色；[手机](./feedback/library-selection-light-390x844.png)，390×844浅色                                                                                         | 先核对品牌/账号/侧栏或手机菜单、正文和固定底栏；仍复用统一外壳。本次工具栏位置和公共区域一致，既有侧栏标语差异不顺手修改。 |
+| 单选/多选；`389:7582/389:7886` + 本轮批准   | [桌面浅色](./feedback/library-selection-light-1440x1080.png)、[桌面深色](./feedback/library-selection-dark-1440x1080.png)、[手机深色](./feedback/library-selection-dark-390x844.png)                                            | Checkbox与已选描边一致，清单只在需要时展开，没有新增持续占高的工具行。                                                     |
+| 短视口与触屏发现性                          | [390×560浅色](./feedback/library-selection-light-390x560.png)、[深色](./feedback/library-selection-dark-390x560.png)、[触屏未选状态](./feedback/library-selection-touch-light-390x844.png)                                      | 内部列表滚动、不压底栏；实际无hover媒体条件下未选Checkbox常显，44px命中区、Escape回焦通过。                                |
+| 窄屏数量及Dropdown                          | [360×1080选2400项](./feedback/library-selection-2400-360.png)、[跨页计数](./feedback/library-selection-cross-page-counts.png)、[最终菜单主题](./feedback/selection-menu-surface.png)，深色                                      | 默认排序与方向完整；菜单区分当前页与其他页数量；深色surface、边框和12px圆角已修复。                                        |
+| 按需条件与精确日期；替代旧`43:428/102:4306` | [组合条件与结果](./feedback/browser/library-query-filters-combined-result.png)、[精确边界](./feedback/library-query-filters-precise-date-boundaries.png)，桌面深色                                                              | 大Modal按用户明确批准替换；条件直接应用并独立移除，时区、含/不含边界可读，未改边界保持原绝对时刻。                         |
+| 日期手机短视口                              | [390×844](./feedback/library-query-filters-precise-date-390x844.png)、[390×480](./feedback/library-query-filters-precise-date-390x480.png)、[聚焦操作](./feedback/library-query-filters-precise-date-actions-390x480.png)，深色 | 浮层收在正文边界内，短视口内部滚动；日期分段与取消/应用均可聚焦可见，44px按钮不被底栏覆盖。                                |
+| 错误与恢复                                  | [选项读取失败](./feedback/library-query-filters-options-failure.png)、[失效引用](./feedback/library-query-filters-missing-reference.png)                                                                                        | 显式错误与恢复入口可见，保留失效条件；不将读取失败显示为正常空结果。                                                       |
+
+本轮相册内容复用同一工具栏、选择与虚拟列表，节点仍为 `38:378/102:4002`；实际相册顺序、固定作用域、详情/删除及会话流程通过同一浏览器运行链检查。
+
+本轮最终 UI 人工验收尚未进行，PR #218 保持草稿。已用最终构建重启 [本地预览](http://issue173.localhost:3173/library)，保留原240张测试图片及账户；[更新后预览截图](./feedback/preview-final.png)，1440×1080浅色。物理设备与AMD64/ARM64容器未执行；容器验证沿用Release流程，不为本PR发布镜像。
+
+`node docs/tasks/check.mjs`：120任务、298需求通过；`git diff --check`：通过。本次本地适用检查通过，远端检查列表为空，不记为CI通过。
+
+## 首轮实施与验证记录（历史）
 
 ## 范围与前置
 

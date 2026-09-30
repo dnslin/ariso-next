@@ -171,7 +171,13 @@ async function layouts(state) {
             target.name === '清除搜索' ? 32 : 36,
             `${target.name}: desktop design height`,
           );
-          assert.ok(target.width >= (target.name === '清除搜索' ? 32 : 44));
+          const minimumWidth =
+            target.name === '清除搜索'
+              ? 32
+              : ['网格', '瀑布流', '刷新图库'].includes(target.name)
+                ? 36
+                : 44;
+          assert.ok(target.width >= minimumWidth);
         } else
           assert.ok(
             target.height >=

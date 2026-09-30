@@ -1,0 +1,285 @@
+{
+  "reviewer": "independent design_audit agent (no implementation edits)",
+  "date": "2026-09-30",
+  "scope": "Issue #173 2026-09-30 user-approved query and selection revision",
+  "basis": {
+    "rules": [
+      "AGENTS.md",
+      "docs/design/handoff.md#图库查询与选择交互返修（2026-09-30，用户批准）",
+      "docs/tasks/execution.md"
+    ],
+    "figma_file": "74sT9Hrf8G4czcWeTkET5b",
+    "figma_context_and_screenshots_read_this_revision": [
+      "30:285",
+      "98:748",
+      "389:7582",
+      "389:7886"
+    ],
+    "other_nodes_read_earlier_in_same_issue": [
+      "37:392",
+      "505:10077",
+      "38:378",
+      "102:4002",
+      "43:428",
+      "102:4306"
+    ]
+  },
+  "method": "Read Figma context and screenshots, inspect actual Ego screenshots at their stated viewports. Root exclusively ran browser interactions in this revision; functional conclusions distinguish runner evidence from independent visual review.",
+  "functional_conclusion": "本轮专项及完整浏览器功能验证通过。独立读取同一运行的selection/query/filters/scale四份报告，均passed，共31项行为检查及12个布局/加载/批量组合；随后读取最终runner.json，startedAt2026-09-30T15:34:07.294Z、finishedAt2026-09-30T15:57:02.266Z、statuspassed，桌面/手机身份与公共流程、图库查询、相册、上传轮询、上传、详情及工作区连续性阶段均通过。这里是对真实执行报告的独立复核，不代表评审者另行执行了整套浏览器命令。设计复评范围维持已读Figma与实际截图；用户人工验收仍待，PR保持草稿。",
+  "design_conclusion": "Pass for reviewed scope against Figma plus the explicit 2026-09-30 approved changes. All in-scope Required visual findings verified fixed. User manual acceptance remains required.",
+  "reviewed_checks": [
+    {
+      "check": "1440x1080 full-page/public shell before controls",
+      "result": "pass within task scope",
+      "evidence": [
+        "representative-desktop.png",
+        "library-selection-light-1440x1080.png",
+        "library-selection-dark-1440x1080.png"
+      ],
+      "detail": "Public sidebar/brand/account, main 32px inset and full-width footer remain unified. Compact query controls and icon layout switch follow approved deviation."
+    },
+    {
+      "check": "390x844 mobile full page and selection",
+      "result": "pass",
+      "evidence": [
+        "library-selection-light-390x844.png",
+        "library-selection-dark-390x844.png"
+      ],
+      "detail": "Brand/menu/header precede query tools and gallery; 16px content inset, fixed footer, selected yellow border and checks are readable."
+    },
+    {
+      "check": "390x560 selected-item Popover",
+      "result": "fixed and visually verified",
+      "evidence": [
+        "library-selection-light-390x560.png",
+        "library-selection-dark-390x560.png"
+      ],
+      "detail": "Former layer y288..538 overlapped footer y456; corrected layer bottom443 stays above footer456 with internal list scroll."
+    },
+    {
+      "check": "Touch checkbox discoverability",
+      "result": "pass",
+      "evidence": [
+        "library-selection-touch-light-390x844.png",
+        "library-selection-touch-dark-390x560.png"
+      ],
+      "detail": "An unselected card checkbox is visible in actual coarse-pointer capture, alongside selected checks."
+    },
+    {
+      "check": "Visible selection count across pages",
+      "result": "fixed and visually verified",
+      "evidence": ["library-selection-cross-page-counts.png"],
+      "detail": "Expanded menu visibly distinguishes current1/other40 for selected41; no extra persistent gallery-shifting row."
+    },
+    {
+      "check": "Dark selection menu surface",
+      "result": "fixed and visually verified",
+      "evidence": ["selection-menu-surface.png"],
+      "detail": "Surface, border and 12px corner treatment match shared dark popovers and card information surfaces."
+    },
+    {
+      "check": "2400 selected at 360 and 1440 widths",
+      "result": "pass",
+      "evidence": [
+        "library-selection-2400-360.png",
+        "library-selection-2400-1440.png"
+      ],
+      "detail": "Upload sort text/direction and selected2400 remain complete. Controls stay within content inset; footer total and batch control remain visible."
+    },
+    {
+      "check": "Condition bar and complete image proportions",
+      "result": "pass for reviewed captures",
+      "evidence": [
+        "representative-desktop.png",
+        "library-query-filters-combined-conditions.png",
+        "library-query-filters-combined-result.png",
+        "library-query-grid-more-390.png",
+        "library-query-masonry-more-390.png"
+      ],
+      "detail": "Approved add-as-needed conditions wrap without covering gallery; image content is contained; original whole-filter Modal intentionally replaced."
+    },
+    {
+      "check": "Date partial/absolute bounds desktop",
+      "result": "pass for reviewed captures",
+      "evidence": [
+        "library-query-filters-partial-date.png",
+        "library-query-filters-precise-date-boundaries.png"
+      ],
+      "detail": "Partial date error and field focus are visible; site zone and exact inclusive/exclusive time boundaries remain inspectable."
+    },
+    {
+      "check": "Error/recovery states",
+      "result": "pass for reviewed captures",
+      "evidence": [
+        "library-query-filters-options-failure.png",
+        "library-query-filters-missing-reference.png",
+        "library-query-filters-session-expired.png"
+      ],
+      "detail": "Options failure offers retry; invalid tag remains explicit instead of silently broadening query; expired session requests login."
+    },
+    {
+      "check": "Final mobile date Popover normal and short main boundaries",
+      "result": "fixed and visually verified",
+      "evidence": [
+        "library-query-filters-precise-date-390x844.png",
+        "library-query-filters-precise-date-actions-390x844.png",
+        "library-query-filters-precise-date-390x480.png",
+        "library-query-filters-precise-date-actions-390x480.png"
+      ],
+      "detail": "390x844 layer bottom719 is above footer740. 390x480 layer bottom363 is above footer376; internal scrolling brings complete44px Apply and Cancel controls into view. Public brand area/footer remain outside the layer. Site zone and exact timestamps remain inspectable."
+    }
+  ],
+  "required_pending": [],
+  "out_of_scope": [
+    {
+      "item": "Existing shared-sidebar slogan missing",
+      "source": "Figma30:292",
+      "detail": "Preexisting public-shell discrepancy reported only; not introduced or changed by this issue."
+    }
+  ],
+  "limits": [
+    "No physical mobile-device test by reviewer.",
+    "User manual UI acceptance pending; retain draft PR.",
+    "No Figma or business-code edits by reviewer."
+  ],
+  "screenshot_root": "test-results/issue-173/feedback-browser/",
+  "functional_evidence": [
+    "test-results/browser/library-selection.json",
+    "test-results/browser/library-query.json",
+    "test-results/browser/library-filters.json",
+    "test-results/browser/library-scale.json",
+    "test-results/browser/runner.json"
+  ],
+  "current_run_review": {
+    "runner_started_at": "2026-09-30T15:34:07.294Z",
+    "runner_status_when_read": "passed",
+    "environment": {
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.18.1"
+    },
+    "phase_reports": {
+      "selection": {
+        "path": "test-results/browser/library-selection.json",
+        "status": "passed",
+        "check_count": 9,
+        "combination_count": 0
+      },
+      "query": {
+        "path": "test-results/browser/library-query.json",
+        "status": "passed",
+        "check_count": 7,
+        "combination_count": 12
+      },
+      "filters": {
+        "path": "test-results/browser/library-filters.json",
+        "status": "passed",
+        "check_count": 13,
+        "combination_count": 0
+      },
+      "scale": {
+        "path": "test-results/browser/library-scale.json",
+        "status": "passed",
+        "check_count": 2,
+        "combination_count": 0
+      }
+    },
+    "reviewed_actual_screenshots": [
+      {
+        "path": "test-results/browser/library-selection-light-1440x1080.png",
+        "result": "pass",
+        "detail": "先核对完整公共侧栏、品牌/账号、主内容及固定底栏；选中轮廓与非模态清单位置、条目分隔、关闭/移除控件保持上一轮结论。"
+      },
+      {
+        "path": "test-results/browser/library-selection-dark-390x560.png",
+        "result": "pass",
+        "detail": "短视口清单有内部滚动；浮层底部443、固定底栏456，不覆盖底栏。"
+      },
+      {
+        "path": "test-results/browser/library-selection-touch-light-390x844.png",
+        "result": "pass",
+        "detail": "未选首卡复选框常显；已选卡黄色边界清晰；选择按钮有可见焦点环，手机公共区与底栏一致。"
+      },
+      {
+        "path": "test-results/browser/library-query-masonry-more-1440.png",
+        "result": "pass for captured record-placeholder state",
+        "detail": "瀑布布局图标选中状态、四列、间隔、卡片资料区与底栏保持一致；此图无实际缩略图，完整比例图片仍引用此前representative-desktop已读证据。"
+      },
+      {
+        "path": "test-results/browser/library-query-grid-pages-390.png",
+        "result": "pass",
+        "detail": "手机稳定两列，上角直角；上一页禁用和下一页可用，分页底栏没有挤压或遮挡操作。"
+      },
+      {
+        "path": "test-results/browser/library-query-filters-combined-result.png",
+        "result": "pass",
+        "detail": "使用稳定结果帧：全部条件跨两行正常排列，停用存储明确占位并有文本状态，唯一结果和计数一致。"
+      },
+      {
+        "path": "test-results/browser/library-query-filters-precise-date-390x844.png",
+        "result": "pass",
+        "detail": "当前站点UTC对应04:00–05:00精确边界完整显示；日期浮层位于main内，底部687低于固定底栏顶740之前。"
+      },
+      {
+        "path": "test-results/browser/library-query-filters-precise-date-actions-390x480.png",
+        "result": "pass",
+        "detail": "短视口内部滚动后取消/应用按钮完整可见；浮层不越过品牌区或固定底栏。"
+      },
+      {
+        "path": "test-results/browser/library-selection-2400-360.png",
+        "result": "pass",
+        "detail": "最新稳定帧为两列；上传时间与方向、已选2400张完整显示，搜索/工具栏保持16px正文边距，选择边界与底栏正常。"
+      },
+      {
+        "path": "test-results/browser/library-query-filters-combined-conditions.png",
+        "result": "transient frame; not final appearance evidence",
+        "detail": "格式菜单处于关闭透明度过渡；最终文档以combined-result稳定图证明条件条与结果。"
+      },
+      {
+        "path": "test-results/browser/library-selection-cross-page-counts.png",
+        "result": "count evidence only; transient appearance",
+        "detail": "当前1/其他40计数正确，菜单打开过渡使背后卡片透出；最终菜单主题仍引用已实际验收的feedback-browser/selection-menu-surface.png稳定图。"
+      }
+    ],
+    "design_result": "本轮代表截图范围内通过；无新增Required。Figma基线及用户已批准交互变更沿用此前实际读取。",
+    "whole_suite_result": "passed; independently read final runner.json for the same startedAt; all recorded stages passed",
+    "human_acceptance": "pending; PR remains draft",
+    "browser_operation_by_reviewer": "none; root exclusively owns Ego",
+    "runner_finished_at": "2026-09-30T15:57:02.266Z",
+    "final_runner_evidence": {
+      "path": "test-results/browser/runner.json",
+      "status": "passed",
+      "startedAt": "2026-09-30T15:34:07.294Z",
+      "finishedAt": "2026-09-30T15:57:02.266Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.18.1",
+      "identity": [
+        {
+          "width": 1440,
+          "setup": "passed",
+          "restart": "passed"
+        },
+        {
+          "width": 390,
+          "setup": "passed",
+          "restart": "passed"
+        }
+      ],
+      "stages": {
+        "m2-1440": "passed",
+        "interaction-polish-1440": "passed",
+        "workspace-continuity-1440": "passed",
+        "libraryQuery": "passed",
+        "albums": "passed",
+        "uploadPolling": "passed",
+        "upload": "passed",
+        "library": "passed",
+        "m2-390": "passed",
+        "interaction-polish-390": "passed",
+        "workspace-continuity-390": "passed"
+      },
+      "temporaryDirectoryRemoved": true
+    }
+  }
+}

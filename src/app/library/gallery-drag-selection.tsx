@@ -1,0 +1,141 @@
+'use client';
+
+import { useEffect, useRef, type RefObject } from 'react';
+import {
+  boxesIntersect,
+  useSelectionContainer,
+  type Box,
+} from '@air/react-drag-to-select';
+import type { LibraryItem } from '../../server/library/types';
+import type { GallerySlot } from './gallery-layout';
+import type { LibrarySelection } from './use-library-selection';
+
+/** Layout slots cover loaded records, including cards outside the DOM window. */
+export function intersectingGalleryIds(
+  box: Box,
+  slots: GallerySlot[],
+  items: LibraryItem[],
+) {
+  return slots
+    .filter((slot) => boxesIntersect(box, slot))
+    .map((slot) => items[slot.index].id);
+}
+
+export function GalleryDragSelection({
+  container,
+  slots,
+  items,
+  selection,
+  disabled,
+}: {
+  container: RefObject<HTMLDivElement | null>;
+  slots: GallerySlot[];
+  items: LibraryItem[];
+  selection: LibrarySelection;
+  disabled: boolean;
+}) {
+  const { selectIds } = selection;
+  const lastBox = useRef<Box | null>(null);
+  const before = useRef<string[]>([]);
+  const retained = useRef<string[]>([]);
+  const dragging = useRef(false);
+  const bodyStyle = useRef<{
+    userSelect: string;
+    webkitUserSelect: string;
+  } | null>(null);
+  function restoreBodyStyle(release = true) {
+    if (!bodyStyle.current) return;
+    Object.assign(document.body.style, bodyStyle.current);
+    if (release) bodyStyle.current = null;
+  }
+  function applyLocalBox(box: Box) {
+    if (!dragging.current) return;
+    selectIds([
+      ...retained.current,
+      ...intersectingGalleryIds(box, slots, items),
+    ]);
+  }
+  const { DragSelection, cancelCurrentSelection } = useSelectionContainer({
+    isEnabled: !disabled,
+    shouldStartSelecting: (target) => {
+      if (
+        !(target instanceof Element) ||
+        !container.current?.contains(target) ||
+        target.closest('button, input, label, [role="checkbox"]')
+      )
+        return false;
+      bodyStyle.current = {
+        userSelect: document.body.style.userSelect,
+        webkitUserSelect: document.body.style.webkitUserSelect,
+      };
+      return true;
+    },
+    onSelectionStart: (event) => {
+      dragging.current = true;
+      before.current = [...selection.selected.keys()];
+      retained.current = before.current.filter(
+        (id) =>
+          event.shiftKey ||
+          event.ctrlKey ||
+          event.metaKey ||
+          !selection.currentIds.has(id),
+      );
+    },
+    isValidSelectionStart: (box) => {
+      // Air supplies every local box here, including a drag shrunk below its
+      // starting threshold. Keep its default threshold and final geometry.
+      lastBox.current = box;
+      return box.width * box.height > 10;
+    },
+    onSelectionChange: () => {
+      if (lastBox.current) applyLocalBox(lastBox.current);
+    },
+    onSelectionEnd: () => {
+      // Air cancels its last change rAF on mouseup; commit its latest box now.
+      if (lastBox.current) applyLocalBox(lastBox.current);
+      dragging.current = false;
+    },
+    selectionProps: {
+      'aria-hidden': true,
+      style: {
+        border: '1px solid var(--accent)',
+        background: 'color-mix(in srgb, var(--accent) 18%, transparent)',
+        zIndex: 30,
+      },
+    },
+  });
+  useEffect(() => {
+    function cancel() {
+      dragging.current = false;
+      cancelCurrentSelection();
+      restoreBodyStyle(false);
+    }
+    function escape(event: KeyboardEvent) {
+      if (event.key !== 'Escape' || !dragging.current) return;
+      selectIds(before.current);
+      cancel();
+    }
+    // The library owns mouse listeners; these cover cancellation and teardown.
+    window.addEventListener('keydown', escape);
+    window.addEventListener('blur', cancel);
+    function mouseup() {
+      queueMicrotask(() => restoreBodyStyle());
+    }
+    window.addEventListener('mouseup', mouseup);
+    if (disabled) cancel();
+    return () => {
+      window.removeEventListener('keydown', escape);
+      window.removeEventListener('blur', cancel);
+      window.removeEventListener('mouseup', mouseup);
+    };
+  }, [cancelCurrentSelection, disabled, selectIds]);
+  useEffect(
+    () => () => {
+      dragging.current = false;
+      cancelCurrentSelection();
+      restoreBodyStyle();
+    },
+    [cancelCurrentSelection],
+  );
+  return <DragSelection />;
+}

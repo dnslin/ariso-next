@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "limited": {
+    "endpoint": "/api/auth/get-session",
+    "retryAfter": 10,
+    "requests": 101
+  },
+  "loginRateLimits": [
+    {
+      "path": "/api/auth/get-session",
+      "status": 429,
+      "retryAfter": 9,
+      "receivedAt": 1790782322562
+    }
+  ],
+  "url": "http://feedback173.localhost:3174/library?q=issue173-&pageSize=40"
+}

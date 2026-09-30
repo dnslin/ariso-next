@@ -19,8 +19,10 @@ import { LibraryLoading } from './library-loading';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
 import { LibraryFooter, LibraryToolbar } from './library-controls';
-import { LibraryFiltersDialog } from './library-filters';
+import { LibraryFiltersBar } from './library-filters';
 import { LibraryGallery } from './library-gallery';
+import { LibrarySelectionMenu } from './library-selection-menu';
+import { useLibrarySelection } from './use-library-selection';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
 export function LibraryScreen(props: {
@@ -42,12 +44,13 @@ export function LibraryScreen(props: {
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
   const [client] = useState(() => new QueryClient());
   const query = useLibraryQuery(client, { albumId: props.albumId });
+  const selection = useLibrarySelection(
+    JSON.stringify([props.albumId, query.filters, query.loadingMode]),
+    query.items,
+  );
   const [notice, setNotice] = useState('');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [albumSearch, setAlbumSearch] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
   const endRef = useRef<HTMLParagraphElement>(null);
-  const filterTrigger = useRef<HTMLElement | null>(null);
   useEffect(() => () => client.clear(), [client]);
   const expireSession = useCallback(() => {
     resetUpload();
@@ -63,6 +66,7 @@ export function LibraryScreen(props: {
     setNotice(
       `已将 ${record.displayName} 移入回收站。文件仍占用空间，不会自动清理。`,
     );
+    selection.remove(record.id);
     detail.close();
     await query.onItemRemoved(record.id);
     props.onImageRemoved?.();
@@ -88,10 +92,6 @@ export function LibraryScreen(props: {
       query.filters.status ||
       (!props.albumId && query.filters.albumId)
     );
-  function openFilters() {
-    filterTrigger.current = document.activeElement as HTMLElement;
-    setFilterOpen(true);
-  }
   const invalid =
     query.queryError ||
     (query.error instanceof LibraryReadError && query.error.status === 400);
@@ -122,64 +122,32 @@ export function LibraryScreen(props: {
             <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
           </div>
         )}
-        {props.albumId && !albumSearch ? (
-          <Button
-            variant="outline"
-            className="h-12 w-full rounded-lg font-normal md:w-60"
-            onPress={() => setAlbumSearch(true)}
-          >
-            搜索与筛选
-          </Button>
-        ) : (
+        <div className="grid min-w-0 gap-2">
           <LibraryToolbar
             query={query}
-            onFilter={openFilters}
             album={!!props.albumId}
+            selectionMenu={
+              selection.selected.size ? (
+                <LibrarySelectionMenu
+                  key={JSON.stringify([query.filters, query.loadingMode])}
+                  selection={selection}
+                  loadingMode={query.loadingMode}
+                  disabled={!query.canOperate}
+                  onOpen={detail.open}
+                />
+              ) : undefined
+            }
           />
-        )}
-        {filtered ? (
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <p>
-              已应用筛选{query.filters?.q ? `：${query.filters.q}` : ''}
-              {query.filters?.tagIds.length
-                ? ` · ${query.filters.tagIds.length} 个标签（任一匹配）`
-                : ''}
-            </p>
-            <Button
-              variant="outline"
-              className="min-h-11 rounded-lg font-normal"
-              onPress={openFilters}
-            >
-              修改筛选
-            </Button>
-            <Button
-              variant="outline"
-              className="min-h-11 rounded-lg font-normal"
-              onPress={query.resetQuery}
-            >
-              清除筛选
-            </Button>
-          </div>
-        ) : null}
-        {query.refreshAvailable ? (
-          <Alert status="default">
-            <Alert.Content>
-              <Alert.Description>
-                图片列表可能已变化，刷新以获取最新顺序。
-              </Alert.Description>
-            </Alert.Content>
-            <Button
-              variant="outline"
-              className="min-h-11 rounded-lg"
-              isDisabled={query.isFetching}
-              onPress={() => {
-                void query.refresh();
-              }}
-            >
-              刷新图库
-            </Button>
-          </Alert>
-        ) : null}
+          {query.filters ? (
+            <LibraryFiltersBar
+              filters={query.filters}
+              timeZone={props.timeZone}
+              fixedAlbumId={props.albumId}
+              onSessionExpired={expireSession}
+              onApply={(patch) => void query.applyQuery(patch)}
+            />
+          ) : null}
+        </div>
         {query.expired ? (
           <p role="alert">登录已失效，正在返回登录页。</p>
         ) : (
@@ -269,7 +237,8 @@ export function LibraryScreen(props: {
                 items={query.items}
                 layout={query.layout}
                 album={!!props.albumId}
-                disabled={!query.canOperate}
+                disabled={!query.canOperate || !!detail.imageId}
+                selection={selection}
                 onOpen={detail.open}
               />
             ) : null}
@@ -299,41 +268,9 @@ export function LibraryScreen(props: {
                 已加载全部图片
               </p>
             ) : null}
-            {!query.refreshAvailable ? (
-              <Button
-                variant="ghost"
-                className="min-h-11 w-fit rounded-lg text-sm font-normal"
-                isDisabled={query.isFetching}
-                onPress={() => {
-                  void query.refresh();
-                }}
-              >
-                刷新图库
-              </Button>
-            ) : null}
           </>
         )}
       </section>
-      {query.filters ? (
-        <LibraryFiltersDialog
-          key={filterOpen ? 'open' : 'closed'}
-          isOpen={filterOpen}
-          onOpenChange={(open) => {
-            setFilterOpen(open);
-            if (!open)
-              requestAnimationFrame(() => filterTrigger.current?.focus());
-          }}
-          filters={query.filters}
-          timeZone={props.timeZone}
-          fixedAlbumId={props.albumId}
-          onSessionExpired={expireSession}
-          onApply={(patch) => {
-            void query.applyQuery(patch);
-            setFilterOpen(false);
-            requestAnimationFrame(() => filterTrigger.current?.focus());
-          }}
-        />
-      ) : null}
       {detail.imageId ? (
         <LibraryDetail
           key={detail.imageId}

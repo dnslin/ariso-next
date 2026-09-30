@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { signInToLibrary } from './library-login.mjs';
 
 const button = (name) => `loc=role:button[name="${name}"]`;
 const quote = (value) => `'${String(value).replaceAll("'", "''")}'`;
@@ -29,33 +30,72 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     await page.goto(`${config.origin}/library?${query}`);
     await ready();
   }
-  async function open() {
-    await page.click(button('筛选'));
-    await page.waitForSelector(button('关闭筛选'));
-  }
-  async function close() {
-    await page.click(button('关闭筛选'));
-    await page.waitForFunction(
-      () => !document.querySelector('button[aria-label="关闭筛选"]'),
+  const categoryIds = {
+    标签: 'tags',
+    '标签（匹配任意一个）': 'tags',
+    上传日期: 'date',
+    可见性: 'visibility',
+    处理状态: 'status',
+    存储位置: 'storages',
+    相册: 'albums',
+    格式: 'format',
+  };
+  async function add(label) {
+    const id = categoryIds[label];
+    if (
+      await page.evaluate(
+        (id) => !!document.querySelector(`[data-filter-category="${id}"]`),
+        id,
+      )
+    )
+      return;
+    await page.click(button('添加条件'));
+    await page.click(
+      `loc=role:menuitem[name="${label === '标签（匹配任意一个）' ? '标签' : label}"]`,
     );
+    await page.waitForSelector(`[data-filter-category="${id}"]`);
+  }
+  async function openDate() {
+    await add('上传日期');
+    await page.click(button('编辑上传日期'));
+    await page.waitForSelector(button('应用日期'));
+  }
+  async function applyDate() {
+    await page.click(button('应用日期'));
+    await page.waitForFunction(
+      () =>
+        !document.querySelector('[role="group"][aria-label="上传开始日期"]'),
+    );
+    await ready();
   }
   async function choice(label, name) {
-    await page.click(`loc=role:button[name*="${label}"]`);
+    await add(label);
+    const before = await page.url();
+    await page.click(
+      `[data-filter-category="${categoryIds[label]}"] button[aria-haspopup]`,
+    );
     await page.click(`loc=role:option[name="${name}"]`);
+    await page.waitForFunction((before) => location.href !== before, before);
+    await ready();
   }
   async function reference(label, search, optionName, multiple = false) {
-    await page.click(`loc=role:button[name*="${label}"]`);
+    await add(label);
+    const before = await page.url();
+    await page.click(
+      `[data-filter-category="${categoryIds[label]}"] button[aria-haspopup]`,
+    );
     await page.fill('input[placeholder="输入名称搜索"]', search);
     await page.waitForSelector(`loc=role:option[name*="${optionName}"]`);
     await page.click(`loc=role:option[name*="${optionName}"]`);
+    await page.waitForFunction((before) => location.href !== before, before);
     if (multiple) {
-      // SearchField consumes Escape to clear nonempty text before closing its popover.
       await page.fill('input[placeholder="输入名称搜索"]', '');
       await page.keyboard.press('Escape');
     }
     await page.waitForFunction(
       () => !document.querySelector('input[placeholder="输入名称搜索"]'),
     );
+    await ready();
   }
   async function date(label, value) {
     const values = value.split('-');
@@ -106,28 +146,6 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
       ['2026', '09', expectedDay, '00', '00', '00'],
     );
   }
-  async function signIn() {
-    await page.waitForSelector('#email');
-    await page.fill('#email', config.credentials.email);
-    await page.fill('#password', config.credentials.password);
-    await page.click(button('登录'));
-    await page.waitForFunction(
-      () =>
-        location.pathname === '/library' ||
-        document
-          .querySelector('[role="alert"]')
-          ?.textContent.includes('HTTP 429'),
-    );
-    if (new URL(await page.url()).pathname === '/login') {
-      await page.waitForFunction(
-        () => !document.querySelector('button[type="submit"]').disabled,
-        undefined,
-        { timeout: 15000 },
-      );
-      await page.click(button('登录'));
-    }
-    await ready();
-  }
 
   try {
     await sql(
@@ -145,26 +163,35 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     );
     await visit();
 
-    // Editing and dismissing the actual form must leave both URL and visible data untouched.
+    // Adding an empty condition and cancelling date edits must not query or change results.
     const beforeCancel = await page.url();
     const beforeCancelItems = await items();
-    await open();
-    await choice('可见性', '公开');
-    await close();
+    await page.evaluate(() => {
+      const original = window.fetch;
+      window.__filterListRequests = 0;
+      window.fetch = (...args) => {
+        if (new URL(String(args[0]), location.href).pathname === '/api/images')
+          window.__filterListRequests += 1;
+        return original(...args);
+      };
+    });
+    await openDate();
+    await date('上传开始日期', '2026-09-01');
+    await page.click(button('取消日期'));
     assert.equal(await page.url(), beforeCancel);
     assert.deepEqual(await items(), beforeCancelItems);
+    assert.equal(await page.evaluate(() => window.__filterListRequests), 0);
     report.checks.push(
-      'Cancelling the real filter dialog discards the visibility draft without changing URL or loaded image IDs.',
+      'Adding an empty date condition and cancelling its real editor changes neither the URL nor the current image IDs.',
     );
 
-    // All categories are edited through their real HeroUI controls, never by setting a URL.
-    await open();
+    await openDate();
     const startYear =
       '[role="group"][aria-label="上传开始日期"] [role="spinbutton"][data-type="year"]';
     const beforePartial = await page.url();
     await page.focus(startYear);
     await page.keyboard.type('2026');
-    await page.click(button('应用筛选'));
+    await page.click(button('应用日期'));
     await page.waitForFunction(() =>
       document
         .querySelector('[role="dialog"] [role="alert"]')
@@ -178,17 +205,17 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
       'month',
     );
     await screenshot('partial-date');
-    await reference('标签（匹配任意一个）', 'Issue 173 A', 'Issue 173 A', true);
-    await reference('标签（匹配任意一个）', 'Issue 173 B', 'Issue 173 B', true);
     await date('上传开始日期', '2026-09-01');
     await date('上传结束日期（包含当天）', '2026-09-03');
+    await applyDate();
+    await reference('标签（匹配任意一个）', 'Issue 173 A', 'Issue 173 A', true);
+    await reference('标签（匹配任意一个）', 'Issue 173 B', 'Issue 173 B', true);
     await choice('可见性', '私有');
     await choice('处理状态', '已就绪');
     await reference('存储位置', storageName, `${storageName}（已停用）`);
     await reference('相册', albumName, albumName);
     await choice('格式', 'PNG / APNG');
-    await screenshot('combined-draft');
-    await page.click(button('应用筛选'));
+    await screenshot('combined-conditions');
     await page.waitForFunction(
       (id) => new URL(location.href).searchParams.get('storageId') === id,
       storageId,
@@ -213,27 +240,239 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     assert.deepEqual(await items(), ['issue173-000']);
     await screenshot('combined-result');
     report.checks.push(
-      'Real label search/multi-select, inclusive site-time-zone dates, visibility, processing state, disabled storage, album and original format apply together; the URL contains real IDs/UTC midnight boundaries and only issue173-000 is returned.',
+      'Real label search/multi-select, inclusive site-time-zone dates, visibility, processing state, disabled storage, album and original format apply immediately one category at a time; the URL contains real IDs/UTC midnight boundaries and only issue173-000 is returned.',
       'Entering only a start year blocks Apply with a visible incomplete-date error, keeps the URL/dialog and focuses the missing month; completing the date then submits the real combined query.',
     );
 
     // Reopening and applying without editing dates must preserve their exact UTC instants.
-    await open();
-    await page.click(button('应用筛选'));
-    await ready();
+    await openDate();
+    await applyDate();
     const reapplied = new URL(await page.url()).searchParams;
     assert.equal(reapplied.get('uploadedFrom'), applied.get('uploadedFrom'));
     assert.equal(
       reapplied.get('uploadedBefore'),
       applied.get('uploadedBefore'),
     );
-    await open();
+    const combinedUrl = await page.url();
+    const preciseUrl = new URL(combinedUrl);
+    const preciseFrom = '2026-09-02T04:00:00.000Z';
+    const preciseBefore = '2026-09-02T05:00:00.000Z';
+    preciseUrl.searchParams.set('uploadedFrom', preciseFrom);
+    preciseUrl.searchParams.set('uploadedBefore', preciseBefore);
+    await page.goto(preciseUrl.href);
+    await ready();
+    await openDate();
+    const boundaryText = await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="filter-date-boundaries"]')
+          .textContent,
+    );
+    const localTime = new Intl.DateTimeFormat('zh-CN', {
+      timeZone: site.time_zone,
+      dateStyle: 'short',
+      timeStyle: 'long',
+    });
+    assert.ok(boundaryText.includes(site.time_zone));
+    assert.ok(boundaryText.includes(localTime.format(new Date(preciseFrom))));
+    assert.ok(boundaryText.includes(localTime.format(new Date(preciseBefore))));
+    assert.ok(boundaryText.includes('（含）至'));
+    assert.ok(boundaryText.includes('（不含）'));
+    if (site.time_zone === 'Asia/Shanghai') {
+      assert.ok(boundaryText.includes('12:00:00'));
+      assert.ok(boundaryText.includes('13:00:00'));
+    }
+    await screenshot('precise-date-boundaries');
+    await applyDate();
+    assert.equal(
+      new URL(await page.url()).searchParams.get('uploadedFrom'),
+      preciseFrom,
+    );
+    assert.equal(
+      new URL(await page.url()).searchParams.get('uploadedBefore'),
+      preciseBefore,
+    );
+    report.checks.push(
+      'A non-midnight URL interval shows both actual local boundary times and the site time zone in the date editor; applying unchanged dates preserves the original precise instants.',
+    );
+    for (const height of [844, 480]) {
+      await page.cdp('Emulation.setDeviceMetricsOverride', {
+        width: 390,
+        height,
+        deviceScaleFactor: 1,
+        mobile: true,
+      });
+      await page.waitForFunction(
+        (height) => innerWidth === 390 && innerHeight === height,
+        height,
+      );
+      await openDate();
+      await page.waitForFunction(() => {
+        const popover = document.querySelector(
+          '[data-testid="filter-date-popover"]',
+        );
+        return (
+          popover &&
+          popover
+            .getAnimations({ subtree: true })
+            .every(
+              (animation) =>
+                !animation.pending && animation.playState !== 'running',
+            )
+        );
+      });
+      await page.evaluate(
+        () =>
+          new Promise((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+          ),
+      );
+      const mobileDate = await page.evaluate(() => {
+        const popover = document.querySelector(
+          '[data-testid="filter-date-popover"]',
+        );
+        const boundaries = document.querySelector(
+          '[data-testid="filter-date-boundaries"]',
+        );
+        const dialog = boundaries.closest('[role="dialog"]');
+        const rectangle = (node) => {
+          const { left, top, right, bottom, width, height } =
+            node.getBoundingClientRect();
+          return { left, top, right, bottom, width, height };
+        };
+        return {
+          text: boundaries.textContent,
+          popover: rectangle(popover),
+          main: rectangle(document.querySelector('main')),
+          dialog: rectangle(dialog),
+          boundaries: rectangle(boundaries),
+          scrollHeight: dialog.scrollHeight,
+          clientHeight: dialog.clientHeight,
+        };
+      });
+      report.datePopover ??= [];
+      const geometry = {
+        viewport: { width: 390, height },
+        ...mobileDate,
+        controls: [],
+      };
+      report.datePopover.push(geometry);
+      await screenshot(`precise-date-390x${height}`);
+      assert.ok(mobileDate.text.includes(site.time_zone));
+      assert.ok(
+        mobileDate.text.includes(localTime.format(new Date(preciseFrom))),
+      );
+      assert.ok(
+        mobileDate.text.includes(localTime.format(new Date(preciseBefore))),
+      );
+      assert.ok(
+        mobileDate.popover.left >= 0 &&
+          mobileDate.popover.right <= 390 &&
+          mobileDate.popover.top >= Math.max(0, mobileDate.main.top) &&
+          mobileDate.popover.bottom <= Math.min(height, mobileDate.main.bottom),
+        `Date popover stays within main and above the footer at 390×${height}`,
+      );
+      const controls = [
+        ...['上传开始日期', '上传结束日期（包含当天）'].flatMap((label) =>
+          ['year', 'month', 'day'].map((segment) => ({
+            name: `${label}:${segment}`,
+            selector: `[role="group"][aria-label="${label}"] [role="spinbutton"][data-type="${segment}"]`,
+            action: false,
+          })),
+        ),
+        { name: '取消日期', selector: button('取消日期'), action: true },
+        { name: '应用日期', selector: button('应用日期'), action: true },
+      ];
+      for (const control of controls) {
+        // Actual browser focus scrolls each segment/action into the dialog's scroll area.
+        await page.focus(control.selector);
+        await page.evaluate(
+          () =>
+            new Promise((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            ),
+        );
+        const focused = await page.evaluate(() => {
+          const target = document.activeElement;
+          const dialog = target.closest('[role="dialog"]');
+          const rect = target.getBoundingClientRect();
+          const clip = dialog.getBoundingClientRect();
+          return {
+            top: rect.top,
+            bottom: rect.bottom,
+            left: rect.left,
+            right: rect.right,
+            height: rect.height,
+            clipTop: clip.top,
+            clipBottom: clip.bottom,
+            visible: target.contains(
+              document.elementFromPoint(
+                rect.left + rect.width / 2,
+                rect.top + rect.height / 2,
+              ),
+            ),
+          };
+        });
+        geometry.controls.push({ name: control.name, ...focused });
+        assert.ok(
+          focused.top >= focused.clipTop &&
+            focused.bottom <= focused.clipBottom &&
+            focused.left >= 0 &&
+            focused.right <= 390,
+          `${control.name} is fully visible after actual focus at 390×${height}`,
+        );
+        assert.equal(
+          focused.visible,
+          true,
+          `${control.name} is unobstructed after focus`,
+        );
+        if (control.action)
+          assert.ok(
+            focused.height >= 44,
+            `${control.name} retains a 44px target`,
+          );
+      }
+      await screenshot(`precise-date-actions-390x${height}`);
+      await page.focus(
+        '[role="group"][aria-label="上传开始日期"] [role="spinbutton"][data-type="year"]',
+      );
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(
+        () => !document.querySelector('[data-testid="filter-date-boundaries"]'),
+      );
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute('aria-label') === '编辑上传日期',
+      );
+      assert.equal(
+        new URL(await page.url()).searchParams.get('uploadedFrom'),
+        preciseFrom,
+      );
+      assert.equal(
+        new URL(await page.url()).searchParams.get('uploadedBefore'),
+        preciseBefore,
+      );
+      report.checks.push(
+        `At 390×${height}, the actual date popover stays within main above the footer; precise local boundaries remain present and every date segment plus both 44px actions is reachable through actual focus and internal scrolling; Escape returns focus to the trigger without changing the applied interval.`,
+      );
+    }
+    await page.cdp('Emulation.setDeviceMetricsOverride', {
+      width: 1440,
+      height: 1080,
+      deviceScaleFactor: 1,
+      mobile: false,
+    });
+    await page.waitForFunction(
+      () => innerWidth === 1440 && innerHeight === 1080,
+    );
+    await page.goto(combinedUrl);
+    await ready();
+    await openDate();
     const beforeDeletedSegment = await page.url();
     const startDay =
       '[role="group"][aria-label="上传开始日期"] [role="spinbutton"][data-type="day"]';
     await page.focus(startDay);
     await page.keyboard.press('Backspace');
-    await page.click(button('应用筛选'));
+    await page.click(button('应用日期'));
     await page.waitForFunction(() =>
       document
         .querySelector('[role="dialog"] [role="alert"]')
@@ -247,11 +486,7 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
       'day',
     );
     await date('上传开始日期', '2026-09-01');
-    await page.click(button('应用筛选'));
-    await page.waitForFunction(
-      () => !document.querySelector('button[aria-label="关闭筛选"]'),
-    );
-    await ready();
+    await applyDate();
     assert.equal(
       new URL(await page.url()).searchParams.get('uploadedFrom'),
       applied.get('uploadedFrom'),
@@ -259,14 +494,21 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     report.checks.push(
       'Deleting the day segment from an already applied date also blocks Apply and keeps the original URL; refilling the day makes the same date submittable again.',
     );
-    await page.click(button('清除筛选'));
+    await page.click(button('移除格式条件'));
+    await page.waitForFunction(
+      () => !new URL(location.href).searchParams.has('format'),
+    );
+    assert.equal(
+      new URL(await page.url()).searchParams.get('storageId'),
+      storageId,
+    );
+    await page.click(button('清除筛选条件'));
     await page.waitForFunction(
       () => !new URL(location.href).searchParams.has('storageId'),
     );
     await ready();
     const cleared = new URL(await page.url()).searchParams;
     for (const key of [
-      'q',
       'tagId',
       'albumId',
       'storageId',
@@ -277,27 +519,29 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
       'uploadedBefore',
     ])
       assert.equal(cleared.has(key), false, `${key} must be cleared`);
+    assert.equal(cleared.get('q'), 'issue173-');
     report.checks.push(
-      'Applying unchanged dates retains exact UTC instants; the real clear-filters action removes every applied category and restores an unfiltered query.',
+      'Applying unchanged dates retains exact UTC instants; individual removal preserves other conditions; clearing all categories preserves the independent search query.',
     );
 
     await visit('q=issue173-&tagId=issue173-filter-missing&pageSize=40');
     await page.waitForSelector('[data-testid="library-error"]');
-    await open();
     await page.waitForFunction(() =>
       document
-        .querySelector('[role="dialog"]')
+        .querySelector('[data-testid="library-filters-bar"]')
         ?.textContent.includes('已失效：issue173-filter-missing'),
     );
     await screenshot('missing-reference');
-    await close();
+    await page.click('[data-filter-category="tags"] button[aria-haspopup]');
+    await page.focus('input[placeholder="输入名称搜索"]');
+    await page.keyboard.press('Escape');
     assert.equal(
       new URL(await page.url()).searchParams.get('tagId'),
       'issue173-filter-missing',
     );
     assert.deepEqual(await items(), []);
     report.checks.push(
-      'A deleted selected tag stays visible as an invalid ID in the real dialog; dismissing it preserves the URL and never broadens the failed query.',
+      'A deleted selected tag stays visible as an invalid ID in the conditions bar; dismissing its options preserves the URL and never broadens the failed query.',
     );
 
     await visit();
@@ -322,8 +566,8 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
         return original(...args);
       };
     });
-    await open();
-    await page.click('loc=role:button[name*="标签（匹配任意一个）"]');
+    await add('标签');
+    await page.click('[data-filter-category="tags"] button[aria-haspopup]');
     await page.waitForSelector(button('重新读取选项'));
     await page.waitForFunction(() =>
       document
@@ -347,8 +591,7 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     await page.waitForFunction(
       () => !document.querySelector('input[placeholder="输入名称搜索"]'),
     );
-    await page.waitForSelector(button('关闭筛选'));
-    await close();
+    await page.waitForSelector('[data-testid="library-filters-bar"]');
     report.checks.push(
       'A controlled filter-options transport failure produces the real error/retry UI; retry reads the actual server and restores selectable labels without refreshing the page.',
     );
@@ -377,14 +620,14 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
       true,
       'Album status text is fully inside the card bounds',
     );
-    await page.click(button('搜索与筛选'));
+    await page.waitForSelector('[data-testid="library-filters-bar"]');
+    await page.waitForSelector(button('添加条件'));
     assert.equal(
       await page.evaluate(
         () => !!document.querySelector('button[aria-label="图片排序"]'),
       ),
       false,
     );
-    await open();
     assert.equal(
       await page.evaluate(() =>
         [...document.querySelectorAll('button')].some(
@@ -398,9 +641,14 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
         ),
       ),
       true,
-      'Album scope cannot be changed in the filter dialog',
+      'Album scope cannot be changed in the filter bar',
     );
-    await close();
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('button[aria-label="移除相册条件"]'),
+      ),
+      false,
+    );
     await page.click('[data-image-id="issue173-000"] button');
     await page.waitForSelector('[data-testid="detail-body"]');
     await page.click(button('删除图片'));
@@ -443,7 +691,8 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     const returnTo = `${returnToUrl.pathname}${returnToUrl.search}`;
     await sql(`UPDATE session SET expires_at=${Date.now() - 1}`);
     try {
-      await page.click(button('筛选'));
+      await page.click(button('添加条件'));
+      await page.click('loc=role:menuitem[name="标签"]');
     } catch (error) {
       if (!String(error).includes('Cannot find context with specified id'))
         throw error;
@@ -455,7 +704,8 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     assert.equal(expired.searchParams.get('returnTo'), returnTo);
     assert.deepEqual(await items(), []);
     await screenshot('session-expired');
-    await signIn();
+    await signInToLibrary(page, config, report);
+    await ready();
     assert.equal(
       `${new URL(await page.url()).pathname}${new URL(await page.url()).search}`,
       returnTo,

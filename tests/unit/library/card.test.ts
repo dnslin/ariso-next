@@ -112,3 +112,17 @@ it('disables old query cards and reserves their supplied image height', () => {
   expect(html).toMatch(/<button[^>]*disabled/);
   expect(html).toContain('height:237px');
 });
+
+it('exposes a named selected checkbox independently of the detail button', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, {
+      item,
+      isSelected: true,
+      onToggle: () => undefined,
+    }),
+  );
+  expect(html).toContain('aria-label="选择图片：旅行"');
+  expect(html).toMatch(/<input[^>]*type="checkbox"[^>]*checked=""/);
+  expect(html).toContain('aria-label="查看图片：旅行"');
+  expect(html).not.toMatch(/<button\b[^>]*>(?:(?!<\/button>)[\s\S])*<button\b/);
+});

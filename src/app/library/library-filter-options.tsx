@@ -100,7 +100,7 @@ export function LibraryFilterOptionsField({
   );
   return (
     <Autocomplete<LibraryFilterOption, 'single' | 'multiple'>
-      className={kind === 'tags' ? 'w-full gap-1.5' : 'w-full gap-2'}
+      className="min-w-0 max-w-72 flex-1"
       selectionMode={kind === 'tags' ? 'multiple' : 'single'}
       value={kind === 'tags' ? selectedIds : (selectedIds[0] ?? null)}
       onChange={(value) =>
@@ -116,26 +116,19 @@ export function LibraryFilterOptionsField({
       allowsEmptyCollection
       placeholder="全部"
     >
-      <Label
-        className={
-          kind === 'tags'
-            ? 'text-sm font-normal leading-[22px]'
-            : 'text-[13px] font-normal leading-5'
-        }
-      >
-        {label}
-      </Label>
-      <Autocomplete.Trigger
-        className={`h-11 min-h-11 w-full items-center border border-border bg-surface px-3.5 pe-11 shadow-none ${kind === 'tags' ? 'rounded-lg' : 'rounded-xl'} [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11`}
-      >
-        <Autocomplete.Value className="min-w-0 truncate text-base text-foreground md:text-sm">
+      <Label className="sr-only">{label}</Label>
+      <Autocomplete.Trigger className="h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11">
+        <span className="shrink-0 text-sm text-muted">
+          {kind === 'tags' ? '标签' : label}
+        </span>
+        <Autocomplete.Value className="min-w-0 truncate text-sm text-foreground">
           {names.length ? names.join('、') : '全部'}
         </Autocomplete.Value>
         <Autocomplete.Indicator>
           <ChevronDown className="size-4" aria-hidden="true" />
         </Autocomplete.Indicator>
       </Autocomplete.Trigger>
-      <Autocomplete.Popover className="max-h-80 overflow-y-auto rounded-xl border border-border bg-surface p-2">
+      <Autocomplete.Popover className="max-h-80 min-w-64 max-w-[calc(100vw-32px)] overflow-y-auto rounded-xl border border-border bg-surface p-2">
         <Autocomplete.Filter inputValue={search} onInputChange={setSearch}>
           <SearchField aria-label={`搜索${label}`}>
             <SearchField.Group className="min-h-11 rounded-lg border border-border shadow-none">

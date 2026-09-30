@@ -1,0 +1,109 @@
+{
+  "reviewer": "independent code_audit agent",
+  "scope": "Issue 173 feedback changes after d210df3, including date popover boundaries, real-auth rate-limit handling and mandatory four-phase browser orchestration",
+  "verdict": "No remaining Critical or Required findings in reviewed source",
+  "critical": [],
+  "required": [],
+  "resolved": [
+    "Air queued callbacks cannot overwrite canceled selection; final local box is committed synchronously on mouseup",
+    "Album pages expose selection actions through the shared toolbar",
+    "Removing the final selected item, clearing all, or deselecting the only selected page restores focus to the stable search input",
+    "Date editor displays the site timezone and actual inclusive/exclusive applied boundaries while preserving unedited absolute instants",
+    "Selected list uses HeroUI controlled positioning bounded to main and a constrained scrollable list",
+    "Visible selection menu includes current-page and other-page counts",
+    "Narrow toolbar retains touch target heights and tests assert complete sort label visibility",
+    "Date popover uses the existing HeroUI main boundary with a single padded, vertically scrollable dialog"
+  ],
+  "latestDeltaChecksActuallyRun": [
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/filter-dates.test.ts tests/unit/library/filter-options.test.ts",
+      "environment": "Node 24.18.1, pnpm 11.19.0",
+      "result": "2 files, 6 tests passed"
+    },
+    {
+      "command": "pnpm exec eslint src/app/library/library-filters.tsx e2e/library-query-filters.mjs --max-warnings=0",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "loginSynchronizationReview": {
+    "historicalNote": "This records the earlier synchronization-only delta; the captured failure later identified get-session HTTP 429. Current retry handling is reviewed below.",
+    "verdict": "No Critical or Required findings; no assertion weakening",
+    "findings": [
+      "The query suite waits for the exact expected URL and document load, then retains its original library selector assertion",
+      "Filter reauthentication reads and waits for the complete returnTo including query parameters",
+      "Existing default assertion timeouts remain unchanged; no retry or forced navigation was added to the success path",
+      "Failure reporting captures URL, document readiness, library presence, alerts and screenshot before rethrowing",
+      "This change improves synchronization and evidence but does not establish the cause of the earlier unexplained login timeout"
+    ],
+    "checksActuallyRun": [
+      {
+        "command": "pnpm exec eslint e2e/library-query.mjs e2e/library-query-filters.mjs --max-warnings=0",
+        "environment": "Node 24.18.1, pnpm 11.19.0",
+        "result": "passed"
+      },
+      {
+        "command": "git diff --check",
+        "result": "passed"
+      }
+    ]
+  },
+  "browserPhaseSplitReview": {
+    "verdict": "No Critical or Required findings; all four phases remain mandatory in the full runner",
+    "findings": [
+      "verify-browser explicitly awaits selection, query, filters and scale in order before reporting libraryQuery passed",
+      "Each phase executes the shared 93-record fixture setup and finally cleanup, with a separate JSON report filename",
+      "Selection, filter and scale branches invoke their complete helpers; the query branch retains query combinations and unavailable-storage checks",
+      "The scale helper still invokes verifyLargeLibrarySelection for the large explicit-selection fixture",
+      "The existing per-run 300000ms timeout is unchanged; no phase has a success-path bypass or swallowed failure"
+    ],
+    "checksActuallyRun": [
+      {
+        "command": "pnpm exec eslint e2e/library-query.mjs scripts/verify-browser.mjs --max-warnings=0",
+        "environment": "Node 24.18.1, pnpm 11.19.0",
+        "result": "passed"
+      },
+      {
+        "command": "git diff --check",
+        "result": "passed"
+      }
+    ]
+  },
+  "realAuthRetryReview": {
+    "verdict": "No Critical or Required findings",
+    "evidenceRead": "test-results/browser/library-selection.json records the get-session HTTP 429 alert while still on login",
+    "findings": [
+      "The helper observes actual sign-in/email and get-session fetch responses without altering responses, cookies, session state or production rate limiting",
+      "Retries require an observed HTTP 429 plus the corresponding visible UI alert and a positive retry header no greater than the actual 60-second limiter window",
+      "Every attempt clicks the real login button; success still requires exact returnTo, document load and the real library selector",
+      "Attempts are limited to three and non-429 failures are not retried",
+      "The temporary fetch observer is discarded by production full-document login navigation or the parent's finally navigation on failure",
+      "The scale helper installs its own request observer and does not depend on the now-separate query phase monitor"
+    ],
+    "optional": [],
+    "followUpVerified": [
+      "The final attempt now exits immediately after recording HTTP 429, without a pointless cooldown",
+      "Read test-results/issue-173/login-limit-probe.json documenting an actual get-session limiter response and subsequent real UI return to the complete query URL; this reviewer did not execute that probe"
+    ],
+    "checksActuallyRun": [
+      {
+        "command": "pnpm exec eslint e2e/library-login.mjs e2e/library-query.mjs e2e/library-query-filters.mjs scripts/verify-browser.mjs --max-warnings=0",
+        "environment": "Node 24.18.1, pnpm 11.19.0",
+        "result": "passed"
+      },
+      {
+        "command": "git diff --check",
+        "result": "passed"
+      }
+    ]
+  },
+  "limitations": [
+    "This reviewer did not control the browser or run a build",
+    "Browser assertions were reviewed, not executed by this reviewer",
+    "Final browser verification and independent design acceptance are separate requirements",
+    "User acceptance remains required for the approved UI changes"
+  ]
+}

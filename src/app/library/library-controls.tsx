@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Button } from '@heroui/react/button';
 import { SearchField } from '@heroui/react/search-field';
 import { Select } from '@heroui/react/select';
@@ -8,7 +8,8 @@ import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { ToggleButtonGroup } from '@heroui/react/toggle-button-group';
 import { ToggleButton } from '@heroui/react/toggle-button';
-import { ChevronDown } from 'lucide-react';
+import { Tooltip } from '@heroui/react/tooltip';
+import { LayoutDashboard, LayoutGrid, RefreshCw } from 'lucide-react';
 import type { useLibraryQuery } from './use-library-query';
 
 type Query = ReturnType<typeof useLibraryQuery>;
@@ -21,11 +22,11 @@ const sortOptions = [
 
 export function LibraryToolbar({
   query,
-  onFilter,
+  selectionMenu,
   album = false,
 }: {
   query: Query;
-  onFilter: () => void;
+  selectionMenu?: ReactNode;
   album?: boolean;
 }) {
   return (
@@ -35,17 +36,8 @@ export function LibraryToolbar({
     >
       <div className="flex min-w-0 gap-2 xl:gap-3">
         <LibrarySearch key={query.filters?.q ?? ''} query={query} />
-        <Button
-          variant="outline"
-          className="h-11 w-22 shrink-0 justify-between rounded-lg px-3 font-normal xl:h-9 xl:w-24"
-          onPress={onFilter}
-          isDisabled={!query.filters}
-        >
-          筛选
-          <ChevronDown size={16} aria-hidden />
-        </Button>
       </div>
-      <div className="flex items-center gap-2 xl:gap-3">
+      <div className="flex min-w-0 items-center gap-1 xl:gap-3">
         {!album ? (
           <LibrarySelect
             label="图片排序"
@@ -56,7 +48,7 @@ export function LibraryToolbar({
                 sort: sortOptions.find((option) => option.id === sort)!.id,
               });
             }}
-            className="w-26.5 shrink-0 xl:w-36"
+            className="w-auto min-w-0 shrink"
             compact
           />
         ) : (
@@ -74,29 +66,52 @@ export function LibraryToolbar({
           isDetached
           className="gap-2 bg-transparent p-0 xl:gap-1"
         >
-          <ToggleButton
-            id="grid"
-            variant="ghost"
-            className="h-11 w-15.5 min-w-0 rounded-lg px-3 font-normal data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground xl:h-9 xl:w-16"
-          >
-            网格
-          </ToggleButton>
-          <ToggleButton
-            id="masonry"
-            variant="ghost"
-            className="h-11 w-15.5 min-w-0 rounded-lg px-3 font-normal data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground xl:h-9 xl:w-20"
-          >
-            瀑布流
-          </ToggleButton>
+          <Tooltip>
+            <ToggleButton
+              id="grid"
+              aria-label="网格"
+              isIconOnly
+              variant="ghost"
+              className="size-11 min-w-0 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground xl:size-9"
+            >
+              <LayoutGrid size={18} aria-hidden />
+            </ToggleButton>
+            <Tooltip.Content>网格</Tooltip.Content>
+          </Tooltip>
+          <Tooltip>
+            <ToggleButton
+              id="masonry"
+              aria-label="瀑布流"
+              isIconOnly
+              variant="ghost"
+              className="size-11 min-w-0 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground xl:size-9"
+            >
+              <LayoutDashboard size={18} aria-hidden />
+            </ToggleButton>
+            <Tooltip.Content>瀑布流</Tooltip.Content>
+          </Tooltip>
         </ToggleButtonGroup>
-        <Button
-          variant="outline"
-          isDisabled
-          aria-label="选择图片，尚未开放"
-          className="h-11 min-w-0 flex-1 rounded-lg px-2 font-normal xl:h-9 xl:w-30 xl:flex-none"
-        >
-          选择图片
-        </Button>
+        {selectionMenu ?? (
+          <Tooltip>
+            <Button
+              aria-label="刷新图库"
+              isIconOnly
+              variant="ghost"
+              className="relative size-11 min-w-0 rounded-lg xl:size-9"
+              data-refresh-available={query.refreshAvailable || undefined}
+              isDisabled={query.isFetching}
+              onPress={() => void query.refresh()}
+            >
+              <RefreshCw size={18} aria-hidden />
+              {query.refreshAvailable ? (
+                <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-accent" />
+              ) : null}
+            </Button>
+            <Tooltip.Content>
+              {query.refreshAvailable ? '图片有更新，点击刷新' : '刷新图库'}
+            </Tooltip.Content>
+          </Tooltip>
+        )}
       </div>
     </div>
   );
@@ -116,7 +131,7 @@ function LibrarySearch({ query }: { query: Query }) {
       }}
       className="min-w-0 flex-1 xl:w-70"
     >
-      <SearchField.Group className="h-11 min-w-0 rounded-lg border border-border bg-background px-3 shadow-none xl:h-9">
+      <SearchField.Group className="h-11 min-w-0 rounded-lg border border-border bg-background shadow-none xl:h-9">
         <SearchField.Input
           placeholder="搜索图片名称…"
           className="min-w-0 text-base xl:text-sm"
@@ -156,10 +171,10 @@ export function LibrarySelect({
       className={className}
     >
       <Select.Trigger
-        className={`h-11 min-w-0 rounded-lg border border-border bg-background px-3 text-sm font-normal shadow-none ${compact ? 'xl:h-9' : ''}`}
+        className={`h-11 min-w-0 rounded-lg border border-border bg-background text-sm font-normal shadow-none ${compact ? 'px-2 xl:h-9 xl:px-3' : 'px-3'}`}
       >
-        <Select.Value className="whitespace-nowrap" />
-        <Select.Indicator className={compact ? 'hidden' : undefined} />
+        <Select.Value className="truncate" />
+        {!compact ? <Select.Indicator /> : null}
       </Select.Trigger>
       <Select.Popover>
         <ListBox>

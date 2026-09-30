@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
+import { Checkbox } from '@heroui/react/checkbox';
 import { Chip } from '@heroui/react/chip';
 import { Skeleton } from '@heroui/react/skeleton';
 import { ImageOff } from 'lucide-react';
@@ -21,12 +22,16 @@ export function LibraryCard({
   squareMobileTop = false,
   album = false,
   isDisabled = false,
+  isSelected = false,
+  onToggle,
 }: {
   item: LibraryItem;
   imageHeight?: number;
   squareMobileTop?: boolean;
   album?: boolean;
   isDisabled?: boolean;
+  isSelected?: boolean;
+  onToggle?: (item: LibraryItem) => void;
   onOpen?: (id: string, element: HTMLElement) => void;
 }) {
   const [failed, setFailed] = useState(false);
@@ -42,8 +47,24 @@ export function LibraryCard({
     <Card
       data-testid="library-card"
       data-image-id={item.id}
-      className={`relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border' : 'border border-border'} ${squareMobileTop ? 'rounded-t-none min-[1200px]:rounded-t-2xl' : ''}`}
+      data-selected={isSelected || undefined}
+      className={`group relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none data-[selected=true]:ring-2 data-[selected=true]:ring-accent has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border' : 'border border-border'} ${squareMobileTop ? 'rounded-t-none min-[1200px]:rounded-t-2xl' : ''}`}
     >
+      {onToggle ? (
+        <Checkbox
+          aria-label={`选择图片：${item.displayName}`}
+          isSelected={isSelected}
+          isDisabled={isDisabled}
+          onChange={() => onToggle(item)}
+          className="absolute top-0 left-0 z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 data-[selected=true]:opacity-100 [@media(hover:none)]:opacity-100"
+        >
+          <Checkbox.Content className="flex size-11 items-center justify-center">
+            <Checkbox.Control className="size-5 border border-border bg-surface shadow-sm">
+              <Checkbox.Indicator />
+            </Checkbox.Control>
+          </Checkbox.Content>
+        </Checkbox>
+      ) : null}
       <Button
         variant="ghost"
         isDisabled={isDisabled}
@@ -70,7 +91,8 @@ export function LibraryCard({
               alt={item.displayName}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover"
+              draggable={false}
+              className="h-full w-full object-contain"
               onLoad={() => setLoaded(true)}
               onError={() => setFailed(true)}
             />
