@@ -1,0 +1,38 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "commands": [
+    {
+      "command": "node tests/experiments/storage-s3/verify-probes.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output docs/verification/storage-157/review-fixes/live --r2-no-lock-evidence 'docs/tasks/evidence/EV-STORAGE-01/README.md:119 records owner confirmation: same R2 endpoint, bucket image has no object lock rules; reused for current authorized test'",
+      "exitCode": 0,
+      "reports": ["run-VNDrSN/r2.json", "run-VNDrSN/seaweedfs.json"]
+    },
+    {
+      "command": "pnpm exec eslint tests/experiments/storage-s3/verify-probes.ts --max-warnings=0",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec prettier tests/experiments/storage-s3/verify-probes.ts docs/verification/storage-157/review-fixes/live --check",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "results": {
+    "r2": "Initial five stages passed. Wrong credentials fail PUT and DELETE with SignatureDoesNotMatch 403 after the local capability/owner check; one exact cleanup reference remains, with zero known bytes and one unconfirmed object. Restored credentials permit manual cleanup but not automatic enablement. Revision 3 passes all five stages before enablement.",
+    "seaweedfs": "Initial five stages passed. Wrong credentials fail configuration with SignatureDoesNotMatch 403. PUT, read, anonymous and DELETE are skipped; cleanupPending is false and references/usage are empty. No manual cleanup was invoked or marked passed. Restored credentials remain untested and disabled until revision 3 passes all five stages.",
+    "final": "Three exact keys per service were inspected as absent. All final references and usage released; temporary independent databases removed."
+  },
+  "credentialScan": "Exact supplied credential values and full X-Amz-Signature URLs absent in both new reports.",
+  "limitations": [
+    "Anonymous API refusal does not verify unknown public aliases; R2 whole-bucket no-lock confirmation reuses the recorded owner statement for the same target.",
+    "Real-service wrong-credential checks cover pre-write configuration rejection and attempted-write cleanup recovery. Read-timeout classification is covered by separate deterministic integration tests, not by these healthy remote services.",
+    "No bucket configuration or existing object changed. Historical live reports retain their original outcomes."
+  ]
+}

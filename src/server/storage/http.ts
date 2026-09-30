@@ -45,24 +45,53 @@ export async function storageResponse(
         { status: 400, headers },
       );
     }
-    const detail = error as { code?: string; status?: number };
+    const detail = error as {
+      code?: string;
+      status?: number;
+      storageId?: string;
+      key?: string;
+      serviceCode?: string;
+      requestId?: string;
+    };
     const status =
       detail?.status ??
       (detail?.code === 'STORAGE_INVALID_INPUT'
         ? 400
-        : detail?.code === 'STORAGE_NOT_FOUND'
-          ? 404
-          : [
-                'STORAGE_DISABLED',
-                'STORAGE_TEST_REQUIRED',
-                'STORAGE_TEST_STALE',
-                'STORAGE_REFERENCES_UNAVAILABLE',
-              ].includes(detail?.code ?? '')
-            ? 409
-            : 500);
-    if (status < 500 && error instanceof Error) {
+        : detail?.code === 'STORAGE_TIMEOUT'
+          ? 504
+          : detail?.code === 'STORAGE_OPERATION_FAILED' ||
+              detail?.code === 'STORAGE_BUCKET_UNSUPPORTED'
+            ? 502
+            : detail?.code === 'STORAGE_NOT_FOUND'
+              ? 404
+              : [
+                    'STORAGE_DISABLED',
+                    'STORAGE_IN_USE',
+                    'STORAGE_TEST_REQUIRED',
+                    'STORAGE_TEST_STALE',
+                    'STORAGE_REFERENCES_UNAVAILABLE',
+                  ].includes(detail?.code ?? '')
+                ? 409
+                : 500);
+    if (
+      (status < 500 || status === 502 || status === 504) &&
+      error instanceof Error
+    ) {
+      if (status === 502 || status === 504) {
+        createRuntimeLogger('storage.http', 'info').error(
+          { err: error, path: new URL(request.url).pathname },
+          'Remote storage operation failed',
+        );
+      }
       return Response.json(
-        { code: detail.code, message: error.message },
+        {
+          code: detail.code,
+          message: error.message,
+          storageId: detail.storageId,
+          key: detail.key,
+          serviceCode: detail.serviceCode,
+          requestId: detail.requestId,
+        },
         { status, headers },
       );
     }

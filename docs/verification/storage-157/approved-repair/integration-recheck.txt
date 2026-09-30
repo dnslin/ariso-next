@@ -1,0 +1,28 @@
+Already up to date
+Done in 62ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso
+
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 1 failed) 22846ms
+   × counts each compressed GET and download once without database writes 5078ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+    118| }
+    119|
+    120| it.each(['original', 'compressed', 'watermark'])(
+       |                                                 ^
+    121|   'counts each %s GET and download once without database writes',
+    122|   async (version) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 36 passed (37)
+   Start at  20:24:19
+   Duration  57.35s (tests 98%, import 2%)

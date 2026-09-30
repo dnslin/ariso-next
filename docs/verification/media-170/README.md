@@ -1,6 +1,6 @@
 # T-MED-07 完整元数据保存与独立重读
 
-最新结果见[合并水印迁移后的最终验证](#合并水印迁移后的最终验证)。之前各轮的失败与草稿状态保留为历史记录。
+最新结果见[合并存储探测迁移后的最终验证](#合并存储探测迁移后的最终验证)。之前各轮的失败与草稿状态保留为历史记录。
 
 关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../tasks/m3-m4-platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](../../tasks/execution.md)。
 
@@ -214,3 +214,29 @@ T-LIB-06 继续负责常用参数、完整树、读取错误/历史结果和重�
 `EGO_TASK_SPACE=12 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-170-watermark-merge pnpm run test:browser` 完整退出 0：[命令输出](./watermark-merge-browser.txt)、[主运行器](./watermark-merge-browser-runner.json)、[独立 UI 运行器](./watermark-merge-browser-ui-runner.json)均通过。本轮使用 Node 24.18.1、pnpm 11.19.0、macOS arm64 和现有 Ego Lite；覆盖桌面/手机初始化与重启、图库/详情/回收恢复、相册、真实上传下载、匿名访问、队列轮询、交互和跨页连续性，以及公共组件多视口与浅深色回归。成功后运行器清理隔离数据和临时服务，TaskSpace 保留至最终远端核对后关闭。
 
 本轮完整截图与原始报告已复制到 `/Volumes/data/project/ariso/test-results/media-170-archive/browser-170-watermark-merge/`，此前各轮也保存在同一父目录。生成和格式修复后没有业务代码修改。基于 `main@2b261d3` 的本地适用验证与双角度复审均通过，可执行所有者已授权的合并和清理。没有远端 PR 检查，不记为 CI 通过。双架构镜像与容器验证仍由 Release 流程执行；本次没有发布或部署。
+
+### 合并存储探测迁移后的最终验证
+
+水印合并轮完整验证并推送 `c87e49a` 后，最终核对时主分支又合入存储探测 PR #211（`b0a6e95`），其迁移占用 `0012`。保留主分支全部存储实现及 `0012_storage_probes` SQL、快照和 journal 条目，将本任务元数据表重新生成为 `0013_magenta_colonel_america`；重复生成无 schema 差异。迁移测试的 import 冲突合并为两边所需导入，保留主分支原有水印升级探测测试。
+
+本任务升级回归改为从真实 `0012` 数据库迁移到 `0013`，保留水印数据、S3 配置、连接报告、待清理探测记录、清理重试时间、历史迁移进度和外键完整性；重复迁移不重放。独立测试 agent 完整运行迁移测试 **13 项通过**。质量评审者另行选中两条真实升级用例验证通过，其余 11 项未选中。
+
+两位独立评审者再次分别按 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 复审，均 **Approve**，无 Required 问题。主分支启动/关闭流程与存储实现原样保留；媒体、水印、存储探测均在数据库关闭前结束。元数据仍只接通本地存储，S3 连接探测并不冒充 S3 内容读取。原三项评审修复的真实复现检查保持通过。
+
+本轮无 UI 变更，继续使用 Node 24.18.1 / pnpm 11.19.0 / macOS arm64。最新组合的构建、608 项单元、844 项集成、静态检查与完整浏览器均通过，上一轮水印组合的完整结果仍按历史保留。
+
+| 最新组合实际命令                                                     | 结果                                                                                                     |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                     | [通过](./storage-merge-install.txt)                                                                      |
+| `pnpm run db:generate`（生成与再次核对）                             | [生成](./storage-merge-generate.txt)、[无后续差异](./storage-merge-generate-recheck.txt)                 |
+| `pnpm run format:check`                                              | [通过](./storage-merge-format.txt)                                                                       |
+| `pnpm run lint`                                                      | [通过](./storage-merge-lint.txt)                                                                         |
+| `pnpm run typecheck`                                                 | [通过](./storage-merge-typecheck.txt)                                                                    |
+| `pnpm run test:unit`                                                 | [42 文件 / 608 项通过](./storage-merge-unit.txt)                                                         |
+| `pnpm run build`                                                     | [通过](./storage-merge-build.txt)                                                                        |
+| `pnpm run test:integration --maxWorkers=2`                           | [94 文件 / 844 项通过](./storage-merge-integration.txt)，在 build 完成后执行                             |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` | [120 任务 / 298 需求](./storage-merge-task-check.txt)、[5 项自检](./storage-merge-task-selftest.txt)通过 |
+
+`EGO_TASK_SPACE=12 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-170-storage-merge pnpm run test:browser` 完整退出 0：[命令输出](./storage-merge-browser.txt)、[主运行器](./storage-merge-browser-runner.json)、[独立 UI 运行器](./storage-merge-browser-ui-runner.json)均通过。完整覆盖与上一轮相同，沿用 TaskSpace 12；未跳过、弱化或删除场景。测试结束后清理临时服务和隔离数据，最终 GitHub 核对后关闭测试空间。
+
+本轮截图与原始报告已保存在 `/Volumes/data/project/ariso/test-results/media-170-archive/browser-170-storage-merge/`，清理 worktree 不影响证据。基于 `main@b0a6e95` 的全部适用本地检查与双角度复审完成，可执行所有者授权的合并。无本次 UI 变更，设计及人工 UI 验收不适用；无远端 PR 检查，不记为 CI 通过。发布和后续业务能力的既定边界不变。

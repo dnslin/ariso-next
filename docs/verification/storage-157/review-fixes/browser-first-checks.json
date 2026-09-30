@@ -1,0 +1,125 @@
+{
+  "sourceDirectory": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-first",
+  "taskSpaceId": 10,
+  "status": "failed",
+  "reports": {
+    "browser.json": {
+      "status": "passed",
+      "taskSpaceId": 10,
+      "errors": []
+    },
+    "error-recovery.json": {
+      "status": "passed"
+    },
+    "identity-1440-restart.json": {
+      "status": "passed",
+      "checks": [
+        "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 1440,
+      "phase": "restart",
+      "errors": [],
+      "activeCheck": "login-failures"
+    },
+    "identity-1440-setup.json": {
+      "status": "passed",
+      "checks": [
+        "Reload before final submission leaves setup open and clears in-memory secrets",
+        "A deliberately lost real setup response requires status verification before any retry",
+        "Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner",
+        "Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers",
+        "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+        "Owner session does not authenticate the second hostname browser page",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 1440,
+      "phase": "setup",
+      "errors": [],
+      "activeCheck": "credential-logout"
+    },
+    "identity-390-restart.json": {
+      "status": "passed",
+      "checks": [
+        "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 390,
+      "phase": "restart",
+      "errors": [],
+      "activeCheck": "login-failures"
+    },
+    "identity-390-setup.json": {
+      "status": "passed",
+      "checks": [
+        "Reload before final submission leaves setup open and clears in-memory secrets",
+        "Unavailable browser timezone recommendation requires an explicit selection",
+        "Unsent setup and failed status check remain unknown; real SETUP_REQUIRED unlocks retry without losing fields",
+        "390×400 shortened viewport can scroll and focus the submit button (not a physical soft-keyboard test)",
+        "Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner",
+        "Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers",
+        "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+        "Owner session does not authenticate the second hostname browser page",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 390,
+      "phase": "setup",
+      "errors": [],
+      "activeCheck": "credential-logout"
+    },
+    "interaction-polish-1440.json": {
+      "status": "passed",
+      "checks": [
+        "Idle upload cloud animates continuously without hover; reduced motion disables its animation.",
+        "Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes.",
+        "Original/compressed/thumbnail share stable stage geometry; pausing the real original response displays Skeleton until actual decode, without layout shift.",
+        "Real Toolbar ArrowRight/ArrowLeft focus navigation follows visible actions on desktop and mobile.",
+        "Real copy success produces an expiring overlay Toast without layout shift; 44px copy/detail CloseButtons close the layers and copy-close restores its trigger focus."
+      ],
+      "width": 1920
+    },
+    "m2-1440.json": {
+      "status": "passed",
+      "checks": [
+        "M2 login honors the real preceding identity rate-limit countdown before retrying.",
+        "1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+        "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+        "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+        "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+        "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+      ],
+      "width": 1440
+    },
+    "shell-browser.json": {
+      "status": "passed",
+      "checks": [
+        "Real Next navigation, current ancestor, Tabs category navigation, single content tree",
+        "767/768/1199/1200 navigation boundaries; reduced-motion disables transitions",
+        "Open mobile menu stays open on tablet and closes on desktop breakpoint and restores focus to visible navigation",
+        "Mobile Modal Tab containment, background scroll lock, Escape and trigger focus restoration",
+        "Mobile navigation closes Modal; Select changes actual category route",
+        "Short viewport input remains reachable above persistent footer",
+        "Long workspace name wraps; empty navigation invents no business entries; explicit menu close button"
+      ],
+      "errors": [],
+      "limitations": [
+        "Desktop Chromium emulation does not verify physical soft keyboard, touch hardware, or safe-area insets"
+      ]
+    },
+    "workspace-continuity-1440.json": {
+      "status": "passed",
+      "checks": [
+        "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+        "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+        "Hard reload still warns for unsent work and starts a fresh document with no persisted queue.",
+        "Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.",
+        "A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held."
+      ],
+      "width": 1440
+    }
+  }
+}

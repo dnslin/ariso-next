@@ -1,0 +1,59 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "commands": [
+    {
+      "command": "node tests/experiments/storage-s3/verify-probes.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output docs/verification/storage-157/live --r2-no-lock-evidence 'docs/tasks/evidence/EV-STORAGE-01/README.md:119 records owner confirmation: same R2 endpoint, bucket image has no object lock rules; reused for current authorized test'",
+      "exitCode": 0,
+      "reports": ["run-kr45dq/r2.json", "run-kr45dq/seaweedfs.json"],
+      "result": "Final rerun after protocol XML/204 rejection and error-body timeout fixes. Both services passed initial production runtime test, rejected invalid credentials, retained failed cleanup references, completed manual cleanup after credential restoration, required full new-revision retest and released all final references and usage. All three exact keys per service were absent after cleanup."
+    },
+    {
+      "command": "node tests/experiments/storage-s3/verify-probes.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output docs/verification/storage-157/live --r2-no-lock-evidence 'docs/tasks/evidence/EV-STORAGE-01/README.md:119 records owner confirmation: same R2 endpoint, bucket image has no object lock rules; reused for current authorized test'",
+      "exitCode": 0,
+      "reports": ["run-FGeogJ/r2.json", "run-FGeogJ/seaweedfs.json"],
+      "result": "Both services passed initial production runtime test, rejected invalid credentials, retained failed cleanup references, completed manual cleanup after credential restoration, required full new-revision retest and released all final references and usage. All three exact keys per service were absent after cleanup."
+    },
+    {
+      "command": "node tests/experiments/storage-s3/verify-probes.ts --output docs/verification/storage-157/live/missing-environment",
+      "exitCode": 1,
+      "reports": [
+        "missing-environment/run-OBU73c/r2.json",
+        "missing-environment/run-OBU73c/seaweedfs.json"
+      ],
+      "result": "Expected failure: missing configurations remain incomplete, with no remote requests."
+    },
+    {
+      "command": "pnpm exec eslint tests/experiments/storage-s3/verify-probes.ts --max-warnings=0",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec prettier tests/experiments/storage-s3/verify-probes.ts docs/verification/storage-157/live --check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --project tsconfig.json",
+      "exitCode": 2,
+      "result": "Concurrent implementation checkpoint: no verify-probes.ts diagnostics. LocalStorage localPath typing errors in verify-media/media tests and missing extension/coder in analytics usage tests were reported to the main agent; final project typecheck belongs to the consolidated verification record."
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "credentialScan": "Passed exact credential-value and X-Amz-Signature checks on run-FGeogJ and final run-kr45dq reports; no credential values or full signed URLs recorded.",
+  "initialPassingReports": ["run-sxC4Fn/r2.json", "run-sxC4Fn/seaweedfs.json"],
+  "limitations": [
+    "R2 uses existing owner confirmation for no lock rules on the same entire bucket. The test does not automatically inspect R2 lock rules.",
+    "API anonymous refusal does not enumerate or verify unknown public aliases.",
+    "SeaweedFS reported Server SeaweedFS 30GB 4.47. R2 reported cloudflare without a product version; missing request IDs are retained as unavailable, with cf-ray where present.",
+    "Invalid credentials exercise real remote rejection and cleanup recovery; these cases do not simulate an accepted write followed by remote deletion failure. That failure boundary is covered separately by integration tests.",
+    "AWS S3 was not tested and is no longer in the required service matrix.",
+    "No bucket configuration, existing object, preview database, Release, container image or deployment was changed."
+  ],
+  "finalPassingReports": ["run-kr45dq/r2.json", "run-kr45dq/seaweedfs.json"]
+}

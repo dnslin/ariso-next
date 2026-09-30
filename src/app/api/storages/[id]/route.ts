@@ -1,3 +1,4 @@
+import { listStorageProbes } from '../../../../server/storage/probes.ts';
 import { storageResponse } from '../../../../server/storage/http.ts';
 import {
   readStorage,
@@ -10,9 +11,10 @@ export const dynamic = 'force-dynamic';
 type Context = { params: Promise<{ id: string }> };
 
 export function GET(request: Request, context: Context) {
-  return storageResponse(request, async (db) =>
-    readStorage(db, (await context.params).id),
-  );
+  return storageResponse(request, async (db) => {
+    const { id } = await context.params;
+    return { ...readStorage(db, id), probes: listStorageProbes(db, id) };
+  });
 }
 export function PATCH(request: Request, context: Context) {
   return storageResponse(request, async (db, settingsContext) => {

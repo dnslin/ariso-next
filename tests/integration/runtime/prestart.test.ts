@@ -41,6 +41,11 @@ function writeMigrations(
       when: 3,
       sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
     },
+    {
+      tag: '0003_storage_probes',
+      when: 4,
+      sql: readFileSync(resolve('drizzle/0012_storage_probes.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -116,6 +121,7 @@ describe('compiled prestart CLI', () => {
       { name: 'account' },
       { name: 'session' },
       { name: 'storage_configs' },
+      { name: 'storage_probes' },
       { name: 'storage_settings' },
       { name: 'user' },
       { name: 'verification' },

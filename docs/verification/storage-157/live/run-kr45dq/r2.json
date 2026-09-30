@@ -1,0 +1,446 @@
+{
+  "service": "r2",
+  "startedAt": "2026-09-29T10:07:22.088Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "region": "auto",
+    "bucket": "image",
+    "forcePathStyle": true,
+    "serviceVersion": "Not supplied; response Server is recorded below"
+  },
+  "noLockEvidence": "docs/tasks/evidence/EV-STORAGE-01/README.md:119 records owner confirmation: same R2 endpoint, bucket image has no object lock rules; reused for current authorized test",
+  "deploymentRequirement": "Private bucket and public aliases remain a deployment requirement; API denial does not verify unknown aliases",
+  "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+  "database": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-probes-157-laJSZT/ariso.db",
+  "logs": [
+    {
+      "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+      "report": {
+        "probeId": "fa3ba5a2-e68d-4b8b-ba37-e4bf48a7bf70",
+        "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/fa3ba5a2-e68d-4b8b-ba37-e4bf48a7bf70",
+              "httpStatusCode": 400,
+              "serviceCode": "InvalidArgument",
+              "basis": "r2-authorization-required"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T10:07:25.493Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-09-29T10:07:22.102Z"
+        }
+      }
+    },
+    {
+      "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+      "report": {
+        "probeId": "da35c108-1178-4d6f-ad26-ce1a81ea7bf8",
+        "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+        "revision": 2,
+        "passed": false,
+        "stale": false,
+        "cleanupPending": true,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "failed",
+            "error": {
+              "message": "Storage write failed: ffc9d450-36f5-4a86-9f64-b3260504d5af, probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8: The request signature we calculated does not match the signature you provided. Check your secret access key and signing method.",
+              "code": "STORAGE_OPERATION_FAILED",
+              "serviceCode": "SignatureDoesNotMatch",
+              "httpStatusCode": 403
+            }
+          },
+          {
+            "stage": "read",
+            "status": "skipped"
+          },
+          {
+            "stage": "anonymous",
+            "status": "skipped"
+          },
+          {
+            "stage": "delete",
+            "status": "failed",
+            "error": {
+              "message": "Storage delete failed: ffc9d450-36f5-4a86-9f64-b3260504d5af, probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8: The request signature we calculated does not match the signature you provided. Check your secret access key and signing method.",
+              "code": "STORAGE_OPERATION_FAILED",
+              "serviceCode": "SignatureDoesNotMatch",
+              "httpStatusCode": 403
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T10:07:27.333Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-09-29T10:07:26.638Z"
+        }
+      }
+    },
+    {
+      "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+      "report": {
+        "probeId": "2aa4b177-50dd-4fa4-8786-a8bb7c77d2f7",
+        "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+        "revision": 3,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/2aa4b177-50dd-4fa4-8786-a8bb7c77d2f7",
+              "httpStatusCode": 400,
+              "serviceCode": "InvalidArgument",
+              "basis": "r2-authorization-required"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T10:07:31.604Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-09-29T10:07:28.898Z"
+        }
+      }
+    }
+  ],
+  "connection": {
+    "probeId": "fa3ba5a2-e68d-4b8b-ba37-e4bf48a7bf70",
+    "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+    "revision": 1,
+    "passed": true,
+    "stale": false,
+    "cleanupPending": false,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "passed",
+        "evidence": {
+          "basis": "official-capability-and-owner-confirmation",
+          "automaticVersionOrLockDetection": false,
+          "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+          "r2NoBucketLocksConfirmed": true
+        }
+      },
+      {
+        "stage": "write",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "read",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "anonymous",
+        "status": "passed",
+        "evidence": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/fa3ba5a2-e68d-4b8b-ba37-e4bf48a7bf70",
+          "httpStatusCode": 400,
+          "serviceCode": "InvalidArgument",
+          "basis": "r2-authorization-required"
+        }
+      },
+      {
+        "stage": "delete",
+        "status": "passed",
+        "evidence": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T10:07:25.493Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": true,
+      "confirmedAt": "2026-09-29T10:07:22.102Z"
+    }
+  },
+  "key": "ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/fa3ba5a2-e68d-4b8b-ba37-e4bf48a7bf70",
+  "exactKeyHead": {
+    "status": 404,
+    "server": "cloudflare",
+    "requestId": null,
+    "cfRay": "a42a2e50f8ba964b-LAX"
+  },
+  "assertions": {
+    "stagesPassed": 5,
+    "enableBeforeTestRejected": true,
+    "enableAfterTestAllowed": true,
+    "referencesReleased": true,
+    "usageReleased": true,
+    "exactKeyAbsent": true
+  },
+  "invalidCredentials": {
+    "probeId": "da35c108-1178-4d6f-ad26-ce1a81ea7bf8",
+    "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+    "revision": 2,
+    "passed": false,
+    "stale": false,
+    "cleanupPending": true,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "passed",
+        "evidence": {
+          "basis": "official-capability-and-owner-confirmation",
+          "automaticVersionOrLockDetection": false,
+          "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+          "r2NoBucketLocksConfirmed": true
+        }
+      },
+      {
+        "stage": "write",
+        "status": "failed",
+        "error": {
+          "message": "Storage write failed: ffc9d450-36f5-4a86-9f64-b3260504d5af, probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8: The request signature we calculated does not match the signature you provided. Check your secret access key and signing method.",
+          "code": "STORAGE_OPERATION_FAILED",
+          "serviceCode": "SignatureDoesNotMatch",
+          "httpStatusCode": 403
+        }
+      },
+      {
+        "stage": "read",
+        "status": "skipped"
+      },
+      {
+        "stage": "anonymous",
+        "status": "skipped"
+      },
+      {
+        "stage": "delete",
+        "status": "failed",
+        "error": {
+          "message": "Storage delete failed: ffc9d450-36f5-4a86-9f64-b3260504d5af, probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8: The request signature we calculated does not match the signature you provided. Check your secret access key and signing method.",
+          "code": "STORAGE_OPERATION_FAILED",
+          "serviceCode": "SignatureDoesNotMatch",
+          "httpStatusCode": 403
+        }
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T10:07:27.333Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": true,
+      "confirmedAt": "2026-09-29T10:07:26.638Z"
+    }
+  },
+  "invalidCredentialsKey": "ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8",
+  "pendingReferences": [
+    {
+      "probeId": "da35c108-1178-4d6f-ad26-ce1a81ea7bf8",
+      "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+      "key": "probes/da35c108-1178-4d6f-ad26-ce1a81ea7bf8",
+      "state": "cleanup"
+    }
+  ],
+  "pendingUsage": [
+    {
+      "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+      "knownBytes": 0,
+      "unconfirmedObjects": 1,
+      "confirmedAt": null
+    }
+  ],
+  "retriedConnection": {
+    "probeId": "2aa4b177-50dd-4fa4-8786-a8bb7c77d2f7",
+    "storageId": "ffc9d450-36f5-4a86-9f64-b3260504d5af",
+    "revision": 3,
+    "passed": true,
+    "stale": false,
+    "cleanupPending": false,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "passed",
+        "evidence": {
+          "basis": "official-capability-and-owner-confirmation",
+          "automaticVersionOrLockDetection": false,
+          "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+          "r2NoBucketLocksConfirmed": true
+        }
+      },
+      {
+        "stage": "write",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "read",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "anonymous",
+        "status": "passed",
+        "evidence": {
+          "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/2aa4b177-50dd-4fa4-8786-a8bb7c77d2f7",
+          "httpStatusCode": 400,
+          "serviceCode": "InvalidArgument",
+          "basis": "r2-authorization-required"
+        }
+      },
+      {
+        "stage": "delete",
+        "status": "passed",
+        "evidence": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T10:07:31.604Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": true,
+      "confirmedAt": "2026-09-29T10:07:28.898Z"
+    }
+  },
+  "retriedKey": "ariso/ffc9d450-36f5-4a86-9f64-b3260504d5af/probes/2aa4b177-50dd-4fa4-8786-a8bb7c77d2f7",
+  "recoveryAssertions": {
+    "credentialEditInvalidatesPassedResult": true,
+    "realServiceRejectedCredentials": true,
+    "failedCleanupRetainsExactKey": true,
+    "manualCleanupAfterCredentialRestorePassed": true,
+    "cleanupDoesNotRestoreConnectionPassed": true,
+    "newRevisionRequiresFullRetest": true,
+    "finalReferencesAndUsageReleased": true,
+    "recoveryKeysAbsent": true
+  },
+  "remainingReferences": [],
+  "localDatabaseRemoved": true,
+  "finishedAt": "2026-09-29T10:07:32.334Z"
+}
