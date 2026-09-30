@@ -74,3 +74,11 @@
 | `python3 /tmp/ariso-141-check-evidence.py`（本轮临时只读检查）                                                                                                                                                 | 通过：三文档 166 个相对文件链接、20 个新增锚点、46 个新增引用 Figma ID、64 个唯一节点、12 张 PNG 自然尺寸、3 个原生消费者。未新增项目测试脚手架。 |
 
 功能结论限定为规则及责任核对；本轮无真实页面改动，网页设计还原与用户人工 UI 验收不适用，不能写通过。完整批次编辑/选择回填和清理交接表达缺口已落实到消费者；DES-06-UPLOAD、相关 DES-05/07 和 RG-02/03/05/06/07 继续开放，后续 UI 必须经真实功能、设计对照与用户人工验收。
+
+## PR 与远端检查
+
+已提交并推送实施提交 `54298666bac77da4d3dc70a56b2ce6f3b4812bda`，创建 [PR #215](https://github.com/dnslin/ariso-next/pull/215)，分支 `codex/issue-141-upload-design`。首次 create 在推送尚未结束时返回远端分支不存在，确认 push 成功及 ls-remote 的提交一致后重试成功；没有创建重复 PR。
+
+实际执行 `gh pr view 215 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --repo dnslin/ariso-next --branch codex/issue-141-upload-design --json databaseId,status,conclusion,workflowName`，以及该提交的 `check-runs` 和 `status` API。回读为 OPEN、非草稿、CLEAN，检查/Actions 列表为空、check-runs 与状态数量为 0；聚合 pending 不代表有检查运行中，不能记作 CI 通过。
+
+本 PR 按纯文档适用检查与独立审计完成后提交评审；消费者 UI 的缺口、真实页面及人工验收仍由原任务承接。本段作为后续证据提交保留；不合并 PR、不关闭 Issue、不发布、不部署、不删除分支或 worktree。
