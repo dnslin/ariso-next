@@ -274,8 +274,10 @@ export function LibraryDetail({
   dialogRef,
   onTrashed,
   returnTo,
+  albumId,
 }: {
   imageId: string;
+  albumId?: string;
   returnTo: string;
   client: QueryClient;
   onClose: () => void;
@@ -290,7 +292,6 @@ export function LibraryDetail({
       if (pending)
         void client.cancelQueries({
           queryKey: ['library-detail', imageId],
-          exact: true,
         });
       setMutationPending(pending);
     },
@@ -301,8 +302,8 @@ export function LibraryDetail({
   const [previewRevision, setPreviewRevision] = useState(0);
   const query = useQuery(
     {
-      queryKey: ['library-detail', imageId],
-      queryFn: ({ signal }) => readDetail(imageId, signal),
+      queryKey: ['library-detail', imageId, albumId],
+      queryFn: ({ signal }) => readDetail(imageId, signal, albumId),
       enabled: !mutationPending,
       retry: false,
       networkMode: 'always',
@@ -424,7 +425,10 @@ export function LibraryDetail({
                     void client.invalidateQueries({ queryKey: ['library'] });
                 },
                 onVerified: (record) =>
-                  client.setQueryData(['library-detail', imageId], record),
+                  client.setQueryData(
+                    ['library-detail', imageId, albumId],
+                    record,
+                  ),
                 onComplete: onTrashed,
               }}
               onRefresh={() => {

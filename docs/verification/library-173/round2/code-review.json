@@ -1,0 +1,58 @@
+{
+  "reviewer": "independent code_audit agent",
+  "skill": "code-review-and-quality",
+  "baseline": "c2ebb6f",
+  "scope": "Second manual feedback revision: photo drag selection, shared pointer/keyboard context menu, query identity cleanup, stored thumbnail dimensions, card corners and filter alignment",
+  "verdict": "No remaining Critical or Required code findings",
+  "critical": [],
+  "required": [],
+  "optional": [],
+  "resolvedFinding": {
+    "issue": "Parent contextMenu state could survive selection/query changes and reopen a stale menu after a new selection",
+    "resolution": "The parent records the same selection identity, including album scope, and clears context state during render when identity differs or selected count reaches zero; the menu key uses that identity",
+    "regressionCoverage": "The mandatory feedback phase opens a menu, changes query using browser Back, then selects a checkbox and asserts that no stale menu reappears"
+  },
+  "reviewConclusions": [
+    "Pointer contextmenu and Shift+F10/ContextMenu keys call the same openContextMenu helper and retain the same selection semantics and origin focus",
+    "A deliberate photo drag suppresses the React Aria onPress detail callback; a subsequent primary pointer press or Enter/Space resets suppression",
+    "Existing Air selection lifecycle and cancellation remain in use rather than introducing another drag engine",
+    "Thumbnail dimensions come from the stored thumbnail version in the existing batched read; list and status share the contract, and original image dimensions retain their original meaning",
+    "Missing, partial and non-stored thumbnail dimensions are covered by query integration tests; rotated thumbnail proportions are covered by layout and existing media orientation tests",
+    "Four rounded corners and grid crop versus masonry full proportion are explicitly recorded in the approved handoff amendment",
+    "The feedback phase is awaited by the full runner and cleans its temporary thumbnail objects, version records and files",
+    "verifyLibraryContextEdges is called by the mandatory feedback helper and asserts main boundaries, action target sizes and Escape origin focus in both themes"
+  ],
+  "checksActuallyRun": [
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/gallery.test.ts tests/unit/library/card.test.ts tests/unit/library/selection.test.ts tests/unit/library/query-hook.test.ts",
+      "environment": "Node 24.18.1, pnpm 11.19.0",
+      "result": "4 files, 44 tests passed; rerun after final keyboard helper review"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/library/query.test.ts",
+      "result": "1 file, 32 tests passed earlier in this review round; unchanged thumbnail API since that run"
+    },
+    {
+      "command": "pnpm exec eslint src/app/library/library-gallery.tsx src/app/library/library-screen.tsx src/app/library/library-selection-menu.tsx e2e/library-feedback.mjs e2e/library-query.mjs scripts/verify-browser.mjs --max-warnings=0",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "browserEvidenceRead": {
+    "path": "test-results/issue-173/round2/library-feedback.json",
+    "status": "passed",
+    "checks": 3,
+    "combinations": 24,
+    "note": "Read the actual report; this reviewer did not execute it. This report predates the newly added context-edge checks."
+  },
+  "notExecutedByReviewer": [
+    "Browser control, screenshots and physical-device testing",
+    "The newly added context-edge browser scenarios",
+    "Full unit/integration suites, build and typecheck",
+    "Independent Figma design acceptance and user acceptance"
+  ],
+  "remainingVerification": "The root agent must complete the current full browser run, including the new mandatory context-edge scenarios. Independent design and user acceptance remain separate gates."
+}

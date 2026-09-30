@@ -57,6 +57,7 @@ afterEach(() => {
 });
 function setup(onUnauthorized?: () => void) {
   const request = vi.fn<typeof fetch>();
+  const onLibraryChanged = vi.fn();
   const transfer = deferred<UploadSessionResult>();
   let progress: (value: number) => void = () => {};
   const transport = {
@@ -73,6 +74,7 @@ function setup(onUnauthorized?: () => void) {
     request,
     createTransport,
     onUnauthorized,
+    onLibraryChanged,
   });
   controllers.push(controller);
   const file = new File(['image'], 'same.png', { type: 'image/png' });
@@ -86,6 +88,7 @@ function setup(onUnauthorized?: () => void) {
   };
   return {
     controller,
+    onLibraryChanged,
     file,
     request,
     transport,
@@ -672,4 +675,52 @@ describe('manual upload controller', () => {
     expect(c.request).toHaveBeenCalledTimes(1);
     expect(setup().controller.snapshot).toEqual([]);
   });
+});
+
+it('notifies library changes only for confirmed new image and processing transitions', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  c.progress(100);
+  expect(c.onLibraryChanged).not.toHaveBeenCalled();
+  c.respond(accepted('queued'));
+  c.transfer.resolve(accepted('queued').sessions[0]);
+  await started;
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(1);
+  c.respond(accepted('queued'));
+  await c.controller.refresh();
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(1);
+  c.request.mockRejectedValueOnce(new Error('temporary read failure'));
+  await c.controller.refresh();
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(1);
+  c.respond(accepted('queued'));
+  await c.controller.refresh();
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(1);
+  c.respond(accepted('running'));
+  await c.controller.refresh();
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(2);
+  c.respond(accepted('succeeded'));
+  await c.controller.refresh();
+  expect(c.onLibraryChanged).toHaveBeenCalledTimes(3);
+});
+
+it('does not notify for a rejected upload or a cancelled transfer completing late', async () => {
+  const rejected = setup();
+  rejected.controller.add(rejected.file);
+  rejected.respond({ message: 'storage unavailable' }, 409);
+  await rejected.controller.start('private');
+  expect(rejected.onLibraryChanged).not.toHaveBeenCalled();
+
+  const c = setup();
+  c.controller.add(c.file);
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  c.respond({ ...queued, state: 'cancelled' });
+  await c.controller.cancel(c.controller.snapshot[0].id);
+  c.transfer.resolve(accepted('succeeded').sessions[0]);
+  await started;
+  expect(c.onLibraryChanged).not.toHaveBeenCalled();
 });

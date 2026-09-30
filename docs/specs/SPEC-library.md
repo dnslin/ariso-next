@@ -1,7 +1,7 @@
 # Spec: library — 图库查询、详情、批量操作与回收站
 
 - 模块 ID：`library`。
-- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，筛选界面、选择和查看器仍由后续任务承接。
+- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，四种布局/加载组合、筛选界面及历史恢复的实施与验证见[Issue #173 记录](../verification/library-173/README.md)，用户已于2026-10-01确认 UI 人工验收通过；选择完整能力和查看器由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[delivery](./SPEC-delivery.md)、[collections](./SPEC-collections.md)的已确认契约。upload 提供入口来源，图库不反向依赖其队列实现。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10、13.4、14、15、16、18、22、23、26.8/26.9/26.11/26.13；[覆盖表](../tasks/coverage.md)。
@@ -19,7 +19,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 
 ## 2. 工程与库能力依据
 
-当前已实现基础图库、详情和回收恢复。生产沿用 Node/Next、Drizzle、Zod、Pino、HeroUI 和 TanStack Query；nuqs、Yet Another React Lightbox 已在 EV-LIBRARY-01 隔离实验验证，尚未接入完整产品页面。实际版本以所属 package.json 和锁文件为准。
+当前已实现基础图库、详情和回收恢复。生产沿用 Node/Next、Drizzle、Zod、Pino、HeroUI 和 TanStack Query；nuqs 已接入所有者图库和相册内容页；Yet Another React Lightbox 已在 EV-LIBRARY-01 隔离实验验证，尚未接入完整产品页面。实际版本以所属 package.json 和锁文件为准。
 
 - [TanStack Query 分页](https://tanstack.com/query/latest/docs/framework/react/guides/paginated-queries)用于请求缓存和加载状态。筛选/排序/范围/页码必须进入 query key；切网格与瀑布流不改变数据 key。新查询加载时若暂显旧数据，必须禁用旧数据的选择和操作，不能把旧图当新查询结果。
 - [nuqs 参数选项](https://nuqs.dev/docs/options)用于解析 URL 和浏览器历史。搜索输入先本地编辑，提交搜索、应用筛选和翻页才写一条历史；后退恢复已应用查询，不为每个输入字符创建历史记录。
@@ -78,7 +78,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 
 ## 4. 查询结果与十万图片规模
 
-列表只返回本页轻量信息：ID、displayName/originalName、原图大小和格式、展示比例、visibility、processing_status、当前活动/最近失败任务摘要、storageId/名称/启用、版本存在性及 thumbnail URL、回收/删除状态和操作可用原因。完整分组元数据不塞进每张卡片；详情单独获取。对象 Key、凭据和永久 S3 地址不是列表链接。
+列表只返回本页轻量信息：ID、displayName/originalName、原图大小和格式、展示比例、visibility、processing_status、当前活动/最近失败任务摘要、storageId/名称/启用、版本存在性及 thumbnail URL、回收/删除状态和操作可用原因。展示比例使用已保存缩略图的 `thumbnailDimensions`（width/height），缺失或尺寸不完整为 null；原图 width/height 保持原始识别语义，不能用于替代自动旋转后的缩略图比例。完整分组元数据不塞进每张卡片；详情单独获取。对象 Key、凭据和永久 S3 地址不是列表链接。
 
 同一图片命中多个所选标签也只出现一次。列表、总数及筛选使用同一谓词，计数不因多标签或多相册联表重复图片。关系过滤用 EXISTS 或按图片聚合后判断，不用 DISTINCT 掩盖错误联表。分页数据和总数在同一短只读事务取一致视图；事务内不请求文件或 S3。
 

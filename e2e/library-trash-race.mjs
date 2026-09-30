@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { verifyDetailReconciliation } from './library-detail-reconciliation.mjs';
 import { join } from 'node:path';
 
 // Keep the actual pre-write GET and actual POST responses independently pending.
@@ -67,6 +68,7 @@ async function holdConcurrentReads(page, mode) {
 }
 
 export async function verifyLibraryTrashRace({ page, config, sql, report }) {
+  await verifyDetailReconciliation({ page, config, sql, report });
   const button = (name) => `loc=role:button[name="${name}"]`;
   for (const mode of ['normal', 'lost-write', 'late-success']) {
     await sql(

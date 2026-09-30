@@ -23,6 +23,7 @@ export interface LibraryItem {
     boolean
   >;
   thumbnailUrl: string | null;
+  thumbnailDimensions: { width: number; height: number } | null;
   activeJob: LibraryJobSummary | null;
   latestFailedJob: LibraryJobSummary | null;
   trashedAt: string | null;

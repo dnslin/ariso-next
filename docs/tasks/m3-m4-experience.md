@@ -131,8 +131,9 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验证方法：真实浏览器四组合×三数量，网络次数、前进后退/复制链接、DST 日期、localStorage 不可用；持续加载测 DOM/内存并查键盘顺序。
 - 界面：所有者 /library、/albums/{albumId}；T-LIB-03 API 与 collections/storage 筛选项。桌面[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)、手机[98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)、桌面状态[43:428](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=43-428)、手机状态[102:4306](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4306)。HeroUI：[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Select](https://heroui.com/en/docs/react/components/select)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[ToggleButtonGroup](https://heroui.com/en/docs/react/components/toggle-button-group)、[Alert](https://heroui.com/en/docs/react/components/alert)。瀑布流/分段渲染无通用控件对应，采用专用业务布局；手机双列与固定分页栏；DG-LIBRARY 对应 DES-06-LIBRARY/RG-02；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 网格查询/分页/历史：URL回放和迟到响应隔离。
-  - [ ] 2. 瀑布流及加载更多组合：布局切换无请求，有界渲染与返回位置。
+  - [x] 1. 网格查询/分页/历史：URL回放和迟到响应隔离。
+  - [x] 2. 瀑布流及加载更多组合：布局切换无请求，有界渲染与返回位置。
+- 实施证据：[Issue #173 记录](../verification/library-173/README.md)。独立代码与设计评审已完成，最终自动化结果见记录；用户已于2026-10-01确认 UI 人工验收通过；后续代码评审两项P2的修复与定向验证见同一记录，不将实现勾选视为整组需求关闭。
 
 #### DG-LIBRARY T-LIB-04 核对结论
 
@@ -141,7 +142,7 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 可复用：上列主页面、筛选框及[图库状态表](../archive/preparation-2026-09/design/library-flow-2026-09-18.md#状态节点) 01–06 的空库、无匹配、失效条件、加载与读取失败。桌面保留搜索/筛选/排序/布局工具区，手机双列；沿既有 HeroUI 映射组合，公共外壳复用 OwnerShell/AdminShell，不复制旧状态图中的“工作空间”面包屑。
 - 适用状态：首次加载与继续加载分别处理；旧列表暂留时禁用旧图操作；空库、筛选无结果、越过末页不是读取错误。400 参数错误保留可见条件并提供重置；失效引用不能静默扩大范围；401 清管理缓存。成功是实际列表响应，不采用固定数量或计时跳转。
 - 真实验收：library §3/4/11 的四组合 × 20/40/80、完整筛选、时区日期、历史/直达链接、迟到响应、无效 cursor 与刷新；切布局不请求已有数据。与 T-LIB-05/07 联验选择、滚动与焦点恢复；相册内容沿固定加入顺序，不能把已有相册管理页当成内容页。
-- 未实现与边界：当前生产只有固定网格、40 张加载更多，完整查询/邻居 API 已在 T-LIB-03 交付，nuqs/瀑布流仍未接产品。任意组合可用现有布局/状态规则表达，无须复制全部排列的画板；真实 DOM/内存及浅深色、两端断点和短视口按[前端共用验收](./execution.md#前端共用验收)补证，RG-02 保持开放。
+- 未实现与边界：DG 核对时生产只有固定网格、40 张加载更多，完整查询/邻居 API 已在 T-LIB-03 交付；当前接入结果与剩余验收见上方 Issue #173 记录。任意组合可用现有布局/状态规则表达，无须复制全部排列的画板；真实 DOM/内存及浅深色、两端断点和短视口按[前端共用验收](./execution.md#前端共用验收)补证，RG-02 保持开放。
 
 ### T-LIB-05 跨页显式选择与已选清单
 
@@ -156,6 +157,8 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 实施步骤：
   - [ ] 1. 跨页显式选择及当前页全选：过滤清空而布局保留。
   - [ ] 2. 已选清单逐项移除与失效清理：超过200项不预读全库。
+
+- 部分实施：2026-09-30 用户在 #173 人工返修中要求提前接入勾选、开源鼠标框选和已选菜单，范围及证据见 [#173 返修记录](../verification/library-173/README.md)。跨页轻量选择及逐项清单已接入；外部失效图完整清理、超过200项真实浏览器专项与本卡最终验收仍由 #174 承接，不据此勾选整卡完成。
 
 #### DG-LIBRARY T-LIB-05 核对结论
 

@@ -1,0 +1,17 @@
+{
+  "phase": "selection",
+  "status": "failed",
+  "checks": [],
+  "combinations": [],
+  "screenshots": ["library-query-failure.png"],
+  "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-55588.localhost:55588/library?q=issue173-&pageSize=40\"; last URL was \"http://ariso-55588.localhost:55588/login?returnTo=%2Flibrary%3Fq%3Dissue173-%26pageSize%3D40\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+  "failureState": {
+    "url": "http://ariso-55588.localhost:55588/login?returnTo=%2Flibrary%3Fq%3Dissue173-%26pageSize%3D40",
+    "readyState": "complete",
+    "hasLibrary": false,
+    "alerts": [
+      "无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 429）"
+    ],
+    "loginBusy": false
+  }
+}

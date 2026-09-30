@@ -8,6 +8,7 @@ import { toast } from '@heroui/react/toast';
 import { Spinner } from '@heroui/react/spinner';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
+import { notifyLibraryChanged } from './library-changes';
 import { bytesLabel } from './detail-labels';
 
 /** A lost write response is reconciled by reading; never retry the write automatically. */
@@ -63,6 +64,7 @@ export function TrashAction({
         !current.deletionStatus &&
         (restoring ? current.trashedAt === null : current.trashedAt !== null)
       ) {
+        notifyLibraryChanged();
         setOpen(false);
         if (!restoring) toast.success('已移入回收站');
         onComplete(current);

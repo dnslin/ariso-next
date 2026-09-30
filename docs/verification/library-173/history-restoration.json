@@ -1,0 +1,1073 @@
+{
+  "before": {
+    "status": "failed",
+    "source": "history-before.log",
+    "initialScrollTop": 500,
+    "recordedScrollTopBeforeLeaving": 592,
+    "backScrollTop": 0,
+    "backGalleryHeight": 1440,
+    "backLoaded": 20,
+    "requestedRestoreTarget": 0
+  },
+  "after": {
+    "status": "passed",
+    "trials": [
+      {
+        "trial": 0,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            }
+          ]
+        }
+      },
+      {
+        "trial": 1,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            }
+          ]
+        }
+      },
+      {
+        "trial": 2,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 3,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 4,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 5,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 6,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 7,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            }
+          ]
+        }
+      },
+      {
+        "trial": 8,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            }
+          ]
+        }
+      },
+      {
+        "trial": 9,
+        "initial": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 500,
+          "height": 1792,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            }
+          ]
+        },
+        "shortPage": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=3",
+          "top": 0,
+          "height": 1003,
+          "loaded": "7",
+          "gallery": 564,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            }
+          ]
+        },
+        "restored": {
+          "url": "http://issue173.localhost:3173/library?q=history173-&pageSize=20&page=2",
+          "top": 592,
+          "height": 1816,
+          "loaded": "20",
+          "gallery": 1440,
+          "events": [
+            {
+              "event": "scrollTo",
+              "args": [0, 500],
+              "page": "2",
+              "before": 0,
+              "height": 1792,
+              "gallery": 1440
+            },
+            {
+              "event": "scroll",
+              "top": 592,
+              "page": "2",
+              "height": 1816
+            },
+            {
+              "event": "scroll",
+              "top": 0,
+              "page": "3",
+              "height": 1003
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 0],
+              "page": "3",
+              "before": 0,
+              "height": 1003,
+              "gallery": 564
+            },
+            {
+              "event": "scrollTo",
+              "args": [0, 592],
+              "page": "2",
+              "before": 0,
+              "height": 1816,
+              "gallery": 1440
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

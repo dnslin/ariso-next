@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@air/react-drag-to-select':
+        specifier: 5.0.11
+        version: 5.0.11(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@aws-sdk/client-s3':
         specifier: 3.1136.0
         version: 3.1136.0
@@ -71,6 +74,9 @@ importers:
       next-themes:
         specifier: 0.4.6
         version: 0.4.6(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      nuqs:
+        specifier: 2.10.1
+        version: 2.10.1(next@16.3.5(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@24.13.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       pino:
         specifier: 10.3.1
         version: 10.3.1
@@ -152,6 +158,12 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@air/react-drag-to-select@5.0.11':
+    resolution: {integrity: sha512-y45tfrYnbInjpWv6cOVWy2XWy+kfZBuYd3aoS+CVjQSbM6FM7j/J7I4cWThJhQ3XmZ6KULJXeB8Mg0yLgQxH2A==}
+    peerDependencies:
+      react: 16 - 19
+      react-dom: 16 - 19
 
   '@alloc/quick-lru@5.3.0':
     resolution: {integrity: sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA==}
@@ -3440,6 +3452,27 @@ packages:
     resolution: {integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==}
     engines: {node: '>=18'}
 
+  nuqs@2.10.1:
+    resolution: {integrity: sha512-7lPZrPJVOsD0VvfQSKtodYBBPGPLsLzkFU8ueYIap9yMMJvSw6UC12p8luA5NW7aKe7AbPHKxcxb3OluH6iAJA==}
+    peerDependencies:
+      '@remix-run/react': '>=2'
+      '@tanstack/react-router': ^1
+      next: '>=14.2.0'
+      react: '>=18.2.0 || ^19.0.0-0'
+      react-router: ^5 || ^6 || ^7 || ^8
+      react-router-dom: ^5 || ^6 || ^7
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@tanstack/react-router':
+        optional: true
+      next:
+        optional: true
+      react-router:
+        optional: true
+      react-router-dom:
+        optional: true
+
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -3658,6 +3691,9 @@ packages:
     resolution: {integrity: sha512-TnckvpDQGU0672wEaLZqdzvhuSeXWjgW6vijMWxiKOxc8CosQUfPGISdcZyfHqjX3XMjEtRxj4w9HumvX4h4mw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  react-style-object-to-css@1.1.2:
+    resolution: {integrity: sha512-+5MFULqCCj7wwJJ/ISKFP91ZlHVF1Rv8o0neiTKvt21XDTU5e34tc8hy+XPLeYWYOupdHt25HxxwocvYm3HM6A==}
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -4196,6 +4232,12 @@ snapshots:
       react-stately: 3.50.0(react@19.3.0)
       react-transition-group: 4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       use-sync-external-store: 1.7.0(react@19.3.0)
+
+  '@air/react-drag-to-select@5.0.11(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+    dependencies:
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+      react-style-object-to-css: 1.1.2
 
   '@alloc/quick-lru@5.3.0': {}
 
@@ -7323,6 +7365,13 @@ snapshots:
       path-key: 4.0.0
       unicorn-magic: 0.3.0
 
+  nuqs@2.10.1(next@16.3.5(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@24.13.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0):
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      react: 19.3.0
+    optionalDependencies:
+      next: 16.3.5(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@24.13.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+
   object-assign@4.1.1: {}
 
   object-inspect@1.13.4: {}
@@ -7562,6 +7611,8 @@ snapshots:
       '@swc/helpers': 0.5.23
       react: 19.3.0
       use-sync-external-store: 1.7.0(react@19.3.0)
+
+  react-style-object-to-css@1.1.2: {}
 
   react-transition-group@4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:

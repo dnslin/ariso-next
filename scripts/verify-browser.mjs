@@ -20,6 +20,11 @@ for (const name of [
   'shell-browser.json',
   'error-recovery.json',
   'library.json',
+  'library-query.json',
+  'library-feedback.json',
+  'library-selection.json',
+  'library-filters.json',
+  'library-scale.json',
   'albums.json',
   'upload.json',
   'upload-polling.json',
@@ -332,6 +337,20 @@ try {
       await corsFixture.close();
       corsFixture = undefined;
       await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+      for (const phase of [
+        'feedback',
+        'selection',
+        'query',
+        'filters',
+        'scale',
+      ]) {
+        await runBrowser(
+          '../e2e/library-query.mjs',
+          { ...identityConfig, libraryQueryPhase: phase },
+          `library-${phase}.log`,
+        );
+      }
+      report.libraryQuery = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');

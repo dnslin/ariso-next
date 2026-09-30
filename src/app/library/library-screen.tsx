@@ -1,245 +1,272 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { QueryClient } from '@tanstack/react-query';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { Images } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
-import type { LibraryPage } from '../../server/library/types';
 import { LibraryLoading } from './library-loading';
-import { LibraryCard } from './library-card';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
+import { LibraryFooter, LibraryToolbar } from './library-controls';
+import { LibraryFiltersBar } from './library-filters';
+import { LibraryGallery } from './library-gallery';
+import {
+  LibrarySelectionMenu,
+  type LibraryContextMenu,
+} from './library-selection-menu';
+import { useLibrarySelection } from './use-library-selection';
+import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
-class ListReadError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-  ) {
-    super(message);
-  }
-}
-
-async function readPage(
-  cursor: string | null,
-  signal: AbortSignal,
-): Promise<LibraryPage> {
-  const query = cursor ? `?${new URLSearchParams({ cursor })}` : '';
-  let response: Response;
-  try {
-    response = await fetch(`/api/images${query}`, {
-      signal,
-      cache: 'no-store',
-    });
-  } catch (error) {
-    if (signal.aborted) throw error;
-    throw new Error('连接中断，无法读取图片列表，请检查网络后重试。', {
-      cause: error,
-    });
-  }
-  if (!response.ok)
-    throw new ListReadError(
-      `图片列表读取失败（HTTP ${response.status}），请重试。`,
-      response.status,
-    );
-  return response.json();
-}
-
-export function LibraryScreen({
-  name,
-  description,
-  email,
-  ownerName,
-  initialSidebarCollapsed,
-}: {
+export function LibraryScreen(props: {
   name: string;
   description: string;
   email: string;
   ownerName: string;
   initialSidebarCollapsed: boolean;
+  timeZone: string;
+  albumId?: string;
+  header?: ReactNode;
+  children?: ReactNode;
+  onImageRemoved?: () => void;
 }) {
   const resetUpload = useResetUpload();
   const detail = useDetailNavigation();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
+  const [client] = useState(() => new QueryClient());
+  const query = useLibraryQuery(client, { albumId: props.albumId });
+  const selectionIdentity = JSON.stringify([
+    props.albumId,
+    query.filters,
+    query.loadingMode,
+  ]);
+  const selection = useLibrarySelection(selectionIdentity, query.items);
   const [notice, setNotice] = useState('');
-  function onTrashed(record: Detail) {
-    void client.cancelQueries({ queryKey: ['library'] });
-    client.setQueriesData<{ pages: LibraryPage[]; pageParams: unknown[] }>(
-      { queryKey: ['library'] },
-      (data) =>
-        data
-          ? {
-              ...data,
-              pages: data.pages.map((page) => ({
-                ...page,
-                items: page.items.filter((item) => item.id !== record.id),
-              })),
-            }
-          : data,
+  const [contextMenu, setContextMenu] = useState<
+    (LibraryContextMenu & { identity: string }) | null
+  >(null);
+  if (
+    contextMenu &&
+    (contextMenu.identity !== selectionIdentity || !selection.selected.size)
+  ) {
+    setContextMenu(null);
+  }
+  const moreRef = useRef<HTMLButtonElement>(null);
+  const endRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => () => client.clear(), [client]);
+  const expireSession = useCallback(() => {
+    resetUpload();
+    client.clear();
+    window.location.replace(
+      `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
+  }, [resetUpload, client, returnTo]);
+  useEffect(() => {
+    if (query.expired) expireSession();
+  }, [query.expired, expireSession]);
+  async function onTrashed(record: Detail) {
     setNotice(
       `已将 ${record.displayName} 移入回收站。文件仍占用空间，不会自动清理。`,
     );
+    selection.remove(record.id);
     detail.close();
-    void client.invalidateQueries({ queryKey: ['library'] });
+    await query.onItemRemoved(record.id);
+    props.onImageRemoved?.();
   }
-  // 管理数据只活在当前图库页面；离开或失效后不保留私有卡片缓存。
-  const [client] = useState(() => new QueryClient());
-  const query = useInfiniteQuery(
-    {
-      queryKey: ['library', 'uploaded_desc', 40],
-      queryFn: ({ pageParam, signal }) => readPage(pageParam, signal),
-      initialPageParam: null as string | null,
-      getNextPageParam: (page) => (page.hasMore ? page.nextCursor : undefined),
-      retry: false,
-      networkMode: 'always',
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-    client,
-  );
-  const moreRef = useRef<HTMLButtonElement>(null);
-  const endRef = useRef<HTMLParagraphElement>(null);
-  const busy = useRef(false);
-  const expired =
-    query.error instanceof ListReadError && query.error.status === 401;
-  useEffect(() => () => client.clear(), [client]);
-  useEffect(() => {
-    if (!expired) return;
-    resetUpload();
-    client.clear();
-    window.location.replace('/login?reason=expired&returnTo=%2Flibrary');
-  }, [client, expired, resetUpload]);
-
-  const pages = expired ? [] : (query.data?.pages ?? []);
-  const items = [
-    ...new Map(
-      pages.flatMap((page) => page.items).map((item) => [item.id, item]),
-    ).values(),
-  ];
-  const total = pages.at(-1)?.total;
-  const count =
-    total === undefined
-      ? '数量待确认'
-      : `${total.toLocaleString('zh-CN')} 张图片 · 已加载 ${items.length} 张`;
-
   async function loadMore() {
-    if (busy.current || query.isFetching || !query.hasNextPage) return;
-    busy.current = true;
-    try {
-      const result = await query.fetchNextPage({ cancelRefetch: false });
-      requestAnimationFrame(() => {
-        if (result.hasNextPage) moreRef.current?.focus({ preventScroll: true });
-        else endRef.current?.focus({ preventScroll: true });
-      });
-    } finally {
-      busy.current = false;
-    }
+    const result = await query.loadMore();
+    if (!result) return;
+    requestAnimationFrame(() => {
+      if (result.hasNextPage) moreRef.current?.focus({ preventScroll: true });
+      else endRef.current?.focus({ preventScroll: true });
+    });
   }
-
+  const filtered =
+    query.filters &&
+    !!(
+      query.filters.q ||
+      query.filters.tagIds.length ||
+      query.filters.uploadedFrom ||
+      query.filters.uploadedBefore ||
+      query.filters.format ||
+      query.filters.storageId ||
+      query.filters.visibility ||
+      query.filters.status ||
+      (!props.albumId && query.filters.albumId)
+    );
+  const invalid =
+    query.queryError ||
+    (query.error instanceof LibraryReadError && query.error.status === 400);
   return (
     <OwnerShell
-      name={name}
-      description={description}
-      email={email}
-      ownerName={ownerName}
-      initialSidebarCollapsed={initialSidebarCollapsed}
-      footer={
-        <p data-testid="library-count" role="status" className="w-full text-sm">
-          {expired ? '登录已失效' : count}
-        </p>
-      }
+      {...props}
+      returnTo={returnTo}
+      footer={<LibraryFooter query={query} />}
     >
       <section
         className="grid min-w-0 gap-5 xl:gap-6"
         aria-labelledby="library-title"
+        data-testid="library-list"
+        data-loaded-count={query.items.length}
+        data-layout={query.layout}
+        data-loading-mode={query.loadingMode}
       >
         {notice ? <p role="status">{notice}</p> : null}
-        <div className="grid gap-1.5">
-          <h1
-            id="library-title"
-            tabIndex={-1}
-            className="text-[28px] font-medium leading-normal md:text-[30px]"
-          >
-            图库
-          </h1>
-          <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
+        {props.header ?? (
+          <div className="grid min-h-19 gap-1.5">
+            <h1
+              id="library-title"
+              tabIndex={-1}
+              className="text-[30px] font-medium leading-normal"
+            >
+              图库
+            </h1>
+            <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
+          </div>
+        )}
+        <div className="grid min-w-0 gap-2">
+          <LibraryToolbar
+            query={query}
+            album={!!props.albumId}
+            selectionMenu={
+              selection.selected.size ? (
+                <LibrarySelectionMenu
+                  key={selectionIdentity}
+                  selection={selection}
+                  contextMenu={contextMenu}
+                  onContextMenuClose={() => setContextMenu(null)}
+                  loadingMode={query.loadingMode}
+                  disabled={!query.canOperate}
+                  onOpen={detail.open}
+                />
+              ) : undefined
+            }
+          />
+          {query.filters ? (
+            <LibraryFiltersBar
+              filters={query.filters}
+              timeZone={props.timeZone}
+              fixedAlbumId={props.albumId}
+              onSessionExpired={expireSession}
+              onApply={(patch) => void query.applyQuery(patch)}
+            />
+          ) : null}
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-muted">上传时间从新到旧 · 每批 40 张</p>
-          <Button
-            variant="outline"
-            className="min-h-11 rounded-lg"
-            isDisabled={query.isFetching || expired}
-            onPress={() => {
-              void client.resetQueries({ queryKey: ['library'] });
-            }}
-          >
-            刷新图库
-          </Button>
-        </div>
-        {expired ? (
+        {query.expired ? (
           <p role="alert">登录已失效，正在返回登录页。</p>
         ) : (
           <>
             {query.isPending ? <LibraryLoading /> : null}
-            {query.isError ? (
+            {query.error ? (
               <Alert status="danger" role="alert" data-testid="library-error">
                 <Alert.Content>
                   <Alert.Title>
-                    {items.length ? '更多图片加载失败' : '图片列表加载失败'}
+                    {invalid
+                      ? '查询条件或加载位置无效'
+                      : query.items.length
+                        ? '更多图片加载失败'
+                        : '图片列表加载失败'}
                   </Alert.Title>
                   <Alert.Description>
                     {query.error.message}{' '}
-                    {items.length ? '已加载的图片仍保留。' : ''}
+                    {query.items.length ? '已加载的图片仍保留。' : ''}
                   </Alert.Description>
+                  <div className="mt-3 flex gap-2">
+                    <Button
+                      variant="outline"
+                      className="min-h-11 rounded-lg"
+                      onPress={() => {
+                        void query.refresh();
+                      }}
+                    >
+                      重试加载
+                    </Button>
+                    {invalid ? (
+                      <Button
+                        className="min-h-11 rounded-lg"
+                        onPress={query.resetQuery}
+                      >
+                        重置查询
+                      </Button>
+                    ) : null}
+                  </div>
                 </Alert.Content>
               </Alert>
             ) : null}
-            {!query.isPending && !query.isError && total === 0 ? (
+            {!query.isPending && !query.error && query.items.length === 0 ? (
               <div
                 data-testid="library-empty"
-                className="grid min-h-60 content-center gap-2 text-center md:min-h-90"
+                className="grid min-h-60 content-center justify-items-center gap-3 text-center md:min-h-90"
               >
-                <h2 className="text-xl font-medium">图库还没有图片</h2>
-                <p className="text-sm">上传第一张图片，开始整理你的图库。</p>
+                <Images size={36} aria-hidden />
+                <h2 className="text-xl font-medium">
+                  {query.total
+                    ? '本页已无图片'
+                    : filtered
+                      ? '没有找到匹配图片'
+                      : props.albumId
+                        ? '相册还没有图片'
+                        : '图库还没有图片'}
+                </h2>
+                <p className="text-sm">
+                  {query.total
+                    ? '图片数量已变化，请返回有效页。'
+                    : filtered
+                      ? '请修改或清除筛选条件。'
+                      : props.albumId
+                        ? '添加图片后，会按加入时间从新到旧显示。'
+                        : '上传第一张图片，开始整理你的图库。'}
+                </p>
+                {query.page > 1 ? (
+                  <Button
+                    className="min-h-11 rounded-lg"
+                    onPress={() => {
+                      void query.setPage(1);
+                    }}
+                  >
+                    返回第一页
+                  </Button>
+                ) : filtered ? (
+                  <Button
+                    className="min-h-11 rounded-lg"
+                    onPress={query.resetQuery}
+                  >
+                    清除筛选
+                  </Button>
+                ) : null}
               </div>
             ) : null}
-            {items.length ? (
-              <ul
-                data-testid="library-grid"
-                aria-label="图库图片"
-                className="grid grid-cols-2 items-stretch gap-3 md:grid-cols-3 xl:grid-cols-4 xl:gap-5"
-              >
-                {items.map((item) => (
-                  <li
-                    key={item.id}
-                    className="min-w-0 [content-visibility:auto] [contain-intrinsic-size:auto_300px]"
-                  >
-                    <LibraryCard item={item} onOpen={detail.open} />
-                  </li>
-                ))}
-              </ul>
+            {query.items.length ? (
+              <LibraryGallery
+                items={query.items}
+                layout={query.layout}
+                album={!!props.albumId}
+                disabled={!query.canOperate || !!detail.imageId}
+                selection={selection}
+                onOpen={detail.open}
+                onContextMenu={(menu) =>
+                  setContextMenu({ ...menu, identity: selectionIdentity })
+                }
+              />
             ) : null}
-            {query.isError && !pages.length ? (
-              <Button
-                variant="primary"
-                className="min-h-11 w-full rounded-lg md:w-36"
-                onPress={() => {
-                  void query.refetch();
-                }}
-              >
-                重试加载
-              </Button>
-            ) : null}
-            {query.hasNextPage ? (
+            {query.hasMore ? (
               <Button
                 ref={moreRef}
                 data-testid="library-load-more"
                 variant="outline"
-                className="min-h-11 w-full rounded-lg md:w-44"
+                className="min-h-11 w-full rounded-lg font-normal md:w-36 xl:min-h-9"
                 isDisabled={query.isFetching}
                 onPress={() => {
                   void loadMore();
@@ -252,7 +279,10 @@ export function LibraryScreen({
                     : '加载更多'}
               </Button>
             ) : null}
-            {pages.length && !query.hasNextPage && total !== 0 ? (
+            {query.pages.length &&
+            !query.hasMore &&
+            query.total !== 0 &&
+            query.loadingMode === 'more' ? (
               <p ref={endRef} tabIndex={-1} className="text-sm text-muted">
                 已加载全部图片
               </p>
@@ -264,13 +294,15 @@ export function LibraryScreen({
         <LibraryDetail
           key={detail.imageId}
           imageId={detail.imageId}
-          returnTo={`/library?${new URLSearchParams({ image: detail.imageId })}`}
+          albumId={props.albumId}
+          returnTo={returnTo}
           client={client}
           onClose={detail.close}
           onTrashed={onTrashed}
           dialogRef={detail.dialogRef}
         />
       ) : null}
+      {props.children}
     </OwnerShell>
   );
 }

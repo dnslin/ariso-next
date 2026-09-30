@@ -1,0 +1,606 @@
+{
+  "status": "passed",
+  "checks": [
+    "All four layout/loading combinations execute 20/40/80 against real SQLite; layout produces zero list requests; page size restarts at the beginning.",
+    "Back and repeated Forward/Back restore the previous cached page and the actual main-container scroll offset.",
+    "Search drafts change neither URL nor request/history count; submit adds one history entry; Back/Forward restores filters; copied pages restore their real items; image-only navigation causes no list request.",
+    "A held real beta response arriving after a newer alpha query never replaces alpha results or exposes old-query actions.",
+    "Repeated tag IDs retain any-tag matching without duplicate images; a removed tag keeps its URL and shows an explicit failure; malformed URL has a working reset.",
+    "A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; external change notification retains cards until explicit refresh.",
+    "Cancelling the real filter dialog discards the visibility draft without changing URL or loaded image IDs.",
+    "Real label search/multi-select, inclusive site-time-zone dates, visibility, processing state, disabled storage, album and original format apply together; the URL contains real IDs/UTC midnight boundaries and only issue173-000 is returned.",
+    "Entering only a start year blocks Apply with a visible incomplete-date error, keeps the URL/dialog and focuses the missing month; completing the date then submits the real combined query.",
+    "Deleting the day segment from an already applied date also blocks Apply and keeps the original URL; refilling the day makes the same date submittable again.",
+    "Applying unchanged dates retains exact UTC instants; the real clear-filters action removes every applied category and restores an unfiltered query.",
+    "A deleted selected tag stays visible as an invalid ID in the real dialog; dismissing it preserves the URL and never broadens the failed query.",
+    "A controlled filter-options transport failure produces the real error/retry UI; retry reads the actual server and restores selectable labels without refreshing the page.",
+    "Deleting through album details refreshes both the content total and the album header count.",
+    "The real album route preserves fixed joined order, disables changing album scope, rejects a conflicting album query, and prevents an unrelated image deep link from opening content.",
+    "An actual expired SQLite owner session makes filter-options return 401, removes management content and redirects to expired login with the exact query returnTo; a real sign-in restores that query before the parent suite continues.",
+    "2,400 real SQLite images load in 30 exact 80-item requests; sampled virtual DOM stays bounded; post-GC heap growth is recorded without an invented limit; Tab/Shift+Tab cross the virtual-window boundary in item order.",
+    "When only the library preference key is unavailable, defaults load real images and changed layout/loading preferences survive subsequent in-session queries."
+  ],
+  "combinations": [
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 80,
+      "status": "passed"
+    }
+  ],
+  "screenshots": [
+    "library-query-grid-more-1440.png",
+    "library-query-grid-more-390.png",
+    "library-query-masonry-more-1440.png",
+    "library-query-masonry-more-390.png",
+    "library-query-grid-pages-1440.png",
+    "library-query-grid-pages-390.png",
+    "library-query-masonry-pages-1440.png",
+    "library-query-masonry-pages-390.png",
+    "library-query-invalid-reference.png",
+    "library-query-filters-partial-date.png",
+    "library-query-filters-combined-draft.png",
+    "library-query-filters-combined-result.png",
+    "library-query-filters-missing-reference.png",
+    "library-query-filters-options-failure.png",
+    "library-query-filters-session-expired.png",
+    "library-query-scale-2400.png"
+  ],
+  "scale": {
+    "status": "passed",
+    "records": 2400,
+    "pageSize": 80,
+    "samples": [
+      {
+        "batch": 1,
+        "loaded": 80,
+        "cardNodes": 21,
+        "totalDomNodes": 630,
+        "galleryHeight": 5820,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 0,
+        "scrollHeight": 6232,
+        "focusedId": null,
+        "requestCount": 1,
+        "responseBytes": 43690,
+        "heapUsedBytes": 15227676,
+        "heapTotalBytes": 16252928
+      },
+      {
+        "batch": 5,
+        "loaded": 400,
+        "cardNodes": 34,
+        "totalDomNodes": 877,
+        "galleryHeight": 29180,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 22749,
+        "scrollHeight": 29592,
+        "focusedId": null,
+        "requestCount": 5,
+        "responseBytes": 218450,
+        "heapUsedBytes": 16671540,
+        "heapTotalBytes": 18087936
+      },
+      {
+        "batch": 10,
+        "loaded": 800,
+        "cardNodes": 34,
+        "totalDomNodes": 877,
+        "galleryHeight": 58380,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 51949,
+        "scrollHeight": 58792,
+        "focusedId": null,
+        "requestCount": 10,
+        "responseBytes": 436900,
+        "heapUsedBytes": 17607084,
+        "heapTotalBytes": 18874368
+      },
+      {
+        "batch": 15,
+        "loaded": 1200,
+        "cardNodes": 34,
+        "totalDomNodes": 877,
+        "galleryHeight": 87580,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 81149,
+        "scrollHeight": 87992,
+        "focusedId": null,
+        "requestCount": 15,
+        "responseBytes": 655350,
+        "heapUsedBytes": 18552616,
+        "heapTotalBytes": 20185088
+      },
+      {
+        "batch": 20,
+        "loaded": 1600,
+        "cardNodes": 34,
+        "totalDomNodes": 877,
+        "galleryHeight": 116780,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 110349,
+        "scrollHeight": 117192,
+        "focusedId": null,
+        "requestCount": 20,
+        "responseBytes": 873800,
+        "heapUsedBytes": 19366548,
+        "heapTotalBytes": 20709376
+      },
+      {
+        "batch": 25,
+        "loaded": 2000,
+        "cardNodes": 34,
+        "totalDomNodes": 878,
+        "galleryHeight": 145980,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 139549,
+        "scrollHeight": 146392,
+        "focusedId": null,
+        "requestCount": 25,
+        "responseBytes": 1092250,
+        "heapUsedBytes": 20207796,
+        "heapTotalBytes": 21495808
+      },
+      {
+        "batch": 30,
+        "loaded": 2400,
+        "cardNodes": 34,
+        "totalDomNodes": 878,
+        "galleryHeight": 175180,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 168749,
+        "scrollHeight": 175576,
+        "focusedId": null,
+        "requestCount": 30,
+        "responseBytes": 1310268,
+        "heapUsedBytes": 21076100,
+        "heapTotalBytes": 22020096
+      }
+    ],
+    "keyboard": [
+      {
+        "direction": "Tab",
+        "id": "library173-scale-0020"
+      },
+      {
+        "direction": "Tab",
+        "id": "library173-scale-0021"
+      },
+      {
+        "direction": "Tab",
+        "id": "library173-scale-0022"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0021"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0020"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0019"
+      }
+    ],
+    "limitations": [
+      "Heap measurements describe this Ego Chromium process after explicit GC, with no image bytes or thumbnail elements in this fixture.",
+      "No universal heap threshold is assumed. Growth includes retained lightweight image records, query pages, layout positions and small request-observation records.",
+      "The DOM bound is checked for this fixed 1440×1080 viewport; it is not a maximum for arbitrary viewport sizes."
+    ],
+    "requests": [
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0000",
+        "lastId": "library173-scale-0079",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk5MjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wMDc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0080",
+        "lastId": "library173-scale-0159",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk4NDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wMTU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0160",
+        "lastId": "library173-scale-0239",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk3NjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wMjM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0240",
+        "lastId": "library173-scale-0319",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk2ODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wMzE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0320",
+        "lastId": "library173-scale-0399",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk2MDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wMzk5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0400",
+        "lastId": "library173-scale-0479",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk1MjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wNDc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0480",
+        "lastId": "library173-scale-0559",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTk0NDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wNTU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0560",
+        "lastId": "library173-scale-0639",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTkzNjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wNjM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0640",
+        "lastId": "library173-scale-0719",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTkyODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wNzE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0720",
+        "lastId": "library173-scale-0799",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTkyMDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wNzk5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0800",
+        "lastId": "library173-scale-0879",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTkxMjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wODc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0880",
+        "lastId": "library173-scale-0959",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTkwNDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0wOTU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0960",
+        "lastId": "library173-scale-1039",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg5NjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xMDM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1040",
+        "lastId": "library173-scale-1119",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg4ODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xMTE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1120",
+        "lastId": "library173-scale-1199",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg4MDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xMTk5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1200",
+        "lastId": "library173-scale-1279",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg3MjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xMjc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1280",
+        "lastId": "library173-scale-1359",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg2NDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xMzU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1360",
+        "lastId": "library173-scale-1439",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg1NjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xNDM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1440",
+        "lastId": "library173-scale-1519",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg0ODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xNTE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1520",
+        "lastId": "library173-scale-1599",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTg0MDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xNTk5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1600",
+        "lastId": "library173-scale-1679",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTgzMjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xNjc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1680",
+        "lastId": "library173-scale-1759",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTgyNDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xNzU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1760",
+        "lastId": "library173-scale-1839",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTgxNjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xODM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1840",
+        "lastId": "library173-scale-1919",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTgwODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xOTE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1920",
+        "lastId": "library173-scale-1999",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTgwMDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0xOTk5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2000",
+        "lastId": "library173-scale-2079",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTc5MjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0yMDc5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2080",
+        "lastId": "library173-scale-2159",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTc4NDEsImlkIjoibGlicmFyeTE3My1zY2FsZS0yMTU5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2160",
+        "lastId": "library173-scale-2239",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTc3NjEsImlkIjoibGlicmFyeTE3My1zY2FsZS0yMjM5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2240",
+        "lastId": "library173-scale-2319",
+        "ordered": true,
+        "bytes": 43690
+      },
+      {
+        "url": "http://issue173.localhost:3173/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImRlbGV0aW9uU3RhdHVzXCI6bnVsbCxcInNvcnRcIjpcInVwbG9hZGVkX2Rlc2NcIixcInBhZ2VTaXplXCI6ODB9IiwidmFsdWUiOjE4MDA5OTk5OTc2ODEsImlkIjoibGlicmFyeTE3My1zY2FsZS0yMzE5In0",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2320",
+        "lastId": "library173-scale-2399",
+        "ordered": true,
+        "bytes": 43258
+      }
+    ],
+    "heapGrowthBytes": 5848424,
+    "heapGrowthBytesPerAdditionalImage": 2520.8724137931035,
+    "domNodeGrowth": 248,
+    "loadedCache": {
+      "pages": 30,
+      "lightweightRecords": 2400,
+      "thumbnails": 0
+    },
+    "focusRing": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  }
+}

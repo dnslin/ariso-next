@@ -23,6 +23,7 @@ const item: LibraryItem = {
     watermark: false,
   },
   thumbnailUrl: null,
+  thumbnailDimensions: null,
   activeJob: null,
   latestFailedJob: null,
   trashedAt: null,
@@ -80,4 +81,49 @@ it('offers one named full-card action while retaining readable image diagnostics
   expect(html).toContain('旅行</p>');
   expect(html).toContain('本地存储');
   expect(html).toContain('处理中');
+});
+
+it('keeps ready cards compact while retaining abnormal format and storage diagnostics', () => {
+  const ready = { ...item, processingStatus: 'ready' as const };
+  const html = renderToStaticMarkup(jsx(LibraryCard, { item: ready }));
+  expect(html).not.toContain('本地存储');
+  expect(html).toContain('已就绪');
+  expect(
+    renderToStaticMarkup(
+      jsx(LibraryCard, { item: { ...ready, format: 'unknown' } }),
+    ),
+  ).toContain('格式待识别');
+  const disabledStorage = renderToStaticMarkup(
+    jsx(LibraryCard, {
+      item: {
+        ...ready,
+        storage: { ...ready.storage, enabled: false },
+        thumbnailUrl: '/i/image?type=thumbnail',
+      },
+    }),
+  );
+  expect(disabledStorage).toContain('存储已停用');
+  expect(disabledStorage).not.toContain('<img');
+});
+
+it('disables old query cards and reserves their supplied image height', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, { item, isDisabled: true, imageHeight: 237 }),
+  );
+  expect(html).toMatch(/<button[^>]*disabled/);
+  expect(html).toContain('height:237px');
+});
+
+it('exposes a named selected checkbox independently of the detail button', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, {
+      item,
+      isSelected: true,
+      onToggle: () => undefined,
+    }),
+  );
+  expect(html).toContain('aria-label="选择图片：旅行"');
+  expect(html).toMatch(/<input[^>]*type="checkbox"[^>]*checked=""/);
+  expect(html).toContain('aria-label="查看图片：旅行"');
+  expect(html).not.toMatch(/<button\b[^>]*>(?:(?!<\/button>)[\s\S])*<button\b/);
 });

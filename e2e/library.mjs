@@ -20,16 +20,58 @@ const report = {
   ],
 };
 const sql = (statement) => identitySql(config, statement);
-const ids = () =>
-  page.evaluate(() =>
-    [...document.querySelectorAll('[data-testid="library-card"]')].map(
-      (node) => node.dataset.imageId,
-    ),
+// Walk every virtual window: assert full query order without requiring all cards in DOM.
+const ids = async () => {
+  const seen = new Map();
+  const saved = await page.evaluate(
+    () => document.querySelector('main').scrollTop,
   );
+  const geometry = await page.evaluate(() => {
+    const main = document.querySelector('main');
+    return { height: main.clientHeight, extent: main.scrollHeight };
+  });
+  for (
+    let top = 0;
+    top < geometry.extent;
+    top += Math.max(100, geometry.height / 2)
+  ) {
+    await page.evaluate((top) => {
+      document.querySelector('main').scrollTop = top;
+    }, top);
+    await page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+    for (const row of await page.evaluate(() =>
+      [...document.querySelectorAll('[data-testid="library-card"]')].map(
+        (node) => ({
+          id: node.dataset.imageId,
+          position: Number(node.parentElement.getAttribute('aria-posinset')),
+        }),
+      ),
+    ))
+      seen.set(row.position, row.id);
+  }
+  await page.evaluate((top) => {
+    document.querySelector('main').scrollTop = top;
+  }, saved);
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
+  return [...seen].sort((a, b) => a[0] - b[0]).map((row) => row[1]);
+};
 const count = async (value) =>
   page.waitForFunction(
     (n) =>
-      document.querySelectorAll('[data-testid="library-card"]').length === n,
+      Number(
+        document.querySelector('[data-testid="library-list"]')?.dataset
+          .loadedCount,
+      ) === n,
     value,
   );
 const resize = async (width, height = width >= 1200 ? 1080 : 844) => {
@@ -40,6 +82,14 @@ const resize = async (width, height = width >= 1200 ? 1080 : 844) => {
     mobile: width < 768,
   });
   await page.waitForFunction((w) => innerWidth === w, width);
+  // ResizeObserver and the gallery's animation-frame measurement must complete
+  // before checking the rendered layout; innerWidth changes ahead of both.
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
 };
 // Hold or reject actual list responses at fetch's transport boundary. Successful
 // data always comes from the real production endpoint and disposable SQLite DB.
@@ -83,20 +133,21 @@ async function layouts(state) {
     for (const width of [360, 390, 430, 768, 1440]) {
       await resize(width);
       const layout = await page.evaluate(() => {
-        const grid = document.querySelector('[data-testid="library-grid"]');
+        const grid = document.querySelector('[data-testid="library-gallery"]');
         return {
           width: innerWidth,
           scrollWidth: document.documentElement.scrollWidth,
           mainWidth: document.querySelector('main').clientWidth,
           mainScrollWidth: document.querySelector('main').scrollWidth,
-          columns: grid
-            ? getComputedStyle(grid).gridTemplateColumns.split(' ').length
-            : null,
+          columns: grid ? Number(grid.dataset.columns) : null,
           targets: [...document.querySelectorAll('button,a')]
             .filter((node) => node.getBoundingClientRect().width > 0)
             .map((node) => ({
               name: node.getAttribute('aria-label') || node.textContent,
               shellNavigation: node.classList.contains('shell-nav-link'),
+              compactToolbar:
+                !!node.closest('[data-testid="library-toolbar"]') ||
+                node.dataset.testid === 'library-load-more',
               height: node.getBoundingClientRect().height,
               width: node.getBoundingClientRect().width,
             })),
@@ -112,13 +163,29 @@ async function layouts(state) {
       );
       if (width < 768 && layout.columns !== null)
         assert.equal(layout.columns, 2);
-      for (const target of layout.targets)
-        assert.ok(
-          target.height >=
-            (width >= 1200 && target.shellNavigation ? 40 : 44) &&
-            target.width >= 44,
-          `${target.name}: 44px target`,
-        );
+      for (const target of layout.targets) {
+        // handoff.md requires 44px on phones; the desktop Figma toolbar is 36px.
+        if (width >= 1200 && target.compactToolbar) {
+          assert.equal(
+            target.height,
+            target.name === '清除搜索' ? 32 : 36,
+            `${target.name}: desktop design height`,
+          );
+          const minimumWidth =
+            target.name === '清除搜索'
+              ? 32
+              : ['网格', '瀑布流', '刷新图库'].includes(target.name)
+                ? 36
+                : 44;
+          assert.ok(target.width >= minimumWidth);
+        } else
+          assert.ok(
+            target.height >=
+              (width >= 1200 && target.shellNavigation ? 40 : 44) &&
+              target.width >= 44,
+            `${target.name}: phone/general action target`,
+          );
+      }
       await page.screenshot({
         path: join(config.output, `library-${state}-${theme}-${width}.png`),
       });
