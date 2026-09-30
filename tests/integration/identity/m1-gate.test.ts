@@ -107,6 +107,7 @@ it('M1: empty directory → setup → login → logout → real restart preserve
       maxEdge: null,
       jpegBackground: '#FFFFFF',
       watermarkMode: 'off',
+      watermarkAssetId: null,
       defaultLinkVersion: 'compressed',
       defaultVisibility: 'public',
       concurrency: 1,

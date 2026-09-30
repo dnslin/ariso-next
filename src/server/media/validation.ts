@@ -11,11 +11,19 @@ export const mediaSettingsInputSchema = z
       .string()
       .regex(/^#[0-9a-fA-F]{6}$/, '请输入 #RRGGBB 颜色'),
     watermarkMode: z.enum(['off', 'text', 'image']),
+    watermarkAssetId: z.string().uuid().nullable(),
     defaultLinkVersion: z.enum(['original', 'compressed', 'watermark']),
     defaultVisibility: z.enum(['public', 'private']),
     concurrency: z.number().int().min(1).max(4),
   })
   .superRefine((settings, ctx) => {
+    if (settings.watermarkMode === 'image' && !settings.watermarkAssetId) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['watermarkAssetId'],
+        message: '请选择水印素材',
+      });
+    }
     if (
       settings.defaultLinkVersion === 'compressed' &&
       !settings.compressionEnabled
@@ -41,8 +49,18 @@ export const mediaSettingsInputSchema = z
 export type MediaSettingsInput = z.output<typeof mediaSettingsInputSchema>;
 export type ProcessingSnapshot = Omit<
   MediaSettingsInput,
-  'defaultLinkVersion' | 'concurrency'
->;
+  'defaultLinkVersion' | 'concurrency' | 'watermarkAssetId'
+> & { watermarkAsset: WatermarkAssetSnapshot | null };
+
+export type WatermarkAssetSnapshot = {
+  id: string;
+  path: string;
+  format: 'PNG' | 'WEBP' | 'SVG';
+  mime: string;
+  width: number;
+  height: number;
+  byteSize: number;
+};
 
 export const initialMediaSettings: Readonly<MediaSettingsInput> = {
   compressionEnabled: true,
@@ -51,6 +69,7 @@ export const initialMediaSettings: Readonly<MediaSettingsInput> = {
   maxEdge: null,
   jpegBackground: '#FFFFFF',
   watermarkMode: 'off',
+  watermarkAssetId: null,
   defaultLinkVersion: 'compressed',
   defaultVisibility: 'public',
   concurrency: 1,
