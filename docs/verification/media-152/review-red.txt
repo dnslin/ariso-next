@@ -1,0 +1,75 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-152
+
+ ❯ |integration| tests/integration/media/settings-http.test.ts (3 tests | 1 failed | 2 skipped) 1179ms
+   × rejects NUL text before saving any part of the settings patch 1179ms
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed | 29 skipped) 361ms
+   × renders CR and CRLF line breaks with the same pixels as LF 361ms
+ ❯ |unit| tests/unit/media/settings.test.ts (52 tests | 2 failed | 50 skipped) 5ms
+   × rejects NUL text with a field error even in off mode 4ms
+   × rejects NUL text with a field error even in text mode 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/media/settings.test.ts > rejects NUL text with a field error even in off mode
+ FAIL  |unit| tests/unit/media/settings.test.ts > rejects NUL text with a field error even in text mode
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/unit/media/settings.test.ts:159:28
+    157|       watermarkText: 'A\0B',
+    158|     });
+    159|     expect(result.success).toBe(false);
+       |                            ^
+    160|     if (!result.success)
+    161|       expect(result.error.issues[0].path).toEqual(['watermarkText']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |integration| tests/integration/media/settings-http.test.ts > rejects NUL text before saving any part of the settings patch
+AssertionError: expected 200 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 200
+
+ ❯ tests/integration/media/settings-http.test.ts:182:27
+    180|     quality: 10,
+    181|   });
+    182|   expect(response.status).toBe(422);
+       |                           ^
+    183|   expect(await response.json()).toMatchObject({
+    184|     code: 'MEDIA_SETTINGS_INVALID',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > renders CR and CRLF line breaks with the same pixels as LF
+AssertionError: expected '29 46' to be '29 92' // Object.is equality
+
+Expected: "29 92"
+Received: "29 46"
+
+ ❯ tests/integration/media/watermark.test.ts:608:31
+    606|   for (const text of ['A\r\nB', 'A\rB']) {
+    607|     const actual = await render(text);
+    608|     expect(actual.dimensions).toBe(expected.dimensions);
+       |                               ^
+    609|     expect(Buffer.from(actual.pixels).equals(expected.pixels)).toBe(tr…
+    610|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  4 failed | 81 skipped (85)
+   Start at  15:45:09
+   Duration  2.30s (tests 72%, import 23%, transform 5%)

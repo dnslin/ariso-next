@@ -144,3 +144,15 @@ JS
 截至本段写入，包含补强断言的完整浏览器第 2 轮仍由主 agent 执行。本审计只读复核上述差异与失败/诊断证据，未操作浏览器或测试数据，不将尚未取得的最终 GREEN 记为通过。
 
 追加 GREEN：已实际读取[完整浏览器第 2 轮的 CORS 模块报告](./ui/full-browser/storage-cors.json)，status=passed。`navigationInterruption` 记录实际图库导航、恰好一次 complete 尝试，以及真实 PUT 中断错误和 GET/HEAD 未执行结果。导航后的真实读取仍包含 running probe `f441ab6a-7bf4-4627-9e90-544266866a0b`；同一 probe 的最终报告为 passed=false、cleanupPending=false，错误为 `STORAGE_CORS_EXPIRED`。该模块已执行并通过保留的条件更新、维护后空 probes、报告归属、重开失败页面与对象列表为空断言。完整测试中的 CORS 回归证据已补齐，原失败保留不改写。本审计没有独立重跑浏览器；其他业务模块仍在继续，项目完整运行器的最终状态由主记录维护，此处不提前宣布整套通过。
+
+## 合并最新 main 后的迁移冲突复审
+
+2026-09-30，基线为 `origin/main` 的 `a0d5561`。本轮仅复审 #152 水印迁移与 #158 CORS 迁移的合并解决；不重新评价已批准的 UI，不操作浏览器或真实数据。
+
+审计者运行只读 Node 比较脚本，以 `git show origin/main:<path>` 的字节内容核对工作区：main 已有的 15 份 SQL 和 15 份 snapshot 全部原样保留；journal 前 15 项与 main 严格相等。新增 `0015_fluffy_venus.sql` 与合并前 CORS `0014_silent_shiva.sql` 逐字相同，没有修改已经进入 main 的 `0014_sticky_blacklash.sql`。新 snapshot 的 prevId 指向 main 的 0014 id；与其差异仅为自身 id/prevId 和 `cors_report`、`origin`、`invalidated`、`expires_at` 四列。journal 新项 idx=15，时间严格晚于水印迁移，未重编号或重写旧条目。
+
+`migrations.test.ts` 保留双方旧数据和历史进度断言：水印资产、预览引用、设置、存储和待清理 probe 均逐值比较；新增 10 个水印默认字段及 CORS 的 null/0 默认字段分别验证。元数据、水印、CORS 的时间顺序、已应用进度前缀、外键检查、重复执行不重放均保留。审计者在 Node 24.18.1 / pnpm 11.19.0 下实际运行 `pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts`，退出 0，1 个文件 13 项通过。
+
+启动夹具按实际表范围补全：`prestart` 只有最小存储/身份表，读取新的 CORS 0015 即可；`secret-preflight` 和 `startup` 已有 media_settings，必须先执行真实 main 水印 0014，再执行 CORS 0015。审计发现两处 secret-preflight 严格进度预期漏记第 10 项，startup 一处漏记第 13 项。实现者以真实运行取得[RED](./merge-main/fixture-red.txt)：5 项失败、12 项通过，均显示相应遗漏的进度项；修复仅补上 10/13，没有放宽顺序或移除数据、密钥、回滚与恢复断言。[GREEN](./merge-main/fixture-green.txt)记录同两文件 17 项全部通过。审计者已读取两份原始输出并复查最终差异，未冒称独立运行这两份启动测试。
+
+本轮迁移合并范围未发现未解决问题；历史迁移未改写，快照链和夹具完整性成立。审计者另运行相关差异的 `git diff --check`，通过。合并后的全量集成与浏览器检查仍由主 agent 执行，实际结果以主记录为准；本结论不提前将它们记为通过。

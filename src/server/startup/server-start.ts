@@ -43,6 +43,7 @@ function initializeServerRuntime() {
       // DATA_DIR is absolute; keep runtime data paths absolute for output tracing.
       storageRoot: resolve(config.dataDir, 'storage'),
       temporaryRoot: resolve(config.dataDir, 'tmp'),
+      watermarksRoot: resolve(config.dataDir, 'assets', 'watermarks'),
       resources: mediaResources,
       logger: createRuntimeLogger('media.queue', config.logLevel),
     });

@@ -15,7 +15,7 @@
 - 创建签名前持久登记随机确切 Key。只有三次浏览器请求可读成功、服务端字节核验和删除均成功才记录 passed。响应错误、opaque、缺失方法、内容不同或清理失败均不能通过。
 - `invalidateS3Cors(tx)` 供 #194 的站点设置事务组合使用。origin/revision 不符和 A→B→A 的旧回包均不能恢复通过；该函数已经过事务集成测试，但尚无后续设置页面消费入口。
 - 未完成探测由到期维护或重启恢复接管；删除失败保留确切 Key、错误和引用，复用已有手动重试入口。已知对象清理成功释放引用；迟到对象扫描由 #164 承接，本次没有宣称扫描已实现。
-- 迁移 `0014_silent_shiva.sql` 新增配置 CORS 报告及 probe 的 origin、invalidated、expires_at。没有新依赖；复用 AWS SDK、Drizzle、现有探测维护实例和 React Query。
+- 迁移 `0015_fluffy_venus.sql` 新增配置 CORS 报告及 probe 的 origin、invalidated、expires_at。没有新依赖；复用 AWS SDK、Drizzle、现有探测维护实例和 React Query。
 - `/settings/storage/:id` 提供受所有者会话保护的 CORS 页面，复用 OwnerShell、AdminShell、SessionControls。正式按钮调用生产 hook 与浏览器传输；提供示例复制、复制失败的完整可选文本、配置来源导航、检测结果、清理状态和重试。当前 revision 未通过连接测试时禁止开始；停用的存储仍可预先检测，不新增 enabled 门槛。
 
 ## 首轮后端与协议证据（UI 接入前）
@@ -114,8 +114,16 @@
 
 P2 显示问题的[失败证据](./local/cleanup-render-red.txt)和[修复后证据](./local/cleanup-render-green.txt)保留；新断言先因缺少“已删除”失败，修复后通过。不能把单个聚焦测试通过写成完整检查通过。
 
-AWS S3 按现行约定不要求实测，本次未验证。物理设备不在当前要求内；其他浏览器引擎未验证。AMD64/ARM64 镜像与容器留给 Release 流程，本次未创建 Release、发布镜像或部署。首轮交付时 PR 保持草稿；当前验收状态见本文开头。不合并、不主动关闭 Issue，不删除分支或 worktree。
+AWS S3 按现行约定不要求实测，本次未验证。物理设备不在当前要求内；其他浏览器引擎未验证。AMD64/ARM64 镜像与容器留给 Release 流程，本次未创建 Release、发布镜像或部署。首轮交付时 PR 保持草稿；当前验收状态见本文开头。当时尚未获准合并、关闭 Issue 或清理分支/worktree；后续合并授权见下文。
 
 ## 人工验收后的文档更新
 
 2026-09-30 仅更新本记录、设计评审状态及 T-STO-05 实施记录，未修改产品代码或测试。运行 `pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` 与 `git diff --check`；均通过（任务检查 120 项 / 298 条需求，自测 5 项拒绝用例），原业务验证结果保留。
+
+## 合并 main 前的冲突解决（2026-09-30）
+
+用户已明确要求合并 PR #217、关闭 #158，并清理和更新本地分支。main 的 `a0d5561` 已合入 #152 水印实现，其 `0014_sticky_blacklash` 与本分支原 CORS 0014 编号冲突。本轮保留 main 全部历史 SQL、snapshot 和 journal 前缀，以真实合并后的 schema 重新生成 `0015_fluffy_venus`；四条 CORS SQL 与原文件逐字相同，没有引入兼容迁移或修改业务/UI。
+
+合并的迁移测试同时保留水印与 CORS 新列默认值、历史数据、迁移进度及重跑不重放断言。三个启动夹具指向新 CORS 文件；包含 media 表的两个夹具也加入实际水印迁移。独立审计发现严格数量预期漏项，[失败证据](./merge-main/fixture-red.txt)的 5 个用例均仅多出实际新增迁移记录；补齐顺序预期后[17 项聚焦检查](./merge-main/fixture-green.txt)通过，未放宽断言。
+
+首次单元检查与构建同时启动，main 新增的验证脚本依赖尚未生成的 `dist/server/media/watermark.js`，因此[初次失败](./merge-main/unit.txt)。构建退出 0 后原样重跑，[645 项单元](./merge-main/unit-final.txt)通过；没有为此改动产品代码。冻结安装、lint、类型及构建已通过；构建仍包含既有可选原生依赖跟踪诊断，不宣称零告警。完整集成已退出 0，[97 文件 / 900 项](./merge-main/integration-final.txt)通过。完整浏览器第二轮退出 0，[应用运行器](./merge-main/browser-final.json)、[CORS 专项](./merge-main/cors-final.json)及[独立 UI 运行器](./merge-main/browser-ui-final.json)均通过，临时测试目录已移除。第一轮因 CDP `Page.captureScreenshot` 超时退出，保留[失败运行器](./merge-main/browser-first.json)及[具体错误](./merge-main/browser-first-failure.json)；检查当时页面后原样重跑，没有修改产品或测试。最终格式、文档检查（120 任务 / 298 需求、5 项拒绝自测）及差异检查通过；[实际命令、环境及结果](./merge-main/checks.json)集中记录。独立迁移合并审计未发现未解决问题，见[审计附录](./code-review.md#合并最新-main-后的迁移冲突复审)。原 UI 人工验收结论保留，本轮没有界面改动。

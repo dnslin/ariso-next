@@ -49,7 +49,7 @@ function writeMigrations(
     {
       tag: '0004_storage_cors',
       when: 5,
-      sql: readFileSync(resolve('drizzle/0014_silent_shiva.sql'), 'utf8'),
+      sql: readFileSync(resolve('drizzle/0015_fluffy_venus.sql'), 'utf8'),
     },
     ...migrations,
   ]);

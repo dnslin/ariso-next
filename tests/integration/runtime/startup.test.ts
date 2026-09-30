@@ -59,7 +59,8 @@ function writeMigrations(
       '0010_giant_moondragon',
       '0011_little_shinko_yamashiro',
       '0012_storage_probes',
-      '0014_silent_shiva',
+      '0014_sticky_blacklash',
+      '0015_fluffy_venus',
     ].map((tag, index) => ({
       tag,
       when: index + 3,
@@ -321,6 +322,7 @@ describe('完整生产入口的失败与恢复', () => {
       { created_at: 10 },
       { created_at: 11 },
       { created_at: 12 },
+      { created_at: 13 },
       { created_at: 1000 },
     ]);
     writeMigrations(folder, [

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "aa964dde-20f9-4a8f-a17b-0e2f472e51a9",
+  "id": "bde0435f-4b19-46bd-b65d-351f497ed7e2",
   "prevId": "f292d246-f9ca-43a3-8de3-b2f72b8d32b1",
   "tables": {
     "analytics_daily": {
@@ -1313,6 +1313,86 @@
           "notNull": false,
           "autoincrement": false
         },
+        "watermark_text": {
+          "name": "watermark_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "watermark_font": {
+          "name": "watermark_font",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'chinese'"
+        },
+        "watermark_font_size": {
+          "name": "watermark_font_size",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 3
+        },
+        "watermark_color": {
+          "name": "watermark_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'#FFFFFF'"
+        },
+        "watermark_stroke_color": {
+          "name": "watermark_stroke_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'#000000'"
+        },
+        "watermark_stroke_width": {
+          "name": "watermark_stroke_width",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "watermark_opacity": {
+          "name": "watermark_opacity",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 50
+        },
+        "watermark_position": {
+          "name": "watermark_position",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'bottom-right'"
+        },
+        "watermark_margin": {
+          "name": "watermark_margin",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 2
+        },
+        "watermark_width": {
+          "name": "watermark_width",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 20
+        },
         "default_link_version": {
           "name": "default_link_version",
           "type": "text",
@@ -1827,13 +1907,6 @@
           "autoincrement": false,
           "default": "'untested'"
         },
-        "cors_report": {
-          "name": "cors_report",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "cors_revision": {
           "name": "cors_revision",
           "type": "integer",
@@ -1905,28 +1978,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
-        },
-        "origin": {
-          "name": "origin",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "invalidated": {
-          "name": "invalidated",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": false
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "key": {

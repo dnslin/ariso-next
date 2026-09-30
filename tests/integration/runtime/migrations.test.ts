@@ -20,6 +20,19 @@ import {
   writeMigrations,
 } from '../../fixtures/runtime/migrations';
 
+const watermarkDefaults = {
+  watermark_text: '',
+  watermark_font: 'chinese',
+  watermark_font_size: 3,
+  watermark_color: '#FFFFFF',
+  watermark_stroke_color: '#000000',
+  watermark_stroke_width: 0,
+  watermark_opacity: 50,
+  watermark_position: 'bottom-right',
+  watermark_margin: 2,
+  watermark_width: 20,
+};
+
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
 beforeEach(() => {
@@ -121,6 +134,10 @@ describe('runtime forward migrations', () => {
     const retainedData = existingData();
     const expectedUpgradedData = {
       ...retainedData,
+      settings: retainedData.settings.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
       storage: retainedData.storage.map((row) => ({
         ...(row as Record<string, unknown>),
         cors_report: null,
@@ -152,9 +169,13 @@ describe('runtime forward migrations', () => {
     )!;
     expect(metadataEntry.when).toBeGreaterThan(previousEntries.at(-1)!.when);
     const corsEntry = journal.entries.find(
-      (entry) => entry.tag === '0014_silent_shiva',
+      (entry) => entry.tag === '0015_fluffy_venus',
     )!;
-    expect(corsEntry.when).toBeGreaterThan(metadataEntry.when);
+    const watermarkEntry = journal.entries.find(
+      (entry) => entry.tag === '0014_sticky_blacklash',
+    )!;
+    expect(watermarkEntry.when).toBeGreaterThan(metadataEntry.when);
+    expect(corsEntry.when).toBeGreaterThan(watermarkEntry.when);
     const upgradedProgress = progress();
     expect(upgradedProgress).toHaveLength(journal.entries.length);
     expect(upgradedProgress.slice(0, originalProgress.length)).toEqual(
@@ -278,7 +299,10 @@ describe('runtime forward migrations', () => {
       db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
     ).toEqual(previewRefsBefore);
     expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
-      settingsBefore,
+      settingsBefore.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
     );
     const upgradedProgress = progress();
     expect(upgradedProgress.slice(0, 12)).toEqual(progressBefore);
@@ -296,7 +320,10 @@ describe('runtime forward migrations', () => {
       db.prepare('SELECT * FROM media_watermark_preview_refs').all(),
     ).toEqual(previewRefsBefore);
     expect(db.prepare('SELECT * FROM media_settings').all()).toEqual(
-      settingsBefore,
+      settingsBefore.map((row) => ({
+        ...(row as Record<string, unknown>),
+        ...watermarkDefaults,
+      })),
     );
   });
 

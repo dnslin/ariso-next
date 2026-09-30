@@ -1,0 +1,90 @@
+{
+  "baseMain": "a0d5561238c87b3144d1d65dda553eaddba67814",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/secret-preflight.test.ts tests/integration/runtime/startup.test.ts --maxWorkers=1",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-158/merge-main-browser-2 pnpm run test:browser",
+      "exitCode": 0
+    }
+  ],
+  "unit": {
+    "files": 46,
+    "tests": 645
+  },
+  "integration": {
+    "files": 97,
+    "tests": 900
+  },
+  "migrationReview": {
+    "independentTests": 13,
+    "fixtureGreenTests": 17,
+    "historicalFilesUnchanged": 30
+  },
+  "buildNote": "Build exited 0 with existing optional native dependency trace diagnostics.",
+  "documentation": {
+    "tasks": 120,
+    "requirements": 298,
+    "rejectionCases": 5
+  },
+  "browser": {
+    "status": "passed",
+    "firstAttempt": "CDP Page.captureScreenshot timeout; unchanged retry passed",
+    "temporaryDirectoryRemoved": true
+  }
+}

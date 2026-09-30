@@ -1,0 +1,110 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso
+
+ ❯ |integration| tests/integration/runtime/startup.test.ts (13 tests | 1 failed) 14103ms
+   ❯ 完整生产入口的失败与恢复 (13)
+     × 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 970ms
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 4 failed) 6109ms
+   × 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 2015ms
+   × wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 1060ms
+   × invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 1036ms
+   × tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 1222ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+AssertionError: expected [ { created_at: 1 }, …(9) ] to deeply equal [ { created_at: 1 }, …(8) ]
+
+- Expected
++ Received
+
+@@ -24,6 +24,9 @@
+      "created_at": 8,
+    },
+    {
+      "created_at": 9,
+    },
++   {
++     "created_at": 10,
++   },
+  ]
+
+ ❯ tests/integration/runtime/secret-preflight.test.ts:187:7
+    185|     expect(
+    186|       db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
+    187|     ).toEqual([
+       |       ^
+    188|       { created_at: 1 },
+    189|       { created_at: 2 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+AssertionError: expected { tables: [ …(18) ], …(2) } to deeply equal { tables: [ …(18) ], …(2) }
+
+- Expected
++ Received
+
+@@ -26,10 +26,13 @@
+      },
+      {
+        "created_at": 9,
+      },
+      {
++       "created_at": 10,
++     },
++     {
+        "created_at": 1000,
+      },
+      {
+        "created_at": 2000,
+      },
+
+ ❯ tests/integration/runtime/secret-preflight.test.ts:288:26
+    286|     }
+    287|     const afterFailure = inspect();
+    288|     expect(afterFailure).toEqual({
+       |                          ^
+    289|       tables: [
+    290|         { name: '__drizzle_migrations' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移
+AssertionError: expected [ { created_at: 1 }, …(13) ] to deeply equal [ { created_at: 1 }, …(12) ]
+
+- Expected
++ Received
+
+@@ -34,8 +34,11 @@
+    },
+    {
+      "created_at": 12,
+    },
+    {
++     "created_at": 13,
++   },
++   {
+      "created_at": 1000,
+    },
+  ]
+
+ ❯ tests/integration/runtime/startup.test.ts:312:7
+    310|     expect(
+    311|       query('SELECT created_at FROM __drizzle_migrations ORDER BY crea…
+    312|     ).toEqual([
+       |       ^
+    313|       { created_at: 1 },
+    314|       { created_at: 2 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 12 passed (17)
+   Start at  21:53:58
+   Duration  20.37s (tests 100%)

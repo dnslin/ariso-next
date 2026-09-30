@@ -7,10 +7,16 @@ export function startSvgPreview(
   outputPath: string,
   workspace: string,
   signal: AbortSignal,
+  renderWidth?: number,
 ) {
   return startMediaTool(
     'node',
-    [resolve('scripts/media/svg-render.mjs'), sourcePath, outputPath],
+    [
+      resolve('scripts/media/svg-render.mjs'),
+      sourcePath,
+      outputPath,
+      renderWidth === undefined ? 'preview' : String(renderWidth),
+    ],
     {
       workspace,
       cancelSignal: signal,
