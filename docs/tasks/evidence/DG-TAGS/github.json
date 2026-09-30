@@ -1,0 +1,49 @@
+{
+  "readDate": "2026-10-01",
+  "timezone": "Asia/Shanghai",
+  "issue": {
+    "body": "任务 ID：`DG-TAGS`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-TAGS；核对Unicode名称、真实搜索分页和关系变化。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+    "comments": [],
+    "number": 138,
+    "state": "OPEN",
+    "title": "[DG-TAGS] Unicode名称设计适用核对",
+    "url": "https://github.com/dnslin/ariso-next/issues/138"
+  },
+  "blockedBy": [],
+  "blocking": [
+    {
+      "html_url": "https://github.com/dnslin/ariso-next/issues/176",
+      "number": 176,
+      "state": "open",
+      "title": "[T-COL-03] 标签创建重命名删除与图库入口"
+    }
+  ],
+  "consumer": {
+    "body": "任务 ID：`T-COL-03`\n\n- 任务组：`COLLECTIONS-BASE`\n- 里程碑：M3\n- 需求：`R-16.2-01`、`R-16.3-02`\n- 范围：[collections 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-collections.md) §3/7/8；src/server/collections/ 标签管理和 src/app/tags/；提供按真实 tagId 进入图库。\n- 直接前置：`T-COL-01`、`T-LIB-04`、`DG-TAGS`\n- 验收条件：标签 1–50 码点；同键创建复用、仅改大小写不改首次形式；冲突不合并。改名保 ID/关系，删除含回收关联但不删图，同名重建不继承。正常图库数量准确，取消上传形成的空标签可手工删除。\n- 验证方法：单元/SQLite 覆盖规范化、唯一竞争和外键；浏览器分页搜索、冲突、未知结果、改名后 URL 查询保留、真 ID 跳转与返回。\n- 界面：所有者 /tags → /library?tagId=<id>；标签管理响应与 T-LIB-04 查询。桌面[30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)、手机[101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295)、桌面状态[418:3988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-3988)、手机状态[418:8180](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-8180)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。手机紧凑列表不省略管理功能；DG-TAGS 对应 DES-06-TAGS；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 标签列表及创建/重命名：Unicode唯一与冲突不合并。\n  - [ ] 2. 删除与 tagId 跳图库：回收关联清除，返回查询保留。\n\n## 执行与依赖\n\n直接前置：#66、#173、#138。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+    "comments": [],
+    "number": 176,
+    "state": "OPEN",
+    "title": "[T-COL-03] 标签创建重命名删除与图库入口",
+    "url": "https://github.com/dnslin/ariso-next/issues/176"
+  },
+  "consumerBlockedBy": [
+    {
+      "html_url": "https://github.com/dnslin/ariso-next/issues/66",
+      "number": 66,
+      "state": "closed",
+      "title": "[T-COL-01] 相册标签模型与上传关联事务"
+    },
+    {
+      "html_url": "https://github.com/dnslin/ariso-next/issues/173",
+      "number": 173,
+      "state": "closed",
+      "title": "[T-LIB-04] 四种布局加载组合与筛选历史"
+    },
+    {
+      "html_url": "https://github.com/dnslin/ariso-next/issues/138",
+      "number": 138,
+      "state": "open",
+      "title": "[DG-TAGS] Unicode名称设计适用核对"
+    }
+  ]
+}
