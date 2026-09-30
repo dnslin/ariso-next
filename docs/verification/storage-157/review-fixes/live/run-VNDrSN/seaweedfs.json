@@ -1,0 +1,497 @@
+{
+  "service": "seaweedfs",
+  "startedAt": "2026-09-29T16:20:26.755Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://fs.447654.xyz",
+    "region": "us-east-1",
+    "bucket": "images",
+    "forcePathStyle": true,
+    "serviceVersion": "Not supplied; response Server is recorded below"
+  },
+  "deploymentRequirement": "Private bucket and public aliases remain a deployment requirement; API denial does not verify unknown aliases",
+  "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+  "database": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-probes-157-ksAZS2/ariso.db",
+  "logs": [
+    {
+      "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+      "report": {
+        "probeId": "4273e3fa-b3d6-4294-8dd3-e1d321ba6a1e",
+        "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18D9D718968FFDD8F1C8DB68",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "18D9D7189BE9877564205784",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D718A1470821E51522AE",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D718A6B047E3036E3665",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://fs.447654.xyz/images/ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/4273e3fa-b3d6-4294-8dd3-e1d321ba6a1e",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "18D9D718B7496228601B5214",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18D9D718BC75E7B9529F103A",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T16:20:28.106Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    },
+    {
+      "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+      "report": {
+        "probeId": "db2e3d06-addc-42f8-a52d-890b69930110",
+        "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+        "revision": 2,
+        "passed": false,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "failed",
+            "error": {
+              "message": "Storage check-bucket failed: 2e6d715a-93c2-4448-94bb-8da0d93ea978, : The request signature we calculated does not match the signature you provided. Check your key and signing method.",
+              "code": "STORAGE_OPERATION_FAILED",
+              "serviceCode": "SignatureDoesNotMatch",
+              "requestId": "18D9D718EBC7CBD8231D0002",
+              "httpStatusCode": 403
+            }
+          },
+          {
+            "stage": "write",
+            "status": "skipped"
+          },
+          {
+            "stage": "read",
+            "status": "skipped"
+          },
+          {
+            "stage": "anonymous",
+            "status": "skipped"
+          },
+          {
+            "stage": "delete",
+            "status": "skipped"
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T16:20:28.895Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    },
+    {
+      "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+      "report": {
+        "probeId": "3afcc428-0c1a-49f1-82f9-e0860262b1d9",
+        "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+        "revision": 3,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18D9D71901C2BC3A70EE14DE",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "18D9D71906FD9A13F9AFA545",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D7190C3D54FADF2AAB21",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D71911A2F09EA95E8A63",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://fs.447654.xyz/images/ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/3afcc428-0c1a-49f1-82f9-e0860262b1d9",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "18D9D719219E1C32CA3D7CB5",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18D9D71926F9BE9613E809F8",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-09-29T16:20:29.887Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    }
+  ],
+  "connection": {
+    "probeId": "4273e3fa-b3d6-4294-8dd3-e1d321ba6a1e",
+    "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+    "revision": 1,
+    "passed": true,
+    "stale": false,
+    "cleanupPending": false,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "passed",
+        "evidence": {
+          "basis": "configuration-apis",
+          "automaticVersionOrLockDetection": true,
+          "versioning": {
+            "status": "unversioned",
+            "metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D718968FFDD8F1C8DB68",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "lock": {
+            "status": "not-configured",
+            "serviceCode": "ObjectLockConfigurationNotFoundError",
+            "metadata": {
+              "httpStatusCode": 404,
+              "requestId": "18D9D7189BE9877564205784",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        }
+      },
+      {
+        "stage": "write",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "requestId": "18D9D718A1470821E51522AE",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "read",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "requestId": "18D9D718A6B047E3036E3665",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "anonymous",
+        "status": "passed",
+        "evidence": {
+          "url": "https://fs.447654.xyz/images/ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/4273e3fa-b3d6-4294-8dd3-e1d321ba6a1e",
+          "httpStatusCode": 403,
+          "serviceCode": "AccessDenied",
+          "requestId": "18D9D718B7496228601B5214",
+          "basis": "access-denied"
+        }
+      },
+      {
+        "stage": "delete",
+        "status": "passed",
+        "evidence": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D9D718BC75E7B9529F103A",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T16:20:28.106Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": false,
+      "confirmedAt": null
+    }
+  },
+  "key": "ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/4273e3fa-b3d6-4294-8dd3-e1d321ba6a1e",
+  "exactKeyHead": {
+    "status": 404,
+    "server": "SeaweedFS 30GB 4.47",
+    "requestId": "18D9D718D37E04C5DB042875",
+    "cfRay": null
+  },
+  "assertions": {
+    "stagesPassed": 5,
+    "enableBeforeTestRejected": true,
+    "enableAfterTestAllowed": true,
+    "referencesReleased": true,
+    "usageReleased": true,
+    "exactKeyAbsent": true
+  },
+  "invalidCredentials": {
+    "probeId": "db2e3d06-addc-42f8-a52d-890b69930110",
+    "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+    "revision": 2,
+    "passed": false,
+    "stale": false,
+    "cleanupPending": false,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "failed",
+        "error": {
+          "message": "Storage check-bucket failed: 2e6d715a-93c2-4448-94bb-8da0d93ea978, : The request signature we calculated does not match the signature you provided. Check your key and signing method.",
+          "code": "STORAGE_OPERATION_FAILED",
+          "serviceCode": "SignatureDoesNotMatch",
+          "requestId": "18D9D718EBC7CBD8231D0002",
+          "httpStatusCode": 403
+        }
+      },
+      {
+        "stage": "write",
+        "status": "skipped"
+      },
+      {
+        "stage": "read",
+        "status": "skipped"
+      },
+      {
+        "stage": "anonymous",
+        "status": "skipped"
+      },
+      {
+        "stage": "delete",
+        "status": "skipped"
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T16:20:28.895Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": false,
+      "confirmedAt": null
+    }
+  },
+  "invalidCredentialsKey": "ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/db2e3d06-addc-42f8-a52d-890b69930110",
+  "pendingReferences": [],
+  "pendingUsage": [],
+  "credentialRecoveryCleanup": {
+    "status": "not-applicable",
+    "reason": "Configuration failed before PUT; no remote object operation or cleanup responsibility was created"
+  },
+  "retriedConnection": {
+    "probeId": "3afcc428-0c1a-49f1-82f9-e0860262b1d9",
+    "storageId": "2e6d715a-93c2-4448-94bb-8da0d93ea978",
+    "revision": 3,
+    "passed": true,
+    "stale": false,
+    "cleanupPending": false,
+    "stages": [
+      {
+        "stage": "configuration",
+        "status": "passed",
+        "evidence": {
+          "basis": "configuration-apis",
+          "automaticVersionOrLockDetection": true,
+          "versioning": {
+            "status": "unversioned",
+            "metadata": {
+              "httpStatusCode": 200,
+              "requestId": "18D9D71901C2BC3A70EE14DE",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          "lock": {
+            "status": "not-configured",
+            "serviceCode": "ObjectLockConfigurationNotFoundError",
+            "metadata": {
+              "httpStatusCode": 404,
+              "requestId": "18D9D71906FD9A13F9AFA545",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          }
+        }
+      },
+      {
+        "stage": "write",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "requestId": "18D9D7190C3D54FADF2AAB21",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "read",
+        "status": "passed",
+        "evidence": {
+          "httpStatusCode": 200,
+          "requestId": "18D9D71911A2F09EA95E8A63",
+          "attempts": 1,
+          "totalRetryDelay": 0
+        }
+      },
+      {
+        "stage": "anonymous",
+        "status": "passed",
+        "evidence": {
+          "url": "https://fs.447654.xyz/images/ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/3afcc428-0c1a-49f1-82f9-e0860262b1d9",
+          "httpStatusCode": 403,
+          "serviceCode": "AccessDenied",
+          "requestId": "18D9D719219E1C32CA3D7CB5",
+          "basis": "access-denied"
+        }
+      },
+      {
+        "stage": "delete",
+        "status": "passed",
+        "evidence": {
+          "metadata": {
+            "httpStatusCode": 204,
+            "requestId": "18D9D71926F9BE9613E809F8",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+      }
+    ],
+    "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+    "testedAt": "2026-09-29T16:20:29.887Z",
+    "ownerConfirmation": {
+      "wholeBucketHasNoLockRules": false,
+      "confirmedAt": null
+    }
+  },
+  "retriedKey": "ariso/2e6d715a-93c2-4448-94bb-8da0d93ea978/probes/3afcc428-0c1a-49f1-82f9-e0860262b1d9",
+  "recoveryAssertions": {
+    "credentialEditInvalidatesPassedResult": true,
+    "realServiceRejectedCredentials": true,
+    "configurationFailureSkipsWriteAndDelete": true,
+    "noCleanupResponsibilityOrUsageCreated": true,
+    "restoringCredentialsDoesNotRestorePassed": true,
+    "newRevisionRequiresFullRetest": true,
+    "finalReferencesAndUsageReleased": true,
+    "recoveryKeysAbsent": true
+  },
+  "remainingReferences": [],
+  "localDatabaseRemoved": true,
+  "finishedAt": "2026-09-29T16:20:29.986Z"
+}

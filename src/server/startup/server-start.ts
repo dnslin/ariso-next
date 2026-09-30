@@ -1,3 +1,4 @@
+import { startStorageProbeRuntime } from '../storage/probe-runtime.ts';
 import { createMediaResources } from '../media/resources.ts';
 import { startWatermarkRuntime } from '../media/watermark-runtime.ts';
 import { hasUploadWatermarkReference } from '../upload/watermark-references.ts';
@@ -61,6 +62,11 @@ function initializeServerRuntime() {
       db: connection.db.$client,
       logger: createRuntimeLogger('analytics', config.logLevel),
     });
+    const storageProbes = startStorageProbeRuntime({
+      db: connection.db,
+      secretCrypto: createSecretCrypto(config.encryptionKey),
+      logger: createRuntimeLogger('storage.probes', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -68,6 +74,7 @@ function initializeServerRuntime() {
       setup,
       mediaQueue,
       uploads,
+      storageProbes,
       watermarks,
       analytics,
       get stopping() {
@@ -78,6 +85,7 @@ function initializeServerRuntime() {
           .stop()
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())
+          .finally(() => storageProbes.stop())
           .finally(() => {
             try {
               if (!analytics.stop()) {

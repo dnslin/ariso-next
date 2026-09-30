@@ -1,0 +1,360 @@
+{
+  "sourceDirectory": "/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso/test-results/pr211-review-fixes/browser-retry",
+  "taskSpaceId": 10,
+  "status": "passed",
+  "reports": {
+    "albums.json": {
+      "status": "passed",
+      "checks": [
+        "Blank names, 101 code points and 2001 description characters do not write; 100 astral Unicode code points and 2000 description characters persist through the actual form.",
+        "Duplicate names retain different IDs; edit validation failure preserves input, and a committed PATCH with a lost response is reconciled by ID without a second write or changing its namesake.",
+        "Cancel does not delete; a real DELETE with a lost response is reconciled with 404 and returns to the list, leaving its namesake intact.",
+        "A lost POST response retains inputs and disables Create across closing and reopening; rechecking never duplicates the album. The ending control is reachable in a short viewport, restores keyboard focus to New Album, and allows a fresh creation in the same page while retaining exactly one original album.",
+        "Default pagination uses 40 real records with no overlaps; search resets the page, matches % and _ literally and distinguishes no results.",
+        "A held real list response displays loading; a lost read displays an actionable error rather than an empty album library, and Retry recovers.",
+        "Keyboard opens creation, Escape restores its trigger, and both 390×400 and 1440×400 retain visible form actions; light/dark layouts cover 360/390/430/768/1440.",
+        "After real logout, a real album detail requires sign-in and returns to the same full album ID with its edit control available.",
+        "A final real logout restores the anonymous session expected by the following upload suite; /upload presents its sign-in form."
+      ]
+    },
+    "browser.json": {
+      "status": "passed",
+      "taskSpaceId": 10,
+      "errors": []
+    },
+    "error-recovery.json": {
+      "status": "passed"
+    },
+    "identity-1440-restart.json": {
+      "status": "passed",
+      "checks": [
+        "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 1440,
+      "phase": "restart",
+      "errors": [],
+      "activeCheck": "login-failures"
+    },
+    "identity-1440-setup.json": {
+      "status": "passed",
+      "checks": [
+        "Reload before final submission leaves setup open and clears in-memory secrets",
+        "A deliberately lost real setup response requires status verification before any retry",
+        "Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner",
+        "Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers",
+        "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+        "Owner session does not authenticate the second hostname browser page",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 1440,
+      "phase": "setup",
+      "errors": [],
+      "activeCheck": "credential-logout"
+    },
+    "identity-390-restart.json": {
+      "status": "passed",
+      "checks": [
+        "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 390,
+      "phase": "restart",
+      "errors": [],
+      "activeCheck": "login-failures"
+    },
+    "identity-390-setup.json": {
+      "status": "passed",
+      "checks": [
+        "Reload before final submission leaves setup open and clears in-memory secrets",
+        "Unavailable browser timezone recommendation requires an explicit selection",
+        "Unsent setup and failed status check remain unknown; real SETUP_REQUIRED unlocks retry without losing fields",
+        "390×400 shortened viewport can scroll and focus the submit button (not a physical soft-keyboard test)",
+        "Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner",
+        "Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers",
+        "Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback",
+        "Owner session does not authenticate the second hostname browser page",
+        "Real credential login; protected route return; real logout; anonymous protected page redirects"
+      ],
+      "width": 390,
+      "phase": "setup",
+      "errors": [],
+      "activeCheck": "credential-logout"
+    },
+    "interaction-polish-1440.json": {
+      "status": "passed",
+      "checks": [
+        "Idle upload cloud animates continuously without hover; reduced motion disables its animation.",
+        "Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes.",
+        "Original/compressed/thumbnail share stable stage geometry; pausing the real original response displays Skeleton until actual decode, without layout shift.",
+        "Real Toolbar ArrowRight/ArrowLeft focus navigation follows visible actions on desktop and mobile.",
+        "Real copy success produces an expiring overlay Toast without layout shift; 44px copy/detail CloseButtons close the layers and copy-close restores its trigger focus."
+      ],
+      "width": 1920
+    },
+    "interaction-polish-390.json": {
+      "status": "passed",
+      "checks": [
+        "Idle upload cloud animates continuously without hover; reduced motion disables its animation.",
+        "Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes.",
+        "Original/compressed/thumbnail share stable stage geometry; pausing the real original response displays Skeleton until actual decode, without layout shift.",
+        "Real Toolbar ArrowRight/ArrowLeft focus navigation follows visible actions on desktop and mobile.",
+        "Real copy success produces an expiring overlay Toast without layout shift; 44px copy/detail CloseButtons close the layers and copy-close restores its trigger focus."
+      ],
+      "width": 390
+    },
+    "library.json": {
+      "status": "passed",
+      "checks": [
+        "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+        "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+        "Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.",
+        "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+        "Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.",
+        "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+        "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+        "Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.",
+        "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position.",
+        "Desktop action Toolbar moves Copy → Download → Delete by keyboard; Escape cancels deletion and returns focus to its direct trigger.",
+        "Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.",
+        "Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.",
+        "Changing the real default setting is reflected when copy reopens while the compressed preview stays selected; default URLs omit type; unsaved explicit watermark returns 404.",
+        "Missing thumbnail download HEAD returns 404 and displays the explicit download error without requesting another version.",
+        "After a real thumbnail file read failure, restoring the fixture file and manually refreshing decodes that same thumbnail without an original fallback.",
+        "Mobile details keep Copy, current-version Download and Delete directly in the fixed footer; cancelling deletion returns focus to Delete.",
+        "Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport copy action opens the real copy dialog.",
+        "Pre-write GET race (normal): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+        "Pre-write GET race (lost-write): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST after explicit unknown-result reconciliation.",
+        "Pre-write GET race (late-success): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+        "Trash cancellation and Escape restore trigger focus without writes; held real POST disables duplicate submission; successful trash removes detail/card and every saved version rejects owner and anonymous reads.",
+        "A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.",
+        "Opening a trash record and using its top return control restores focus to the original record.",
+        "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+        "Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.",
+        "Disabled storage permits record trash/restore; success explicitly says the storage remains disabled; real content remains unreadable and storage is not enabled.",
+        "A real concurrent deleting transition returns HTTP 409 and triggers a current-record read; the trashed record remains and reopening disables restore.",
+        "Losing the real successful restore response and its real reconciliation read preserves an unknown-result state; manual reconciliation discovers the committed result without repeating the write.",
+        "Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record; reopening the original record resumes a real read and shows its already-restored state without another write.",
+        "A record really deleted after confirmation opens produces HTTP 404 and a definite missing-record result, not an indefinitely unknown mutation.",
+        "A real expired owner session during restore/reconciliation redirects to login with the exact trash record return target; signing in returns to that record.",
+        "A real zero-record query renders empty; losing the real refresh response renders an error rather than an empty state; retry reads the real endpoint.",
+        "The 390×400 shortened viewport keeps the real record restore action reachable; this is not a physical keyboard or safe-area device test.",
+        "Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login."
+      ],
+      "limitations": [
+        "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+      ]
+    },
+    "m2-1440.json": {
+      "status": "passed",
+      "checks": [
+        "M2 login honors the real preceding identity rate-limit countdown before retrying.",
+        "1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+        "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+        "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+        "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+        "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+      ],
+      "width": 1440
+    },
+    "m2-390.json": {
+      "status": "passed",
+      "checks": [
+        "390px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "390px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "390px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "390px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+        "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+        "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+        "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+        "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+        "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+      ],
+      "width": 390
+    },
+    "owner-shell.json": {
+      "status": "passed",
+      "checks": [
+        "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+        "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+        "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.",
+        "Idle upload cloud moves continuously without hover; reduced motion disables the animation.",
+        "All real owner routes remove the workspace breadcrumb, paint the footer to workspace edges with responsive inner padding, and preserve keyboard focus without a pointer-triggered trash heading ring.",
+        "Upload/library/trash/albums share all ten design menu entries; the four implemented routes are links, and the remaining six explain that they are not yet available.",
+        "Computed navigation text decoration is none, including hover; heading origins match across all four routes at desktop, phone and tablet widths.",
+        "Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.",
+        "Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu."
+      ],
+      "limitations": [
+        "Chromium viewport emulation does not constitute physical-device verification."
+      ]
+    },
+    "shell-browser.json": {
+      "status": "passed",
+      "checks": [
+        "Real Next navigation, current ancestor, Tabs category navigation, single content tree",
+        "767/768/1199/1200 navigation boundaries; reduced-motion disables transitions",
+        "Open mobile menu stays open on tablet and closes on desktop breakpoint and restores focus to visible navigation",
+        "Mobile Modal Tab containment, background scroll lock, Escape and trigger focus restoration",
+        "Mobile navigation closes Modal; Select changes actual category route",
+        "Short viewport input remains reachable above persistent footer",
+        "Long workspace name wraps; empty navigation invents no business entries; explicit menu close button"
+      ],
+      "errors": [],
+      "limitations": [
+        "Desktop Chromium emulation does not verify physical soft keyboard, touch hardware, or safe-area insets"
+      ]
+    },
+    "ui/browser.json": {
+      "status": "passed",
+      "taskSpaceId": 10,
+      "checks": [
+        "SSR, hydration, system theme change, explicit preference survives reload",
+        "RHF invalid message, invalid field focus, keyboard submit, preserved value",
+        "Query loading, empty, HTTP error and recovery",
+        "Modal Enter/Tab containment/Escape/focus restoration",
+        "Short viewport modal input and close with touch emulation and reduced motion"
+      ],
+      "errors": [],
+      "limitations": [
+        "Desktop Chromium emulation is not physical touch/soft keyboard/safe-area validation",
+        "No business UI, Firefox, Safari or Edge acceptance"
+      ]
+    },
+    "ui/library.json": {
+      "status": "passed",
+      "checks": [
+        "Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input",
+        "Layout preserves query/cache/selection; same-query page history preserves explicit selection",
+        "Three-slide finite window, controlled image identity after rebuilding slides, zoom and keyboard pan, real desktop fullscreen enter/exit, Escape restores URL/scroll/selection/focus without list HTTP",
+        "Light/dark at 360/390/430/768/1440, 44px controls, short viewport; emulated missing Fullscreen API hides its button but retains viewport viewer and zoom",
+        "Pending hides stale actions; HTTP 503, empty and cached recovery; changed query clears selection"
+      ],
+      "errors": [],
+      "limitations": [
+        "HTTP fixture has 120 lightweight records, separate SQLite experiment supplies 100k scale evidence",
+        "Fullscreen unavailable is an explicit capability override, not real mobile Safari",
+        "No production library, cross-page neighbor API, permissions or physical-device acceptance"
+      ]
+    },
+    "ui/runner.json": {
+      "status": "passed"
+    },
+    "upload-polling.json": {
+      "status": "passed",
+      "checks": [
+        {
+          "name": "Content acceptance invalidates an outstanding automatic read",
+          "overlap": {
+            "reads": 1,
+            "heldPastDeadline": true,
+            "accepted": true,
+            "held": true,
+            "uploadProgress": {
+              "loaded": 6814,
+              "total": 6814,
+              "lengthComputable": true
+            }
+          }
+        },
+        {
+          "name": "Content acceptance invalidates an outstanding automatic read",
+          "result": {
+            "imageId": "ebee62a0-b24d-4321-a020-2dd94a52c1e6",
+            "reads": 2,
+            "heldPastDeadline": true,
+            "accepted": true,
+            "held": false,
+            "uploadProgress": {
+              "loaded": 6814,
+              "total": 6814,
+              "lengthComputable": true
+            }
+          }
+        },
+        {
+          "name": "A new file after cancellation and clearing also resumes automatic polling",
+          "overlap": {
+            "reads": 1,
+            "heldPastDeadline": true,
+            "accepted": true,
+            "held": true,
+            "uploadProgress": {
+              "loaded": 6814,
+              "total": 6814,
+              "lengthComputable": true
+            }
+          }
+        },
+        {
+          "name": "A new file after cancellation and clearing also resumes automatic polling",
+          "result": {
+            "imageId": "a16aa3fe-1ed4-455e-898b-bbaffa6f436a",
+            "reads": 2,
+            "heldPastDeadline": true,
+            "accepted": true,
+            "held": false,
+            "uploadProgress": {
+              "loaded": 6814,
+              "total": 6814,
+              "lengthComputable": true
+            }
+          }
+        }
+      ],
+      "limitations": [
+        "Browser-boundary holds delay real responses without changing their payloads; no controller methods are called."
+      ]
+    },
+    "upload.json": {
+      "status": "passed",
+      "checks": [
+        "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image.",
+        "Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.",
+        "Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.",
+        "Native File selection is manual; remove and terminal completion release File/blob references; real upload reaches ready; detail return preserves result; clear retains persisted image.",
+        "Real empty, oversized sparse and unsupported files show distinct input reasons without creating queue items or retaining File references.",
+        "Real invalid image bytes fail server inspection without imageId or detail action.",
+        "Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.",
+        "Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure.",
+        "Lost real creation response is reconciled through original idempotent submission rather than an automatic second content upload.",
+        "Held real XHR dispatch exposes uploading: only the title icon pulses, reduced motion disables the pulse, and no success icon appears early.",
+        "Real content reaches 100% but held XHR acknowledgement remains saving; cancellation after server acceptance returns 409 and reconciles the same image instead of reporting cancellation.",
+        "Hard document navigation and reopening upload does not restore browser queue; previously accepted server image persists.",
+        "Hard document navigation from an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.",
+        "Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.",
+        "Real missing default and disabled storage prevent manual start without silently choosing another target; lost real settings response displays retry and recovers."
+      ],
+      "limitations": [
+        "Ego Chromium device emulation is not physical touch, soft keyboard or safe-area hardware evidence.",
+        "Transport failures and timing holds are controlled browser-boundary faults; processing failure uses a disposable SQLite trigger."
+      ]
+    },
+    "workspace-continuity-1440.json": {
+      "status": "passed",
+      "checks": [
+        "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+        "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+        "Hard reload still warns for unsent work and starts a fresh document with no persisted queue.",
+        "Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.",
+        "A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held."
+      ],
+      "width": 1440
+    },
+    "workspace-continuity-390.json": {
+      "status": "passed",
+      "checks": [
+        "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+        "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+        "Hard reload still warns for unsent work and starts a fresh document with no persisted queue.",
+        "Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.",
+        "A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held."
+      ],
+      "width": 390
+    }
+  }
+}

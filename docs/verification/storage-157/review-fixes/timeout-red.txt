@@ -1,0 +1,68 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso
+
+ ❯ |integration| tests/integration/storage/s3-probe-protocol.test.ts (39 tests | 2 failed) 349ms
+   × 鉴权读取 headers 超时返回 STORAGE_TIMEOUT 107ms
+   × 鉴权读取 body 超时返回 STORAGE_TIMEOUT 103ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/storage/s3-probe-protocol.test.ts > 鉴权读取 headers 超时返回 STORAGE_TIMEOUT
+AssertionError: expected Error: Storage read failed: probe-config,… { …(8) } to match object { operation: 'read', …(1) }
+(8 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "STORAGE_TIMEOUT",
++ Error {
++   "code": "STORAGE_OPERATION_FAILED",
+    "operation": "read",
+  }
+
+ ❯ tests/integration/storage/s3-probe-protocol.test.ts:345:30
+    343|         const pending =
+    344|           phase === 'headers' ? reading : (await reading).stream.toArr…
+    345|         await expect(pending).rejects.toMatchObject({
+       |                              ^
+    346|           operation: 'read',
+    347|           code: 'STORAGE_TIMEOUT',
+ ❯ withEndpoint tests/integration/storage/s3-probe-protocol.test.ts:34:11
+ ❯ tests/integration/storage/s3-probe-protocol.test.ts:330:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/storage/s3-probe-protocol.test.ts > 鉴权读取 body 超时返回 STORAGE_TIMEOUT
+AssertionError: expected Error: Storage read failed: probe-config,… { …(8) } to match object { operation: 'read', …(1) }
+(12 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "STORAGE_TIMEOUT",
++ Error {
++   "code": "STORAGE_OPERATION_FAILED",
+    "operation": "read",
+  }
+
+ ❯ tests/integration/storage/s3-probe-protocol.test.ts:345:30
+    343|         const pending =
+    344|           phase === 'headers' ? reading : (await reading).stream.toArr…
+    345|         await expect(pending).rejects.toMatchObject({
+       |                              ^
+    346|           operation: 'read',
+    347|           code: 'STORAGE_TIMEOUT',
+ ❯ withEndpoint tests/integration/storage/s3-probe-protocol.test.ts:34:5
+ ❯ tests/integration/storage/s3-probe-protocol.test.ts:330:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 37 passed (39)
+   Start at  00:15:55
+   Duration  505ms (tests 79%, import 15%, transform 6%)

@@ -1,0 +1,62 @@
+Already up to date
+Done in 121ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+src/cli/verify-media.ts(73,11): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+src/cli/verify-media.ts(118,13): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/analytics/usage.test.ts(95,48): error TS2345: Argument of type '{ format: string; mime: string; width: number; height: number; animated: boolean; pageCount: number; }' is not assignable to parameter of type '{ format: ImageFormat; mime: "image/jpeg" | "image/png" | "image/webp" | "image/avif" | "image/bmp" | "image/tiff" | "image/heic" | "image/gif" | "image/x-icon" | "image/svg+xml"; extension: "webp" | ... 8 more ... | "svg"; coder: "jpeg" | ... 8 more ... | "svg"; width: number | null; height: number | null; }'.
+  Type '{ format: string; mime: string; width: number; height: number; animated: boolean; pageCount: number; }' is missing the following properties from type '{ format: "PNG" | "WEBP" | "HEIC" | "AVIF" | "GIF" | "TIFF" | "SVG" | "JPEG" | "ICO" | "BMP"; mime: "image/jpeg" | "image/png" | "image/webp" | "image/avif" | "image/bmp" | "image/tiff" | "image/heic" | "image/gif" | "image/x-icon" | "image/svg+xml"; extension: "webp" | ... 8 more ... | "svg"; coder: "jpeg" | ... 8 ...': extension, coder
+tests/integration/analytics/usage.test.ts(101,35): error TS2345: Argument of type '{ format: string; mime: string; width: number; height: number; animated: boolean; pageCount: number; }' is not assignable to parameter of type '{ format: ImageFormat; mime: "image/jpeg" | "image/png" | "image/webp" | "image/avif" | "image/bmp" | "image/tiff" | "image/heic" | "image/gif" | "image/x-icon" | "image/svg+xml"; extension: "webp" | ... 8 more ... | "svg"; coder: "jpeg" | ... 8 more ... | "svg"; width: number | null; height: number | null; }'.
+  Type '{ format: string; mime: string; width: number; height: number; animated: boolean; pageCount: number; }' is missing the following properties from type '{ format: "PNG" | "WEBP" | "HEIC" | "AVIF" | "GIF" | "TIFF" | "SVG" | "JPEG" | "ICO" | "BMP"; mime: "image/jpeg" | "image/png" | "image/webp" | "image/avif" | "image/bmp" | "image/tiff" | "image/heic" | "image/gif" | "image/x-icon" | "image/svg+xml"; extension: "webp" | ... 8 more ... | "svg"; coder: "jpeg" | ... 8 ...': extension, coder
+tests/integration/media/format-recovery.test.ts(77,11): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(124,11): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(158,44): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type '{ localPath: string; id: string; }'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(168,29): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type '{ localPath: string; id: string; }'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(171,43): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type '{ localPath: string; id: string; }'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(192,24): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type '{ localPath: string; id: string; }'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/format-recovery.test.ts(196,42): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type '{ localPath: string; id: string; }'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/formats.test.ts(66,42): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/formats.test.ts(102,5): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/svg.test.ts(100,38): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+tests/integration/media/svg.test.ts(148,9): error TS2345: Argument of type '{ id: string; name: string; type: "local" | "s3"; enabled: boolean; localPath: string | null; endpoint: string | null; region: string | null; bucket: string | null; pathPrefix: string | null; ... 13 more ...; updatedAt: Date; }' is not assignable to parameter of type 'LocalStorage'.
+  Types of property 'localPath' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+[ELIFECYCLE] Command failed with exit code 2.

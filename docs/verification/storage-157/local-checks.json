@@ -1,0 +1,389 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64",
+    "base": "00979f5"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0,
+      "result": "0011_wise_maria_hill.sql generated and reviewed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 1,
+      "result": "Generated migration JSON formatting; fixed and rerun below"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=2",
+      "exitCode": 0,
+      "files": 38,
+      "tests": 542
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/probe-http.test.ts tests/unit/storage/s3-probes.test.ts tests/unit/storage/s3.test.ts --project integration tests/integration/storage/probes.test.ts tests/integration/storage/s3-probe-protocol.test.ts tests/integration/storage/s3.test.ts tests/integration/storage/settings.test.ts tests/integration/runtime/prestart.test.ts",
+      "exitCode": 0,
+      "files": 8,
+      "tests": 117
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 2,
+      "result": "15 baseline errors in 5 existing files",
+      "evidence": "typecheck-failed.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 2,
+      "result": "Runtime compilation fails on two baseline verify-media errors",
+      "evidence": "build-failed.txt"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --incremental false --project /tmp/ariso-157-baseline.IydoNR/tsconfig.json",
+      "exitCode": 2,
+      "result": "Unmodified origin/main archive reproduces all 15 existing errors",
+      "evidence": "baseline-typecheck.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "Final full check after formatting generated migration JSON"
+    }
+  ],
+  "notRun": {
+    "release": "No release/image/container/deployment requested"
+  },
+  "audit": {
+    "conclusion": "Code review passed after both Required findings and migration fixture assertions fixed",
+    "independentTests": 66,
+    "fullDelivery": "Applicable local validation complete after approved repairs and passing rechecks"
+  },
+  "redEvidence": [
+    "Missing probe-runtime module before implementation",
+    "Unknown version XML and 201/204 failed before fix",
+    "Original HTTP returned 500 instead of 502/504 (2 failed tests)",
+    "prestart table list lacked storage_probes before correction"
+  ],
+  "liveEvidence": "live/checks.json",
+  "approvedRepair": {
+    "authorization": "2026-09-29 所有者明确回复“批准修复”",
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm --dir tests/experiments/ui run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=2",
+        "exitCode": 1,
+        "files": 87,
+        "passed": 730,
+        "failed": 6,
+        "evidence": "approved-repair/integration-first.txt"
+      },
+      {
+        "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts tests/integration/analytics/scale.test.ts tests/integration/analytics/count.test.ts tests/integration/identity/auth.test.ts --maxWorkers=1",
+        "exitCode": 1,
+        "passed": 36,
+        "failed": 1,
+        "evidence": "approved-repair/integration-recheck.txt"
+      },
+      {
+        "command": "pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "passed": 13,
+        "evidence": "approved-repair/count-recheck.txt"
+      },
+      {
+        "command": "pnpm run test:browser",
+        "exitCode": 0,
+        "evidence": "approved-repair/browser-runner.json"
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0,
+        "round": "final code and evidence"
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0,
+        "round": "final code and evidence"
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0,
+        "round": "final code and evidence"
+      }
+    ],
+    "integrationConclusion": "All 736 tests have passing coverage across full run and unchanged-assertion rechecks; first full command failed and is retained",
+    "audit": "Five-file repair, HTTP test lifecycle ordering and explicit-column analytics fixture reviewed independently; no Required",
+    "packagedMedia": "approved-repair/packaged-media.json",
+    "browser": "approved-repair/browser-checks.json",
+    "currentConclusion": "All applicable local checks have passing evidence; code audit has no Required; no UI changes"
+  },
+  "initialPullRequest": {
+    "url": "https://github.com/dnslin/ariso-next/pull/211",
+    "state": "OPEN",
+    "isDraft": true,
+    "statusCheckRollup": [],
+    "workflowRuns": [],
+    "ciPassed": false,
+    "note": "Historical draft snapshot before owner-approved repairs; no remote checks configured"
+  },
+  "reviewFixes": {
+    "date": "2026-09-30",
+    "authorization": "所有者要求修复两份独立评审的问题与优化建议",
+    "environment": {
+      "node": "24.18.1",
+      "pnpm": "11.19.0",
+      "platform": "macOS arm64",
+      "base": "00979f5"
+    },
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0,
+        "evidence": "review-fixes/unit.txt"
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "evidence": "review-fixes/build.txt"
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0,
+        "result": "Repeated after final HTTP regression edit"
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0,
+        "result": "Repeated after final test edits"
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=1",
+        "exitCode": 0,
+        "files": 87,
+        "tests": 745,
+        "evidence": "review-fixes/integration.txt"
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "result": "120 tasks / 298 requirements"
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "exitCode": 0,
+        "result": "5 rejection cases"
+      },
+      {
+        "command": "BROWSER_REPORT_DIR=test-results/pr211-review-fixes/browser pnpm run test:browser",
+        "exitCode": 1,
+        "result": "Library group reached original 300000ms runner timeout; no precise cause established",
+        "evidence": "review-fixes/browser-first-runner.json"
+      },
+      {
+        "command": "EGO_TASK_SPACE=10 BROWSER_REPORT_DIR=test-results/pr211-review-fixes/browser-retry pnpm run test:browser",
+        "exitCode": 0,
+        "result": "Complete rerun in the same space, unchanged code/timeout/assertions; all groups passed and space finished once",
+        "evidence": "review-fixes/browser-retry-runner.json"
+      }
+    ],
+    "redEvidence": [
+      "review-fixes/probe-red-summary.json",
+      "review-fixes/timeout-red.txt"
+    ],
+    "audit": "review-fixes/audit.json",
+    "liveEvidence": "review-fixes/live/checks.json",
+    "browser": {
+      "conclusion": "Full rerun passed after first-run timeout; initial failure retained",
+      "taskSpaceId": 10,
+      "finalChecks": "review-fixes/browser-retry-checks.json",
+      "localArtifacts": "test-results/pr211-review-fixes/browser-first and browser-retry",
+      "spaceClosed": true
+    },
+    "notRun": {
+      "release": "No Release/image/container/deployment requested",
+      "design": "No UI change; Figma and human UI acceptance not applicable"
+    }
+  },
+  "mainSync": {
+    "base": "6c24c07128c1e07f7f28676a5d049083d545eee0",
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:integration --maxWorkers=2",
+        "exitCode": 0,
+        "files": 88,
+        "tests": 772,
+        "evidence": "review-fixes/main-sync-integration.txt"
+      }
+    ],
+    "unit": {
+      "files": 39,
+      "tests": 572,
+      "evidence": "review-fixes/main-sync-unit.txt"
+    },
+    "audit": "review-fixes/audit.json#mainSyncReview",
+    "browserAndLive": "Not rerun after adopting the six equivalent main baseline repairs; this task S3 implementation and UI unchanged. Passing pre-sync runs remain explicitly scoped to pre-sync tree.",
+    "fullLocalLogs": "/tmp/ariso-pr211-sync",
+    "diffCheck": "git diff --cached origin/main --check passed; inherited main historical-log whitespace left unchanged"
+  },
+  "mergePreparation": {
+    "base": "2b261d3aa232cfe82556677a5b028032d12f7927",
+    "commands": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 1
+      },
+      {
+        "command": "pnpm run format:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run lint",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run test:unit --maxWorkers=2",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm exec drizzle-kit generate --config=drizzle.config.ts --name storage_probes",
+        "exitCode": 0,
+        "result": "Generated and audited 0012_storage_probes.sql and combined snapshot"
+      },
+      {
+        "command": "pnpm run db:generate",
+        "exitCode": 0,
+        "result": "No schema changes, nothing to migrate"
+      }
+    ],
+    "formatFirstFailure": "Migration regression was still being edited; its final formatting and full format check passed.",
+    "migration": "Preserve main watermark 0011; generated 0012_storage_probes and audited SQL/snapshot/journal continuity. pnpm run db:generate subsequently reports no schema changes.",
+    "migrationUpgrade": {
+      "command": "pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "tests": 12,
+      "evidence": "merge-preparation/migration-upgrade.txt"
+    },
+    "audit": {
+      "migration": "Independent review confirms only probe table/index and connection_report added; previous main migrations unchanged; actual upgrade preserves existing data.",
+      "runtime": "Cross-review confirms singleton watermark and probe runtime, shared media resources and full stop chain before DB close."
+    },
+    "unit": {
+      "files": 41,
+      "tests": 600,
+      "evidence": "merge-preparation/unit.txt"
+    },
+    "integration": {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "exitCode": 0,
+      "files": 92,
+      "tests": 823,
+      "evidence": "merge-preparation/integration.txt"
+    },
+    "artifactExport": "/Users/dnslin/.codex/exports/ariso-issue-157.ynnt8G"
+  }
+}

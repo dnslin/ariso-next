@@ -1,5 +1,12 @@
+import type { ConnectionReport } from './probe-types.ts';
 import { sql } from 'drizzle-orm';
-import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import {
+  check,
+  integer,
+  sqliteTable,
+  text,
+  index,
+} from 'drizzle-orm/sqlite-core';
 
 export const storageConfigs = sqliteTable('storage_configs', {
   id: text('id').primaryKey().notNull(),
@@ -21,6 +28,9 @@ export const storageConfigs = sqliteTable('storage_configs', {
     .notNull()
     .default('untested'),
   connectionRevision: integer('connection_revision'),
+  connectionReport: text('connection_report', {
+    mode: 'json',
+  }).$type<ConnectionReport>(),
   connectionTestedAt: integer('connection_tested_at', { mode: 'timestamp_ms' }),
   corsStatus: text('cors_status', {
     enum: ['untested', 'passed', 'failed', 'invalidated'],
@@ -46,3 +56,33 @@ export const storageSettings = sqliteTable(
 );
 
 export type StorageConfig = typeof storageConfigs.$inferSelect;
+
+export const storageProbes = sqliteTable(
+  'storage_probes',
+  {
+    id: text('id').primaryKey().notNull(),
+    storageId: text('storage_id')
+      .notNull()
+      .references(() => storageConfigs.id),
+    purpose: text('purpose', { enum: ['connection', 'cors'] }).notNull(),
+    configRevision: integer('config_revision').notNull(),
+    key: text('key').notNull(),
+    state: text('state', { enum: ['running', 'cleanup'] }).notNull(),
+    stage: text('stage').notNull(),
+    objectState: text('object_state', {
+      enum: ['planned', 'writing', 'stored'],
+    }).notNull(),
+    byteSize: integer('byte_size'),
+    confirmedAt: integer('confirmed_at', { mode: 'timestamp_ms' }),
+    cleanupAttempts: integer('cleanup_attempts').notNull().default(0),
+    nextCleanupAt: integer('next_cleanup_at', { mode: 'timestamp_ms' }),
+    error: text('error'),
+    report: text('report', { mode: 'json' })
+      .$type<ConnectionReport>()
+      .notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [index('storage_probes_storage').on(table.storageId)],
+);
+export type StorageProbe = typeof storageProbes.$inferSelect;
