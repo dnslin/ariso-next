@@ -13,6 +13,7 @@ import { bytesLabel } from '../library/detail-labels';
 import { UploadSettingsFields } from './settings';
 import { useUploadQueue, uploadTerminalStates } from './provider';
 import { UploadQueueItem } from './item';
+import { useUploadInput, UploadInputDialog } from './input-controls';
 
 type ScreenProps = {
   name: string;
@@ -33,9 +34,8 @@ export function UploadScreen(props: ScreenProps) {
     chosenVisibility,
     setVisibility,
   } = useUploadQueue();
-  const [error, setError] = useState('');
   const [detailId, setDetailId] = useState<string | null>(null);
-  const input = useRef<HTMLInputElement>(null);
+  const input = useUploadInput(controller);
   const trigger = useRef<HTMLElement | null>(null);
   const queuedCount = items.filter((item) => item.state === 'queued').length;
   const completedCount = items.filter((item) =>
@@ -97,10 +97,7 @@ export function UploadScreen(props: ScreenProps) {
   const selectedStorage = settings.storages.find(
     (s) => s.id === storageId && s.enabled,
   );
-  function choose() {
-    setError('');
-    input.current?.click();
-  }
+  const choose = input.chooseFiles;
   return (
     <OwnerShell
       {...props}
@@ -112,7 +109,6 @@ export function UploadScreen(props: ScreenProps) {
               className="flex-1 md:max-w-45"
               onPress={() => {
                 controller.clearCompleted();
-                setError('');
               }}
             >
               清空已完成
@@ -186,87 +182,107 @@ export function UploadScreen(props: ScreenProps) {
                 : '选择图片，确认本次设置后开始上传。'}
           </p>
         </div>
-        <input
-          ref={input}
-          type="file"
-          multiple
-          aria-label="选择图片文件"
-          accept="image/jpeg,image/png,.jpg,.jpeg,.png"
-          className="hidden"
-          onChange={(event) => {
-            const files = Array.from(event.currentTarget.files ?? []);
-            event.currentTarget.value = '';
-            const errors: string[] = [];
-            for (const file of files) {
-              const reason = controller.add(file);
-              if (reason) errors.push(`${file.name}：${reason}`);
-            }
-            setError(errors.join('\n'));
-          }}
-        />
+        {input.controls}
         <div
           data-testid="upload-composition"
           className="grid min-w-0 items-start gap-3 md:grid-cols-[minmax(0,1fr)_360px] md:gap-6"
         >
-          {items.length ? (
-            <Card
-              data-testid="upload-queue"
-              className="min-w-0 gap-4 rounded-2xl border border-border bg-background px-3 py-4 shadow-none md:rounded-[20px] md:p-6"
-            >
-              <Toolbar
-                aria-label="上传队列操作"
-                className="hidden min-h-11 w-full items-center justify-between gap-3 md:flex"
+          <div
+            data-testid="upload-input-zone"
+            {...input.zoneProps}
+            className={`min-w-0 rounded-[20px] ${input.dragging ? 'outline-2 outline-offset-2 outline-focus' : ''}`}
+          >
+            {items.length ? (
+              <Card
+                data-testid="upload-queue"
+                className="min-w-0 gap-4 rounded-2xl border border-border bg-background px-3 py-4 shadow-none md:rounded-[20px] md:p-6"
               >
-                <h2 className="text-lg font-medium">
-                  {queuedCount > 0
-                    ? `待上传 ${queuedCount} 张`
-                    : `共 ${items.length} 张`}
+                <Toolbar
+                  aria-label="上传队列操作"
+                  className="hidden min-h-11 w-full flex-wrap items-center justify-between gap-3 md:flex"
+                >
+                  <h2 className="text-lg font-medium">
+                    {queuedCount > 0
+                      ? `待上传 ${queuedCount} 张`
+                      : `共 ${items.length} 张`}
+                  </h2>
+                  <div className="flex shrink-0 gap-2">
+                    <Button variant="outline" onPress={input.chooseDirectory}>
+                      选择文件夹
+                    </Button>
+                    <Tooltip>
+                      <Button
+                        variant="outline"
+                        className="min-h-11 w-30 shrink-0"
+                        onPress={choose}
+                      >
+                        继续添加
+                      </Button>
+                      <Tooltip.Content>
+                        可多选图片，已选文件会保留
+                      </Tooltip.Content>
+                    </Tooltip>
+                  </div>
+                </Toolbar>
+                {items.map((item) => (
+                  <UploadQueueItem
+                    key={item.id}
+                    item={item}
+                    controller={controller}
+                    client={client}
+                    onOpen={(id, element) => {
+                      trigger.current = element;
+                      setDetailId(id);
+                    }}
+                  />
+                ))}
+              </Card>
+            ) : (
+              <Card
+                data-testid="upload-picker"
+                className="min-h-70 min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 text-center shadow-none md:min-h-90 md:p-6"
+              >
+                <span
+                  aria-hidden
+                  data-testid="upload-idle-motion"
+                  className="motion-safe:animate-[upload-float_2.8s_ease-in-out_infinite]"
+                >
+                  <CloudUpload size={40} />
+                </span>
+                <h2 className="text-[26px] font-medium">
+                  <span className="md:hidden">选择要上传的图片</span>
+                  <span className="hidden md:inline">把图片放在这里</span>
                 </h2>
-                <Tooltip>
+                <div className="flex flex-wrap items-center justify-center text-[13px]">
+                  <span className="hidden md:inline">拖拽、粘贴或</span>
+                  <span className="md:hidden">支持多选 · </span>
                   <Button
                     variant="outline"
-                    className="min-h-11 w-30 shrink-0"
-                    onPress={choose}
+                    className="mx-1 min-h-11 rounded-lg px-2 text-[13px] font-normal"
+                    onPress={input.chooseDirectory}
                   >
-                    继续添加
+                    选择文件夹
                   </Button>
-                  <Tooltip.Content>可多选图片，已选文件会保留</Tooltip.Content>
-                </Tooltip>
-              </Toolbar>
-              {items.map((item) => (
-                <UploadQueueItem
-                  key={item.id}
-                  item={item}
-                  controller={controller}
-                  client={client}
-                  onOpen={(id, element) => {
-                    trigger.current = element;
-                    setDetailId(id);
-                  }}
-                />
-              ))}
-            </Card>
-          ) : (
-            <Card
-              data-testid="upload-picker"
-              className="min-h-70 min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 text-center shadow-none md:min-h-90 md:p-6"
-            >
-              <span
-                aria-hidden
-                data-testid="upload-idle-motion"
-                className="motion-safe:animate-[upload-float_2.8s_ease-in-out_infinite]"
+                  <span> · 单文件最大 {bytesLabel(settings.maxFileBytes)}</span>
+                </div>
+                <Button
+                  className="h-12 min-h-12 w-36 font-normal"
+                  onPress={choose}
+                >
+                  选择图片
+                </Button>
+              </Card>
+            )}
+            {items.length ? (
+              <Button
+                variant="outline"
+                className="mt-3 min-h-11 w-full md:hidden"
+                onPress={input.chooseDirectory}
               >
-                <CloudUpload size={40} />
-              </span>
-              <h2 className="text-[26px] font-medium">选择要上传的图片</h2>
-              <p className="text-sm">
-                JPEG、PNG · 单文件最大 {bytesLabel(settings.maxFileBytes)}
-              </p>
-              <Button className="min-h-12 w-36" onPress={choose}>
-                选择图片
+                选择文件夹
               </Button>
-            </Card>
-          )}
+            ) : null}
+          </div>
           <UploadSettingsFields
             settings={settings}
             storageId={storageId}
@@ -276,16 +292,15 @@ export function UploadScreen(props: ScreenProps) {
             onVisibility={setVisibility}
           />
         </div>
-        {error ? (
-          <Alert status="danger" role="alert">
-            <Alert.Content>
-              <Alert.Description className="whitespace-pre-wrap">
-                {error}
-              </Alert.Description>
-            </Alert.Content>
-          </Alert>
-        ) : null}
       </section>
+      <UploadInputDialog
+        input={input}
+        maxFileBytes={settings.maxFileBytes}
+        queueCount={items.length}
+        queueLimit={settings.queueLimit}
+        completedCount={completedCount}
+        clearCompleted={() => controller.clearCompleted()}
+      />
       {detailId ? (
         <LibraryDetail
           key={detailId}

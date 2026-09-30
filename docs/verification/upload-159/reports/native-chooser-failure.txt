@@ -1,0 +1,26 @@
+AssertionError [ERR_ASSERTION]: Native directory enumeration was cancelled by the browser; folder selection remains unverified
+
+true !== false
+
+    at directory (file:////[eval2]:175:10)
+    at async file:////[eval2]:373:3
+
+ego's nodejs process exited with code 1.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Target upload input browser passed
+
+1 !== 0
+
+    at file:///private/tmp/ariso-159-target-browser.mjs:46:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.1
