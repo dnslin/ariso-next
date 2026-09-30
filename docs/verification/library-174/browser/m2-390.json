@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "width": 390,
+  "height": 844,
+  "theme": "light",
+  "checks": [
+    "390px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "390px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+    "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+    "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+    "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+    "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+  ],
+  "core": {
+    "analyticsBefore": [
+      {
+        "version": "original",
+        "count": 3
+      }
+    ],
+    "images": [
+      {
+        "id": "4f73feec-6fe8-4217-8b01-251339a3923c",
+        "format": "jpg",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-50995.localhost:50995/i/4f73feec-6fe8-4217-8b01-251339a3923c?type=original"
+      },
+      {
+        "id": "2d3ea0e8-eebb-4f48-b32a-9d2a01fdc746",
+        "format": "jpg",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-50995.localhost:50995/i/2d3ea0e8-eebb-4f48-b32a-9d2a01fdc746?type=original"
+      },
+      {
+        "id": "41e9e47b-2e84-40f8-af14-4239c3bf83da",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-50995.localhost:50995/i/41e9e47b-2e84-40f8-af14-4239c3bf83da?type=original"
+      },
+      {
+        "id": "26a497c9-c57e-4827-8c58-42580672ff80",
+        "format": "png",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-50995.localhost:50995/i/26a497c9-c57e-4827-8c58-42580672ff80?type=original"
+      },
+      {
+        "id": "4c925a29-f337-4fdd-94b0-594573dcdd21",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 0
+      }
+    ]
+  },
+  "recovery": {
+    "imageId": "5757bd3c-cb99-4a5e-b032-ca502cbb59b4",
+    "job": {
+      "id": "925692b7-8d06-48cb-8f2e-d3f33be1a436",
+      "status": "running",
+      "snapshot": "{\"compressionEnabled\":true,\"outputFormat\":\"webp\",\"quality\":82,\"maxEdge\":null,\"jpegBackground\":\"#FFFFFF\",\"watermarkMode\":\"off\",\"watermarkText\":\"\",\"watermarkFont\":\"chinese\",\"watermarkFontSize\":3,\"watermarkColor\":\"#FFFFFF\",\"watermarkStrokeColor\":\"#000000\",\"watermarkStrokeWidth\":0,\"watermarkOpacity\":50,\"watermarkPosition\":\"bottom-right\",\"watermarkMargin\":2,\"watermarkWidth\":20,\"watermarkAsset\":null,\"defaultVisibility\":\"public\"}",
+      "expected_versions": "[\"compressed\",\"thumbnail\"]"
+    },
+    "original": {
+      "id": "14802bdc-6093-42a8-aa7c-27d0f1194e17",
+      "key": "original/5757bd3c-cb99-4a5e-b032-ca502cbb59b4.png",
+      "storage_id": "98efad40-f061-45b9-b4cb-47e0fbd99a5e",
+      "local_path": "default"
+    },
+    "versions": [
+      {
+        "kind": "compressed",
+        "count": 1
+      },
+      {
+        "kind": "original",
+        "count": 1
+      },
+      {
+        "kind": "thumbnail",
+        "count": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+Already up to date
+Done in 164ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=1
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+ ❯ |integration| tests/integration/identity/auth.test.ts (17 tests | 1 failed) 122482ms
+   ❯ initialized production auth (16)
+     × production constraints reject invalid owners and duplicate providers; incomplete identity is explicit 12605ms
+{"time":"2026-09-30T18:36:03.406Z","level":"info","module":"identity.setup","event":"setup-code","code":"n0Tvb0QmJQqozUF1KrLvwhnu2oT1u6NE","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-30T18:36:03.476Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-30T18:36:03.815Z","level":"info","module":"identity.setup","event":"setup-code","code":"cJojxXb0jAVeo7H6T4qvt_zfMy-n5DLC","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-30T18:36:03.818Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-174-selection/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-KdAyhK/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-30T18:36:03.822Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-30T18:36:04.138Z","level":"info","module":"identity.setup","event":"setup-code","code":"OPkhEY21HGdn0nsCU8QiuKP4FUhRRyIP","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-30T18:36:04.193Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/auth.test.ts > initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/auth.test.ts:200:3
+    198|   });
+    199|
+    200|   it('production constraints reject invalid owners and duplicate provi…
+       |   ^
+    201|     for (const value of ['NULL', '0', '2']) {
+    202|       expect(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 100 passed (101)
+      Tests  1 failed | 926 passed (927)
+   Start at  02:26:22
+   Duration  1002.79s (tests 97%, import 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.
