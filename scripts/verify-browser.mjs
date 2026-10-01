@@ -268,7 +268,8 @@ try {
     browser.stdin.end(
       `const config = ${JSON.stringify(browserConfig)};\n${source}`,
     );
-    const timeout = setTimeout(interrupt, 300000);
+    // Full screenshot matrices can exceed five minutes; behavior waits stay bounded.
+    const timeout = setTimeout(interrupt, 600000);
     try {
       const [code] = await closed;
       assert.equal(code, 0, `Ego browser verification failed (${logName})`);
