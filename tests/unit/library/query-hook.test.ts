@@ -274,3 +274,50 @@ it('removes confirmed invalid IDs from all same-query cached pages without refet
   expect(fetcher).not.toHaveBeenCalled();
   client.clear();
 });
+
+it.each(['pages', 'more'] as const)(
+  'keeps other tag combinations in %s history when selection is invalidated',
+  (mode) => {
+    context.search = 'tagId=a&pageSize=20&page=1';
+    const filters = parseLibraryLocation(
+      new URLSearchParams(context.search),
+    ).filters;
+    const client = new QueryClient();
+    const current = libraryListKey(filters, mode, 1);
+    const broader = libraryListKey(
+      parseLibraryLocation(new URLSearchParams('tagId=a&tagId=b&pageSize=20'))
+        .filters,
+      mode,
+      1,
+    );
+    const cached =
+      mode === 'pages'
+        ? page(['image-with-a-and-b'], null)
+        : {
+            pages: [page(['image-with-a-and-b'], 'next')],
+            pageParams: [null],
+          };
+    client.setQueryData(current, cached);
+    client.setQueryData(broader, cached, { updatedAt: 123 });
+    const fetcher = vi.fn();
+    vi.stubGlobal('fetch', fetcher);
+
+    // Removing tag a invalidates this selection, but tag b still matches history.
+    mount(client).onSelectionInvalid(['image-with-a-and-b']);
+    const updated = client.getQueryData<
+      LibraryPage | InfiniteData<LibraryPage>
+    >(current)!;
+    expect('pages' in updated ? updated.pages[0].items : updated.items).toEqual(
+      [],
+    );
+    expect(client.getQueryData(broader)).toEqual(cached);
+    expect(client.getQueryState(broader)!.dataUpdatedAt).toBe(123);
+    context.search = 'tagId=a&tagId=b&pageSize=20';
+    if (mode === 'pages') context.search += '&page=1';
+    expect(mount(client).items.map((item) => item.id)).toEqual([
+      'image-with-a-and-b',
+    ]);
+    expect(fetcher).not.toHaveBeenCalled();
+    client.clear();
+  },
+);

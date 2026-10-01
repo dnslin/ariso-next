@@ -11,6 +11,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 import { parseAsNativeArrayOf, parseAsString, useQueryStates } from 'nuqs';
 import {
+  hashKey,
   useInfiniteQuery,
   useQuery,
   type QueryClient,
@@ -284,6 +285,7 @@ export function useLibraryQuery(
   }
   function onSelectionInvalid(ids: string[]) {
     if (!ids.length || !filters) return;
+    const filterKey = hashKey([filters]);
     const invalid = new Set(ids);
     const prune = (page: LibraryPage) => ({
       ...page,
@@ -291,7 +293,8 @@ export function useLibraryQuery(
     });
     for (const mode of ['pages', 'more'] as const) {
       for (const cached of client.getQueryCache().findAll({
-        queryKey: ['library', mode, filters],
+        queryKey: ['library', mode],
+        predicate: (cached) => hashKey([cached.queryKey[2]]) === filterKey,
       })) {
         const data = cached.state.data as
           LibraryPage | InfiniteData<LibraryPage> | undefined;
