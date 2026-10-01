@@ -1,0 +1,33 @@
+Already up to date
+Done in 44ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr223-build-YQSSUr/ariso
+
+ ❯ |integration| tests/integration/runtime/build.test.ts (1 test | 1 failed) 13ms
+   × 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/build.test.ts > 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码
+ExecaError: Command failed with exit code 128: git ls-files --cached --others --exclude-standard -z
+
+fatal: not a git repository (or any of the parent directories): .git
+ ❯ getFinalError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/final-error.js:6:9
+ ❯ makeError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/result.js:108:16
+ ❯ getAsyncResult node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:209:4
+ ❯ handlePromise node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:192:17
+ ❯ tests/integration/runtime/build.test.ts:14:24
+     12|   try {
+     13|     // Include current edits, but never local environment files or gen…
+     14|     const { stdout } = await execa('git', [
+       |                        ^
+     15|       'ls-files',
+     16|       '--cached',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  16:41:02
+   Duration  141ms (import 65%, transform 17%, tests 16%, worker 2%)

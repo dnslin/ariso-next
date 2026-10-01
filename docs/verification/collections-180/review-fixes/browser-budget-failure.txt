@@ -1,0 +1,480 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs
+$ next build tests/experiments/shell --webpack
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.mjs took 12ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.7s
+  Running TypeScript ...
+  Finished TypeScript in 2.5s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/2) ...
+✓ Generating static pages using 4 workers (2/2) in 363ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /[[...path]]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+$ next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.mjs took 10ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 545ms
+  Running TypeScript ...
+  Finished TypeScript in 927ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/6) ...
+  Generating static pages using 7 workers (1/6)
+  Generating static pages using 7 workers (2/6)
+  Generating static pages using 7 workers (4/6)
+✓ Generating static pages using 7 workers (6/6) in 300ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /library
+├ ƒ /library/data
+└ ƒ /probe
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+{ taskSpaceId: 12 }
+[p1 "Ariso" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    anchor [ref=334, loc=href:/, url=http://ariso-60757.localhost:60757/]
+      svg_root
+      text "返回首页"
+    container
+      heading
+        text "页面不存在"
+      paragraph
+        text "此地址尚未开放，或页面已移除。"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=335, url=http://127.0.0.1:60768/]
+          text "Ariso"
+        button "收起侧栏" [ref=336, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      paragraph
+        text "布局验证"
+      container "后台导航"
+        anchor "仪表盘" [ref=337, loc=css:a[aria-label="仪表盘"], url=http://127.0.0.1:60768/dashboard]
+          text "仪表盘"
+        anchor "图片" [ref=338, loc=css:a[aria-label="图片"], url=http://127.0.0.1:60768/images]
+          text "图片"
+        anchor "设置" [ref=339, loc=css:a[aria-label="设置"], url=http://127.0.0.1:60768/settings]
+          text "设置"
+      text "验证用户"
+    container
+      container [ref=340]
+        container "验证内容"
+          heading
+            text "dashboard"
+          container
+            button [ref=341]
+              text "浅色"
+            button [ref=342]
+              text "深色"
+          container
+            container
+              text "验证字段"
+              text "1"
+            textbox "验证字段 1" [ref=343]
+          container
+            container
+              text "验证字段"
+              text "2"
+            textbox "验证字段 2" [ref=344]
+          container
+            container
+              text "验证字段"
+              text "3"
+            textbox "验证字段 3" [ref=345]
+          container
+            container
+              text "验证字段"
+              text "4"
+            textbox "验证字段 4" [ref=346]
+          container
+            container
+              text "验证字段"
+              text "5"
+            textbox "验证字段 5" [ref=347]
+          container
+            container
+              text "验证字段"
+              text "6"
+            textbox "验证字段 6" [ref=348]
+          container
+            container
+              text "验证字段"
+              text "7"
+            textbox "验证字段 7" [ref=349]
+          container
+            container
+              text "验证字段"
+              text "8"
+            textbox "验证字段 8" [ref=350]
+          container
+            container
+              text "验证字段"
+              text "9"
+            textbox "验证字段 9" [ref=351]
+      button [ref=352]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=353, url=http://127.0.0.1:60768/]
+          text "Ariso"
+        button "收起侧栏" [ref=354, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      paragraph
+        text "布局验证"
+      container "后台导航"
+        anchor "仪表盘" [ref=355, loc=css:a[aria-label="仪表盘"], url=http://127.0.0.1:60768/dashboard]
+          text "仪表盘"
+        anchor "图片" [ref=356, loc=css:a[aria-label="图片"], url=http://127.0.0.1:60768/images]
+          text "图片"
+        anchor "设置" [ref=357, loc=css:a[aria-label="设置"], url=http://127.0.0.1:60768/settings]
+          text "设置"
+      text "验证用户"
+    container
+      container [ref=358]
+        tablist "设置分类"
+          tab [ref=359]
+            text "基本设置"
+          tab [ref=360]
+            text "存储设置"
+        tabpanel "基本设置"
+          container "验证内容"
+            heading
+              text "settings/basic"
+            container
+              button [ref=361]
+                text "浅色"
+              button [ref=362]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=363]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=364]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=365]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=366]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=367]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=368]
+            container
+              container
+                text "验证字段"
+                text "7"
+              textbox "验证字段 7" [ref=369]
+            container
+              text "验证字段"
+              text "8"
+      button [ref=370]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container
+      anchor "Ariso 首页" [ref=371, url=http://127.0.0.1:60768/]
+        text "Ariso"
+      button [ref=372]
+        text "菜单"
+    container
+      container [ref=373]
+        container
+          text "设置分类"
+          button "存储设置 设置分类" [ref=374]
+            text "存储设置"
+            svg_root
+        tabpanel "存储设置"
+          container "验证内容"
+            heading
+              text "settings/storage"
+            container
+              button [ref=375]
+                text "浅色"
+              button [ref=376]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=377]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=378]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=379]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=380]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=381]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=382]
+      button [ref=383]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    anchor "Ariso 首页" [ref=371, url=http://127.0.0.1:60768/]
+      text "Ariso"
+    button [ref=372]
+      text "菜单"
+  container
+    text "设置分类"
+    button "存储设置 设置分类" [ref=374]
+      text "存储设置"
+      svg_root
+    container "验证内容"
+      heading
+        text "settings/storage"
+      button [ref=375]
+        text "浅色"
+      button [ref=376]
+        text "深色"
+      container
+        text "验证字段"
+        text "1"
+      textbox "验证字段 1" [ref=377]
+      container
+        text "验证字段"
+        text "2"
+      textbox "验证字段 2" [ref=378]
+      container
+        text "验证字段"
+        text "3"
+      textbox "验证字段 3" [ref=379]
+      container
+        text "验证字段"
+        text "4"
+      textbox "验证字段 4" [ref=380]
+      container
+        text "验证字段"
+        text "5"
+      textbox "验证字段 5" [ref=381]
+      container
+        text "验证字段"
+        text "6"
+      textbox "验证字段 6" [ref=382]
+  button [ref=383]
+    text "保存验证设置"
+  dialog "导航菜单" [ref=384, loc=role:dialog[name="导航菜单"]]
+    container
+      heading
+        text "Ariso"
+      button [ref=385]
+        text "关闭"
+    paragraph
+      text "布局验证"
+    container "后台导航"
+      anchor "仪表盘" [ref=386, url=http://127.0.0.1:60768/dashboard]
+        text "仪表盘"
+      anchor "图片" [ref=387, url=http://127.0.0.1:60768/images]
+        text "图片"
+      anchor "设置" [ref=388, url=http://127.0.0.1:60768/settings]
+        text "设置"
+    text "验证用户"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container
+      anchor "Ariso 首页" [ref=389, url=http://127.0.0.1:60768/]
+        text "Ariso"
+      button [ref=390]
+        text "菜单"
+    container
+      container [ref=391]
+        container
+          text "设置分类"
+          button "存储设置 设置分类" [ref=392]
+            text "存储设置"
+            svg_root
+        tabpanel "存储设置"
+          container "验证内容"
+            heading
+              text "settings/storage"
+            container
+              button [ref=393]
+                text "浅色"
+              button [ref=394]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=395]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=396]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=397]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=398]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=399]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=400]
+      button [ref=401]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "PR 223 修复回归"(12): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    anchor "Ariso 首页" [ref=389, url=http://127.0.0.1:60768/]
+      text "Ariso"
+    button [ref=390]
+      text "菜单"
+  container
+    text "设置分类"
+    button "存储设置 设置分类" [ref=392]
+      text "存储设置"
+      svg_root
+    container "验证内容"
+      heading
+        text "settings/storage"
+      button [ref=393]
+        text "浅色"
+      button [ref=394]
+        text "深色"
+      container
+        text "验证字段"
+        text "1"
+      textbox "验证字段 1" [ref=395]
+      container
+        text "验证字段"
+        text "2"
+      textbox "验证字段 2" [ref=396]
+      container
+        text "验证字段"
+        text "3"
+      textbox "验证字段 3" [ref=397]
+      container
+        text "验证字段"
+        text "4"
+      textbox "验证字段 4" [ref=398]
+      container
+        text "验证字段"
+        text "5"
+      textbox "验证字段 5" [ref=399]
+      container
+        text "验证字段"
+        text "6"
+      textbox "验证字段 6" [ref=400]
+  button [ref=401]
+    text "保存验证设置"
+  dialog "设置分类" [ref=402]
+    listbox "设置分类" [ref=403]
+      listboxoption [ref=404]
+        text "基本设置"
+        svg_root
+      listboxoption [ref=405]
+        text "存储设置"
+        svg_root
+
+{ taskSpaceId: 12, status: 'passed', layouts: [ { width: 390, scrollWidth: 390, headingVisible: true }, { width: 1440, scrollWidth: 1440, headingVisible: true } ], errorCollectorSelfTest: { status: 'passed', expectedError: { url: 'http://ariso-60757.localhost:60757/', kind: 'console.error', message: 'Ariso error collector self-test 1790845763739' } }, page: { title: 'Ariso', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', lang: 'zh-CN', text: 'Ariso\n\n轻装简从\n\n首次使用，请完成站点初始化。\n\n开始初始化\n\n开源 · 极简 · 图片托管', images: [] }, homeStatus: 200, privateFixtures: [ { path: '/verification/fixtures/sample.jpg', status: 404 }, { path: '/verification/fixtures/sample.png', status: 404 }, { path: '/sample.jpg', status: 404 }, { path: '/sample.png', status: 404 } ], health: { status: 200, cacheControl: 'no-store', body: '{"status":"ok"}' }, resources: [ { url: '/runtime.svg', status: 200, contentType: 'image/svg+xml' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/14l_ixx6vz7c5.css', status: 200, contentType: 'text/css; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/0dx0dtfnwkh_u.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/0p2bh8hmk8lh_.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/15jc3rrhfxky-.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/turbopack-17gxbe1qiifwv.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/03q8-3f9r-2pa.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/3cowe5x6pa_a1.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/06700mj1i9b-j.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/01nnyx70lpbc_.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/2tr0u6hr9mlcr.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/3eb67_wvhztof.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/0uia683lsc7vl.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/0cz1d0mv5g_q7.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-60757.localhost:60757/_next/static/chunks/2opzjt54cdx8o.js', status: 200, contentType: 'application/javascript; charset=UTF-8' } ], errors: [], recovery: { status: 'passed', expectedErrors: [ { url: 'http://ariso-60757.localhost:60757/', kind: 'console.error', message: 'Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.' } ], check: 'Database read failure → restore database → click retry → home recovered without reload' } }
+
+{ status: 'passed', width: 1440, phase: 'setup', checks: [ 'Reload before final submission leaves setup open and clears in-memory secrets', 'A deliberately lost real setup response requires status verification before any retry', 'Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner', 'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers', 'Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback', 'Owner session does not authenticate the second hostname browser page', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [ { name: 'setup', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'unknown', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_24_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_24_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_24_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria7878801177-_r_24_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'login', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } } ], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], focusStyles: { innerBorder: '0px', innerOutline: 'none', groupOutline: 'none', groupShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px', buttonRadius: '8px' }, settings: { site_settings: [ { id: 1, public_url: 'http://ariso-60757.localhost:60757', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790845819576 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790845819576, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: '0b40957c-bebe-4209-a614-5f877287ee1a' } ], storage_configs: [ { id: '0b40957c-bebe-4209-a614-5f877287ee1a', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790845800366, updated_at: 1790845800366, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, loginFailure: { status: 500, body: '' }, activeCheck: 'credential-logout', errors: [] }
+
+{ status: 'passed', width: 1440, phase: 'restart', checks: [ 'Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], settings: { site_settings: [ { id: 1, public_url: 'http://ariso-60757.localhost:60757', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790845819576 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790845819576, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: '0b40957c-bebe-4209-a614-5f877287ee1a' } ], storage_configs: [ { id: '0b40957c-bebe-4209-a614-5f877287ee1a', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790845800366, updated_at: 1790845800366, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, activeCheck: 'login-failures', sessionChecks: [ { check: 'Real HTTP 429 feedback disables login until the retry header window expires', retrySeconds: 10 }, { check: 'Aged real session renews on window focus and browser cookie expiry advances', beforeExpiry: 1791450641.619297, afterExpiry: 1791450642.659605 }, { check: 'Expired real session redirects from the visible upload page to the expiry notice' }, { check: 'Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry' } ], loginFailureChecks: [ { scenario: 'HTML gateway error', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 502）', loginStatuses: [] }, { scenario: 'malformed error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 500）', loginStatuses: [] }, { scenario: 'null error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'array error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'non-string error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'stable server error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）', loginStatuses: [] }, { scenario: 'credential error code', injection: 'browser fetch boundary', message: '邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）', loginStatuses: [] }, { scenario: 'login request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [] }, { scenario: 'empty rate-limit response', injection: 'browser fetch boundary', message: '登录请求过于频繁，请等待服务允许后重试。（HTTP 429）', loginStatuses: [] }, { scenario: 'session HTTP failure', injection: 'browser fetch boundary', message: '无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）', loginStatuses: [ 200 ] }, { scenario: 'invalid session response', injection: 'browser fetch boundary', message: '登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）', loginStatuses: [ 429, 200 ] }, { scenario: 'unconfirmed session', injection: 'browser fetch boundary', message: '尚未确认登录会话，请重试。', loginStatuses: [ 200 ] }, { scenario: 'session request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [ 200 ] }, { scenario: 'Deferred React commit and repeated identical login feedback', injection: 'browser fetch boundary and controlled MessagePort scheduling', attempts: [ { attempt: 1, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true }, { attempt: 2, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true } ] } ], errors: [] }
+
+{ status: 'running', width: 1440, height: 1080, theme: 'light', checks: [ 'M2 login honors the real preceding identity rate-limit countdown before retrying.', '1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', 'A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.', 'Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.', 'Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.' ], core: { analyticsBefore: [], images: [ { id: '50fed696-3f58-4084-abf2-77e1eea602a2', format: 'jpg', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-60757.localhost:60757/i/50fed696-3f58-4084-abf2-77e1eea602a2?type=original' }, { id: 'a52c811e-485e-46d5-961c-a57348fd1e87', format: 'jpg', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-60757.localhost:60757/i/a52c811e-485e-46d5-961c-a57348fd1e87?type=original' }, { id: '73e276d5-7afb-45a0-b354-fabccb4668a4', format: 'png', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-60757.localhost:60757/i/73e276d5-7afb-45a0-b354-fabccb4668a4?type=original' }, { id: '7eed18cd-8a79-4c82-be85-2f3e2256b40e', format: 'png', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-60757.localhost:60757/i/7eed18cd-8a79-4c82-be85-2f3e2256b40e?type=original' }, { id: '39b94273-9d40-4221-96dd-5a5e3a08f48d', format: 'png', visibility: 'public', expectedOriginalCount: 0 } ] }, recovery: { imageId: '85f2710c-35e3-47c9-9afd-16c5453bcbc4', job: { id: '020448ea-53a7-439d-a1cb-8a727a036b41', status: 'running', snapshot: '{"compressionEnabled":true,"outputFormat":"webp","quality":82,"maxEdge":null,"jpegBackground":"#FFFFFF","watermarkMode":"off","watermarkText":"","watermarkFont":"chinese","watermarkFontSize":3,"watermarkColor":"#FFFFFF","watermarkStrokeColor":"#000000","watermarkStrokeWidth":0,"watermarkOpacity":50,"watermarkPosition":"bottom-right","watermarkMargin":2,"watermarkWidth":20,"watermarkAsset":null,"defaultVisibility":"public"}', expected_versions: '["compressed","thumbnail"]' }, original: { id: '3b37e6c8-ec73-4408-b728-169fb0582a93', key: 'original/85f2710c-35e3-47c9-9afd-16c5453bcbc4.png', storage_id: '0b40957c-bebe-4209-a614-5f877287ee1a', local_path: 'default' } } }
+
+{ status: 'passed', width: 1440, height: 1080, theme: 'light', checks: [ 'M2 login honors the real preceding identity rate-limit countdown before retrying.', '1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', 'A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.', 'Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.', 'Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.', 'After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.', 'Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty.' ], core: { analyticsBefore: [], images: [ { id: '50fed696-3f58-4084-abf2-77e1eea602a2', format: 'jpg', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-60757.localhost:60757/i/50fed696-3f58-4084-abf2-77e1eea602a2?type=original' }, { id: 'a52c811e-485e-46d5-961c-a57348fd1e87', format: 'jpg', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-60757.localhost:60757/i/a52c811e-485e-46d5-961c-a57348fd1e87?type=original' }, { id: '73e276d5-7afb-45a0-b354-fabccb4668a4', format: 'png', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-60757.localhost:60757/i/73e276d5-7afb-45a0-b354-fabccb4668a4?type=original' }, { id: '7eed18cd-8a79-4c82-be85-2f3e2256b40e', format: 'png', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-60757.localhost:60757/i/7eed18cd-8a79-4c82-be85-2f3e2256b40e?type=original' }, { id: '39b94273-9d40-4221-96dd-5a5e3a08f48d', format: 'png', visibility: 'public', expectedOriginalCount: 0 } ] }, recovery: { imageId: '85f2710c-35e3-47c9-9afd-16c5453bcbc4', job: { id: '020448ea-53a7-439d-a1cb-8a727a036b41', status: 'running', snapshot: '{"compressionEnabled":true,"outputFormat":"webp","quality":82,"maxEdge":null,"jpegBackground":"#FFFFFF","watermarkMode":"off","watermarkText":"","watermarkFont":"chinese","watermarkFontSize":3,"watermarkColor":"#FFFFFF","watermarkStrokeColor":"#000000","watermarkStrokeWidth":0,"watermarkOpacity":50,"watermarkPosition":"bottom-right","watermarkMargin":2,"watermarkWidth":20,"watermarkAsset":null,"defaultVisibility":"public"}', expected_versions: '["compressed","thumbnail"]' }, original: { id: '3b37e6c8-ec73-4408-b728-169fb0582a93', key: 'original/85f2710c-35e3-47c9-9afd-16c5453bcbc4.png', storage_id: '0b40957c-bebe-4209-a614-5f877287ee1a', local_path: 'default' }, versions: [ { kind: 'compressed', count: 1 }, { kind: 'original', count: 1 }, { kind: 'thumbnail', count: 1 } ] } }
+
+{ status: 'passed', width: 1920, height: 1080, checks: [ 'Idle upload cloud animates continuously without hover; reduced motion disables its animation.', 'Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes.', 'Original/compressed/thumbnail share stable stage geometry; pausing the real original response displays Skeleton until actual decode, without layout shift.', 'Real Toolbar ArrowRight/ArrowLeft focus navigation follows visible actions on desktop and mobile.', 'Real copy success produces an expiring overlay Toast without layout shift; 44px copy/detail CloseButtons close the layers and copy-close restores its trigger focus.' ], images: [ { id: '0ba3dca6-9415-461c-af72-843c350aed79', originalName: 'sample.jpg' }, { id: 'e5e59513-bd0e-4857-a24d-782d13bb85e9', originalName: 'sample.png' }, { id: '90a192ff-a2eb-44d3-9ba1-c354452f2013', originalName: 'interaction-1920-added.png' } ], composition: { x: 264, y: 123, width: 1624, height: 430 }, queue: { x: 264, y: 123, width: 1240, height: 430 }, submissionId: '33d04468-6b25-422f-b13b-2f9d003bc71f', stage: { x: 464, y: 360, width: 547.125, height: 299 }, toastLayer: { hitToast: true, hitTag: 'SPAN', hitSlot: 'toast-title', regionZ: 100001, backdropZ: [ 100000, 100000 ] } }
+
+{ status: 'passed', width: 1440, height: 1000, checks: [ 'Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.', 'Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.', 'Hard reload still warns for unsent work and starts a fresh document with no persisted queue.', 'Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.', 'A real upload-result 401 independently resets a mixed completed/unsent queue, revokes its Blob and navigates without beforeunload; the separate session check response is held.' ], background: { network: { submissions: [ { id: '98325772-b2a5-43f7-a6ef-32b94c861f60', storageId: '0b40957c-bebe-4209-a614-5f877287ee1a', visibility: 'private', maxFileBytes: 52428800, sessions: [ { id: 'f80c147e-72bc-430d-9ab3-4e01d75699e1', queueItemId: '9762e01a-131d-4582-a6ba-df0b0fff9d84', groupIndex: 0, originalName: 'sample.jpg', declaredSize: 638, state: 'queued', imageId: null, jobId: null, byteSize: null, errorCode: null, error: null, cleanupStatus: 'none', image: null, job: null } ] } ], reads: [ { pathname: '/library', body: { id: '98325772-b2a5-43f7-a6ef-32b94c861f60', storageId: '0b40957c-bebe-4209-a614-5f877287ee1a', visibility: 'private', maxFileBytes: 52428800, sessions: [ [Object] ] } } ], heldReadPaths: [ '/upload' ] }, returned: { document: 'a8306deb-73fd-4dd8-87a6-f6a467bab713', rows: [ { id: '9762e01a-131d-4582-a6ba-df0b0fff9d84', image: 'e196f76e-694c-4943-9716-b89aa6a31711' } ] }, persisted: [ { queue_item_id: '9762e01a-131d-4582-a6ba-df0b0fff9d84', image_id: 'e196f76e-694c-4943-9716-b89aa6a31711', state: 'accepted' } ] }, hardRefresh: { document: 'f586f185-2813-4054-930a-759815ee8849', trace: { revoked: [ 'blob:http://ariso-60757.localhost:60757/6c281158-496a-43b6-b255-755433ee9326' ], unloads: [ { prevented: true, document: 'a8306deb-73fd-4dd8-87a6-f6a467bab713' } ] } }, logout: { revoked: [ 'blob:http://ariso-60757.localhost:60757/6c281158-496a-43b6-b255-755433ee9326', 'blob:http://ariso-60757.localhost:60757/6a18241a-81af-4b12-9134-fd4f3563fd07' ], unloads: [ { prevented: true, document: 'a8306deb-73fd-4dd8-87a6-f6a467bab713' } ] }, expiry: { revoked: [ 'blob:http://ariso-60757.localhost:60757/6c281158-496a-43b6-b255-755433ee9326', 'blob:http://ariso-60757.localhost:60757/6a18241a-81af-4b12-9134-fd4f3563fd07', 'blob:http://ariso-60757.localhost:60757/31be197c-54f9-4d6b-b072-9b623344ec2e' ], unloads: [ { prevented: true, document: 'a8306deb-73fd-4dd8-87a6-f6a467bab713' } ] }, result401: { imageId: 'c6078d95-896e-408c-879b-59ca3b5760f1', reads: [ { path: '/api/images/c6078d95-896e-408c-879b-59ca3b5760f1', status: 401 } ], sessionChecksHeld: 3, beforeUnload: [ false ] } }
+
+{ status: 'passed', width: 390, phase: 'setup', checks: [ 'Reload before final submission leaves setup open and clears in-memory secrets', 'Unavailable browser timezone recommendation requires an explicit selection', 'Unsent setup and failed status check remain unknown; real SETUP_REQUIRED unlocks retry without losing fields', '390×400 shortened viewport can scroll and focus the submit button (not a physical soft-keyboard test)', 'Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner', 'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers', 'Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback', 'Owner session does not authenticate the second hostname browser page', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [ { name: 'setup', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 268, height: 46 }, { name: 'email', width: 268, height: 46 }, { name: 'password', width: 220, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 220, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 724 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 298, height: 46 }, { name: 'email', width: 298, height: 46 }, { name: 'password', width: 250, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 250, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 724 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 338, height: 46 }, { name: 'email', width: 338, height: 46 }, { name: 'password', width: 290, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 290, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 703 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 268, height: 46 }, { name: 'email', width: 268, height: 46 }, { name: 'password', width: 220, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 220, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 724 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 298, height: 46 }, { name: 'email', width: 298, height: 46 }, { name: 'password', width: 250, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 250, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 724 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 338, height: 46 }, { name: 'email', width: 338, height: 46 }, { name: 'password', width: 290, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 290, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 703 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 268, height: 46 }, { name: 'timeZone', width: 270, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 298, height: 46 }, { name: 'timeZone', width: 300, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 338, height: 46 }, { name: 'timeZone', width: 340, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 268, height: 46 }, { name: 'timeZone', width: 270, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 298, height: 46 }, { name: 'timeZone', width: 300, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 338, height: 46 }, { name: 'timeZone', width: 340, height: 48 }, { name: '选择时区', width: 44, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 }, { name: 'react-aria8650701881-_r_d_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 629 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 268, height: 46 }, { name: 'email', width: 268, height: 46 }, { name: 'password', width: 220, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 220, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 738 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 298, height: 46 }, { name: 'email', width: 298, height: 46 }, { name: 'password', width: 250, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 250, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 722 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 338, height: 46 }, { name: 'email', width: 338, height: 46 }, { name: 'password', width: 290, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 290, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 701 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 268, height: 46 }, { name: 'email', width: 268, height: 46 }, { name: 'password', width: 220, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 220, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 738 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 298, height: 46 }, { name: 'email', width: 298, height: 46 }, { name: 'password', width: 250, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 250, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 722 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 338, height: 46 }, { name: 'email', width: 338, height: 46 }, { name: 'password', width: 290, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 290, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 701 }, brand: { top: 76, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'unknown', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 270, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 503 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 300, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 503 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 340, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 482 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 270, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 270, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 312, radius: '24px' }, group: { top: 76, height: 503 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 300, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 300, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 342, radius: '24px' }, group: { top: 76, height: 503 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 340, height: 48 }, { name: 'react-aria8650701881-_r_24_', width: 340, height: 48 } ], geometry: { path: '/setup', card: { left: 24, top: 168, width: 382, radius: '24px' }, group: { top: 76, height: 482 }, brand: { top: 76, height: 72 }, fields: [] } }, { name: 'login', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 256, height: 44 }, { name: 'password', width: 208, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 294, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 328, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 286, height: 44 }, { name: 'password', width: 238, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 324, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 358, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 326, height: 44 }, { name: 'password', width: 278, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 364, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 398, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 256, height: 44 }, { name: 'password', width: 208, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 294, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 328, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 286, height: 44 }, { name: 'password', width: 238, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 324, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 358, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 326, height: 44 }, { name: 'password', width: 278, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 364, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 398, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 256, height: 44 }, { name: 'password', width: 208, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 294, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 328, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 286, height: 44 }, { name: 'password', width: 238, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 324, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 358, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 326, height: 44 }, { name: 'password', width: 278, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 364, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 398, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 360, scrollWidth: 360, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 256, height: 44 }, { name: 'password', width: 208, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 294, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 328, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 390, scrollWidth: 390, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 286, height: 44 }, { name: 'password', width: 238, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 324, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 358, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 430, scrollWidth: 430, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 326, height: 44 }, { name: 'password', width: 278, height: 44 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 364, height: 44 } ], geometry: { path: '/login', card: { left: 16, top: 150, width: 398, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } } ], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], focusStyles: { innerBorder: '0px', innerOutline: 'none', groupOutline: 'none', groupShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px', buttonRadius: '8px' }, settings: { site_settings: [ { id: 1, public_url: 'http://ariso-60757.localhost:60757', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790846071936 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790846071937, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: 'b937b1f1-a4df-4634-8151-ea7824aae326' } ], storage_configs: [ { id: 'b937b1f1-a4df-4634-8151-ea7824aae326', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790846025203, updated_at: 1790846025203, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, loginFailure: { status: 500, body: '' }, activeCheck: 'credential-logout', errors: [] }
+
+{ status: 'passed', width: 390, phase: 'restart', checks: [ 'Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], settings: { site_settings: [ { id: 1, public_url: 'http://ariso-60757.localhost:60757', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790846071936 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790846071937, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: 'b937b1f1-a4df-4634-8151-ea7824aae326' } ], storage_configs: [ { id: 'b937b1f1-a4df-4634-8151-ea7824aae326', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790846025203, updated_at: 1790846025203, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, activeCheck: 'login-failures', sessionChecks: [ { check: 'Real HTTP 429 feedback disables login until the retry header window expires', retrySeconds: 10 }, { check: 'Aged real session renews on window focus and browser cookie expiry advances', beforeExpiry: 1791450913.933488, afterExpiry: 1791450916.637963 }, { check: 'Expired real session redirects from the visible upload page to the expiry notice' }, { check: 'Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry' } ], loginFailureChecks: [ { scenario: 'HTML gateway error', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 502）', loginStatuses: [] }, { scenario: 'malformed error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 500）', loginStatuses: [] }, { scenario: 'null error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'array error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'non-string error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'stable server error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）', loginStatuses: [] }, { scenario: 'credential error code', injection: 'browser fetch boundary', message: '邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）', loginStatuses: [] }, { scenario: 'login request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [] }, { scenario: 'empty rate-limit response', injection: 'browser fetch boundary', message: '登录请求过于频繁，请等待服务允许后重试。（HTTP 429）', loginStatuses: [] }, { scenario: 'session HTTP failure', injection: 'browser fetch boundary', message: '无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）', loginStatuses: [ 200 ] }, { scenario: 'invalid session response', injection: 'browser fetch boundary', message: '登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）', loginStatuses: [ 200 ] }, { scenario: 'unconfirmed session', injection: 'browser fetch boundary', message: '尚未确认登录会话，请重试。', loginStatuses: [ 200 ] }, { scenario: 'session request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [ 429, 200 ] }, { scenario: 'Deferred React commit and repeated identical login feedback', injection: 'browser fetch boundary and controlled MessagePort scheduling', attempts: [ { attempt: 1, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true }, { attempt: 2, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true } ] } ], errors: [] }
+
+{ storageCors: 'passed', report: '/Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/test-results/pr223-fix/browser/storage-cors.json' }
+
+AbortError: The operation was aborted
+    at AbortSignal.abortListener (node:events:1025:14)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:776:26)
+    at runAbort (node:internal/abort_controller:547:10)
+    at abortSignal (node:internal/abort_controller:518:3)
+    at AbortController.abort (node:internal/abort_controller:566:5)
+    at Timeout.interrupt (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr223-build-YQSSUr/ariso-final/scripts/verify-browser.mjs:103:14)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+Browser report: /Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/test-results/pr223-fix/browser
+[ELIFECYCLE] Command failed with exit code 1.

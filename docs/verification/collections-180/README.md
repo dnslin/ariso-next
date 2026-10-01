@@ -94,3 +94,37 @@
 已使用 `gh pr view 223 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,mergeable,statusCheckRollup` 与 `gh pr checks 223` 实际回读：OPEN、isDraft=true、base=main、MERGEABLE，statusCheckRollup=[]，没有远端检查。没有把空列表记作 CI 通过，也不等待不存在的工作流；日常 PR 依据上述本地适用检查。没有合并、关闭 Issue、发布镜像或部署。
 
 首次推送因系统钥匙串凭据读取阻塞而停止；本机代理连接检查返回 HTTP 200。后续仅在当前命令设置用户提供的代理及保留 localhost 的 NO_PROXY，并用 `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push --set-upstream origin codex/issue-180-album-cover` 成功推送。全局代理和 Git 凭据配置未改。Ego 空间 7 已结束，本任务临时预览及测试进程已停止，证据保留。
+
+## PR #223 双视角审计返修（2026-10-01）
+
+用户要求分别以 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review` 复审后，本轮只处理两项 P2：打开封面选择时存在两个外壳、正文目标和会话观察器；封面浏览器脚本混合几何、夹具和业务职责，保存助手重复覆盖成功截图。本节是本轮返修的最新记录，上方初轮实施结果和历史失败记录保留。
+
+修复前实际复现：[双外壳记录](./review-fixes/before/double-shell.json)及[真实页面](./review-fixes/before/double-shell.png)显示两个外壳和 main ID，收起后打开重新展开，skip link 指向隐藏正文且焦点仍在链接；[截图覆盖记录](./review-fixes/before/album-cover-screenshot-overwrite.json)显示 20 条保存成功记录只有 4 个文件路径。原始失败不是仅凭源码推测。
+
+`AlbumCoverPicker` 持续挂载并按 isOpen 启停请求，向同一个 `LibraryScreen` 提供正文和底栏。后者只保留一个 OwnerShell，隐藏原业务正文并保留查询、选择及布局；打开前保存正文滚动，关闭后恢复并回焦。关闭清理请求和查询缓存，重新打开复位页码、选择和结果；旧请求 finally 不能清掉新请求状态。API、封面资格、生命周期和数据结构未改。
+
+第一版单壳代表验证进一步发现返回滚动 640→0 与 skip 未聚焦，见[第一版探查](./review-fixes/representative-initial.json)。Gallery 现只测量可见的非零宽度，保留隐藏前有效布局；共享 AdminShell 用实例 main ref 处理实际聚焦。[最终代表记录](./review-fixes/representative-final.json)实测单壳、同一 main、侧栏修改保留、skip 聚焦可见正文、640→640 及“设置封面”回焦通过。公共修改的消费范围为上传、图库、相册列表/内容、回收站及已实现存储配置页。完整浏览器加入上传、图库、相册列表、回收站1440/390/768的真实键盘skip回归，封面workspace另检查内容/选择切换；存储配置由既有CORS套件覆盖。
+
+通用几何检查现在由相册和封面脚本共同使用，夹具创建单独承担实际数据准备。layouts 不再根据证据名称切换业务检查，saved 不再截图；手动/自动成功各使用明确独立名称，并在捕获前断言路径唯一。新增 workspace 场景验证同一 DOM 外壳/正文、侧栏双向保留、选择与非零滚动、取消焦点、重开第 1 页及关闭后不再读取成员。主脚本 969 行；[断言保留核对](./review-fixes/before/static-preservation-audit.json)只是静态证据，实际行为仍由浏览器报告证明。
+
+本轮仍使用 macOS arm64、Node 24.18.1 / pnpm 11.19.0 和已有 Ego Lite。包命令沿用上方 PATH。为保留用户正在预览的服务、数据和旧构建，生产构建与完整浏览器从当前源文件副本 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr223-build-YQSSUr/ariso-final` 执行；构建副本复制真实worktree已冻结安装的依赖，实验 UI 在副本再执行冻结安装。Ego 使用修复专用空间 12，未接管人工空间 10。所有新场景使用独立临时 SQLite/存储。
+
+全量集成最初错误地在没有 Git 元数据的构建副本运行，runtime/build.test.ts 的 `git ls-files` 失败，见[失败诊断](./review-fixes/integration-mirror-failure.txt)。该轮中断退出 130，见[原日志](./review-fixes/integration.txt)，不计为通过。改回真实 worktree 后原命令完整重跑，101 个文件、928 项（含真实媒体工具）通过，用时 585.43 秒，见[最终集成](./review-fixes/integration-final.txt)。测试、超时和断言均未修改。
+
+最终生产构建退出 0，见[构建](./review-fixes/build-final.txt)；保留其他 CPU/平台 resvg 可选包追踪警告，不声称零告警。56 个文件、721 项单元通过，见[单元](./review-fixes/unit.txt)。[lint](./review-fixes/lint-final.txt)、[类型](./review-fixes/typecheck-final.txt)、[源代码格式](./review-fixes/format-source.txt)、[实验 UI 冻结安装](./review-fixes/ui-install.txt)和[实验 UI 类型](./review-fixes/ui-typecheck.txt)均实际通过。新增证据后的最终格式、完整浏览器和复审结果见下方。
+
+本轮第一次完整浏览器检查在图库既有 10 秒等待中退出 1，见[运行器](./review-fixes/browser-initial/runner.json)、[图库报告](./review-fixes/browser-initial/library.json)和[日志](./review-fixes/browser-initial/library.txt)。该轮仅有图库前两项行为检查，不能记为通过，也未据此确定产品缺陷。独立服务重放先遇到 Ego `Page.captureScreenshot` 超时，见[截图失败记录](./review-fixes/library-capture-failure.json)；在同一空间恢复页面渲染后，保留原业务断言与超时完整重跑图库，35 条行为检查及 220 条布局记录通过，见[专项报告](./review-fixes/library-focused.json)。定位脚本仅添加阶段和失败诊断，没有修改生产代码或弱化断言。缺失缩略图和手机菜单 Escape 焦点均通过；不能将这次结果写成已查明首次超时的唯一原因。完整套件另以新的独立数据库重跑，后续结果见下方。
+
+第二轮在图库第29条检查后被运行器5分钟总预算中断，见[失败运行器](./review-fixes/browser-budget-failure/runner.json)、[后续图库报告](./review-fixes/browser-budget-failure/library.json)。独立评审者读取文件时间戳确认：`storage-cors.log`→`library.log`恰为300.010秒；运行器先记录 `Timeout.interrupt` 并清理服务，10.808秒后图库才记录业务等待超时。因此不能据此断言迟到恢复业务失败，29条之后未计通过。已完整通过的专项从首图到报告为247.420秒；正式运行额外耗时触发外层上限。运行器仅把单脚本执行预算300000→600000ms，业务十秒等待、断言、退出码及失败清理不变，无新配置或静默重试。新的完整运行结果见下方。
+
+第三轮正式运行的图库35条行为/220条布局、全部query阶段及相册通过；封面在新增工作区回归的第六个状态失败，见[该轮运行器](./review-fixes/browser-selector-failure/runner.json)、[封面报告](./review-fixes/browser-selector-failure/album-cover.json)。原因是测试在picker正文内查“上一页”，分页实际位于独立公共底栏。已有单壳、同一main、侧栏双向保留、120px滚动与选择、重开1/2证明保留，但成功保存和后续场景未到达，不记通过。修正仅使用实际 `aria-label="封面图片分页"` 容器，再断言上一页按钮disabled数组严格等于 `[true]`，同时核对唯一和禁用；没有改产品布局、行为等待或弱化断言。先独立执行完整封面专项，再执行最终完整套件，结果见下方。
+
+修正后独立新服务中的原 `e2e/album-cover.mjs` 实际退出0，见[完整封面专项](./review-fixes/cover-focused/album-cover.json)。60条行为、130条布局、152次截图对应152个不同路径；8个workspace状态全部通过，关闭前后focus reads保持3→3。手动/自动成功各只捕获两主题×390/1440四张，独立设计评审已实际逐张复核这8张及workspace两张，没有新增必修偏差。仅复制评审实际查看的10张专项图片；全部最终状态截图将在完整运行后按其报告复制，不能把专项图片冒作最终轮截图。专项服务已停止，用户预览服务保持。第四轮完整套件结果见下方。
+
+最终 `EGO_TASK_SPACE=12 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr223-fix/browser pnpm run test:browser` 实际退出0，运行时间2026-10-01 17:54:40–18:22:16（Asia/Shanghai），见[完整运行器](./review-fixes/browser/runner.json)、[末尾UI运行器](./review-fixes/browser/ui/runner.json)和[实际日志](./review-fixes/browser-final.txt)。所有实际阶段通过，完整临时数据库/存储目录已清理；没有拼接专项来代替整套通过。运行器包含实际 `build:shell` 和实验UI构建。修复专用Ego空间12已finish，用户空间10与原人工预览未改。
+
+最终[封面报告](./review-fixes/browser/album-cover.json)60条行为、130条布局、152次截图对应152个不同文件；本轮手动/自动成功各四张明确命名，删除重复保存截图副作用，布局记录减少来自重复矩阵去除，原业务断言保留。八个workspace状态验证单一可见外壳/main、同一DOM节点、真实Enter聚焦、侧栏双向保留、原选择/120px滚动恢复、重开1/2及关闭后focus reads3→3。[公共外壳](./review-fixes/browser/owner-shell.json)四个路由×1440/390/768的12组键盘跳转均为mains1/mainIds1/focused=true。图库、相册和存储配置公共区域的两端浅深色真实图也已独立复核。
+
+[五轴代码复审](./review-fixes/code-quality-review.md)与[严格结构复审](./review-fixes/structure-review.md)分别由独立agent完成，均Approve、Required=0、Optional=0，原R1/R2关闭。[独立设计复核](./review-fixes/design-review.md)实际重读8个Figma节点并逐张核对代表、最终手动/自动成功、workspace及全部公共消费路由截图；功能与本轮变更设计均通过，没有新增必修偏差。部分公共截图的HTTP429会话提示也在历史截图存在；会话/鉴权源码未变，评审没有证据归为本次新增缺陷，按范围只记录。部分图仍是加载状态，不冒充最终图片状态。详细逐项对照及实际图链接见同一设计记录。
+
+实际命令与退出值汇总见[执行结果](./review-fixes/execution-outcomes.json)。本轮核心代码提交 `705b26e`，脚本整理 `e7bc180`，运行器执行预算修正 `2069ecc`，分页回归定位修正 `8530078`。最终 `pnpm run format:check` 已通过，见[格式记录](./review-fixes/format-final.txt)；`node docs/tasks/check.mjs` 为120任务/298需求通过，`--self-test` 的5个拒绝场景通过。用户已取消的picker名称/短ID不再列缺口；人工整体UI验收仍待用户确认，T-COL-04和PR保持未完成/草稿。物理设备与Release阶段AMD64/ARM64镜像/容器未执行，未标通过；没有发布、部署、合并、关闭Issue或删除分支/worktree。
