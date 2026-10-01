@@ -1,0 +1,31 @@
+Already up to date
+Done in 167ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-176
+
+ ❯ |unit| tests/unit/identity/return-to.test.ts (20 tests | 1 failed) 16ms
+   × returns to the implemented tags query after login 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/return-to.test.ts > returns to the implemented tags query after login
+AssertionError: expected '/admin' to be '/tags?q=Go&page=2&pageSize=20' // Object.is equality
+
+Expected: "/tags?q=Go&page=2&pageSize=20"
+Received: "/admin"
+
+ ❯ tests/unit/identity/return-to.test.ts:60:61
+     58|
+     59| it('returns to the implemented tags query after login', () => {
+     60|   expect(loginDestination('/tags?q=Go&page=2&pageSize=20')).toBe('/tag…
+       |                                                             ^
+     61|   expect(loginDestination('/tags/unknown')).toBe('/admin');
+     62|   expect(loginDestination('https://evil.test/tags')).toBe('/admin');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  00:24:31
+   Duration  568ms (transform 65%, import 18%, worker 10%, tests 7%)

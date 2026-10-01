@@ -55,3 +55,11 @@ it('returns to delivered album list and details after authentication', () => {
   expect(loginDestination('/albums/album-1/unknown')).toBe('/admin');
   expect(loginDestination('https://evil.test/albums/album-1')).toBe('/admin');
 });
+
+it('returns to the implemented tags query after login', () => {
+  expect(loginDestination('/tags?q=Go&page=2&pageSize=20')).toBe(
+    '/tags?q=Go&page=2&pageSize=20',
+  );
+  expect(loginDestination('/tags/unknown')).toBe('/admin');
+  expect(loginDestination('https://evil.test/tags')).toBe('/admin');
+});

@@ -69,8 +69,10 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
 - 验证方法：单元/SQLite 覆盖规范化、唯一竞争和外键；浏览器分页搜索、冲突、未知结果、改名后 URL 查询保留、真 ID 跳转与返回。
 - 界面：所有者 /tags → /library?tagId=<id>；标签管理响应与 T-LIB-04 查询。桌面[30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)、手机[101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295)、桌面状态[418:3988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-3988)、手机状态[418:8180](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-8180)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。手机紧凑列表不省略管理功能；DG-TAGS 对应 DES-06-TAGS；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 标签列表及创建/重命名：Unicode唯一与冲突不合并。
-  - [ ] 2. 删除与 tagId 跳图库：回收关联清除，返回查询保留。
+  - [x] 1. 标签列表及创建/重命名：Unicode唯一与冲突不合并。
+  - [x] 2. 删除与 tagId 跳图库：回收关联清除，返回查询保留。
+
+- 实施记录：[Issue #176](../verification/collections-176/README.md)。已提供标签页、管理接口与真实图库入口；自动检查和独立审计以该记录的实际结果为准。UI 仍须用户人工验收，DES-06-TAGS 与相关 DES/RG 保持开放。
 
 #### DG-TAGS 对 T-COL-03 的核对结论（2026-10-01）
 
@@ -97,7 +99,7 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
 
 本次未发现必须先补画才能推进 T-COL-03 的独立表达缺口。若真实组合无法用既有容器呈现，负责人须列出具体节点、差异、影响，与 P2-DESIGN 补交接并取得用户批准后再实现该部分；不把原因记录当批准。上传批次标签搜索多选/创建后选中的既有缺口继续由 [T-UP-03](./m3-m4-platform.md#dg-upload-对-t-up-03-的核对结论2026-09-30) 承接，不在标签页增加重复选择器；批量标签增删/部分失败归 T-LIB-08，回收恢复与大图的完整闭环归原任务，不把跨模块未完成项写为本 DG 已通过。
 
-**现状与验证责任：** 已有 `tagNameSchema`、`getOrCreateTags`、`deleteTag`、外键与内部上传关系事务；已有 library 的真实 `tagId` 查询、候选分页和历史状态。尚无 `/tags`、标签管理 HTTP 接口、`listTags` 或 `renameTag`；不能把图库候选接口的 40 条/名称升序（无管理计数，使用 SQLite lower）当成本卡管理查询或完整 Unicode 搜索。T-COL-03 实施时核对现有库与契约，补齐本卡管理能力；现有候选搜索的 Unicode 边界仅报告，本 DG 不顺手修改 library。
+**核对当日现状与验证责任：** 已有 `tagNameSchema`、`getOrCreateTags`、`deleteTag`、外键与内部上传关系事务；已有 library 的真实 `tagId` 查询、候选分页和历史状态。当日尚无 `/tags`、标签管理 HTTP 接口、`listTags` 或 `renameTag`，现已由上述 #176 实施记录承接；不能把图库候选接口的 40 条/名称升序（无管理计数，使用 SQLite lower）当成本卡管理查询或完整 Unicode 搜索。T-COL-03 实施时核对现有库与契约，补齐本卡管理能力；现有候选搜索的 Unicode 边界仅报告，本 DG 不顺手修改 library。
 
 T-COL-03 按[前端共用验收](./execution.md#前端共用验收)取得两端浅深色、规定宽度、短视口、键盘与关闭回焦、44px 手机目标及上述状态的真实页面证据，完成自动验证后交用户人工验收。本次只有浅色 Figma 读取，不证明主题、浏览器请求或产品页面设计通过；DES-06-TAGS、关联 DES-05/07 与 RG-02/04/07 保持开放。
 

@@ -17,7 +17,7 @@ const navigation = [
   '上传',
   '图库',
   '相册',
-  '标签，尚未开放',
+  '标签',
   '分享管理，尚未开放',
   '回收站',
   '访问统计，尚未开放',
@@ -156,6 +156,7 @@ try {
         ['/albums', '/albums', 'albums'],
         [`/albums/${albumId}`, '/albums', 'album-content'],
         ['/trash', '/trash', 'trash'],
+        ['/tags', '/tags', 'tags'],
         ['/admin', '/upload', 'admin-entry'],
       ]) {
         await page.goto(`${config.origin}${path}`);
@@ -238,7 +239,7 @@ try {
     }
   }
   report.checks.push(
-    'All six implemented owner-shell entries retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
+    'All seven implemented owner-shell entries retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
   );
   report.checks.push(
     'Menu and close are accessible icon-only 44px targets; real hover adds no background or transform, keyboard focus remains visible and close/Escape restore trigger focus at 360/430/768/987 and short 390×560.',

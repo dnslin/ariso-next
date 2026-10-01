@@ -29,6 +29,7 @@ for (const name of [
   'library-scale.json',
   'albums.json',
   'album-cover.json',
+  'tags.json',
   'upload.json',
   'upload-polling.json',
   'upload-input.json',
@@ -371,6 +372,8 @@ try {
         'album-cover.log',
       );
       report.albumCover = 'passed';
+      await runBrowser('../e2e/tags.mjs', identityConfig, 'tags.log');
+      report.tags = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
       await runBrowser(
         '../e2e/upload-polling.mjs',

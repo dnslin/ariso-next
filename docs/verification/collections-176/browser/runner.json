@@ -1,0 +1,20 @@
+{
+  "startedAt": "2026-10-01T16:52:33.843Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-54339.localhost:54339",
+  "taskSpaceId": 4,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (interaction-polish-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Volumes/data/project/ariso-issue-176/scripts/verify-browser.mjs:279:14)\n    at async file:///Volumes/data/project/ariso-issue-176/scripts/verify-browser.mjs:406:5",
+  "finishedAt": "2026-10-01T16:54:47.557Z",
+  "temporaryDirectoryRemoved": true
+}
