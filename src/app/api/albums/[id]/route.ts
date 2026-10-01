@@ -1,4 +1,4 @@
-import { readAlbum } from '../../../../server/collections/album-management.ts';
+import { readOwnerAlbum } from '../../../../server/library/album-covers.ts';
 import { CollectionError } from '../../../../server/collections/errors.ts';
 import {
   deleteAlbum,
@@ -15,7 +15,7 @@ export function GET(request: Request, context: Context) {
   return albumResponse(request, async () => {
     const { id } = await context.params;
     return getServerRuntime().connection.db.transaction((tx) => ({
-      album: readAlbum(tx, id),
+      album: readOwnerAlbum(tx, id),
     }));
   });
 }
@@ -26,7 +26,7 @@ export function PATCH(request: Request, context: Context) {
     return getServerRuntime().connection.db.transaction(
       (tx) => {
         updateAlbum(tx, id, input);
-        return { album: readAlbum(tx, id) };
+        return { album: readOwnerAlbum(tx, id) };
       },
       { behavior: 'immediate' },
     );

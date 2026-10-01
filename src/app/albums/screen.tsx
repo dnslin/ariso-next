@@ -17,6 +17,8 @@ import { LibraryScreen } from '../library/library-screen';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { AlbumDialog, type AlbumAction } from './dialog';
+import { AlbumCoverPicker } from './cover-picker';
+import { AlbumCoverImage, AlbumCoverSummary } from './cover-preview';
 import {
   albumRequest,
   AlbumRequestError,
@@ -42,6 +44,23 @@ export function AlbumsScreen(props: {
   const [pageSize, setPageSize] = useState(40);
   const [action, setAction] = useState<AlbumAction | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [coverOpen, setCoverOpen] = useState(false);
+  const coverTrigger = useRef<HTMLButtonElement>(null);
+  const coverScroll = useRef(0);
+  function openCover() {
+    coverScroll.current = coverTrigger.current?.closest('main')?.scrollTop ?? 0;
+    setCoverOpen(true);
+  }
+  function closeCover() {
+    setCoverOpen(false);
+    void detail.refetch();
+    requestAnimationFrame(() => {
+      coverTrigger.current
+        ?.closest('main')
+        ?.scrollTo({ top: coverScroll.current });
+      coverTrigger.current?.focus({ preventScroll: true });
+    });
+  }
   const opener = useRef<HTMLElement | null>(null);
   function openAction(next: AlbumAction) {
     opener.current = document.activeElement as HTMLElement | null;
@@ -73,6 +92,7 @@ export function AlbumsScreen(props: {
       queryFn: ({ signal }) =>
         albumRequest<{ album: Album }>(albumUrl(props.albumId!), { signal }),
       enabled: !!props.albumId,
+      refetchOnWindowFocus: false,
       retry: false,
       networkMode: 'always',
     },
@@ -121,66 +141,97 @@ export function AlbumsScreen(props: {
   ) : null;
   if (props.albumId && album)
     return (
-      <LibraryScreen
-        {...props}
-        timeZone={props.timeZone!}
-        onImageRemoved={() => {
-          void client.invalidateQueries({ queryKey: ['album', props.albumId] });
+      <AlbumCoverPicker
+        album={album}
+        isOpen={coverOpen}
+        onCancel={closeCover}
+        onExpire={expire}
+        onComplete={(saved) => {
+          client.setQueryData(['album', saved.id], { album: saved });
+          void client.invalidateQueries({ queryKey: ['albums'] });
+          closeCover();
         }}
-        header={
-          <>
-            <Link
-              href="/albums"
-              className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
-            >
-              <ArrowLeft size={16} />
-              返回相册列表
-            </Link>
+        renderWorkspace={(content, footer) => (
+          <LibraryScreen
+            {...props}
+            timeZone={props.timeZone!}
+            workspace={coverOpen ? { content, footer } : undefined}
+            onRefresh={() => {
+              void detail.refetch();
+            }}
+            afterToolbar={
+              <AlbumCoverSummary
+                key={JSON.stringify(album.cover)}
+                album={album}
+                onSetCover={openCover}
+                onRefresh={async () => {
+                  const result = await detail.refetch();
+                  if (result.error) throw result.error;
+                }}
+              />
+            }
+            onImageRemoved={() => {
+              void client.invalidateQueries({
+                queryKey: ['album', props.albumId],
+              });
+            }}
+            header={
+              <>
+                <Link
+                  href="/albums"
+                  className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
+                >
+                  <ArrowLeft size={16} />
+                  返回相册列表
+                </Link>
 
-            <h1
-              id="library-title"
-              tabIndex={-1}
-              className="text-[26px] font-medium leading-normal break-words md:text-[30px]"
-            >
-              {album.name}
-            </h1>
-            <p className="text-sm text-muted">
-              {album.imageCount} 张图片 · 相册 #{album.id.slice(0, 8)}
-            </p>
-            {album.description ? (
-              <p className="text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
-                {album.description}
-              </p>
-            ) : null}
-            <div className="grid w-full grid-cols-3 gap-2.5 md:max-w-130">
-              <Button
-                variant="outline"
-                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                onPress={() => openAction({ kind: 'edit', album })}
-              >
-                编辑相册
-              </Button>
-              <Button
-                variant="outline"
-                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                isDisabled
-                aria-label="设置封面，尚未开放"
-              >
-                设置封面
-              </Button>
-              <Button
-                variant="outline"
-                className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                onPress={() => openAction({ kind: 'menu', album })}
-              >
-                更多
-              </Button>
-            </div>
-          </>
-        }
-      >
-        {albumDialog}
-      </LibraryScreen>
+                <h1
+                  id="library-title"
+                  tabIndex={-1}
+                  className="text-[26px] font-medium leading-normal break-words md:text-[30px]"
+                >
+                  {album.name}
+                </h1>
+                <p className="text-sm text-muted">
+                  {album.imageCount} 张图片 · {album.publicImageCount} 张公开 ·
+                  相册 #{album.id.slice(0, 8)}
+                </p>
+                {album.description ? (
+                  <p className="text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
+                    {album.description}
+                  </p>
+                ) : null}
+                <div className="grid w-full grid-cols-3 gap-2.5 md:max-w-130">
+                  <Button
+                    variant="outline"
+                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                    onPress={() => openAction({ kind: 'edit', album })}
+                  >
+                    编辑相册
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                    ref={coverTrigger}
+                    onPress={openCover}
+                  >
+                    设置封面
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                    onPress={() => openAction({ kind: 'menu', album })}
+                  >
+                    更多
+                  </Button>
+                </div>
+              </>
+            }
+          >
+            {albumDialog}
+          </LibraryScreen>
+        )}
+      />
     );
   return (
     <OwnerShell
@@ -312,15 +363,19 @@ export function AlbumsScreen(props: {
                     className="flex w-full min-w-0 flex-col items-stretch gap-3 rounded-[20px] border border-border bg-surface p-4 text-foreground no-underline"
                   >
                     <div
-                      className="aspect-[333/184] w-full rounded-xl bg-default"
-                      aria-hidden
-                    />
+                      data-testid={`album-cover-${item.id}`}
+                      className="flex aspect-[333/184] w-full items-center justify-center overflow-hidden rounded-xl bg-default"
+                    >
+                      <AlbumCoverImage
+                        key={JSON.stringify(item.cover)}
+                        cover={item.cover}
+                      />
+                    </div>
                     <span className="text-base font-medium [overflow-wrap:anywhere]">
                       {item.name}
                     </span>
                     <span className="text-xs font-normal text-muted">
-                      {item.imageCount} 张图片 · #{item.id.slice(0, 8)} ·
-                      封面尚未开放
+                      {item.imageCount} 张图片 · #{item.id.slice(0, 8)}
                     </span>
                   </Link>
                 ))}

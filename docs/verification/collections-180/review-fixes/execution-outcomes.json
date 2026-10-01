@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-01",
+  "platform": "macOS arm64",
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "source": "Observed completion results returned by exec/write_stdin for actually executed commands; not inferred solely from log wording. Includes final document-format and task-index outcomes.",
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "lockfile unchanged"
+    },
+    {
+      "command": "pnpm run lint",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "lint-final.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "typecheck-final.log"
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=1",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "56 files / 721 tests; unit.log"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "101 files / 928 tests; 585.43s; integration-final.log"
+    },
+    {
+      "command": "pnpm run build",
+      "location": "isolated ariso-final mirror",
+      "exitCode": 0,
+      "evidence": "actual exec session 12273 completion returned exit_code=0; build-final.log; optional cross-platform resvg tracing diagnostics retained"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "location": "isolated ariso-final mirror",
+      "exitCode": 0,
+      "evidence": "ui-install.log"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui run typecheck",
+      "location": "isolated ariso-final mirror",
+      "exitCode": 0,
+      "evidence": "ui-typecheck.log"
+    },
+    {
+      "command": "node --check scripts/verify-browser.mjs + pnpm exec eslint scripts/verify-browser.mjs --max-warnings=0",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "actual exec completion / runner-lint.txt; execution budget only, unchanged browser behavior waits"
+    },
+    {
+      "command": "ego-browser nodejs < test-results/pr223-fix/cover-focused-script.mjs",
+      "location": "root worktree / independent fixture service / Ego Space 12",
+      "exitCode": 0,
+      "evidence": "cover-focused/album-cover.json; 60 checks / 130 layouts / 152 unique screenshots"
+    },
+    {
+      "command": "EGO_TASK_SPACE=12 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr223-fix/browser pnpm run test:browser",
+      "location": "isolated ariso-final mirror; actual tool session 15383 completion",
+      "exitCode": 0,
+      "evidence": "browser/runner.json and browser/ui/runner.json; full suite passed, temporaryDirectoryRemoved=true"
+    },
+    {
+      "command": "pnpm run format:check",
+      "location": "root worktree including new evidence",
+      "exitCode": 0,
+      "evidence": "format-final.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs + node docs/tasks/check.mjs --self-test",
+      "location": "root worktree",
+      "exitCode": 0,
+      "evidence": "120 tasks / 298 requirements; 5 rejection cases passed"
+    }
+  ]
+}

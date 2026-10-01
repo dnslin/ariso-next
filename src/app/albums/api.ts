@@ -1,6 +1,6 @@
-import type { listAlbums } from '../../server/collections/album-management';
+import type { listOwnerAlbums } from '../../server/library/album-covers';
 
-export type AlbumPage = ReturnType<typeof listAlbums>;
+export type AlbumPage = ReturnType<typeof listOwnerAlbums>;
 export type Album = AlbumPage['items'][number];
 
 export class AlbumRequestError extends Error {

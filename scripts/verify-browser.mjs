@@ -26,6 +26,7 @@ for (const name of [
   'library-filters.json',
   'library-scale.json',
   'albums.json',
+  'album-cover.json',
   'upload.json',
   'upload-polling.json',
   'upload-input.json',
@@ -268,7 +269,8 @@ try {
     browser.stdin.end(
       `const config = ${JSON.stringify(browserConfig)};\n${source}`,
     );
-    const timeout = setTimeout(interrupt, 300000);
+    // Full screenshot matrices can exceed five minutes; behavior waits stay bounded.
+    const timeout = setTimeout(interrupt, 600000);
     try {
       const [code] = await closed;
       assert.equal(code, 0, `Ego browser verification failed (${logName})`);
@@ -354,6 +356,12 @@ try {
       report.libraryQuery = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
+      await runBrowser(
+        '../e2e/album-cover.mjs',
+        identityConfig,
+        'album-cover.log',
+      );
+      report.albumCover = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
       await runBrowser(
         '../e2e/upload-polling.mjs',

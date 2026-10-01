@@ -5,6 +5,9 @@ const { join } = await import('node:path');
 const { identitySql, openIdentityAccountMenu } = await import(
   config.identitySessionScript
 );
+const { resizeViewport, setTheme, readGeometry, assertGeometry } = await import(
+  new URL('./browser-geometry.mjs', config.identitySessionScript).href
+);
 const page = (await taskSpace(config.spaceId)).page('p1');
 const button = (name) => `loc=role:button[name="${name}"]`;
 const report = { status: 'failed', checks: [], layouts: [] };
@@ -44,18 +47,7 @@ async function signInAt(path) {
     await page.waitForURL(`${config.origin}${path}`);
   }
 }
-async function resize(width, height = width >= 1200 ? 1080 : 844) {
-  await page.cdp('Emulation.setDeviceMetricsOverride', {
-    width,
-    height,
-    deviceScaleFactor: 1,
-    mobile: width < 768,
-  });
-  await page.waitForFunction(
-    ({ width, height }) => innerWidth === width && innerHeight === height,
-    { width, height },
-  );
-}
+const resize = (width, height) => resizeViewport(page, width, height);
 async function list() {
   await page.goto(`${config.origin}/albums`);
   await page.waitForSelector('input[aria-label="搜索相册"]');
@@ -93,85 +85,21 @@ async function create(name) {
 }
 async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
   for (const theme of ['light', 'dark']) {
-    await page.cdp('Emulation.setEmulatedMedia', {
-      features: [
-        { name: 'prefers-color-scheme', value: theme },
-        { name: 'prefers-reduced-motion', value: 'reduce' },
-      ],
-    });
-    await page.waitForFunction(
-      (theme) => document.documentElement.classList.contains(theme),
-      theme,
-    );
+    await setTheme(page, theme);
     for (const width of widths) {
       await resize(width);
-      const geometry = await page.evaluate(() => ({
-        width: innerWidth,
-        overflow: document.documentElement.scrollWidth > innerWidth,
-        sectionOverflow:
+      const geometry = await readGeometry(page);
+      geometry.sectionOverflow = await page.evaluate(
+        () =>
           document.querySelector('main section').scrollWidth >
           document.querySelector('main section').clientWidth,
-        mainOverflow:
-          document.querySelector('main').scrollWidth >
-          document.querySelector('main').clientWidth,
-        targets: [...document.querySelectorAll('button,a,input,textarea')]
-          .filter((node) => {
-            if (
-              !node.getClientRects().length ||
-              node.closest('[inert],[aria-hidden="true"]')
-            )
-              return false;
-            // React Aria's assistive dismiss controls are intentionally clipped.
-            // Exclude actual visual hiding, never a small measured click target.
-            for (
-              let ancestor = node;
-              ancestor;
-              ancestor = ancestor.parentElement
-            ) {
-              const style = getComputedStyle(ancestor);
-              if (
-                style.visibility === 'hidden' ||
-                style.clip === 'rect(0px, 0px, 0px, 0px)' ||
-                style.clipPath === 'inset(50%)'
-              )
-                return false;
-            }
-            return true;
-          })
-          .map((node) => {
-            const rect = node.getBoundingClientRect();
-            return {
-              name:
-                node.getAttribute('aria-label') ||
-                node.textContent ||
-                node.name,
-              width: rect.width,
-              height: rect.height,
-              navigation: node.classList.contains('shell-nav-link'),
-            };
-          }),
-      }));
-      assert.equal(
-        geometry.overflow,
-        false,
-        `${state}/${theme}/${width} document overflow`,
       );
-      assert.equal(
-        geometry.mainOverflow,
-        false,
-        `${state}/${theme}/${width} main overflow`,
-      );
+      assertGeometry(geometry, `${state}/${theme}/${width}`);
       assert.equal(
         geometry.sectionOverflow,
         false,
         `${state}/${theme}/${width} content stays within its padded column`,
       );
-      for (const target of geometry.targets)
-        assert.ok(
-          target.width >= (width < 1200 ? 44 : 24) &&
-            target.height >= (width < 1200 ? 44 : 24),
-          `${state}: ${target.name} has a usable target (${target.width}×${target.height})`,
-        );
       await shot(`${state}-${theme}-${width}`);
       report.layouts.push({ state, theme, ...geometry });
     }

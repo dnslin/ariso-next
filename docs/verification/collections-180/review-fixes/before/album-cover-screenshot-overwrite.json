@@ -1,0 +1,128 @@
+{
+  "source": "docs/verification/collections-180/browser/album-cover.json",
+  "node": "v24.18.1",
+  "originalReportStatus": "passed",
+  "fields": {
+    "screenshots": "actual screenshot paths in capture order",
+    "layouts": "state/theme/width of observed layout results"
+  },
+  "observed": {
+    "recordCount": 20,
+    "uniquePathCount": 4,
+    "captureCountsByPath": {
+      "album-cover-save-success-light-390.png": 5,
+      "album-cover-save-success-light-1440.png": 5,
+      "album-cover-save-success-dark-390.png": 5,
+      "album-cover-save-success-dark-1440.png": 5
+    },
+    "layouts": [
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "light",
+        "width": 1440
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 390
+      },
+      {
+        "state": "save-success",
+        "theme": "dark",
+        "width": 1440
+      }
+    ]
+  },
+  "scenario": "Five saved() calls: keyboard manual 041, retry manual 040, lost automatic response, unknown manual 041 reconciliation, touch automatic selection. Each records light/dark at 390/1440 with the same four paths. Final automatic captures replace earlier manual evidence.",
+  "failure": {
+    "name": "AssertionError",
+    "message": "Every actual screenshot record must have an independent file path; manual and automatic save results cannot overwrite each other\n\n4 !== 20\n",
+    "actual": 4,
+    "expected": 20
+  }
+}

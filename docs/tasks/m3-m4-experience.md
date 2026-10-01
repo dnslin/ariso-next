@@ -110,10 +110,12 @@ T-COL-03 按[前端共用验收](./execution.md#前端共用验收)取得两端�
 - 直接前置：`T-COL-02`、`T-LIB-04`、`T-MED-05`、`T-DEL-01`、`DG-ALBUMS`
 - 验收条件：全相册先过滤资格再按 joined_at 降序/ID 升序选第一公开图；手动封面变私有/回收临时回退，恢复重现，移出后清空。选中图处理中/停用时占位，不偷偷换下一张；无公开图占位。
 - 验证方法：真实关系数据覆盖跨页第一公开图、加入同值、临时回退/恢复、移出再加入、文件丢失；浏览器触摸选择/切回自动、内容筛选固定顺序。
-- 界面：所有者 /albums/{albumId}；成员与封面身份来自 collections，thumbnail 经 delivery。桌面[38:378](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=38-378)、手机[102:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4002)、桌面状态[282:1724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1724)、手机状态[282:4070](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4070)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Card](https://heroui.com/en/docs/react/components/card)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Alert](https://heroui.com/en/docs/react/components/alert)。封面异常另见 [282:1979](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1979) / [282:4244](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4244)；DG-ALBUMS 核对 DES-04，手机选择器保留短 ID/状态；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 界面：所有者 /albums/{albumId}；成员与封面身份来自 collections，thumbnail 经 delivery。桌面[38:378](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=38-378)、手机[102:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4002)、桌面状态[282:1724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1724)、手机状态[282:4070](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4070)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Card](https://heroui.com/en/docs/react/components/card)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Alert](https://heroui.com/en/docs/react/components/alert)。封面异常另见 [282:1979](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1979) / [282:4244](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4244)；DG-ALBUMS 核对 DES-04，手机封面选择页保留图片名称/状态；用户于 2026-10-01 明确决定不添加相册名称/短 ID，见下方核对记录。响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
-  - [ ] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
+  - [x] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
+  - [x] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
+
+实施与验证记录：[T-COL-04 / Issue #180](../verification/collections-180/README.md)。封面身份、读写与真实页面已完成本地适用检查和独立审计；用户已取消选择页新增相册名称/短 ID 的要求。2026-10-01 用户明确授权合并 PR #223、清理本地分支并关闭 Issue #180，按该指令完成本卡收尾；不把合并授权写成另一次逐项人工测试通过。成员批量操作与匿名分享仍由各自后置任务承接。
 
 #### DG-ALBUMS 对 T-COL-04 的核对结论（2026-09-28）
 
@@ -129,7 +131,7 @@ T-COL-03 按[前端共用验收](./execution.md#前端共用验收)取得两端�
 
 T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片选择为双列并保留图片名称和状态；使用本卡 HeroUI 组合，不新增封面文件或把 storage 反向引入 collections。封面没有单独的“保存失败／响应丢失／加载中／目标已失效／恢复后”完整两端流程；失败容器复用 T-COL-02 保存失败状态，恢复后的展示复用手动封面内容，加载与禁用遵循交接。由 T-COL-04 验证提交前后成员资格变化、失败保留选择、未知结果先读回核对、重试与返回焦点；不能把相册信息保存文案原样用于封面。若需要新布局或改变既定交互，交 P2-DESIGN 补具体缺口并取得用户批准。
 
-明确的表达缺口：封面选择页 `282:1724/282:4070` 当前只有“设置相册封面”标题，没有当前相册名称或短 ID，不能把本卡“手机选择器保留短 ID”写成现稿已满足。T-COL-04 / P2-DESIGN 负责补齐该页的相册身份上下文位置，并在实现这一界面前取得用户批准；该局部界面仍未完成，不阻塞无关的底层身份解析。本次不修改 Figma，也不替用户批准新位置。
+选择页身份上下文决定（2026-10-01）：封面选择页 `282:1724/282:4070` 当前只有“设置相册封面”标题，没有当前相册名称或短 ID。用户在人工预览中确认所讨论位置是封面选择页标题下方后，明确回复“没必要没必要”。因此取消此前补齐该位置的要求，沿用现有设计，不修改 Figma，不再将此项列为待批准或未实现范围。相册列表及内容页已有的名称/短 ID 保留；本决定不代表整页人工验收通过。
 
 两端浅深色、各宽度/短视口、键盘/焦点、手机点击目标及加载/空/错误/成功/禁用均按[前端共用验收](./execution.md#前端共用验收)执行。真实网页截图、设计逐项对照和用户人工验收由 T-COL-04 留证；此次未运行网页，DES-04、DES-05/07、RG-02/07 不关闭。分享失效全流程仍归 T-SHR-04；此处不扩展为分享实现。
 
