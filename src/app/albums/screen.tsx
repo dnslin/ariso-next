@@ -46,10 +46,20 @@ export function AlbumsScreen(props: {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [coverOpen, setCoverOpen] = useState(false);
   const coverTrigger = useRef<HTMLButtonElement>(null);
+  const coverScroll = useRef(0);
+  function openCover() {
+    coverScroll.current = coverTrigger.current?.closest('main')?.scrollTop ?? 0;
+    setCoverOpen(true);
+  }
   function closeCover() {
     setCoverOpen(false);
     void detail.refetch();
-    requestAnimationFrame(() => coverTrigger.current?.focus());
+    requestAnimationFrame(() => {
+      coverTrigger.current
+        ?.closest('main')
+        ?.scrollTo({ top: coverScroll.current });
+      coverTrigger.current?.focus({ preventScroll: true });
+    });
   }
   const opener = useRef<HTMLElement | null>(null);
   function openAction(next: AlbumAction) {
@@ -131,11 +141,21 @@ export function AlbumsScreen(props: {
   ) : null;
   if (props.albumId && album)
     return (
-      <>
-        <div className={coverOpen ? 'hidden' : 'contents'}>
+      <AlbumCoverPicker
+        album={album}
+        isOpen={coverOpen}
+        onCancel={closeCover}
+        onExpire={expire}
+        onComplete={(saved) => {
+          client.setQueryData(['album', saved.id], { album: saved });
+          void client.invalidateQueries({ queryKey: ['albums'] });
+          closeCover();
+        }}
+        renderWorkspace={(content, footer) => (
           <LibraryScreen
             {...props}
             timeZone={props.timeZone!}
+            workspace={coverOpen ? { content, footer } : undefined}
             onRefresh={() => {
               void detail.refetch();
             }}
@@ -143,7 +163,7 @@ export function AlbumsScreen(props: {
               <AlbumCoverSummary
                 key={JSON.stringify(album.cover)}
                 album={album}
-                onSetCover={() => setCoverOpen(true)}
+                onSetCover={openCover}
                 onRefresh={async () => {
                   const result = await detail.refetch();
                   if (result.error) throw result.error;
@@ -193,7 +213,7 @@ export function AlbumsScreen(props: {
                     variant="outline"
                     className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
                     ref={coverTrigger}
-                    onPress={() => setCoverOpen(true)}
+                    onPress={openCover}
                   >
                     设置封面
                   </Button>
@@ -210,29 +230,8 @@ export function AlbumsScreen(props: {
           >
             {albumDialog}
           </LibraryScreen>
-        </div>
-        {coverOpen ? (
-          <AlbumCoverPicker
-            album={album}
-            onCancel={closeCover}
-            onExpire={expire}
-            onComplete={(saved) => {
-              client.setQueryData(['album', saved.id], { album: saved });
-              void client.invalidateQueries({ queryKey: ['albums'] });
-              closeCover();
-            }}
-            renderShell={(content, footer) => (
-              <OwnerShell
-                {...props}
-                footer={footer}
-                returnTo={window.location.pathname + window.location.search}
-              >
-                {content}
-              </OwnerShell>
-            )}
-          />
-        ) : null}
-      </>
+        )}
+      />
     );
   return (
     <OwnerShell

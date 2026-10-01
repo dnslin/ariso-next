@@ -174,6 +174,18 @@ export async function verifyOwnerShell(page, config) {
         const position = await contentPosition();
         if (!baseline) baseline = position;
         sameContentPosition(position, baseline);
+        await page.focus('.skip-link');
+        await page.keyboard.press('Enter');
+        await page.waitForFunction(
+          () =>
+            document.activeElement === document.querySelector('#main-content'),
+        );
+        const skip = await page.evaluate(() => ({
+          mains: document.querySelectorAll('main').length,
+          mainIds: document.querySelectorAll('#main-content').length,
+          focused: document.activeElement.id === 'main-content',
+        }));
+        assert.deepEqual(skip, { mains: 1, mainIds: 1, focused: true });
         await openNavigation();
         const actual = await readNavigation(scope);
         if (width < 1200)
@@ -257,7 +269,7 @@ export async function verifyOwnerShell(page, config) {
             `owner-shell-${path.slice(1)}-${width}.png`,
           ),
         });
-        report.pages.push({ width, path, heading: position, ...actual });
+        report.pages.push({ width, path, heading: position, skip, ...actual });
         const next = routes[(routes.indexOf(path) + 1) % routes.length];
         await page.click(`${scope} nav a[href="${next}"]`);
         await page.waitForURL(`${config.origin}${next}`);

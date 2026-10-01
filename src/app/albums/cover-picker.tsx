@@ -20,16 +20,18 @@ import { CoverResult, type CoverOutcome } from './cover-result';
 
 export function AlbumCoverPicker({
   album,
+  isOpen,
   onCancel,
   onComplete,
   onExpire,
-  renderShell,
+  renderWorkspace,
 }: {
   album: Album;
+  isOpen: boolean;
   onCancel: () => void;
   onComplete: (album: Album) => void;
   onExpire: () => void;
-  renderShell: (children: ReactNode, footer: ReactNode) => ReactNode;
+  renderWorkspace: (content: ReactNode, footer: ReactNode) => ReactNode;
 }) {
   const [client] = useState(() => new QueryClient());
   const [page, setPage] = useState(1);
@@ -42,16 +44,21 @@ export function AlbumCoverPicker({
   const latestAlbum = useRef(album);
   const choiceTrigger = useRef<HTMLElement | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
-  const mounted = useRef(true);
+  const mounted = useRef(false);
   useEffect(() => {
-    mounted.current = true;
-    heading.current?.focus();
+    mounted.current = isOpen;
+    if (isOpen) heading.current?.focus();
     return () => {
       mounted.current = false;
       request.current?.abort();
+      request.current = null;
+      busy.current = false;
       client.clear();
     };
-  }, [client]);
+  }, [client, isOpen]);
+  useEffect(() => {
+    if (!isOpen) latestAlbum.current = album;
+  }, [album, isOpen]);
   const filters = parseLibraryLocation(
     new URLSearchParams({ pageSize: '40' }),
     album.id,
@@ -59,6 +66,7 @@ export function AlbumCoverPicker({
   const list = useQuery(
     {
       queryKey: ['album-cover-choices', album.id, page],
+      enabled: isOpen,
       queryFn: ({ signal }) => readLibraryResult(filters, { page }, signal),
       retry: false,
       networkMode: 'always',
@@ -66,9 +74,13 @@ export function AlbumCoverPicker({
     client,
   );
   useEffect(() => {
-    if (list.error instanceof LibraryReadError && list.error.status === 401)
+    if (
+      isOpen &&
+      list.error instanceof LibraryReadError &&
+      list.error.status === 401
+    )
       onExpire();
-  }, [list.error, onExpire]);
+  }, [isOpen, list.error, onExpire]);
   const blocked =
     pending ||
     outcome.kind === 'unknown' ||
@@ -160,8 +172,11 @@ export function AlbumCoverPicker({
       });
       await verify(imageId, controller.signal);
     } finally {
-      busy.current = false;
-      if (mounted.current) setPending(false);
+      if (request.current === controller) {
+        busy.current = false;
+        request.current = null;
+        if (mounted.current) setPending(false);
+      }
     }
   }
 
@@ -174,14 +189,26 @@ export function AlbumCoverPicker({
     try {
       await verify(choice, controller.signal);
     } finally {
-      busy.current = false;
-      if (mounted.current) setPending(false);
+      if (request.current === controller) {
+        busy.current = false;
+        request.current = null;
+        if (mounted.current) setPending(false);
+      }
     }
   }
 
-  function cancel() {
-    if (latestAlbum.current !== album) onComplete(latestAlbum.current);
+  function close(saved?: Album) {
+    setPage(1);
+    setChoice(undefined);
+    setChoiceName('自动选择');
+    setOutcome({ kind: 'idle' });
+    setPending(false);
+    if (saved) onComplete(saved);
     else onCancel();
+  }
+
+  function cancel() {
+    close(latestAlbum.current !== album ? latestAlbum.current : undefined);
   }
 
   function resetOutcome() {
@@ -226,7 +253,9 @@ export function AlbumCoverPicker({
       </div>
     ) : null;
 
-  return renderShell(
+  if (!isOpen) return renderWorkspace(null, null);
+
+  return renderWorkspace(
     <section
       className="grid min-w-0 grid-cols-1 gap-4"
       data-testid="album-cover-picker"
@@ -286,7 +315,7 @@ export function AlbumCoverPicker({
         pending={pending}
         onClose={() => {
           if (pending) return;
-          if (outcome.kind === 'saved') onComplete(outcome.album);
+          if (outcome.kind === 'saved') close(outcome.album);
           else if (outcome.kind === 'unknown' || outcome.kind === 'missing')
             cancel();
           else resetOutcome();
