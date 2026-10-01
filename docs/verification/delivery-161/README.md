@@ -84,7 +84,7 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 node scripts/verify-delivery-s3.ts --config /V
 | `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-rest node work/verify-browser-rest.mjs`                      | 退出1；规模/导航/相册/封面/上传/轮询通过，原生目录枚举取消              |
 | `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-tail node work/verify-browser-tail.mjs`                      | 退出0；仅剩余手机持久化/交互/连续性、S3、隔离UI通过；仍标明两个失败场景 |
 
-生产模块未再改动，沿用本轮已执行的安装、单元、集成、类型和构建证据，没有机械重跑无变化的检查。新增记录执行格式与文档检查。各临时生产实例、数据库及测试素材已清理；原项目、分支和worktree保留。Ego空间3因整体检查仍有错误保留供继续验证，没有创建新的空间。
+生产模块未再改动，沿用本轮已执行的安装、单元、集成、类型和构建证据，没有机械重跑无变化的检查。新增记录执行格式与文档检查。已通过的既有界面大型报告归档结果摘要，并在摘要中链接完整原始记录；失败、宽屏实测及本次S3证据不压缩。各临时生产实例、数据库及测试素材已清理；原项目、分支和worktree保留。Ego空间3因整体检查仍有错误保留供继续验证，没有创建新的空间。
 
 ## 独立审计
 
