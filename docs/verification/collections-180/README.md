@@ -1,6 +1,6 @@
 # T-COL-04 固定相册内容与手动自动封面实施记录
 
-日期：2026-10-01（Asia/Shanghai）。对应 [Issue #180](https://github.com/dnslin/ariso-next/issues/180)、`R-16.1-02` / `R-16.1-04`。业务规则沿用 [collections 规格](../../specs/SPEC-collections.md) §5–8；检查与设计遵守[执行约定](../../tasks/execution.md)及[设计交接](../../design/handoff.md)。本地实现、适用检查与独立审计证据已收齐；选择页身份位置批准及用户人工 UI 验收未完成，不能作为全任务完成证明。
+日期：2026-10-01（Asia/Shanghai）。对应 [Issue #180](https://github.com/dnslin/ariso-next/issues/180)、`R-16.1-02` / `R-16.1-04`。业务规则沿用 [collections 规格](../../specs/SPEC-collections.md) §5–8；检查与设计遵守[执行约定](../../tasks/execution.md)及[设计交接](../../design/handoff.md)。本地实现、适用检查与独立审计证据已收齐；用户已明确取消选择页新增相册名称/短 ID 的要求。最终用户人工 UI 验收尚未完成，不能作为全任务完成证明。
 
 ## 前置与环境
 
@@ -20,7 +20,7 @@
 
 成员批量操作继续归 T-LIB-08；匿名分享与字段裁剪归 T-SHR-03 / #192。当前封面能力不能被描述为匿名分享已经实现。
 
-## 设计来源与待批准范围
+## 设计来源与用户决定
 
 实现者和独立评审者分别实时读取 Figma 设计信息与截图。文件为 `74sT9Hrf8G4czcWeTkET5b`；具体节点见下表及[任务核对表](../../tasks/m3-m4-experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。公共区域沿用 OwnerShell，图标沿用 Lucide，控件使用项目已锁 HeroUI 3.2.6；既有共享工具栏以当前交接的批准记录为准。
 
@@ -38,7 +38,7 @@
 | 无公开成员       | 282:2007 | 282:4272 |
 | 保存错误容器复用 | 279:1561 | 279:3816 |
 
-选择页 282:1724 / 282:4070 缺少当前相册名称与短 ID。任务核对表明确要求新增位置取得用户批准。已询问是否在标题下放置名称与短 ID，尚未收到批准，因此该身份上下文没有自行添加，任务保持未完成。本次不修改 Figma。用户还明确要求最终 UI 人工验收；独立设计检查不替代人工确认。
+选择页 282:1724 / 282:4070 没有当前相册名称与短 ID。此前任务核对表要求补齐位置并取得批准；用户于 2026-10-01 在人工预览中，经解释该位置属于封面选择页标题下方后，明确回复“没必要没必要”。据此取消这项补充要求，保持现有选择页设计，不修改 Figma；它不再是待批准或未实现事项。相册列表及内容页已有的名称与短 ID 保留。此决定仅针对选择页身份上下文，不代表整页人工验收通过；独立设计检查仍不替代用户最终确认。
 
 ## 审计与检查状态
 
@@ -89,7 +89,7 @@
 
 ## 交付边界
 
-代码审计通过；已实现范围的独立设计复核没有未解决的本次必修偏差。选择页身份位置批准与用户人工 UI 验收尚未完成，因此 T-COL-04 保持未完成，[PR #223](https://github.com/dnslin/ariso-next/pull/223) 保留草稿。分支为 `codex/issue-180-album-cover`，worktree 和 Issue 均保留。实现与证据提交为 `917e36b`。
+代码审计通过；已实现范围的独立设计复核没有未解决的本次必修偏差。选择页身份上下文补充已由用户明确取消；最终用户人工 UI 验收尚未完成，因此 T-COL-04 保持未完成，[PR #223](https://github.com/dnslin/ariso-next/pull/223) 保留草稿。分支为 `codex/issue-180-album-cover`，worktree 和 Issue 均保留。实现与证据提交为 `917e36b`。
 
 已使用 `gh pr view 223 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,mergeable,statusCheckRollup` 与 `gh pr checks 223` 实际回读：OPEN、isDraft=true、base=main、MERGEABLE，statusCheckRollup=[]，没有远端检查。没有把空列表记作 CI 通过，也不等待不存在的工作流；日常 PR 依据上述本地适用检查。没有合并、关闭 Issue、发布镜像或部署。
 
