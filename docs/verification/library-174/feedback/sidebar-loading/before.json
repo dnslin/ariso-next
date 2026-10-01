@@ -1,0 +1,21 @@
+{
+  "url": "http://issue174.localhost:3175/library",
+  "loading": true,
+  "mode": "more",
+  "preference": "{\"layout\":\"grid\",\"loadingMode\":\"pages\"}",
+  "trace": [
+    {
+      "action": "pushState",
+      "from": "http://issue174.localhost:3175/albums/issue174-preview-album?page=1&pageSize=80",
+      "to": "/library",
+      "time": 199711.5
+    }
+  ],
+  "resources": [
+    {
+      "name": "http://issue174.localhost:3175/api/images?scope=album&pageSize=80&albumId=issue174-preview-album&page=1",
+      "status": 200,
+      "duration": 21.299999982118607
+    }
+  ]
+}

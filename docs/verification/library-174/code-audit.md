@@ -174,3 +174,9 @@
 - 相册真实限流适配及边界收紧后，`pnpm exec eslint e2e/albums.mjs --max-warnings=0`、`pnpm exec prettier e2e/albums.mjs --check`、`node --check e2e/albums.mjs`、`git diff --check`：通过。
 
 本轮没有自行运行重型构建/集成或操作 Ego。完整 unit/integration 与专项的执行者是主实施者，审计实际读取对应输出并核对测试有效性。最终 `pnpm run test:browser` 退出 0，[第八轮总报告](./feedback/full-browser/runner.json) `passed`；环境为 macOS ARM64、Node 24.18.1，运行时间 2026-10-01 10:33:41–10:44:46 UTC。报告中两端身份、图库六阶段、公共壳层、相册、上传/轮询、M2、工作区连续性、交互和 UI 验证全部通过，独立临时目录已清理。实际限制仍为物理设备、其他浏览器、镜像/容器发布验证及用户人工 UI 验收没有由代码审计执行；没有把这些项标为通过。
+
+## 侧栏图库初始化修复的有限复核（2026-10-01）
+
+独立代码审计agent仅只读复核本轮use-library-query.ts及e2e/library-query.mjs，未发现可证实的P1/P2。实际读取已安装Next的HistoryUpdater和nuqs适配器：Next在useInsertionEffect发布当前路径；replaceState(null,'',url)保留内部history tree，并通过ACTION_RESTORE更新useSearchParams。nuqs在站内导航清理排队更新，与原初始化丢失链路吻合。直接提交初始化保留当前查询/hash，不增加历史项；缓存键、模式切换、历史恢复保持原实现。
+
+新增回归真实点击上传→图库侧栏，检查page=1、pages模式及40项，并返回原查询继续原历史检查，未削弱断言。审计者未运行测试或修改文件；[定向浏览器结果](./feedback/sidebar-loading/after.json)和生产构建由实现者实际执行，不能描述为审计者独立执行。此次是有限代码复核，不是重新执行此前完整审计或设计矩阵。

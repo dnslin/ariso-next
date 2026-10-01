@@ -83,6 +83,22 @@ async function verifyModeHistory() {
   );
   await loaded(40);
   assert.equal((await state()).loadingMode, 'pages');
+  report.activeCheck = 'sidebar-pagination-initialization';
+  await page.click('a[aria-label="上传"]');
+  await page.waitForFunction(() => location.pathname === '/upload');
+  await page.click('a[aria-label="图库"]');
+  await page.waitForFunction(
+    () =>
+      location.pathname === '/library' &&
+      new URL(location.href).searchParams.get('page') === '1',
+  );
+  await loaded(40);
+  assert.equal((await state()).loadingMode, 'pages');
+  report.checks.push(
+    'Sidebar upload→library starts the saved paginated query without a reload.',
+  );
+  await page.goto(`${config.origin}/library?q=issue173-&pageSize=40`);
+  await loaded(40);
   await select('图片加载方式', '加载更多');
   await loaded(40);
   await page.click('[data-testid="library-load-more"]');

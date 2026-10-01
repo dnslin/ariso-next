@@ -138,19 +138,15 @@ export function useLibraryQuery(
   useEffect(() => {
     if (!initializing || preferences === null) return;
     if (!queryError && !hasPage && preferredLoadingMode === 'pages') {
-      void setParams({ page: '1' }, { history: 'replace' });
+      // Commit initialization directly: navigation can cancel nuqs' queued update.
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', '1');
+      window.history.replaceState(null, '', url);
       return;
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Finish URL initialization after the navigation adapter has published it.
     setInitializing(false);
-  }, [
-    initializing,
-    preferences,
-    queryError,
-    hasPage,
-    preferredLoadingMode,
-    setParams,
-  ]);
+  }, [initializing, preferences, queryError, hasPage, preferredLoadingMode]);
   const loadingMode: LibraryLoadingMode = hasPage ? 'pages' : 'more';
   const queryKey = libraryListKey(filters, loadingMode, page);
   const enabled =

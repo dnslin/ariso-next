@@ -177,3 +177,15 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 仅在相册边框覆盖层补充浅深色透明背景，保留圆角、边框、选择和详情行为。实际修改为LibraryCard的after:bg-transparent和dark:after:bg-transparent。[修改前截图](./feedback/image-overlay/before.png)与[更新预览后截图](./feedback/image-overlay/after.png)记录同一1440×1080深色相册。重新加载后的[页面状态](./feedback/image-overlay/result.json)确认没有临时诊断样式，覆盖层背景rgba(0,0,0,0)，图片与文件名恢复显示。
 
 遵照用户“不重复测试验证”的指示，没有重跑整套单元、集成、浏览器、设计矩阵或独立审计。只为更新预览执行必要的生产构建（退出0，见[输出](./feedback/image-overlay/build.txt)），保留原数据与会话密钥更新预览（见[记录](./feedback/image-overlay/preview.txt)），并检查本次遮挡。既有完整验证数字属于前轮，不作为本次再次执行的结果。本次仍待用户人工验收，PR保持草稿。
+
+## 人工反馈：侧栏回图库一直加载（2026-10-01）
+
+实际复现保存pages偏好后，从相册侧栏进入/library：页面一直显示LibraryLoading，未写入page=1，也没有图库列表请求。[失败状态](./feedback/sidebar-loading/before.json)和[实际页面](./feedback/sidebar-loading/before.png)保留。直接以原生history.replaceState补page=1后，原页面立即加载，确认阻塞在初始化，而不是图片文件或接口。nuqs的初始化排队更新会被站内导航清理，本页面却仍等待页码发布才允许查询。
+
+仅将这次分页偏好的URL初始化改为Next既有支持的原生replaceState，沿用相同路径和全部查询参数；筛选、页码切换、加载方式及历史恢复仍用原实现。不增加重试、超时或强制刷新，也不修改偏好与会话。e2e/library-query.mjs增加真实上传侧栏→图库回归步骤，验证无需刷新即进入page=1、加载40项并沿用pages模式；原模式历史断言保留。
+
+为更新预览执行[生产构建](./feedback/sidebar-loading/build.txt)（退出0）并[保留原数据/会话更新服务](./feedback/sidebar-loading/preview.txt)。实际新版上传→侧栏图库[定向检查通过](./feedback/sidebar-loading/after.json)，40项、图片已解码、pages模式，观察到一次pushState进入/library及replaceState补page=1，未新增初始化历史项；[实际截图](./feedback/sidebar-loading/after.png)保留。诊断最初用history.length+1判断新增项，遇Chrome历史已有50项上限，改为严格观察实际push/replace调用；不是产品失败，没有放宽页码、模式或图片数量断言。
+
+按用户要求没有重跑整套单元、集成、完整浏览器或设计矩阵。新增正式e2e步骤未运行完整查询套件，本次只执行同一路径的真实浏览器定向检查。此前测试总数属于历史结果，不能视为本次再次执行。PR继续草稿，用户人工验收待完成。
+
+本轮[独立有限代码复核](./code-audit.md#侧栏图库初始化修复的有限复核2026-10-01)已读取Next/nuqs真实实现与本轮两文件，未发现可证实的P1/P2；未重新运行测试或审计历史改动。

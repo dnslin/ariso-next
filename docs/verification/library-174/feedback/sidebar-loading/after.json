@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "checks": [
+    "Actual sidebar upload→library loads 40 images without reloading the library.",
+    "The navigation has one pushState; page=1 initialization uses replaceState.",
+    "The saved pagination preference and original login remain effective."
+  ],
+  "result": {
+    "url": "http://issue174.localhost:3175/library?page=1",
+    "loading": false,
+    "mode": "pages",
+    "loaded": 40,
+    "firstImage": 64,
+    "historyCalls": [
+      {
+        "method": "pushState",
+        "url": "/library"
+      },
+      {
+        "method": "replaceState",
+        "url": "http://issue174.localhost:3175/library?page=1"
+      },
+      {
+        "method": "replaceState",
+        "url": "/library?page=1"
+      }
+    ],
+    "preference": "{\"layout\":\"grid\",\"loadingMode\":\"pages\"}"
+  }
+}
