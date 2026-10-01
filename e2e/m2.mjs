@@ -63,7 +63,7 @@ try {
   await page.waitForFunction(
     () =>
       document.querySelector('#email') ||
-      document.querySelector('input[type=file]'),
+      document.querySelector('input[aria-label="选择图片文件"]'),
   );
   if (new URL(await page.url()).pathname === '/login') {
     await page.fill('#email', config.credentials.email);
@@ -88,18 +88,22 @@ try {
       );
     }
   }
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   if (config.phase === 'before') {
     report.core = await verifyM2Core({ task, page, config, sql, report });
     await page.goto(`${config.origin}/upload`);
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
     // Hold only scheduling of a genuinely accepted upload. Restart must recover
     // its persisted running job without creating another image or submission.
     await sql(
       "CREATE TRIGGER m2_hold_job AFTER INSERT ON media_jobs BEGIN UPDATE media_jobs SET status='running' WHERE id=NEW.id; END",
     );
     try {
-      await page.setInputFiles('input[type=file]', [source]);
+      await page.setInputFiles('input[aria-label="选择图片文件"]', [source]);
       await page.waitForSelector(
         '[data-testid="upload-item"][data-state="queued"]',
       );

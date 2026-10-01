@@ -83,3 +83,37 @@
 实际执行 `gh pr view 221 --repo dnslin/ariso-next --json number,url,isDraft,state,headRefName,baseRefName,statusCheckRollup,mergeStateStatus`，回读为OPEN、draft=true，head为本分支、base=main、statusCheckRollup=[]。当前没有远端检查，不记为CI通过，也不等待不存在的工作流。`gh issue view 159 --repo dnslin/ariso-next --json number,state,url` 回读仍OPEN。
 
 推送首次阻塞于macOS凭据助手，取消等待后仅在当前命令使用已有 `gh auth git-credential` 及用户提供的本机代理成功推送，未修改全局凭据或代理配置。PR保持草稿；不合并、不关闭Issue、不发布、不部署、不删除分支或worktree。独立测试实例与临时数据已清理；截图、报告和原工作区保留。
+
+## 2026-10-01 重新复测与人工验收
+
+按用户要求重新使用现有 Ego Lite，同一 Space11，Node24.18.1 / pnpm11.19.0 / Darwin arm64。复测与人工预览各使用独立生产实例、账号和数据目录，不读写用户原预览数据。
+
+首轮完整复测 `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=test-results/browser-159-retest pnpm run test:browser`：此前登录实际重试窗口场景在桌面和手机均通过，随后 M2 桌面用例因旧 `input[type=file]` 同时匹配普通与目录入口而失败。已将 `e2e/m2.mjs` 与 `e2e/m2-core.mjs` 的入口精确为 `input[aria-label="选择图片文件"]`；保留全部断言、数据、超时和重启流程。独立代码审计确认这项测试适配通过，两个文件的语法与差异检查通过。完整复跑结果记录在下文，不用历史结果代替。
+
+适配后完整复跑 `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=test-results/browser-159-retest-fixed pnpm run test:browser`：1440/390身份初始化与重启、桌面M2、交互、队列连续性以及存储CORS通过；随后图库用例达到运行器原有300000ms超时，整体失败，尚未执行后续上传套件。末次图库截图为剪贴板拒绝反馈；终止后实际Ego页面仍显示“中文下载样本.png”的压缩图详情。本记录不据此断言超时根因，不放宽超时，也不修改范围外图库实现。[首轮失败](./reports/retest-selector-runner.json)与[适配后运行器](./reports/retest-full-runner.json)、[超时记录](./reports/retest-full-failure.txt)已归档。
+
+专项复测 `EGO_TASK_SPACE=11 node docs/verification/upload-159/run-browser.mjs native-chooser`：原生目录枚举仍返回 `cancel`、0文件，选择器失败断言保留；[真实结果](./reports/retest-native.json)与[运行器](./reports/retest-native-runner.json)已归档。人工选择器验收仍待进行。
+
+专项诊断 `EGO_TASK_SPACE=11 node docs/verification/upload-159/run-browser.mjs directory-drag-diagnostic`：真实拖入目录的11场景、58组布局以及短视口复测通过。覆盖普通多选、目录/文件拖入、真实图片粘贴、混合拒绝、读取失败、停止/Escape/迟到回调、500名额含真实ready结果、清空及释放。运行器仍明确标为 **partial**，不替代失败的原生目录选择或完整套件。[专项结果](./reports/retest-directory-drag.json)、[诊断运行器](./reports/retest-directory-drag-runner.json)和[本轮真实截图](./browser-retest/)已归档；截图数量不替代设计与人工验收。权限/延迟仍为明确的边界故障注入，剪贴板已恢复，测试实例及临时数据已清理。
+
+既有上传回归 `EGO_TASK_SPACE=11 TARGET_SOURCE=/Volumes/data/project/ariso/e2e/upload.mjs TARGET_OUTPUT=test-results/upload-159-regression-retest node /tmp/ariso-159-retest-target.mjs`：15场景、130组布局通过，[结果摘要](./reports/retest-upload-regression.json)与[运行器](./reports/retest-upload-regression-runner.json)已归档。原始逐控件报告及130组截图保留在本地 `test-results/upload-159-regression-retest`，不改变测试断言。临时实例已清理。此专项通过不替代完整浏览器失败。
+
+轮询专项 `EGO_TASK_SPACE=11 TARGET_SOURCE=/Volumes/data/project/ariso/e2e/upload-polling.mjs TARGET_OUTPUT=test-results/upload-159-polling-retest node /tmp/ariso-159-retest-target.mjs`：4场景通过，[结果](./reports/retest-upload-polling.json)与[运行器](./reports/retest-upload-polling-runner.json)已归档。临时实例及测试数据已清理；人工预览另有独立实例，保留运行供用户验收。
+
+本轮仅适配两份旧测试的普通文件入口。`pnpm run lint`、`pnpm run format:check`、两份脚本 `node --check`、`node docs/tasks/check.mjs` 与 `git diff --check` 已通过；证据最终修订后再次执行格式与文档检查。上传业务和设计没有变动，沿用上文已完成的独立代码与设计审计，并补充上述独立测试适配审计。完整浏览器超时、目录原生选择器及人工UI验收仍未通过，PR继续保持草稿，远端检查仍为空。
+
+### 人工验收清单
+
+先验原生文件夹选择，再验日常操作与设计。人工素材放在本地 `test-results/upload-159-manual/`，不会提交到仓库；`nested` 含两个子目录下的同名图片、空目录和文本，`mixed` 含正常、空、非图片和超过50MiB的文件，`capacity-501` 含501张小图片。容量场景开始前刷新页面清空当前队列。
+
+| 人工操作                                                                   | 预期结果                                                                                                      |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 点击“选择文件夹”，在系统选择器选择 `nested`                                | 两张同名图片分别入队；空目录不产生项目，文本归为不支持；没有目录层级或自动上传。此项用于补齐原生选择器证据。  |
+| 从系统拖入文件/目录；再次选择同一文件；复制真实截图后按⌘V                  | 拖入与递归扫描可用，重复文件是独立项目；截图生成可用名称。文本或URL粘贴不加入队列。                           |
+| 选择 `mixed`；扫描大目录时点击停止或按Escape                               | 正常图片保留；空文件、大小、格式分别汇总。停止后保留已加入项、不再追加，随后还能重新输入。                    |
+| 刷新后选择 `capacity-501`，再实际上传一张图片                              | 仅500项入队并显示满额说明；点击开始上传才上传。完成结果仍占名额；清空已完成只清队列记录，图库图片仍存在。     |
+| 对照本记录Figma和网页截图，检查桌面/手机与浅深色；缩短窗口并使用Tab/Escape | 整页、公共区域、输入区及扫描/停止/汇总/满额弹窗符合设计；窄屏与短视口可滚动到操作，焦点可见，关闭后回到入口。 |
+
+人工预览已在Ego的“Issue 159 复测与人工验收”Space11打开并登录上传页，已调用 `handOff()` 将控制交给用户。服务使用本地独立的 `test-results/upload-159-preview/data`，留在运行状态；同目录保存预览截图和临时账号访问文件，不提交账号信息。当前地址为 `http://ariso-preview-62213.localhost:62213/upload`。另已请求在Codex面板打开，工具返回queued，等待当前任务被显示时打开。
+
+这些操作待用户亲自执行，不因自动化或独立设计审计通过而标记人工验收完成。

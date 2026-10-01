@@ -1,0 +1,19 @@
+ElementResolutionError: Selector input[type=file] matched 2 elements (0 visible, 2 hidden). Candidates: 1. input "选择图片文件" (hidden); 2. input "选择图片文件夹" (hidden). Use a current snapshot ref or a more specific role, text, or CSS selector.
+    at ambiguityError (file:////[eval1]:10631:12)
+    at rawSelectorCountError (file:////[eval1]:10176:12)
+    at async findUniqueRawSelectorContext (file:////[eval1]:10140:15)
+    at async resolveRawSelectorObjectId (file:////[eval1]:10080:19)
+    at async setInputFilesInPage (file:////[eval1]:15209:22)
+    at async #retryElementAction (file:////[eval1]:18867:24)
+    at async file:////[eval1]:18968:29
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (m2-1440-before.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/scripts/verify-browser.mjs:274:14)
+    at async file:///Volumes/data/project/ariso/scripts/verify-browser.mjs:373:5
+Browser report: /Volumes/data/project/ariso/test-results/browser-159-retest
+[ELIFECYCLE] Command failed with exit code 1.
