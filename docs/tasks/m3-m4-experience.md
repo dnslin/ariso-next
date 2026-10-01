@@ -83,10 +83,10 @@ T-COL-02 复用 OwnerShell 的品牌、导航、账号和手机菜单；仅在�
 - 验证方法：真实关系数据覆盖跨页第一公开图、加入同值、临时回退/恢复、移出再加入、文件丢失；浏览器触摸选择/切回自动、内容筛选固定顺序。
 - 界面：所有者 /albums/{albumId}；成员与封面身份来自 collections，thumbnail 经 delivery。桌面[38:378](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=38-378)、手机[102:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4002)、桌面状态[282:1724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1724)、手机状态[282:4070](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4070)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Card](https://heroui.com/en/docs/react/components/card)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Alert](https://heroui.com/en/docs/react/components/alert)。封面异常另见 [282:1979](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1979) / [282:4244](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4244)；DG-ALBUMS 核对 DES-04，手机封面选择页保留图片名称/状态；用户于 2026-10-01 明确决定不添加相册名称/短 ID，见下方核对记录。响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
-  - [ ] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
+  - [x] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。
+  - [x] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。
 
-实施与验证记录：[T-COL-04 / Issue #180](../verification/collections-180/README.md)。封面身份、读写与真实页面已完成本地适用检查和独立审计；用户已取消选择页新增相册名称/短 ID 的要求。用户最终人工验收尚未完成，本卡不标记完成。成员批量操作与匿名分享仍由各自后置任务承接。
+实施与验证记录：[T-COL-04 / Issue #180](../verification/collections-180/README.md)。封面身份、读写与真实页面已完成本地适用检查和独立审计；用户已取消选择页新增相册名称/短 ID 的要求。2026-10-01 用户明确授权合并 PR #223、清理本地分支并关闭 Issue #180，按该指令完成本卡收尾；不把合并授权写成另一次逐项人工测试通过。成员批量操作与匿名分享仍由各自后置任务承接。
 
 #### DG-ALBUMS 对 T-COL-04 的核对结论（2026-09-28）
 
