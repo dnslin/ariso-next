@@ -1,4 +1,3 @@
-import { requireLocalStorage } from '../storage/settings.ts';
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { getImageAccessState } from '../media/images.ts';
@@ -36,7 +35,6 @@ export function selectImageDelivery(
     .where(eq(storageConfigs.id, image.storageId))
     .get();
   if (!storage) throw new Error(`Missing image storage: ${image.storageId}`);
-  requireLocalStorage(storage);
   if (!storage.enabled) throw deliveryError('STORAGE_DISABLED');
   const resolved = resolveImageVersion(
     state,

@@ -43,7 +43,7 @@ export function configuration(
   return config;
 }
 export function clientConfig(
-  context: ProbeContext,
+  context: Pick<ProbeContext, 'secretCrypto'>,
   config: StorageConfig,
 ): S3StorageConfig {
   if (!config.accessKeyEncrypted || !config.secretKeyEncrypted)
