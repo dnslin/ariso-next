@@ -169,3 +169,11 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 本轮人工反馈修复、最终验证和独立复审已提交推送，源码提交为 `3e871a5`。推送后发现主分支新增 #159 交接记录，唯一冲突是同一文档末尾的并发追加；本轮只调整 #174 节的位置，正文原样保留，没有合并或修改主分支业务代码。[实际合并检查](./feedback/handoff-merge-check.txt)通过，合并结果同时保留 #174 与 #159 记录。生成的上传异常输入文件已移至本机忽略的原始归档，不作为PR交付文件；测试报告与实际断言不变。
 
 修正文档后再次推送并执行 `gh pr view 222` 与 `gh pr checks 222`：[最新状态快照](./feedback/pr-final-state.json)为 OPEN / draft / MERGEABLE，远端代码提交已核对；[实际检查输出](./feedback/pr-final-checks.txt)仍为 no checks reported。该快照记录证据补充提交之前的查询时点，最后提交推送后再次只读核对，不把空检查列表视为CI通过。Ego TaskSpace 8已完成并保留p1人工预览，3175服务、原数据、会话及worktree均保留。用户人工UI验收仍待完成。
+
+## 人工反馈：相册卡片图片被遮挡（2026-10-01）
+
+用户截图揭示实际相册卡片为空白；此前设计验收漏检，不能把该遮挡解释为图像工具差异。真实页面中缩略图已加载且naturalWidth为64，API与缩略图HTTP200，但卡片的边框伪元素位于z-index20，计算背景为不透明的rgb(34,37,47)，遮住图片和文字。HeroUI生成的dark:bg-surface规则同时作用于元素及before/after。
+
+仅在相册边框覆盖层补充浅深色透明背景，保留圆角、边框、选择和详情行为。实际修改为LibraryCard的after:bg-transparent和dark:after:bg-transparent。[修改前截图](./feedback/image-overlay/before.png)与[更新预览后截图](./feedback/image-overlay/after.png)记录同一1440×1080深色相册。重新加载后的[页面状态](./feedback/image-overlay/result.json)确认没有临时诊断样式，覆盖层背景rgba(0,0,0,0)，图片与文件名恢复显示。
+
+遵照用户“不重复测试验证”的指示，没有重跑整套单元、集成、浏览器、设计矩阵或独立审计。只为更新预览执行必要的生产构建（退出0，见[输出](./feedback/image-overlay/build.txt)），保留原数据与会话密钥更新预览（见[记录](./feedback/image-overlay/preview.txt)），并检查本次遮挡。既有完整验证数字属于前轮，不作为本次再次执行的结果。本次仍待用户人工验收，PR保持草稿。

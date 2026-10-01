@@ -154,3 +154,7 @@
 已独立读取[桌面身份与会话报告](./feedback/full-browser/identity-1440-restart.json)和[手机身份与会话报告](./feedback/full-browser/identity-390-restart.json)的sessionChecks，两端均passed：真实有效所有者会话从首页“登录”进入既有后台目标/upload，无登录表单；已有本地returnTo=/library得到遵守，外部目的地被拒绝并回/upload。实际断言与既有目的地规则一致，没有设计新的登录后页面。另读取[最终公共外壳](./feedback/full-browser/owner-shell.json)、[完整导航](./feedback/full-browser/shell-navigation.json)、[图库行为](./feedback/full-browser/library.json)和[相册行为](./feedback/full-browser/albums.json)检查项，确认菜单第一次Escape回焦、全消费路由当前项与公共区域、相册/短视口行为验证。最终公共及UI源码自navigation-final截图后未变，因此本轮视觉基准保留上述已实际查看的76张不可覆盖图片，不使用旧截图代替。
 
 本轮独立功能与设计复验均通过。用户人工设计验收仍待完成，PR应保留草稿；agent结论不代表用户已验收。物理手机/软键盘/非零安全区未实测，发布镜像与容器执行边界沿现有约定，不标记这些项目通过。
+
+## 用户发现的漏检更正（2026-10-01）
+
+用户后续截图确认相册卡片的空白是实际产品遮挡，不是图像差异呈现。此前关于该空白误判已撤回的结论不成立；本轮设计验收漏检了不透明的边框伪元素。实现者已只修正该覆盖层为透明，并实际更新预览，前后截图和原因统一见[交付记录的本次反馈](./README.md#人工反馈相册卡片图片被遮挡2026-10-01)。按用户要求未重跑设计矩阵或独立评审，不能沿用此前通过结论称本次已完成独立复验；本次用户人工验收仍待完成。
