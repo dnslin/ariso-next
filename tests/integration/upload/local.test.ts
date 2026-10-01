@@ -10,6 +10,8 @@ import { collectionFixture } from '../collections/helpers.ts';
 import {
   createAlbum,
   deleteAlbum,
+  deleteTag,
+  getOrCreateTags,
 } from '../../../src/server/collections/records.ts';
 import {
   albumImages,
@@ -30,7 +32,15 @@ import {
 import {
   createSubmission,
   getSession,
+  cancelSession,
 } from '../../../src/server/upload/sessions.ts';
+import { patchMediaSettings } from '../../../src/server/media/settings.ts';
+import {
+  createWatermarkAsset,
+  cleanupWatermarkAssets,
+  getWatermarkAsset,
+} from '../../../src/server/media/watermark-assets.ts';
+import { hasUploadWatermarkReference } from '../../../src/server/upload/watermark-references.ts';
 import { receiveSession } from '../../../src/server/upload/receive.ts';
 import {
   cleanupSession,
@@ -95,13 +105,14 @@ function assertNoAssets() {
 }
 
 describe('real local upload reception and ownership', () => {
-  async function processNext() {
+  async function processNext(watermarksRoot?: string) {
     const job = claimNextMediaJob(fixture.db)!;
     expect(job).not.toBeNull();
     await processMediaJob(
       {
         ...fixture,
         temporaryRoot: join(fixture.storageRoot, 'processing-tmp'),
+        watermarksRoot,
         logger: { info() {}, error() {} },
       },
       job.id,
@@ -112,6 +123,93 @@ describe('real local upload reception and ownership', () => {
       .where(eq(mediaJobs.id, job.id))
       .get()!;
   }
+
+  it('retains actual image watermark A for all 45 frozen files while new submissions use B, then releases A after the last pending group terminates', async () => {
+    const { db } = fixture;
+    const watermarksRoot = join(fixture.storageRoot, 'watermarks');
+    const context = {
+      db,
+      watermarksRoot,
+      hasUploadReference: hasUploadWatermarkReference,
+    };
+    const a = await createWatermarkAsset(
+      context,
+      bytes,
+      new AbortController().signal,
+    );
+    patchMediaSettings(db, { watermarkMode: 'image', watermarkAssetId: a.id });
+    const first = createSubmission(db, {
+      requestId: 'image-watermark-A',
+      files: Array.from({ length: 45 }, (_, index) => ({
+        queueItemId: `q${index}`,
+        originalName: 'photo.png',
+        declaredSize: bytes.length,
+      })),
+    });
+    expect(
+      [0, 1, 2].map(
+        (group) => first.sessions.filter((s) => s.groupIndex === group).length,
+      ),
+    ).toEqual([20, 20, 5]);
+    expect(first.snapshot.watermarkAsset).toMatchObject({
+      id: a.id,
+      path: a.path,
+      byteSize: bytes.length,
+    });
+    const b = await createWatermarkAsset(
+      context,
+      bytes,
+      new AbortController().signal,
+    );
+    patchMediaSettings(db, { watermarkAssetId: b.id });
+    const next = submission('image-watermark-B');
+    expect(next.snapshot.watermarkAsset?.id).toBe(b.id);
+
+    const accepted = await receive(first.sessions[0].id);
+    expect(
+      db.select().from(mediaJobs).where(eq(mediaJobs.id, accepted.jobId!)).get()
+        ?.snapshot.watermarkAsset?.id,
+    ).toBe(a.id);
+    expect((await processNext(watermarksRoot)).status).toBe('succeeded');
+    expect(
+      db
+        .select()
+        .from(mediaVersions)
+        .where(eq(mediaVersions.kind, 'watermark'))
+        .all(),
+    ).toHaveLength(1);
+    expect(await cleanupWatermarkAssets(context)).toEqual([]);
+    expect(await readFile(join(watermarksRoot, a.path))).toEqual(bytes);
+
+    // A later group still hands the same immutable source to media after B is selected.
+    const middle = first.sessions.find((s) => s.groupIndex === 1)!;
+    const acceptedMiddle = await receive(middle.id);
+    expect(
+      db
+        .select()
+        .from(mediaJobs)
+        .where(eq(mediaJobs.id, acceptedMiddle.jobId!))
+        .get()?.snapshot.watermarkAsset?.id,
+    ).toBe(a.id);
+    expect((await processNext(watermarksRoot)).status).toBe('succeeded');
+    const last = first.sessions.at(-1)!;
+    for (const session of first.sessions)
+      if (![accepted.id, acceptedMiddle.id, last.id].includes(session.id))
+        cancelSession(db, session.id);
+    expect(await cleanupWatermarkAssets(context)).toEqual([]);
+    expect(getWatermarkAsset(db, a.id)?.status).toBe('ready');
+    expect(await readFile(join(watermarksRoot, a.path))).toEqual(bytes);
+    cancelSession(db, last.id);
+    expect(await cleanupWatermarkAssets(context)).toEqual([]);
+    expect(getWatermarkAsset(db, a.id)?.status).toBe('deleted');
+    await expect(stat(join(watermarksRoot, a.path))).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
+    expect(getWatermarkAsset(db, b.id)?.status).toBe('ready');
+    expect(await readFile(join(watermarksRoot, b.path))).toEqual(bytes);
+    expect(getSession(db, accepted.id).state).toBe('accepted');
+    expect(getSession(db, next.sessions[0].id).state).toBe('queued');
+  });
 
   it('keeps accepted work after the request disconnects during actual inspection and processes it to ready', async () => {
     const session = submission().sessions[0];
@@ -254,6 +352,94 @@ describe('real local upload reception and ownership', () => {
     await expect(
       stat(filePath(`original/${session.candidateImageId}.png`)),
     ).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  it('keeps an accepted file while a deleted tag fails the next file instead of binding its same-name replacement', async () => {
+    const { db } = fixture;
+    const [tag] = db.transaction((tx) => getOrCreateTags(tx, ['原标签']));
+    const batch = createSubmission(db, {
+      requestId: 'selected-tag',
+      tagIds: [tag.id],
+      files: [0, 1].map((index) => ({
+        queueItemId: `q${index}`,
+        originalName: 'same.png',
+        declaredSize: bytes.length,
+      })),
+    });
+    const first = await receive(batch.sessions[0].id);
+    db.transaction((tx) => deleteTag(tx, tag.id));
+    const [replacement] = db.transaction((tx) =>
+      getOrCreateTags(tx, ['原标签']),
+    );
+    expect(replacement.id).not.toBe(tag.id);
+    await expect(receive(batch.sessions[1].id)).rejects.toMatchObject({
+      code: 'COLLECTION_TARGET_REMOVED',
+    });
+    expect(getSession(db, first.id)).toMatchObject({
+      state: 'accepted',
+      imageId: first.imageId,
+    });
+    expect(db.select().from(mediaImages).all()).toHaveLength(1);
+    expect(db.select().from(mediaJobs).all()).toHaveLength(1);
+    expect(db.select().from(imageTags).all()).toEqual([]);
+    expect(getSession(db, batch.sessions[1].id)).toMatchObject({
+      state: 'failed',
+      imageId: null,
+      jobId: null,
+      errorCode: 'COLLECTION_TARGET_REMOVED',
+      cleanupStatus: 'none',
+      temporaryKey: null,
+      finalKey: null,
+    });
+  });
+
+  it('settles cancellation during image validation before ownership transfer and removes the original candidate', async () => {
+    const runtime = startUploadRuntime({
+      ...fixture,
+      logger: { info() {}, error() {} },
+    });
+    const session = submission('validation-cancel').sessions[0];
+    let entered!: () => void;
+    let release!: () => void;
+    const started = new Promise<void>((resolve) => {
+      entered = resolve;
+    });
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const inspect = formats.identifyImageFile;
+    vi.spyOn(formats, 'identifyImageFile').mockImplementationOnce(
+      async (...args) => {
+        entered();
+        await gate;
+        return inspect(...args);
+      },
+    );
+    try {
+      const receiving = runtime.receive(session.id, request());
+      const failed = expect(receiving).rejects.toBeDefined();
+      await started;
+      expect(getSession(fixture.db, session.id).state).toBe('validating');
+      const cancelled = runtime.cancel(session.id);
+      expect(getSession(fixture.db, session.id).state).toBe('cancelled');
+      release();
+      expect(await cancelled).toMatchObject({
+        state: 'cancelled',
+        imageId: null,
+        jobId: null,
+        cleanupStatus: 'none',
+        temporaryKey: null,
+        finalKey: null,
+      });
+      await failed;
+      assertNoAssets();
+      await expect(
+        stat(filePath(`uploads/${session.id}.partial`)),
+      ).rejects.toMatchObject({ code: 'ENOENT' });
+    } finally {
+      release();
+      await runtime.stop();
+    }
   });
 
   it('rolls back every ownership row after a SQLite acceptance failure and deletes the published candidate', async () => {

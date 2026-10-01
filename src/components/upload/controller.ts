@@ -9,6 +9,7 @@ import type {
   CreateUploadTransport,
   UploadItem,
   UploadSessionResult,
+  UploadSelection,
   UploadSubmissionResult,
   UploadTransport,
 } from './types.ts';
@@ -69,6 +70,9 @@ export class UploadController {
   }
   get snapshot() {
     return this.items;
+  }
+  updateLimits(limits: { maxFileBytes: number; queueLimit: number }) {
+    Object.assign(this.options, limits);
   }
   getSnapshot = () => this.items;
   subscribe = (listener: () => void) => {
@@ -243,6 +247,10 @@ export class UploadController {
         submissionId: result.id,
         storageId: result.storageId,
         visibility: result.visibility,
+        groupIndex: session.groupIndex,
+        batchSize: result.batchSize,
+        albumIds: [...result.albumIds],
+        tagIds: [...result.tagIds],
         ...(initial && session.state === 'queued'
           ? { state: 'waiting-upload' as const }
           : {}),
@@ -250,7 +258,11 @@ export class UploadController {
       this.applySession(entry, session);
     }
   }
-  async start(visibility: 'public' | 'private', storageId?: string) {
+  async start(
+    visibility: 'public' | 'private',
+    storageId?: string,
+    selection: UploadSelection = { albumIds: [], tagIds: [] },
+  ) {
     const entries = [...this.entries.values()].filter(
       (entry) => entry.item.state === 'queued' && !entry.batch,
     );
@@ -266,6 +278,8 @@ export class UploadController {
           declaredSize: item.size,
         })),
         visibility,
+        albumIds: [...selection.albumIds],
+        tagIds: [...selection.tagIds],
         ...(storageId ? { storageId } : {}),
       }),
     };

@@ -27,6 +27,10 @@ export type UploadItem = {
   visibility?: 'public' | 'private';
   storageId?: string;
   submissionId?: string;
+  groupIndex?: number;
+  batchSize?: number;
+  albumIds?: readonly string[];
+  tagIds?: readonly string[];
   sessionId?: string;
   imageId?: string;
   jobId?: string;
@@ -55,9 +59,14 @@ export type UploadSessionResult = Pick<
 };
 export type UploadSubmissionResult = Pick<
   SubmissionResponse,
-  'id' | 'storageId' | 'visibility'
+  'id' | 'storageId' | 'visibility' | 'batchSize' | 'albumIds' | 'tagIds'
 > & {
   sessions: UploadSessionResult[];
+};
+
+export type UploadSelection = {
+  albumIds: readonly string[];
+  tagIds: readonly string[];
 };
 
 export type UploadTransport = {

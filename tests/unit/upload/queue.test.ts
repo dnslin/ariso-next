@@ -27,6 +27,9 @@ function setup(batchSize = 20, queueLimit = 20) {
         id: `batch-${batches.length}`,
         storageId: 'local',
         visibility: input.visibility,
+        batchSize,
+        albumIds: input.albumIds,
+        tagIds: input.tagIds,
         sessions: input.files.map(
           (file: { queueItemId: string }, index: number) => ({
             id: `${batches.length}-${index}`,
@@ -120,7 +123,10 @@ function setup(batchSize = 20, queueLimit = 20) {
 it('freezes a shared submission, leaves additions for next start and shares three slots across submissions', async () => {
   const c = setup();
   c.add(2);
-  const first = c.controller.start('private');
+  const first = c.controller.start('private', undefined, {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+  });
   await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
   c.add(3);
   expect(
@@ -129,7 +135,10 @@ it('freezes a shared submission, leaves additions for next start and shares thre
   expect(
     c.request.mock.calls.filter(([, init]) => init?.method === 'POST'),
   ).toHaveLength(1);
-  const second = c.controller.start('public');
+  const second = c.controller.start('public', undefined, {
+    albumIds: ['album-b'],
+    tagIds: ['tag-b'],
+  });
   await vi.waitFor(() => expect(c.transports[2].upload).toHaveBeenCalledOnce());
   expect(c.transports[3].upload).not.toHaveBeenCalled();
   expect(c.peak()).toBe(3);
@@ -138,6 +147,14 @@ it('freezes a shared submission, leaves additions for next start and shares thre
   ).toEqual([
     ['private', 2],
     ['public', 3],
+  ]);
+  expect(
+    c.controller.snapshot.slice(0, 2).map((item) => item.albumIds),
+  ).toEqual([['album-a'], ['album-a']]);
+  expect(c.controller.snapshot.slice(2).map((item) => item.tagIds)).toEqual([
+    ['tag-b'],
+    ['tag-b'],
+    ['tag-b'],
   ]);
   c.settle(0);
   await vi.waitFor(() => expect(c.transports[3].upload).toHaveBeenCalledOnce());
@@ -270,4 +287,54 @@ it('merges overlapping item queries into one submission read without losing per-
     'image-0',
     'image-1',
   ]);
+});
+
+it('freezes relation IDs per submission and preserves groups of 20/20/5 across setting edits', async () => {
+  const c = setup(20, 50);
+  c.add(45);
+  const selection = { albumIds: ['album-a'], tagIds: ['tag-a'] };
+  const first = c.controller.start('private', 'local', selection);
+  selection.albumIds[0] = 'album-b';
+  selection.tagIds.push('tag-b');
+  await vi.waitFor(() => expect(c.transports[2].upload).toHaveBeenCalledOnce());
+  const metadata = JSON.parse(c.request.mock.calls[0][1]!.body as string);
+  expect(metadata).toMatchObject({ albumIds: ['album-a'], tagIds: ['tag-a'] });
+  expect(c.controller.snapshot.map((item) => item.groupIndex)).toEqual([
+    ...Array(20).fill(0),
+    ...Array(20).fill(1),
+    ...Array(5).fill(2),
+  ]);
+  for (let index = 0; index < 45; index++) {
+    await vi.waitFor(() =>
+      expect(c.transports[index].upload).toHaveBeenCalledOnce(),
+    );
+    c.settle(index, 'failed');
+  }
+  await first;
+  expect(c.peak()).toBe(3);
+  expect(
+    c.controller.snapshot.every(
+      (item) => item.albumIds?.[0] === 'album-a' && item.tagIds?.length === 1,
+    ),
+  ).toBe(true);
+});
+
+it('applies refreshed limits to new additions without clearing current files or results', () => {
+  const c = setup(20, 2);
+  c.add(2);
+  const before = c.controller.snapshot;
+  c.controller.updateLimits({ maxFileBytes: 1, queueLimit: 3 });
+  expect(c.controller.snapshot).toBe(before);
+  expect(c.controller.add(new File(['xx'], 'large.png'))).toMatchObject({
+    reason: 'size',
+  });
+  c.add(1);
+  c.controller.updateLimits({ maxFileBytes: 100, queueLimit: 1 });
+  expect(c.controller.snapshot).toHaveLength(3);
+  expect(c.controller.add(new File(['x'], 'extra.png'))).toMatchObject({
+    reason: 'capacity',
+  });
+  c.transports.forEach((transport) =>
+    expect(transport.destroy).not.toHaveBeenCalled(),
+  );
 });

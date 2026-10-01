@@ -1,5 +1,6 @@
 import { asc, eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
+import { albums, tags } from '../collections/schema.ts';
 import { readMediaSettings } from '../media/settings.ts';
 import { storageConfigs, storageSettings } from '../storage/schema.ts';
 import { UploadError } from './errors.ts';
@@ -11,6 +12,7 @@ export function readUploadPageSettings(db: BetterSQLite3Database) {
     const upload = tx
       .select({
         maxFileBytes: uploadSettings.maxFileBytes,
+        batchSize: uploadSettings.batchSize,
         queueLimit: uploadSettings.queueLimit,
       })
       .from(uploadSettings)
@@ -30,9 +32,20 @@ export function readUploadPageSettings(db: BetterSQLite3Database) {
       );
     return {
       maxFileBytes: upload.maxFileBytes,
+      batchSize: upload.batchSize,
       queueLimit: upload.queueLimit,
       defaultVisibility: media.defaultVisibility,
       defaultStorageId: storage.defaultStorageId,
+      albums: tx
+        .select({ id: albums.id, name: albums.name })
+        .from(albums)
+        .orderBy(asc(albums.createdAt), asc(albums.id))
+        .all(),
+      tags: tx
+        .select({ id: tags.id, displayName: tags.displayName })
+        .from(tags)
+        .orderBy(asc(tags.createdAt), asc(tags.id))
+        .all(),
       storages: tx
         .select({
           id: storageConfigs.id,

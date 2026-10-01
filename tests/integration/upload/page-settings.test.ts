@@ -2,6 +2,10 @@ import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mediaSettings } from '../../../src/server/media/schema.ts';
 import {
+  createAlbum,
+  getOrCreateTags,
+} from '../../../src/server/collections/records.ts';
+import {
   storageConfigs,
   storageSettings,
 } from '../../../src/server/storage/schema.ts';
@@ -32,9 +36,12 @@ describe('upload page settings', () => {
     const result = readUploadPageSettings(db);
     expect(result).toEqual({
       maxFileBytes: 12345,
+      batchSize: 20,
       queueLimit: 7,
       defaultVisibility: 'private',
       defaultStorageId: storage.id,
+      albums: [],
+      tags: [],
       storages: expect.arrayContaining([
         { id: storage.id, name: storage.name, enabled: true },
         { id: 'disabled', name: '已停用的本地存储', enabled: false },
@@ -43,6 +50,21 @@ describe('upload page settings', () => {
     expect(result.storages).toHaveLength(2);
     expect(JSON.stringify(result)).not.toContain('localPath');
     expect(JSON.stringify(result)).not.toContain('private/local/path');
+  });
+
+  it('returns actual collection IDs and labels without exposing membership or internal fields', () => {
+    const { db } = fixture;
+    const album = db.transaction((tx) =>
+      createAlbum(tx, { name: '旅行', description: 'private notes' }),
+    )!;
+    const [tag] = db.transaction((tx) => getOrCreateTags(tx, ['夏天']));
+    expect(readUploadPageSettings(db)).toMatchObject({
+      albums: [{ id: album.id, name: '旅行' }],
+      tags: [{ id: tag.id, displayName: '夏天' }],
+    });
+    expect(JSON.stringify(readUploadPageSettings(db))).not.toContain(
+      'private notes',
+    );
   });
 
   it('preserves unset and disabled defaults without selecting another storage', () => {

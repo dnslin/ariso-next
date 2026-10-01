@@ -11,6 +11,7 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
+import { notifyLibraryChanged } from '../library/library-changes';
 import { bytesLabel, stepLabels } from '../library/detail-labels';
 import { useResetUpload } from './provider';
 import { UploadResult, useUploadResult } from './result';
@@ -77,7 +78,48 @@ function ProcessingOptions({
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const [options, setOptions] = useState(false);
+  const [reprocessId, setReprocessId] = useState<string | null>(null);
+  const [reprocessError, setReprocessError] = useState<string | null>(null);
+  const [uncertain, setUncertain] = useState(false);
+  const submitting = useRef(false);
   const optionsTrigger = useRef<HTMLButtonElement | null>(null);
+  async function reprocess() {
+    if (!item.imageId || submitting.current) return;
+    submitting.current = true;
+    onPending(true);
+    setReprocessError(null);
+    try {
+      const response = await fetch(
+        `/api/images/${encodeURIComponent(item.imageId)}/reprocess`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scope: 'all' }),
+          cache: 'no-store',
+        },
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 404)
+          onUnavailable(response.status);
+        if (response.status >= 500) setUncertain(true);
+        throw new Error(`${result.message}（HTTP ${response.status}）`);
+      }
+      setReprocessId(result.jobId);
+      notifyLibraryChanged();
+    } catch (error) {
+      setReprocessError(error instanceof Error ? error.message : String(error));
+      // A disconnected response cannot prove that the server rejected the task.
+      if (error instanceof TypeError || error instanceof SyntaxError)
+        setUncertain(true);
+    } finally {
+      await query.refetch();
+      submitting.current = false;
+      onPending(false);
+    }
+  }
+  const activeJob = query.data?.activeJob;
+  const retryFailed = query.data?.latestFailedJob?.id === reprocessId;
   return (
     <Modal
       isOpen={options}
@@ -97,7 +139,7 @@ function ProcessingOptions({
         isKeyboardDismissDisabled={mutationPending}
       >
         <Modal.Container placement="center" className="p-4">
-          <Modal.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6">
+          <Modal.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6">
             <Modal.Header className="flex flex-row items-center justify-between gap-3">
               <Modal.Heading className="text-xl font-medium leading-normal">
                 原图已保存，图片处理失败
@@ -109,7 +151,7 @@ function ProcessingOptions({
                 onPress={() => setOptions(false)}
               />
             </Modal.Header>
-            <Modal.Body className="grid gap-4 text-sm leading-normal [overflow-wrap:anywhere]">
+            <Modal.Body className="m-0 grid gap-4 p-0 text-sm leading-normal text-foreground [overflow-wrap:anywhere]">
               <div>
                 <p>
                   {item.name} · 图片 ID：{item.imageId}
@@ -124,10 +166,56 @@ function ProcessingOptions({
                 ) : null}
               </div>
               <p className="rounded-lg bg-default p-3 text-[13px]">
-                原图和已保存版本保留。移入回收站不会自动清理文件。
+                原图和已保存版本保留。重新处理使用最新设置，并保留同一图片 ID。
               </p>
+              {reprocessError ? (
+                <p role="alert">
+                  {uncertain ? '重处理提交未确认' : '重处理提交失败'}：
+                  {reprocessError}
+                </p>
+              ) : null}
+              {uncertain ? (
+                <p role="alert">提交结果未知，请在图片详情核对，勿重复提交。</p>
+              ) : activeJob ? (
+                <p role="status">
+                  当前重处理：
+                  {activeJob.status === 'queued' ? '服务端排队' : '处理中'}
+                  {activeJob.step
+                    ? ` · ${stepLabels[activeJob.step] ?? activeJob.step}`
+                    : ''}
+                </p>
+              ) : reprocessId ? (
+                <p role="status">
+                  {retryFailed
+                    ? `重处理失败：${query.data?.latestFailedJob?.error ?? '请查看图片详情'}`
+                    : query.data?.processingStatus === 'ready'
+                      ? '当前图片已重新处理完成。本次上传的首次处理失败记录保留。'
+                      : '重处理已受理，正在读取任务结果…'}
+                </p>
+              ) : null}
             </Modal.Body>
-            <Modal.Footer className="grid gap-4">
+            <Modal.Footer className="mt-0 grid w-full grid-cols-1 justify-stretch gap-4">
+              <Button
+                className="h-12 w-full rounded-lg text-sm font-normal"
+                isDisabled={
+                  mutationPending ||
+                  unavailable ||
+                  query.isPending ||
+                  query.isError ||
+                  !!query.data?.trashedAt ||
+                  !!query.data?.deletionStatus ||
+                  !!activeJob ||
+                  (!!reprocessId &&
+                    !retryFailed &&
+                    query.data?.processingStatus !== 'ready') ||
+                  uncertain
+                }
+                onPress={() => {
+                  void reprocess();
+                }}
+              >
+                {mutationPending ? '正在提交…' : '重新处理'}
+              </Button>
               <Button
                 variant="outline"
                 className="h-12 w-full rounded-lg text-sm font-normal"

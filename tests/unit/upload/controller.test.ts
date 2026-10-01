@@ -22,6 +22,9 @@ function submission(
     id: 'submission',
     storageId: 'local',
     visibility: 'private',
+    batchSize: 20,
+    albumIds: [],
+    tagIds: [],
     sessions: [{ ...queued, ...session }],
   };
 }

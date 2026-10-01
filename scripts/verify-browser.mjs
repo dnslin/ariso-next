@@ -30,6 +30,7 @@ for (const name of [
   'albums.json',
   'album-cover.json',
   'upload.json',
+  'upload-submissions.json',
   'upload-polling.json',
   'upload-input.json',
   'storage-cors.json',
@@ -384,6 +385,12 @@ try {
         'upload-input.log',
       );
       report.uploadInput = 'passed';
+      await runBrowser(
+        '../e2e/upload-submissions.mjs',
+        identityConfig,
+        'upload-submissions.log',
+      );
+      report.uploadSubmissions = 'passed';
       report.upload = 'passed';
       report.library = 'passed';
     }

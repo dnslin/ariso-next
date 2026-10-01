@@ -44,10 +44,13 @@ describe('GET /upload/settings', () => {
     } as ReturnType<typeof getServerRuntime>);
     const settings = {
       maxFileBytes: 123,
+      batchSize: 20,
       queueLimit: 7,
       defaultVisibility: 'private' as const,
       defaultStorageId: null,
       storages: [],
+      albums: [],
+      tags: [],
     };
     vi.mocked(readUploadPageSettings).mockReturnValue(settings);
     const response = await GET(request());

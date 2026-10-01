@@ -28,6 +28,9 @@ export function submissionResult(submission: ReturnType<typeof getSubmission>) {
     storageId: submission.storageId,
     visibility: submission.visibility,
     maxFileBytes: submission.maxFileBytes,
+    batchSize: submission.batchSize,
+    albumIds: submission.albumIds,
+    tagIds: submission.tagIds,
     sessions: submission.sessions.map((session) => ({
       ...sessionResult(session),
       image: session.image,
