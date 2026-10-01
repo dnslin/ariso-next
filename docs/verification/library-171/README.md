@@ -2,6 +2,8 @@
 
 本次保留 `T-LIB-06` 与原需求编号，未改写冻结 PRD。Issue 完整验收尚未完成，PR 保持草稿，界面仍需用户人工验收。
 
+交付 PR：[草稿 #227](https://github.com/dnslin/ariso-next/pull/227)，分支 `codex/issue-171-image-detail`，实施提交 `c4cfb9139615890305e0662317cb436190c14ebc`。2026-10-02 使用 `gh pr view 227 --json state,isDraft,mergeable,statusCheckRollup` 回读：OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。没有实际触发远端检查，不记为CI通过，不等待不存在的工作流。
+
 ## 范围与前置
 
 读取 Issue 正文、评论（无评论）和 GitHub 原生依赖。五项直接前置 #77、#170、#153、#66、#131 均已关闭，见 [blocked-by.json](./blocked-by.json)。后置 #179、#185 仍开放，见 [blocking.json](./blocking.json)。分支从当时最新 `origin/main`（`3eb585f`）建立为 `codex/issue-171-image-detail`；独立 worktree 保留原项目目录。
