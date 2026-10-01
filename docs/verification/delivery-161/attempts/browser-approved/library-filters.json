@@ -1,0 +1,309 @@
+{
+  "phase": "filters",
+  "status": "failed",
+  "checks": [
+    "Adding an empty date condition and cancelling its real editor changes neither the URL nor the current image IDs.",
+    "Real label search/multi-select, inclusive site-time-zone dates, visibility, processing state, disabled storage, album and original format apply immediately one category at a time; the URL contains real IDs/UTC midnight boundaries and only issue173-000 is returned.",
+    "Entering only a start year blocks Apply with a visible incomplete-date error, keeps the URL/dialog and focuses the missing month; completing the date then submits the real combined query.",
+    "A non-midnight URL interval shows both actual local boundary times and the site time zone in the date editor; applying unchanged dates preserves the original precise instants.",
+    "At 390×844, the actual date popover stays within main above the footer; precise local boundaries remain present and every date segment plus both 44px actions is reachable through actual focus and internal scrolling; Escape returns focus to the trigger without changing the applied interval.",
+    "At 390×480, the actual date popover stays within main above the footer; precise local boundaries remain present and every date segment plus both 44px actions is reachable through actual focus and internal scrolling; Escape returns focus to the trigger without changing the applied interval.",
+    "Deleting the day segment from an already applied date also blocks Apply and keeps the original URL; refilling the day makes the same date submittable again.",
+    "Applying unchanged dates retains exact UTC instants; individual removal preserves other conditions; clearing all categories preserves the independent search query.",
+    "A deleted selected tag stays visible as an invalid ID in the conditions bar; dismissing its options preserves the URL and never broadens the failed query."
+  ],
+  "combinations": [],
+  "screenshots": [
+    "library-query-filters-partial-date.png",
+    "library-query-filters-combined-conditions.png",
+    "library-query-filters-combined-result.png",
+    "library-query-filters-precise-date-boundaries.png",
+    "library-query-filters-precise-date-390x844.png",
+    "library-query-filters-precise-date-actions-390x844.png",
+    "library-query-filters-precise-date-390x480.png",
+    "library-query-filters-precise-date-actions-390x480.png",
+    "library-query-filters-missing-reference.png",
+    "library-query-failure.png"
+  ],
+  "datePopover": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "text": "当前生效区间（UTC）：2026/9/2 UTC 04:00:00（含）至 2026/9/2 UTC 05:00:00（不含）。未修改的边界保持不变。",
+      "popover": {
+        "left": 17,
+        "top": 447,
+        "right": 375,
+        "bottom": 687,
+        "width": 358,
+        "height": 240
+      },
+      "main": {
+        "left": 0,
+        "top": 64,
+        "right": 390,
+        "bottom": 739.5,
+        "width": 390,
+        "height": 675.5
+      },
+      "dialog": {
+        "left": 18,
+        "top": 448,
+        "right": 374,
+        "bottom": 686,
+        "width": 356,
+        "height": 238
+      },
+      "boundaries": {
+        "left": 34,
+        "top": 582,
+        "right": 358,
+        "bottom": 614,
+        "width": 324,
+        "height": 32
+      },
+      "scrollHeight": 238,
+      "clientHeight": 238,
+      "controls": [
+        {
+          "name": "上传开始日期:year",
+          "top": 537,
+          "bottom": 557,
+          "left": 47,
+          "right": 78.1015625,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:month",
+          "top": 537,
+          "bottom": 557,
+          "left": 85.5859375,
+          "right": 93.3671875,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:day",
+          "top": 537,
+          "bottom": 557,
+          "left": 100.8515625,
+          "right": 108.6328125,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:year",
+          "top": 537,
+          "bottom": 557,
+          "left": 211,
+          "right": 242.1015625,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:month",
+          "top": 537,
+          "bottom": 557,
+          "left": 249.5859375,
+          "right": 257.3671875,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:day",
+          "top": 537,
+          "bottom": 557,
+          "left": 264.8515625,
+          "right": 272.6328125,
+          "height": 20,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "取消日期",
+          "top": 626,
+          "bottom": 670,
+          "left": 174,
+          "right": 262,
+          "height": 44,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        },
+        {
+          "name": "应用日期",
+          "top": 626,
+          "bottom": 670,
+          "left": 270,
+          "right": 358,
+          "height": 44,
+          "clipTop": 448,
+          "clipBottom": 686,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 480
+      },
+      "text": "当前生效区间（UTC）：2026/9/2 UTC 04:00:00（含）至 2026/9/2 UTC 05:00:00（不含）。未修改的边界保持不变。",
+      "popover": {
+        "left": 17,
+        "top": 249,
+        "right": 375,
+        "bottom": 363.5,
+        "width": 358,
+        "height": 114.5
+      },
+      "main": {
+        "left": 0,
+        "top": 64,
+        "right": 390,
+        "bottom": 375.5,
+        "width": 390,
+        "height": 311.5
+      },
+      "dialog": {
+        "left": 18,
+        "top": 250,
+        "right": 374,
+        "bottom": 362.5,
+        "width": 356,
+        "height": 112.5
+      },
+      "boundaries": {
+        "left": 34,
+        "top": 384,
+        "right": 358,
+        "bottom": 416,
+        "width": 324,
+        "height": 32
+      },
+      "scrollHeight": 238,
+      "clientHeight": 113,
+      "controls": [
+        {
+          "name": "上传开始日期:year",
+          "top": 339,
+          "bottom": 359,
+          "left": 47,
+          "right": 78.1015625,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:month",
+          "top": 339,
+          "bottom": 359,
+          "left": 85.5859375,
+          "right": 93.3671875,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:day",
+          "top": 339,
+          "bottom": 359,
+          "left": 100.8515625,
+          "right": 108.6328125,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:year",
+          "top": 339,
+          "bottom": 359,
+          "left": 211,
+          "right": 242.1015625,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:month",
+          "top": 339,
+          "bottom": 359,
+          "left": 249.5859375,
+          "right": 257.3671875,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:day",
+          "top": 339,
+          "bottom": 359,
+          "left": 264.8515625,
+          "right": 272.6328125,
+          "height": 20,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "取消日期",
+          "top": 302.5,
+          "bottom": 346.5,
+          "left": 174,
+          "right": 262,
+          "height": 44,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        },
+        {
+          "name": "应用日期",
+          "top": 302.5,
+          "bottom": 346.5,
+          "left": 270,
+          "right": 358,
+          "height": 44,
+          "clipTop": 250,
+          "clipBottom": 362.5,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-58885.localhost:58885/library?q=issue173-&pageSize=40\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "failureState": {
+    "url": "http://ariso-58885.localhost:58885/library?q=issue173-&pageSize=40",
+    "readyState": "complete",
+    "hasLibrary": true,
+    "library": {
+      "testid": "library-list",
+      "loadedCount": "40",
+      "layout": "grid",
+      "loadingMode": "more"
+    },
+    "scrollTop": 0,
+    "alerts": [
+      "会话核对失败（HTTP 429），请检查连接后重试。",
+      "Controlled filter-options transport failure"
+    ]
+  }
+}

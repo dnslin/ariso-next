@@ -1,6 +1,6 @@
 # T-DEL-02 S3 内容访问、特殊格式和附件联验
 
-关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../tasks/m3-m4-platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](../../tasks/execution.md)。实现与独立代码审计已完成；集成失败项复验通过，完整浏览器仍被既有上传旧断言阻断。PR须保留草稿。
+关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../tasks/m3-m4-platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](../../tasks/execution.md)。实现、核心验证与独立代码审计已完成。获批的宽屏旧断言修正已通过；完整浏览器仍有既有筛选测试误选和原生目录枚举取消两项阻断，PR保留草稿。
 
 2026-10-02 通过 gh 读取 Issue、评论和原生 blocked by / blocking。评论为空，直接前置 #69、#83、#155、#150、#153、#70 全部 CLOSED；实现及交付记录已核对。下游 #162、#164、#169、#193 仍 OPEN。从最新 origin/main `3eb585f` 创建分支 `codex/delivery-s3-161` 与独立 worktree `/Volumes/data/project/ariso-delivery-161`。原目录和真实预览数据未修改。当前必需真实服务按 execution 为 R2 与 SeaweedFS；AWS 实测已取消，不记为通过。
 
@@ -38,7 +38,7 @@ S3四版本协议种子仅代表已保存实际对象，不能作为远端图片
 | `pnpm exec vitest run --project integration tests/integration/delivery/s3-fixture-cancel.test.ts tests/integration/delivery/s3.test.ts --maxWorkers=1`                                         | 退出0，2文件/5项                                                               |
 | `pnpm run test:integration --maxWorkers=1`                                                                                                                                                     | 退出1，108文件/1029项通过，2文件各1项失败；随后复验这2文件全通过，保留首轮失败 |
 | `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts tests/integration/identity/setup.test.ts --maxWorkers=1`                                                   | 退出0，2文件/46项全部通过；未修改源码、超时或断言                              |
-| `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161 pnpm run test:browser`                                                                                          | 退出1；上传宽屏既有旧断言失败，见下文                                          |
+| `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161 pnpm run test:browser`                                                                                          | 首轮退出1：上传宽屏旧断言失败，获批修正后已复验通过                            |
 | `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                                                                                                           | 120任务/298需求无环；5个拒绝夹具通过                                           |
 | `git diff --check`                                                                                                                                                                             | 通过                                                                           |
 
@@ -68,10 +68,28 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 node scripts/verify-delivery-s3.ts --config /V
 - 真实首轮R2因补充HEAD验收主动中断；SeaweedFS因种子deferred事务升级出现SQLITE_BUSY。已按项目既有immediate事务模式修复，并重新执行完整两服务。首轮失败与全部预登记Key清理见[R2](attempts/live-first/r2/report.json)、[SeaweedFS](attempts/live-first/seaweedfs/report.json)。
 - 无配置反例实际运行 `node scripts/verify-delivery-s3.ts --output test-results/delivery-s3-missing-config`，退出1；[R2](attempts/missing-config/r2/report.json)、[SeaweedFS](attempts/missing-config/seaweedfs/report.json)均incomplete，未发远端请求。
 - 全量集成首轮auth超时5000ms、setup请求连接拒绝（ECONNREFUSED）；在同机另有任务并行的环境运行，不能仅据此断言根因。完整两失败文件随后46项全部通过。首轮与复验摘要见[集成记录](checks/integration.json)。未修改身份实现、超时或断言。
-- 整套浏览器首轮已通过runtime、错误恢复、桌面初始化/重启和M2持久化。之后1920×1080上传组合宽度断言要求填满正文，与[用户已批准1280px最大宽度](../../design/handoff.md#上传输入区桌面样式返修2026-10-01用户批准)冲突。原测试与产品UI均和本分支基线相同；尚未改动范围外内容，已向用户请求仅修正旧断言授权。[运行器](attempts/browser-first/runner.json)、[实际失败](attempts/browser-first/interaction-polish-1440.json)。该失败使完整浏览器未通过；两服务内容协议浏览器已独立通过，不能替代完整检查。
+- 整套浏览器首轮已通过runtime、错误恢复、桌面初始化/重启和M2持久化。之后1920×1080上传组合宽度断言要求填满正文，与[用户已批准1280px最大宽度](../../design/handoff.md#上传输入区桌面样式返修2026-10-01用户批准)冲突。用户2026-10-02明确批准仅修正此旧断言；实际改为 `Math.min(available, 1280)`，仍要求误差不超过1px，360px设置区、24px间距、溢出及手机检查全部保留。没有改产品UI。[首次运行器](attempts/browser-first/runner.json)、[首次失败](attempts/browser-first/interaction-polish-1440.json)。
+- 修正后重跑完整命令，桌面宽屏、连续性、两端身份及图库/分页/反馈/选择均通过；在既有筛选场景失败。[完整运行器](attempts/browser-approved/runner.json)、[宽屏通过](attempts/browser-approved/interaction-polish-1440.json)、[1920×1080实际截图](attempts/browser-approved/interaction-1920-queue-three.png)。实测组合1280px、队列896px。
+- 筛选失败是 `e2e/library-query-filters.mjs` 只读取第一个 `role=alert`，误读独立的会话HTTP429提示。实际受控筛选错误已经显示在第二条提示中，导致原等待超时。[失败及实际页面状态](attempts/browser-approved/library-filters.json)、[截图](attempts/browser-approved/library-query-failure.png)。文件及对应产品代码与origin/main相同。独立审计确认只遍历全部提示并要求受控错误存在仍验证相同预期；本次尚未获该范围外修改授权，未实施。429是真实状态，没有修改限流、隐藏提示或声称已经解决。
+- 为避免重复已通过场景，使用同一现有运行器派生临时驱动，仅建立新390账户前置并执行尚未运行的检查。实际断言、失败退出、超时和清理均保留。驱动选择差异归档为[rest.diff](checks/browser-rest.diff)和[tail.diff](checks/browser-tail.diff)，临时文件执行后移除。临时rest移除原运行器的未执行library成功标记；继承结果仅引用前一轮，不冒充本轮重新执行。
+- rest补跑中2400张规模、公共导航、相册、封面、上传主流程及轮询通过；上传输入场景在原生目录枚举返回cancel/零文件时明确失败。[运行器](checks/browser-rest/runner.json)、[目录取消](checks/browser-rest/upload-input.json)。这是[#159已记录的相同原生选择器限制](../upload-159/README.md)，不修改断言、不用模拟数据替代实际目录枚举，也不将其归为本次已经修复的能力。
+- tail仅补齐随后仍未执行场景，手机M2持久化、交互、工作区连续性、新增S3和隔离UI均通过。[运行器](checks/browser-tail/runner.json)、[手机交互](checks/browser-tail/interaction-polish-390.json)、[390×844队列截图](checks/browser-tail/interaction-390-queue-three.png)、[新增S3浏览器](checks/browser-tail/delivery-s3/browser.json)、[390×844外站嵌入](checks/browser-tail/delivery-s3/external-embed.png)、[隔离UI](checks/browser-tail/ui/runner.json)。运行器明确标记补跑范围及filters/upload-input仍未通过，不能替代完整套件通过。
+
+### 获批修正后的实际命令
+
+| 命令                                                                                                                                        | 结果                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `pnpm exec eslint e2e/interaction-polish.mjs --max-warnings=0`、`pnpm exec prettier e2e/interaction-polish.mjs --check`、`git diff --check` | 退出0                                                                   |
+| `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-approved pnpm run test:browser`                              | 退出1；宽屏修正通过，既有filters误选提示失败                            |
+| `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-rest node work/verify-browser-rest.mjs`                      | 退出1；规模/导航/相册/封面/上传/轮询通过，原生目录枚举取消              |
+| `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-tail node work/verify-browser-tail.mjs`                      | 退出0；仅剩余手机持久化/交互/连续性、S3、隔离UI通过；仍标明两个失败场景 |
+
+生产模块未再改动，沿用本轮已执行的安装、单元、集成、类型和构建证据，没有机械重跑无变化的检查。新增记录执行格式与文档检查。各临时生产实例、数据库及测试素材已清理；原项目、分支和worktree保留。Ego空间3因整体检查仍有错误保留供继续验证，没有创建新的空间。
 
 ## 独立审计
 
 独立agent使用code-review-and-quality审读最终生产变更、测试、真实报告和浏览器截图，结论Approve，未发现遗留Required。审计提出两项必修：真实服务脚本取消未完整传播到启动/PUT；HEAD缺少实际长度、类型、ETag及普通格式MIME/扩展断言。均已在本轮修复，独立复验关闭。审计实际另跑 `pnpm exec vitest run --project integration tests/integration/delivery/s3-races.test.ts`（19/19）与 `pnpm exec vitest run --project integration tests/integration/delivery/s3-fixture-cancel.test.ts`（1/1），均通过。
 
-本次无产品UI变更，设计还原审计与本次UI人工验收不适用。代码审计通过不代表完整浏览器检查通过。
+获批宽屏修正由独立agent复核：仍精确比较1280px/可用宽度，未弱化任何其他断言。临时补跑的选择、前置及报告边界也经独立审读，不将未执行或失败场景标为本次通过。
+
+本次无产品UI变更，设计还原审计与本次UI人工验收不适用。代码审计和核心S3浏览器通过不代表完整套件通过；当前草稿剩余阻断是上述既有筛选测试与原生目录选择证据。
