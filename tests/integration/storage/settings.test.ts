@@ -506,20 +506,32 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
       watermarkAsset: null,
       defaultVisibility: 'public' as const,
     };
-    const accepted = previous.db.transaction((tx) =>
-      acceptOriginal(tx, {
-        imageId: 'existing-image',
-        storageId: 'existing-storage',
-        key: 'images/original',
-        originalName: 'before.png',
-        visibility: 'private',
-        format: 'PNG',
-        mime: 'image/png',
-        byteSize: 3,
-        snapshot,
-        expectedVersions: ['thumbnail'],
-      }),
-    );
+    // Freeze media rows too: migration 0016 adds candidate width/height to
+    // the current ORM schema, which cannot be used against the predecessor.
+    previous.db.$client.exec(`
+      INSERT INTO media_images (id, storage_id, original_name, display_name, visibility,
+        format, mime, byte_size, processing_status, created_at, updated_at)
+      VALUES ('existing-image', 'existing-storage', 'before.png', 'before', 'private',
+        'PNG', 'image/png', 3, 'pending', 1000, 1000);
+      INSERT INTO media_objects (id, image_id, storage_id, key, purpose, status,
+        byte_size, format, mime, created_at, updated_at)
+      VALUES ('existing-original', 'existing-image', 'existing-storage', 'images/original',
+        'original', 'stored', 3, 'PNG', 'image/png', 1000, 1000);
+      INSERT INTO media_versions (image_id, kind, object_id, byte_size, format, mime, created_at)
+      VALUES ('existing-image', 'original', 'existing-original', 3, 'PNG', 'image/png', 1000);
+    `);
+    previous.db.$client
+      .prepare(
+        `INSERT INTO media_jobs (id, image_id, kind, scope, snapshot,
+      expected_versions, status, created_at, updated_at) VALUES (?, ?, 'process', 'all', ?, ?, 'queued', 1000, 1000)`,
+      )
+      .run(
+        'existing-job',
+        'existing-image',
+        JSON.stringify(snapshot),
+        JSON.stringify(['thumbnail']),
+      );
+    const accepted = { jobId: 'existing-job' };
     const now = new Date(1000);
     previous.db
       .insert(uploadSubmissions)
@@ -556,18 +568,24 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         updatedAt: now,
       })
       .run();
-    const before = [
-      mediaImages,
-      mediaObjects,
-      uploadSubmissions,
-      uploadSessions,
-    ].map((table) => previous.db.select().from(table).all());
+    const readReferences = () => [
+      previous.db.select().from(mediaImages).all(),
+      previous.db.$client
+        .prepare(
+          `SELECT id, image_id, job_id, storage_id, key, purpose,
+        status, byte_size, format, mime, error, created_at, updated_at FROM media_objects`,
+        )
+        .all(),
+      previous.db.select().from(uploadSubmissions).all(),
+      previous.db.select().from(uploadSessions).all(),
+    ];
+    const before = readReferences();
     migrateRuntimeDatabase(previous.db, resolve('drizzle'));
-    expect(
-      [mediaImages, mediaObjects, uploadSubmissions, uploadSessions].map(
-        (table) => previous.db.select().from(table).all(),
-      ),
-    ).toEqual(before);
+    expect(readReferences()).toEqual(before);
+    expect(previous.db.select().from(mediaObjects).get()).toMatchObject({
+      width: null,
+      height: null,
+    });
     expect(readStorage(previous.db, 'existing-storage')).toMatchObject({
       name: '原有本地',
       type: 'local',

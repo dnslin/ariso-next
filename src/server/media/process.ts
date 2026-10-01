@@ -13,14 +13,16 @@ import { inspectImageFile } from './file-formats.ts';
 import { startSvgPreview } from './svg.ts';
 import { prepareWatermark } from './watermark.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
-import { planDerivedObject } from './objects.ts';
+import { planDerivedObject, markUnpublishedMediaObjects } from './objects.ts';
 import {
   activeMediaJob,
-  publishMediaVersion,
-  savedMediaVersion,
+  saveMediaCandidate,
+  completeMediaJob,
+  savedMediaCandidate,
   markMediaCandidates,
   reconcileMediaObjects,
 } from './steps.ts';
+import { mediaJobSteps, reprocessVersions } from './reprocess.ts';
 import { advanceMediaStep, settleMediaFailure } from './recovery.ts';
 import {
   mediaImages,
@@ -79,12 +81,6 @@ export async function processMediaJob(
         storageDirectory: `${storageRoot}${sep}${storage.localPath}`,
       });
     const { snapshot } = job;
-    if (job.scope !== 'all') {
-      throw mediaError(
-        'MEDIA_SETTINGS_UNSUPPORTED',
-        'Scoped reprocessing is not implemented (T-MED-10)',
-      );
-    }
     const original = db
       .select()
       .from(mediaObjects)
@@ -118,14 +114,12 @@ export async function processMediaJob(
       stepSignal,
       budget.diskLimitBytes,
     );
-    const expected: typeof job.expectedVersions = [];
-    if (facts.classification === 'static' && snapshot.compressionEnabled)
-      expected.push('compressed');
-    expected.push('thumbnail');
-    if (facts.classification === 'static' && snapshot.watermarkMode !== 'off')
-      expected.push('watermark');
-    // Classification resolves applicability; the immutable settings snapshot stays unchanged.
-    job.expectedVersions = [...expected];
+    job.expectedVersions = reprocessVersions(
+      job.scope,
+      facts.classification,
+      snapshot,
+    );
+    const workVersions = mediaJobSteps(job);
     db.transaction((tx) => {
       activeMediaJob(tx, jobId);
       const details = {
@@ -162,7 +156,7 @@ export async function processMediaJob(
         .where(eq(mediaJobs.id, jobId))
         .run();
       if (job.step === 'identify')
-        advanceMediaStep(tx, jobId, job.expectedVersions[0] ?? 'complete');
+        advanceMediaStep(tx, jobId, workVersions[0] ?? 'complete');
     });
 
     step = 'metadata';
@@ -241,7 +235,7 @@ export async function processMediaJob(
     budget.close();
     budget = undefined;
 
-    for (const kind of job.expectedVersions) {
+    for (const kind of workVersions) {
       step = kind;
       signal.throwIfAborted();
       budget = beginStep();
@@ -254,7 +248,7 @@ export async function processMediaJob(
         budget.diskLimitBytes,
         stepSignal,
       );
-      if (savedMediaVersion(db, jobId, kind)) {
+      if (savedMediaCandidate(db, jobId, kind)) {
         budget.close();
         budget = undefined;
         continue;
@@ -297,7 +291,7 @@ export async function processMediaJob(
       ];
       if (kind === 'watermark') {
         if (snapshot.compressionEnabled) {
-          const compressed = savedMediaVersion(db, jobId, 'compressed');
+          const compressed = savedMediaCandidate(db, jobId, 'compressed');
           if (!compressed)
             throw mediaError(
               'MEDIA_VERSIONS_MISSING',
@@ -307,8 +301,8 @@ export async function processMediaJob(
           const content = await readObject(
             storageRoot,
             storage,
-            compressed.media_objects.key,
-            compressed.media_versions.mime,
+            compressed.key,
+            compressed.mime!,
             cancelSignal,
           );
           content.stream.destroy();
@@ -405,7 +399,7 @@ export async function processMediaJob(
           'MEDIA_OUTPUT_INVALID',
           `Unexpected derived encoding: ${result.format}`,
         );
-      publishMediaVersion(
+      saveMediaCandidate(
         db,
         jobId,
         kind,
@@ -425,40 +419,8 @@ export async function processMediaJob(
     }
 
     step = 'complete';
-    db.transaction((tx) => {
-      activeMediaJob(tx, jobId);
-      const saved = tx
-        .select({ kind: mediaVersions.kind })
-        .from(mediaVersions)
-        .innerJoin(mediaObjects, eq(mediaObjects.id, mediaVersions.objectId))
-        .where(
-          and(eq(mediaObjects.jobId, jobId), eq(mediaObjects.status, 'stored')),
-        )
-        .all();
-      if (
-        job.expectedVersions.some(
-          (kind) => !saved.some((version) => version.kind === kind),
-        )
-      )
-        throw mediaError(
-          'MEDIA_VERSIONS_MISSING',
-          `Missing saved versions for ${jobId}`,
-        );
-      const now = new Date();
-      tx.update(mediaJobs)
-        .set({
-          status: 'succeeded',
-          error: null,
-          finishedAt: now,
-          updatedAt: now,
-        })
-        .where(eq(mediaJobs.id, jobId))
-        .run();
-      tx.update(mediaImages)
-        .set({ processingStatus: 'ready', updatedAt: now })
-        .where(eq(mediaImages.id, image.id))
-        .run();
-    });
+    signal.throwIfAborted();
+    completeMediaJob(db, jobId);
     logger.info({ jobId, imageId: image.id }, 'Media processing completed');
   } catch (error) {
     toolCleanupFailed =
@@ -496,6 +458,13 @@ export async function processMediaJob(
             [plan.objectId, plan.temporaryObjectId],
             failure,
           );
+        const terminal = tx
+          .select()
+          .from(mediaJobs)
+          .where(eq(mediaJobs.id, jobId))
+          .get();
+        if (terminal?.status === 'failed' || terminal?.status === 'cancelled')
+          markUnpublishedMediaObjects(tx, jobId, failure);
         return failure;
       });
     }
