@@ -35,7 +35,7 @@ macOS ARM64；Node 24.18.1；pnpm 11.19.0；ImageMagick 7.1.2-32；ExifTool 13.5
 | `pnpm run test:unit`                                                                                                                                                 | [最终 57 文件、727 项通过](./unit.txt)。                                                                                                                                                                            |
 | `pnpm run test:integration --maxWorkers=1`                                                                                                                           | [首轮 100 文件通过、1 文件失败，926 项通过、1 项超时](./integration.txt)；现有身份约束用例超过 5000ms。原样[单文件复跑 17 项通过](./identity-retry.txt)；[完整重跑 101 文件、927 项通过](./integration-retry.txt)。 |
 | `EGO_TASK_SPACE=8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=docs/verification/library-174/browser pnpm run test:browser`                                                   | [完整功能流程通过](./browser/runner.json)，实际日志见[重跑记录](./browser-run.txt)。设计评审另发现短视口正文不可读；不能以功能 passed 替代设计验收，最终前端修复后的专项结果见下文。                                |
-| `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --check`                                                                                             | [格式通过](./format.txt)；[文档检查通过](./docs-check.txt)，120任务/298需求；[diff检查通过](./diff-check.txt)，退出码0，无输出。                                                                                    |
+| `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --cached --check`                                                                                    | [格式通过](./format.txt)；[文档检查通过](./docs-check.txt)，120任务/298需求；[diff检查通过](./diff-check.txt)，退出码0，无输出。                                                                                    |
 
 首轮构建发现新增 HTTP 测试 headers 类型不兼容，已按真实类型修正后通过。首轮 unit 与 runtime 构建并行导致尚未生成 dist 文件，运行产物生成后重跑通过。测试失败未通过跳过、改超时或削弱断言处理。
 
@@ -122,7 +122,7 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 
 ### 本轮实际验证
 
-环境仍为 macOS ARM64、Node 24.18.1、pnpm 11.19.0 与现有 Ego Lite。专项使用独立3176临时数据库、241张实际原图/缩略图，正式浏览器运行器自行创建隔离数据库，不修改人工预览数据。
+环境仍为 macOS ARM64、Node 24.18.1、pnpm 11.19.0 与现有 Ego Lite。专项分别使用独立3176/3177临时数据库、241张实际原图/缩略图，正式浏览器运行器自行创建隔离数据库，不修改人工预览数据。
 
 | 命令                                                                                                                             | 实际结果                                                                                                                    |
 | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -136,7 +136,7 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 | `ego-browser nodejs < test-results/verify-issue174-feedback-selection.mjs`                                                       | [普通选择真实专项通过](./feedback/browser/library-selection.json)，两主题桌面/手机/短视口11图。                             |
 | `ego-browser nodejs < test-results/verify-feedback-shell.mjs`                                                                    | [公共壳层专项通过](./feedback/browser/shell-navigation.json)，仅作为阶段证据；最终设计图使用下方导航复验目录。              |
 | `EGO_TASK_SPACE=8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=docs/verification/library-174/feedback/full-browser pnpm run test:browser` | [第八轮完整通过](./feedback/full-browser/runner.json)，覆盖新增登录入口、框选、200+核对、六路由公共壳层及原有跨模块流程。   |
-| `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --check`                                                         | [格式检查通过](./feedback/format-check.txt)、[任务依赖检查120项/298需求通过](./feedback/docs-check.txt)、最终diff检查通过。 |
+| `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --cached --check`                                                | [格式检查通过](./feedback/format-check.txt)、[任务依赖检查120项/298需求通过](./feedback/docs-check.txt)、最终diff检查通过。 |
 
 真实限流专项命令 `ego-browser nodejs < test-results/verify-logout-real-limit.mjs` 复用正式相册退出helper，先在独立3177真实请求101次会话接口；98次200、3次429，退出后的会话确认也实际429并给出10秒窗口。按期限实际点退出重试，最终登录表单的reason为signed-out，实际相册接口401：[专项报告与三项已执行断言](./feedback/logout-limit/logout-limit.json)、[真实失败提示截图](./feedback/logout-limit/albums-logout-rate-limit.png)、[实际输出](./feedback/logout-limit-run.txt)。该专项没有伪造响应、清理限流或放宽断言。独立审计实际读取了脚本与报告。
 
@@ -165,3 +165,7 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 实际运行 `gh pr view 222 --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,mergeable,statusCheckRollup` 与 `gh pr checks 222`。首次创建的[状态快照](./pr-created-state.json)为 OPEN / draft / MERGEABLE、base main，`statusCheckRollup=[]`；[检查输出](./pr-checks.txt)为 no checks reported。当前无远端检查，不记为 CI 通过，也不等待不存在的 PR 工作流。`ci.yml` 只接受 workflow_call，发布流程仍由 `images.yml` 的 Release 触发。
 
 两次初始推送没有完成；检查进程后确认 `git-credential-osxkeychain get` 卡住，已中止本任务对应进程。最终以当前命令的代理和现有 gh 登录凭据成功推送：`git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin codex/issue-174-selection`。未修改全局代理或 Git 凭据配置。PR 状态文档补充后再次提交推送并核对远端分支。
+
+本轮人工反馈修复、最终验证和独立复审已提交推送，源码提交为 `3e871a5`。推送后发现主分支新增 #159 交接记录，唯一冲突是同一文档末尾的并发追加；本轮只调整 #174 节的位置，正文原样保留，没有合并或修改主分支业务代码。[实际合并检查](./feedback/handoff-merge-check.txt)通过，合并结果同时保留 #174 与 #159 记录。生成的上传异常输入文件已移至本机忽略的原始归档，不作为PR交付文件；测试报告与实际断言不变。
+
+修正文档后再次推送并执行 `gh pr view 222` 与 `gh pr checks 222`：[最新状态快照](./feedback/pr-final-state.json)为 OPEN / draft / MERGEABLE，远端代码提交已核对；[实际检查输出](./feedback/pr-final-checks.txt)仍为 no checks reported。该快照记录证据补充提交之前的查询时点，最后提交推送后再次只读核对，不把空检查列表视为CI通过。Ego TaskSpace 8已完成并保留p1人工预览，3175服务、原数据、会话及worktree均保留。用户人工UI验收仍待完成。
