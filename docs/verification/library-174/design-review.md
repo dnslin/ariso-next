@@ -87,3 +87,70 @@
 - 物理手机、软键盘、非零安全区及发布镜像/容器未实测；不标记通过，执行边界按现有约定。
 
 - 用户人工设计验收待完成；本报告仅记录 agent 独立评审结论。
+
+## PR #222 人工反馈复验（2026-10-01）
+
+本段保留此前独立验收历史，单独记录本次反馈。用户明确批准：手机菜单与关闭入口改为纯 Lucide 图标并取消悬停背景；有效所有者会话访问登录页直接回到既有成功登录目标；普通框选默认保留此前单选。这些批准只覆盖对应入口视觉与行为，不扩展为其他设计差异的批准。Figma 未修改。
+
+评审者独立用 `get_design_context`（`skillNames=figma-design-to-code`）实际读取并查看返回截图：[桌面图库30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)、[手机图库98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)、该上下文关联的[公共手机Header112:1498](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=112-1498)，以及现行交接索引确认的[全屏导航106:1494](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=106-1494)。原图的文字菜单/关闭入口按本次批准替换，64px品牌页眉、全屏导航、导航顺序、当前项和底部账号区仍以原设计与既有交接为依据。
+
+已保存并再次实际查看本轮原尺寸参考：
+
+| 节点     | 视口/主题      | 本轮Figma截图                                 |
+| -------- | -------------- | --------------------------------------------- |
+| 30:285   | 1440×1080/浅色 | [桌面整页](./feedback/figma/30-285.png)       |
+| 98:748   | 390×844/浅色   | [手机整页](./feedback/figma/98-748.png)       |
+| 112:1498 | 390×64/浅色    | [公共手机页眉](./feedback/figma/112-1498.png) |
+| 106:1494 | 390×844/浅色   | [全屏导航](./feedback/figma/106-1494.png)     |
+
+已实际阅读共享 `AdminShell/OwnerShell`、布局样式、登录页及目的地规则、框选实现、相关测试和调用路径。源码采用既有HeroUI图标按钮与Lucide Menu/X，保留44px点击范围、可访问名称和键盘焦点；框选合并拖前显式选择与当前框命中项，Escape取消恢复拖前选择。
+
+### 本轮独立设计结论
+
+本轮设计评审通过，改动范围内剩余P1/P2为0。最终视觉基准统一使用[导航最终报告](./feedback/navigation-final/shell-navigation.json)及同目录76张真实截图，已逐张实际查看，并对疑点单张重读原尺寸图片；没有用图片数量、无溢出或检查passed替代设计判断。评审先对照整页及公共区域，再核对业务区域与图标控件。用户人工验收仍待完成；这个设计结论不代表完整检查或用户验收已通过。
+
+### 最终整页与公共区域逐项对照
+
+桌面公共区域参照30:285；手机公共区域参照98:748、112:1498、106:1494及现行交接。仅本轮批准的文字入口→图标、取消悬停背景属于视觉差异，其他已批准决定沿用既有交接。对其他消费路由检查公共区域一致性和原业务区域顺序，不重新审计已确认的业务设计。
+
+| 消费路由      | 1440×1080浅/深                                                                                                                                                       | 390×844浅/深页面                                                                                                                                                   | 390×844浅/深全屏菜单                                                                                                                                                         | 对照结论                                                                |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 上传          | [浅色](./feedback/navigation-final/shell-navigation-upload-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-upload-dark-1440.png)               | [浅色](./feedback/navigation-final/shell-navigation-upload-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-upload-dark-390.png)               | [浅色](./feedback/navigation-final/shell-navigation-upload-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-upload-dark-390-menu.png)               | 桌面左右上传/设置区、手机上下业务区保持；上传当前项正确。               |
+| 图库          | [浅色](./feedback/navigation-final/shell-navigation-library-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-library-dark-1440.png)             | [浅色](./feedback/navigation-final/shell-navigation-library-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-library-dark-390.png)             | [浅色](./feedback/navigation-final/shell-navigation-library-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-library-dark-390-menu.png)             | 桌面四列与手机双列、标题/筛选/图片区/固定底栏顺序保持；图库当前项正确。 |
+| 相册管理      | [浅色](./feedback/navigation-final/shell-navigation-albums-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-albums-dark-1440.png)               | [浅色](./feedback/navigation-final/shell-navigation-albums-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-albums-dark-390.png)               | [浅色](./feedback/navigation-final/shell-navigation-albums-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-albums-dark-390-menu.png)               | 公共页眉与相册业务区保持；相册当前项正确。                              |
+| 相册内容      | [浅色](./feedback/navigation-final/shell-navigation-album-content-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-album-content-dark-1440.png) | [浅色](./feedback/navigation-final/shell-navigation-album-content-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-album-content-dark-390.png) | [浅色](./feedback/navigation-final/shell-navigation-album-content-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-album-content-dark-390-menu.png) | 返回、标题/说明、操作/筛选与内容区保持；导航相册仍为当前项。            |
+| 回收站        | [浅色](./feedback/navigation-final/shell-navigation-trash-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-trash-dark-1440.png)                 | [浅色](./feedback/navigation-final/shell-navigation-trash-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-trash-dark-390.png)                 | [浅色](./feedback/navigation-final/shell-navigation-trash-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-trash-dark-390-menu.png)                 | 公共区域、标题/说明、内容区与底栏保持；回收站当前项正确。               |
+| 后台入口→上传 | [浅色](./feedback/navigation-final/shell-navigation-admin-entry-light-1440.png) / [深色](./feedback/navigation-final/shell-navigation-admin-entry-dark-1440.png)     | [浅色](./feedback/navigation-final/shell-navigation-admin-entry-light-390.png) / [深色](./feedback/navigation-final/shell-navigation-admin-entry-dark-390.png)     | [浅色](./feedback/navigation-final/shell-navigation-admin-entry-light-390-menu.png) / [深色](./feedback/navigation-final/shell-navigation-admin-entry-dark-390-menu.png)     | 实际落到上传；同一页眉、侧栏与上传当前项，无另复制布局。                |
+
+桌面232px公共侧栏、正文左右32px、品牌区、导航图标/顺序、展开/收起与底部账号区一致。手机64px公共页眉、左右16px、品牌/Menu与全屏菜单中的品牌/X一致；菜单当前项、分隔线、禁用入口与底部账号区在两主题一致。深色文字、边框和焦点可读，图片未反色。相册封面依既有任务显示明确占位，不将占位写作真实封面。一级页无虚假面包屑、既有图库网格/瀑布流及16px圆角继续沿用已批准交接。
+
+### 最终入口悬停、焦点与短视口
+
+以下40张最终图片已分别实际查看；每格链接依次为Menu悬停/键盘焦点、X悬停/键盘焦点。两入口均为44px目标内的20px Lucide图标，悬停保持透明背景和位置，焦点环清楚可见。焦点环由HeroUI阴影样式实现，CSS outline为none不代表没有焦点。Menu/X纯图标和无悬停背景有本轮明确批准，保留可访问名称“菜单/关闭”。
+
+| 视口    | 浅色：Menu悬停 / 焦点 / X悬停 / 焦点                                                                                                                                                                                                                                                                                                                                                              | 深色：Menu悬停 / 焦点 / X悬停 / 焦点                                                                                                                                                                                                                                                                                                                                                          |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 360×844 | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-light-360x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-light-360x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-light-360x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-light-360x844-close-focus.png) | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-dark-360x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-dark-360x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-dark-360x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-dark-360x844-close-focus.png) |
+| 430×844 | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-light-430x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-light-430x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-light-430x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-light-430x844-close-focus.png) | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-dark-430x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-dark-430x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-dark-430x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-dark-430x844-close-focus.png) |
+| 768×844 | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-light-768x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-light-768x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-light-768x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-light-768x844-close-focus.png) | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-dark-768x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-dark-768x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-dark-768x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-dark-768x844-close-focus.png) |
+| 987×844 | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-light-987x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-light-987x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-light-987x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-light-987x844-close-focus.png) | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-dark-987x844-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-dark-987x844-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-dark-987x844-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-dark-987x844-close-focus.png) |
+| 390×560 | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-light-390x560-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-light-390x560-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-light-390x560-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-light-390x560-close-focus.png) | [菜单悬停](./feedback/navigation-final/shell-navigation-upload-dark-390x560-trigger-hover.png) / [菜单焦点](./feedback/navigation-final/shell-navigation-upload-dark-390x560-trigger-focus.png) / [关闭悬停](./feedback/navigation-final/shell-navigation-upload-dark-390x560-close-hover.png) / [关闭焦点](./feedback/navigation-final/shell-navigation-upload-dark-390x560-close-focus.png) |
+
+360/430宽度品牌与入口完整；768/987保持既有断点下的全屏导航，没有新增抽屉；390×560短视口菜单顶部品牌/X、底部账号区保持可见，导航正文单独滚动，键盘焦点未被遮挡。整页、公共区和控件分别核对后，本轮无未批准视觉差异。
+
+### 失败、疑点与处理依据
+
+- 旧图有真实滚动残留，不能用于整页顶部位置验收。最终捕图明确以instant归零并等待实际滚动容器归零，实际重新查看navigation-final后，后台入口两主题桌面标题恢复至约38px，图库两主题手机64px品牌/Menu页眉完整。只修正测试准备，没有改产品滚动行为。
+- 评审曾将多图共同区域的差异呈现误判为相册页眉/菜单品牌空白。相同绝对路径原尺寸重读及只读PNG前景像素检查确认实际品牌/Menu/X完整，此疑点撤回，未据此修改产品、Figma或增加等待。最终结论依据完整原图，而非差异呈现的空白。
+- [实际菜单Escape失败](./feedback/menu-escape-before.json)及[通知失败记录](./feedback/library-toast-before.json)保留。刷新图库Tooltip离开后按默认延时存留，会拦截第一次Escape；将既有Tooltip的closeDelay设为0后，已独立阅读[最终图库定向报告](./feedback/library-final/library.json)：35项行为检查、220项布局记录为passed，明确包含先开刷新提示再开手机菜单，第一次Escape关闭菜单并回焦，以及下载正常通知。本次没有新增样式或额外键盘监听。
+- 既有公共侧栏缺“图片，自在收纳。”标语沿#173的范围外记录保留；图标批准不覆盖该差异。本次不顺手修改。
+
+### 功能结论与人工验收边界
+
+已独立读取[最终导航报告](./feedback/navigation-final/shell-navigation.json)与[本轮完整复跑中的选择报告](./feedback/full-browser/library-selection.json)，均为passed。导航实际操作验证六个入口的当前项、Menu/X可访问名称、悬停透明、44px目标、键盘焦点、关闭/Escape回焦；选择实际鼠标验证单选后普通框选保留、连续/Shift增加命中、Escape恢复拖前选择、缩框到阈值以下只移本次命中，以及跨页、迟到动画帧取消与清空回焦。行为结论来自实际操作断言，视觉结论来自上述最终图片。
+
+已独立读取最终完整[浏览器runner](./feedback/full-browser/runner.json)：2026-10-01 10:33:41至10:44:46 UTC，Node v24.18.1、darwin/arm64、现有Ego Lite TaskSpace 8、独立服务 `http://ariso-63817.localhost:63817` 与临时测试数据，status为passed，临时目录已移除。最终两端身份、图库/选择/核对/查询/条件/规模、公共导航、相册、上传/轮询、工作区与交互检查通过；先前失败轮次不替代该最终结果。
+
+已独立读取[桌面身份与会话报告](./feedback/full-browser/identity-1440-restart.json)和[手机身份与会话报告](./feedback/full-browser/identity-390-restart.json)的sessionChecks，两端均passed：真实有效所有者会话从首页“登录”进入既有后台目标/upload，无登录表单；已有本地returnTo=/library得到遵守，外部目的地被拒绝并回/upload。实际断言与既有目的地规则一致，没有设计新的登录后页面。另读取[最终公共外壳](./feedback/full-browser/owner-shell.json)、[完整导航](./feedback/full-browser/shell-navigation.json)、[图库行为](./feedback/full-browser/library.json)和[相册行为](./feedback/full-browser/albums.json)检查项，确认菜单第一次Escape回焦、全消费路由当前项与公共区域、相册/短视口行为验证。最终公共及UI源码自navigation-final截图后未变，因此本轮视觉基准保留上述已实际查看的76张不可覆盖图片，不使用旧截图代替。
+
+本轮独立功能与设计复验均通过。用户人工设计验收仍待完成，PR应保留草稿；agent结论不代表用户已验收。物理手机/软键盘/非零安全区未实测，发布镜像与容器执行边界沿现有约定，不标记这些项目通过。

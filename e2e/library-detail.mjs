@@ -484,6 +484,12 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
     ),
   );
+  await page.waitForSelector('loc=role:alertdialog[name="已发起下载"]');
+  await page.hover('loc=role:alertdialog[name="已发起下载"]');
+  await page.click('loc=role:button[name="关闭通知"]');
+  await page.waitForSelector('loc=role:alertdialog[name="已发起下载"]', {
+    state: 'hidden',
+  });
   report.checks.push(
     'Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.',
   );

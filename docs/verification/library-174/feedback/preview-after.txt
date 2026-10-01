@@ -1,0 +1,229 @@
+[p1 "Ariso" | space "Issue 174 selection verification"(8): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=1299, url=http://issue174.localhost:3175/]
+          text "Ariso"
+        button "收起侧栏" [ref=1300, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=1301, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=1302, loc=css:a[aria-label="上传"], url=http://issue174.localhost:3175/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=1303, loc=css:a[aria-label="图库"], url=http://issue174.localhost:3175/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=1304, loc=css:a[aria-label="相册"], url=http://issue174.localhost:3175/albums]
+          svg_root
+          text "相册"
+        group "标签，尚未开放" [ref=1305, loc=role:group[name="标签，尚未开放"]]
+          link "标签，尚未开放"
+            svg_root
+            text "标签"
+            text "尚未开放"
+        group "分享管理，尚未开放" [ref=1306, loc=role:group[name="分享管理，尚未开放"]]
+          link "分享管理，尚未开放"
+            svg_root
+            text "分享管理"
+            text "尚未开放"
+        anchor "回收站" [ref=1307, loc=css:a[aria-label="回收站"], url=http://issue174.localhost:3175/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=1308, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        group "存储管理，尚未开放" [ref=1309, loc=role:group[name="存储管理，尚未开放"]]
+          link "存储管理，尚未开放"
+            svg_root
+            text "存储管理"
+            text "尚未开放"
+        group "站点设置，尚未开放" [ref=1310, loc=role:group[name="站点设置，尚未开放"]]
+          link "站点设置，尚未开放"
+            svg_root
+            text "站点设置"
+            text "尚未开放"
+      button "账号菜单" [ref=1311, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container
+      container [ref=1312]
+        container "图库"
+          container
+            heading [ref=1313]
+              text "图库"
+            paragraph
+              text "保存每一刻，也让每一次查找更轻松。"
+          container
+            container
+              group
+                searchbox "搜索图片名称" [ref=1314, loc=css:input[placeholder="搜索图片名称…"]]
+                  text "搜索图片名称…"
+              container
+                button "图片排序 上传时间 ↓ 上传时间 ↓" [ref=1315]
+                  text "上传时间 ↓"
+                radiogroup "图片布局"
+                  radiobutton "网格" [ref=1316, loc=css:button[aria-label="网格"]]
+                    svg_root
+                  radiobutton "瀑布流" [ref=1317, loc=css:button[aria-label="瀑布流"]]
+                    svg_root
+                button "刷新图库" [ref=1318, loc=css:button[aria-label="刷新图库"]]
+                  svg_root
+            container "图片筛选条件"
+              button [ref=1319]
+                svg_root
+                text "添加条件"
+          list "图库图片"
+            listitem
+              svg_root
+              button "查看图片：旅行 · 验收图片 001" [ref=1320, loc=css:button[aria-label="查看图片：旅行 · 验收图片 001"]]
+              image
+              container
+                paragraph
+                  text "旅行 · 验收图片 001"
+                container
+                  text "私有"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：日常 · 验收图片 002" [ref=1321, loc=css:button[aria-label="查看图片：日常 · 验收图片 002"]]
+              image
+              container
+                paragraph
+                  text "日常 · 验收图片 002"
+                container
+                  text "公开"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：作品 · 验收图片 003" [ref=1322, loc=css:button[aria-label="查看图片：作品 · 验收图片 003"]]
+              image
+              container
+                paragraph
+                  text "作品 · 验收图片 003"
+                container
+                  text "公开"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：旅行 · 验收图片 004" [ref=1323, loc=css:button[aria-label="查看图片：旅行 · 验收图片 004"]]
+              image
+              container
+                paragraph
+                  text "旅行 · 验收图片 004"
+                container
+                  text "私有"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：日常 · 验收图片 005" [ref=1324, loc=css:button[aria-label="查看图片：日常 · 验收图片 005"]]
+              image
+              container
+                paragraph
+                  text "日常 · 验收图片 005"
+                container
+                  text "公开"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：作品 · 验收图片 006" [ref=1325, loc=css:button[aria-label="查看图片：作品 · 验收图片 006"]]
+              image
+              container
+                paragraph
+                  text "作品 · 验收图片 006"
+                container
+                  text "公开"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：旅行 · 验收图片 007" [ref=1326, loc=css:button[aria-label="查看图片：旅行 · 验收图片 007"]]
+              image
+              container
+                paragraph
+                  text "旅行 · 验收图片 007"
+                container
+                  text "私有"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：日常 · 验收图片 008" [ref=1327, loc=css:button[aria-label="查看图片：日常 · 验收图片 008"]]
+              image
+              container
+                paragraph
+                  text "日常 · 验收图片 008"
+                container
+                  text "公开"
+                  container
+                    text "0.0"
+                    text "MiB ·"
+                    text "已就绪"
+            listitem
+              svg_root
+              button "查看图片：作品 · 验收图片 009" [ref=1328, loc=css:button[aria-label="查看图片：作品 · 验收图片 009"]]
+              image
+            listitem
+              svg_root
+              button "查看图片：旅行 · 验收图片 010" [ref=1329, loc=css:button[aria-label="查看图片：旅行 · 验收图片 010"]]
+              image
+            listitem
+              svg_root
+              button "查看图片：日常 · 验收图片 011" [ref=1330, loc=css:button[aria-label="查看图片：日常 · 验收图片 011"]]
+              image
+            listitem
+              svg_root
+              button "查看图片：作品 · 验收图片 012" [ref=1331, loc=css:button[aria-label="查看图片：作品 · 验收图片 012"]]
+              image
+      container
+        status
+          text "241 张图片 · 本页 80 张"
+        container
+          button "图片加载方式 分页 分页" [ref=1332]
+            text "分页"
+            svg_root
+          button "每批图片数 80 张 / 批 80 张 / 批" [ref=1333]
+            text "80 张 / 批"
+            svg_root
+          navigation "图库分页"
+            unordered_list
+              list_item
+                button [ref=1334]
+                  text "上一页"
+              list_item
+                text "1"
+                text "/"
+                text "4"
+              list_item
+                button [ref=1335]
+                  text "下一页"

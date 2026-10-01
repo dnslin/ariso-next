@@ -1,0 +1,95 @@
+Error: JavaScript evaluation failed at line 0, column 0: SecurityError: Controlled unavailable preference storage; expression: ()=>({url:location.href,count:document.querySelector("[data-testid=library-list]")?.dataset.loadedCount,mode:document.querySelector("[data-testid=library-lis...
+    at runtimeValue (file:////[eval1]:9139:15)
+    at evaluateInSession (file:////[eval1]:19186:12)
+    at async file:////[eval1]:18809:24
+    at async file:////[eval1]:16691:28
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 图片加载方式 分页
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+PAGE1_WAIT { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+SELECT 图片加载方式 加载更多
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '80', mode: 'more', scroll: 2225, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 图片加载方式 分页
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '80', mode: 'more', scroll: 500, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+SELECT 图片加载方式 加载更多
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 500, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 每批图片数 20 张 / 批
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '20', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '40', mode: 'more', scroll: 765, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '20', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 每批图片数 40 张 / 批
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '80', mode: 'more', scroll: 2225, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 每批图片数 80 张 / 批
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '80', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 93 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '93', mode: 'more', scroll: 5145, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '80', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 每批图片数 20 张 / 批
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '20', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '40', mode: 'more', scroll: 765, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20', count: '20', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+SELECT 每批图片数 40 张 / 批
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '80', mode: 'more', scroll: 2225, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+SELECT 每批图片数 80 张 / 批
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '80', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 93 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '93', mode: 'more', scroll: 5146, pref: '{"layout":"masonry","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80', count: '80', mode: 'more', scroll: 0, pref: '{"layout":"masonry","loadingMode":"more"}' }
+SELECT 图片加载方式 分页
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=1', count: '80', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+SELECT 每批图片数 20 张 / 批
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+SELECT 每批图片数 40 张 / 批
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '0', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=2', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+SELECT 每批图片数 80 张 / 批
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=1', count: '80', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 13 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=2', count: '13', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=1', count: '80', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"pages"}' }
+SELECT 每批图片数 20 张 / 批
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+SELECT 每批图片数 40 张 / 批
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=2', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40&page=1', count: '40', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+SELECT 每批图片数 80 张 / 批
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=1', count: '80', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 13 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=2', count: '13', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=80&page=1', count: '80', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+SELECT 每批图片数 20 张 / 批
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"masonry","loadingMode":"pages"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 7 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=3', count: '7', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 500, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 7 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=3', count: '7', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 500, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 7 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=3', count: '7', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 500, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 7 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=3', count: '7', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=2', count: '20', mode: 'pages', scroll: 500, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 20 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-alpha&pageSize=20&page=1', count: '20', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 2 { url: 'http://issue174-library-debug.localhost:3177/library?q=issue173-&tagId=issue173-a&tagId=issue173-b&tagId=issue173-a&pageSize=20&page=1', count: '2', mode: 'pages', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '0', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+SELECT 图片加载方式 加载更多
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '40', mode: 'more', scroll: 2373, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 80 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '80', mode: 'more', scroll: 2225, pref: '{"layout":"grid","loadingMode":"more"}' }
+LOADED_START 40 { url: 'http://issue174-library-debug.localhost:3177/library?pageSize=40&q=issue173-', count: '40', mode: 'more', scroll: 0, pref: '{"layout":"grid","loadingMode":"more"}' }
+
+ego's nodejs process exited with code 1.

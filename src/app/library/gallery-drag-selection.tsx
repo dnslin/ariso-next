@@ -39,7 +39,6 @@ export function GalleryDragSelection({
   const { selectIds } = selection;
   const lastBox = useRef<Box | null>(null);
   const before = useRef<string[]>([]);
-  const retained = useRef<string[]>([]);
   const dragging = useRef(false);
   const bodyStyle = useRef<{
     userSelect: string;
@@ -53,7 +52,7 @@ export function GalleryDragSelection({
   function applyLocalBox(box: Box) {
     if (!dragging.current) return;
     selectIds([
-      ...retained.current,
+      ...before.current,
       ...intersectingGalleryIds(box, slots, items),
     ]);
   }
@@ -74,17 +73,10 @@ export function GalleryDragSelection({
       };
       return true;
     },
-    onSelectionStart: (event) => {
+    onSelectionStart: () => {
       dragging.current = true;
       onDragStart();
       before.current = [...selection.selected.keys()];
-      retained.current = before.current.filter(
-        (id) =>
-          event.shiftKey ||
-          event.ctrlKey ||
-          event.metaKey ||
-          !selection.currentIds.has(id),
-      );
     },
     isValidSelectionStart: (box) => {
       // Air supplies every local box here, including a drag shrunk below its

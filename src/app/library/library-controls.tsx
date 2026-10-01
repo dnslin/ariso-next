@@ -92,7 +92,7 @@ export function LibraryToolbar({
           </Tooltip>
         </ToggleButtonGroup>
         {selectionMenu ?? (
-          <Tooltip>
+          <Tooltip closeDelay={0}>
             <Button
               aria-label="刷新图库"
               isIconOnly

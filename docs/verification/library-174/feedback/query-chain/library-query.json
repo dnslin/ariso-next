@@ -1,0 +1,23 @@
+{
+  "phase": "query",
+  "status": "failed",
+  "checks": [],
+  "combinations": [],
+  "screenshots": ["library-query-failure.png"],
+  "activeCheck": "mode-history-restore-scroll",
+  "expectedOffset": 503,
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "failureState": {
+    "url": "http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40",
+    "readyState": "complete",
+    "hasLibrary": true,
+    "library": {
+      "testid": "library-list",
+      "loadedCount": "80",
+      "layout": "grid",
+      "loadingMode": "more"
+    },
+    "scrollTop": 514,
+    "alerts": []
+  }
+}

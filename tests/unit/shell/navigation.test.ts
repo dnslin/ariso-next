@@ -25,6 +25,17 @@ function renderAdmin(pathname: string) {
 }
 
 describe('后台壳层导航', () => {
+  it('手机菜单使用有可访问名称的图标按钮，不显示文字按钮', () => {
+    const header = renderAdmin('/settings').match(
+      /<header[^>]*class="shell-mobile-header"[^>]*>([\s\S]*?)<\/header>/,
+    )?.[1];
+    expect(header).toBeDefined();
+    expect(header).toMatch(
+      /<button[^>]*aria-label="菜单"[^>]*>[\s\S]*?<svg[^>]*aria-hidden="true"/,
+    );
+    expect(header).not.toMatch(/>菜单<\/button>/);
+  });
+
   it('只展示组合方提供的入口，并保留主内容和用户区域', () => {
     const html = renderAdmin('/settings');
     const navigation = html.match(

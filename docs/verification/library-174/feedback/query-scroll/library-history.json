@@ -1,0 +1,581 @@
+{
+  "phase": "history",
+  "status": "failed",
+  "checks": [],
+  "combinations": [],
+  "screenshots": ["library-query-failure.png"],
+  "activeCheck": "mode-history-restore-scroll",
+  "expectedOffset": 503,
+  "scrollTrace": [
+    {
+      "kind": "installed",
+      "time": 312.69999998807907,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "galleryTop": 240,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "((a,b,c,d,e,f,g,h)=>{let i=doc"
+    },
+    {
+      "kind": "scrollTo",
+      "time": 547.5999999940395,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "galleryTop": 240,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "加载更多",
+      "args": [0, 0],
+      "stack": "Error\n    at Element.scrollTo (<anonymous>:6:132)\n    at http://issue174-library-debug.localhost:3177/_next/static/chunks/3wrou1qtwf32_.js:2:178985"
+    },
+    {
+      "kind": "wheel",
+      "time": 617.5,
+      "scroll": 53,
+      "mainHeight": 1003,
+      "galleryTop": 187,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 52.74131774902344
+    },
+    {
+      "kind": "scroll",
+      "time": 617.6999999880791,
+      "scroll": 53,
+      "mainHeight": 1003,
+      "galleryTop": 187,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 617.9000000059605,
+      "scroll": 53,
+      "mainHeight": 1003,
+      "galleryTop": 187,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 657.9000000059605,
+      "scroll": 199,
+      "mainHeight": 1003,
+      "galleryTop": 41,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 145.81423950195312
+    },
+    {
+      "kind": "scroll",
+      "time": 659.3000000119209,
+      "scroll": 199,
+      "mainHeight": 1003,
+      "galleryTop": 41,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 659.3000000119209,
+      "scroll": 199,
+      "mainHeight": 1003,
+      "galleryTop": 41,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 699.9000000059605,
+      "scroll": 419,
+      "mainHeight": 1003,
+      "galleryTop": -179,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 220.27256774902344
+    },
+    {
+      "kind": "scroll",
+      "time": 700.0999999940395,
+      "scroll": 419,
+      "mainHeight": 1003,
+      "galleryTop": -179,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 700.0999999940395,
+      "scroll": 419,
+      "mainHeight": 1003,
+      "galleryTop": -179,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 718.6999999880791,
+      "scroll": 695,
+      "mainHeight": 1003,
+      "galleryTop": -455,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 276.1163330078125
+    },
+    {
+      "kind": "scroll",
+      "time": 719.3000000119209,
+      "scroll": 695,
+      "mainHeight": 1003,
+      "galleryTop": -455,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 719.3000000119209,
+      "scroll": 695,
+      "mainHeight": 1003,
+      "galleryTop": -455,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 758.9000000059605,
+      "scroll": 1008,
+      "mainHeight": 1003,
+      "galleryTop": -768,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 313.3454895019531
+    },
+    {
+      "kind": "scroll",
+      "time": 760,
+      "scroll": 1008,
+      "mainHeight": 1003,
+      "galleryTop": -768,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 760.0999999940395,
+      "scroll": 1008,
+      "mainHeight": 1003,
+      "galleryTop": -768,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 799.9000000059605,
+      "scroll": 1340,
+      "mainHeight": 1003,
+      "galleryTop": -1100,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 331.9600830078125
+    },
+    {
+      "kind": "scroll",
+      "time": 800.3000000119209,
+      "scroll": 1340,
+      "mainHeight": 1003,
+      "galleryTop": -1100,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 800.5999999940395,
+      "scroll": 1340,
+      "mainHeight": 1003,
+      "galleryTop": -1100,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 839.0999999940395,
+      "scroll": 1672,
+      "mainHeight": 1003,
+      "galleryTop": -1432,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 331.9600830078125
+    },
+    {
+      "kind": "scroll",
+      "time": 839.6999999880791,
+      "scroll": 1672,
+      "mainHeight": 1003,
+      "galleryTop": -1432,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 839.6999999880791,
+      "scroll": 1672,
+      "mainHeight": 1003,
+      "galleryTop": -1432,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 878.5,
+      "scroll": 1986,
+      "mainHeight": 1003,
+      "galleryTop": -1746,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 313.3454895019531
+    },
+    {
+      "kind": "scroll",
+      "time": 879.1999999880791,
+      "scroll": 1986,
+      "mainHeight": 1003,
+      "galleryTop": -1746,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 879.3000000119209,
+      "scroll": 1986,
+      "mainHeight": 1003,
+      "galleryTop": -1746,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 918.1999999880791,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 276.1163330078125
+    },
+    {
+      "kind": "scroll",
+      "time": 918.6999999880791,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "scrollend",
+      "time": 918.9000000059605,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式"
+    },
+    {
+      "kind": "wheel",
+      "time": 963,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 220.27256774902344
+    },
+    {
+      "kind": "wheel",
+      "time": 984.5,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 145.81423950195312
+    },
+    {
+      "kind": "wheel",
+      "time": 1004.5,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "图片加载方式",
+      "delta": 52.74131774902344
+    },
+    {
+      "kind": "focus",
+      "time": 1068.800000011921,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "((a,b,c,d,e,f,g,h)=>{let i=doc",
+      "element": "正在加载更多…",
+      "args": []
+    },
+    {
+      "kind": "focus",
+      "time": 1094.699999988079,
+      "scroll": 2225,
+      "mainHeight": 1003,
+      "galleryTop": -1985,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "((a,b,c,d,e,f,g,h)=>{let i=doc",
+      "element": "加载更多",
+      "args": [
+        {
+          "preventScroll": true
+        }
+      ]
+    },
+    {
+      "kind": "scroll",
+      "time": 1104.800000011921,
+      "scroll": 2229,
+      "mainHeight": 1003,
+      "galleryTop": -1989,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scrollTo",
+      "time": 1115.5999999940395,
+      "scroll": 2229,
+      "mainHeight": 1003,
+      "galleryTop": -1989,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多",
+      "args": [0, 500],
+      "stack": "Error\n    at Element.scrollTo (<anonymous>:6:132)\n    at <anonymous>:3:46\n    at __egoPageEvaluate (<anonymous>:3:63)\n    at <anonymous>:4:9"
+    },
+    {
+      "kind": "scroll",
+      "time": 1124.699999988079,
+      "scroll": 503,
+      "mainHeight": 1003,
+      "galleryTop": -263,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scrollend",
+      "time": 1124.699999988079,
+      "scroll": 503,
+      "mainHeight": 1003,
+      "galleryTop": -263,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "offset-captured",
+      "time": 1137.4000000059605,
+      "scroll": 503,
+      "mainHeight": 1003,
+      "galleryTop": -263,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1150.199999988079,
+      "scroll": 506,
+      "mainHeight": 1003,
+      "galleryTop": -266,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1184.5999999940395,
+      "scroll": 508,
+      "mainHeight": 1003,
+      "galleryTop": -268,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1205.300000011921,
+      "scroll": 510,
+      "mainHeight": 1003,
+      "galleryTop": -270,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1224.5,
+      "scroll": 511,
+      "mainHeight": 1003,
+      "galleryTop": -271,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1245,
+      "scroll": 512,
+      "mainHeight": 1003,
+      "galleryTop": -272,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1264.5,
+      "scroll": 513,
+      "mainHeight": 1003,
+      "galleryTop": -273,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1277.199999988079,
+      "scroll": 514,
+      "mainHeight": 1003,
+      "galleryTop": -274,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "加载更多"
+    },
+    {
+      "kind": "scroll",
+      "time": 1377,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "fonts": "loaded",
+      "active": "分页"
+    },
+    {
+      "kind": "scrollTo",
+      "time": 1404.699999988079,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "galleryTop": 240,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "分页",
+      "args": [0, 0],
+      "stack": "Error\n    at Element.scrollTo (<anonymous>:6:132)\n    at http://issue174-library-debug.localhost:3177/_next/static/chunks/3wrou1qtwf32_.js:2:178985"
+    },
+    {
+      "kind": "pages-selected",
+      "time": 1420.5999999940395,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "galleryTop": 240,
+      "galleryHeight": 2900,
+      "fonts": "loaded",
+      "active": "分页"
+    },
+    {
+      "kind": "scrollTo",
+      "time": 1452.5,
+      "scroll": 0,
+      "mainHeight": 1003,
+      "galleryTop": 240,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "分页",
+      "args": [0, 514],
+      "stack": "Error\n    at Element.scrollTo (<anonymous>:6:132)\n    at http://issue174-library-debug.localhost:3177/_next/static/chunks/3wrou1qtwf32_.js:2:178985"
+    },
+    {
+      "kind": "scroll",
+      "time": 1457,
+      "scroll": 514,
+      "mainHeight": 1003,
+      "galleryTop": -274,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "分页"
+    },
+    {
+      "kind": "scrollend",
+      "time": 1457.199999988079,
+      "scroll": 514,
+      "mainHeight": 1003,
+      "galleryTop": -274,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "分页"
+    },
+    {
+      "kind": "back-mode-loaded",
+      "time": 1466.300000011921,
+      "scroll": 514,
+      "mainHeight": 1003,
+      "galleryTop": -274,
+      "galleryHeight": 5820,
+      "fonts": "loaded",
+      "active": "分页"
+    }
+  ],
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "failureState": {
+    "url": "http://issue174-library-debug.localhost:3177/library?q=issue173-&pageSize=40",
+    "readyState": "complete",
+    "hasLibrary": true,
+    "library": {
+      "testid": "library-list",
+      "loadedCount": "80",
+      "layout": "grid",
+      "loadingMode": "more"
+    },
+    "scrollTop": 514,
+    "alerts": []
+  }
+}

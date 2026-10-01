@@ -243,8 +243,8 @@ export async function verifyShell(page, config) {
     );
     await page.keyboard.press('Escape');
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
-    await page.waitForFunction(() =>
-      document.activeElement.textContent.includes('菜单'),
+    await page.waitForFunction(
+      () => document.activeElement.getAttribute('aria-label') === '菜单',
     );
     report.checks.push(
       'Mobile Modal Tab containment, background scroll lock, Escape and trigger focus restoration',
@@ -253,8 +253,8 @@ export async function verifyShell(page, config) {
     await page.waitForSelector('[role="dialog"]');
     await page.click('loc=role:button[name="关闭"]');
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
-    await page.waitForFunction(() =>
-      document.activeElement.textContent.includes('菜单'),
+    await page.waitForFunction(
+      () => document.activeElement.getAttribute('aria-label') === '菜单',
     );
     await page.click('loc=role:button[name="菜单"]');
     await page.waitForSelector('[role="dialog"]');

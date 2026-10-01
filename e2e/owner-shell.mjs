@@ -235,7 +235,7 @@ export async function verifyOwnerShell(page, config) {
           await page.waitForSelector(navigationDialog, { state: 'hidden' });
           await page.waitForFunction(
             () =>
-              document.activeElement?.textContent.trim() === '菜单' &&
+              document.activeElement?.getAttribute('aria-label') === '菜单' &&
               document.activeElement.getBoundingClientRect().width > 0,
           );
           await openNavigation();

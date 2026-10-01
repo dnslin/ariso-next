@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "height": 1080,
+  "theme": "light",
+  "checks": [
+    "M2 login honors the real preceding identity rate-limit countdown before retrying.",
+    "1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+    "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+    "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+    "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+    "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+  ],
+  "core": {
+    "analyticsBefore": [],
+    "images": [
+      {
+        "id": "3af9767d-070b-4c13-ba07-30b311c0979b",
+        "format": "jpg",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-63817.localhost:63817/i/3af9767d-070b-4c13-ba07-30b311c0979b?type=original"
+      },
+      {
+        "id": "1c9445b4-2752-41aa-bd97-9ba1736243a7",
+        "format": "jpg",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-63817.localhost:63817/i/1c9445b4-2752-41aa-bd97-9ba1736243a7?type=original"
+      },
+      {
+        "id": "c86f5394-936f-4399-968a-56abe6548034",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-63817.localhost:63817/i/c86f5394-936f-4399-968a-56abe6548034?type=original"
+      },
+      {
+        "id": "34c0601e-b1a1-46a4-8262-270c057aab57",
+        "format": "png",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-63817.localhost:63817/i/34c0601e-b1a1-46a4-8262-270c057aab57?type=original"
+      },
+      {
+        "id": "4e31a3af-5238-48f6-b7d9-69534c4d9102",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 0
+      }
+    ]
+  },
+  "recovery": {
+    "imageId": "63f636a0-9e5b-454b-8a1c-f27ccecfc5ca",
+    "job": {
+      "id": "ad66c05e-ef95-4960-a5bd-5d710712078c",
+      "status": "running",
+      "snapshot": "{\"compressionEnabled\":true,\"outputFormat\":\"webp\",\"quality\":82,\"maxEdge\":null,\"jpegBackground\":\"#FFFFFF\",\"watermarkMode\":\"off\",\"watermarkText\":\"\",\"watermarkFont\":\"chinese\",\"watermarkFontSize\":3,\"watermarkColor\":\"#FFFFFF\",\"watermarkStrokeColor\":\"#000000\",\"watermarkStrokeWidth\":0,\"watermarkOpacity\":50,\"watermarkPosition\":\"bottom-right\",\"watermarkMargin\":2,\"watermarkWidth\":20,\"watermarkAsset\":null,\"defaultVisibility\":\"public\"}",
+      "expected_versions": "[\"compressed\",\"thumbnail\"]"
+    },
+    "original": {
+      "id": "aa09452c-75a7-4d97-b546-593108d0c132",
+      "key": "original/63f636a0-9e5b-454b-8a1c-f27ccecfc5ca.png",
+      "storage_id": "cea3b542-d2e9-4603-86ed-65f3d2cce9ce",
+      "local_path": "default"
+    },
+    "versions": [
+      {
+        "kind": "compressed",
+        "count": 1
+      },
+      {
+        "kind": "original",
+        "count": 1
+      },
+      {
+        "kind": "thumbnail",
+        "count": 1
+      }
+    ]
+  }
+}

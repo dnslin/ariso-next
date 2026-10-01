@@ -69,7 +69,7 @@ macOS ARM64；Node 24.18.1；pnpm 11.19.0；ImageMagick 7.1.2-32；ExifTool 13.5
 - 用户本轮明确要求 UI 必须人工验收；本记录及自动验证不替代人工验收，PR 保持草稿。
 - 批量关系/公开私有/回收恢复由 T-LIB-08 / #177 承接，批量复制由 T-LIB-10 / #187 承接；未添加无后端行为的占位入口。
 - Lightbox 与完整详情仍由各自任务承接，不据本次选择专项称为全量图库完成。
-- 公共侧栏缺少设计标语为既有范围外差异，未修改公共外壳或配置。
+- 公共侧栏缺少设计标语为既有范围外差异。本轮按人工反馈仅修改菜单/关闭按钮，未修改标语或导航配置。
 - 物理设备、软键盘、非零安全区未实测，按既有执行约定不作为日常门槛。AMD64/ARM64 镜像与容器留待 Release 流程，没有发布或部署。
 - 没有合并 PR、关闭 Issue、删除分支或 worktree。
 
@@ -77,7 +77,86 @@ macOS ARM64；Node 24.18.1；pnpm 11.19.0；ImageMagick 7.1.2-32；ExifTool 13.5
 
 最终构建的隔离预览：[图库](http://issue174.localhost:3175/library)、[241 张相册](http://issue174.localhost:3175/albums/issue174-preview-album)。测试账户 `owner@example.test`，密码 `production-auth-test-password`。独立数据包含 241 张正常图片、实际保存的原图/缩略图、相册与标签。真实 HTTP 登录、首批20项/total241、6631字节缩略图读取均为200。原3173/3174预览的数据和账户未改。
 
-本机最终进程33699；数据目录 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-issue174-preview-JmvriL/data`，同父目录的 `server.log` / `preview.json` 保留运行信息。预览只在本机运行，不是发布或部署。现有 Ego 页已登录并跨四页选择241项、打开清单供人工检查；[交接页面截图](./human-preview.png)为1440×1080深色，实际20张清单缩略图已解码。关闭清单即可继续操作；刷新整页会按既定会话行为清空选择。人工验收可以每页80项，跨四页共选择241项，检查菜单数量、已选清单翻页/移除、布局保留与筛选清空；不得据人工手动检查替代已有自动失效/错误/取消专项。
+首轮预览进程33699；本轮更新后的进程见下方返修交接记录。数据目录 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-issue174-preview-JmvriL/data`，同父目录的 `server.log` / `preview.json` 保留运行信息。预览只在本机运行，不是发布或部署。首轮交接时，Ego 页已登录并跨四页选择241项、打开清单供人工检查；[交接页面截图](./human-preview.png)为1440×1080深色，实际20张清单缩略图已解码。关闭清单即可继续操作；刷新整页会按既定会话行为清空选择。人工验收可以每页80项，跨四页共选择241项，检查菜单数量、已选清单翻页/移除、布局保留与筛选清空；不得据人工手动检查替代已有自动失效/错误/取消专项。
+
+## 人工反馈返修（2026-10-01）
+
+用户人工验收要求：手机公共侧栏菜单/关闭改为纯图标并取消 hover 效果；有效登录会话从首页点击登录直接进入后台；普通框选保留先前手动勾选。用户进一步确认按钮指手机侧栏，并授权继续使用原 Ego TaskSpace 8。[用户菜单截图](./feedback/user-menu.png)、[关闭截图](./feedback/user-close.png)、[已登录却显示登录表单](./feedback/user-login.png)保留。设计与选择行为调整的明确批准只维护在[交接记录](../../design/handoff.md#图库选择人工验收返修2026-10-01-用户批准)，没有修改 Figma 或冻结 PRD。
+
+本轮使用已有公共 `AdminShell`、HeroUI Button/Modal 与 Lucide Menu/X；保留可访问名称、44px目标、键盘焦点及关闭回焦。登录页复用服务器真实所有者会话和既有 `loginDestination`，默认 `/admin` 由原页面进入 `/upload`，允许的本地 returnTo 继续有效。匿名、过期、撤销会话仍显示表单，Bearer/分享凭证不算所有者登录。框选使用拖动前完整选择快照加本轮命中；缩小只撤去本轮新增项，Escape 恢复原快照，不新增选择模式或兼容层。
+
+### 失败证据和修正
+
+- 真实旧预览 Cookie 有效，访问登录页仍出现表单：[浏览器记录](./feedback/login-before.json)、[真实截图](./feedback/login-before.png)。[新真实 HTTP 回归](./feedback/login-http-before.txt)在旧产物中预期307、实际200，最终全量集成使用新构建验证。
+- 普通框选取消先前单选：[真实浏览器旧行为](./feedback/drag-before.json)；新增两项单元断言在修改前[确实失败](./feedback/drag-before.txt)，修后[32项聚焦用例通过](./feedback/drag-after.txt)。
+- 新行为下第一次选择 E2E 已通过真实普通/Shift框选和 Escape，但后续响应式断言仍等待旧数量3：[保留失败报告](./feedback/selection-first-run.json)。改为新的实际数量4并保留具体 ID、第五项新增及 Escape 恢复断言；[最终专项9项检查通过](./feedback/browser/library-selection.json)。没有削弱选择断言。
+- 新公共壳层专项的初版断言只收集 `<a>`，漏掉 HeroUI 的禁用 `<span role="link">`；已按现有 `.shell-nav-link` 收集完整导航。键盘焦点最初只检查 outline，但实际 HeroUI 用 box-shadow 绘制焦点环；已实际读取样式及浏览器计算值，改为验证真实绘制并保留键盘 `data-focus-visible` 断言。hover 等待实际过渡结束后再比对背景与 transform。以上修正是新验收脚本适配真实组件，不改生产焦点样式。
+
+完整浏览器首轮与重跑均在既有图库菜单关闭检查失败：[首轮运行器](./feedback/full-first-runner.json)、[第二轮运行器](./feedback/full-second-runner.json)和[第二轮图库报告](./feedback/full-second-library.json)。先修正手机菜单的旧 `activeElement.textContent` 回焦断言，并全面搜索修正公共消费路由场景同类断言；这是必要适配，但后续实际复现证明它不是完整根因。
+
+在独立3177数据库记录真实键盘与焦点事件，[失败诊断](./feedback/menu-escape-before.json)确认第一次 Escape 已到导航菜单、没有修饰键/重复/输入法组合状态，却被 document 捕获阶段阻断。临时诊断只记录 `Event.stopPropagation` 原调用，不改变事件行为；堆栈指向已安装 React Aria Tooltip 的捕获监听。打开前 `aria-describedby` 明确对应“刷新图库”提示，该提示离开触发器后仍按 HeroUI 默认500ms保留打开状态，因此拦截菜单的首次 Escape。等待 Modal 入场结束仍失败，不能用等待动画规避。
+
+最小修复只把现有刷新 Tooltip 的 `closeDelay` 设为0，沿用库的立即关闭与监听清理；其他提示、Modal 和键盘处理未改，无全局 Escape 回退或新状态层。正式 E2E 新增真实悬停并核对刷新按钮关联的提示内容，随后点击菜单、只按一次 Escape，分别断言菜单消失与触发器回焦。失败日志分别见[首次完整输出](./feedback/full-first-run.txt)、[第二次完整输出](./feedback/full-second-run.txt)，完整原始截图归档到本机 `test-results/issue174-feedback-full-first/` 和 `test-results/issue174-feedback-full-second/`。
+
+定向图库复验已通过新的“一次 Escape”操作后，又遇到下载成功通知覆盖详情关闭按钮：[首次记录](./feedback/library-toast-before.json)。使用通知本身已存在的“关闭通知”按钮关闭它，再继续原详情关闭操作；新增断言确认真实“已发起下载”通知及消失，原下载文件名/字节断言保留。最初误把通知关闭按钮定位在 `role=alert` 文本区内，实际按钮是 `alertdialog` 的兄弟内容，已按真实 DOM 与语义定位修正。实际 HeroUI 关闭按钮只在通知悬停时接收点击，已读取现有 CSS 并按真实交互先悬停通知。没有改变通知位置、超时或产品详情行为。
+
+最终定向 `ego-browser nodejs < test-results/verify-library-feedback-final.mjs` 使用修复后的生产构建、独立3177数据库运行完整 `e2e/library.mjs`，包括详情与回收站流程；[35项行为检查、220组布局通过](./feedback/library-final/library.json)，[实际输出](./feedback/library-final-run.txt)保留。刷新提示打开→手机菜单→第一次 Escape 关闭并回焦，以及悬停关闭下载通知后继续关闭详情，都取得实际操作证据。它不代替下方完整跨模块运行器的最终结果。
+
+Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一个任务空间，切回本任务8后截图恢复。没有重启 Ego、安装浏览器或操作另一任务的数据。代码、测试及证据均在独立 worktree；一次聚焦命令误落原目录未找到新测试，随即纠正并清理仅该命令生成的日志，原目录保持干净，该输出不作为产品失败证据。
+
+第三次完整运行已通过两端身份、图库详情、普通选择和200+核对，但在既有查询模式/历史场景超时：[运行器](./feedback/full-third-runner.json)、[失败报告](./feedback/full-third-library-query.json)、[实际截图](./feedback/full-third-library-query.png)。截图为93项查询、已加载80项，没有错误提示；原报告未标记具体等待步骤，不能据此认定产品根因。独立3177诊断的原模式切换与历史返回连续10轮通过，严格40/80数量、滚动恢复和无新增请求断言均保留：[诊断记录](./feedback/query-history/library-history.json)。另一次临时采样脚本在故意禁用localStorage的用例中读偏好而失败，只是诊断采样自身错误，不作为产品失败。
+
+独立代码复核确认原加载模式切换等待存在缺口：旧模式和新模式都可能显示40项，数量本身不能证明切换完成。测试现在先等真实模式与URL编码一致；仅明确测试偏好持久化的正常存储场景等待保存为分页，再导航。原数量、历史、滚动和请求数断言未放宽；故意localStorage不可用的用例不新增偏好读取。报告另记录模式历史的具体步骤及失败时的模式/滚动值。此项修正测试等待的已确认缺口，不声称已定位第三轮超时的全部原因。最终定向 `ego-browser nodejs < test-results/verify-library-query-final.mjs` 的[8项行为检查与12组组合通过](./feedback/query-final/library-query.json)，包括故意localStorage不可用的原场景；[实际日志](./feedback/query-final-run.txt)保留。完整浏览器仍以最终重跑结果为准。
+
+第四轮仍在历史滚动恢复检查失败，[运行器](./feedback/full-fourth-runner.json)和[失败报告](./feedback/full-fourth-library-query.json)明确定位 `mode-history-restore-scroll`，实际位置511px。按相同前序“200+核对→查询”在独立3177复现为期望503px、实际514px；[完整滚动轨迹](./feedback/query-scroll/library-history.json)进一步确认：手动设置500px后，浏览器的点击前自动滚轮运动仍有尾声，位置由503逐步变成514，期间没有新的主区域scrollTo、focus或布局位移。生产历史返回调用的目标就是离开前514，并正确恢复514；不是生产滚动恢复缺陷。
+
+最终只修正测试的采样时机：复用已有历史观察器，在真实 `pushState` 调用前记录当前URL和滚动位置；切换完成后核对来自加载更多且只有一次历史push，再用该离开位置验证返回。原500px主动滚动、40/80数量、2px内严格误差、无新增请求断言全部保留。没有修改生产滚动、关闭浏览器锚定、增加等待时间或放宽误差。单次scrollend在尾声结束前就曾触发，因此没有据此增加不可靠等待。
+
+相同前序的最终 `ego-browser nodejs < test-results/verify-library-query-chain-final.mjs` 已[通过8项检查与12组组合](./feedback/query-chain-final/library-query.json)，记录实际离开位置514px并按原严格误差通过返回核对；[运行日志](./feedback/query-chain-final-run.txt)保留。此前单独查询与10轮历史通过仍作为阶段证据，最终完整浏览器以最后一次实际运行结果为准。
+
+第五轮已通过查询历史与公共路由矩阵，后续相册的真实退出会话检查失败：[运行器](./feedback/full-fifth-runner.json)、[相册报告](./feedback/full-fifth-albums.json)、[实际页面](./feedback/full-fifth-albums-failed.png)保留。提示为“尚未确认会话已退出”，原报告未区分后继会话请求的状态与非空响应，不能据此认定会话撤销或本轮登录重定向的根因。独立3177原样相册流程9项检查通过：[相册定向报告](./feedback/albums-debug/albums.json)。正式脚本只在失败时补充认证请求路径、HTTP状态和开始时间，不记录Cookie或响应内容，不改退出流程、不绕过验证。[第六轮完整运行器](./feedback/full-sixth-runner.json)与[相册失败报告](./feedback/full-sixth-albums.json)再次在相同退出确认失败。Resource Timing已无认证条目，不能从空采样推断未发送请求。更完整的独立3177“六个图库phase→公共壳层→相册”定向链路全部通过；[相册链路报告](./feedback/albums-chain/albums.json)保留。另[实际接口登录后从账号菜单退出](./feedback/logout-fetch-probe.txt)通过，Cookie的路径与域符合原配置。正式脚本补充只读响应观察，保留退出与401断言，第七轮的只读响应观察已定位为实际限流，见下文。
+
+第七轮[真实认证响应](./feedback/full-seventh-albums.json)明确定位：退出返回200，后继会话确认返回429，实际 `X-Retry-After: 2`；并未观察到有效会话返回。沿现有 `library-login` 的执行方式，相册测试现在只对实际429及退出失败提示等待服务器给出的期限，再实际点击“退出登录”。最多3次，不清限流、Cookie或数据库，不伪造会话、不强制跳登录；非429错误和当前请求为200却未确认退出仍失败。原登录表单、真实401、再登录到原相册ID以及后续上传的匿名前置全部保留。[第八轮完整运行器通过](./feedback/full-browser/runner.json)，实际输出见[最终完整日志](./feedback/full-browser-run.txt)。相册、上传/轮询、两端身份与公共流程，以及UI实验均通过，运行器独立临时目录已清理。
+
+公共路由的首版和第五轮截图仍有滚轮尾声导致顶部未完整入画。最后仅修改截图视口准备：显式立即归零，并等待主区域和窗口实际为0；不修改产品滚动。定向六入口两主题的[34组布局及76张截图通过](./feedback/navigation-final/shell-navigation.json)，实际逐图设计评审仍以独立报告为准。[定向运行输出](./feedback/navigation-final-run.txt)保留。
+
+### 本轮实际验证
+
+环境仍为 macOS ARM64、Node 24.18.1、pnpm 11.19.0 与现有 Ego Lite。专项使用独立3176临时数据库、241张实际原图/缩略图，正式浏览器运行器自行创建隔离数据库，不修改人工预览数据。
+
+| 命令                                                                                                                             | 实际结果                                                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                 | [通过](./feedback/install.txt)，无锁文件或依赖变更。                                                                        |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck`                     | [冻结安装](./feedback/ui-install.txt)和[类型检查](./feedback/ui-typecheck.txt)通过；外壳与UI构建包含在完整浏览器命令中。    |
+| `pnpm run lint`                                                                                                                  | [通过](./feedback/lint.txt)。                                                                                               |
+| `pnpm run typecheck`                                                                                                             | [通过](./feedback/typecheck.txt)。                                                                                          |
+| `pnpm run build`                                                                                                                 | [通过](./feedback/build.txt)，无部署密钥/数据库构建；可选跨平台依赖诊断与前轮相同。                                         |
+| `pnpm run test:unit`                                                                                                             | [58文件、730项通过](./feedback/unit.txt)。                                                                                  |
+| `pnpm run test:integration --maxWorkers=1`                                                                                       | [101文件、928项通过](./feedback/integration.txt)，普通集成与真实媒体工具均执行。                                            |
+| `ego-browser nodejs < test-results/verify-issue174-feedback-selection.mjs`                                                       | [普通选择真实专项通过](./feedback/browser/library-selection.json)，两主题桌面/手机/短视口11图。                             |
+| `ego-browser nodejs < test-results/verify-feedback-shell.mjs`                                                                    | [公共壳层专项通过](./feedback/browser/shell-navigation.json)，仅作为阶段证据；最终设计图使用下方导航复验目录。              |
+| `EGO_TASK_SPACE=8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=docs/verification/library-174/feedback/full-browser pnpm run test:browser` | [第八轮完整通过](./feedback/full-browser/runner.json)，覆盖新增登录入口、框选、200+核对、六路由公共壳层及原有跨模块流程。   |
+| `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --check`                                                         | [格式检查通过](./feedback/format-check.txt)、[任务依赖检查120项/298需求通过](./feedback/docs-check.txt)、最终diff检查通过。 |
+
+真实限流专项命令 `ego-browser nodejs < test-results/verify-logout-real-limit.mjs` 复用正式相册退出helper，先在独立3177真实请求101次会话接口；98次200、3次429，退出后的会话确认也实际429并给出10秒窗口。按期限实际点退出重试，最终登录表单的reason为signed-out，实际相册接口401：[专项报告与三项已执行断言](./feedback/logout-limit/logout-limit.json)、[真实失败提示截图](./feedback/logout-limit/albums-logout-rate-limit.png)、[实际输出](./feedback/logout-limit-run.txt)。该专项没有伪造响应、清理限流或放宽断言。独立审计实际读取了脚本与报告。
+
+最终导航设计使用 `ego-browser nodejs < test-results/verify-navigation-final.mjs` 的[34组/76图](./feedback/navigation-final/shell-navigation.json)，选择与跨页最终报告使用正式完整运行器输出。[普通框选报告](./feedback/full-browser/library-selection.json)、[200+核对报告](./feedback/full-browser/library-selection-reconciliation.json)、[两端身份](./feedback/full-browser/identity-390-setup.json)和[相册退出](./feedback/full-browser/albums.json)均为passed。
+
+完整原始图与日志在本机 `test-results/issue174-feedback-full-final/` 归档；前轮失败分别在 `test-results/issue174-feedback-full-first/` 至 `full-seventh/`，首次专项在 `test-results/issue174-feedback-browser-initial/`。定向诊断的原图也在同名 `test-results/issue174-feedback-*/` 归档。本PR只保留本Issue设计、选择、失败与人工预览所需图片；未纳入PR的截图路径按报告原名在相应本机归档查找。测试用3176/3177服务已停止、其隔离临时数据已删除；人工3175预览、分支与worktree保留。
+
+### 本轮设计和审计结论
+
+修改前实际读取图库桌面 `30:285`、手机 `98:748` 与手机公共头部 `112:1498` 的设计上下文和截图；独立设计评审另实际读取全屏导航 `106:1494`。原设计按钮为文字与底色，此处按用户明确批准改为纯图标和透明 hover；保留公共结构、顺序、位置和触控区域。桌面1440×1080、手机390×844的上传、图库、相册管理、相册内容、回收站与后台入口均核对两主题；公共按钮另覆盖360/430/768/987×844及390×560，hover、键盘focus、关闭/Escape回焦均用实际输入。
+
+独立[代码复审](./code-audit.md)已完成本轮源码与测试复核；独立[设计复验](./design-review.md)已实际读取Figma四节点和稳定后的76张最终导航图，本轮视觉P1/P2=0。完整功能按第八轮实际结果通过；本轮代码审计和设计评审均无未解决P1/P2。用户人工验收仍待完成，PR继续保持草稿；物理设备、AMD64/ARM64容器及发布未执行，按原执行边界保留。
+
+### 最新人工预览与复验入口
+
+预览已以最终已验证构建更新，进程73082；沿用原数据目录和原会话/加密密钥，构建复制到预览独立app-feedback目录。[更新核对](./feedback/preview-restart.txt)确认241张图片、相册/标签关系、版本、所有者和全部原会话保持不变；重启前取得的真实Cookie仍有效，图库及保存缩略图HTTP200。Ego原有Cookie也实际完成首页→登录→上传，未出现登录表单：[实际结果](./feedback/preview-valid-login.txt)、[1440×1080实际页面](./feedback/preview-valid-login-upload.png)。
+
+人工入口保持[241张相册](http://issue174.localhost:3175/albums/issue174-preview-album?page=1&pageSize=80)，当前Ego页面供用户继续复验。最新实际截图为1440×1080深色[相册](./feedback/preview-album-desktop-dark.png)、390×844深色[相册](./feedback/preview-album-mobile-dark.png)与[全屏菜单](./feedback/preview-menu-mobile-dark.png)；已等保存缩略图解码、Modal容器实际入场结束，按钮关闭后回焦。用户偏好仍为深色，截图据实际主题记录；浅色对照见最终两主题导航矩阵，没有为截图修改用户主题偏好。
+
+请刷新原预览后人工复验：手机菜单/关闭纯图标与无hover背景；保留有效登录回首页后点登录直接进后台；先单选再普通框选保留原图；跨页已选清单数量、翻页与逐项移除。用户确认前PR保持草稿，人工验收栏不勾选。
 
 ## PR 状态
 

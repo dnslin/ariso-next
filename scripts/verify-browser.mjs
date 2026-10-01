@@ -18,6 +18,7 @@ await mkdir(output, { recursive: true });
 for (const name of [
   'browser.json',
   'shell-browser.json',
+  'shell-navigation.json',
   'error-recovery.json',
   'library.json',
   'library-query.json',
@@ -353,6 +354,12 @@ try {
         );
       }
       report.libraryQuery = 'passed';
+      await runBrowser(
+        '../e2e/shell-navigation.mjs',
+        identityConfig,
+        'shell-navigation.log',
+      );
+      report.shellNavigation = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
       await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');

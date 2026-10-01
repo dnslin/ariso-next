@@ -197,7 +197,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
       const cards = [
         ...document.querySelectorAll('[data-testid="library-card"]'),
       ]
-        .slice(0, 4)
+        .slice(0, 5)
         .map((card) => card.getBoundingClientRect());
       const start = {
         x: (cards[0].right + cards[1].left) / 2,
@@ -230,7 +230,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
       const end =
         ending === 'collapse'
           ? { x: start.x + 1, y: start.y + 1 }
-          : { x: cards[2].right - 16, y: cards[2].bottom - 20 };
+          : { x: cards[4].right - 16, y: cards[4].bottom - 20 };
       mouse(document.body, 'mousemove', end);
       if (ending === 'escape') {
         window.dispatchEvent(
@@ -363,14 +363,12 @@ export async function verifyLibrarySelection({ page, config, report }) {
       () => !document.querySelector('[data-testid="library-selected-panel"]'),
     );
     await sameTaskDrag('collapse');
-    await selected(39);
+    await selected(40);
     assert.match(
       (await state()).status,
-      /当前页 0 张，其他页 39 张/,
-      'Shrinking a large drag to a 1px gap box and immediately releasing keeps only the other-page baseline',
+      /当前页 1 张，其他页 39 张/,
+      'Shrinking a large drag to a 1px gap box and immediately releasing retains the manually checked image and other-page baseline',
     );
-    await choose(fixtureName(40));
-    await selected(40);
     await action('取消当前页选择');
     await selected(39);
     assert.match((await state()).status, /当前页 0 张，其他页 39 张/);
@@ -387,7 +385,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
       'Current-page select/deselect and Back preserve other-page IDs; the paged selected list renders 20 rows and removes an actual second-page entry.',
     );
     report.checks.push(
-      'Within one browser task, a large drag shrunk below the 5px movement threshold and immediately released clears current-page hits while retaining all 39 other-page IDs.',
+      'Within one browser task, a large drag shrunk below the 5px movement threshold and immediately released removes only new drag hits, retaining the pre-drag current-page image and all 39 other-page IDs.',
     );
 
     await search('issue173-alpha');
@@ -421,12 +419,14 @@ export async function verifyLibrarySelection({ page, config, report }) {
       'A real gap is available for drag start',
     );
     const dragTop = (await state()).galleryTop;
+    await choose(fixtureName(0));
+    await selected(1);
     await drag(
       { x: (row[0].right + row[1].left) / 2, y: row[0].top + 20 },
       { x: row[2].right - 16, y: row[2].bottom - 20 },
-      2,
+      3,
     );
-    assert.deepEqual((await state()).ids, [row[1].id, row[2].id]);
+    assert.deepEqual((await state()).ids, [row[0].id, row[1].id, row[2].id]);
     assert.ok(
       Math.abs((await state()).galleryTop - dragTop) < 1,
       'First drag selection leaves the gallery in the same position',
@@ -434,27 +434,46 @@ export async function verifyLibrarySelection({ page, config, report }) {
     await drag(
       { x: (row[2].right + row[3].left) / 2, y: row[3].top + 20 },
       { x: row[3].right - 16, y: row[3].bottom - 20 },
-      3,
+      4,
       { shift: true },
     );
-    assert.deepEqual((await state()).ids, [row[1].id, row[2].id, row[3].id]);
+    assert.deepEqual((await state()).ids, [
+      row[0].id,
+      row[1].id,
+      row[2].id,
+      row[3].id,
+    ]);
+    const fifth = await page.evaluate(() => {
+      const card = document.querySelectorAll('[data-testid="library-card"]')[4];
+      const rect = card.getBoundingClientRect();
+      return {
+        id: card.dataset.imageId,
+        right: rect.right,
+        bottom: rect.bottom,
+      };
+    });
     await drag(
       { x: (row[0].right + row[1].left) / 2, y: row[0].top + 20 },
-      { x: row[0].left + 16, y: row[0].bottom - 20 },
-      1,
+      { x: fifth.right - 16, y: fifth.bottom - 20 },
+      5,
       { cancel: true },
     );
-    await selected(3);
-    assert.deepEqual((await state()).ids, [row[1].id, row[2].id, row[3].id]);
+    await selected(4);
+    assert.deepEqual((await state()).ids, [
+      row[0].id,
+      row[1].id,
+      row[2].id,
+      row[3].id,
+    ]);
     await sameTaskDrag('escape');
-    await selected(3);
+    await selected(4);
     assert.deepEqual(
       (await state()).ids,
-      [row[1].id, row[2].id, row[3].id],
+      [row[0].id, row[1].id, row[2].id, row[3].id],
       'Escape restores the original selection even when two change rAF callbacks were queued in the same task',
     );
     report.checks.push(
-      'Real mouse drags start in measured card gaps, select intersecting cards, append with Shift and restore the pre-drag selection on Escape; no detail opens or gallery shifts.',
+      'A manually checked image survives a real plain mouse drag; consecutive plain/Shift drags add intersecting cards, and Escape restores the pre-drag selection after adding a new fifth card; no detail opens or gallery shifts.',
     );
     report.checks.push(
       'Two different mousemove events followed by Escape in the same browser task leave no queued rAF capable of overwriting the restored selection after two frames.',
@@ -478,7 +497,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
       ]) {
         await resize(width, height);
         await top();
-        await selected(3);
+        await selected(4);
         if (width < 768) {
           assert.equal(
             await page.evaluate(() => matchMedia('(hover: none)').matches),
@@ -562,7 +581,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
           await page.evaluate(() =>
             document.activeElement?.getAttribute('aria-label'),
           ),
-          '操作已选 3 张图片',
+          '操作已选 4 张图片',
         );
       }
     }
