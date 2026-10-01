@@ -21,7 +21,9 @@ async function login() {
   await page.fill('input[name="email"]', config.credentials.email);
   await page.fill('input[name="password"]', config.credentials.password);
   await page.click(button('登录'));
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
 }
 async function navigate(label, pathname) {
   if (width < 1200) {
@@ -80,7 +82,9 @@ async function queued() {
   });
 }
 async function queueOne() {
-  await page.setInputFiles('input[type=file]', [fixture('sample.jpg')]);
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [
+    fixture('sample.jpg'),
+  ]);
   await privateSetting();
   const state = await queued();
   assert.equal(state.rows.length, 1);
@@ -101,7 +105,9 @@ async function assertRetained(before) {
   );
 }
 async function assertEmpty() {
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   assert.equal(
     await page.evaluate(
       () => document.querySelectorAll('[data-testid="upload-item"]').length,
@@ -144,7 +150,9 @@ try {
   });
   await page.goto(`${config.origin}/upload`);
   if (await page.evaluate(() => location.pathname === '/login')) await login();
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   await page.evaluate(
     (key) =>
       sessionStorage.setItem(key, JSON.stringify({ revoked: [], unloads: [] })),
@@ -360,7 +368,9 @@ try {
     'Actual logout and expiry of the current real session revoke queued Blobs and clear the queue before a fresh sign-in.',
   );
   // Cover useUploadResult's own 401 branch: a completed row coexists with unsent work.
-  await page.setInputFiles('input[type=file]', [fixture('sample.jpg')]);
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [
+    fixture('sample.jpg'),
+  ]);
   await page.click(button('开始上传'));
   await page.waitForSelector('[data-testid="upload-item"][data-state="ready"]');
   await page.waitForFunction(() => {
@@ -373,7 +383,9 @@ try {
       !image.src.startsWith('blob:')
     );
   });
-  await page.setInputFiles('input[type=file]', [fixture('sample.png')]);
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [
+    fixture('sample.png'),
+  ]);
   await page.waitForSelector(
     '[data-testid="upload-item"][data-state="queued"]',
   );

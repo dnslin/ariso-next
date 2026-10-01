@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -45,6 +46,7 @@ export function AdminShell({
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(initialSidebarCollapsed);
   const navigationId = useId();
+  const mainRef = useRef<HTMLElement>(null);
   const current = navigation
     .filter(
       ({ href, unavailable }) =>
@@ -99,7 +101,11 @@ export function AdminShell({
 
   return (
     <div className="admin-shell">
-      <Link href="#main-content" className="skip-link">
+      <Link
+        href="#main-content"
+        className="skip-link"
+        onPress={() => mainRef.current?.focus()}
+      >
         跳到主要内容
       </Link>
       <aside
@@ -191,7 +197,12 @@ export function AdminShell({
         </Modal>
       </header>
       <div className="shell-workspace">
-        <main id="main-content" tabIndex={-1} className="shell-content">
+        <main
+          ref={mainRef}
+          id="main-content"
+          tabIndex={-1}
+          className="shell-content"
+        >
           {children}
         </main>
         {footer ? <footer className="shell-footer">{footer}</footer> : null}

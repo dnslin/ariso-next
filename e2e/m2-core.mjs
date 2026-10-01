@@ -94,7 +94,9 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
     page.waitForSelector(`[data-testid="upload-item"][data-state="${name}"]`);
   const upload = async (format, visibility, expectedState = 'ready') => {
     await page.goto(`${config.origin}/upload`);
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
     await page.click('loc=role:button[name*="可见性"]');
     await page.click(
       `loc=role:option[name="${visibility === 'public' ? '公开' : '私有'}"]`,
@@ -103,7 +105,7 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
       config.projectDirectory,
       `tests/fixtures/runtime/images/sample.${format}`,
     );
-    await page.setInputFiles('input[type=file]', [source]);
+    await page.setInputFiles('input[aria-label="选择图片文件"]', [source]);
     await waitState('queued');
     await page.click(button('开始上传'));
     await waitState(expectedState);

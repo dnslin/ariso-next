@@ -189,3 +189,35 @@ Ego 的页面内容与鼠标正常，但截图曾超时；实际前台是另一�
 按用户要求没有重跑整套单元、集成、完整浏览器或设计矩阵。新增正式e2e步骤未运行完整查询套件，本次只执行同一路径的真实浏览器定向检查。此前测试总数属于历史结果，不能视为本次再次执行。PR继续草稿，用户人工验收待完成。
 
 本轮[独立有限代码复核](./code-audit.md#侧栏图库初始化修复的有限复核2026-10-01)已读取Next/nuqs真实实现与本轮两文件，未发现可证实的P1/P2；未重新运行测试或审计历史改动。
+
+## 两角度复审、缓存修复与并发冲突处理（2026-10-01）
+
+按用户要求，两个独立 agent 对 `52959bb` 的完整 PR 差异分别评审：`code-review-and-quality` 检查正确性、需求、边界和测试有效性；`thermo-nuclear-code-quality-review` 检查模块职责、结构复杂度和可维护性。结构评审无必修项；正确性评审发现一项 P2，现已修复并通过原评审者有限复核。两位评审者未重复运行测试或浏览器。
+
+P2 的触发为：历史查询“标签 a 或 b”包含图片，当前查询“标签 a”核对后发现该图不再匹配 a。TanStack Query 的默认部分匹配把 `['a']` 当成 `['a','b']` 的前缀，误删历史查询中仍匹配 b 的图片。现在复用已安装库导出的 `hashKey` 精确比较完整规范化筛选条件，保留同条件的所有分页和加载更多缓存，其他查询不受影响。没有新增依赖、查询键格式或缓存兼容层。
+
+新增回归使用真实 QueryClient 和实际 hook，覆盖分页与加载更多：当前失配项移除，历史组合保留图片和最后读取时间，返回历史仍显示图片且不发请求。修复前两项实际失败：[红日志](./feedback/cache-matching/red.txt)；修复后该文件全部9项通过：[绿日志](./feedback/cache-matching/green.txt)。
+
+拉取后的 `origin/main=1dd0f69` 有两个源码冲突，均来自相册封面 #180（PR #223，`917e36b`、`705b26e`）：
+
+- `library-card.tsx`：双方修改同一 className。保留 main 的单一 `bg-surface`，以及本 PR 的浅深色 `after:bg-transparent` 修复，避免边框伪元素遮挡图片。
+- `library-screen.tsx`：main 为复用同一 OwnerShell、查询和选择状态，新增封面工作区、底栏切换、摘要和刷新回调；本 PR 在同一区域新增选择核对告警、失配通知与 pending 禁用。最终保留全部双方行为，未替换为任一方整文件。独立结构评审者已逐项读取双向差异与相册调用点，确认未丢失功能。
+
+通过 merge 将已合入的 main 更新纳入本分支；未修改并发任务的主工作区，没有变基或强推。其他自动合并文件保持既有任务行为，未重新审计它们的产品选择。
+
+本轮环境为 macOS ARM64、Node 24.18.1、pnpm 11.19.0。按用户明确要求仅执行与修复和冲突整合有关的检查，不重跑全量单元、集成、Ego 浏览器矩阵或 Figma 设计验收；前轮的全量数字仍只代表当时版本。
+
+| 实际命令                                                                                                                                                                           | 结果                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts -t 'keeps other tag combinations'`                                                                      | 修复前2项失败，7项因定向筛选未执行；作为失败复现证据。                                                        |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts`                                                                                                        | 修复后9项通过。                                                                                               |
+| `pnpm install --frozen-lockfile`                                                                                                                                                   | [通过](./feedback/cache-matching/install.txt)，锁文件与依赖未改变。                                           |
+| `pnpm exec eslint src/app/library/use-library-query.ts src/app/library/library-card.tsx src/app/library/library-screen.tsx tests/unit/library/query-hook.test.ts --max-warnings=0` | [通过](./feedback/cache-matching/lint.txt)。仅检查修复及冲突文件。                                            |
+| `pnpm run typecheck`                                                                                                                                                               | [通过](./feedback/cache-matching/typecheck.txt)。                                                             |
+| `pnpm run build`                                                                                                                                                                   | [通过](./feedback/cache-matching/build.txt)，退出码0。已有可选跨平台 resvg 依赖追踪诊断仍保留，不改构建配置。 |
+
+本轮修改文件的 `pnpm exec prettier <上述4个源码/测试文件与本记录、审计记录> --check` 及 `git diff --cached --check` 通过。日志仅规范终端换行与行尾空白，保留完整诊断。
+
+保留3175人工预览已更新为本轮构建，沿用原数据和密钥；已有 Cookie 仍有效，241条图片记录、关系、所有者和会话在重启前后保持一致，列表与缩略图HTTP200：[更新结果](./feedback/cache-matching/preview.txt)。这是更新预览的可用性确认，不能当作新增功能浏览器或设计验收。
+
+代码结论：P2 已闭合，两个冲突融合的有限独立复核通过。设计结论：本轮没有新增设计方案，没有重复设计验收；UI 仍等待用户人工验收。PR 保持草稿；发布、部署、物理设备和双架构容器未执行。

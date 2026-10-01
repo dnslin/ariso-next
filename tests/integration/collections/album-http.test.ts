@@ -47,6 +47,7 @@ it('authenticates every album operation, checks write origins, and returns real 
         ['/missing', 'GET'],
         ['/missing', 'PATCH'],
         ['/missing', 'DELETE'],
+        ['/missing/cover', 'PUT'],
       ]) {
         const response = await fetch(`${origin}/api/albums${path}`, {
           method,
@@ -61,6 +62,7 @@ it('authenticates every album operation, checks write origins, and returns real 
       ['', 'POST'],
       ['/missing', 'PATCH'],
       ['/missing', 'DELETE'],
+      ['/missing/cover', 'PUT'],
     ]) {
       for (const invalidOrigin of ['', 'https://other.example']) {
         const response = await fetch(`${origin}/api/albums${path}`, {
@@ -121,6 +123,109 @@ it('authenticates every album operation, checks write origins, and returns real 
     expect(await (await fetch(url, { headers })).json()).toMatchObject({
       album: { name: '更名' },
     });
+    const coverUrl = `${url}/cover`;
+    for (const body of [
+      '{',
+      '{}',
+      '{"imageId":123}',
+      '{"imageId":null,"extra":true}',
+    ]) {
+      const response = await fetch(coverUrl, { method: 'PUT', headers, body });
+      expect(response.status).toBe(400);
+    }
+    const automatic = await fetch(coverUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ imageId: null }),
+    });
+    expect(automatic.status).toBe(200);
+    expect(await automatic.json()).toMatchObject({
+      album: {
+        cover: {
+          mode: 'empty',
+          imageId: null,
+          preferredCoverImageId: null,
+          status: 'empty',
+          thumbnailUrl: null,
+        },
+      },
+    });
+    const storage = live.db.$client
+      .prepare('SELECT id FROM storage_configs LIMIT 1')
+      .get() as { id: string };
+    live.db.$client
+      .prepare(
+        'INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+      )
+      .run(
+        'http-cover',
+        storage.id,
+        '封面.png',
+        '封面.png',
+        'public',
+        'png',
+        'image/png',
+        100,
+        'processing',
+        1000,
+        1000,
+      );
+    live.db.$client
+      .prepare(
+        'INSERT INTO album_images (album_id,image_id,joined_at) VALUES (?,?,?)',
+      )
+      .run(album.id, 'http-cover', 1000);
+    const manual = await fetch(coverUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ imageId: 'http-cover' }),
+    });
+    expect(manual.status).toBe(200);
+    expect(await manual.json()).toMatchObject({
+      album: {
+        publicImageCount: 1,
+        cover: {
+          mode: 'manual',
+          imageId: 'http-cover',
+          preferredCoverImageId: 'http-cover',
+          status: 'processing',
+          thumbnailUrl: null,
+        },
+      },
+    });
+    live.db.$client
+      .prepare('UPDATE media_images SET visibility=? WHERE id=?')
+      .run('private', 'http-cover');
+    expect(await (await fetch(url, { headers })).json()).toMatchObject({
+      album: {
+        cover: {
+          preferredCoverImageId: 'http-cover',
+          temporaryFallback: true,
+          mode: 'empty',
+        },
+      },
+    });
+    const unavailable = await fetch(coverUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ imageId: 'http-cover' }),
+    });
+    expect(unavailable.status).toBe(400);
+    const reset = await fetch(coverUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ imageId: null }),
+    });
+    expect((await reset.json()).album.cover.preferredCoverImageId).toBeNull();
+    const invalidCover = await fetch(coverUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ imageId: 'missing' }),
+    });
+    expect(invalidCover.status).toBe(400);
+    expect(await invalidCover.json()).toMatchObject({
+      code: 'COLLECTION_IMAGE_UNAVAILABLE',
+    });
     live.db.$client.exec(
       "CREATE TRIGGER reject_album BEFORE UPDATE ON albums BEGIN SELECT RAISE(ABORT, 'test database write failure'); END",
     );
@@ -130,6 +235,15 @@ it('authenticates every album operation, checks write origins, and returns real 
       body: JSON.stringify({ name: '不应保存' }),
     });
     expect(failed.status).toBe(500);
+    expect(
+      (
+        await fetch(coverUrl, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify({ imageId: null }),
+        })
+      ).status,
+    ).toBe(500);
     expect(await failed.json()).toMatchObject({
       code: 'INTERNAL_SERVER_ERROR',
     });

@@ -81,7 +81,7 @@ async function overlappingRead(name) {
     };
   });
   try {
-    await page.setInputFiles('input[type=file]', [source]);
+    await page.setInputFiles('input[aria-label="选择图片文件"]', [source]);
     await page.waitForSelector(`${item}[data-state="queued"]`);
     await page.click(button('开始上传'));
     await page.waitForFunction(
@@ -178,14 +178,16 @@ try {
   await page.waitForFunction(
     () =>
       document.querySelector('#email') ||
-      document.querySelector('input[type=file]'),
+      document.querySelector('input[aria-label="选择图片文件"]'),
   );
   if (await page.evaluate(() => !!document.querySelector('#email'))) {
     await page.fill('#email', config.credentials.email);
     await page.fill('#password', config.credentials.password);
     await page.click(button('登录'));
   }
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   await overlappingRead(
     'Content acceptance invalidates an outstanding automatic read',
   );
@@ -199,7 +201,7 @@ try {
       window.__pollingSendHeld = true;
     };
   });
-  await page.setInputFiles('input[type=file]', [source]);
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [source]);
   await page.click(button('开始上传'));
   await page.waitForFunction(() => window.__pollingSendHeld === true);
   await page.click(button('请求取消'));

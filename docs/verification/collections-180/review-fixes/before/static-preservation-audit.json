@@ -1,0 +1,19 @@
+{
+  "node": "v24.18.1",
+  "kind": "Static preservation audit; browser execution remains pending",
+  "audit": [
+    {
+      "path": "e2e/album-cover.mjs",
+      "originalBusinessAssertions": 43,
+      "currentBusinessAssertions": 45,
+      "allOriginalBusinessAssertionsRetained": true
+    },
+    {
+      "path": "e2e/albums.mjs",
+      "originalBusinessAssertions": 48,
+      "currentBusinessAssertions": 48,
+      "allOriginalBusinessAssertionsRetained": true
+    }
+  ],
+  "fixtureSQLCallExpressionsRetained": true
+}

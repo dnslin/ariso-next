@@ -180,3 +180,11 @@
 独立代码审计agent仅只读复核本轮use-library-query.ts及e2e/library-query.mjs，未发现可证实的P1/P2。实际读取已安装Next的HistoryUpdater和nuqs适配器：Next在useInsertionEffect发布当前路径；replaceState(null,'',url)保留内部history tree，并通过ACTION_RESTORE更新useSearchParams。nuqs在站内导航清理排队更新，与原初始化丢失链路吻合。直接提交初始化保留当前查询/hash，不增加历史项；缓存键、模式切换、历史恢复保持原实现。
 
 新增回归真实点击上传→图库侧栏，检查page=1、pages模式及40项，并返回原查询继续原历史检查，未削弱断言。审计者未运行测试或修改文件；[定向浏览器结果](./feedback/sidebar-loading/after.json)和生产构建由实现者实际执行，不能描述为审计者独立执行。此次是有限代码复核，不是重新执行此前完整审计或设计矩阵。
+
+## 两个独立角度与本轮有限复核（2026-10-01）
+
+完整评审基线为 `52959bb138e739ca5ae11630365ee6007517e69a`。正确性 agent 使用 `code-review-and-quality` 实际读取所有代码/测试/脚本差异、TanStack Query 的部分匹配源码和服务端标签 OR 谓词，发现一项 P2：失配 ID 清理可能误删标签前缀匹配的其他历史查询。结构 agent 使用 `thermo-nuclear-code-quality-review` 检查模块边界、状态、请求取消与原子应用、文件增长和证据边界，无 Required 项；未因顺序200项分批或现有身份检查而机械要求重构。
+
+修复后正确性 agent 只读 `use-library-query.ts`、`query-hook.test.ts` 与实际红绿日志，确认 `hashKey` 精确比较完整 filters，仍能清理同查询不同页；分页和加载更多的历史标签组合回归有效，P2 已闭合。结构 agent 另只读 `library-card.tsx`、`library-screen.tsx` 对 HEAD / origin/main 的双向差异和相册调用点，确认 #180 工作区/公共外壳/摘要/刷新与 #174 核对/告警/禁用全部保留，没有新增明显结构问题。
+
+两位评审者均未改代码或运行测试；实现者实际检查和未执行范围统一见 [本轮记录](./README.md#两角度复审缓存修复与并发冲突处理2026-10-01)。这次有限代码复核不替代用户人工 UI 验收。

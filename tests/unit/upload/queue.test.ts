@@ -180,14 +180,18 @@ it('counts terminal rows against the real queue limit and releases every browser
   const c = setup(20, 2);
   const revoke = vi.spyOn(URL, 'revokeObjectURL');
   c.add(2);
-  expect(c.controller.add(new File(['x'], 'extra.png'))).toContain('上限');
+  expect(c.controller.add(new File(['x'], 'extra.png'))).toMatchObject({
+    reason: 'capacity',
+  });
   const started = c.controller.start('private');
   await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
   c.settle(0, 'failed');
   await vi.waitFor(() =>
     expect(c.controller.snapshot[0].state).toBe('upload-failed'),
   );
-  expect(c.controller.add(new File(['x'], 'extra.png'))).toContain('上限');
+  expect(c.controller.add(new File(['x'], 'extra.png'))).toMatchObject({
+    reason: 'capacity',
+  });
   c.controller.clearCompleted();
   c.add(1);
   expect(c.controller.snapshot.map((item) => item.state)).toEqual([

@@ -1,4 +1,10 @@
 import { createUploadTransport } from './transport.ts';
+import { normalizeUploadName } from '../../shared/upload-name.ts';
+import {
+  canPreviewUpload,
+  isUploadImage,
+  type UploadInputFailure,
+} from './input.ts';
 import type {
   CreateUploadTransport,
   UploadItem,
@@ -89,28 +95,41 @@ export class UploadController {
     if (entry.item.previewUrl) URL.revokeObjectURL(entry.item.previewUrl);
     this.update(entry, { previewUrl: null });
   }
-  add(file: File): string | null {
-    if (this.destroyed) return '上传页面已关闭';
+  add(file: File): UploadInputFailure | null {
+    if (this.destroyed) return { reason: 'closed', message: '上传页面已关闭' };
+    let name: string;
+    try {
+      name = normalizeUploadName(file.name);
+    } catch (error) {
+      return { reason: 'name', message: (error as Error).message };
+    }
+    if (!file.size) return { reason: 'empty', message: '文件为空，请重新选择' };
+    if (file.size > this.options.maxFileBytes)
+      return { reason: 'size', message: '文件大小超过上传上限' };
+    if (!isUploadImage(file))
+      return { reason: 'format', message: '文件不是支持的图片格式' };
     if (this.entries.size >= this.options.queueLimit)
-      return '队列已达到上限，请清空已完成结果后继续添加';
-    if (!file.size) return '文件为空，请重新选择';
-    if (file.size > this.options.maxFileBytes) return '文件大小超过上传上限';
-    if (
-      !/\.(jpe?g|png)$/iu.test(file.name) &&
-      !['image/jpeg', 'image/png'].includes(file.type)
-    )
-      return '当前仅支持 JPEG 和 PNG 图片';
+      return {
+        reason: 'capacity',
+        message: '队列已达到上限，请清空已完成结果后继续添加',
+      };
+    // Re-wrap without directory metadata; original bytes are retained by the Blob.
+    file = new File([file], name, {
+      type: file.type,
+      lastModified: file.lastModified,
+    });
     const id = crypto.randomUUID();
+    const transport = this.createTransport(file, id);
     this.entries.set(id, {
       item: {
         id,
         name: file.name,
         size: file.size,
-        previewUrl: URL.createObjectURL(file),
+        previewUrl: canPreviewUpload(file) ? URL.createObjectURL(file) : null,
         progress: 0,
         state: 'queued',
       },
-      transport: this.createTransport(file, id),
+      transport,
       readVersion: 0,
       transferState: 'idle',
     });

@@ -207,6 +207,8 @@ export const mediaObjects = sqliteTable(
       ],
     }).notNull(),
     byteSize: integer('byte_size'),
+    width: integer('width'),
+    height: integer('height'),
     format: text('format'),
     mime: text('mime'),
     error: text('error'),

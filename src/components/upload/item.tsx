@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
@@ -172,7 +172,7 @@ function ProcessingOptions({
   );
 }
 
-export function UploadQueueItem({
+export const UploadQueueItem = memo(function UploadQueueItem({
   item,
   controller,
   client,
@@ -428,4 +428,4 @@ export function UploadQueueItem({
       ) : null}
     </Card>
   );
-}
+});

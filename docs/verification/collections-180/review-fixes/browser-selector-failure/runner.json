@@ -1,0 +1,30 @@
+{
+  "startedAt": "2026-10-01T09:27:11.488Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-64310.localhost:64310",
+  "taskSpaceId": 12,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    },
+    {
+      "width": 390,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "storageCors": "passed",
+  "libraryQuery": "passed",
+  "albums": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (album-cover.log)\n\n1 !== 0\n\n    at runBrowser (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr223-build-YQSSUr/ariso-final/scripts/verify-browser.mjs:275:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr223-build-YQSSUr/ariso-final/scripts/verify-browser.mjs:358:7",
+  "finishedAt": "2026-10-01T09:48:47.354Z",
+  "temporaryDirectoryRemoved": true
+}

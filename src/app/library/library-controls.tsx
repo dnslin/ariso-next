@@ -131,10 +131,10 @@ function LibrarySearch({ query }: { query: Query }) {
       }}
       className="min-w-0 flex-1 xl:w-70"
     >
-      <SearchField.Group className="h-11 min-w-0 rounded-lg border border-border bg-background shadow-none xl:h-9">
+      <SearchField.Group className="h-11 min-w-0 overflow-visible rounded-lg border border-border bg-background shadow-none xl:h-9">
         <SearchField.Input
           placeholder="搜索图片名称…"
-          className="min-w-0 text-base xl:text-sm"
+          className="h-11 min-w-0 text-base xl:h-9 xl:text-sm"
         />
         {value ? (
           <SearchField.ClearButton

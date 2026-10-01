@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { planLocalWrite } from '../storage/local.ts';
+import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { MediaTransaction } from './images.ts';
 import {
   mediaImages,
@@ -47,4 +48,26 @@ export function planDerivedObject(
     )
     .run();
   return { objectId, temporaryObjectId, storageId: image.storageId, ...write };
+}
+
+/** Preserve current versions; terminal failures release every other owned object. */
+export function markUnpublishedMediaObjects(
+  db: BetterSQLite3Database,
+  jobId: string,
+  diagnostic: string,
+) {
+  db.update(mediaObjects)
+    .set({
+      status: 'cleanup_pending',
+      error: diagnostic,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(mediaObjects.jobId, jobId),
+        inArray(mediaObjects.status, ['planned', 'writing', 'stored']),
+        sql`not exists (select 1 from media_versions where object_id = ${mediaObjects.id})`,
+      ),
+    )
+    .run();
 }

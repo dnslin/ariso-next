@@ -44,6 +44,7 @@ export function LibraryGallery({
     let frame = 0;
     function measure() {
       const rect = element.getBoundingClientRect();
+      if (!rect.width) return;
       const scrollRect = scroller.getBoundingClientRect();
       setViewport({
         width: rect.width,

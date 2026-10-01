@@ -146,6 +146,7 @@ async function trackReferences() {
     URL.createObjectURL = (blob) => {
       const url = create(blob);
       window.__uploadUrls.add(url);
+      window.__uploadReferences.push(new WeakRef(blob));
       return url;
     };
     URL.revokeObjectURL = (url) => {
@@ -173,7 +174,8 @@ async function released() {
     alive: window.__uploadReferences.filter((reference) => reference.deref())
       .length,
     urls: window.__uploadUrls.size,
-    input: document.querySelector('input[type=file]').files.length,
+    input: document.querySelector('input[aria-label="选择图片文件"]').files
+      .length,
   }));
   assert.deepEqual(
     refs,
@@ -182,7 +184,7 @@ async function released() {
   );
 }
 async function select(file = source) {
-  await page.setInputFiles('input[type=file]', [file]);
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [file]);
   await state('queued');
 }
 async function clear() {
@@ -203,7 +205,9 @@ try {
   await page.fill('#email', config.credentials.email);
   await page.fill('#password', config.credentials.password);
   await page.click(button('登录'));
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   const { verifyOwnerShell } = await import(
     new URL('./owner-shell.mjs', config.libraryDetailScript).href
   );
@@ -243,7 +247,9 @@ try {
     source: `window.__uploadFetch = window.fetch.bind(window); window.fetch = (...args) => window.__uploadFetch(...args);`,
   });
   await page.reload();
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   await trackReferences();
   await layouts('empty');
   await select();
@@ -396,7 +402,7 @@ try {
   for (const [name, size, reason] of [
     ['empty.png', 0, '文件为空'],
     ['oversized.png', settings.maxFileBytes + 1, '超过上传上限'],
-    ['unsupported.txt', 1, '仅支持 JPEG 和 PNG'],
+    ['unsupported.txt', 1, '不支持的格式'],
   ]) {
     const path = join(fixtures, name);
     const file = await open(path, 'w');
@@ -405,7 +411,7 @@ try {
     } finally {
       await file.close();
     }
-    await page.setInputFiles('input[type=file]', [path]);
+    await page.setInputFiles('input[aria-label="选择图片文件"]', [path]);
     await page.waitForFunction(
       (reason) =>
         [...document.querySelectorAll('[role="alert"]')].some((node) =>
@@ -419,6 +425,7 @@ try {
       ),
       0,
     );
+    await page.click(button('查看待上传图片'));
     await released();
   }
   report.checks.push(
@@ -786,7 +793,9 @@ try {
   );
   await page.goto(`${config.origin}/library`);
   await page.goto(`${config.origin}/upload`);
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   assert.equal(
     await page.evaluate(
       () => document.querySelectorAll('[data-testid="upload-item"]').length,
@@ -816,7 +825,9 @@ try {
     await released();
     await page.goto(`${config.origin}/library`);
     await page.goto(`${config.origin}/upload`);
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
     assert.equal(
       await page.evaluate(
         () => document.querySelectorAll('[data-testid="upload-item"]').length,
@@ -880,7 +891,9 @@ try {
   try {
     await sql('UPDATE storage_settings SET default_storage_id=NULL');
     await page.reload();
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
     await select();
     await page.waitForFunction(() =>
       document.body.textContent.includes('默认存储缺失或已停用'),
@@ -899,7 +912,9 @@ try {
     await sql(`UPDATE storage_settings SET default_storage_id='${storageId}'`);
     await sql(`UPDATE storage_configs SET enabled=0 WHERE id='${storageId}'`);
     await page.reload();
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
     await select();
     await page.waitForFunction(() =>
       document.body.textContent.includes('暂无可用存储'),
@@ -937,7 +952,9 @@ try {
     await page.waitForSelector(button('重试读取设置'));
     await layouts('settings-error');
     await page.click(button('重试读取设置'));
-    await page.waitForSelector('input[type=file]', { state: 'attached' });
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
   } finally {
     await page.evaluate(() => window.__uploadReleaseSettings?.());
     await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {

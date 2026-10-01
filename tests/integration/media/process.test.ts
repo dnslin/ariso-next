@@ -631,10 +631,18 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
   );
 
   it.each(['compressed', 'thumbnail', 'watermark'] as const)(
-    'reports unimplemented scoped reprocessing rather than silently changing scope: %s',
+    'executes the selected processing scope: %s',
     async (scope) => {
       const accepted = await accept(
         await readFile(resolve('tests/fixtures/runtime/images/sample.png')),
+        scope === 'watermark'
+          ? {
+              watermarkMode: 'text',
+              watermarkText: 'test',
+              watermarkFont: 'latin',
+              watermarkFontSize: 10,
+            }
+          : {},
       );
       connection.db
         .update(mediaJobs)
@@ -642,12 +650,12 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
         .where(eq(mediaJobs.id, accepted.jobId))
         .run();
       await processNext();
-      expect(state(accepted.imageId).latestJob!.error).toContain(
-        'MEDIA_SETTINGS_UNSUPPORTED',
-      );
+      expect(state(accepted.imageId).latestJob!.status).toBe('succeeded');
       expect(
-        state(accepted.imageId).versions.filter((v) => v.saved),
-      ).toHaveLength(1);
+        state(accepted.imageId)
+          .versions.filter((v) => v.saved)
+          .map((v) => v.kind),
+      ).toEqual(['original', scope]);
       expect(await versionBytes(accepted.imageId, 'original')).toEqual(
         accepted.bytes,
       );

@@ -1,0 +1,5980 @@
+{
+  "status": "passed",
+  "checks": [
+    "Real multiple selection preserves same-name files and repeated explicit selection as independent queued IDs; no automatic upload or scan dialog.",
+    "Diagnostic only: native directory drop works; chooser remains failed in Ego.",
+    "Native Chromium CDP dragEnter/dragOver/drop of a real filesystem directory exercises recursive FileSystemEntry reading.",
+    "Native ordinary-file drag/drop enters the same manual queue.",
+    "Real JPEG/PNG/WebP/AVIF/HEIC/GIF/BMP/TIFF/ICO samples and hostile SVG enter the queue; HEIC/SVG placeholders remain safe without executing SVG.",
+    "Actual image/png ClipboardItem and native Meta+V produce generated screenshot filenames and independent repeats; native text URL paste does not import remotely.",
+    "Real mixed directory reports empty/unsupported/oversized separately, retains the valid image, traps short-viewport keyboard focus and restores focus after Escape.",
+    "Controlled FileSystemEntry NotAllowedError reports one failed directory while preserving 20 successfully read files; this is not OS permission evidence.",
+    "Stop button and Escape cancel a genuinely pending entry read, retain accepted files and permit new input; late callbacks add no files and removal releases tracked references.",
+    "Real 501-file folder reaches default limit 500 including a real ready result, reports exactly two excluded files, clears only the result to release capacity, retains its database image and releases tracked native Files, actual queued PNG Files and URLs.",
+    "Controlled missing webkitdirectory capability shows explicit browser guidance while native ordinary selection remains usable."
+  ],
+  "layouts": [
+    {
+      "name": "empty",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-empty-light-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-empty-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-empty-light-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-empty-light-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-empty-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-empty-dark-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-empty-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-empty-dark-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-empty-dark-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-empty-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-ordinary-light-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 159,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 157,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-ordinary-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-ordinary-light-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 194,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 192,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-ordinary-light-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-ordinary-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-ordinary-dark-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 159,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 157,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-ordinary-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-ordinary-dark-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 194,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 192,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-ordinary-dark-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "ordinary",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-ordinary-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 4
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-complete-light-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 278,
+            "height": 48,
+            "available": 278
+          },
+          {
+            "width": 278,
+            "height": 48,
+            "available": 278
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 159,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 157,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 278,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 278,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-complete-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-complete-light-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 348,
+            "height": 48,
+            "available": 348
+          },
+          {
+            "width": 348,
+            "height": 48,
+            "available": 348
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 194,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 192,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 348,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 348,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-complete-light-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-complete-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-complete-dark-360.png",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 278,
+            "height": 48,
+            "available": 278
+          },
+          {
+            "width": 278,
+            "height": 48,
+            "available": 278
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 294,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 159,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 157,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 278,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 278,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-complete-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-complete-dark-430.png",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 348,
+            "height": 48,
+            "available": 348
+          },
+          {
+            "width": 348,
+            "height": 48,
+            "available": 348
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 364,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 194,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 192,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 348,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 348,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-complete-dark-768.png",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 64,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-complete",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-complete-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 2 张 · 未加入 1 项不支持的格式 1 项（不支持的格式不能上传）允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 2
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "format-placeholders",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-format-placeholders-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 10
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "format-placeholders",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-format-placeholders-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 10
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "format-placeholders",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-format-placeholders-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 10
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "format-placeholders",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-format-placeholders-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": null,
+      "modalGeometry": null,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 10
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "mixed-result",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-mixed-result-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 1 张 · 未加入 3 项不支持的格式 1 项（不支持的格式不能上传）文件为空 1 项文件大小超过上传上限 50.0 MiB：1 项允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "mixed-result",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-mixed-result-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 1 张 · 未加入 3 项不支持的格式 1 项（不支持的格式不能上传）文件为空 1 项文件大小超过上传上限 50.0 MiB：1 项允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "mixed-result",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-mixed-result-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 1 张 · 未加入 3 项不支持的格式 1 项（不支持的格式不能上传）文件为空 1 项文件大小超过上传上限 50.0 MiB：1 项允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "mixed-result",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-mixed-result-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 1 张 · 未加入 3 项不支持的格式 1 项（不支持的格式不能上传）文件为空 1 项文件大小超过上传上限 50.0 MiB：1 项允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-read-error-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 20 张 · 未加入 1 项文件或目录读取失败 1 项/不可读目录：Verification controlled directory read denied允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-read-error-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 20 张 · 未加入 1 项文件或目录读取失败 1 项/不可读目录：Verification controlled directory read denied允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-read-error-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "文件扫描完成已加入 20 张 · 未加入 1 项文件或目录读取失败 1 项/不可读目录：Verification controlled directory read denied允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-read-error-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "文件扫描完成已加入 20 张 · 未加入 1 项文件或目录读取失败 1 项/不可读目录：Verification controlled directory read denied允许文件大小等于 50.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看待上传图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "scanning",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-scanning-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "正在扫描文件夹已发现 20 个文件已加入 20 张图片，扫描仍在继续。仅加入图片，不保留文件夹层级，也不会自动创建相册。停止扫描",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "停止扫描",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "scanning",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-scanning-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "正在扫描文件夹已发现 20 个文件已加入 20 张图片，扫描仍在继续。仅加入图片，不保留文件夹层级，也不会自动创建相册。停止扫描",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "停止扫描",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "scanning",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-scanning-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "正在扫描文件夹已发现 20 个文件已加入 20 张图片，扫描仍在继续。仅加入图片，不保留文件夹层级，也不会自动创建相册。停止扫描",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "停止扫描",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "scanning",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-scanning-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "正在扫描文件夹已发现 20 个文件已加入 20 张图片，扫描仍在继续。仅加入图片，不保留文件夹层级，也不会自动创建相册。停止扫描",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "停止扫描",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "stopped",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-stopped-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "扫描已停止已加入的 20 张图片保留在待上传队列。未扫描的文件不会继续加入。查看队列重新选择文件夹",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看队列",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件夹",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "stopped",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-stopped-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "扫描已停止已加入的 20 张图片保留在待上传队列。未扫描的文件不会继续加入。查看队列重新选择文件夹",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看队列",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件夹",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "stopped",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-stopped-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "扫描已停止已加入的 20 张图片保留在待上传队列。未扫描的文件不会继续加入。查看队列重新选择文件夹",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看队列",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件夹",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "stopped",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-stopped-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "扫描已停止已加入的 20 张图片保留在待上传队列。未扫描的文件不会继续加入。查看队列重新选择文件夹",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 20
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看队列",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "重新选择文件夹",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "queue-full",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-queue-full-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "队列已满500 / 500 项，其中 1 项已完成。本次多出的 2 个文件未加入。成功、失败和已取消结果也占名额。清空已完成只移除页面记录，不会删除图片。清空已完成返回队列",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看详情",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 499
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 112,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 112,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 110,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回队列",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "queue-full",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-queue-full-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "队列已满500 / 500 项，其中 1 项已完成。本次多出的 2 个文件未加入。成功、失败和已取消结果也占名额。清空已完成只移除页面记录，不会删除图片。清空已完成返回队列",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看详情",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 499
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回队列",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "queue-full",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-queue-full-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "队列已满500 / 500 项，其中 1 项已完成。本次多出的 2 个文件未加入。成功、失败和已取消结果也占名额。清空已完成只移除页面记录，不会删除图片。清空已完成返回队列",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看详情",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "shell": false,
+          "count": 499
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 112,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 112,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 110,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回队列",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "queue-full",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-queue-full-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "队列已满500 / 500 项，其中 1 项已完成。本次多出的 2 个文件未加入。成功、失败和已取消结果也占名额。清空已完成只移除页面记录，不会删除图片。清空已完成返回队列",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "查看详情",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "shell": false,
+          "count": 499
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "清空已完成",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回队列",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-unavailable",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-unavailable-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "当前浏览器无法读取文件夹可以继续使用普通文件选择上传多张图片。粘贴只读取图片，不支持粘贴网址导入。部分格式无法本地预览时，仍可正常上传。选择图片返回上传",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回上传",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-unavailable",
+      "theme": "light",
+      "screenshot": "../browser-retest/upload-input-directory-unavailable-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "当前浏览器无法读取文件夹可以继续使用普通文件选择上传多张图片。粘贴只读取图片，不支持粘贴网址导入。部分格式无法本地预览时，仍可正常上传。选择图片返回上传",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回上传",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-unavailable",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-unavailable-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "dialog": "当前浏览器无法读取文件夹可以继续使用普通文件选择上传多张图片。粘贴只读取图片，不支持粘贴网址导入。部分格式无法本地预览时，仍可正常上传。选择图片返回上传",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          },
+          {
+            "width": 308,
+            "height": 48,
+            "available": 308
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "菜单",
+          "width": 60,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 358,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回上传",
+          "width": 308,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "directory-unavailable",
+      "theme": "dark",
+      "screenshot": "../browser-retest/upload-input-directory-unavailable-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "dialog": "当前浏览器无法读取文件夹可以继续使用普通文件选择上传多张图片。粘贴只读取图片，不支持粘贴网址导入。部分格式无法本地预览时，仍可正常上传。选择图片返回上传",
+      "modalGeometry": {
+        "bodyGap": 16,
+        "footerGap": 16,
+        "buttons": [
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          },
+          {
+            "width": 430,
+            "height": 48,
+            "available": 430
+          }
+        ]
+      },
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "shell": true,
+          "count": 1
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 144,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "选择图片",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        },
+        {
+          "name": "返回上传",
+          "width": 430,
+          "height": 48,
+          "shell": false,
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium emulation does not verify physical touch, soft keyboards or device safe areas.",
+    "Directory permission/read failures and delayed reads are controlled browser entry-boundary faults, not real operating-system permission failures.",
+    "Supported-format input tests prove candidate acceptance and safe local preview; actual format verification remains server-side.",
+    "GC checks track native input Files and the exact queued Files passed to object-URL creation. Formats without a local preview, including HEIC/SVG, have native input and URL checks but no direct queued-wrapper GC evidence."
+  ],
+  "shortViewport": {
+    "bodyHeight": 174.5,
+    "contentHeight": 174.5,
+    "explanationBottom": 261.5,
+    "lastLineBottom": 249.5,
+    "scrollHeight": 397,
+    "clientHeight": 366
+  },
+  "clipboardRestored": true,
+  "fixturesRemoved": true
+}

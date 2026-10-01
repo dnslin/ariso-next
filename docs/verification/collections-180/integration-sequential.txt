@@ -1,0 +1,18 @@
+Already up to date
+Done in 51ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=1
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso
+
+{"time":"2026-09-30T18:40:04.575Z","level":"info","module":"identity.setup","event":"setup-code","code":"L5dCETaj3EpUyPXwUfhOEikkb7FZuEDR","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-30T18:40:04.646Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-30T18:40:05.137Z","level":"info","module":"identity.setup","event":"setup-code","code":"XJ41LC4uc3GgseABQpPvs3W4QpZL-JJo","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-09-30T18:40:05.142Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-180-album-cover/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-eAV86O/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-09-30T18:40:05.146Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-09-30T18:40:05.613Z","level":"info","module":"identity.setup","event":"setup-code","code":"-Y4I3Tj0ui_nnyLbHqhcRA8fubo_Wpv-","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-09-30T18:40:05.670Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+
+ Test Files  101 passed (101)
+      Tests  928 passed (928)
+   Start at  02:33:52
+   Duration  669.86s (tests 97%, import 3%)

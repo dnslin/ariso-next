@@ -10,6 +10,10 @@ import { processMetadataJob } from './metadata-job.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 import { readMediaSettings } from './settings.ts';
 import { recoverMediaJobs } from './recovery.ts';
+import {
+  cleanupMediaCandidates,
+  recoverMediaCandidateCleanup,
+} from './candidate-cleanup.ts';
 import { mediaError } from './errors.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
@@ -67,6 +71,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
   async function consume() {
     try {
       recoverMediaJobs(runtime.db);
+      recoverMediaCandidateCleanup(runtime.db);
       // A previous recovery may have persisted failure just before the process
       // was killed. Discover owned workspaces independently of task status.
       let entries: string[];
@@ -89,6 +94,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
         await terminateMediaTools(workspace);
         await rm(workspace, { recursive: true, force: true });
       }
+      let nextCleanupAt = 0;
       while (!signal.aborted && runtime.db.$client.open) {
         const limit = readMediaSettings(runtime.db)?.concurrency ?? 1;
         while (!signal.aborted && active.size < limit) {
@@ -109,6 +115,10 @@ export function startMediaQueue(runtime: MediaRuntime) {
             })
             .finally(() => active.delete(execution));
           active.add(execution);
+        }
+        if (Date.now() >= nextCleanupAt) {
+          await cleanupMediaCandidates(runtime, signal);
+          nextCleanupAt = Date.now() + 1000;
         }
         await setTimeout(50, undefined, { signal, ref: active.size > 0 });
       }

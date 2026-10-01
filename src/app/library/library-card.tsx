@@ -46,7 +46,7 @@ export function LibraryCard({
       data-testid="library-card"
       data-image-id={item.id}
       data-selected={isSelected || undefined}
-      className={`group relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-background p-0 shadow-none data-[selected=true]:ring-2 data-[selected=true]:ring-accent has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus dark:bg-surface ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border after:bg-transparent dark:after:bg-transparent' : 'border border-border'}`}
+      className={`group relative h-full min-w-0 gap-0 overflow-hidden rounded-2xl bg-surface p-0 shadow-none data-[selected=true]:ring-2 data-[selected=true]:ring-accent has-[[data-focus-visible=true]]:ring-2 has-[[data-focus-visible=true]]:ring-focus ${album ? 'after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:border after:border-border after:bg-transparent dark:after:bg-transparent' : 'border border-border'}`}
     >
       {onToggle ? (
         <Checkbox

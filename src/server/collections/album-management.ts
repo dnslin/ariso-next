@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { mediaImages } from '../media/schema.ts';
 import { CollectionError } from './errors.ts';
 import { albums, albumImages } from './schema.ts';
+import { resolveAlbumCovers } from './cover.ts';
 import type { CollectionsTransaction } from './types.ts';
 
 const querySchema = z.object({
@@ -44,7 +45,11 @@ function serializeAlbums(
 ) {
   if (!rows.length) return [];
   const counts = tx
-    .select({ id: albumImages.albumId, value: count() })
+    .select({
+      id: albumImages.albumId,
+      value: count(),
+      publicCount: sql<number>`sum(case when ${mediaImages.visibility} = 'public' then 1 else 0 end)`,
+    })
     .from(albumImages)
     .innerJoin(mediaImages, eq(albumImages.imageId, mediaImages.id))
     .where(
@@ -59,14 +64,20 @@ function serializeAlbums(
     )
     .groupBy(albumImages.albumId)
     .all();
-  const byId = new Map(counts.map((row) => [row.id, row.value]));
+  const byId = new Map(counts.map((row) => [row.id, row]));
+  const covers = resolveAlbumCovers(
+    tx,
+    rows.map((row) => row.id),
+  );
   return rows.map(({ id, name, description, createdAt, updatedAt }) => ({
     id,
     name,
     description,
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
-    imageCount: byId.get(id) ?? 0,
+    imageCount: byId.get(id)?.value ?? 0,
+    publicImageCount: byId.get(id)?.publicCount ?? 0,
+    cover: covers.get(id)!,
   }));
 }
 
