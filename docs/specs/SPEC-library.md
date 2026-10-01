@@ -191,18 +191,21 @@ Markdown/HTML 的 alt 使用 displayName，按目标语法转义中括号、引�
 
 ## 10. 接口、实现组织与设计对应
 
-| 所有者入口（草案）               | 职责                                                                                               |
-| -------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `GET /api/images`                | scope=normal/album/trash、规范化查询、分页或游标结果；album 范围必须有 albumId                     |
-| `GET /api/images/{id}`           | 详情、版本、关系、任务摘要及可操作原因；回收状态也返回管理记录；内容仅由独立所有者管理预览路由提供 |
-| `GET /api/images/{id}/metadata`  | 完整分组结果及读取状态；失败保留旧数据标记                                                         |
-| `PATCH /api/images/{id}`         | displayName/visibility；调用 media 的字段更新函数                                                  |
-| `POST /api/images/status`        | 最多 80 个 ID 的当前状态/任务/版本摘要，用于可见列表刷新，不改业务状态                             |
-| `POST /api/images/batch`         | 最多 200 个 ID、一个命令及参数，逐项结果；没有 allMatching=true                                    |
-| `POST /api/images/copy`          | 明确 IDs、查询范围、统一版本模式及输出格式；返回排序键/文本行，跨批合并全局顺序                    |
-| `GET /api/images/{id}/neighbors` | 同一查询上下文的前后图片轻量信息；不传所有结果 ID                                                  |
+| 所有者入口（草案）                   | 职责                                                                                               |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `GET /api/images`                    | scope=normal/album/trash、规范化查询、分页或游标结果；album 范围必须有 albumId                     |
+| `GET /api/images/{id}`               | 详情、版本、关系、任务摘要及可操作原因；回收状态也返回管理记录；内容仅由独立所有者管理预览路由提供 |
+| `GET /api/images/{id}/metadata`      | 完整分组结果及读取状态；失败保留旧数据标记                                                         |
+| `PATCH /api/images/{id}`             | displayName/visibility；调用 media 的字段更新函数                                                  |
+| `PATCH /api/images/{id}/collections` | 当前图片最终相册/标签集合；调用 collections 的关系函数，不改图片字段                               |
+| `POST /api/images/status`            | 最多 80 个 ID 的当前状态/任务/版本摘要，用于可见列表刷新，不改业务状态                             |
+| `POST /api/images/batch`             | 最多 200 个 ID、一个命令及参数，逐项结果；没有 allMatching=true                                    |
+| `POST /api/images/copy`              | 明确 IDs、查询范围、统一版本模式及输出格式；返回排序键/文本行，跨批合并全局顺序                    |
+| `GET /api/images/{id}/neighbors`     | 同一查询上下文的前后图片轻量信息；不传所有结果 ID                                                  |
 
 媒体重处理、元数据重读、回收/恢复/删除的单图入口沿用 media 已定义路由，不新增同义别名。全部读取需要所有者 Cookie，写入复用 identity 的来源/CSRF 检查；API Token/分享授权不能代替。私有数据响应 no-store，客户端会话内数据缓存不成为无权限文件访问路径。
+
+T-LIB-06 的字段 PATCH 至少包含 displayName 或 visibility；空对象、未知字段及无效名称返回 400。关系 PATCH 至少包含 albumIds 或 tagIds，提供的维度按最终集合保存，省略维度保留，空数组清除；关系写入在同一短事务中提交，保留幸存关系的 joinedAt。元数据 GET 对不存在图片返回 404，存在但未读取返回 200/null；已读取时保留完整分组 JSON、读取/尝试时间、错误及 historical 标记。详情和状态批读分别返回最新 processingJob、metadataJob，保留真实终态，不从缺少活动任务推断成功。[实际实施与未完成界面](../verification/library-171/README.md)以本次记录为准。
 
 错误区分 400 参数、401 会话、404 记录不存在、409 状态/关系冲突和内部故障。正常图片字节通过 `/i/{id}`；回收图片管理预览按 delivery 的专用入口验证当前所有者、资产、版本和存储，不接受任意对象文件路径。日志记录操作、ID、数量和错误上下文，不记录 Cookie、Token 或完整分组元数据。
 

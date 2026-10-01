@@ -248,7 +248,12 @@ it('reports lifecycle, switch, failed-scope and queued-job conflicts', async () 
   const accepted = await request('{"scope":"thumbnail"}');
   expect(accepted).toMatchObject({
     status: 202,
-    body: { jobId: expect.any(String), status: 'queued' },
+    body: {
+      jobId: expect.any(String),
+      status: 'queued',
+      scope: 'thumbnail',
+      expectedVersions: ['thumbnail'],
+    },
   });
   const before = snapshot();
   expect(await request('{"scope":"thumbnail"}')).toMatchObject({
@@ -275,6 +280,11 @@ it('keeps old HTTP links readable throughout ready processing and publishes all 
     body: { jobId: expect.any(String), status: 'queued' },
   });
   const jobId = accepted.body.jobId as string;
+  expect(accepted.body.expectedVersions).toEqual(
+    connection.db.select().from(mediaJobs).where(eq(mediaJobs.id, jobId)).get()!
+      .expectedVersions,
+  );
+  expect(accepted.body.scope).toBe('all');
   expect(await publicBytes('compressed')).toEqual(oldBytes);
   expect(connection.db.select().from(mediaImages).get()!.processingStatus).toBe(
     'ready',

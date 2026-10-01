@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "checks": [
+    "Actual watermark/compressed confirmation shows retained-version and temporary-compression rules without submitting jobs; all-scope queued renders the existing persisted controlled receipt/snapshot; 1440×1080 and390×844 light/dark match actual state without horizontal overflow."
+  ],
+  "screens": [
+    {
+      "state": "confirm-watermark",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-watermark-light-1440.png"
+    },
+    {
+      "state": "confirm-watermark",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-watermark-light-390.png"
+    },
+    {
+      "state": "confirm-watermark",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-watermark-dark-1440.png"
+    },
+    {
+      "state": "confirm-watermark",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-watermark-dark-390.png"
+    },
+    {
+      "state": "confirm-compressed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-compressed-light-1440.png"
+    },
+    {
+      "state": "confirm-compressed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-compressed-light-390.png"
+    },
+    {
+      "state": "confirm-compressed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-compressed-dark-1440.png"
+    },
+    {
+      "state": "confirm-compressed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/confirm-compressed-dark-390.png"
+    },
+    {
+      "state": "queued-all",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/queued-all-light-1440.png"
+    },
+    {
+      "state": "queued-all",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/queued-all-light-390.png"
+    },
+    {
+      "state": "queued-all",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/queued-all-dark-1440.png"
+    },
+    {
+      "state": "queued-all",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "path": "/Volumes/data/project/ariso-issue-171/test-results/browser-171-additional/queued-all-dark-390.png"
+    }
+  ],
+  "limitations": [
+    "All-scope queued uses a controlled persisted existing job; this is layout evidence, not actual worker execution."
+  ]
+}

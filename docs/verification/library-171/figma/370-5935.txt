@@ -1,0 +1,98 @@
+const imgForestLight = "https://www.figma.com/api/mcp/asset/787e9d4b-8ec7-4312-94ff-5098659eae82.png";
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function Component32M() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="370:5935" data-name="32 · M / 图片处理 / 仅缩略图 · 正在排队">
+      <div className="absolute bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between left-0 overflow-clip px-[16px] top-0 w-[390px]" data-node-id="370:5936" data-name="Mobile / Header">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[36px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I370:5936;112:1495">
+          Ariso
+        </p>
+        <button className="bg-[var(--secondary,#e3f6f5)] content-stretch cursor-pointer flex h-[44px] items-center justify-center overflow-clip relative rounded-[22px] shrink-0 w-[64px]" data-node-id="I370:5936;112:1496" data-name="Mobile / 打开菜单">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I370:5936;112:1497">
+            菜单
+          </p>
+        </button>
+      </div>
+      <div className="absolute h-[660px] left-[16px] overflow-x-clip overflow-y-auto top-[88px] w-[358px]" data-node-id="370:5937" data-name="图片处理内容滚动区">
+        <div className="absolute content-stretch flex flex-col gap-[12px] items-start left-0 pb-[16px] top-0 w-[358px]" data-node-id="370:5938" data-name="Main">
+          <a className="[word-break:break-word] block cursor-pointer font-['Noto_Sans_SC:Regular'] font-normal leading-[0] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="370:5939">
+            <p className="leading-[1.5]">← 返回图片详情</p>
+          </a>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[28px] text-[color:var(--foreground,#272343)] w-full" data-node-id="370:5940">
+            仅缩略图 · 正在排队
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal h-[22px] leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] w-full" data-node-id="370:5941">
+            forest-light.jpg · 仅缩略图
+          </p>
+          <div className="content-stretch flex gap-[12px] items-center overflow-clip relative shrink-0 w-full" data-node-id="370:5975" data-name="图片识别">
+            <div className="h-[60px] relative rounded-[8px] shrink-0 w-[80px]" data-node-id="370:5976" data-name="forest-light · 缩略图">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[8px] size-full" src={imgForestLight} />
+            </div>
+            <div className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Regular'] font-normal h-full leading-[0] min-w-px relative text-[13px] text-[color:var(--foreground,#272343)]">
+              <p className="leading-[1.5] mb-0">forest-light.jpg</p>
+              <p className="leading-[1.5]">原图 · 2.4 MiB</p>
+            </div>
+          </div>
+          <div className="bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col items-start overflow-clip p-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="370:5942" data-name="说明">
+            <div className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] w-full" data-node-id="370:5943">
+              <p className="leading-[1.5] mb-0">本次参数已固定。</p>
+              <p className="leading-[1.5]">只替换缩略图，压缩图和水印图保持不变。完成前继续使用旧版本。</p>
+            </div>
+          </div>
+          <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col items-start overflow-clip px-[12px] py-[8px] relative rounded-[16px] shrink-0 w-full" data-node-id="370:5944" data-name="图片处理状态明细">
+            <div className="content-stretch flex gap-[4px] h-[72px] items-start relative shrink-0 w-full" data-node-id="370:5965" data-name="处理明细 / 任务范围">
+              <div className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] min-w-px relative text-[14px] text-[color:var(--foreground,#272343)]" data-node-id="I370:5965;31:136">
+                <p className="leading-[1.5] mb-0">任务范围</p>
+                <p className="leading-[1.5]">仅缩略图 · 已排队</p>
+              </div>
+            </div>
+            <div className="content-stretch flex gap-[4px] h-[72px] items-start relative shrink-0 w-full" data-node-id="370:5970" data-name="处理明细 / 当前版本">
+              <div className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Regular'] font-normal leading-[0] min-w-px relative text-[14px] text-[color:var(--foreground,#272343)]" data-node-id="I370:5970;31:136">
+                <p className="leading-[1.5] mb-0">当前版本</p>
+                <p className="leading-[1.5]">继续可用 · 等待新结果</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[var(--background,#fffffe)] border-[var(--accent,#bae8e8)] border-solid border-t bottom-0 content-stretch flex h-[80px] items-center justify-end left-[16px] overflow-clip pb-[20px] pt-[12px] right-[16px]" data-node-id="370:5947" data-name="固定图片处理操作栏">
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch cursor-pointer flex flex-[1_0_0] h-[48px] items-center justify-center min-w-px relative rounded-[8px]" label="返回图片详情" />
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Mobile / Header
+**Node ID:** 112:1498
+
+手机后台64px固定页眉；Caveat品牌及44px高菜单按钮，宽度跟随屏幕。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

@@ -1,0 +1,1893 @@
+{
+  "status": "passed",
+  "checks": [
+    "Real public source order locates the card at 5; 44 items are loaded and actual virtual windows are traversed. Card keyboard opening → version workspace → detail retains watermark preview; closing preserves visibility/sort URL, masonry layout, source scroll and exact trigger focus.",
+    "A rejected write reconciles the real renamed record into the visible detail cache while later background reads remain held.",
+    "Pre-write GET race (normal): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+    "Pre-write GET race (lost-write): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST after explicit unknown-result reconciliation.",
+    "Pre-write GET race (late-success): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+    "Trash cancellation and Escape restore trigger focus without writes; held real POST disables duplicate submission; successful trash removes detail/card and every saved version rejects owner and anonymous reads.",
+    "A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.",
+    "Opening a trash record and using its top return control restores focus to the original record.",
+    "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+    "Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.",
+    "Disabled storage permits record trash/restore; success explicitly says the storage remains disabled; real content remains unreadable and storage is not enabled.",
+    "A real concurrent deleting transition returns HTTP 409 and triggers a current-record read; the trashed record remains and reopening disables restore.",
+    "Losing the real successful restore response and its real reconciliation read preserves an unknown-result state; manual reconciliation discovers the committed result without repeating the write.",
+    "Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record; reopening the original record resumes a real read and shows its already-restored state without another write.",
+    "A record really deleted after confirmation opens produces HTTP 404 and a definite missing-record result, not an indefinitely unknown mutation.",
+    "A real expired owner session during restore/reconciliation redirects to login with the exact trash record return target; signing in returns to that record.",
+    "A real zero-record query renders empty; losing the real refresh response renders an error rather than an empty state; retry reads the real endpoint.",
+    "The 390×400 shortened viewport keeps the real record restore action reachable; this is not a physical keyboard or safe-area device test.",
+    "Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login."
+  ],
+  "layouts": [
+    {
+      "state": "trash-trash-confirm",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-trash-confirm",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "删除图片",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-loading",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 302,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 302,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 332,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 332,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 372,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 372,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 694,
+          "height": 88
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 694,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 1102,
+          "height": 88
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 1102,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 302,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 302,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 332,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 332,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 372,
+          "height": 148
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 372,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 694,
+          "height": 88
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 694,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-list",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "中文下载样本.png原文件 6.5 KiB · 默认本地存储 · 公开已回收 · 已就绪2026/10/2 02:21:54",
+          "width": 1102,
+          "height": 88
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 1102,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-record",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-restore-confirm",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "确认恢复",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 302,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 332,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 372,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 694,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 1102,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 302,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 332,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 372,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 694,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-disabled-restored",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "前往图库",
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "暂无缩略图不应出现的回收图片原文件 0.0 KiB · 默认本地存储 · 私有已回收 · 已就绪2023/11/15 06:13:20",
+          "width": 1102,
+          "height": 88
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 78,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-deleting",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "返回",
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 278,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 278,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 308,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 348,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 348,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-unknown",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "关闭",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新核对",
+          "width": 430,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-empty",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "trash-read-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+  ],
+  "trashRaces": [
+    {
+      "mode": "normal",
+      "oldReadAborted": true
+    },
+    {
+      "mode": "lost-write",
+      "oldReadAborted": true
+    },
+    {
+      "mode": "late-success",
+      "oldReadAborted": true
+    }
+  ]
+}

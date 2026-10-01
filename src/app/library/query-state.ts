@@ -27,7 +27,7 @@ export function parseLibraryLocation(
 ) {
   const input: Record<string, unknown> = Object.create(null);
   for (const key of new Set(params.keys())) {
-    if (key === 'image') continue;
+    if (key === 'image' || key === 'detailView' || key === 'preview') continue;
     const values = params.getAll(key);
     if (key !== 'tagId' && values.length > 1)
       throw new LibraryQueryError(`查询参数 ${key} 不能重复`);

@@ -32,6 +32,19 @@ function detail(
     tags: [],
     activeJob: null,
     latestFailedJob: null,
+    metadataJob: null,
+    processingJob: null,
+    actions: {
+      editUnavailableReason: null,
+      reprocessUnavailableReason: null,
+      metadataReadUnavailableReason: null,
+    },
+    reprocess: {
+      scopes: { all: null, compressed: null, thumbnail: null, watermark: null },
+      expectedVersions: ['compressed', 'thumbnail'],
+      compressionEnabled: true,
+      watermarkEnabled: false,
+    },
     defaultVersion: 'watermark',
     defaultLink: {
       actualVersion: null,
@@ -45,6 +58,7 @@ function detail(
       kind,
       applicable: true,
       saved: available.includes(kind),
+      status: available.includes(kind) ? 'saved' : 'not_generated',
       format: 'png',
       mime: 'image/png',
       width: 640,
