@@ -1,13 +1,13 @@
 import { z } from 'zod';
+import { normalizeUploadName } from '../../shared/upload-name.ts';
 import { UploadError } from './errors.ts';
 
 export function normalizeOriginalName(value: string) {
-  if (/[\u0000-\u001f\u007f-\u009f]/u.test(value))
-    throw new UploadError('UPLOAD_INVALID_NAME', '文件名不能包含控制字符');
-  const name = value.split(/[\\/]/u).at(-1) ?? '';
-  if ([...name].length > 255)
-    throw new UploadError('UPLOAD_INVALID_NAME', '文件名不能超过 255 个字符');
-  return name === '' || name === '.' || name === '..' ? 'image' : name;
+  try {
+    return normalizeUploadName(value);
+  } catch (error) {
+    throw new UploadError('UPLOAD_INVALID_NAME', (error as Error).message);
+  }
 }
 
 const id = z.string().min(1).max(255);

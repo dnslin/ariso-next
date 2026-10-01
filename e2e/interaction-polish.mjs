@@ -106,10 +106,12 @@ try {
     ],
   });
   await page.goto(`${config.origin}/upload`);
-  await page.waitForSelector('input[type=file]', { state: 'attached' });
+  await page.waitForSelector('input[aria-label="选择图片文件"]', {
+    state: 'attached',
+  });
   assert.equal(
     await page.evaluate(
-      () => document.querySelector('input[type=file]').multiple,
+      () => document.querySelector('input[aria-label="选择图片文件"]').multiple,
     ),
     true,
     'Native file chooser accepts multiple images',
@@ -153,7 +155,7 @@ try {
   );
   await page.screenshot({ path: output('upload-empty.png') });
 
-  await page.setInputFiles('input[type=file]', [
+  await page.setInputFiles('input[aria-label="选择图片文件"]', [
     fixture('sample.jpg'),
     fixture('sample.png'),
   ]);

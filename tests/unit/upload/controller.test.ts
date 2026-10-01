@@ -160,13 +160,17 @@ describe('manual upload controller', () => {
   it('validates inputs, queues manually, assigns independent IDs and releases removed previews', () => {
     const c = setup();
     const revoke = vi.spyOn(URL, 'revokeObjectURL');
-    expect(c.controller.add(new File([], 'empty.png'))).toContain('为空');
-    expect(c.controller.add(new File(['x'.repeat(21)], 'large.png'))).toContain(
-      '上限',
-    );
+    expect(c.controller.add(new File([], 'empty.png'))).toMatchObject({
+      reason: 'empty',
+    });
     expect(
-      c.controller.add(new File(['x'], 'image.gif', { type: 'image/gif' })),
-    ).toContain('JPEG');
+      c.controller.add(new File(['x'.repeat(21)], 'large.png')),
+    ).toMatchObject({ reason: 'size' });
+    expect(
+      c.controller.add(
+        new File(['x'], 'document.pdf', { type: 'application/pdf' }),
+      ),
+    ).toMatchObject({ reason: 'format' });
     expect(c.controller.add(c.file)).toBeNull();
     const first = c.controller.snapshot[0]!;
     expect(c.request).not.toHaveBeenCalled();
