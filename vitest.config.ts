@@ -16,6 +16,8 @@ export default defineConfig({
           environment: 'node',
           include: ['tests/integration/**/*.test.ts'],
           exclude: [
+            'tests/integration/delivery/formats.test.ts',
+            'tests/integration/delivery/reprocess.test.ts',
             'tests/integration/media/metadata.test.ts',
             'tests/integration/media/metadata-http.test.ts',
             'tests/integration/media/process.test.ts',
@@ -43,6 +45,8 @@ export default defineConfig({
           name: 'media-tools',
           environment: 'node',
           include: [
+            'tests/integration/delivery/formats.test.ts',
+            'tests/integration/delivery/reprocess.test.ts',
             'tests/integration/media/metadata.test.ts',
             'tests/integration/media/metadata-http.test.ts',
             'tests/integration/media/process.test.ts',
