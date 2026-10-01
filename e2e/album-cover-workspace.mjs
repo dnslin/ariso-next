@@ -187,16 +187,14 @@ export async function verifyAlbumCoverWorkspace({
       '1/2',
       'Reopening starts the picker at page one',
     );
-    assert.equal(
-      await page.evaluate(
-        () =>
-          [
-            ...document.querySelectorAll(
-              '[data-testid="album-cover-picker"] button',
-            ),
-          ].find((node) => node.textContent.trim() === '上一页').disabled,
+    assert.deepEqual(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('[aria-label="封面图片分页"] button')]
+          .filter((node) => node.textContent.trim() === '上一页')
+          .map((node) => node.disabled),
       ),
-      true,
+      [true],
+      'Reopened cover pagination has one disabled previous-page button',
     );
     await cancel();
     await page.waitForFunction(() =>
