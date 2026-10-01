@@ -4,6 +4,8 @@
 
 2026-10-02 通过 gh 读取 Issue、评论和原生 blocked by / blocking。评论为空，直接前置 #69、#83、#155、#150、#153、#70 全部 CLOSED；实现及交付记录已核对。下游 #162、#164、#169、#193 仍 OPEN。从最新 origin/main `3eb585f` 创建分支 `codex/delivery-s3-161` 与独立 worktree `/Volumes/data/project/ariso-delivery-161`。原目录和真实预览数据未修改。当前必需真实服务按 execution 为 R2 与 SeaweedFS；AWS 实测已取消，不记为通过。
 
+已推送分支并创建 [草稿 PR #224](https://github.com/dnslin/ariso-next/pull/224)。实际 `gh pr view 224 --repo dnslin/ariso-next --json number,url,state,isDraft,mergeable,headRefName,statusCheckRollup` 返回 OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。没有远端检查，不将空列表记作CI通过，也不等待不存在的工作流。未合并、关闭Issue、发布或部署；分支与worktree保留。
+
 ## 实施行为
 
 - `/i/{id}` 和所有者回收管理预览复用同一权限、状态、版本选择，支持已发布 S3 对象。GET 一次302到 GET 专用300秒签名，按实际版本覆盖类型、附件名称与缓存；HEAD 单独签名，无正文，不携带GET响应覆盖参数，不计数。普通GET不预查远端对象、不代理文件流量。
