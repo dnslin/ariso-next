@@ -1,0 +1,100 @@
+{
+  "phase": "query",
+  "status": "passed",
+  "checks": [
+    "Saved pagination preference initializes a fresh entry as page=1; more→pages→Back restores 80 cached items and scroll, and Forward restores pagination without new list requests.",
+    "All four layout/loading combinations execute 20/40/80 against real SQLite; layout produces zero list requests; page size restarts at the beginning.",
+    "Back and repeated Forward/Back restore the previous cached page and the actual main-container scroll offset.",
+    "Search drafts change neither URL nor request/history count; submit adds one history entry; Back/Forward restores filters; copied pages restore their real items; image-only navigation causes no list request.",
+    "A held real beta response arriving after a newer alpha query never replaces alpha results or exposes old-query actions.",
+    "Repeated tag IDs retain any-tag matching without duplicate images; a removed tag keeps its URL and shows an explicit failure; malformed URL has a working reset.",
+    "A corrupted cursor is rejected by the actual server; refresh discards it and later load-more succeeds; receiving a cross-context change notification only marks the toolbar and retains cards until explicit refresh (producer paths are covered separately).",
+    "When only the library preference key is unavailable, defaults load real images and changed layout/loading preferences survive subsequent in-session queries."
+  ],
+  "combinations": [
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "more",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "more",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "grid",
+      "mode": "pages",
+      "pageSize": 80,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 20,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 40,
+      "status": "passed"
+    },
+    {
+      "layout": "masonry",
+      "mode": "pages",
+      "pageSize": 80,
+      "status": "passed"
+    }
+  ],
+  "screenshots": [
+    "library-query-grid-more-1440.png",
+    "library-query-grid-more-390.png",
+    "library-query-masonry-more-1440.png",
+    "library-query-masonry-more-390.png",
+    "library-query-grid-pages-1440.png",
+    "library-query-grid-pages-390.png",
+    "library-query-masonry-pages-1440.png",
+    "library-query-masonry-pages-390.png",
+    "library-query-invalid-reference.png"
+  ],
+  "activeCheck": "mode-history-forward"
+}

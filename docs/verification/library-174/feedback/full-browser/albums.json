@@ -1,0 +1,6224 @@
+{
+  "status": "passed",
+  "checks": [
+    "Blank names, 101 code points and 2001 description characters do not write; 100 astral Unicode code points and 2000 description characters persist through the actual form.",
+    "Duplicate names retain different IDs; edit validation failure preserves input, and a committed PATCH with a lost response is reconciled by ID without a second write or changing its namesake.",
+    "Cancel does not delete; a real DELETE with a lost response is reconciled with 404 and returns to the list, leaving its namesake intact.",
+    "A lost POST response retains inputs and disables Create across closing and reopening; rechecking never duplicates the album. The ending control is reachable in a short viewport, restores keyboard focus to New Album, and allows a fresh creation in the same page while retaining exactly one original album.",
+    "Default pagination uses 40 real records with no overlaps; search resets the page, matches % and _ literally and distinguishes no results.",
+    "A held real list response displays loading; a lost read displays an actionable error rather than an empty album library, and Retry recovers.",
+    "Keyboard opens creation, Escape restores its trigger, and both 390×400 and 1440×400 retain visible form actions; light/dark layouts cover 360/390/430/768/1440.",
+    "After real logout, a real album detail requires sign-in and returns to the same full album ID with its edit control available.",
+    "A final real logout restores the anonymous session expected by the following upload suite; /upload presents its sign-in form."
+  ],
+  "layouts": [
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建第一本相册",
+          "width": 130,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-boundary",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-boundary",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-boundary",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-boundary",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-success",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-success",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-success",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-success",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "same-name",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #a1a28b4c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "同名旅行0 张图片 · #c766225f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保留的描述",
+          "width": 324,
+          "height": 50,
+          "navigation": false
+        },
+        {
+          "name": "重试保存",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保留的描述",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重试保存",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保留的描述",
+          "width": 324,
+          "height": 50,
+          "navigation": false
+        },
+        {
+          "name": "重试保存",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "edit-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保留的描述",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重试保存",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-confirm",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "删除相册",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-confirm",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "删除相册",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-confirm",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "删除相册",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-confirm",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "删除相册",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新确认删除",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新确认删除",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-success",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册列表",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-success",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册列表",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-success",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册列表",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "delete-success",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回相册列表",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "结束本次操作",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-unknown",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "album-name",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "结束本次操作",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "search-empty",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "search-empty",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "search-empty",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "search-empty",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 168,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 328,
+          "height": 260.4375,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 86.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 86.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 358,
+          "height": 277.015625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 238,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 398,
+          "height": 299.125,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 121.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 121.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "populated",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 410 张图片 · #0954a2c2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 400 张图片 · #67556cc9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 390 张图片 · #71d629cf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 380 张图片 · #02cd36d2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 370 张图片 · #42d532e3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 360 张图片 · #d72d8c06 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 350 张图片 · #2afe3420 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 340 张图片 · #e7f1d2e4 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 330 张图片 · #28e65eb9 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 320 张图片 · #042cccbf · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 310 张图片 · #2aab4f1c · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 300 张图片 · #702bc8b5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 290 张图片 · #7bb5ddd2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 280 张图片 · #967dc937 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 270 张图片 · #bd250d72 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 260 张图片 · #7ed70392 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 250 张图片 · #89378e45 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 240 张图片 · #53fe6084 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 230 张图片 · #182f7cf2 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 220 张图片 · #01803958 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 210 张图片 · #14d534f7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 200 张图片 · #493987ff · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 190 张图片 · #77bc49d7 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 180 张图片 · #e858c09b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 170 张图片 · #232a124b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 160 张图片 · #49521a3d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 150 张图片 · #d37a7044 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 140 张图片 · #74b7385a · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 130 张图片 · #e67c009f · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 120 张图片 · #37771bd5 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 110 张图片 · #f3acdb65 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 100 张图片 · #cc4378fa · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 090 张图片 · #7a39951b · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 080 张图片 · #95053c13 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 070 张图片 · #1eeecc88 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 060 张图片 · #53cb5994 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 050 张图片 · #fd7b8db3 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 040 张图片 · #4605dbb8 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 030 张图片 · #40fb18c1 · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "分页相册 020 张图片 · #2571644d · 封面尚未开放",
+          "width": 365,
+          "height": 280.890625,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "loading",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "list-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "list-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "list-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 198,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 101.96875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 101.984375,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "list-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "sectionOverflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "搜索相册",
+          "width": 282,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "新建相册",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页相册数",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 68,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ]
+}

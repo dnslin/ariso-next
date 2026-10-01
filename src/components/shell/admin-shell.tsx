@@ -14,7 +14,7 @@ import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
 import { Tooltip } from '@heroui/react/tooltip';
-import { ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { ChevronsLeft, ChevronsRight, Menu, X } from 'lucide-react';
 
 export type ShellNavigationItem = {
   href: string;
@@ -159,16 +159,27 @@ export function AdminShell({
           {name}
         </Link>
         <Modal isOpen={open} onOpenChange={setOpen}>
-          <Button variant="tertiary" className="h-11 min-w-16 rounded-full">
-            菜单
+          <Button
+            isIconOnly
+            variant="ghost"
+            aria-label="菜单"
+            className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
+          >
+            <Menu size={20} aria-hidden />
           </Button>
           <Modal.Backdrop>
             <Modal.Container size="full">
               <Modal.Dialog aria-label="导航菜单" className="shell-menu">
                 <Modal.Header className="shell-menu-header">
                   <Modal.Heading className="shell-brand">{name}</Modal.Heading>
-                  <Button slot="close" variant="tertiary">
-                    关闭
+                  <Button
+                    slot="close"
+                    isIconOnly
+                    variant="ghost"
+                    aria-label="关闭"
+                    className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
+                  >
+                    <X size={20} aria-hidden />
                   </Button>
                 </Modal.Header>
                 {description ? (

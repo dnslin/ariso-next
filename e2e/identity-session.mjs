@@ -295,6 +295,23 @@ export async function verifyIdentitySession(page, config, checks = []) {
   });
   await signIn();
 
+  await page.goto(`${config.origin}/`);
+  await page.click('a[href="/login"]');
+  await page.waitForURL(`${config.origin}/upload`);
+  assert.equal(
+    await page.evaluate(() => !!document.querySelector('#email')),
+    false,
+  );
+  await page.goto(`${config.origin}/login?returnTo=%2Flibrary`);
+  await page.waitForURL(`${config.origin}/library`);
+  await page.goto(`${config.origin}/login?returnTo=%2F%2Fforeign.example`);
+  await page.waitForURL(`${config.origin}/upload`);
+  await openIdentityAccountMenu(page);
+  checks.push({
+    check:
+      'A real valid owner session enters the backend from Home Login, honors existing local returnTo and rejects an external destination without showing the login form',
+  });
+
   const day = 86400000;
   const now = Date.now();
   await sql(

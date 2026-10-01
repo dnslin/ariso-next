@@ -1,0 +1,28 @@
+{
+  "startedAt": "2026-10-01T08:11:49.361Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "origin": "http://ariso-62318.localhost:62318",
+  "taskSpaceId": 8,
+  "identity": [
+    {
+      "width": 1440,
+      "setup": "passed",
+      "restart": "passed"
+    },
+    {
+      "width": 390,
+      "setup": "passed",
+      "restart": "passed"
+    }
+  ],
+  "m2-1440": "passed",
+  "interaction-polish-1440": "passed",
+  "workspace-continuity-1440": "passed",
+  "storageCors": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/scripts/verify-browser.mjs:275:14)\n    at async file:///Users/dnslin/.codex/worktrees/issue-174-selection/ariso/scripts/verify-browser.mjs:341:7",
+  "finishedAt": "2026-10-01T08:17:34.957Z",
+  "temporaryDirectoryRemoved": true
+}

@@ -1,0 +1,59 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+ ❯ |unit| tests/unit/library/selection.test.ts (10 tests | 2 failed) 17ms
+   ❯ explicit library selection (10)
+     × reconciles only the checked snapshot, retaining moved and newly selected IDs 2ms
+     × ignores a late reconciliation after clearing, reselecting or changing query 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/selection.test.ts > explicit library selection > reconciles only the checked snapshot, retaining moved and newly selected IDs
+TypeError: selection.reconcile is not a function
+ ❯ Object.act tests/unit/library/selection.test.ts:216:50
+    214|       { items: [item('a'), item('b')], act: (selection) => selection.s…
+    215|       { items: [item('c')], act: (selection) => { snapshot = new Map(s…
+    216|       { items: [], act: (selection) => selection.reconcile(snapshot, […
+       |                                                  ^
+    217|       { items: [], check: (selection) => {
+    218|         expect(ids(selection)).toEqual(['a', 'c']);
+ ❯ Probe tests/unit/library/selection.test.ts:54:10
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5371:22
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ performWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19
+ ❯ startWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7
+ ❯ renderToStringImpl node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8933:7
+ ❯ process.env.NODE_ENV.exports.renderToStaticMarkup node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10426:14
+ ❯ run tests/unit/library/selection.test.ts:58:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/selection.test.ts > explicit library selection > ignores a late reconciliation after clearing, reselecting or changing query
+TypeError: selection.reconcile is not a function
+ ❯ Object.act tests/unit/library/selection.test.ts:231:50
+    229|       { items: [item('a')], act: (selection) => selection.selectCurren…
+    230|       { items: [item('a')], act: (selection) => { snapshot = new Map(s…
+    231|       { items: [], act: (selection) => selection.reconcile(snapshot, […
+       |                                                  ^
+    232|       { items: [], check: (selection) => expect(ids(selection)).toEqua…
+    233|       { identity: 'new-query', items: [item('b')], act: (selection) =>…
+ ❯ Probe tests/unit/library/selection.test.ts:54:10
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5371:22
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ performWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19
+ ❯ startWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7
+ ❯ renderToStringImpl node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8933:7
+ ❯ process.env.NODE_ENV.exports.renderToStaticMarkup node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10426:14
+ ❯ run tests/unit/library/selection.test.ts:58:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  02:10:45
+   Duration  1.15s (import 81%, transform 14%, tests 4%, worker 1%)

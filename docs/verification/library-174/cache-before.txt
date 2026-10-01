@@ -1,0 +1,27 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+ ❯ |unit| tests/unit/library/query-hook.test.ts (7 tests | 1 failed) 20ms
+   × removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors
+TypeError: mount(...).onSelectionInvalid is not a function
+ ❯ tests/unit/library/query-hook.test.ts:247:17
+    245|   client.setQueryData(different, page(['a'], null));
+    246|   const fetcher = vi.fn(); vi.stubGlobal('fetch', fetcher);
+    247|   mount(client).onSelectionInvalid(['a','c']);
+       |                 ^
+    248|   expect(client.getQueryData<LibraryPage>(first)!.items.map(item => it…
+    249|   expect(client.getQueryData<LibraryPage>(second)!.items.map(item => i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  02:23:05
+   Duration  251ms (import 59%, transform 28%, tests 11%, worker 1%)

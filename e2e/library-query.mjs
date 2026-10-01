@@ -9,6 +9,10 @@ const { verifyLibraryFilters } = await import(
 const { verifyLibrarySelection } = await import(
   new URL('./library-selection.mjs', config.libraryDetailScript).href
 );
+const { verifyLibrarySelectionReconciliation } = await import(
+  new URL('./library-selection-reconciliation.mjs', config.libraryDetailScript)
+    .href
+);
 const { verifyLibraryScale } = await import(
   new URL('./library-query-scale.mjs', config.libraryDetailScript).href
 );
@@ -55,10 +59,23 @@ async function state() {
 async function select(label, option) {
   await page.click(`loc=role:button[name*="${label}"]`);
   await page.click(`loc=role:option[name="${option}"]`);
+  if (label === '图片加载方式')
+    await page.waitForFunction(
+      (mode) =>
+        document.querySelector('[data-testid="library-list"]')?.dataset
+          .loadingMode === mode &&
+        new URL(location.href).searchParams.has('page') === (mode === 'pages'),
+      option === '分页' ? 'pages' : 'more',
+    );
 }
 async function verifyModeHistory() {
+  report.activeCheck = 'saved-pagination-preference';
   await select('图片加载方式', '分页');
   await loaded(40);
+  await page.waitForFunction(
+    (key) => JSON.parse(localStorage.getItem(key)).loadingMode === 'pages',
+    preferenceKey,
+  );
   // A fresh entry adopts the preference once, without adding a history entry.
   await page.goto(`${config.origin}/library?q=issue173-&pageSize=40`);
   await page.waitForFunction(
@@ -66,26 +83,50 @@ async function verifyModeHistory() {
   );
   await loaded(40);
   assert.equal((await state()).loadingMode, 'pages');
+  report.activeCheck = 'sidebar-pagination-initialization';
+  await page.click('a[aria-label="上传"]');
+  await page.waitForFunction(() => location.pathname === '/upload');
+  await page.click('a[aria-label="图库"]');
+  await page.waitForFunction(
+    () =>
+      location.pathname === '/library' &&
+      new URL(location.href).searchParams.get('page') === '1',
+  );
+  await loaded(40);
+  assert.equal((await state()).loadingMode, 'pages');
+  report.checks.push(
+    'Sidebar upload→library starts the saved paginated query without a reload.',
+  );
+  await page.goto(`${config.origin}/library?q=issue173-&pageSize=40`);
+  await loaded(40);
   await select('图片加载方式', '加载更多');
   await loaded(40);
   await page.click('[data-testid="library-load-more"]');
   await loaded(80);
+  report.activeCheck = 'mode-history-set-scroll';
   await page.evaluate(() =>
     document.querySelector('.shell-content').scrollTo(0, 500),
   );
   await page.waitForFunction(
     () => document.querySelector('.shell-content').scrollTop >= 490,
   );
-  const offset = await page.evaluate(
-    () => document.querySelector('.shell-content').scrollTop,
-  );
   await monitor();
   await select('图片加载方式', '分页');
   await loaded(40);
+  // The browser's wheel motion can outlive the click that brought Load More
+  // into view. Check the actual position when this history entry was left.
+  const { url, scroll: offset } = await page.evaluate(
+    () => window.__queryDeparture,
+  );
+  assert.equal(new URL(url).searchParams.has('page'), false);
+  assert.equal((await state()).pushes, 1);
+  report.modeHistory = { departureURL: url, offset };
   const requests = (await state()).requests;
   await page.evaluate(() => history.back());
+  report.activeCheck = 'mode-history-back';
   await loaded(80);
   assert.equal((await state()).loadingMode, 'more');
+  report.activeCheck = 'mode-history-restore-scroll';
   await page.waitForFunction(
     (offset) =>
       Math.abs(document.querySelector('.shell-content').scrollTop - offset) < 2,
@@ -93,6 +134,7 @@ async function verifyModeHistory() {
   );
   assert.equal((await state()).requests, requests);
   await page.evaluate(() => history.forward());
+  report.activeCheck = 'mode-history-forward';
   await loaded(40);
   assert.equal((await state()).loadingMode, 'pages');
   assert.equal((await state()).requests, requests);
@@ -114,8 +156,13 @@ async function monitor() {
     const original = window.fetch;
     window.__queryRequests = [];
     window.__queryPushes = 0;
+    window.__queryDeparture = null;
     const push = history.pushState;
     history.pushState = function (...args) {
+      window.__queryDeparture = {
+        url: location.href,
+        scroll: document.querySelector('.shell-content').scrollTop,
+      };
       window.__queryPushes++;
       return push.apply(this, args);
     };
@@ -217,6 +264,8 @@ try {
     await verifyLibraryFeedback({ page, config, sql, report });
   } else if (phase === 'selection') {
     await verifyLibrarySelection({ page, config, report });
+  } else if (phase === 'selection-reconciliation') {
+    await verifyLibrarySelectionReconciliation({ page, config, sql, report });
   } else if (phase === 'filters') {
     await verifyLibraryFilters({ page, config, sql, report });
   } else if (phase === 'scale') {
@@ -557,6 +606,10 @@ try {
     url: location.href,
     readyState: document.readyState,
     hasLibrary: !!document.querySelector('[data-testid="library-list"]'),
+    library: {
+      ...document.querySelector('[data-testid="library-list"]')?.dataset,
+    },
+    scrollTop: document.querySelector('.shell-content')?.scrollTop,
     alerts: [...document.querySelectorAll('[role="alert"]')].map(
       (node) => node.textContent,
     ),

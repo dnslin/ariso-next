@@ -228,3 +228,96 @@ it('Back and Forward resolve the entry mode rather than the latest preference', 
   expect(mount(client).loadingMode).toBe('pages');
   client.clear();
 });
+
+it('removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors', () => {
+  context.search = 'q=photo&pageSize=20&page=2';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const other = parseLibraryLocation(
+    new URLSearchParams('q=other&pageSize=20'),
+  ).filters;
+  const client = new QueryClient();
+  const first = libraryListKey(filters, 'pages', 1);
+  const second = libraryListKey(filters, 'pages', 2);
+  const more = libraryListKey(filters, 'more', 1);
+  const different = libraryListKey(other, 'pages', 1);
+  client.setQueryData(first, page(['a', 'b'], null), { updatedAt: 123 });
+  client.setQueryData(second, page(['c', 'd'], null), { updatedAt: 456 });
+  client.setQueryData(
+    more,
+    { pages: [page(['a', 'b'], 'after-b')], pageParams: [null] },
+    { updatedAt: 789 },
+  );
+  client.setQueryData(different, page(['a'], null));
+  const fetcher = vi.fn();
+  vi.stubGlobal('fetch', fetcher);
+  mount(client).onSelectionInvalid(['a', 'c']);
+  expect(
+    client.getQueryData<LibraryPage>(first)!.items.map((item) => item.id),
+  ).toEqual(['b']);
+  expect(
+    client.getQueryData<LibraryPage>(second)!.items.map((item) => item.id),
+  ).toEqual(['d']);
+  const infinite = client.getQueryData<InfiniteData<LibraryPage>>(more)!;
+  expect(infinite.pages[0].items.map((item) => item.id)).toEqual(['b']);
+  expect(infinite.pages[0].nextCursor).toBe('after-b');
+  expect(infinite.pageParams).toEqual([null]);
+  expect(
+    client.getQueryData<LibraryPage>(different)!.items.map((item) => item.id),
+  ).toEqual(['a']);
+  expect(
+    [first, second, more].map(
+      (key) => client.getQueryState(key)!.dataUpdatedAt,
+    ),
+  ).toEqual([123, 456, 789]);
+  expect(fetcher).not.toHaveBeenCalled();
+  client.clear();
+});
+
+it.each(['pages', 'more'] as const)(
+  'keeps other tag combinations in %s history when selection is invalidated',
+  (mode) => {
+    context.search = 'tagId=a&pageSize=20&page=1';
+    const filters = parseLibraryLocation(
+      new URLSearchParams(context.search),
+    ).filters;
+    const client = new QueryClient();
+    const current = libraryListKey(filters, mode, 1);
+    const broader = libraryListKey(
+      parseLibraryLocation(new URLSearchParams('tagId=a&tagId=b&pageSize=20'))
+        .filters,
+      mode,
+      1,
+    );
+    const cached =
+      mode === 'pages'
+        ? page(['image-with-a-and-b'], null)
+        : {
+            pages: [page(['image-with-a-and-b'], 'next')],
+            pageParams: [null],
+          };
+    client.setQueryData(current, cached);
+    client.setQueryData(broader, cached, { updatedAt: 123 });
+    const fetcher = vi.fn();
+    vi.stubGlobal('fetch', fetcher);
+
+    // Removing tag a invalidates this selection, but tag b still matches history.
+    mount(client).onSelectionInvalid(['image-with-a-and-b']);
+    const updated = client.getQueryData<
+      LibraryPage | InfiniteData<LibraryPage>
+    >(current)!;
+    expect('pages' in updated ? updated.pages[0].items : updated.items).toEqual(
+      [],
+    );
+    expect(client.getQueryData(broader)).toEqual(cached);
+    expect(client.getQueryState(broader)!.dataUpdatedAt).toBe(123);
+    context.search = 'tagId=a&tagId=b&pageSize=20';
+    if (mode === 'pages') context.search += '&page=1';
+    expect(mount(client).items.map((item) => item.id)).toEqual([
+      'image-with-a-and-b',
+    ]);
+    expect(fetcher).not.toHaveBeenCalled();
+    client.clear();
+  },
+);

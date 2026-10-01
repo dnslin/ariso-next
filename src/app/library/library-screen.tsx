@@ -26,6 +26,7 @@ import {
   type LibraryContextMenu,
 } from './library-selection-menu';
 import { useLibrarySelection } from './use-library-selection';
+import { useSelectionReconciliation } from './use-selection-reconciliation';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
 export function LibraryScreen(props: {
@@ -76,6 +77,14 @@ export function LibraryScreen(props: {
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
   }, [resetUpload, client, returnTo]);
+  const reconciliation = useSelectionReconciliation({
+    selection,
+    identity: selectionIdentity,
+    filters: query.filters,
+    dataUpdatedAt: query.dataUpdatedAt,
+    onSessionExpired: expireSession,
+    onInvalid: query.onSelectionInvalid,
+  });
   useEffect(() => {
     if (query.expired) expireSession();
   }, [query.expired, expireSession]);
@@ -164,7 +173,7 @@ export function LibraryScreen(props: {
                     contextMenu={contextMenu}
                     onContextMenuClose={() => setContextMenu(null)}
                     loadingMode={query.loadingMode}
-                    disabled={!query.canOperate}
+                    disabled={!query.canOperate || reconciliation.pending}
                     onOpen={detail.open}
                   />
                 ) : undefined
@@ -181,6 +190,37 @@ export function LibraryScreen(props: {
             ) : null}
           </div>
           {props.afterToolbar}
+          {reconciliation.error ? (
+            <Alert
+              status="danger"
+              role="alert"
+              data-testid="library-selection-error"
+            >
+              <Alert.Content>
+                <Alert.Title>选择状态核对失败</Alert.Title>
+                <Alert.Description>
+                  {reconciliation.error} 已保留全部选择，请重试核对。
+                </Alert.Description>
+                <Button
+                  variant="outline"
+                  className="mt-3 min-h-11 rounded-lg"
+                  onPress={reconciliation.retry}
+                >
+                  重试核对
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
+          {reconciliation.removedCount ? (
+            <p
+              role="status"
+              data-testid="library-selection-notice"
+              className="text-sm"
+            >
+              已移除 {reconciliation.removedCount}{' '}
+              张已删除、已回收或不再匹配当前查询的图片。
+            </p>
+          ) : null}
           {query.expired ? (
             <p role="alert">登录已失效，正在返回登录页。</p>
           ) : (
@@ -270,7 +310,11 @@ export function LibraryScreen(props: {
                   items={query.items}
                   layout={query.layout}
                   album={!!props.albumId}
-                  disabled={!query.canOperate || !!detail.imageId}
+                  disabled={
+                    !query.canOperate ||
+                    reconciliation.pending ||
+                    !!detail.imageId
+                  }
                   selection={selection}
                   onOpen={detail.open}
                   onContextMenu={(menu) =>

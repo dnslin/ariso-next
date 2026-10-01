@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checks": [
+    "101 real session reads reach the existing production HTTP 429 limiter; no response or limiter state is mocked.",
+    "The original album signOut helper observes a real verification HTTP 429 and honors its X-Retry-After deadline before clicking the actual logout button again.",
+    "The browser reaches the signed-out login form and the actual /api/albums request returns HTTP 401."
+  ],
+  "layouts": [],
+  "startedAt": 1790851615799,
+  "saturation": {
+    "ok": 98,
+    "limited": 3
+  },
+  "logoutRateLimits": [
+    {
+      "path": "/api/auth/get-session",
+      "status": 429,
+      "retryAfter": "10",
+      "receivedAt": 1790851616230
+    }
+  ],
+  "finishedAt": 1790851626476
+}

@@ -402,14 +402,28 @@ try {
     'Thumbnail failure never requests original',
   );
   await resize(390);
+  await page.hover('loc=role:button[name="刷新图库"]');
+  await page.waitForFunction(() => {
+    const id = document
+      .querySelector('button[aria-label="刷新图库"]')
+      ?.getAttribute('aria-describedby');
+    const tooltip = id ? document.getElementById(id) : null;
+    return (
+      tooltip?.getAttribute('role') === 'tooltip' &&
+      tooltip.textContent.includes('刷新')
+    );
+  });
   await page.click('loc=role:button[name="菜单"]');
   await page.waitForSelector('loc=role:dialog[name="导航菜单"]');
   await page.keyboard.press('Escape');
+  await page.waitForSelector('loc=role:dialog[name="导航菜单"]', {
+    state: 'hidden',
+  });
   await page.waitForFunction(
-    () => document.activeElement?.textContent === '菜单',
+    () => document.activeElement?.getAttribute('aria-label') === '菜单',
   );
   report.checks.push(
-    'Actual missing thumbnail file renders explicit failure without original fallback; mobile menu Escape restores trigger focus.',
+    'Actual missing thumbnail file renders explicit failure without original fallback; leaving an open refresh tooltip and opening the mobile menu lets the first Escape close the menu and restore trigger focus.',
   );
   assert.ok(
     await page.evaluate(() =>

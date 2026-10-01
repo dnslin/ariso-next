@@ -154,6 +154,85 @@ async function intercept(method, mode, suffix = '') {
 async function restore() {
   await page.evaluate(() => window.__albumRestore?.());
 }
+async function signOut() {
+  await page.evaluate(() => {
+    const original = window.fetch;
+    window.__albumAuthRequests = [];
+    window.__albumRestoreAuth = () => {
+      window.fetch = original;
+    };
+    window.fetch = async (...args) => {
+      const requests = window.__albumAuthRequests;
+      const path = new URL(String(args[0]), location.href).pathname;
+      const record = path.startsWith('/api/auth/') ? { path } : null;
+      if (record) requests.push(record);
+      const response = await original(...args);
+      if (record) {
+        Object.assign(record, {
+          status: response.status,
+          retryAfter: response.headers.get('x-retry-after'),
+          receivedAt: Date.now(),
+        });
+      }
+      return response;
+    };
+  });
+  await openIdentityAccountMenu(page);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await page.evaluate(() => {
+      window.__albumAuthRequests = [];
+    });
+    await page.click(button('退出登录'));
+    await page.waitForFunction(
+      () =>
+        (location.pathname === '/login' &&
+          !!document.querySelector('#email')) ||
+        (window.__albumAuthRequests?.some((entry) => entry.status === 429) &&
+          [...document.querySelectorAll('[role="alert"]')].some((alert) =>
+            /尚未确认会话已退出|退出失败/.test(alert.textContent),
+          )),
+    );
+    if (new URL(await page.url()).pathname === '/login') {
+      await page.waitForSelector('#email');
+      return;
+    }
+    const responses = await page.evaluate(() => window.__albumAuthRequests);
+    assert.ok(
+      responses.every(
+        (entry) =>
+          entry.status === undefined ||
+          entry.status < 400 ||
+          entry.status === 429,
+      ),
+      'Non-rate-limit authentication failures are not retried',
+    );
+    const limited = responses.at(-1);
+    assert.equal(
+      limited?.status,
+      429,
+      'The current logout request was rate-limited',
+    );
+    const seconds = Number(limited?.retryAfter);
+    assert.ok(
+      seconds > 0 && seconds <= 60,
+      'Actual logout verification limit supplies a bounded retry deadline',
+    );
+    (report.logoutRateLimits ??= []).push(limited);
+    if (attempt === 2) break;
+    await page.waitForFunction(
+      (deadline) => Date.now() >= deadline,
+      limited.receivedAt + seconds * 1000,
+      { timeout: seconds * 1000 + 1000 },
+    );
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('button')].some(
+        (node) => node.textContent === '退出登录' && !node.disabled,
+      ),
+    );
+  }
+  assert.fail('Actual logout did not recover after the server retry windows');
+}
+
 async function search(value, count) {
   await page.fill('input[aria-label="搜索相册"]', value);
   await page.press('input[aria-label="搜索相册"]', 'Enter');
@@ -665,9 +744,7 @@ try {
     'Keyboard opens creation, Escape restores its trigger, and both 390×400 and 1440×400 retain visible form actions; light/dark layouts cover 360/390/430/768/1440.',
   );
   report.stage = 'anonymous detail return';
-  await openIdentityAccountMenu(page);
-  await page.click(button('退出登录'));
-  await page.waitForSelector('#email');
+  await signOut();
   assert.equal((await page.fetch(`/api/albums/${second}`)).status, 401);
   await signInAt(`/albums/${second}`);
   await page.waitForURL(`${config.origin}/albums/${second}`);
@@ -678,9 +755,7 @@ try {
   );
   report.stage = 'upload suite handoff';
   // The existing upload suite starts from an anonymous owner session.
-  await openIdentityAccountMenu(page);
-  await page.click(button('退出登录'));
-  await page.waitForSelector('#email');
+  await signOut();
   assert.equal((await page.fetch('/api/albums')).status, 401);
   await page.goto(`${config.origin}/upload`);
   await page.waitForSelector('#email');
@@ -695,10 +770,14 @@ try {
   delete report.stage;
 } catch (error) {
   report.error = String(error.stack ?? error);
+  report.authRequests = await page.evaluate(
+    () => window.__albumAuthRequests ?? [],
+  );
   report.failureSnapshot = await page.snapshot();
   await shot('failed');
   throw error;
 } finally {
+  await page.evaluate(() => window.__albumRestoreAuth?.());
   await restore();
   await writeFile(
     join(config.output, 'albums.json'),

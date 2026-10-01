@@ -1,0 +1,297 @@
+{
+  "phase": "filters",
+  "status": "passed",
+  "checks": [
+    "Adding an empty date condition and cancelling its real editor changes neither the URL nor the current image IDs.",
+    "Real label search/multi-select, inclusive site-time-zone dates, visibility, processing state, disabled storage, album and original format apply immediately one category at a time; the URL contains real IDs/UTC midnight boundaries and only issue173-000 is returned.",
+    "Entering only a start year blocks Apply with a visible incomplete-date error, keeps the URL/dialog and focuses the missing month; completing the date then submits the real combined query.",
+    "A non-midnight URL interval shows both actual local boundary times and the site time zone in the date editor; applying unchanged dates preserves the original precise instants.",
+    "At 390×844, the actual date popover stays within main above the footer; precise local boundaries remain present and every date segment plus both 44px actions is reachable through actual focus and internal scrolling; Escape returns focus to the trigger without changing the applied interval.",
+    "At 390×480, the actual date popover stays within main above the footer; precise local boundaries remain present and every date segment plus both 44px actions is reachable through actual focus and internal scrolling; Escape returns focus to the trigger without changing the applied interval.",
+    "Deleting the day segment from an already applied date also blocks Apply and keeps the original URL; refilling the day makes the same date submittable again.",
+    "Applying unchanged dates retains exact UTC instants; individual removal preserves other conditions; clearing all categories preserves the independent search query.",
+    "A deleted selected tag stays visible as an invalid ID in the conditions bar; dismissing its options preserves the URL and never broadens the failed query.",
+    "A controlled filter-options transport failure produces the real error/retry UI; retry reads the actual server and restores selectable labels without refreshing the page.",
+    "Deleting through album details refreshes both the content total and the album header count.",
+    "The real album route preserves fixed joined order, disables changing album scope, rejects a conflicting album query, and prevents an unrelated image deep link from opening content.",
+    "An actual expired SQLite owner session makes filter-options return 401, removes management content and redirects to expired login with the exact query returnTo; a real sign-in restores that query before the parent suite continues."
+  ],
+  "combinations": [],
+  "screenshots": [
+    "library-query-filters-partial-date.png",
+    "library-query-filters-combined-conditions.png",
+    "library-query-filters-combined-result.png",
+    "library-query-filters-precise-date-boundaries.png",
+    "library-query-filters-precise-date-390x844.png",
+    "library-query-filters-precise-date-actions-390x844.png",
+    "library-query-filters-precise-date-390x480.png",
+    "library-query-filters-precise-date-actions-390x480.png",
+    "library-query-filters-missing-reference.png",
+    "library-query-filters-options-failure.png",
+    "library-query-filters-session-expired.png"
+  ],
+  "datePopover": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "text": "当前生效区间（Asia/Shanghai）：2026/9/2 GMT+8 12:00:00（含）至 2026/9/2 GMT+8 13:00:00（不含）。未修改的边界保持不变。",
+      "popover": {
+        "left": 17.265625,
+        "top": 446,
+        "right": 375.265625,
+        "bottom": 718,
+        "width": 358,
+        "height": 272
+      },
+      "main": {
+        "left": 0,
+        "top": 64,
+        "right": 390,
+        "bottom": 739.5,
+        "width": 390,
+        "height": 675.5
+      },
+      "dialog": {
+        "left": 18.265625,
+        "top": 447,
+        "right": 374.265625,
+        "bottom": 717,
+        "width": 356,
+        "height": 270
+      },
+      "boundaries": {
+        "left": 34.265625,
+        "top": 597,
+        "right": 358.265625,
+        "bottom": 645,
+        "width": 324,
+        "height": 48
+      },
+      "scrollHeight": 270,
+      "clientHeight": 270,
+      "controls": [
+        {
+          "name": "上传开始日期:year",
+          "top": 552,
+          "bottom": 572,
+          "left": 47.265625,
+          "right": 78.375,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:month",
+          "top": 552,
+          "bottom": 572,
+          "left": 85.859375,
+          "right": 93.640625,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:day",
+          "top": 552,
+          "bottom": 572,
+          "left": 101.125,
+          "right": 108.90625,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:year",
+          "top": 552,
+          "bottom": 572,
+          "left": 211.265625,
+          "right": 242.375,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:month",
+          "top": 552,
+          "bottom": 572,
+          "left": 249.859375,
+          "right": 257.640625,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:day",
+          "top": 552,
+          "bottom": 572,
+          "left": 265.125,
+          "right": 272.90625,
+          "height": 20,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "取消日期",
+          "top": 657,
+          "bottom": 701,
+          "left": 174.265625,
+          "right": 262.265625,
+          "height": 44,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        },
+        {
+          "name": "应用日期",
+          "top": 657,
+          "bottom": 701,
+          "left": 270.265625,
+          "right": 358.265625,
+          "height": 44,
+          "clipTop": 447,
+          "clipBottom": 717,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 480
+      },
+      "text": "当前生效区间（Asia/Shanghai）：2026/9/2 GMT+8 12:00:00（含）至 2026/9/2 GMT+8 13:00:00（不含）。未修改的边界保持不变。",
+      "popover": {
+        "left": 17.859375,
+        "top": 76,
+        "right": 375.859375,
+        "bottom": 191,
+        "width": 358,
+        "height": 115
+      },
+      "main": {
+        "left": 0,
+        "top": 64,
+        "right": 390,
+        "bottom": 375.5,
+        "width": 390,
+        "height": 311.5
+      },
+      "dialog": {
+        "left": 18.859375,
+        "top": 77,
+        "right": 374.859375,
+        "bottom": 190,
+        "width": 356,
+        "height": 113
+      },
+      "boundaries": {
+        "left": 34.859375,
+        "top": 227,
+        "right": 358.859375,
+        "bottom": 275,
+        "width": 324,
+        "height": 48
+      },
+      "scrollHeight": 270,
+      "clientHeight": 113,
+      "controls": [
+        {
+          "name": "上传开始日期:year",
+          "top": 170,
+          "bottom": 190,
+          "left": 47.859375,
+          "right": 78.96875,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:month",
+          "top": 170,
+          "bottom": 190,
+          "left": 86.453125,
+          "right": 94.234375,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "上传开始日期:day",
+          "top": 170,
+          "bottom": 190,
+          "left": 101.71875,
+          "right": 109.5,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:year",
+          "top": 170,
+          "bottom": 190,
+          "left": 211.859375,
+          "right": 242.96875,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:month",
+          "top": 170,
+          "bottom": 190,
+          "left": 250.453125,
+          "right": 258.234375,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "上传结束日期（包含当天）:day",
+          "top": 170,
+          "bottom": 190,
+          "left": 265.71875,
+          "right": 273.5,
+          "height": 20,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "取消日期",
+          "top": 130,
+          "bottom": 174,
+          "left": 174.859375,
+          "right": 262.859375,
+          "height": 44,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        },
+        {
+          "name": "应用日期",
+          "top": 130,
+          "bottom": 174,
+          "left": 270.859375,
+          "right": 358.859375,
+          "height": 44,
+          "clipTop": 77,
+          "clipBottom": 190,
+          "visible": true
+        }
+      ]
+    }
+  ]
+}

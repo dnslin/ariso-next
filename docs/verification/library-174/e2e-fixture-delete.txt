@@ -1,0 +1,44 @@
+Actual reproduction command (repository root):
+
+export PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
+node --input-type=module <<'JS'
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createProductionFixture } from './tests/experiments/library/production-fixture.ts';
+const directory = mkdtempSync(join(tmpdir(), 'ariso-174-audit-fk-'));
+const connection = createProductionFixture(join(directory, 'ariso.db'), 0);
+const db = connection.db.$client;
+try {
+  console.log(`Node ${process.version}; real production migrations; foreign_keys=${db.pragma('foreign_keys', { simple: true })}`);
+  db.exec(`INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,created_at,updated_at) VALUES ('library174-selection-000','storage-0','audit.png','audit','private','png','image/png',100,'ready',1,1)`);
+  db.exec(`INSERT INTO media_objects (id,image_id,storage_id,key,purpose,status,byte_size,format,mime,created_at,updated_at) VALUES ('audit-thumbnail','library174-selection-000','storage-0','audit.png','thumbnail','stored',100,'png','image/png',1,1)`);
+  db.exec(`INSERT INTO media_versions (image_id,kind,object_id,byte_size,format,mime,created_at) VALUES ('library174-selection-000','thumbnail','audit-thumbnail',100,'png','image/png',1)`);
+  assert.throws(() => db.exec(`DELETE FROM media_images WHERE id='library174-selection-000'`), (error) => {
+    console.log(`BEFORE: ${error.code}: ${error.message}`);
+    return error.code === 'SQLITE_CONSTRAINT_FOREIGNKEY';
+  });
+  db.exec(`DELETE FROM media_versions WHERE image_id='library174-selection-000'`);
+  db.exec(`DELETE FROM media_objects WHERE image_id='library174-selection-000'`);
+  db.exec(`DELETE FROM media_images WHERE id='library174-selection-000'`);
+  for (const table of ['media_versions', 'media_objects', 'media_images']) {
+    const count = db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get().count;
+    assert.equal(count, 0);
+    console.log(`AFTER: ${table} count=${count}`);
+  }
+  console.log('PASS: dependency-order deletion, foreign keys remain enabled; database closed and temporary directory removed in finally.');
+} finally {
+  connection.close();
+  rmSync(directory, { recursive: true, force: true });
+}
+JS
+
+Actual result:
+
+Node v24.18.1; real production migrations; foreign_keys=1
+BEFORE: SQLITE_CONSTRAINT_FOREIGNKEY: FOREIGN KEY constraint failed
+AFTER: media_versions count=0
+AFTER: media_objects count=0
+AFTER: media_images count=0
+PASS: dependency-order deletion, foreign keys remain enabled; database closed and temporary directory removed in finally.

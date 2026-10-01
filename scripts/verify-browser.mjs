@@ -18,11 +18,13 @@ await mkdir(output, { recursive: true });
 for (const name of [
   'browser.json',
   'shell-browser.json',
+  'shell-navigation.json',
   'error-recovery.json',
   'library.json',
   'library-query.json',
   'library-feedback.json',
   'library-selection.json',
+  'library-selection-reconciliation.json',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -343,6 +345,7 @@ try {
       for (const phase of [
         'feedback',
         'selection',
+        'selection-reconciliation',
         'query',
         'filters',
         'scale',
@@ -354,6 +357,12 @@ try {
         );
       }
       report.libraryQuery = 'passed';
+      await runBrowser(
+        '../e2e/shell-navigation.mjs',
+        identityConfig,
+        'shell-navigation.log',
+      );
+      report.shellNavigation = 'passed';
       await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
       report.albums = 'passed';
       await runBrowser(

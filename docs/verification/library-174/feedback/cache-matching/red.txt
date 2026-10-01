@@ -1,0 +1,130 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+ ❯ |unit| tests/unit/library/query-hook.test.ts (9 tests | 2 failed | 7 skipped) 11ms
+   × keeps other tag combinations in pages history when selection is invalidated 9ms
+   × keeps other tag combinations in more history when selection is invalidated 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in pages history when selection is invalidated
+AssertionError: expected { items: [], nextCursor: null, …(2) } to deeply equal { items: [ { …(18) } ], …(3) }
+
+- Expected
++ Received
+
+  {
+    "hasMore": false,
+-   "items": [
+-     {
+-       "activeJob": null,
+-       "byteSize": 100,
+-       "createdAt": "2026-01-01T00:00:00Z",
+-       "deletionStatus": null,
+-       "displayName": "image-with-a-and-b",
+-       "format": "png",
+-       "height": 100,
+-       "id": "image-with-a-and-b",
+-       "latestFailedJob": null,
+-       "originalName": "image-with-a-and-b.png",
+-       "processingStatus": "ready",
+-       "storage": {
+-         "enabled": true,
+-         "id": "s",
+-         "name": "Local",
+-       },
+-       "thumbnailDimensions": null,
+-       "thumbnailUrl": null,
+-       "trashedAt": null,
+-       "versions": {
+-         "compressed": false,
+-         "original": true,
+-         "thumbnail": false,
+-         "watermark": false,
+-       },
+-       "visibility": "private",
+-       "width": 100,
+-     },
+-   ],
++   "items": [],
+    "nextCursor": null,
+    "total": 100,
+  }
+
+ ❯ tests/unit/library/query-hook.test.ts:314:42
+    312|       [],
+    313|     );
+    314|     expect(client.getQueryData(broader)).toEqual(cached);
+       |                                          ^
+    315|     expect(client.getQueryState(broader)!.dataUpdatedAt).toBe(123);
+    316|     context.search = 'tagId=a&tagId=b&pageSize=20';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in more history when selection is invalidated
+AssertionError: expected { Object (pages, pageParams) } to deeply equal { pages: [ { …(4) } ], …(1) }
+
+- Expected
++ Received
+
+@@ -3,41 +3,11 @@
+      null,
+    ],
+    "pages": [
+      {
+        "hasMore": true,
+-       "items": [
+-         {
+-           "activeJob": null,
+-           "byteSize": 100,
+-           "createdAt": "2026-01-01T00:00:00Z",
+-           "deletionStatus": null,
+-           "displayName": "image-with-a-and-b",
+-           "format": "png",
+-           "height": 100,
+-           "id": "image-with-a-and-b",
+-           "latestFailedJob": null,
+-           "originalName": "image-with-a-and-b.png",
+-           "processingStatus": "ready",
+-           "storage": {
+-             "enabled": true,
+-             "id": "s",
+-             "name": "Local",
+-           },
+-           "thumbnailDimensions": null,
+-           "thumbnailUrl": null,
+-           "trashedAt": null,
+-           "versions": {
+-             "compressed": false,
+-             "original": true,
+-             "thumbnail": false,
+-             "watermark": false,
+-           },
+-           "visibility": "private",
+-           "width": 100,
+-         },
+-       ],
++       "items": [],
+        "nextCursor": "next",
+        "total": 100,
+      },
+    ],
+  }
+
+ ❯ tests/unit/library/query-hook.test.ts:314:42
+    312|       [],
+    313|     );
+    314|     expect(client.getQueryData(broader)).toEqual(cached);
+       |                                          ^
+    315|     expect(client.getQueryState(broader)!.dataUpdatedAt).toBe(123);
+    316|     context.search = 'tagId=a&tagId=b&pageSize=20';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 skipped (9)
+   Start at  23:24:16
+   Duration  231ms (import 61%, transform 31%, tests 7%, worker 1%)

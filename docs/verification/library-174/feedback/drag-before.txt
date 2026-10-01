@@ -1,0 +1,64 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+ ❯ |unit| tests/unit/library/drag-selection.test.ts (2 tests | 2 failed) 6ms
+   ❯ gallery mouse selection (2)
+     × keeps a previously checked current-page image and other pages without modifier keys 5ms
+     × shrinks only new drag hits and keeps the complete pre-drag selection on mouseup 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/drag-selection.test.ts > gallery mouse selection > keeps a previously checked current-page image and other pages without modifier keys
+AssertionError: expected last "vi.fn()" call to have been called with [ [ 'manual', 'other-page', …(1) ] ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "manual",
+      "other-page",
+      "dragged",
+    ],
+  ]
+
+ ❯ tests/unit/library/drag-selection.test.ts:47:23
+     45|     capture.options!.isValidSelectionStart!({ left: 130, top: 10, widt…
+     46|     capture.options!.onSelectionChange!({ left: 130, top: 10, width: 5…
+     47|     expect(selectIds).toHaveBeenLastCalledWith(['manual', 'other-page'…
+       |                       ^
+     48|   });
+     49|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/drag-selection.test.ts > gallery mouse selection > shrinks only new drag hits and keeps the complete pre-drag selection on mouseup
+AssertionError: expected last "vi.fn()" call to have been called with [ [ 'manual', 'other-page' ] ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "manual",
+      "other-page",
+    ],
+  ]
+
+ ❯ tests/unit/library/drag-selection.test.ts:56:23
+     54|     capture.options!.isValidSelectionStart!({ left: 110, top: 10, widt…
+     55|     capture.options!.onSelectionEnd!();
+     56|     expect(selectIds).toHaveBeenLastCalledWith(['manual', 'other-page'…
+       |                       ^
+     57|   });
+     58| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  15:42:56
+   Duration  106ms (import 45%, transform 39%, tests 12%, worker 3%)

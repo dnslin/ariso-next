@@ -1,8 +1,11 @@
 import { connection } from 'next/server';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { PublicShell } from '../../components/shell/public-shell';
 import { LoginForm } from '../../components/identity/login-form';
 import { loginDestination } from '../../components/identity/return-to';
 import { readSetupOwner } from '../../server/identity/setup';
+import { readOptionalOwner } from '../../server/identity/owner';
 import { getServerRuntime } from '../../server/startup/server-start';
 
 export default async function LoginPage({
@@ -17,6 +20,14 @@ export default async function LoginPage({
     runtime.setup.databasePath,
   );
   const query = await searchParams;
+  const returnTo = loginDestination(query.returnTo);
+  if (
+    initialized &&
+    (await readOptionalOwner(
+      new Request('http://ariso.internal/login', { headers: await headers() }),
+    ))
+  )
+    redirect(returnTo);
   const notice = !initialized
     ? ''
     : query.setup === 'completed'
@@ -30,7 +41,7 @@ export default async function LoginPage({
     <PublicShell layout="login">
       <LoginForm
         initialized={initialized}
-        returnTo={loginDestination(query.returnTo)}
+        returnTo={returnTo}
         notice={notice}
       />
     </PublicShell>

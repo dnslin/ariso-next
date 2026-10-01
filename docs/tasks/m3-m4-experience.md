@@ -186,10 +186,12 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 验证方法：浏览器以超过两页和超过200个显式选择验证选择守恒、历史/布局、失效清理和任意清单行移除；不得预读全库或图片文件。
 - 界面：所有者 /library、/albums/{albumId}；T-LIB-04 当前查询与显式选择清单。桌面[389:7582](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7582)、手机[389:7886](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=389-7886)、桌面状态[388:2608](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-2608)、手机状态[388:5896](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=388-5896)。HeroUI：[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Toolbar](https://heroui.com/en/docs/react/components/toolbar)、[Table](https://heroui.com/en/docs/react/components/table)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Button](https://heroui.com/en/docs/react/components/button)。已选清单桌面/手机可逐项查看移除；DG-LIBRARY 核对 RG-01 的任意行及当前页全选；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 跨页显式选择及当前页全选：过滤清空而布局保留。
-  - [ ] 2. 已选清单逐项移除与失效清理：超过200项不预读全库。
+  - [x] 1. 跨页显式选择及当前页全选：过滤清空而布局保留。
+  - [x] 2. 已选清单逐项移除与失效清理：超过200项不预读全库。
 
 - 部分实施：2026-09-30 用户在 #173 人工返修中要求提前接入勾选、开源鼠标框选和已选菜单，范围及证据见 [#173 返修记录](../verification/library-173/README.md)。跨页轻量选择及逐项清单已接入；外部失效图完整清理、超过200项真实浏览器专项与本卡最终验收仍由 #174 承接，不据此勾选整卡完成。
+
+- 本轮实施：2026-10-01，#174 补充显式 ID 当前查询核对、失效选择与同查询历史缓存清理、失败保留与重试、取消迟到响应；复用 #173 的跨页选择和分页已选清单。实现、实际验证和独立审计见 [#174 交付记录](../verification/library-174/README.md)。人工反馈返修另落实纯图标菜单/关闭、有效会话跳过登录表单、普通框选保留单选，最终验证与批准依据统一在同一交付记录中维护。所有者于2026-10-01明确要求合并 PR #222、关闭 Issue #174，本卡按该指示完成。未执行项保留原记录；RG-01 的全组结论不由本卡单独关闭，批量业务仍由关联任务承接。
 
 #### DG-LIBRARY T-LIB-05 核对结论
 

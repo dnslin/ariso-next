@@ -1,0 +1,35 @@
+登录入口缺陷：真实 HTTP 失败证据
+
+本文件保留本轮修改 src/app/login/page.tsx 前实际执行结果的关键输出。
+原始输出来源：exec_command，chunk_id 097afc，exit_code 1。
+未在修复后的构建上重新制造失败。
+
+工作目录：/Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+环境：Node 24.18.1，pnpm 11.19.0，原有 .next/standalone
+实际命令：
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts -t 'bypasses the login form'
+
+RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-174-selection/ariso
+
+FAIL |integration| tests/integration/identity/auth.test.ts > initialized production auth > bypasses the login form only for a current owner session using the existing successful-login destination
+AssertionError: expected 200 to be 307 // Object.is equality
+
+- Expected
++ Received
+
+- 307
++ 200
+
+tests/integration/identity/auth.test.ts:161:30
+159|     ]) {
+160|       const allowed = await loginPage(query, { cookie });
+161|       expect(allowed.status).toBe(307);
+
+Test Files 1 failed (1)
+Tests 1 failed | 17 skipped (18)
+Duration 1.50s (tests 76%, import 19%, transform 5%)
+
+这是 -t 指定单个新增回归用例的聚焦失败运行。
+其余 17 项未被本命令选中，不代表在完整验证中跳过。
+失败请求持有通过实际 sign-in/email 接口取得的有效所有者 Cookie。
+预期 /login 在服务端按既有目的地返回 307；实际原构建返回 200 登录表单。

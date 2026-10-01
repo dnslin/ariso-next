@@ -1,0 +1,35 @@
+{ loginStatus: 200 }
+[ { name: 'ariso.session_token', path: '/', domain: 'issue174-library-debug.localhost', httpOnly: true } ]
+{ url: 'http://issue174-library-debug.localhost:3177/login?reason=signed-out', trace: null }
+[p1 "Ariso" | space "Issue 174 selection verification"(8): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    anchor [ref=935, loc=href:/, url=http://issue174-library-debug.localhost:3177/]
+      svg_root
+      text "返回首页"
+    container "登录"
+      container
+        heading
+          text "登录"
+        paragraph
+          text "轻装简从 · 欢迎回来"
+      container [ref=936]
+        alert
+          text "已退出登录。"
+      form
+        container
+          text "邮箱"
+          container
+            svg_root
+            textbox "邮箱" [ref=937, loc=css:input[name="email"]]
+              text "name@example.com"
+        container
+          text "密码"
+          container
+            svg_root
+            textbox "密码" [ref=938, loc=css:input[name="password"]]
+              text "请输入密码"
+            button "显示密码" [ref=939, loc=css:button[aria-label="显示密码"]]
+              svg_root
+        button [ref=940]
+          text "登录"

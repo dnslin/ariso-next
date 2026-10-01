@@ -143,6 +143,53 @@ describe('initialized production auth', () => {
     expect(html).toContain('current-password');
   });
 
+  it('bypasses the login form only for a current owner session using the existing successful-login destination', async () => {
+    const home = await fetch(origin);
+    expect(await home.text()).toContain('href="/login"');
+    const response = await login();
+    const cookie = cookies(response);
+    const token = (await response.json()).token;
+    const loginPage = (query = '', headers: Record<string, string> = {}) =>
+      fetch(`${origin}/login${query}`, { headers, redirect: 'manual' });
+    for (const [query, destination] of [
+      ['', '/admin'],
+      ['?returnTo=%2Flibrary%3Fimage%3Dphoto-1', '/library?image=photo-1'],
+      ['?returnTo=https%3A%2F%2Fevil.test%2Flibrary', '/admin'],
+      ['?returnTo=%2Flogin', '/admin'],
+    ]) {
+      const allowed = await loginPage(query, { cookie });
+      expect(allowed.status).toBe(307);
+      expect(allowed.headers.get('location')).toBe(destination);
+      expect(allowed.headers.get('cache-control')).toContain('no-store');
+      expect(await allowed.text()).not.toContain('login-heading');
+    }
+    const anonymousHeaders: Record<string, string>[] = [
+      {},
+      { cookie: 'ariso.session_token=invalid' },
+      { authorization: `Bearer ${token}` },
+      { cookie: `ariso.share_token=${token}` },
+    ];
+    for (const headers of anonymousHeaders) {
+      const anonymous = await loginPage('', headers);
+      expect(anonymous.status).toBe(200);
+      expect(await anonymous.text()).toContain('login-heading');
+    }
+    connection.db
+      .update(session)
+      .set({ expiresAt: new Date(Date.now() - 1000) })
+      .run();
+    const expired = await loginPage('?reason=expired', { cookie });
+    expect(expired.status).toBe(200);
+    const expiredHtml = await expired.text();
+    expect(expiredHtml).toContain('login-heading');
+    expect(expiredHtml).toContain('会话已失效');
+    const fresh = cookies(await login());
+    expect((await post('sign-out', {}, { cookie: fresh })).status).toBe(200);
+    const revoked = await loginPage('', { cookie: fresh });
+    expect(revoked.status).toBe(200);
+    expect(await revoked.text()).toContain('login-heading');
+  });
+
   it('protects the real admin page independently of navigation, including expired and revoked Cookie replay', async () => {
     const page = (headers: Record<string, string> = {}) =>
       fetch(`${origin}/admin`, { headers, redirect: 'manual' });

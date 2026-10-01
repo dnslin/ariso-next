@@ -11,6 +11,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 import { parseAsNativeArrayOf, parseAsString, useQueryStates } from 'nuqs';
 import {
+  hashKey,
   useInfiniteQuery,
   useQuery,
   type QueryClient,
@@ -138,19 +139,15 @@ export function useLibraryQuery(
   useEffect(() => {
     if (!initializing || preferences === null) return;
     if (!queryError && !hasPage && preferredLoadingMode === 'pages') {
-      void setParams({ page: '1' }, { history: 'replace' });
+      // Commit initialization directly: navigation can cancel nuqs' queued update.
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', '1');
+      window.history.replaceState(null, '', url);
       return;
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Finish URL initialization after the navigation adapter has published it.
     setInitializing(false);
-  }, [
-    initializing,
-    preferences,
-    queryError,
-    hasPage,
-    preferredLoadingMode,
-    setParams,
-  ]);
+  }, [initializing, preferences, queryError, hasPage, preferredLoadingMode]);
   const loadingMode: LibraryLoadingMode = hasPage ? 'pages' : 'more';
   const queryKey = libraryListKey(filters, loadingMode, page);
   const enabled =
@@ -286,6 +283,35 @@ export function useLibraryQuery(
     if (!enabled) return;
     await client.resetQueries({ queryKey, exact: true });
   }
+  function onSelectionInvalid(ids: string[]) {
+    if (!ids.length || !filters) return;
+    const filterKey = hashKey([filters]);
+    const invalid = new Set(ids);
+    const prune = (page: LibraryPage) => ({
+      ...page,
+      items: page.items.filter((item) => !invalid.has(item.id)),
+    });
+    for (const mode of ['pages', 'more'] as const) {
+      for (const cached of client.getQueryCache().findAll({
+        queryKey: ['library', mode],
+        predicate: (cached) => hashKey([cached.queryKey[2]]) === filterKey,
+      })) {
+        const data = cached.state.data as
+          LibraryPage | InfiniteData<LibraryPage> | undefined;
+        if (!data) continue;
+        const updated =
+          'pages' in data
+            ? { ...data, pages: data.pages.map(prune) }
+            : prune(data);
+        // Preserve the last server-read timestamp: pruning is not a new list response.
+        // Total and ordering remain the last query snapshot until explicit refresh.
+        client.setQueryData(cached.queryKey, updated, {
+          updatedAt: cached.state.dataUpdatedAt,
+        });
+      }
+    }
+    setRefreshAvailable(true);
+  }
   async function onItemRemoved(id: string) {
     await client.cancelQueries({ queryKey: ['library'] });
     client.setQueriesData<InfiniteData<LibraryPage>>(
@@ -315,6 +341,7 @@ export function useLibraryQuery(
   }
   return {
     filters,
+    dataUpdatedAt: active.dataUpdatedAt,
     queryError,
     layout,
     loadingMode,
@@ -353,5 +380,6 @@ export function useLibraryQuery(
     refresh,
     refreshAvailable,
     onItemRemoved,
+    onSelectionInvalid,
   };
 }
