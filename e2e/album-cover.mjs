@@ -1,10 +1,19 @@
 /* global taskSpace, config */
 const assert = (await import('node:assert/strict')).default;
-const { mkdir, readFile, rm, writeFile } = await import('node:fs/promises');
+const { readFile, rm, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
 const { signInToLibrary } = await import(
   new URL('./library-login.mjs', config.libraryDetailScript).href
+);
+const { resizeViewport, setTheme, readGeometry, assertGeometry } = await import(
+  new URL('./browser-geometry.mjs', config.identitySessionScript).href
+);
+const { createAlbumCoverFixtures } = await import(
+  new URL('./album-cover-fixtures.mjs', config.identitySessionScript).href
+);
+const { verifyAlbumCoverWorkspace } = await import(
+  new URL('./album-cover-workspace.mjs', config.identitySessionScript).href
 );
 const page = (await taskSpace(config.spaceId)).page('p1');
 const sql = (statement) => identitySql(config, statement);
@@ -17,20 +26,15 @@ let directory;
 const at = (id) => `/albums/${id}`;
 async function shot(state) {
   const file = `album-cover-${state}.png`;
+  assert.ok(
+    !report.screenshots.includes(file),
+    `Screenshot path is unique: ${file}`,
+  );
   await page.screenshot({ path: join(config.output, file) });
   report.screenshots.push(file);
 }
 async function resize(width, height = width >= 1200 ? 1080 : 844) {
-  await page.cdp('Emulation.setDeviceMetricsOverride', {
-    width,
-    height,
-    deviceScaleFactor: 1,
-    mobile: width < 768,
-  });
-  await page.waitForFunction(
-    ({ width, height }) => innerWidth === width && innerHeight === height,
-    { width, height },
-  );
+  await resizeViewport(page, width, height);
   // LibraryGallery measures through ResizeObserver → animation frame → React.
   // Browser metrics alone can still expose the preceding viewport's positions.
   await page.waitForFunction(
@@ -133,133 +137,54 @@ async function imagesPainted() {
     );
   });
 }
-async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
+async function layouts(
+  state,
+  widths = [360, 390, 430, 768, 1440],
+  beforeCapture = imagesPainted,
+) {
   for (const theme of ['light', 'dark']) {
-    await page.cdp('Emulation.setEmulatedMedia', {
-      features: [
-        { name: 'prefers-color-scheme', value: theme },
-        { name: 'prefers-reduced-motion', value: 'reduce' },
-      ],
-    });
-    await page.waitForFunction(
-      (theme) => document.documentElement.classList.contains(theme),
-      theme,
-    );
+    await setTheme(page, theme);
     for (const width of widths) {
       await resize(width);
-      const geometry = await page.evaluate(() => ({
-        width: innerWidth,
-        overflow: document.documentElement.scrollWidth > innerWidth,
-        mainOverflow: [...document.querySelectorAll('main')]
-          .filter((node) => node.getClientRects().length)
-          .some((node) => node.scrollWidth > node.clientWidth),
-        albumCardOverlays: [
-          ...document.querySelectorAll('[data-testid="library-card"]'),
-        ]
-          .filter((card) => card.getClientRects().length)
-          .map((card) => ({
-            imageId: card.dataset.imageId,
-            background: getComputedStyle(card, '::after').backgroundColor,
-          })),
-        picker: (() => {
-          const picker = document.querySelector(
-            '[data-testid="album-cover-picker"]',
-          );
-          if (!picker?.getClientRects().length) return null;
-          const grid = picker.querySelector('[aria-label="相册封面图片"]');
-          const info = picker.querySelector(
-            ':scope > [data-slot="alert-root"]',
-          );
-          return {
-            columns: grid
-              ? getComputedStyle(grid).gridTemplateColumns.split(/\s+/).length
-              : null,
-            infoBackground: info
-              ? getComputedStyle(info).backgroundColor
-              : null,
-          };
-        })(),
-        targets: [...document.querySelectorAll('button,a,input')]
-          .filter((node) => {
-            if (
-              !node.getClientRects().length ||
-              node.closest('[inert],[aria-hidden="true"]')
-            )
-              return false;
-            for (
-              let ancestor = node;
-              ancestor;
-              ancestor = ancestor.parentElement
-            ) {
-              const style = getComputedStyle(ancestor);
-              if (
-                style.visibility === 'hidden' ||
-                style.clip === 'rect(0px, 0px, 0px, 0px)' ||
-                style.clipPath === 'inset(50%)'
-              )
-                return false;
-            }
-            return true;
-          })
-          .map((node) => {
-            const rect = node.getBoundingClientRect();
-            return {
-              name:
-                node.getAttribute('aria-label') ||
-                node.textContent ||
-                node.name,
-              width: rect.width,
-              height: rect.height,
-            };
-          }),
-      }));
-      assert.equal(
-        geometry.overflow,
-        false,
-        `${state}/${theme}/${width} overflow`,
-      );
-      assert.equal(
-        geometry.mainOverflow,
-        false,
-        `${state}/${theme}/${width} main overflow`,
-      );
-      if (state === 'automatic-content') {
-        assert.ok(
-          geometry.albumCardOverlays.length > 0,
-          'Real album cards are rendered',
-        );
-        for (const overlay of geometry.albumCardOverlays)
-          assert.equal(
-            overlay.background,
-            'rgba(0, 0, 0, 0)',
-            `${state}/${theme}/${width}: ${overlay.imageId} outline overlay cannot cover the thumbnail`,
-          );
-      }
-      if (geometry.picker) {
-        if (geometry.picker.columns !== null)
-          assert.equal(
-            geometry.picker.columns,
-            width >= 1200 ? 4 : width >= 768 ? 3 : 2,
-            `${state}/${theme}/${width}: real cover-picker grid columns`,
-          );
-        assert.equal(
-          geometry.picker.infoBackground,
-          theme === 'light' ? 'rgb(227, 246, 245)' : 'rgb(37, 61, 64)',
-          `${state}/${theme}/${width}: cover explanation background`,
-        );
-      }
-      for (const target of geometry.targets)
-        assert.ok(
-          target.width >= (width < 1200 ? 44 : 24) &&
-            target.height >= (width < 1200 ? 44 : 24),
-          `${state}: ${target.name} target ${target.width}×${target.height}`,
-        );
-      if (state === 'automatic-content') await searchEdges(theme, width);
-      if (state !== 'picker-loading') await imagesPainted();
+      const geometry = await readGeometry(page);
+      assertGeometry(geometry, `${state}/${theme}/${width}`);
+      await beforeCapture(theme, width, geometry);
       await shot(`${state}-${theme}-${width}`);
       report.layouts.push({ state, theme, ...geometry });
     }
   }
+}
+async function checkPickerGeometry(theme, width, geometry) {
+  geometry.picker = await page.evaluate(() => {
+    const picker = document.querySelector('[data-testid="album-cover-picker"]');
+    if (!picker?.getClientRects().length) return null;
+    const grid = picker.querySelector('[aria-label="相册封面图片"]');
+    const info = picker.querySelector(':scope > [data-slot="alert-root"]');
+    return {
+      columns: grid
+        ? getComputedStyle(grid).gridTemplateColumns.split(/\s+/).length
+        : null,
+      infoBackground: info ? getComputedStyle(info).backgroundColor : null,
+    };
+  });
+  assert.ok(geometry.picker, 'The actual cover picker is visible');
+  if (geometry.picker.columns !== null)
+    assert.equal(
+      geometry.picker.columns,
+      width >= 1200 ? 4 : width >= 768 ? 3 : 2,
+      `${theme}/${width}: real cover-picker grid columns`,
+    );
+  assert.equal(
+    geometry.picker.infoBackground,
+    theme === 'light' ? 'rgb(227, 246, 245)' : 'rgb(37, 61, 64)',
+    `${theme}/${width}: cover explanation background`,
+  );
+}
+async function pickerLayouts(state, widths) {
+  await layouts(state, widths, async (theme, width, geometry) => {
+    await checkPickerGeometry(theme, width, geometry);
+    await imagesPainted();
+  });
 }
 async function readAlbum(id = albumId) {
   const response = await page.fetch(`/api/albums/${id}`);
@@ -285,7 +210,6 @@ function candidate(id) {
 }
 async function saved(id) {
   await page.waitForSelector('[data-testid="cover-result"]');
-  await layouts('save-success', [390, 1440]);
   await page.click(button('返回相册'));
   await page.waitForSelector('[data-testid="album-cover-summary"]');
   await page.waitForFunction(
@@ -295,16 +219,7 @@ async function saved(id) {
 }
 async function shortModal(state) {
   for (const theme of ['light', 'dark']) {
-    await page.cdp('Emulation.setEmulatedMedia', {
-      features: [
-        { name: 'prefers-color-scheme', value: theme },
-        { name: 'prefers-reduced-motion', value: 'reduce' },
-      ],
-    });
-    await page.waitForFunction(
-      (theme) => document.documentElement.classList.contains(theme),
-      theme,
-    );
+    await setTheme(page, theme);
     for (const width of [390, 1440]) {
       await resize(width, 400);
       await page.waitForFunction(
@@ -469,79 +384,7 @@ async function intercept(method, path, mode) {
 async function restore() {
   await page.evaluate(() => window.__coverRestore?.());
 }
-async function fixtures() {
-  const png = await readFile(
-    join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
-  );
-  const created = 1800000000000;
-  await sql(
-    `INSERT INTO storage_configs (id,name,type,enabled,local_path,created_at,updated_at) VALUES ('issue180-storage','封面验证存储','local',1,'issue180',${created},${created})`,
-  );
-  directory = join(
-    config.dataDirectory,
-    'storage',
-    'issue180',
-    'ariso',
-    'issue180-storage',
-    'cover',
-  );
-  await mkdir(directory, { recursive: true });
-  const ids = [
-    albumId,
-    'issue180-empty',
-    'issue180-private',
-    ...['pending', 'processing', 'failed', 'disabled', 'missing'].map(
-      (status) => `issue180-${status}`,
-    ),
-  ];
-  await sql(
-    `INSERT INTO albums (id,name,description,created_at,updated_at) VALUES ${ids.map((id) => `('${id}','${id === albumId ? '封面验证旅行' : id}','独立浏览器验证数据',${created},${created})`).join(',')}`,
-  );
-  for (let index = 0; index < 45; index++) {
-    const id = `issue180-${String(index).padStart(3, '0')}`;
-    await sql(
-      `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,width,height,byte_size,classification,processing_status,created_at,updated_at) VALUES ('${id}','issue180-storage','${id}.png','${id}.png','${index < 40 ? 'private' : 'public'}','png','image/png',640,480,${png.length},'static','ready',${created - index},${created})`,
-    );
-    await sql(
-      `INSERT INTO media_objects (id,image_id,storage_id,key,purpose,status,byte_size,format,mime,created_at,updated_at) VALUES ('object-${id}','${id}','issue180-storage','cover/${id}.png','thumbnail','stored',${png.length},'png','image/png',${created},${created})`,
-    );
-    await sql(
-      `INSERT INTO media_versions (image_id,kind,object_id,width,height,byte_size,format,mime,created_at) VALUES ('${id}','thumbnail','object-${id}',64,48,${png.length},'png','image/png',${created})`,
-    );
-    await writeFile(join(directory, `${id}.png`), png);
-    // Public 040 and 041 share the same join time and must break ties by ID.
-    const joined = index < 40 ? created + 1000 - index : created;
-    await sql(
-      `INSERT INTO album_images (album_id,image_id,joined_at) VALUES ('${albumId}','${id}',${joined})`,
-    );
-  }
-  await sql(
-    `INSERT INTO album_images (album_id,image_id,joined_at) VALUES ('issue180-private','issue180-000',${created})`,
-  );
-  for (const status of [
-    'pending',
-    'processing',
-    'failed',
-    'disabled',
-    'missing',
-  ]) {
-    const id = `issue180-status-${status}`;
-    await sql(
-      `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,width,height,byte_size,classification,processing_status,created_at,updated_at) VALUES ('${id}','issue180-storage','${id}.png','${id}.png','public','png','image/png',640,480,${png.length},'static','${['pending', 'processing', 'failed'].includes(status) ? status : 'ready'}',${created},${created})`,
-    );
-    await sql(
-      `INSERT INTO album_images (album_id,image_id,joined_at) VALUES ('issue180-${status}','${id}',${created + 1}),('issue180-${status}','issue180-042',${created})`,
-    );
-    if (status === 'missing') {
-      await sql(
-        `INSERT INTO media_objects (id,image_id,storage_id,key,purpose,status,byte_size,format,mime,created_at,updated_at) VALUES ('object-${id}','${id}','issue180-storage','cover/missing.png','thumbnail','stored',${png.length},'png','image/png',${created},${created})`,
-      );
-      await sql(
-        `INSERT INTO media_versions (image_id,kind,object_id,width,height,byte_size,format,mime,created_at) VALUES ('${id}','thumbnail','object-${id}',64,48,${png.length},'png','image/png',${created})`,
-      );
-    }
-  }
-}
+
 try {
   report.stage = 'owner session and fixtures';
   await page.goto(`${config.origin}/library`);
@@ -564,7 +407,15 @@ try {
       ),
     preferenceKey,
   );
-  await fixtures();
+  directory = join(
+    config.dataDirectory,
+    'storage',
+    'issue180',
+    'ariso',
+    'issue180-storage',
+    'cover',
+  );
+  await createAlbumCoverFixtures(config, sql, albumId, directory);
   report.stage = 'automatic full album and picker';
   await content();
   const automatic = (await readAlbum()).cover;
@@ -577,8 +428,36 @@ try {
     false,
     'Automatic cover is beyond the first private-only page',
   );
-  await layouts('automatic-content');
+  await layouts(
+    'automatic-content',
+    undefined,
+    async (theme, width, geometry) => {
+      geometry.albumCardOverlays = await page.evaluate(() =>
+        [...document.querySelectorAll('[data-testid="library-card"]')]
+          .filter((card) => card.getClientRects().length)
+          .map((card) => ({
+            imageId: card.dataset.imageId,
+            background: getComputedStyle(card, '::after').backgroundColor,
+          })),
+      );
+      assert.ok(
+        geometry.albumCardOverlays.length > 0,
+        'Real album cards are rendered',
+      );
+      for (const overlay of geometry.albumCardOverlays)
+        assert.equal(
+          overlay.background,
+          'rgba(0, 0, 0, 0)',
+          `${theme}/${width}: ${overlay.imageId} outline overlay cannot cover the thumbnail`,
+        );
+      await searchEdges(theme, width);
+      await imagesPainted();
+    },
+  );
   await resize(1440);
+  report.stage = 'stable album workspace';
+  await verifyAlbumCoverWorkspace({ page, report, openPicker: picker, shot });
+  report.stage = 'automatic full album and picker';
   await picker();
   assert.equal(
     await page.evaluate(
@@ -590,13 +469,14 @@ try {
     true,
     'Private members cannot be manually selected',
   );
-  await layouts('picker-private-first-page');
+  await pickerLayouts('picker-private-first-page');
   await page.click(button('下一页'));
   await page.waitForSelector(candidate('issue180-041'));
-  await layouts('picker-public-loaded', [390, 1440]);
+  await pickerLayouts('picker-public-loaded', [390, 1440]);
   await page.focus(candidate('issue180-041'));
   await page.keyboard.press('Enter');
   await page.waitForSelector('[data-testid="cover-result"]');
+  await pickerLayouts('manual-save-success', [390, 1440]);
   await shortModal('save-success');
   await saved('issue180-041');
   await layouts('manual-content', [390, 1440]);
@@ -677,7 +557,7 @@ try {
     'true',
   );
   assert.equal((await readAlbum()).cover.preferredCoverImageId, 'issue180-041');
-  await layouts('save-error-retained-selection', [390, 1440]);
+  await pickerLayouts('save-error-retained-selection', [390, 1440]);
   await restore();
   await intercept('PUT', `/api/albums/${albumId}/cover`, 'hold');
   await page.click(button('重试保存'));
@@ -738,7 +618,7 @@ try {
     ),
     true,
   );
-  await layouts('save-unknown', [390, 1440]);
+  await pickerLayouts('save-unknown', [390, 1440]);
   await page.focus(button('重新核对结果'));
   await page.keyboard.press('Enter');
   await page.waitForFunction(
@@ -791,14 +671,14 @@ try {
   await page.waitForSelector(
     '[data-testid="album-cover-picker"] [data-testid="library-loading"]',
   );
-  await layouts('picker-loading', [390, 1440]);
+  await layouts('picker-loading', [390, 1440], checkPickerGeometry);
   await restore();
   await page.waitForSelector(candidate('issue180-000'));
   await page.click(button('取消'));
   await intercept('GET', '/api/images', 'reject');
   await page.click(button('设置封面'));
   await page.waitForSelector('[data-testid="cover-list-error"]');
-  await layouts('picker-read-error', [390, 1440]);
+  await pickerLayouts('picker-read-error', [390, 1440]);
   await restore();
   await page.click(button('重试读取图片'));
   await page.waitForSelector(candidate('issue180-000'));
@@ -818,7 +698,7 @@ try {
     await layouts(`${id.slice(9)}-preview`, [390, 1440]);
     await page.click(button('返回相册'));
     await picker();
-    await layouts(`${id.slice(9)}-picker`, [390, 1440]);
+    await pickerLayouts(`${id.slice(9)}-picker`, [390, 1440]);
     await page.click(button('取消'));
   }
   for (const status of [
@@ -959,6 +839,8 @@ try {
     type: 'touchEnd',
     touchPoints: [],
   });
+  await page.waitForSelector('[data-testid="cover-result"]');
+  await pickerLayouts('automatic-save-success', [390, 1440]);
   await saved(null);
   await page.cdp('Emulation.setTouchEmulationEnabled', { enabled: false });
   await resize(1440);
