@@ -369,7 +369,13 @@ export async function verifyUIRefinement({ page, config, report }) {
             'Upload fills the workspace content width',
           );
           assert.ok(
-            Math.abs(upload.compositionWidth - upload.sectionWidth) <= 1,
+            Math.abs(
+              upload.compositionWidth -
+                (width >= 1200
+                  ? Math.min(upload.sectionWidth, 1280)
+                  : upload.sectionWidth),
+            ) <= 1,
+            'Upload composition uses the approved desktop cap and fills smaller viewports',
           );
           if (width >= 768) {
             assert.equal(upload.settings.width, 360);

@@ -190,7 +190,10 @@ async function drop(paths) {
   for (const type of ['dragEnter', 'dragOver', 'drop'])
     await page.cdp('Input.dispatchDragEvent', { type, ...point, data });
 }
-async function layouts(name, widths = [360, 390, 430, 768, 1440]) {
+async function layouts(
+  name,
+  widths = [360, 390, 430, 768, 1199, 1200, 1440, 1920, 2240],
+) {
   for (const theme of ['light', 'dark']) {
     await page.cdp('Emulation.setEmulatedMedia', {
       features: [
@@ -215,6 +218,31 @@ async function layouts(name, widths = [360, 390, 430, 768, 1440]) {
         width: innerWidth,
         height: innerHeight,
         scrollWidth: document.documentElement.scrollWidth,
+        compositionWidth: document
+          .querySelector('[data-testid="upload-composition"]')
+          .getBoundingClientRect().width,
+        picker: (() => {
+          const card = document.querySelector('[data-testid="upload-picker"]');
+          if (!card) return null;
+          const rect = (node) => {
+            const { width, height, top, left, bottom } =
+              node.getBoundingClientRect();
+            return { width, height, top, left, bottom };
+          };
+          const buttons = [...card.querySelectorAll('button')].filter(
+            (node) => node.getBoundingClientRect().width > 0,
+          );
+          return {
+            icon: rect(
+              card.querySelector('[data-testid="upload-idle-motion"]'),
+            ),
+            buttons: buttons.map((node) => ({
+              name: node.textContent,
+              ...rect(node),
+            })),
+            headingSize: getComputedStyle(card.querySelector('h2')).fontSize,
+          };
+        })(),
         dialog:
           document.querySelector('[data-testid="upload-input-dialog"]')
             ?.textContent ?? null,
@@ -261,6 +289,11 @@ async function layouts(name, widths = [360, 390, 430, 768, 1440]) {
         result.scrollWidth <= width,
         `${name}/${theme}/${width}: no horizontal overflow`,
       );
+      if (width >= 1200)
+        assert.ok(
+          result.compositionWidth <= 1280,
+          'Approved desktop composition stays within 1280px in every queue state',
+        );
       for (const target of result.targets)
         assert.ok(
           target.width >= 44 &&
@@ -273,6 +306,34 @@ async function layouts(name, widths = [360, 390, 430, 768, 1440]) {
           48,
           'Figma image-picker button is 48px high',
         );
+      if (result.picker) {
+        const choose = result.picker.buttons.find(
+          (target) => target.name === '选择图片',
+        );
+        assert.equal(choose.width, width >= 1200 ? 160 : 144);
+        assert.equal(
+          result.picker.headingSize,
+          width >= 1200 ? '28px' : '26px',
+        );
+        if (width >= 1200) {
+          assert.deepEqual(
+            [result.picker.icon.width, result.picker.icon.height],
+            [64, 64],
+          );
+          const folder = result.picker.buttons.find(
+            (target) => target.name === '选择文件夹',
+          );
+          assert.deepEqual(
+            [folder.width, folder.height, folder.top],
+            [160, 48, choose.top],
+          );
+          assert.equal(
+            folder.left - choose.left - choose.width,
+            12,
+            'Approved desktop actions have a 12px gap',
+          );
+        }
+      }
       if (result.modalGeometry) {
         assert.equal(
           result.modalGeometry.bodyGap,

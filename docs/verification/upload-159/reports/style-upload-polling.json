@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Content acceptance invalidates an outstanding automatic read",
+      "overlap": {
+        "reads": 1,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": true,
+        "uploadProgress": {
+          "loaded": 6814,
+          "total": 6814,
+          "lengthComputable": true
+        }
+      }
+    },
+    {
+      "name": "Content acceptance invalidates an outstanding automatic read",
+      "result": {
+        "imageId": "7964d509-2df4-4fde-8d14-de96549c3f34",
+        "reads": 2,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": false,
+        "uploadProgress": {
+          "loaded": 6814,
+          "total": 6814,
+          "lengthComputable": true
+        }
+      }
+    },
+    {
+      "name": "A new file after cancellation and clearing also resumes automatic polling",
+      "overlap": {
+        "reads": 1,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": true,
+        "uploadProgress": {
+          "loaded": 6814,
+          "total": 6814,
+          "lengthComputable": true
+        }
+      }
+    },
+    {
+      "name": "A new file after cancellation and clearing also resumes automatic polling",
+      "result": {
+        "imageId": "3d52cb8a-d71b-4849-8684-c8e373422291",
+        "reads": 2,
+        "heldPastDeadline": true,
+        "accepted": true,
+        "held": false,
+        "uploadProgress": {
+          "loaded": 6814,
+          "total": 6814,
+          "lengthComputable": true
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Browser-boundary holds delay real responses without changing their payloads; no controller methods are called."
+  ]
+}

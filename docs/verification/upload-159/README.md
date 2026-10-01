@@ -117,3 +117,50 @@
 人工预览已在Ego的“Issue 159 复测与人工验收”Space11打开并登录上传页，已调用 `handOff()` 将控制交给用户。服务使用本地独立的 `test-results/upload-159-preview/data`，留在运行状态；同目录保存预览截图和临时账号访问文件，不提交账号信息。当前地址为 `http://ariso-preview-62213.localhost:62213/upload`。另已请求在Codex面板打开，工具返回queued，等待当前任务被显示时打开。
 
 这些操作待用户亲自执行，不因自动化或独立设计审计通过而标记人工验收完成。
+
+## 2026-10-01 用户批准后的桌面样式返修
+
+用户反馈功能基本可用，但桌面输入区显得过空、文件夹按钮零碎。实际重读 Figma 主页面 `30:97`（输入区 `31:141`）与手机 `101:1014`，先展示[1920×1080真实页面临时效果](./browser-style/approved-desktop.png)，用户明确回复“可以的 我批准了”。具体覆盖范围在 [handoff](../../design/handoff.md#上传输入区桌面样式返修2026-10-01用户批准)维护；未修改Figma、冻结PRD或公共外壳。
+
+1200px起组合宽度封顶1280px；空状态图标64px水绿容器、标题28px、说明独立成行。选择图片与文件夹按钮并排160×48px、12px间距，限制说明另起一行。1200px以下保留既有手机和平板样式。沿用HeroUI、现有公共布局与输入接口，没有新增依赖。
+
+### 本轮实际测试与失败处理
+
+环境仍为Darwin arm64、Node24.18.1、pnpm11.19.0、现有Ego Lite Space11。每次浏览器使用独立临时生产实例，未修改用户预览数据。
+
+两轮 `EGO_TASK_SPACE=11 node docs/verification/upload-159/run-browser.mjs directory-drag-diagnostic` 均在原10秒等待“队列已满”时超时，截图与布局已有74组，扫描仍分别在381/336项持续入队。[首次失败](./reports/style-initial-failure.json)与[原样复现](./reports/style-repeat-failure.json)保留，不记为通过。调用路径显示每次新增项都会重新渲染全部既有HeroUI队列卡片；本次用React.memo复用未变化的行，并稳定详情回调，状态更新仍创建新item触发刷新。没有调整测试超时、跳过检查或削弱断言。
+
+修复后原命令实际复跑：**11场景、82组布局与短视口通过**，含真实501文件、500容量含已完成结果、停止/Escape/迟到回调、清空与File/Blob URL释放。[本轮结果](./reports/style-directory-drag.json)、[运行器](./reports/style-directory-drag-runner.json)、[真实截图](./browser-style/)已归档。运行器仍标为partial：目录拖入不替代原生目录选择器，也不替代完整浏览器套件。
+
+`pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`（57文件748项）和 `pnpm run build` 在本轮修复后均实际通过。构建退出0，Next产物追踪仍打印resvg各平台可选绑定解析消息；独立生产实例正常启动，真实PNG保存与处理通过，不将构建描述为无日志警告。
+
+### 布局逐项对照
+
+独立评审者实际重读上述Figma节点，并看过批准图与本轮真实截图；公共区域先于业务细节核对。以下尺寸由真实DOM读取与截图共同验证，设计验收不只依据断言。
+
+| 对照项                                 | 视口与主题 / 实际截图                                                                                                                                                                                                                            | 结论及差异处理                                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| 整页、品牌、侧栏、账号、标题及固定底栏 | [1440浅](./browser-style/upload-input-empty-light-1440.png)、[1440深](./browser-style/upload-input-empty-dark-1440.png)                                                                                                                          | 沿用统一外壳和既有批准基线，无本次复制或变更                                                             |
+| 桌面空状态与设置卡                     | [1920浅](./browser-style/upload-input-empty-light-1920.png)、[1920深](./browser-style/upload-input-empty-dark-1920.png)、[2240浅](./browser-style/upload-input-empty-light-2240.png)、[2240深](./browser-style/upload-input-empty-dark-2240.png) | 组合1280；图标64；标题28；按钮160×48、gap12；与本次批准图一致，原Figma桌面排列的差异已获明确批准         |
+| 手机布局                               | [390浅](./browser-style/upload-input-empty-light-390.png)、[390深](./browser-style/upload-input-empty-dark-390.png)；另覆盖360/430/768                                                                                                           | 保留26标题、40图标、144×48选择图片及44px文件夹入口；本次桌面规则未影响手机                               |
+| 样式断点                               | [1199浅](./browser-style/upload-input-empty-light-1199.png)、[1199深](./browser-style/upload-input-empty-dark-1199.png)、[1200浅](./browser-style/upload-input-empty-light-1200.png)、[1200深](./browser-style/upload-input-empty-dark-1200.png) | 1199保留原排列，1200启用新排列；无水平溢出，组合宽度904                                                  |
+| 队列及输入汇总                         | [1920队列](./browser-style/upload-input-ordinary-light-1920.png)、[2240汇总](./browser-style/upload-input-directory-complete-dark-2240.png)                                                                                                      | 空态和队列复用同一宽度；成功、错误、扫描、停止、满额、禁用与能力缺失仍按原状态节点，几何和点击区断言保留 |
+| 短视口与键盘                           | [390×400弹窗](./browser-style/upload-input-short-dialog.png)、[滚到底部](./browser-style/upload-input-short-dialog-bottom.png)                                                                                                                   | 说明自然高度、滚动到操作和焦点/停止断言通过；物理手机和非零安全区未实测，依执行约定不标记通过            |
+
+独立[代码复审](./code-review.md#桌面样式返修与扫描性能复审2026-10-01)通过，无Critical/Required。独立设计结论见[设计记录](./design-review.md)。方案批准不等于最终页面人工验收；PR继续草稿。原完整浏览器图库超时、原生目录枚举cancel仍为未解决证据限制，不修改历史结论、不将问题转为“后续优化”。
+
+既有 `e2e/upload.mjs` 回归首轮在公共导航弹窗等待超时，保留失败。原样复跑走过导航后，在 `e2e/ui-refinement.mjs:371` 的旧“组合铺满正文”断言失败；这是本次已批准1280最大宽度所改变的规则。已将该断言精确更新为1200起 `min(sectionWidth,1280)`、其余宽度铺满，容差仍1px；设置列、间距、上下对齐和全部公共路由断言保留，独立代码复审通过。没有跳过公共外壳检查。
+
+适配后完整专项复跑 `EGO_TASK_SPACE=11 TARGET_SOURCE=/Volumes/data/project/ariso/e2e/upload.mjs TARGET_OUTPUT=test-results/upload-159-style-regression node /tmp/ariso-159-retest-target.mjs`：**15场景、130组布局通过**；包含原生fetch真实上传、进度/保存、失败、取消、结果回收与未知状态核对、详情回跳、清空不删图库及File/Blob释放。[专项摘要](./reports/style-upload-regression.json)、[运行器](./reports/style-upload-regression-runner.json)与[公共路由结果](./reports/style-owner-shell.json)归档。首轮[导航等待失败](./reports/style-regression-navigation-failure.json)与适配前[宽度断言失败](./reports/style-regression-cap-failure.json)保留；没有用历史15场景结果代替本轮。
+
+`EGO_TASK_SPACE=11 TARGET_SOURCE=/Volumes/data/project/ariso/e2e/upload-polling.mjs TARGET_OUTPUT=test-results/upload-159-style-polling node /tmp/ariso-159-retest-target.mjs`：**4项轮询竞争、过期读取、取消与未知状态恢复通过**，[结果](./reports/style-upload-polling.json)与[运行器](./reports/style-upload-polling-runner.json)已归档。浏览器临时实例与素材清理，剪贴板恢复。
+
+### 本轮人工预览
+
+最终代码生产副本在独立 `test-results/upload-159-style-final-preview/data`，实际地址 `http://ariso-preview-64143.localhost:64143/upload`。已经在Ego Space11的p1登录、打开桌面上传页、关闭账号浮层并保存实际预览截图；清除测试主题与触控设置，使用零值DeviceMetrics解除固定测试尺寸。已 `handOff()` 将浏览器交给用户。账号密码沿用此前人工预览那组，未写入提交的证据。旧62213实例及其数据保留，当前验收应使用新版地址。Codex面板打开请求返回queued，不能称已经在该面板显示。
+
+请人工确认：桌面区域比例、图标与两个按钮是否达到批准效果；浅深色和1199/1200切换，以及手机/短视口/Tab焦点；在系统选择器实际选择 `test-results/upload-159-manual/nested` 补齐原生文件夹证据；再试真实图片拖入、截图粘贴、上传与大目录停止。此前“功能基本没有问题”的反馈不冒充原生选择器全部证据，也不自动标记本次最终UI验收完成。
+
+本轮 `pnpm run test:integration --maxWorkers=1` 实际完成普通集成与真实工具两组：98文件通过、1文件失败；916项通过、1项失败，[原始记录](./reports/style-integration.txt)。失败为 `tests/integration/runtime/shutdown.test.ts:28` 准备图片数据时 `SqliteError: database is locked`，尚未到发送SIGTERM和断言流完成；没有证据说明信号退出行为本身失败，不改动本次范围外的运行时/夹具。随后 `pnpm exec vitest run --project integration tests/integration/runtime/shutdown.test.ts --maxWorkers=1` 同文件4项通过，[隔离复跑记录](./reports/style-shutdown-focused.txt)。隔离通过不替代整套失败，也不合并成“917项通过”。
+
+最终证据修订后执行 `pnpm run format:check`、`pnpm run lint`、`node docs/tasks/check.mjs`（120任务298需求）、`node docs/tasks/check.mjs --self-test`（5项）、两份修改脚本语法及 `git diff --check`，结果通过。沿用 `codex/issue-159-upload-input` 提交推送本轮修订，更新同一 [PR #221](https://github.com/dnslin/ariso-next/pull/221)。最终人工UI验收、原生目录选择器、完整浏览器图库超时及本轮整套集成失败仍明确保留，PR不转正式、不合并。远端检查实际为空，不记为CI通过；发布、镜像、容器和物理设备范围不变。
