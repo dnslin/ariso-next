@@ -2,6 +2,8 @@
 
 日期：2026-10-02（Asia/Shanghai）。[Issue #160](https://github.com/dnslin/ariso-next/issues/160)，任务 `T-UP-03`，需求编号与模块职责沿用[任务卡](../../tasks/m3-m4-platform.md#t-up-03-完整批次快照取消与结果队列)。本次为部分交付，不能表示完整 Issue 已完成。
 
+交付：[草稿PR #225](https://github.com/dnslin/ariso-next/pull/225)，分支 `codex/issue-160-upload-queue`。使用 `gh pr view 225 --json number,url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus` 实际回读为OPEN/isDraft=true，检查列表为空；没有触发远端检查，不记为CI通过，不等待不存在的工作流。直接推送连接无响应后，仅在当前命令设置获授权的本机代理重试成功，未修改全局配置。
+
 ## 前置与修改范围
 
 实际读取 Issue 正文、评论（无评论）和 GitHub 原生 blocked by / blocking。直接前置 #81、#159、#66、#153、#151、#77、#71、#72、#141 均已 CLOSED；下游为 #162 和 #200。基于最新 `origin/main` 的 `3eb585f` 创建 `codex/issue-160-upload-queue`，独立 worktree 为 `/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso`；原 `/Volumes/data/project/ariso` 未改动。
@@ -18,7 +20,9 @@
 
 待批准方案：保留当前桌面右侧360px设置卡及手机下方设置卡，在存储/可见性后加入相册与标签的HeroUI搜索多选。展开层含搜索、勾选列表、新建入口；已选项换行显示可移除标签；同名相册保留名称及完整ID。快建沿已有两端短弹窗，成功选中新ID、失败保留输入和原选择。已有提交时设置卡显示“下一次上传设置”；队列上方沿现有水绿说明区逐次显示文件数、20/20/5与冻结设置，编辑只影响下一次开始。
 
-上述缺口仍属于本Issue，不移交“后续优化”。本地完整队列UI与Issue全量验收未完成。S3双链路共享调度联验由 #162、上传限制独立设置界面由 #200 按原任务承接。人工UI验收尚未进行；不合并、不关闭Issue、不发布、不部署、不删除分支或worktree。
+上述缺口仍属于本Issue，不移交“后续优化”。本地完整队列UI与Issue全量验收未完成。S3双链路共享调度联验由 #162、上传限制独立设置界面由 #200 按原任务承接。人工UI验收尚未进行。已在Ego Lite Space1准备独立真实生产预览，使用临时数据库和存储，留有成功/处理失败各一张，失败注入已撤除，用户可实际点击同ID重处理；这不是用户真实数据，也不将准备页面记为人工通过。刷新会清空浏览器队列，已存图片可从图库查看。
+
+不合并、不关闭Issue、不发布、不部署、不删除分支或worktree。
 
 ## 实际环境与命令
 
@@ -36,7 +40,7 @@ Darwin arm64，Node24.18.1、pnpm11.19.0、HeroUI3.2.6、Uppy5.2.0、现有Ego L
 | `pnpm exec vitest run --project media-tools tests/integration/upload/local.test.ts`                                                                                                                     | 14项通过，含真实图片素材A/B引用                                                                                                                                                                                                                                  |
 | `pnpm run test:integration --maxWorkers=4`                                                                                                                                                              | 多项超时，后因资源压力主动中断（130），不记为通过；本机同一时间其他任务也在运行完整集成。现场load63.59、约57MiB可用内存。失败记录保留，串行复核105文件998项通过，3文件各1项失败；构建稳定后三失败文件复验3文件8项全通过，未改源码、超时或断言                    |
 | `EGO_TASK_SPACE=1 node docs/verification/upload-160/run-browser.mjs submissions`                                                                                                                        | 最终通过，62组布局，真实45+2上传、同ID失败/成功/受理丢响应；全宽动作与16px间距断言通过。原始[报告](./reports/submissions.json)及[环境/清理](./reports/submissions-runner.json)                                                                                   |
-| `pnpm --dir tests/experiments/ui install --frozen-lockfile`                                                                                                                                             | 通过；全量浏览器首轮因独立UI夹具未安装失败，安装后复验中                                                                                                                                                                                                         |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`                                                                                                                                             | 通过；全量浏览器首轮因独立UI夹具未安装失败，安装后复验执行到既有宽布局断言失败                                                                                                                                                                                   |
 | `EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-160 pnpm run test:browser`                                                                                                   | 退出1，停于既有 `interaction-polish-1440` 的宽布局断言；首屏/身份/M2-1440已通过，未执行到上传专项。见[原始日志](./reports/browser-full.txt)与[运行报告](./reports/browser-full-runner.json)                                                                      |
 | `pnpm run test:integration --maxWorkers=1`                                                                                                                                                              | 退出1，105文件998项通过，3文件各1项失败，见[原始记录](./reports/integration-serial.txt)。构建重打包时runtime/shutdown与library/filter-options读取standalone临时缺失文件；media/trash-http夹具写入数据库锁。构建稳定后复验这3文件，8项全通过；首轮退出1不改记通过 |
 | `pnpm exec vitest run --project integration tests/integration/media/trash-http.test.ts tests/integration/runtime/shutdown.test.ts tests/integration/library/filter-options-http.test.ts --maxWorkers=1` | 3文件8项全通过，[原始日志](./reports/integration-retry.txt)                                                                                                                                                                                                      |
