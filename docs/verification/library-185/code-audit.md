@@ -1,8 +1,14 @@
 # Issue #185 独立代码审计
 
-日期：2026-10-02（Asia/Shanghai）。审计者：独立 `code_audit` agent。审计范围为本 Issue 的工作区差异，包含新增、未跟踪的生产代码与测试。本记录只说明代码与功能证据；设计还原由独立设计评审记录说明，最终界面仍需用户人工验收。
+日期：2026-10-02 至 2026-10-03（Asia/Shanghai）。审计者：独立 `code_audit` agent。审计范围为本 Issue 的工作区差异，包含新增、未跟踪的生产代码与测试。本记录只说明代码与功能证据；设计还原由独立设计评审记录说明，最终界面仍需用户人工验收。
 
-## 当前结论（人工反馈返修）
+## 当前结论（YARL 标准门户与连续浏览）
+
+**当前独立代码审计通过：Critical 0，未解决 Required 0。** 连续 Tab 后焦点落到 BODY、Esc 无法关闭的实际缺陷已使用现有 React Aria FocusScope 修复；[失败记录](./browser/yarl-native-preview-final/focus-before-fix.json)保留。源码、依赖差异及严格回归已独立复核，最后完整专项实际退出0、16项检查／53张截图／27条布局；直达与连续图库共12次 Tab／Shift+Tab均保持真实焦点，错误层先 Esc 后查看器 Esc 的分层关闭及回焦通过。最后独立预览也实际退出0，六次真实焦点与两层 Esc 已读回确认。首轮完整专项失败和较早的分阶段结果均保留，未改写为通过。详见[标准门户续记](#yarl-标准门户与连续浏览审计续记2026-10-02)。
+
+两项范围外检查失败、用户最终人工验收及下文明确未执行的环境仍保留，PR 应保持草稿。本结论不代替设计验收或整套适用检查通过。
+
+## 人工反馈返修结论（历史）
 
 **当前独立代码审计通过：Critical 0，未解决 Required 0。** 本轮尺寸与新增 Tooltip 的三项实际缺陷已修复，静态预览名称已改为实际输出的可读名称。源码、测试及实际分阶段报告已复核。完整尝试仍为 failed；该次已执行的正常布局／版本场景、后续 `--only behavior` 13 项／29 张截图和最后 `--only recovery` 3 项／17 张截图共同提供本轮功能证据，不能写成完整命令一次退出 0。具体结论见[本轮续记](#人工反馈返修审计续记2026-10-02)。
 
@@ -116,3 +122,41 @@
 | `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-loading-final node scripts/verify-browser.mjs --suite viewer --only recovery`                                                                                  | 退出0；[运行器](./browser/ui-feedback-loading-final/runner.json)与[业务报告](./browser/ui-feedback-loading-final/library-viewer.json)passed，3项、17截图。真实200／image/webp／16180字节、transferSize16480、暂停时 complete=false／naturalWidth=0、成功后 skeletonHidden=true；本次与此前 Runtime事件均按报告保留，当前数组均空。                                     |
 
 本轮范围内没有未解决 Critical／Required。分阶段证据覆盖适用行为，未声称本轮完整命令一次成功或统一 `test:browser` 通过。原水印 requestId 与旧 Chip 断言失败仍为范围外未解决项，不能以创建／更新 PR 代替这些结果。查看器打开期间真实会话过期、物理设备、Safari、软键盘、非零安全区及 Release 容器仍未执行；原生 Fullscreen 已按人工指令撤销，旧证据只属历史。设计结论由[独立设计评审](./design-review.md)维护，最终整体界面仍需用户人工验收，草稿状态应保留。
+
+## YARL 标准门户与连续浏览审计续记（2026-10-02）
+
+基线为 `5296ae9`，范围是本次未提交的标准 Lightbox 接入及图库／相册连续导航测试，最后焦点复验于2026-10-03完成。已重新读取 `code-review-and-quality`，先读测试，再检查完整实现、调用路径和已安装 YARL／HeroUI／React Aria 源码与类型。所有者继续使用 YARL、保持整视口图片与仅关闭图标／Esc的要求已写入既有 handoff 与 SPEC，没有新增规则、接口或冻结 PRD 修改。为直接使用现有 HeroUI peer 中的 FocusScope，`react-aria@3.52.1` 增为直接依赖；锁文件仅增加 importer 三行，未新增或升级包及传递依赖。
+
+### 源码与边界结论
+
+- [image-viewer.tsx:147](../../../src/components/library/image-viewer.tsx#L147)使用标准 `Lightbox open/close` 和 Zoom，移除 Inline、外层 HeroUI Modal 及手动挂载焦点帧。已实际读取 YARL `Portal`、`NoScroll`、Controller 与 Navigation：默认挂载聚焦图片 controller，门户隔离已有兄弟元素，关闭／卸载恢复其属性与焦点；NoScroll 清除滚动类并还原补偿样式，传感器订阅、定时器和 ResizeObserver 有卸载释放路径。背景与层级复用现有 `--background`／`--z-index-overlay`；正常态只提供44px HeroUI CloseButton。默认门户没有 Tab 环绕，此缺口及修正另列。
+- 有界窗口、imageId 身份及业务导航仍由原 hook 负责，未改协议、查询来源或服务器行为。当前与前后各一张，成功读取实际 delivery 并解码后才更新业务当前图；内部 index 偏移先复位，pending 仍阻止新业务导航。明确选版继承、自动目标版本、失败不换版、关闭取消迟到读取、会话清私有缓存及原详情／列表恢复路径保留，解码尺寸继续使用完整版本对或实际天然对。
+- 审计发现迁移中的 React 门户事件边界风险：曾把错误 AlertDialog 放在 `render.controls` 内；YARL sensors 接收 React 冒泡事件，React Aria 未匹配的方向键会继续传播。实现者已恢复迁移前的同级边界：[image-viewer.tsx:292](../../../src/components/library/image-viewer.tsx#L292)结束 Lightbox，[image-viewer.tsx:293](../../../src/components/library/image-viewer.tsx#L293)开始错误层。未取得修正前的运行时复现，不将源码风险描述为已实测失败。修正后的真实箭头隔离已有证据：同一错误 DOM／焦点保持，当前 `/i/issue185-007?type=compressed`、id、kind 均保持，目标／相邻请求计数始终4。错误层按钮仍复用 HeroUI，返回按钮仍聚焦 controller；最后完整专项与预览均验证第一 Esc 仅关闭错误层，第二 Esc 关闭查看器并回详情入口。
+- [image-viewer.tsx:26](../../../src/components/library/image-viewer.tsx#L26)通过 YARL 公开 `addParent/createModule` 把 `FocusScope contain` 放在门户内部的 controller 父层，包含图片和操作区，没有新增布局容器或自己编写 Tab 算法。已检查已安装 FocusScope 源码：子弹窗 scope 按活跃焦点树归属，外层不会争抢它；卸载移除事件监听、树节点及待执行焦点帧。没有重复启用 autoFocus／restoreFocus，初开和关闭仍沿 YARL 与现有详情恢复路径。`react-aria/FocusScope` 公开导出、实际类型、Apache-2.0 许可及锁文件差异已核对。
+- 没有复制公共外壳、增加普通前后／缩放按钮，图库和相册沿既有 `LibraryScreen`，上传结果沿同一个 `LibraryDetail`；上传没有伪造 neighbors 查询。结构变化由成熟库接管门户、滚动和默认焦点，未引入通用框架或额外抽象。
+
+新增 Required R1，已修复：上述默认挂载焦点和 sibling inert 不等于 Tab 环绕。最后独立预览连续 Tab 后真实 activeElement 为 BODY、inViewer=false，随后 Esc 仍保留 viewer，见[focus-before-fix.json](./browser/yarl-native-preview-final/focus-before-fix.json)。仅记录正常布局的早期预览 status=passed 没有覆盖此缺陷，不能作为焦点通过依据。修复使用上述现有 FocusScope。已独立读取最终完整专项的12次实际焦点结果和最后预览的六次结果，均为 viewer 内“关闭大图”BUTTON；预览还严格读回 document.hasFocus=true。错误弹窗可正常接收焦点，双向键不切背景图，第一 Esc 回 viewer 并保留007／compressed真实字节，第二 Esc 回原详情入口。R1 的源码与运行时回归均已完成，无未解决 Required。
+
+### 测试与实际证据
+
+连续图库测试逐张执行真实方向键与 `waitViewerImage`，校验实际当前 img.src、相邻 ID 及所有请求的 search／visibility／sort。实际顺序为19→20→21→22→23→24→23→24，底层来源 URL、详情滚动、列表布局／选择和焦点恢复仍检查。相册复用四张既有独立样本，先检查真实 API 顺序8→7→6→5，再连续切至5、返回6，验证首尾不循环、所有 album scope／id 和没有显式 sort；finally 删除独立相册并还原 fetch。
+
+首轮完整专项停在触摸测试的 `getComputedStyle(null)`：旧选择器假定 `.yarl__container` 是 viewer-stage 后代，而标准门户下舞台标记是控件层的全视口测量节点。测试改为读取 `[data-testid="image-viewer"] .yarl__container`，仍严格要求实际 `touchAction=none`，没有修改生产手势、断言或时限。错误层回归先确认实际焦点，再依次输入 ArrowLeft（前图6真实可读）／ArrowRight；等待两帧后检查同一错误框、实际图片 src／版本／id、焦点和请求数。临时错误 DOM 引用与网络拦截在 finally 清理。测试没有伪造成功响应，独立 DATA_DIR 由运行器清理。
+
+R1 回归分别在直达 original 与连续图库切至尾图后执行三次 Tab 和三次 Shift+Tab，每次等待两帧并读取实际 activeElement，严格要求位于 viewer；之后沿原 `closeViewer` 检查真实 Escape 隐藏 viewer、详情保留和入口回焦。错误层测试在实际被阻止的邻图读取上再次打开错误框，第一 Esc 后检查真实 src／id／版本／decode及viewer焦点，再用同一严格 helper 输入第二 Esc。断言针对行为，不以 FocusScope 标记存在代替成功。
+
+本轮环境为 Node24.18.1、pnpm11.19.0、macOS ARM64、Ego Lite 独立 TaskSpace13／p1；原空间11已经不存在。本审计没有操作浏览器或重复执行大套检查，已实际读取以下运行器与业务 JSON：
+
+| 实际命令                                                                                                                                                                     | 结果及复核内容                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EGO_TASK_SPACE=13 BROWSER_REPORT_DIR=docs/verification/library-185/browser/yarl-native-representative node scripts/verify-browser.mjs --suite viewer --only representative` | 主 agent 记录退出0；[运行器](./browser/yarl-native-representative/runner.json)与[业务报告](./browser/yarl-native-representative/library-viewer.json)为 passed。1440×1080／390×844浅深共8张入口／正常截图，4条布局；舞台全视口、唯一44px关闭实际命中。checks 数组为空，不将8截图说成8项功能检查。                                                                                                                                                                                                                                                              |
+| `EGO_TASK_SPACE=13 BROWSER_REPORT_DIR=docs/verification/library-185/browser/yarl-native-final node scripts/verify-browser.mjs --suite viewer`                                | 退出1；[运行器](./browser/yarl-native-final/runner.json)与[业务报告](./browser/yarl-native-final/library-viewer.json)为 failed，stage interactions。已执行7条结论、24截图，含五宽浅深／短视口、版本继承与实际动画、连续图库、桌面缩放与两类缺尺寸；停于上述旧测试选择器。原始失败保留。                                                                                                                                                                                                                                                                       |
+| `EGO_TASK_SPACE=13 BROWSER_REPORT_DIR=docs/verification/library-185/browser/yarl-native-behavior node scripts/verify-browser.mjs --suite viewer --only behavior`             | 退出0；[运行器](./browser/yarl-native-behavior/runner.json)与[业务报告](./browser/yarl-native-behavior/library-viewer.json)为 passed，13项、29截图。实际连续图库／相册、三张窗口与查询、触摸双轴与滑动、两类缺尺寸、失败／状态／迟到／解码／删除、真实ready上传及255字名称通过；错误层双向键逐步src／焦点／请求数值已核对。真实加载200 WebP16180字节、transfer16480、skeletonHidden=true，当前与此前Runtime事件数组均空。本次早于 FocusScope 修复，不覆盖 R1。                                                                                                |
+| `EGO_TASK_SPACE=13 BROWSER_REPORT_DIR=docs/verification/library-185/browser/yarl-native-focus-final node scripts/verify-browser.mjs --suite viewer`                          | 主 agent 记录实际退出0；[运行器](./browser/yarl-native-focus-final/runner.json)与[业务报告](./browser/yarl-native-focus-final/library-viewer.json)均为 passed／full／completed，16项、53截图、27条布局，临时目录已清理。已实际读取全部检查及原始值：两来源共12次键盘焦点均为 viewer 内关闭 BUTTON；错误层双向键保持同一 DOM／焦点／007／compressed／src且请求数4；第一 Esc 保留真实当前图并回 viewer，第二 Esc 的严格 helper 已执行通过。连续图库与相册、正常五宽浅深／短视口、选版／动画、缩放／两类缺尺寸／真实触摸、加载／状态／迟到／删除和消费者均完成。 |
+| 最终独立预览的 Ego Lite 定向脚本                                                                                                                                             | 主 agent 记录实际退出0；[报告](./browser/yarl-native-focus-preview-final/report.json)为 passed，1440×1080／390×844浅深4条布局、8张截图。关闭及入口均为实际命中的44px图标目标，stage全视口、图片最大等比 contain、无旧 chrome／溢出。六次 Tab／Shift+Tab逐步 focused=true、hasFocus=true；错误层第一 Esc 保留007／compressed／src和viewer焦点，secondEscapeReturnedToDetail=true。仅核对所记录场景，不称完整 suite 或人工验收。                                                                                                                                |
+
+静态检查与本地测试由主 agent 实际执行并记录退出0，本审计已读输出：`pnpm install --frozen-lockfile` [冻结安装](./checks/yarl-native-install.txt)、`pnpm run lint` [最终lint](./checks/yarl-native-final-lint.txt)、`pnpm run typecheck` [最终类型](./checks/yarl-native-final-typecheck.txt)、`pnpm run test:unit` [71文件／869项](./checks/yarl-native-unit.txt)、[22文件／148项适用集成](./checks/yarl-native-integration.txt)、`pnpm run build` [同级错误层后的构建](./checks/yarl-native-overlay-build.txt)及 `node docs/tasks/check.mjs` [120任务／298需求](./checks/yarl-native-docs.txt)。第一次门户 data 属性的弱类型不匹配保留[失败日志](./checks/yarl-native-increment-typecheck.txt)，类型已通过现有合法 className 与属性组合修正，未使用 any／忽略检查。[构建](./checks/yarl-native-overlay-build.txt)完成编译与15页生成，其他平台原生可选依赖的输出追踪诊断仍保留，不据此宣称跨架构或容器验证通过。最终文档格式和提交前检查由主 agent 统一收齐。
+
+FocusScope 接入后的冻结安装、lint、类型和构建均由主 agent 实际执行退出0，已实际读取[安装](./checks/yarl-native-focus-install.txt)、[最后lint](./checks/yarl-native-focus-final-lint.txt)、[类型](./checks/yarl-native-focus-typecheck.txt)及[构建](./checks/yarl-native-focus-build.txt)。构建完成编译与15页生成；跨平台可选原生包追踪诊断仍保留，未记为容器通过。[直接依赖声明命令](./checks/yarl-native-focus-dependency.txt)为 `pnpm add --offline --save-exact react-aria@3.52.1`，实际 downloaded=0、added=0，现有 peer 版本不变，没有升级传递依赖。本审计只复核上述证据与源码，未重复安装、测试或浏览器；写入后执行 `git diff --check`，最终文档格式由主 agent 统一处理。
+
+本轮独立代码审计结论为 Critical 0、未解决 Required 0，R1 修复已具有真实失败和严格成功回归。首轮 full 的 failed 保留，最新 full 的 passed 为另一实际运行，不相互覆盖。代码结论不代替新的独立设计复核或用户人工验收。原水印日志 requestId 与统一浏览器旧 Chip 断言两项范围外失败保持记录，148项适用集成不覆盖该水印断言，也不推翻此前整套失败。打开查看器后真实会话过期、物理设备、Safari、软键盘、非零安全区及 Release 镜像／容器仍未执行，匿名查看器继续由#193承接，PR保持草稿。

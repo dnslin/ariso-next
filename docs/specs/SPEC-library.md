@@ -24,6 +24,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 - [TanStack Query 分页](https://tanstack.com/query/latest/docs/framework/react/guides/paginated-queries)用于请求缓存和加载状态。筛选/排序/范围/页码必须进入 query key；切网格与瀑布流不改变数据 key。新查询加载时若暂显旧数据，必须禁用旧数据的选择和操作，不能把旧图当新查询结果。
 - [nuqs 参数选项](https://nuqs.dev/docs/options)用于解析 URL 和浏览器历史。搜索输入先本地编辑，提交搜索、应用筛选和翻页才写一条历史；后退恢复已应用查询，不为每个输入字符创建历史记录。
 - [Lightbox 文档](https://yet-another-react-lightbox.com/documentation)及 [Zoom](https://yet-another-react-lightbox.com/plugins/zoom)提供前后切换、缩放/平移，按 imageId 保持当前图片身份；不启用 Download、Share、Slideshow 插件。
+- 管理大图使用 YARL 标准 Lightbox 与 Zoom，由库处理门户、滚动锁定、挂载聚焦、键盘与手势；Portal 内复用 HeroUI 已使用的 React Aria FocusScope 约束 Tab 焦点，避免离开查看器后 Esc 失效。项目衔接现有相邻查询、版本和状态恢复。图库和相册都可在同一查看器连续浏览，无须逐张关闭重开。
 - 管理大图按2026-10-02所有者人工反馈占满页面视口，只保留关闭图标和 Esc 关闭；不再提供系统 Fullscreen 按钮。缩放和平移继续复用 Zoom，手机手势保留。
 - 加载更多使用顺序值与 ID 的游标查询，避免深处反复跳过前面所有记录；这是 [SQLite 滚动窗口查询](https://www.sqlite.org/rowvalue.html)的已有用法。页码跳转仍使用有界 LIMIT/OFFSET，是否达标用真实十万图片数据验证。
 

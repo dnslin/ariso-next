@@ -307,7 +307,7 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
         () =>
           getComputedStyle(
             document.querySelector(
-              '[data-testid="viewer-stage"] .yarl__container',
+              '[data-testid="image-viewer"] .yarl__container',
             ),
           ).touchAction,
       ),

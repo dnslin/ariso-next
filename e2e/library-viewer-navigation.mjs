@@ -106,7 +106,12 @@ export async function verifyViewerNavigation({ page, config, report }) {
     report.stage = 'navigation:initial-neighbor-window';
     await page.click(entry);
     await waitViewerImage(page, viewerId(19), 'compressed');
-    await waitViewerNeighbors(page, viewerId(19));
+    const initialNeighbors = await waitViewerNeighbors(page, viewerId(19));
+    assert.equal(initialNeighbors.previous.id, viewerId(18));
+    assert.equal(initialNeighbors.next.id, viewerId(20));
+    report.navigationSequence = [
+      { input: 'open', ...(await viewerState(page)) },
+    ];
     const windowState = await page.evaluate(() => ({
       requests: window.__viewerRequests,
       imageIds: [
@@ -163,19 +168,34 @@ export async function verifyViewerNavigation({ page, config, report }) {
       new URLSearchParams(neighbors.query).get('visibility'),
       'private',
     );
+    assert.equal(
+      new URLSearchParams(neighbors.query).get('sort'),
+      'uploaded_asc',
+    );
     report.preload = windowState;
     report.stage = 'navigation:cross-page-keyboard';
     await page.keyboard.press('ArrowRight');
     await waitViewerImage(page, viewerId(20), 'compressed');
+    report.navigationSequence.push({
+      input: 'ArrowRight',
+      ...(await viewerState(page)),
+    });
     assert.equal(
       await page.url(),
       detailUrl,
       'Cross-page viewer navigation preserves underlying image/page URL',
     );
     for (let index = 21; index < 25; index++) {
-      await waitViewerNeighbors(page, viewerId(index - 1));
+      const adjacent = await waitViewerNeighbors(page, viewerId(index - 1));
+      assert.equal(adjacent.previous.id, viewerId(index - 2));
+      assert.equal(adjacent.next.id, viewerId(index));
       await page.keyboard.press('ArrowRight');
       await waitViewerImage(page, viewerId(index), 'compressed');
+      assert.equal(await page.url(), detailUrl);
+      report.navigationSequence.push({
+        input: 'ArrowRight',
+        ...(await viewerState(page)),
+      });
     }
     assert.equal((await waitViewerNeighbors(page, viewerId(24))).next, null);
     await page.keyboard.press('ArrowRight');
@@ -192,6 +212,67 @@ export async function verifyViewerNavigation({ page, config, report }) {
       true,
       'Reaching the last-image boundary keeps keyboard focus inside the viewer',
     );
+    report.stage = 'navigation:reverse-after-continuous-next';
+    await page.keyboard.press('ArrowLeft');
+    await waitViewerImage(page, viewerId(23), 'compressed');
+    const reverseNeighbors = await waitViewerNeighbors(page, viewerId(23));
+    assert.equal(reverseNeighbors.previous.id, viewerId(22));
+    assert.equal(reverseNeighbors.next.id, viewerId(24));
+    assert.equal(await page.url(), detailUrl);
+    report.navigationSequence.push({
+      input: 'ArrowLeft',
+      ...(await viewerState(page)),
+    });
+    await page.keyboard.press('ArrowRight');
+    await waitViewerImage(page, viewerId(24), 'compressed');
+    assert.equal(await page.url(), detailUrl);
+    report.navigationSequence.push({
+      input: 'ArrowRight',
+      ...(await viewerState(page)),
+    });
+    const queries = await page.evaluate(() =>
+      window.__viewerRequests
+        .filter((request) => request.path.endsWith('/neighbors'))
+        .map((request) => ({ path: request.path, query: request.query })),
+    );
+    for (const request of queries) {
+      const params = new URLSearchParams(request.query);
+      assert.equal(params.get('q'), 'issue185-query-');
+      assert.equal(params.get('visibility'), 'private');
+      assert.equal(params.get('sort'), 'uploaded_asc');
+    }
+    report.navigationQueries = queries;
+    report.stage = 'navigation:tab-containment-after-continuous-navigation';
+    report.keyboardFocus ??= [];
+    for (const key of [
+      'Tab',
+      'Tab',
+      'Tab',
+      'Shift+Tab',
+      'Shift+Tab',
+      'Shift+Tab',
+    ]) {
+      await page.keyboard.press(key);
+      await settleViewer(page);
+      const focus = await page.evaluate(() => ({
+        tag: document.activeElement?.tagName,
+        label: document.activeElement?.getAttribute('aria-label'),
+        inViewer: !!document.activeElement?.closest(
+          '[data-testid="image-viewer"]',
+        ),
+      }));
+      report.keyboardFocus.push({
+        context: 'filtered-sequence',
+        key,
+        ...focus,
+      });
+      assert.equal(
+        focus.inViewer,
+        true,
+        `${key} stays inside the browsing viewer`,
+      );
+    }
+    report.stage = 'navigation:escape-and-entry-focus';
     await closeViewer(page, true);
     report.stage = 'navigation:source-detail-scroll-and-list-return';
     const detailScroll = await page.evaluate(() => {
@@ -265,6 +346,6 @@ export async function verifyViewerNavigation({ page, config, report }) {
   await page.click(button('关闭图片详情'));
   if (savedLayout === 'grid') await page.click('loc=role:radio[name="网格"]');
   report.checks.push(
-    'A real filtered private query crosses page 1 index 19→20 and reaches index 24 through ArrowRight without looping; actual first/last neighbor responses have no preceding/following item and extra arrow input preserves the boundary image. Only three slides/current±1 delivery requests are allowed. Closing first restores original detail entry, then exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.',
+    'A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.',
   );
 }

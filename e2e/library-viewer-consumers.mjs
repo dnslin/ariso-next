@@ -11,6 +11,7 @@ import {
   entry,
   monitorViewerRequests,
   restoreViewerFetch,
+  settleViewer,
   viewerShot,
   viewerState,
   waitViewerImage,
@@ -31,7 +32,7 @@ export async function verifyViewerConsumers({ page, config, report }) {
   assert.equal(created.status, 201);
   const album = JSON.parse(created.body).album;
   try {
-    for (const index of [7, 8]) {
+    for (const index of [5, 6, 7, 8]) {
       const joined = await page.fetch(
         `/api/images/${viewerId(index)}/collections`,
         {
@@ -49,7 +50,7 @@ export async function verifyViewerConsumers({ page, config, report }) {
     report.albumSequence = JSON.parse(albumPage.body).items.map(
       (item) => item.id,
     );
-    assert.deepEqual(report.albumSequence, [viewerId(8), viewerId(7)]);
+    assert.deepEqual(report.albumSequence, [8, 7, 6, 5].map(viewerId));
     await setDetail171Viewport(page, 1440);
     await page.goto(`${config.origin}/albums/${album.id}`);
     await page.waitForSelector(
@@ -62,6 +63,7 @@ export async function verifyViewerConsumers({ page, config, report }) {
     await page.click(entry);
     await waitViewerImage(page, viewerId(8), 'compressed');
     const neighbors = await waitViewerNeighbors(page, viewerId(8));
+    assert.equal(neighbors.previous, null);
     assert.equal(neighbors.next.id, viewerId(7));
     const query = await page.evaluate(
       () =>
@@ -71,9 +73,55 @@ export async function verifyViewerConsumers({ page, config, report }) {
     );
     assert.equal(new URLSearchParams(query).get('scope'), 'album');
     assert.equal(new URLSearchParams(query).get('albumId'), album.id);
-    await page.keyboard.press('ArrowRight');
-    await waitViewerImage(page, viewerId(7), 'compressed');
+    assert.equal(new URLSearchParams(query).has('sort'), false);
+    report.albumNavigation = [{ input: 'open', ...(await viewerState(page)) }];
+    report.stage = 'consumers:album-first-boundary';
+    await page.keyboard.press('ArrowLeft');
+    await settleViewer(page);
+    await waitViewerImage(page, viewerId(8), 'compressed');
     assert.equal(await page.url(), url);
+    report.stage = 'consumers:album-continuous-next';
+    for (const index of [7, 6, 5]) {
+      const adjacent = await waitViewerNeighbors(page, viewerId(index + 1));
+      assert.equal(adjacent.next.id, viewerId(index));
+      await page.keyboard.press('ArrowRight');
+      await waitViewerImage(page, viewerId(index), 'compressed');
+      assert.equal(await page.url(), url);
+      report.albumNavigation.push({
+        input: 'ArrowRight',
+        ...(await viewerState(page)),
+      });
+    }
+    report.stage = 'consumers:album-last-boundary-and-reverse';
+    const last = await waitViewerNeighbors(page, viewerId(5));
+    assert.equal(last.previous.id, viewerId(6));
+    assert.equal(last.next, null);
+    await page.keyboard.press('ArrowRight');
+    await settleViewer(page);
+    await waitViewerImage(page, viewerId(5), 'compressed');
+    assert.equal(await page.url(), url);
+    await page.keyboard.press('ArrowLeft');
+    await waitViewerImage(page, viewerId(6), 'compressed');
+    const reverse = await waitViewerNeighbors(page, viewerId(6));
+    assert.equal(reverse.previous.id, viewerId(7));
+    assert.equal(reverse.next.id, viewerId(5));
+    assert.equal(await page.url(), url);
+    report.albumNavigation.push({
+      input: 'ArrowLeft',
+      ...(await viewerState(page)),
+    });
+    const queries = await page.evaluate(() =>
+      window.__viewerRequests
+        .filter((request) => request.path.endsWith('/neighbors'))
+        .map((request) => ({ path: request.path, query: request.query })),
+    );
+    for (const request of queries) {
+      const params = new URLSearchParams(request.query);
+      assert.equal(params.get('scope'), 'album');
+      assert.equal(params.get('albumId'), album.id);
+      assert.equal(params.has('sort'), false);
+    }
+    report.albumNavigationQueries = queries;
     await viewerShot(page, config, report, 'album-consumer-1440');
     await closeViewer(page);
     await page.click(button('关闭图片详情'));
@@ -151,6 +199,6 @@ export async function verifyViewerConsumers({ page, config, report }) {
   );
   await restoreViewerFetch(page);
   report.checks.push(
-    'Album content consumes the shared viewer with actual album-only neighbor query and keeps its route on close. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.',
+    'Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.',
   );
 }

@@ -320,14 +320,69 @@ export async function verifyViewerRecovery(context) {
       await waitViewerNeighbors(page, viewerId(7));
       await page.keyboard.press('ArrowRight');
       await page.waitForSelector('[data-testid="viewer-navigation-error"]');
-      assert.equal((await viewerState(page)).id, viewerId(7));
-      assert.equal((await viewerState(page)).kind, 'compressed');
-      await page.keyboard.press('ArrowRight');
-      assert.equal(
-        (await viewerState(page)).id,
-        viewerId(7),
-        'Arrow inside the failure dialog never navigates its background',
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[data-testid="viewer-navigation-error"]')
+          ?.contains(document.activeElement),
       );
+      const beforeArrows = await viewerState(page);
+      assert.equal(beforeArrows.id, viewerId(7));
+      assert.equal(beforeArrows.kind, 'compressed');
+      await waitViewerImage(page, viewerId(7), 'compressed');
+      const beforeArrowRequests = await page.evaluate(() => {
+        window.__viewerErrorDialog = document.querySelector(
+          '[data-testid="viewer-navigation-error"]',
+        );
+        return window.__viewerRequests.filter(
+          (request) =>
+            request.path.endsWith('/neighbors') ||
+            ['/api/images/issue185-006', '/api/images/issue185-008'].includes(
+              request.path,
+            ),
+        ).length;
+      });
+      report.errorDialogArrows = [];
+      for (const key of ['ArrowLeft', 'ArrowRight']) {
+        await page.keyboard.press(key);
+        await settleViewer(page);
+        const current = await viewerState(page);
+        assert.equal(current.id, beforeArrows.id);
+        assert.equal(current.kind, beforeArrows.kind);
+        assert.equal(
+          current.src,
+          beforeArrows.src,
+          'Arrow input in the failure dialog preserves the actual current image',
+        );
+        const dialog = await page.evaluate(() => {
+          const current = document.querySelector(
+            '[data-testid="viewer-navigation-error"]',
+          );
+          return {
+            same: current === window.__viewerErrorDialog,
+            focused: !!current?.contains(document.activeElement),
+            requests: window.__viewerRequests.filter(
+              (request) =>
+                request.path.endsWith('/neighbors') ||
+                [
+                  '/api/images/issue185-006',
+                  '/api/images/issue185-008',
+                ].includes(request.path),
+            ).length,
+          };
+        });
+        assert.equal(dialog.same, true, 'The same failure dialog stays open');
+        assert.equal(
+          dialog.focused,
+          true,
+          'Focus stays inside the failure dialog',
+        );
+        assert.equal(
+          dialog.requests,
+          beforeArrowRequests,
+          'Failure-dialog arrows never start background neighbor or target reads',
+        );
+        report.errorDialogArrows.push({ key, current, dialog });
+      }
       for (const theme of ['light', 'dark']) {
         await setDetail171Theme(page, theme);
         for (const width of [390, 1440]) {
@@ -389,12 +444,40 @@ export async function verifyViewerRecovery(context) {
         state: 'hidden',
       });
       await waitViewerImage(page, viewerId(7), 'compressed');
-      await closeViewer(page);
+      report.stage = 'recovery:adjacent-error-escape-boundary';
+      await page.keyboard.press('ArrowRight');
+      await page.waitForSelector('[data-testid="viewer-navigation-error"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[data-testid="viewer-navigation-error"]')
+          ?.contains(document.activeElement),
+      );
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-testid="viewer-navigation-error"]', {
+        state: 'hidden',
+      });
+      await settleViewer(page);
+      const afterEscape = await viewerState(page);
+      assert.equal(afterEscape.id, beforeArrows.id);
+      assert.equal(afterEscape.kind, beforeArrows.kind);
+      assert.equal(afterEscape.src, beforeArrows.src);
+      assert.equal(afterEscape.decoded, true);
+      const focusInViewer = await page.evaluate(
+        () => !!document.activeElement?.closest('[data-testid="image-viewer"]'),
+      );
+      report.errorDialogEscape = { current: afterEscape, focusInViewer };
+      assert.equal(
+        focusInViewer,
+        true,
+        'Escape dismisses only the failure dialog and restores viewer focus',
+      );
+      await closeViewer(page, true);
     } finally {
+      await page.evaluate(() => delete window.__viewerErrorDialog);
       await page.cdp('Network.setBlockedURLs', { urls: [] });
     }
     report.checks.push(
-      'Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs; error-dialog arrow input does not reach background navigation.',
+      'Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.',
     );
 
     for (const state of [

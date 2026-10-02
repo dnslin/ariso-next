@@ -13,6 +13,7 @@ import {
   monitorViewerRequests,
   openViewerDirect,
   restoreViewerFetch,
+  settleViewer,
   viewer,
   viewerShot,
   viewerState,
@@ -251,14 +252,27 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
   await waitViewerImage(page, 'issue185-missing', 'original');
   report.stage = 'versions:missing-tab-containment';
   await page.focus(button('关闭大图'));
-  await page.keyboard.press('Tab');
-  assert.equal(
-    await page.evaluate(
-      () => !!document.activeElement?.closest('[data-testid="image-viewer"]'),
-    ),
-    true,
-    'Tab remains in the open viewer',
-  );
+  report.keyboardFocus ??= [];
+  for (const key of [
+    'Tab',
+    'Tab',
+    'Tab',
+    'Shift+Tab',
+    'Shift+Tab',
+    'Shift+Tab',
+  ]) {
+    await page.keyboard.press(key);
+    await settleViewer(page);
+    const focus = await page.evaluate(() => ({
+      tag: document.activeElement?.tagName,
+      label: document.activeElement?.getAttribute('aria-label'),
+      inViewer: !!document.activeElement?.closest(
+        '[data-testid="image-viewer"]',
+      ),
+    }));
+    report.keyboardFocus.push({ context: 'direct-original', key, ...focus });
+    assert.equal(focus.inViewer, true, `${key} stays inside the direct viewer`);
+  }
   report.stage = 'versions:missing-escape-and-entry-focus';
   await closeViewer(page, true);
   report.stage = 'versions:focused-entry-tooltip-resize';
@@ -302,7 +316,7 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     'Window resize closes the entry tooltip without moving the returned focus',
   );
   report.checks.push(
-    'Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original; Tab/Escape preserve viewer and return focus; resizing the focused entry closes its tooltip without viewport expansion or moving focus.',
+    'Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original. Three Tab and three Shift+Tab operations keep actual focus inside the direct viewer; Escape closes it and returns to the detail entry. Resizing the focused entry closes its tooltip without viewport expansion or moving focus.',
   );
   report.stage = 'versions:completed';
 }

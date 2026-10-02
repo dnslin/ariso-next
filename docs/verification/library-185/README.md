@@ -4,6 +4,40 @@
 
 分支 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。本次人工反馈已改为图片占满视口、图标入口和单一关闭入口，已取得最终构建、分段浏览器复验和独立审计证据。两项范围外检查失败及返修后的最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。
 
+## YARL 标准查看器与连续浏览返修（2026-10-02—03）
+
+所有者确认继续使用 YARL，并要求在同一大图界面连续浏览图库和相册图片。本次移除 Inline 和外层 HeroUI Modal，使用 YARL 标准 Lightbox 的门户、背景滚动锁定、焦点、Esc、键盘和手势；Zoom 继续处理缩放和平移。正常界面保持全视口图片与单一44px关闭图标，没有恢复旧页眉、版本栏或工具栏。图库使用打开时规范化筛选和排序，相册使用既定加入顺序；业务衔接仍通过现有 neighbors 与 delivery，保持当前/前后各一张、有界预载和读取失败保留当前图。错误 AlertDialog 与 Lightbox 在 React 树保持同级，沿用迁移前的事件隔离边界。
+
+实施者已重新实际读取 Figma `390:6943` / `390:6996` context 与截图；正常栏位由上述用户批准反馈覆盖。错误 `391:6787` / `391:6800` 继续适用，详情 `36:312` / `102:3228` 与公共外壳未改。YARL 仍为既有3.32.2；直接声明 HeroUI 已安装的 peer `react-aria@3.52.1`，复用其 FocusScope，不下载新组件包，不自写焦点循环。没有新接口、临时版本或冻结 PRD 修改。
+
+浏览器沿现有生产专项测试执行，使用一次性 DATA_DIR，未修改用户预览数据。原 Ego 空间11已经不存在；新返修空间13为本轮唯一验证空间，不占用其他任务空间。图库新增真实19→20→21→22→23→24→23→24、完整筛选/排序和来源恢复断言；相册复用四张已有样本验证8→7→6→5→6、固定顺序及首尾不循环。
+
+桌面1440×1080、手机390×844的浅深色入口与正常态代表检查已退出0，八图在[代表状态](./browser/yarl-native-representative/)。独立设计评审已实际逐图核对，未发现代表还原偏差。首轮[完整专项](./browser/yarl-native-final/library-viewer.json)保留失败：已完成图库19→24→23→24、四版本、动画和桌面缩放后，旧测试使用 `viewer-stage .yarl__container` 读取原 Inline 嵌套结构，标准门户下得到 null。修正测试为实际查看器中的图片容器，保留 `touchAction=none` 断言；没有调整生产手势、超时或弱化断言。修正后[行为专项](./browser/yarl-native-behavior/library-viewer.json)退出0，13条检查/29图；随后最终预览真实发现Tab问题，未将这些中间成功记录当作最终验收。历史记录只证明当时实现。
+
+最终预览中第二次Tab落到BODY，随后Esc无法关闭，实际[修前证据](./browser/yarl-native-preview-final/focus-before-fix.json)保留；首轮预览脚本只记录Tab而未断言，因此其 `status=passed` 不能证明焦点约束。读取 YARL 标准门户与已安装 React Aria 的类型、实现及官方[FocusScope文档](https://react-aria.adobe.com/FocusScope)后，在YARL Portal/NoScroll内通过原生模块扩展包住Controller，使用 `FocusScope contain`。不添加autoFocus或restoreFocus，挂载聚焦与关闭归焦仍由已有YARL/详情处理；同级AlertDialog仍由其既有焦点范围处理。
+
+修后[最终完整专项](./browser/yarl-native-focus-final/library-viewer.json)和[运行器](./browser/yarl-native-focus-final/runner.json)真实退出0：16条检查、53张截图、27项布局测量，包含360/390/430/768/1440浅深色、390/1440×400短视口、图库19→24→23→24与相册8→7→6→5→6。直达单图与跨页连续来源各三次Tab/三次Shift+Tab逐次实际焦点均在关闭BUTTON；随后真实Esc返回原详情入口。错误层ArrowLeft/Right不变当前src/id/version、不新增背景邻图请求；返回当前操作有效，再次真实失败后第一Esc仅关闭错误层、当前图片像素与查看器焦点保留，第二Esc返回详情。真实双指捏合、平移、来回滑动、缺尺寸、加载/空/错误、当前失效、迟到响应、解码失败、已删除来源、真实ready上传及255字短视口均通过；触控为Chromium仿真，非物理设备证据。
+
+本轮实际环境为 macOS arm64、Node v24.18.1、pnpm 11.19.0、已有Ego Lite空间13，使用生产standalone构建和独立DATA_DIR。本轮命令与结果：
+
+| 实际命令                                                                                                                                                                                                                                 | 结果与原始输出                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `pnpm add --offline --save-exact react-aria@3.52.1`                                                                                                                                                                                      | 退出0；只显式声明既有peer，无下载，[输出](./checks/yarl-native-focus-dependency.txt)。                                 |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                         | 退出0，[最终锁文件安装](./checks/yarl-native-focus-install.txt)。                                                      |
+| `pnpm run format:check`                                                                                                                                                                                                                  | 最终退出0，[输出](./checks/yarl-native-focus-final-format.txt)。首轮格式失败保留并已修正。                             |
+| `pnpm run lint` / `pnpm run typecheck`                                                                                                                                                                                                   | 退出0，[最终lint](./checks/yarl-native-focus-final-lint.txt)、[类型](./checks/yarl-native-focus-typecheck.txt)。       |
+| `pnpm run test:unit`                                                                                                                                                                                                                     | 71文件/869测试通过，[输出](./checks/yarl-native-unit.txt)。                                                            |
+| `pnpm exec vitest run --project integration --project media-tools tests/integration/library tests/integration/collections tests/integration/delivery/formats.test.ts tests/integration/runtime/ui-browser-runner.test.ts --maxWorkers=4` | 22文件/148测试通过，执行于构建之后，[输出](./checks/yarl-native-integration.txt)。                                     |
+| `pnpm run build`                                                                                                                                                                                                                         | 最终退出0，[输出](./checks/yarl-native-focus-build.txt)；保留既有resvg其他平台可选原生模块追踪警告，不标为无警告构建。 |
+| `EGO_TASK_SPACE=13 BROWSER_REPORT_DIR=docs/verification/library-185/browser/yarl-native-focus-final node scripts/verify-browser.mjs --suite viewer`                                                                                      | 最终完整专项退出0，[输出](./checks/yarl-native-focus-browser.txt)。                                                    |
+| `node docs/tasks/check.mjs`                                                                                                                                                                                                              | 120任务/298需求，无缺ID或循环，[最终输出](./checks/yarl-native-focus-final-docs.txt)。                                 |
+
+仅增加本次缺失的真实行为断言，保留失败证据；没有弱化断言、跳过测试或更改测试超时。全量集成水印日志requestId断言与统一浏览器旧Chip断言仍为此前实际失败，未在本轮重复运行、未改范围外路径。日常PR远端实际检查仍为空，不记CI通过；镜像/容器仅随Release流程验证，本次未发布或部署。真实打开期间会话过期及物理设备未实测；匿名查看器仍由#193承接。用户人工验收仍需执行。
+
+保留给用户的同地址预览已更新至最终构建，数据保持不变。[最终预览报告](./browser/yarl-native-focus-preview-final/report.json)及[执行输出](./checks/yarl-native-focus-preview.txt)退出0：桌面1440×1080/手机390×844浅深色实际入口与正常态共八图，图标入口44px并与同页既有版本图标尺寸一致；满视口图片、单一关闭、实际命中及四端Esc回焦均通过。真实六次正反Tab保持关闭BUTTON，随后Esc关闭；真实邻图失败的第一次Esc保留当前src与查看器焦点，第二次Esc回详情。可查看[桌浅](./browser/yarl-native-focus-preview-final/ready-light-1440.png)、[手浅](./browser/yarl-native-focus-preview-final/ready-light-390.png)、[桌深](./browser/yarl-native-focus-preview-final/ready-dark-1440.png)、[手深](./browser/yarl-native-focus-preview-final/ready-dark-390.png)；入口同目录 `entry-*`。最终对照Figma节点与逐项视觉结论由[独立设计评审](./design-review.md)统一记录。
+
+独立[代码审计](./code-audit.md)最终Critical 0、未解决Required 0，已实际读取源码、依赖锁文件、修前BODY/Esc失败及最终严格焦点报告。独立[设计评审](./design-review.md)实际读取对应Figma并查看最终八张预览与各适用业务状态截图，分别给出功能通过、视觉无本次未解决偏差的结论。两者不代替用户人工验收，PR继续草稿，未合并或关闭Issue。首轮[格式检查](./checks/yarl-native-focus-format-initial.txt)因五份新增证据/审计记录格式失败，保留结果；仅格式化本次改动文件和新证据，不改变报告值。
+
 ## 人工反馈后的简化查看器（2026-10-02）
 
 所有者明确要求入口“用图标去展示”，大图“整个页面都是图片”，“只需要……一个关闭按钮……或者通过 Esc 去关闭”。按本次明确指令实施，已同步[设计交接](../../design/handoff.md#管理大图人工反馈调整2026-10-02)、SPEC §6 和原任务卡，冻结 PRD 未修改。
