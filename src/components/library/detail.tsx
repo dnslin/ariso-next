@@ -1,14 +1,13 @@
 'use client';
 
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
   type RefCallback,
   type ComponentProps,
 } from 'react';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
@@ -17,9 +16,9 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { useResetUpload } from '../upload/provider';
+import { Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
-import { DetailReadError, readDetail } from './read-detail';
+import type { useDetailQuery } from './use-detail-query';
 import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
@@ -41,6 +40,7 @@ function DetailContent({
   trash,
   onRefresh,
   mutationPending,
+  onVersions,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -51,6 +51,7 @@ function DetailContent({
   trash: ComponentProps<typeof TrashAction>;
   onRefresh: () => void;
   mutationPending: boolean;
+  onVersions: () => void;
 }) {
   const [downloadMessage, setDownloadMessage] = useState('');
   const [downloading, setDownloading] = useState(false);
@@ -86,7 +87,7 @@ function DetailContent({
       link.click();
       link.remove();
       toast.success('已发起下载', {
-        description: '请在浏览器下载列表查看结果。',
+        description: `请在浏览器下载列表查看结果。${version.kind === 'original' && detail.visibility === 'public' ? '公开原图可能包含 GPS 和拍摄信息。' : ''}`,
       });
     } catch (error) {
       if (controller.signal.aborted) {
@@ -120,9 +121,25 @@ function DetailContent({
               }}
             />
             <div className="grid min-w-0 content-start gap-2.5 text-sm leading-[22px] [overflow-wrap:anywhere]">
-              <h2 className="text-[22px] leading-8 font-medium">
-                {detail.displayName}
-              </h2>
+              <div className="flex min-w-0 items-start gap-2">
+                <h2 className="min-w-0 pt-1.5 text-[22px] leading-8 font-medium">
+                  {detail.displayName}
+                </h2>
+                <Tooltip>
+                  <Button
+                    data-testid="detail-version-entry"
+                    aria-label="版本信息"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 shrink-0 rounded-lg text-muted hover:text-foreground"
+                    isDisabled={refreshing}
+                    onPress={onVersions}
+                  >
+                    <Layers aria-hidden size={20} />
+                  </Button>
+                  <Tooltip.Content>版本信息</Tooltip.Content>
+                </Tooltip>
+              </div>
               <AccessDisclosure
                 label={detail.visibility === 'private' ? '私有' : '公开'}
               >
@@ -273,67 +290,40 @@ export function LibraryDetail({
   onClose,
   dialogRef,
   onTrashed,
-  returnTo,
   albumId,
+  query,
+  hidden = false,
+  onVersions,
+  initialSelected,
 }: {
+  initialSelected?: string;
+  query: ReturnType<typeof useDetailQuery>;
+  hidden?: boolean;
+  onVersions: (selected: string) => void;
   imageId: string;
   albumId?: string;
-  returnTo: string;
   client: QueryClient;
   onClose: () => void;
   dialogRef: RefCallback<HTMLElement>;
   onTrashed: (detail: Detail) => void;
 }) {
-  const resetUpload = useResetUpload();
-  const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
-  const [mutationPending, setMutationPending] = useState(false);
-  const onMutationPending = useCallback(
-    (pending: boolean) => {
-      if (pending)
-        void client.cancelQueries({
-          queryKey: ['library-detail', imageId],
-        });
-      setMutationPending(pending);
-    },
-    [client, imageId],
-  );
+  const {
+    unavailable,
+    setUnavailable,
+    mutationPending,
+    onMutationPending,
+    expired,
+  } = query;
   const [copyOpen, setCopyOpen] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [previewRevision, setPreviewRevision] = useState(0);
-  const query = useQuery(
-    {
-      queryKey: ['library-detail', imageId, albumId],
-      queryFn: ({ signal }) => readDetail(imageId, signal, albumId),
-      enabled: !mutationPending,
-      retry: false,
-      networkMode: 'always',
-      staleTime: 0,
-      refetchOnWindowFocus: true,
-      refetchInterval: (query) => (query.state.data?.activeJob ? 2000 : false),
-    },
-    client,
+  const [selected, setSelected] = useState<string | null>(
+    initialSelected ?? null,
   );
+  const [previewRevision, setPreviewRevision] = useState(0);
   async function refreshDetail() {
     const result = await query.refetch();
     if (result.isSuccess) setPreviewRevision((value) => value + 1);
   }
-  const expired =
-    unavailable === 401 ||
-    (query.error instanceof DetailReadError && query.error.status === 401);
-  useEffect(() => {
-    if (!expired) return;
-    resetUpload();
-    client.clear();
-    window.location.replace(
-      `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
-    );
-  }, [client, expired, resetUpload, returnTo]);
-  useEffect(
-    () => () => {
-      client.removeQueries({ queryKey: ['library-detail', imageId] });
-    },
-    [client, imageId],
-  );
+  if (hidden) return null;
   return (
     <Modal.Backdrop
       isOpen
@@ -386,6 +376,25 @@ export function LibraryDetail({
               </div>
             </Modal.Body>
           ) : null}
+          {query.statusError ? (
+            <Alert status="danger" className="my-2">
+              <Alert.Content>
+                <Alert.Title>任务状态读取失败</Alert.Title>
+                <Alert.Description>
+                  {query.statusError.message}
+                </Alert.Description>
+                <Button
+                  variant="outline"
+                  className="mt-2 min-h-11"
+                  onPress={() => {
+                    void query.retryStatus();
+                  }}
+                >
+                  重试任务状态
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
           {query.isError ? (
             <Alert status="danger" className="my-4">
               <Alert.Content>
@@ -412,6 +421,9 @@ export function LibraryDetail({
               detail={query.data}
               selected={selected ?? initialPreview(query.data)}
               onSelect={setSelected}
+              onVersions={() =>
+                onVersions(selected ?? initialPreview(query.data))
+              }
               revision={previewRevision}
               refreshing={query.isFetching || mutationPending}
               mutationPending={mutationPending}

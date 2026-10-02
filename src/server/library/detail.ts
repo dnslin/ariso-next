@@ -9,8 +9,14 @@ import {
   resolveImageVersion,
 } from '../delivery/links.ts';
 import { getImageAccessState } from '../media/images.ts';
+import { readGeneratedMediaVersions } from '../media/objects.ts';
 import { mediaJobs, type VersionKind } from '../media/schema.ts';
 import { requireMediaSettings } from '../media/settings.ts';
+import {
+  reprocessUnavailableError,
+  reprocessVersions,
+  type ReprocessScope,
+} from '../media/reprocess.ts';
 import { requireSiteSettings } from '../site/settings.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import type { LibraryDetail, LibraryDetailLinks } from './detail-types.ts';
@@ -46,13 +52,15 @@ export function readLibraryDetail(
         id: storageConfigs.id,
         name: storageConfigs.name,
         enabled: storageConfigs.enabled,
+        type: storageConfigs.type,
       })
       .from(storageConfigs)
       .where(eq(storageConfigs.id, image.storageId))
       .get();
     if (!storage) throw new Error(`Missing image storage: ${image.storageId}`);
     const { publicUrl } = requireSiteSettings(tx);
-    const defaultVersion = requireMediaSettings(tx).defaultLinkVersion;
+    const settings = requireMediaSettings(tx);
+    const defaultVersion = settings.defaultLinkVersion;
     const previewBlocked = image.deletionStatus
       ? image.deletionStatus === 'cleanup_failed'
         ? '图片清理失败，无法预览'
@@ -100,6 +108,48 @@ export function readLibraryDetail(
         ? { ...row, status: row.status as LibraryJobSummary['status'] }
         : null;
     };
+    const metadataJob =
+      tx
+        .select({
+          id: mediaJobs.id,
+          status: mediaJobs.status,
+          step: mediaJobs.step,
+          error: mediaJobs.error,
+        })
+        .from(mediaJobs)
+        .where(
+          and(eq(mediaJobs.imageId, imageId), eq(mediaJobs.kind, 'metadata')),
+        )
+        .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
+        .get() ?? null;
+    const activeJob = summary(['queued', 'running']);
+    const activeMetadata =
+      metadataJob?.status === 'queued' || metadataJob?.status === 'running';
+    const editUnavailableReason =
+      image.trashedAt || image.deletionStatus
+        ? '回收或正在永久删除的图片仅允许读取资料'
+        : null;
+    const processingUnavailableReason =
+      editUnavailableReason ??
+      (!storage.enabled
+        ? '存储已停用'
+        : storage.type !== 'local'
+          ? '当前媒体任务仅支持本地存储'
+          : null);
+    const reprocessScopes = Object.fromEntries(
+      (['all', 'compressed', 'thumbnail', 'watermark'] as const).map(
+        (scope) => [
+          scope,
+          reprocessUnavailableError(
+            image,
+            storage,
+            Boolean(activeJob || activeMetadata),
+            settings,
+            scope,
+          )?.message ?? null,
+        ],
+      ),
+    ) as Record<ReprocessScope, string | null>;
     let defaultLink: LibraryDetail['defaultLink'];
     try {
       const resolved = resolveImageVersion(state, undefined, defaultVersion);
@@ -140,7 +190,7 @@ export function readLibraryDetail(
       createdAt: image.createdAt.toISOString(),
       trashedAt: image.trashedAt?.toISOString() ?? null,
       deletionStatus: image.deletionStatus,
-      storage,
+      storage: { id: storage.id, name: storage.name, enabled: storage.enabled },
       albums: tx
         .select({ id: albums.id, name: albums.name })
         .from(albumImages)
@@ -155,18 +205,23 @@ export function readLibraryDetail(
         .where(eq(imageTags.imageId, imageId))
         .orderBy(asc(tags.displayName), asc(tags.id))
         .all(),
-      versions: state.versions.map(({ kind, applicable, saved }) => {
+      versions: state.versions.map(({ kind, applicable, saved, status }) => {
         const unavailableReason =
           previewBlocked ??
           (saved
             ? null
             : applicable === false
               ? '此图片不适用该版本'
-              : '该版本尚未保存');
+              : status === 'disabled'
+                ? '对应处理开关已关闭'
+                : status === 'failed'
+                  ? '该版本处理失败'
+                  : '该版本尚未保存');
         return {
           kind,
           applicable,
           saved: saved !== null,
+          status,
           format: saved?.version.format ?? null,
           mime: saved?.version.mime ?? null,
           width: saved?.version.width ?? null,
@@ -188,8 +243,39 @@ export function readLibraryDetail(
       }),
       defaultVersion,
       defaultLink,
-      activeJob: summary(['queued', 'running']),
+      activeJob,
       latestFailedJob: summary(['failed']),
+      metadataJob,
+      processingJob: state.latestJob
+        ? {
+            id: state.latestJob.id,
+            status: state.latestJob.status,
+            scope: state.latestJob.scope,
+            expectedVersions: state.latestJob.expectedVersions,
+            generatedVersions: readGeneratedMediaVersions(tx, [
+              state.latestJob,
+            ]).get(state.latestJob.id)!,
+            step: state.latestJob.step,
+            error: state.latestJob.error,
+          }
+        : null,
+      reprocess: {
+        scopes: reprocessScopes,
+        expectedVersions: reprocessVersions(
+          'all',
+          image.classification,
+          settings,
+        ),
+        compressionEnabled: settings.compressionEnabled,
+        watermarkEnabled: settings.watermarkMode !== 'off',
+      },
+      actions: {
+        editUnavailableReason,
+        reprocessUnavailableReason: reprocessScopes.all,
+        metadataReadUnavailableReason:
+          processingUnavailableReason ??
+          (activeJob ? '图片已有活动处理任务' : null),
+      },
     };
   });
 }

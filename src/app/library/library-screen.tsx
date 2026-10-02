@@ -18,6 +18,17 @@ import type { LibraryDetail as Detail } from '../../server/library/detail-types'
 import { LibraryLoading } from './library-loading';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
+import { useDetailQuery } from '../../components/library/use-detail-query';
+import { useDetailReprocess } from '../../components/library/use-detail-reprocess';
+import {
+  DetailReprocess,
+  DetailReprocessFooter,
+} from '../../components/library/detail-reprocess';
+import {
+  DetailVersions,
+  DetailVersionsFooter,
+} from '../../components/library/detail-workspace';
+import { initialPreview } from '../../components/library/detail-preview';
 import { LibraryFooter, LibraryToolbar } from './library-controls';
 import { LibraryFiltersBar } from './library-filters';
 import { LibraryGallery } from './library-gallery';
@@ -51,6 +62,24 @@ export function LibraryScreen(props: {
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
   const [client] = useState(() => new QueryClient());
   const query = useLibraryQuery(client, { albumId: props.albumId });
+  const detailQuery = useDetailQuery(
+    client,
+    detail.imageId,
+    returnTo,
+    props.albumId,
+  );
+  const reprocess = useDetailReprocess(detail.imageId, detailQuery, {
+    onReturn: detail.returnToDetail,
+    onClose: detail.close,
+    onVersions: () => detail.openView('versions'),
+    onOpen: () => detail.openView('reprocess'),
+  });
+  const preview = params.get('preview');
+  const selectedPreview =
+    preview &&
+    ['original', 'compressed', 'thumbnail', 'watermark'].includes(preview)
+      ? preview
+      : undefined;
   const selectionIdentity = JSON.stringify([
     props.albumId,
     query.filters,
@@ -126,14 +155,22 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        props.workspace ? (
+        detail.view === 'reprocess' ? (
+          <DetailReprocessFooter actions={reprocess.footerActions} />
+        ) : detail.view ? (
+          <DetailVersionsFooter
+            detail={detailQuery.data}
+            onReturn={detail.returnToDetail}
+            onReprocess={reprocess.open}
+          />
+        ) : props.workspace ? (
           props.workspace.footer
         ) : (
           <LibraryFooter query={query} />
         )
       }
     >
-      <div className={props.workspace ? 'hidden' : 'contents'}>
+      <div className={props.workspace || detail.view ? 'hidden' : 'contents'}>
         <section
           className="grid min-w-0 gap-5 xl:gap-6"
           aria-labelledby="library-title"
@@ -351,20 +388,75 @@ export function LibraryScreen(props: {
             </>
           )}
         </section>
-        {detail.imageId ? (
-          <LibraryDetail
-            key={detail.imageId}
-            imageId={detail.imageId}
-            albumId={props.albumId}
-            returnTo={returnTo}
-            client={client}
-            onClose={detail.close}
-            onTrashed={onTrashed}
-            dialogRef={detail.dialogRef}
-          />
-        ) : null}
         {props.children}
       </div>
+      {detail.view === 'reprocess' ? (
+        <DetailReprocess state={reprocess} />
+      ) : detail.view &&
+        detailQuery.data &&
+        !detailQuery.isError &&
+        !detailQuery.expired ? (
+        <DetailVersions
+          detail={detailQuery.data}
+          selected={selectedPreview ?? initialPreview(detailQuery.data)}
+          onClose={detail.close}
+        />
+      ) : null}
+      {detail.view && detailQuery.isPending ? (
+        <p role="status">正在读取图片详情…</p>
+      ) : null}
+      {detail.view && detailQuery.statusError && !detailQuery.expired ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>任务状态读取失败</Alert.Title>
+            <Alert.Description>
+              {detailQuery.statusError.message}{' '}
+              当前版本和最后读取的任务状态仍保留。
+            </Alert.Description>
+            <Button
+              variant="outline"
+              className="mt-3 min-h-11"
+              onPress={() => {
+                void detailQuery.retryStatus();
+              }}
+            >
+              重试任务状态
+            </Button>
+          </Alert.Content>
+        </Alert>
+      ) : null}
+      {detail.view && detailQuery.isError ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>图片详情读取失败</Alert.Title>
+            <Alert.Description>{detailQuery.error.message}</Alert.Description>
+            <Button
+              variant="outline"
+              className="mt-3 min-h-11"
+              onPress={() => {
+                void detailQuery.refetch();
+              }}
+            >
+              刷新详情
+            </Button>
+          </Alert.Content>
+        </Alert>
+      ) : null}
+      {detail.imageId ? (
+        <LibraryDetail
+          key={detail.imageId}
+          imageId={detail.imageId}
+          query={detailQuery}
+          hidden={!!detail.view}
+          onVersions={(selected) => detail.openView('versions', selected)}
+          initialSelected={selectedPreview}
+          albumId={props.albumId}
+          client={client}
+          onClose={detail.close}
+          onTrashed={onTrashed}
+          dialogRef={detail.dialogRef}
+        />
+      ) : null}
       {props.workspace?.content}
     </OwnerShell>
   );

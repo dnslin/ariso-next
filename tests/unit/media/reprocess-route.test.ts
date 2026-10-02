@@ -59,10 +59,17 @@ it('returns 202 for an accepted queued task and passes the image and scope', asy
   vi.mocked(requestReprocess).mockReturnValue({
     jobId: '00000000-0000-0000-0000-000000000001',
     status: 'queued',
+    scope: 'thumbnail',
+    expectedVersions: ['thumbnail'],
   });
   expect(await post('{"scope":"thumbnail"}')).toEqual({
     status: 202,
-    body: { jobId: '00000000-0000-0000-0000-000000000001', status: 'queued' },
+    body: {
+      jobId: '00000000-0000-0000-0000-000000000001',
+      status: 'queued',
+      scope: 'thumbnail',
+      expectedVersions: ['thumbnail'],
+    },
   });
   expect(requestReprocess).toHaveBeenCalledWith({}, 'image', {
     scope: 'thumbnail',
@@ -72,6 +79,8 @@ it('passes an empty body as the default scope input and rejects malformed JSON',
   vi.mocked(requestReprocess).mockReturnValue({
     jobId: '00000000-0000-0000-0000-000000000001',
     status: 'queued',
+    scope: 'all',
+    expectedVersions: ['compressed', 'thumbnail'],
   });
   expect((await post()).status).toBe(202);
   expect(requestReprocess).toHaveBeenCalledWith({}, 'image', {});

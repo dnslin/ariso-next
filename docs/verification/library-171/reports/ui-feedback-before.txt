@@ -1,0 +1,81 @@
+Already up to date
+Done in 86ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-171
+
+xxxx·
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > keeps version policy behind a named, initially closed help trigger
+AssertionError: expected '<section data-testid="detail-versions…' to contain 'aria-label="查看版本说明"'
+
+Expected: "aria-label="查看版本说明""
+Received: "<section data-testid="detail-versions" class="grid min-w-0 gap-3 xl:gap-4"><button data-slot="button" class="button button--md button--ghost -my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_">← 返回图库</button><h1 tabindex="-1" data-testid="detail-workspace-title" class="text-[28px] font-medium leading-normal xl:text-[30px]">当前版本与已有文件</h1><p class="text-[13px] leading-normal [overflow-wrap:anywhere]">测试图片 · 当前预览原图</p><div class="flex min-w-0 items-center gap-3 xl:gap-6"><div class="grid shrink-0 place-items-center overflow-hidden rounded-lg bg-default xl:h-21 xl:w-28 h-15 w-20"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-off" aria-label="没有可读缩略图"><line x1="2" x2="22" y1="2" y2="22"></line><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"></path><line x1="13.5" x2="6" y1="13.5" y2="21"></line><line x1="18" x2="21" y1="12" y2="15"></line><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"></path><path d="M21 15V5a2 2 0 0 0-2-2H9"></path></svg></div><div class="min-w-0 text-[13px] leading-normal [overflow-wrap:anywhere]"><p>测试图片</p><p>原图 · 0.1 KiB</p></div></div><div class="rounded-lg bg-default p-3 text-[13px] leading-normal"><p>这里展示当前已保存的版本，没有历史回滚功能。</p><p>关闭处理开关也不会删除已保存的旧版本。</p></div><dl class="rounded-2xl border border-border px-3 py-2 text-sm leading-normal xl:px-5"></dl></section>"
+
+ ❯ tests/unit/library/detail-help.test.ts:61:16
+     59|     }),
+     60|   );
+     61|   expect(html).toContain('aria-label="查看版本说明"');
+       |                ^
+     62|   expect(html).toContain('aria-haspopup="dialog"');
+     63|   expect(html).toContain('aria-expanded="false"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > collapses process policy while retaining selected outputs and disabled reasons
+AssertionError: expected '<section data-testid="detail-reproces…' to contain 'aria-label="查看处理说明"'
+
+Expected: "aria-label="查看处理说明""
+Received: "<section data-testid="detail-reprocess" class="relative isolate grid min-h-full min-w-0 content-start gap-3 xl:gap-4"><div aria-hidden="true" class="pointer-events-none absolute -inset-x-4 -inset-y-6 -z-10 overflow-hidden dark:opacity-30 xl:-inset-x-8 xl:-inset-y-7"><div class="absolute top-[476px] -left-[90px] size-65 rounded-full bg-accent/15 blur-[90px] xl:top-[700px] xl:-left-3 xl:size-115"></div><div class="absolute top-4 left-45 size-65 rounded-full bg-default/35 blur-[90px] xl:top-20 xl:left-[668px] xl:size-115"></div></div><button data-slot="button" class="button button--md button--ghost -my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">← 返回图片详情</button><h1 data-testid="detail-workspace-title" tabindex="-1" class="text-2xl font-normal leading-[37px] xl:text-[30px] xl:leading-[47px]">重新处理这张图片</h1><div class="flex min-w-0 items-center gap-3 xl:gap-6"><div class="grid shrink-0 place-items-center overflow-hidden rounded-lg bg-default xl:h-21 xl:w-28 h-16 w-[85px]"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-off" aria-label="没有可读缩略图"><line x1="2" x2="22" y1="2" y2="22"></line><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"></path><line x1="13.5" x2="6" y1="13.5" y2="21"></line><line x1="18" x2="21" y1="12" y2="15"></line><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"></path><path d="M21 15V5a2 2 0 0 0-2-2H9"></path></svg></div><div class="min-w-0 text-[13px] leading-normal [overflow-wrap:anywhere]"><p>测试图片</p><p>原图 · 0.1 KiB</p></div></div><p class="text-sm leading-[22px] text-muted">压缩开启 · 水印关闭 · 当前图片可用</p><div class="rounded-[10px] bg-default px-3 py-2.5 text-[13px] leading-5">按提交时的最新设置处理。所选新版本全部成功后一起替换，旧版本在处理期间继续可用。</div><div data-slot="radio-group" class="radio-group radio-group--primary gap-2" data-rac="" aria-label="处理范围" role="radiogroup" aria-orientation="vertical" id="react-aria-_R_t_" aria-describedby="react-aria-_R_tH3_ react-aria-_R_tH4_" data-orientation="vertical"><div data-slot="radio" class="radio group mt-0 gap-2 data-[disabled=true]:opacity-100" data-rac="" data-selected="true"><label data-slot="radio-content" data-testid="reprocess-scope-all" data-react-aria-pressable="true" class="radio__content h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background px-3 text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus" data-rac="" data-selected="true"><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input data-react-aria-pressable="true" tabindex="0" type="radio" aria-describedby="react-aria-_R_6t_ react-aria-_R_tH3_" name="react-aria-_R_tH5_" checked="" value="all"/></span><span aria-hidden="true">●</span>全部派生 · 已选</label><span class="description ps-0 text-[13px] leading-5 text-muted opacity-100" id="react-aria-_R_6t_" data-slot="description" slot="description">本次将更新：压缩图、缩略图。</span></div><div data-slot="radio" class="radio group mt-0 gap-2 data-[disabled=true]:opacity-100" data-rac=""><label data-slot="radio-content" data-testid="reprocess-scope-compressed" data-react-aria-pressable="true" class="radio__content h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background px-3 text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus" data-rac=""><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input data-react-aria-pressable="true" tabindex="-1" type="radio" aria-describedby="react-aria-_R_at_ react-aria-_R_tH3_" name="react-aria-_R_tH5_" value="compressed"/></span><span aria-hidden="true">○</span>仅压缩图</label></div><div data-slot="radio" class="radio group mt-0 gap-2 data-[disabled=true]:opacity-100" data-rac=""><label data-slot="radio-content" data-testid="reprocess-scope-thumbnail" data-react-aria-pressable="true" class="radio__content h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background px-3 text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus" data-rac=""><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input data-react-aria-pressable="true" tabindex="-1" type="radio" aria-describedby="react-aria-_R_et_ react-aria-_R_tH3_" name="react-aria-_R_tH5_" value="thumbnail"/></span><span aria-hidden="true">○</span>仅缩略图</label></div><div data-slot="radio" class="radio group mt-0 gap-2 data-[disabled=true]:opacity-100" data-rac="" data-disabled="true"><label data-slot="radio-content" data-testid="reprocess-scope-watermark" data-react-aria-pressable="true" class="radio__content h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background px-3 text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus" data-rac="" data-disabled="true"><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input data-react-aria-pressable="true" type="radio" disabled="" aria-describedby="react-aria-_R_it_ react-aria-_R_tH3_" name="react-aria-_R_tH5_" value="watermark"/></span><span aria-hidden="true">○</span>仅水印图 · 不可选</label><span class="description ps-0 text-xs leading-[19px] text-muted opacity-100" id="react-aria-_R_it_" data-slot="description" slot="description">水印处理开关已关闭</span></div></div><p class="text-[13px] leading-5 text-muted">关闭开关不会删除或隐藏已有压缩图、水印图。</p></section>"
+
+ ❯ tests/unit/library/detail-help.test.ts:70:16
+     68| it('collapses process policy while retaining selected outputs and disa…
+     69|   const html = renderReprocess();
+     70|   expect(html).toContain('aria-label="查看处理说明"');
+       |                ^
+     71|   expect(html).not.toContain('所选新版本全部成功后一起替换');
+     72|   expect(html).toContain('本次将更新：压缩图、缩略图');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > keeps storage unavailability visible once when all scopes share the reason
+AssertionError: expected [ '存储已停用：help-test-storage', …(3) ] to have a length of 1 but got 4
+
+- Expected
++ Received
+
+- 1
++ 4
+
+ ❯ tests/unit/library/detail-help.test.ts:94:50
+     92|   });
+     93|   expect(html).toContain('存储已停用 · 内容不可读');
+     94|   expect(html.match(/存储已停用：help-test-storage/g)).toHaveLength(1);
+       |                                                  ^
+     95|   expect(html.match(/type="radio"/g)).toHaveLength(4);
+     96|   expect(html.match(/disabled=""/g)).toHaveLength(4);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > keeps the replacement contract visible before submitting a single scope
+AssertionError: expected '<section data-testid="detail-reproces…' to contain 'aria-label="查看处理说明"'
+
+Expected: "aria-label="查看处理说明""
+Received: "<section data-testid="detail-reprocess" class="relative isolate grid min-h-full min-w-0 content-start gap-3 xl:gap-4"><div aria-hidden="true" class="pointer-events-none absolute -inset-x-4 -inset-y-6 -z-10 overflow-hidden dark:opacity-30 xl:-inset-x-8 xl:-inset-y-7"><div class="absolute top-[476px] -left-[90px] size-65 rounded-full bg-accent/15 blur-[90px] xl:top-[700px] xl:-left-3 xl:size-115"></div><div class="absolute top-4 left-45 size-65 rounded-full bg-default/35 blur-[90px] xl:top-20 xl:left-[668px] xl:size-115"></div></div><button data-slot="button" class="button button--md button--ghost -my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">← 重新选择范围</button><h1 data-testid="detail-workspace-title" tabindex="-1" class="text-2xl font-normal leading-[37px] xl:text-[30px] xl:leading-[47px]">确认处理范围</h1><div class="flex min-w-0 items-center gap-3 xl:gap-6"><div class="grid shrink-0 place-items-center overflow-hidden rounded-lg bg-default xl:h-21 xl:w-28 h-16 w-[85px]"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-off" aria-label="没有可读缩略图"><line x1="2" x2="22" y1="2" y2="22"></line><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"></path><line x1="13.5" x2="6" y1="13.5" y2="21"></line><line x1="18" x2="21" y1="12" y2="15"></line><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"></path><path d="M21 15V5a2 2 0 0 0-2-2H9"></path></svg></div><div class="min-w-0 text-[13px] leading-normal [overflow-wrap:anywhere]"><p>测试图片</p><p>原图 · 0.1 KiB</p></div></div><p class="text-lg leading-7">本次范围：仅压缩图</p><div class="rounded-[10px] bg-default px-3 py-2.5 text-[13px] leading-5"><p>只替换压缩图，缩略图和水印图保持不变。</p></div><p class="text-sm leading-[22px] text-muted">提交时记录最新设置。当前已保存版本继续可用，直到新结果成功。</p></section>"
+
+ ❯ tests/unit/library/detail-help.test.ts:106:16
+    104|   });
+    105|   expect(html).toContain('只替换压缩图，缩略图和水印图保持不变');
+    106|   expect(html).toContain('aria-label="查看处理说明"');
+       |                ^
+    107|   expect(html).not.toContain('提交时记录最新设置');
+    108| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  14:21:19
+   Duration  789ms (import 47%, transform 45%, tests 7%)

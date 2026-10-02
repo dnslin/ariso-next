@@ -240,6 +240,8 @@ try {
       .href,
     recoveryScript: pathToFileURL(resolve('e2e/error-recovery.mjs')).href,
     libraryDetailScript: pathToFileURL(resolve('e2e/library-detail.mjs')).href,
+    libraryDetail171Script: pathToFileURL(resolve('e2e/library-detail-171.mjs'))
+      .href,
     storageCorsUiScript: pathToFileURL(resolve('e2e/storage-cors-ui.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
