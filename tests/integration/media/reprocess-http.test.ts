@@ -440,7 +440,9 @@ it.each(['disabled', 'deleting'] as const)(
             .get(),
           server.logs(),
         ).toMatchObject({
-          status: 'failed',
+          status: condition === 'deleting' ? 'cancelled' : 'failed',
+          retryCount: 0,
+          nextAttemptAt: null,
           error: expect.stringContaining(
             condition === 'disabled'
               ? 'STORAGE_DISABLED'

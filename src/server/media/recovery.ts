@@ -19,11 +19,16 @@ export function settleMediaFailure(
       .where(eq(mediaJobs.id, jobId))
       .get();
     if (!job || job.status !== 'running') return;
-    const retry = job.retryCount < 1 && analysis.retryable;
+    const deleting = tx
+      .select({ deletionStatus: mediaImages.deletionStatus })
+      .from(mediaImages)
+      .where(eq(mediaImages.id, job.imageId))
+      .get()?.deletionStatus;
+    const retry = !deleting && job.retryCount < 1 && analysis.retryable;
     const now = new Date();
     tx.update(mediaJobs)
       .set({
-        status: retry ? 'queued' : 'failed',
+        status: deleting ? 'cancelled' : retry ? 'queued' : 'failed',
         error: diagnostic,
         retryCount: job.retryCount + (retry ? 1 : 0),
         nextAttemptAt: retry ? new Date(now.getTime() + 5000) : null,
@@ -51,7 +56,7 @@ export function settleMediaFailure(
           ),
         )
         .run();
-    if (job.kind === 'process')
+    if (job.kind === 'process' && !deleting)
       tx.update(mediaImages)
         .set({
           processingStatus: retry ? 'processing' : 'failed',
@@ -78,6 +83,25 @@ export function recoverMediaJobs(db: BetterSQLite3Database) {
         .where(eq(mediaJobs.status, 'running'))
         .all();
       for (const job of interrupted) {
+        const image = tx
+          .select({ deletionStatus: mediaImages.deletionStatus })
+          .from(mediaImages)
+          .where(eq(mediaImages.id, job.imageId))
+          .get();
+        if (image?.deletionStatus) {
+          const now = new Date();
+          tx.update(mediaJobs)
+            .set({
+              status: 'cancelled',
+              nextAttemptAt: null,
+              error: 'MEDIA_IMAGE_DELETING: 永久删除已受理',
+              finishedAt: now,
+              updatedAt: now,
+            })
+            .where(eq(mediaJobs.id, job.id))
+            .run();
+          continue;
+        }
         const exhausted = job.recoveryCount >= 2;
         const now = new Date();
         tx.update(mediaJobs)

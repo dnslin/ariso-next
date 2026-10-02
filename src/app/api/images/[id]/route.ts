@@ -1,3 +1,4 @@
+import { respondToMediaCleanup } from '../../../../server/media/cleanup-http.ts';
 import { isDeliveryErrorCode } from '../../../../server/delivery/errors.ts';
 import { parseImageRequest } from '../../../../server/delivery/links.ts';
 import { requireOwner } from '../../../../server/identity/owner.ts';
@@ -120,4 +121,11 @@ export async function PATCH(
       { status: 500, headers },
     );
   }
+}
+
+export async function DELETE(
+  request: Request,
+  context: { params: Promise<{ id: string }> },
+) {
+  return respondToMediaCleanup(request, context, 'delete');
 }

@@ -424,10 +424,16 @@ it.each(['disabled', 'deleting', 'cancelled', 'trashed'] as const)(
     expect(job(accepted.jobId).status).toBe(
       condition === 'trashed'
         ? 'succeeded'
-        : condition === 'cancelled'
+        : condition === 'cancelled' || condition === 'deleting'
           ? 'cancelled'
           : 'failed',
     );
+    if (condition === 'deleting')
+      expect(job(accepted.jobId)).toMatchObject({
+        retryCount: 0,
+        nextAttemptAt: null,
+        error: expect.stringContaining('MEDIA_IMAGE_DELETING'),
+      });
     if (condition !== 'trashed')
       expect(versions(asset.imageId)).toEqual(before);
     else
@@ -719,7 +725,9 @@ it.each(['disabled', 'deleting'] as const)(
     );
     await processNext();
     expect(job(accepted.jobId)).toMatchObject({
-      status: 'failed',
+      status: condition === 'deleting' ? 'cancelled' : 'failed',
+      retryCount: 0,
+      nextAttemptAt: null,
       error: expect.stringContaining(
         condition === 'disabled' ? 'STORAGE_DISABLED' : 'MEDIA_IMAGE_DELETING',
       ),

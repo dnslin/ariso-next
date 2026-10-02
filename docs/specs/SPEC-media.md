@@ -241,6 +241,8 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 
 `getStorageReferences(tx, storageId)` 返回图片（含回收/删除失败）、对象、未完成任务和遗留清理责任。storage 管理入口在同一写事务内检查汇总引用；无引用以前不能改位置或删配置。实际空间统计包含尚未清掉的旧/候选对象，不能只统计四个当前版本；未知字节数保留待核对标记，不编造为零。
 
+本地永久删除提供方、只读引用/用量函数及所有者 HTTP 已由 T-MED-11 / #154 实施，实际范围和验收见 [交付记录](../verification/media-154/README.md)。S3 清理及管理界面仍按各承接任务执行。
+
 ### analytics 用量只读提供方
 
 补充 `readMediaUsage(tx)`：按 storageId 汇总正常/回收资产数量、当前未解决处理异常，以及媒体对象的已确认字节/待核对数。对象按回收全部对象优先，再正常当前原图、正常当前派生、其余候选/旧对象互斥归类；不把 media_versions 与 media_objects 重复相加。planned 未写入不算已占用，写入未知与删除未确认保留状态；确认删除后才减少。返回记录确认时间，不在统计请求中读取文件。消费方的数量/历史展示规则见 [已评审 analytics 规格](./SPEC-analytics.md)，函数不依赖 analytics。
@@ -283,19 +285,20 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 
 ### 12.2 所有者 HTTP 入口
 
-| 入口                                                           | 行为                                                   |
-| -------------------------------------------------------------- | ------------------------------------------------------ |
-| `/settings/processing`                                         | 压缩、文字/图片水印、真实临时预览                      |
-| `GET/PATCH /api/settings/media`                                | 读取/原子保存；请求体仅允许对应设置字段                |
-| `POST /api/media/watermark-assets`                             | 校验并保存临时水印素材，返回 ID/属性/到期时间          |
-| `POST /api/media/previews`                                     | 上传测试图和参数，创建预览任务                         |
-| `GET/DELETE /api/media/previews/{id}`                          | 获取预览状态/结果或取消清理；仅当前所有者              |
-| `POST /api/images/{id}/reprocess`                              | 范围与最新快照；返回 202 和任务 ID                     |
-| `POST /api/images/{id}/metadata/read`                          | 单独重读；返回 202                                     |
-| `POST /api/images/{id}/trash`、`POST /api/images/{id}/restore` | 元数据操作，重复同一结果幂等                           |
-| `DELETE /api/images/{id}`                                      | 仅回收站永久删除；返回 202，不同步假报文件已删         |
-| `POST /api/images/{id}/cleanup/retry`                          | 删除失败重试，已删除返回明确终态，不创建新资产         |
-| `GET /api/media/jobs/{id}`                                     | 所有者查看状态/步骤/错误；不返回凭据或完整 S3 签名 URL |
+| 入口                                                           | 行为                                                             |
+| -------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `/settings/processing`                                         | 压缩、文字/图片水印、真实临时预览                                |
+| `GET/PATCH /api/settings/media`                                | 读取/原子保存；请求体仅允许对应设置字段                          |
+| `POST /api/media/watermark-assets`                             | 校验并保存临时水印素材，返回 ID/属性/到期时间                    |
+| `POST /api/media/previews`                                     | 上传测试图和参数，创建预览任务                                   |
+| `GET/DELETE /api/media/previews/{id}`                          | 获取预览状态/结果或取消清理；仅当前所有者                        |
+| `POST /api/images/{id}/reprocess`                              | 范围与最新快照；返回 202 和任务 ID                               |
+| `POST /api/images/{id}/metadata/read`                          | 单独重读；返回 202                                               |
+| `POST /api/images/{id}/trash`、`POST /api/images/{id}/restore` | 元数据操作，重复同一结果幂等                                     |
+| `DELETE /api/images/{id}`                                      | 仅回收站永久删除；返回 202，不同步假报文件已删                   |
+| `GET /api/images/{id}/cleanup`                                 | 所有者读取持久删除任务、周期、剩余对象与错误；删除后保留明确终态 |
+| `POST /api/images/{id}/cleanup/retry`                          | 删除失败重试，已删除返回明确终态，不创建新资产                   |
+| `GET /api/media/jobs/{id}`                                     | 所有者查看状态/步骤/错误；不返回凭据或完整 S3 签名 URL           |
 
 图片详情/列表接口与批量路由在 library 定义，稳定图片响应在 delivery 定义。所有管理入口拒绝匿名和上传 Token；同源修改请求沿用 identity 的防跨站请求约定。结果区分 401 未登录、404 不存在、409 当前状态冲突、413 字节超限、422 参数/格式或资源限制、507 磁盘不足；后台失败以任务结果返回，不把错误伪装成成功输出。
 
