@@ -1,0 +1,96 @@
+{
+  "origin": "http://127.0.0.1:3177",
+  "image": "issue177-000",
+  "scope": "Existing direct reprocess deep-link focus effect; no app code changed",
+  "direct": {
+    "immediate": {
+      "at": 243.5,
+      "active": "BODY",
+      "testid": null
+    },
+    "headingMountedAt": 143.30000001192093,
+    "frames": [
+      {
+        "frame": 2,
+        "at": 348,
+        "active": "BODY",
+        "testid": null
+      },
+      {
+        "frame": 30,
+        "at": 1530.4000000357628,
+        "active": "BODY",
+        "testid": null
+      },
+      {
+        "frame": 60,
+        "at": 2741.100000023842,
+        "active": "BODY",
+        "testid": null
+      }
+    ],
+    "focusEvents": []
+  },
+  "cached": {
+    "immediate": {
+      "at": 47833.30000001192,
+      "active": "H1",
+      "testid": "detail-workspace-title",
+      "events": [
+        {
+          "at": 47562.40000003576,
+          "active": "SECTION",
+          "testid": "library-detail"
+        },
+        {
+          "at": 47580.19999998808,
+          "active": "BUTTON",
+          "testid": "detail-version-entry"
+        },
+        {
+          "at": 47603.30000001192,
+          "active": "H1",
+          "testid": "detail-workspace-title"
+        },
+        {
+          "at": 47757.19999998808,
+          "active": "BUTTON",
+          "testid": null
+        },
+        {
+          "at": 47773.80000001192,
+          "active": "H1",
+          "testid": "detail-workspace-title"
+        }
+      ]
+    },
+    "frames": [
+      {
+        "frame": 2,
+        "at": 47878.5,
+        "active": "H1",
+        "testid": "detail-workspace-title"
+      },
+      {
+        "frame": 30,
+        "at": 48924.80000001192,
+        "active": "H1",
+        "testid": "detail-workspace-title"
+      }
+    ]
+  },
+  "comparison": {
+    "originMain": "e188562257ed8e0c1a5d6304b13ad817797cd579",
+    "focusComponent": {
+      "path": "src/components/library/detail-reprocess.tsx",
+      "workingBlob": "f259e118b332b6d7c998031f54888e65832101d0",
+      "originMainBlob": "f259e118b332b6d7c998031f54888e65832101d0",
+      "identical": true
+    },
+    "focusEffectDependencies": ["state.receipt?.jobId", "job?.status"],
+    "mountBranchSameAsMain": true,
+    "mountBranch": "detail.view === reprocess renders DetailReprocess before asynchronous detail data is present",
+    "currentIssueChanges": "LibraryScreen adds batch hooks, sibling workspace and footer selection; the existing reprocess mount branch is unchanged",
+    "conclusion": "Existing direct deep-link focus defect, not a transient assertion race. The first effect runs without a heading; asynchronous detail arrival changes neither dependency. Cached normal entry focuses the heading and retains focus."
+  }
+}

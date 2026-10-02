@@ -6,6 +6,10 @@ import { Dropdown } from '@heroui/react/dropdown';
 import { Popover } from '@heroui/react/popover';
 import { Pagination } from '@heroui/react/pagination';
 import { ChevronDown, ImageOff, X } from 'lucide-react';
+import {
+  batchLabels,
+  type BatchAction,
+} from '../../components/library/use-library-batch';
 import type { LibraryLoadingMode } from './query-state';
 import type {
   LibrarySelection,
@@ -47,6 +51,8 @@ export function LibrarySelectionMenu({
   onOpen,
   contextMenu,
   onContextMenuClose,
+  onBatch,
+  scope = 'normal',
 }: {
   selection: LibrarySelection;
   loadingMode: LibraryLoadingMode;
@@ -54,6 +60,8 @@ export function LibrarySelectionMenu({
   onOpen: (id: string, element: HTMLElement) => void;
   contextMenu?: LibraryContextMenu | null;
   onContextMenuClose?: () => void;
+  onBatch?: (action: BatchAction, element: HTMLElement) => void;
+  scope?: 'normal' | 'trash';
 }) {
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,6 +76,18 @@ export function LibrarySelectionMenu({
   const heading = useRef<HTMLHeadingElement>(null);
   const panelId = useId();
   const total = selection.selected.size;
+  const actions: BatchAction[] =
+    scope === 'trash'
+      ? ['restore']
+      : [
+          'add-albums',
+          'remove-albums',
+          'add-tags',
+          'remove-tags',
+          'public',
+          'private',
+          'trash',
+        ];
   const pages = Math.max(1, Math.ceil(total / 20));
   const currentPage = Math.min(page, pages);
   if (page !== currentPage) setPage(currentPage);
@@ -179,7 +199,10 @@ export function LibrarySelectionMenu({
                 : []
             }
             onAction={(key) => {
-              if (key === 'view') openPanel();
+              if (actions.includes(key as BatchAction)) {
+                const target = contextMenu?.target ?? trigger.current;
+                if (target) onBatch?.(key as BatchAction, target);
+              } else if (key === 'view') openPanel();
               else if (key === 'open') {
                 const id = selection.selected.keys().next().value;
                 const target = contextMenu?.target ?? trigger.current;
@@ -194,6 +217,19 @@ export function LibrarySelectionMenu({
               }
             }}
           >
+            {onBatch
+              ? actions.map((action) => (
+                  <Dropdown.Item
+                    key={action}
+                    id={action}
+                    textValue={batchLabels[action]}
+                    isDisabled={disabled}
+                    className="min-h-11 xl:min-h-9"
+                  >
+                    {batchLabels[action]}
+                  </Dropdown.Item>
+                ))
+              : null}
             {total === 1 ? (
               <Dropdown.Item
                 id="open"
@@ -307,6 +343,11 @@ export function LibrarySelectionMenu({
                         ? ` · ${selection.currentIds.has(item.id) ? '当前页' : '其他页'}`
                         : ''}
                     </span>
+                    {item.batchFailure ? (
+                      <span className="text-xs text-danger [overflow-wrap:anywhere]">
+                        上次批量操作失败：{item.batchFailure}
+                      </span>
+                    ) : null}
                   </span>
                 </Button>
                 <Button

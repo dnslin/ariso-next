@@ -1,7 +1,7 @@
 import { and, eq, exists, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { z } from 'zod';
-import { buildImagePath } from '../delivery/links.ts';
+import { buildImagePath, buildTrashPreviewPath } from '../delivery/links.ts';
 import { mediaImages, mediaObjects, mediaVersions } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import {
@@ -25,14 +25,8 @@ export function readLibrarySelection(
   if (!parsed.success)
     throw new LibraryQueryError('已选清单需要 1–200 个非空图片 ID 和查询条件');
   const query = parseLibraryQuery(new URLSearchParams(parsed.data.query));
-  if (
-    query.page !== null ||
-    query.cursor !== null ||
-    query.filters.scope === 'trash'
-  )
-    throw new LibraryQueryError(
-      '已选清单仅接受正常图库或相册的筛选条件，不接受页码或游标',
-    );
+  if (query.page !== null || query.cursor !== null)
+    throw new LibraryQueryError('已选清单仅接受筛选条件，不接受页码或游标');
   const ids = [...new Set(parsed.data.ids)];
   return db.transaction((tx) => {
     assertLibraryReferences(tx, query.filters);
@@ -40,6 +34,8 @@ export function readLibrarySelection(
       .select({
         id: mediaImages.id,
         displayName: mediaImages.displayName,
+        byteSize: mediaImages.byteSize,
+        deletionStatus: mediaImages.deletionStatus,
         storage: {
           id: storageConfigs.id,
           name: storageConfigs.name,
@@ -74,10 +70,15 @@ export function readLibrarySelection(
         {
           id: row.id,
           displayName: row.displayName,
+          byteSize: row.byteSize,
           storage: row.storage,
           thumbnailUrl:
-            row.storage.enabled && row.hasThumbnail
-              ? buildImagePath(row.id, 'thumbnail')
+            row.storage.enabled &&
+            row.hasThumbnail &&
+            row.deletionStatus === null
+              ? query.filters.scope === 'trash'
+                ? buildTrashPreviewPath(row.id, 'thumbnail')
+                : buildImagePath(row.id, 'thumbnail')
               : null,
         },
       ]),

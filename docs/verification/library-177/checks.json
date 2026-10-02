@@ -1,0 +1,136 @@
+{
+  "environment": {
+    "platform": "Darwin arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "memoryGiB": 16,
+    "logicalCPUs": 10,
+    "imageMagick": "7.1.2-32",
+    "exifTool": "13.55",
+    "browser": "已有Ego Lite",
+    "taskSpace": 10,
+    "page": "p1"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "锁文件未改"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "100 packages reused，0 downloads，锁文件未改"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "All matched files use Prettier code style; final evidence included"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "testFilesPassed": 73,
+      "testsPassed": 905
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "无部署密钥/数据库；现有可选跨平台二进制trace警告"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "exitCode": 1,
+      "testsPassed": 1074,
+      "testsFailed": 6,
+      "result": "5项超时；1项byteSize字段精确断言已修正"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 1,
+      "testFilesPassed": 117,
+      "testFilesFailed": 1,
+      "testsPassed": 1079,
+      "testsFailed": 1,
+      "result": "唯一失败为执行期间重建产物缺少entrypoint，先前5项超时全部通过"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/media/trash-http.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testFilesPassed": 1,
+      "testsPassed": 3,
+      "result": "最终稳定构建后独立复验，全部1080场景已有通过证据"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch",
+      "exitCode": 0,
+      "screenshots": 107,
+      "result": "Final full added batch scenario passed; errors=[]; sessionWaits=[]; last unchecked border color fix followed by representative replay",
+      "layouts": 100,
+      "report": "reports/batch-browser.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=10 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-issue-177-full pnpm run test:browser",
+      "exitCode": 1,
+      "result": "Existing origin/main direct reprocess deep-link focus defect; scope repair awaiting user authorization; no assertion weakened",
+      "report": "reports/full-browser.json",
+      "diagnostic": "diagnostics/detail-focus-diagnostic.json"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only representative",
+      "exitCode": 0,
+      "screenshots": 8,
+      "layouts": 8,
+      "result": "Final unchecked foreground border at 390/1440, light/dark; errors=[]",
+      "report": "reports/batch-representative.json"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts",
+      "exitCode": 0,
+      "testsPassed": 37,
+      "result": "Visibility retained/success revision; prior summary red had 5 failed/9 passed"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts",
+      "exitCode": 0,
+      "testsPassed": 21,
+      "result": "Final visibility states and invalid readable thumbnail; prior last red had 1 failed/20 passed"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only visibility",
+      "exitCode": null,
+      "result": "NOT RUN: existing Ego TaskSpace 10 is agentDelegatedToUser; waitForControl timed out at 1000ms and 30000ms; no alternate space or weakened checks"
+    }
+  ],
+  "codeAudit": "passed including latest visibility UI and independent new browser-script review",
+  "designAudit": "Core107 + last8 representative screenshots reviewed; latest visibility retained/success 44/45 real screenshots missing",
+  "humanAcceptance": "pending",
+  "releaseContainers": "not run; Release stage only",
+  "remaining": [
+    "Existing Ego control must be returned for visibility retained/success real browser verification and final independent design acceptance",
+    "User UI acceptance",
+    "Full browser existing direct reprocess deep-link focus defect; repair authorization pending"
+  ]
+}

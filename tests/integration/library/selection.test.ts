@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import {
   albums,
@@ -170,6 +170,7 @@ it('drops recycled, deleting, removed and changed records while disabled storage
   expect(result.items[0]).toEqual({
     id: 'disabled',
     displayName: 'disabled',
+    byteSize: 100,
     storage: { id: 'storage-3', name: 'Storage 3', enabled: false },
     thumbnailUrl: null,
   });
@@ -210,6 +211,7 @@ it('returns a thumbnail URL only for a saved thumbnail on enabled storage, witho
     read(['thumbnail', 'no-thumbnail']).items.map((item) => item.thumbnailUrl),
   ).toEqual(['/i/thumbnail?type=thumbnail', null]);
   expect(Object.keys(read(['thumbnail']).items[0]).sort()).toEqual([
+    'byteSize',
     'displayName',
     'id',
     'storage',
@@ -292,7 +294,6 @@ it('accepts at most 200 explicit selections, preserves requested order, and reje
     ...[
       'page=1',
       'cursor=abc',
-      'scope=trash',
       'pageSize=200',
       'unknown=1',
       'uploadedFrom=invalid',
@@ -304,4 +305,82 @@ it('accepts at most 200 explicit selections, preserves requested order, and reje
       expect.objectContaining({ code: 'LIBRARY_INVALID_QUERY', status: 400 }),
     );
   }
+});
+
+it('includes current trash selections with owner preview paths, retaining unavailable deletion records', () => {
+  for (const id of [
+    'preview',
+    'deleting',
+    'failed-cleanup',
+    'normal',
+    'disabled',
+  ])
+    seed(id);
+  connection.db
+    .update(mediaImages)
+    .set({ trashedAt: new Date(2000) })
+    .where(
+      inArray(mediaImages.id, [
+        'preview',
+        'deleting',
+        'failed-cleanup',
+        'disabled',
+      ]),
+    )
+    .run();
+  connection.db
+    .update(mediaImages)
+    .set({ deletionStatus: 'deleting' })
+    .where(eq(mediaImages.id, 'deleting'))
+    .run();
+  connection.db
+    .update(mediaImages)
+    .set({ deletionStatus: 'cleanup_failed' })
+    .where(eq(mediaImages.id, 'failed-cleanup'))
+    .run();
+  connection.db
+    .update(mediaImages)
+    .set({ storageId: 'storage-3' })
+    .where(eq(mediaImages.id, 'disabled'))
+    .run();
+  for (const id of ['preview', 'deleting', 'failed-cleanup', 'disabled']) {
+    connection.db
+      .insert(mediaObjects)
+      .values({
+        id: `${id}-object`,
+        imageId: id,
+        storageId: id === 'disabled' ? 'storage-3' : 'storage-0',
+        key: `${id}.webp`,
+        purpose: 'thumbnail',
+        status: 'stored',
+        byteSize: 10,
+        format: 'WEBP',
+        mime: 'image/webp',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .run();
+    connection.db
+      .insert(mediaVersions)
+      .values({
+        imageId: id,
+        kind: 'thumbnail',
+        objectId: `${id}-object`,
+        byteSize: 10,
+        format: 'WEBP',
+        mime: 'image/webp',
+        createdAt: new Date(),
+      })
+      .run();
+  }
+  const result = read(
+    ['preview', 'deleting', 'failed-cleanup', 'normal', 'disabled'],
+    'scope=trash',
+  );
+  expect(result.items.map((item) => [item.id, item.thumbnailUrl])).toEqual([
+    ['preview', '/api/trash/preview/preview?type=thumbnail'],
+    ['deleting', null],
+    ['failed-cleanup', null],
+    ['disabled', null],
+  ]);
 });

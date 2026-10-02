@@ -87,9 +87,11 @@ async function disclosure() {
   );
   assert.ok(
     await page.evaluate(
-      () => document.activeElement.querySelector('[data-slot="chip"]') !== null,
+      () =>
+        document.activeElement.matches('button[data-slot="button"]') &&
+        !document.activeElement.querySelector('[data-slot="chip"]'),
     ),
-    'Visibility trigger uses the real Chip',
+    'Visibility trigger uses the approved single HeroUI Button without a nested Chip',
   );
 }
 try {
