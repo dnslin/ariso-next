@@ -6,10 +6,11 @@ import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { TextField } from '@heroui/react/textfield';
-import { Input } from '@heroui/react/input';
+import { InputGroup } from '@heroui/react/input-group';
 import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { CloseButton } from '@heroui/react/close-button';
+import { Tag as TagIcon } from 'lucide-react';
 import { tagNameSchema } from '../../server/collections/validation';
 import {
   tagRequest,
@@ -37,7 +38,7 @@ export function TagDialog({
   action: TagAction;
   isOpen: boolean;
   onClose: () => void;
-  onComplete: (message?: string) => void;
+  onComplete: (message?: string, status?: 'success' | 'unknown') => void;
   onExpire: () => void;
   onRefresh: () => Promise<void>;
 }) {
@@ -111,6 +112,7 @@ export function TagDialog({
     else if (outcome.kind === 'unknown')
       onComplete(
         `操作结果仍待核对。本次${action.kind === 'create' ? '创建' : action.kind === 'edit' ? '重命名' : '删除'}输入：${action.kind === 'delete' ? tag!.displayName : name}。关闭不撤销请求，也不表示成功；请核对当前资料后再操作。`,
+        'unknown',
       );
     else onClose();
   }
@@ -353,12 +355,17 @@ export function TagDialog({
                           ? `名称 · ${[...name.trim().normalize('NFC')].length} / 50`
                           : '名称'}
                     </Label>
-                    <Input
-                      id="tag-name"
-                      autoFocus
-                      className="h-12 w-full rounded-lg border border-border bg-field pl-9 pr-3 text-sm font-normal shadow-none"
-                      style={{ fontSize: 14 }}
-                    />
+                    <InputGroup className="h-12 w-full rounded-lg border border-border bg-field shadow-none">
+                      <InputGroup.Prefix className="border-0 pl-3 pr-2 text-foreground">
+                        <TagIcon size={16} aria-hidden />
+                      </InputGroup.Prefix>
+                      <InputGroup.Input
+                        id="tag-name"
+                        autoFocus
+                        className="h-full min-w-0 py-0 pl-0 pr-3 text-sm font-normal"
+                        style={{ fontSize: 14 }}
+                      />
+                    </InputGroup>
                     {fieldError ? (
                       <FieldError className="rounded-lg bg-default p-3 text-[13px] leading-normal text-foreground">
                         {fieldError.message}

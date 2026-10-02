@@ -130,9 +130,11 @@ export function TagsList({
               className="flex min-h-11 min-w-11 flex-1 flex-col items-start justify-center gap-1 font-normal text-foreground no-underline [overflow-wrap:anywhere]"
             >
               <span className="text-sm font-normal">{item.displayName}</span>
-              <span className="text-xs leading-normal">
-                {item.imageCount} 张<br />
-                创建于 {mobileDate.format(new Date(item.createdAt))}
+              <span className="flex max-w-full flex-wrap gap-x-3 gap-y-1 text-xs leading-normal">
+                <span className="whitespace-nowrap">{item.imageCount} 张</span>
+                <span className="whitespace-nowrap">
+                  创建于 {mobileDate.format(new Date(item.createdAt))}
+                </span>
               </span>
             </Link>
             {actions(item)}

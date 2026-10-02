@@ -75,3 +75,35 @@
 公共区域范围外记录：既有 OwnerShell 手机为 44×44px 菜单图标，早期 Figma 主图为 64×44px“菜单”水绿按钮；既有侧栏品牌标语表现也与原主图有差异。本 Issue 复用统一实现，不重设计公共区域；没有把公共区域声称为与早期 Figma 全部像素一致。按现行 DG-TAGS 不恢复旧面包屑、将空态按钮置正文，以及沿用图库已批准返修，均是现有交接适用，不是本次自行批准的新偏离。
 
 按 execution.md 的 2026-09-22 范围，物理触控、物理软键盘及非零安全区设备实测不在本次必需范围，也未标通过。未发布镜像、未部署，容器/AMD64/ARM64 验证遵循既有 Release 流程，本设计评审不替代该流程。
+
+## 人工验收返修（2026-10-02）
+
+用户通过四张真实页面截图明确授权修正手机信息横排、输入图标、成功 Toast 与私有胶囊悬停。上一轮 agent 通过结论是首轮记录，本轮以以下授权和新截图复核为准。批准不扩大到其他产品选择、公共布局或权限规则；未修改 Figma。用户原图已实际回看：[手机信息与搜索](manual-revision/user-feedback/mobile-meta-search.png)、[改名输入](manual-revision/user-feedback/edit-name-icon.png)、[删除成功提示](manual-revision/user-feedback/delete-success-notice.png)、[私有悬停](manual-revision/user-feedback/access-disclosure-hover.png)。
+
+独立评审重新实际调用 `get_design_context` 并读取附带截图：主列表 `30:661 / 101:1295`、创建 `418:3885 / 418:8077`、改名 `418:3973 / 418:8165`。原节点搜索/名称输入只有36px左内距、12px右内距预留，没有实际放大镜或标签图标；手机原图数量/日期为两行。补图标、手机横排和成功 Toast 均按本轮明确授权修订，不伪称原图已包含这些表现。授权同步到 `docs/design/handoff.md` 的现有“业务交互中已确认的修订”相册与标签批准段及“后台界面精简”权限说明条，不另建重复规则。
+
+### 环境与失败证据
+
+原浏览器空间失效后，用户授权独立 Ego Lite TaskSpace 5 / p1。浏览器 agent 使用 Node v24.18.1、50953独立数据库备份和临时生产服务；未写原57635预览数据。独立设计评审实际检查用户原图、Figma截图、修复前后真实页面图及对应记录。
+
+[red.json](manual-revision/red.json) 与 [手机列表](manual-revision/red-main-light-390.png)、[创建输入](manual-revision/red-create-light-390.png)、[成功常驻提示](manual-revision/red-create-success-light-390.png)、[私有旧触发器](manual-revision/red-access-before-light-390.png)复现缺图标、强制换行、内联成功提示与外按钮嵌Chip。旧触发器图为未悬停状态，不冒充用户红框的悬停实图。
+
+本轮两项实际验收缺陷也保留历史证据：[access.json](manual-revision/access.json)及[Toast焦点不可见图](manual-revision/green-toast-keyboard-light-1440.png)记录Tab可达但opacity0；随后[阶段功能报告](manual-revision/final.json)与[手机关闭按钮图](manual-revision/final-toast-keyboard-light-390.png)虽已验证关闭功能，设计复核仍发现44px按钮遮住正文末尾。两项均已在本轮修复；旧 `green.json` / `access.json` 的失败与阶段图片保持原记录，没有覆盖成通过。
+
+### 最终逐项对照
+
+按相同视口先检查整页与公共区域，再检查业务行、输入、反馈和详情控件。主列表代表390×844 / 360×844 / 1440×1080；适用状态覆盖两端浅深色。公共外壳、表格、固定底栏与详情预览沿既有批准交接复用。
+
+| 用户授权范围                    | 实际回看证据                                                                                                                                                                                                                                                                  | 独立设计结论                                                                                                                                                                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 手机数量 / 创建日期横排         | [390浅色](manual-revision/green-main-light-390.png)、[360暗色](manual-revision/green-main-dark-360.png)                                                                                                                                                                       | 通过。名称独占首行，数量和短日期横向并列；保持清楚间距、84px基准行与68×44px操作，不挤压按钮。50字符长名称可完整换行，见最终Toast长名测试的真实列表；桌面列区未重排。                                                                                    |
+| 搜索与名称图标                  | [手机创建](manual-revision/green-create-light-390.png)、[桌面暗色创建](manual-revision/green-create-dark-1440.png)、[手机改名](manual-revision/final-edit-input-light-390.png)、[桌面暗色改名](manual-revision/final-edit-input-dark-1440.png)                                | 通过。Lucide Search/Tag 的16px视觉位于左侧预留区、垂直居中，文字仍为14px Regular；完整输入组48px，边框内原生输入46px不是控件缩小。图标不覆盖文字，标签外置、校验/冲突/禁用结构和焦点沿共享输入组合。                                                    |
+| 明确成功 Toast / 未知持续说明   | [手机创建](manual-revision/green-create-success-light-390.png)、[暗色改名](manual-revision/green-rename-success-dark-390.png)、[暗色桌面删除](manual-revision/green-delete-success-dark-1440.png)、[未知关闭后](manual-revision/green-unknown-closed-light-390.png)           | 通过。真实创建/改名/删除反馈复用顶部HeroUI Toast，不再推动正文或长期占位；保留真实目标、图片与关系结果。未知关闭后仍有持续未确认说明，没有成功Toast、没有假定已提交。沿用已有Toast时长；关闭由浏览器记录实际验证，本轮没有单独量测自动消退计时。        |
+| 私有胶囊 hover / 焦点 / Popover | [纯鼠标悬停](manual-revision/final-access-pointer-hover-light-1440.png)、[手机暗色焦点](manual-revision/green-access-focus-dark-390.png)、[暗色展开](manual-revision/green-access-open-dark-1440.png)、[相册内容消费](manual-revision/green-access-album-open-light-1440.png) | 通过。单层水绿HeroUI Button胶囊，无嵌套Chip或额外外壳背景；纯hover没有focusring。键盘仍保留2px可见描边与44px目标，hover/pressed底色与单位变换保持一致。点击/键盘展开、Escape归还焦点和视口内Popover均保留；图库与相册内容共用，回收记录不消费此触发器。 |
+| Toast关闭焦点与正文空间         | [手机浅色50字符](manual-revision/toast-content-light-390.png)、[手机深色50字符](manual-revision/toast-content-dark-390.png)、[toast-content.json](manual-revision/toast-content.json)                                                                                         | 通过。最终正文预留右侧关闭区并自然换行；50字符真实名称与成功说明完整可读，逐行文字边界在358pxToast内且不与44px关闭区相交。关闭按钮真实键盘focus时opacity1、pointer-events auto，清楚描边可见，Enter关闭。                                               |
+
+### 本轮结论
+
+**功能证据：** 关闭焦点补修后的[完整标签回归](manual-revision/tags-regression/tags.json)为 `passed`，118张状态截图继续覆盖真实读写、冲突、单次写后的核对、关系保留/删除、分页搜索和短视口；[阶段末轮记录](manual-revision/final.json)验证编辑图标、纯鼠标胶囊与两端浅深键盘关闭；最后[正文空间专项](manual-revision/toast-content.json)为 `passed`；最后正文排版补修后只执行该专项，没有重复完整标签套件。两张手机浅深50字符真实截图及逐行边界、焦点和关闭断言通过。Access部分的真实交互检查已通过，旧整体记录因Toast焦点问题保持 `keyboard-focus-failed`，不把该旧记录冒充整体通过。测试命令、构建与代码审计由[本轮实施记录](manual-revision/README.md)统一维护；本设计评审不冒充执行这些套件。
+
+**独立设计结论：** 本轮人工验收返修的agent设计复核通过，用户四图提出的调整与本轮发现的Toast焦点/遮挡缺陷均已修复并实际复核，没有未解决的本次设计偏差。用户再次人工验收仍待完成；此结论不替代用户复验，不将首轮通过或阶段功能报告用作此次返修验收。

@@ -5,13 +5,14 @@ import { useSearchParams } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { TextField } from '@heroui/react/textfield';
-import { Input } from '@heroui/react/input';
+import { InputGroup } from '@heroui/react/input-group';
+import { toast } from '@heroui/react/toast';
 import { Select } from '@heroui/react/select';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
-import { Plus, Tags } from 'lucide-react';
+import { Plus, Search, Tags } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { parseTagQuery } from '../../server/collections/tag-query';
@@ -225,11 +226,16 @@ export function TagsScreen(props: {
             value={params.get('q') ?? ''}
             onChange={(value) => apply({ q: value, page: 1 })}
           >
-            <Input
-              placeholder="搜索标签名称"
-              className="h-12 w-full rounded-lg border border-border bg-field pl-9 text-sm font-normal shadow-none"
-              style={{ fontSize: 14 }}
-            />
+            <InputGroup className="h-12 w-full rounded-lg border border-border bg-field shadow-none">
+              <InputGroup.Prefix className="border-0 pl-3 pr-2 text-foreground">
+                <Search size={16} aria-hidden />
+              </InputGroup.Prefix>
+              <InputGroup.Input
+                placeholder="搜索标签名称"
+                className="h-full min-w-0 py-0 pl-0 pr-3 text-sm font-normal"
+                style={{ fontSize: 14 }}
+              />
+            </InputGroup>
           </TextField>
         ) : null}
         {list.isPending && query ? (
@@ -316,8 +322,14 @@ export function TagsScreen(props: {
             const result = await list.refetch();
             if (result.error) throw result.error;
           }}
-          onComplete={(message) => {
-            if (message) setNotice(message);
+          onComplete={(message, status = 'success') => {
+            if (message) {
+              if (status === 'unknown') setNotice(message);
+              else {
+                setNotice('');
+                toast.success(message);
+              }
+            }
             close();
             void client.invalidateQueries({ queryKey: ['tags'] });
           }}

@@ -135,3 +135,44 @@ try {
 最终受影响场景记录已实际回读：[affected-runner](browser-affected/affected-runner.json)、[tags](browser-affected/tags.json) 和 [shell-navigation](browser-affected/shell-navigation.json) 均为 passed，没有 error。标签记录包含 12 项功能检查、114 个视口/主题布局、118 张实际截图；覆盖第二页精确键核对、未知结果关闭提示与新表单、单次写入、同名重建的新 ID、真实搜索清除、分页返回与短视口键盘焦点。导航记录覆盖 `/upload`、`/library`、`/albums`、相册内容、`/trash`、`/tags`、`/admin` 七个消费入口，两端浅深色统一品牌、账号、导航顺序与当前项；共 38 个布局记录、82 张截图。
 
 这些直接运行结果证明本次受影响场景通过，不能替代完整浏览器流程未通过的事实。最后源码复读仅新增 FieldError 的 `leading-normal` 和明确删除失败时的目标名称保留/“返回标签”文案；它们没有改变 schema、状态判断、关系或提交行为，未发现新增代码问题。**最终源码审计仍为 Critical 0、Required 0。** 本轮审计只读源码和已生成记录，没有重复运行检查、操作 Git 或扩大范围；对应结果以主 [实施与验证记录](README.md) 和 [设计评审](design-review.md) 的实际证据为准。用户人工 UI 验收仍未执行，未声明通过。
+
+## 用户人工反馈后的本轮源码审计
+
+用户新增授权手机标签数量/日期横排、搜索和名称图标、成功反馈使用 Toast，以及图片详情私有标签悬停修正。本节结论仅适用于本轮源码，不把前一轮已经通过的浏览器结果当成本轮通过。
+
+审计者独立复读主实施者修改的 tags screen/dialog/list 及对应 `e2e/tags.mjs`，核对安装包 HeroUI 3.2.6 InputGroup、Toast 的类型/实现/样式与既有全局 Providers：
+
+- 搜索和名称继续使用 TextField，组合已有 InputGroup.Prefix/Input；16px Lucide Search/Tag 图标带 aria-hidden，字段原标签、值、自动聚焦、错误关联和禁用来源继续保留。前缀用 12px 左边距、16px 图标、8px 间隔，输入本身无左 padding，没有重写输入事件或增加校验规则。
+- 手机数量/日期是分别不拆字的子 span，外层 flex-wrap 横排；常规可用宽度同行，空间不足时允许换行，日期仍按站点时区和原有格式显示。链接、ID、计数来源与操作按钮保持。
+- `onComplete` 仅增加内部反馈状态 `success | unknown`。真实写入/无变化删除的确认消息使用既有全局 `toast.success`，并清除旧页面 notice；未知关闭显式传 `unknown`，保持含输入的持久提示而不会发成功 Toast。已经读回但不能证明提交的 checked 状态不发送成功消息，仍保留原核对说明。列表刷新和单次写入控制保持，未新增 ToastProvider、Toast 队列或资源生命周期。
+- 浏览器回归源码已改查实际 success Toast，并检查可见的 16px 图标和手机数量/日期同行；未知关闭仍查持久提示、原输入、新表单及单次写入。安装包 InputGroup 内部继续使用 React Aria Input 和 TextField 上下文，没有另做原生输入框或图标点击处理。
+
+图片访问说明 `src/components/library/access-disclosure.tsx` 由本报告审计者实施，因此**不将本人自检冒称独立审计**。主实施者另行实际复读该源码与 HeroUI Button CSS，确认单层 Button 保留 label/Popover、44px 点击区、原可访问名称和说明内容；默认 hover/pressed 背景固定为现有水绿 default，取消位移/缩放和过渡，保留焦点轮廓。独立复读结论没有新增正确性或权限问题。原来的嵌套 Chip 已删除，未新增状态或修改图片权限契约。
+
+审计者仅针对 AccessDisclosure 运行 `pnpm exec prettier src/components/library/access-disclosure.tsx --check` 与 `pnpm exec eslint src/components/library/access-disclosure.tsx --max-warnings=0`，Node 24 下均通过。主流程类型已通过，新的构建/lint及受影响浏览器结果正在收齐。原隔离 Ego 空间已关闭，本轮尚未执行浏览器；访问说明的 hover/点击/键盘，以及本轮标签图标、横排、Toast 与未知提示不能标为实际通过。主流程继续用真实页面检查相关行为。
+
+本轮独立 tags 源码审计 **Critical 0、Required 0**。AccessDisclosure 的主实施者独立复读无新增问题；本轮运行/设计验收仍待证据，不据此宣称已完成用户新增要求。
+
+## 通知键盘焦点与无形变断言的最后复审
+
+独立复读 `Providers` 的最后修改和 HeroUI 3.2.6 Toast.CloseButton 实现/CSS：库默认关闭按钮为 `opacity-0`、`pointer-events-none`，仅在通知 hover 时显示。本次只为已有 44px 关闭按钮添加 `focus-visible:pointer-events-auto focus-visible:opacity-100`，使键盘获得可见焦点时显示并可点击；仍使用库提供的关闭操作和既有可访问名称。没有增加焦点监听、计时器、通知队列、状态或卸载逻辑，ToastProvider 的位置、通知内容、导航和 QueryClient 创建方式没有变化。
+
+此 Providers 是标签成功消息及既有图库复制/下载/移入回收站、回收站恢复、存储复制消息共用的通知渲染入口。修复适用于它们的关闭按钮，不改变这些调用的成功判断、消息、请求或资源生命周期。实际键盘缺陷由主流程复现为 Tab 后 `:focus-visible=true` 但仍透明且不能接收指针，Enter 已能关闭；最后修复后的键盘结果仍以本轮真实浏览器证据为准。[已有 hover 失败记录](manual-revision/attempts/toast-hover-required/green.json) 保留，不能冒称修复后的通过证据。
+
+独立复读 `e2e/ui-refinement.mjs`：`getComputedStyle(...).transform` 的 `none` 与浏览器返回的 `matrix(1, 0, 0, 1, 0, 0)` 均转换成 DOMMatrixReadOnly，再对当前二维变换的六个系数严格断言 `[1, 0, 0, 1, 0, 0]`。平移、缩放、旋转和倾斜仍会失败，未放宽为任意 matrix 或删除断言；保持 idle/hover/keyboard focus 三个状态、单层背景、44px 点击区、可见焦点、Popover 操作和 Escape 返回焦点检查。该 helper 由另一实施者修改，本审计者仅复读；AccessDisclosure 本身由本审计者实施、主实施者另行独立复读的分工保持。
+
+**最后源码复审：Critical 0、Required 0。** 主流程本轮 `pnpm run build`、`pnpm run typecheck`、`pnpm run lint` 已实际执行并报告 exit 0，相关记录位于 [manual-revision](manual-revision/README.md)；审计者没有重复运行检查。恢复后的 Space 5 正在补最后键盘和标签专项证据，此时不将本轮浏览器或人工设计验收标为通过，也不以此前失败运行中生成的 green 文件名判断成功。
+
+### 窄屏通知文字与关闭按钮空间复审
+
+末轮真实页面对照发现 390px 通知的 44px 焦点关闭按钮覆盖文字。独立复读最后一行 `Toast.Content className="min-w-0 pr-8 wrap-anywhere"` 与已安装 Toast CSS：通知本身左右各有 16px padding，关闭按钮绝对定位于右侧 -4px、宽 44px；内容增加右 padding 32px 后，文字右边界距通知右边 48px，超过按钮占用的 40px 并留出间隔。`min-w-0` 允许 flex 内容缩小，`wrap-anywhere` 使长名称按可用宽度自然换行；标题和描述没有截断规则。没有改变通知大小规则、关闭按钮点击区、显示逻辑、通知队列或业务状态。
+
+该修改修复已有公共通知布局的实测问题，影响仍局限于上述 Toast 消费入口。独立源码复审 **Critical 0、Required 0**；修复后的 390px 实际文字/关闭按钮对照等待最后截图证据，不将源码判断写成浏览器或人工验收通过。审计者未修改实现、未重复运行全量验证。
+
+### 最后文字重叠检查与实际短补验
+
+独立实际读取新增 `e2e/toast-layout.mjs`、`e2e/tags.mjs` 的布局调用，以及本轮短验证脚本与 [toast-content.json](manual-revision/toast-content.json)。helper 对真实通知标题的文字节点建立 DOM Range，逐行读取渲染矩形，断言每个片段完整容纳在通知边界，并逐个检测与 44px 关闭按钮矩形是否相交，没有仅根据整块标题宽度或截图数量推断无覆盖。完整标签布局检查中通知可自然过期，未出现时记录 null；短补验明确断言通知存在、包含实际提交名称、至少两行文字，避免这个可过期分支使最后修复验证空通过。未新增业务能力或模拟成功写入。
+
+实际短补验命令 `node work/run-manual-tags-browser.mjs toast-content` 在 Node 24.18.1、保留的独立 Ego Space 5、独立 50953 数据库执行，结果 **passed**。390×844 浅深两主题均通过真实 50 码点标签创建后的通知检查，文本四行完整容纳且不覆盖关闭按钮；关闭按钮为 44×44，键盘 focus-visible 时 opacity 1 / pointer auto，Enter 实际关闭。生成 [浅色截图](manual-revision/toast-content-light-390.png) 与 [深色截图](manual-revision/toast-content-dark-390.png)，测试创建的标签随后由真实 API 删除。记录确认原 57635 预览数据不变。
+
+**最终独立源码审计：Critical 0、Required 0。** 完整标签专项的 12 项功能检查、114 个布局和 118 张截图是在最后 Toast.Content 排版补修之前执行；最后补修后只运行上述两主题短补验，没有再执行完整标签专项或完整 browser 流程。其余先前限制和范围外上传失败保留，最后人工复验仍由用户完成。本审计者只读源码与已生成证据并更新本报告，没有重复执行检查；AccessDisclosure 的独立源码复读仍由主实施者完成。

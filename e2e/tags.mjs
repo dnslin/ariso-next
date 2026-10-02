@@ -12,6 +12,9 @@ const { resizeViewport, setTheme, readGeometry, assertGeometry } = await import(
 const { createTagFixtures } = await import(
   new URL('./tags-fixtures.mjs', config.identitySessionScript).href
 );
+const { verifyToastTextLayout } = await import(
+  new URL('./toast-layout.mjs', config.identitySessionScript).href
+);
 const page = (await taskSpace(config.spaceId)).page('p1');
 const sql = (statement) => identitySql(config, statement);
 const button = (name) => `loc=role:button[name="${name}"]`;
@@ -73,7 +76,7 @@ async function nameField() {
   const selector = await page.evaluate(() => {
     const label = [
       ...document.querySelectorAll(
-        ':is([role="dialog"],[role="alertdialog"]) label',
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) label',
       ),
     ].find((node) => node.textContent.includes('名称'));
     return label?.htmlFor ? `#${CSS.escape(label.htmlFor)}` : null;
@@ -83,7 +86,9 @@ async function nameField() {
 }
 async function openCreate() {
   await page.click(button('新建标签'));
-  await page.waitForSelector(':is([role="dialog"],[role="alertdialog"]) input');
+  await page.waitForSelector(
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) input',
+  );
 }
 async function fillName(name) {
   await page.fill(await nameField(), name);
@@ -91,24 +96,32 @@ async function fillName(name) {
 async function rowAction(id, name) {
   const selector = `[data-testid="tag-${id}"] button:has-text("${name}")`;
   await page.click(selector);
-  await page.waitForSelector(':is([role="dialog"],[role="alertdialog"])');
+  await page.waitForSelector(
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+  );
 }
 async function dismiss() {
   // Resizing can move focus out of the responsive overlay. Restore a visible
   // dialog control before dispatching the real Escape key.
   await page.focus(
-    ':is([role="dialog"],[role="alertdialog"]) button[aria-label="关闭"]',
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) button[aria-label="关闭"]',
   );
   await page.keyboard.press('Escape');
-  await page.waitForSelector(':is([role="dialog"],[role="alertdialog"])', {
-    state: 'hidden',
-  });
+  await page.waitForSelector(
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+    {
+      state: 'hidden',
+    },
+  );
 }
 async function returned() {
   await page.click(button('返回标签列表'));
-  await page.waitForSelector(':is([role="dialog"],[role="alertdialog"])', {
-    state: 'hidden',
-  });
+  await page.waitForSelector(
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+    {
+      state: 'hidden',
+    },
+  );
   await page.waitForFunction(
     () => !document.querySelector('[data-testid="tags-loading"]'),
   );
@@ -122,17 +135,24 @@ async function tagStyles(theme, width) {
       const css = getComputedStyle(node);
       return { size: css.fontSize, weight: css.fontWeight };
     };
+    const icon = (input, className) => {
+      if (!visible(input)) return null;
+      const svg = input.closest('.input-group')?.querySelector(className);
+      if (!visible(svg)) return { visible: false };
+      const bounds = svg.getBoundingClientRect();
+      return { visible: true, width: bounds.width, height: bounds.height };
+    };
     const header = document.querySelector('[data-testid="tags-list"] thead');
     const hint = document.querySelector(
-      ':is([role="dialog"],[role="alertdialog"]) .bg-default',
+      ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) .bg-default',
     );
     const resultLink = document.querySelector(
-      ':is([role="dialog"],[role="alertdialog"]) a[href^="/library?tagId="]',
+      ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) a[href^="/library?tagId="]',
     );
     const notice = document.querySelector('[data-testid="tags-notice"]');
     const listError = document.querySelector('[data-testid="tags-error"]');
     const dialog = document.querySelector(
-      ':is([role="dialog"],[role="alertdialog"])',
+      ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
     );
     return {
       search: font(document.querySelector('input[aria-label="搜索标签名称"]')),
@@ -142,6 +162,23 @@ async function tagStyles(theme, width) {
           '[data-testid="tags-list"] li a > span:first-child',
         ),
       ),
+      searchIcon: icon(
+        document.querySelector('input[aria-label="搜索标签名称"]'),
+        '.lucide-search',
+      ),
+      nameIcon: icon(document.querySelector('#tag-name'), '.lucide-tag'),
+      mobileMetadata: [
+        ...document.querySelectorAll(
+          '[data-testid="tags-list"] li a > span:nth-child(2)',
+        ),
+      ]
+        .filter(visible)
+        .map((metadata) =>
+          [...metadata.children].map((part) => ({
+            text: part.textContent,
+            top: part.getBoundingClientRect().top,
+          })),
+        ),
       hint: visible(hint) ? getComputedStyle(hint).backgroundColor : null,
       notice: visible(notice) ? getComputedStyle(notice).backgroundColor : null,
       listError: visible(listError)
@@ -167,6 +204,28 @@ async function tagStyles(theme, width) {
     };
   });
   if (!styles) return null;
+  for (const [name, actual] of Object.entries({
+    search: styles.searchIcon,
+    name: styles.nameIcon,
+  }))
+    if (actual)
+      assert.deepEqual(
+        actual,
+        { visible: true, width: 16, height: 16 },
+        `${name} input exposes its 16px prefix icon`,
+      );
+  if (width < 768)
+    for (const metadata of styles.mobileMetadata) {
+      assert.equal(
+        metadata.length,
+        2,
+        'Mobile metadata separates image count and creation date',
+      );
+      assert.ok(
+        Math.abs(metadata[0].top - metadata[1].top) <= 1,
+        'Image count and creation date share one line at ordinary mobile widths',
+      );
+    }
   if (styles.dialogMessages !== null)
     assert.equal(
       styles.dialogMessages,
@@ -234,6 +293,7 @@ async function layouts(state, widths = [390, 1440]) {
       const geometry = await readGeometry(page);
       assertGeometry(geometry, `${state}/${theme}/${width}`);
       geometry.tags = await tagStyles(theme, width);
+      geometry.toast = await verifyToastTextLayout(page);
       await shot(`${state}-${theme}-${width}`);
       report.layouts.push({ state, theme, ...geometry });
     }
@@ -376,7 +436,7 @@ try {
   await page.waitForFunction(() =>
     [
       ...document.querySelectorAll(
-        ':is([role="dialog"],[role="alertdialog"]) button',
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) button',
       ),
     ].some((node) => node.disabled && node.textContent.includes('提交')),
   );
@@ -387,9 +447,11 @@ try {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="tags-notice"]')
+        .querySelector('[data-slot="toast"].toast--success')
         ?.textContent.includes('已创建') &&
-      !document.querySelector(':is([role="dialog"],[role="alertdialog"])'),
+      !document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ),
   );
   await layouts('create-success');
   assert.equal(
@@ -410,8 +472,9 @@ try {
     (
       await page.evaluate(
         () =>
-          document.querySelector(':is([role="dialog"],[role="alertdialog"])')
-            .textContent,
+          document.querySelector(
+            ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+          ).textContent,
       )
     ).includes('Go'),
   );
@@ -436,8 +499,9 @@ try {
     (
       await page.evaluate(
         () =>
-          document.querySelector(':is([role="dialog"],[role="alertdialog"])')
-            .textContent,
+          document.querySelector(
+            ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+          ).textContent,
       )
     ).includes('Go'),
   );
@@ -481,7 +545,9 @@ try {
   await page.click(button('保存更改'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('已被使用'),
   );
   assert.equal(
@@ -502,9 +568,11 @@ try {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="tags-notice"]')
+        .querySelector('[data-slot="toast"].toast--success')
         ?.textContent.includes('已重命名') &&
-      !document.querySelector(':is([role="dialog"],[role="alertdialog"])'),
+      !document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ),
   );
   await layouts('rename-success');
   await rowAction('issue176-tag-1', '编辑');
@@ -513,7 +581,9 @@ try {
   await page.click(button('保存更改'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('未能保存'),
   );
   await layouts('edit-error');
@@ -531,9 +601,11 @@ try {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="tags-notice"]')
+        .querySelector('[data-slot="toast"].toast--success')
         ?.textContent.includes('重命名为 远行，') &&
-      !document.querySelector(':is([role="dialog"],[role="alertdialog"])'),
+      !document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ),
   );
   assert.equal(
     (await sql("SELECT display_name FROM tags WHERE id='issue176-tag-1'"))[0]
@@ -604,7 +676,9 @@ try {
   await page.click(button('创建标签'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('未能创建'),
   );
   assert.equal(
@@ -624,7 +698,9 @@ try {
   await page.click(button('创建标签'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('待核对'),
   );
   await layouts('unknown');
@@ -686,8 +762,9 @@ try {
   await rowAction('issue176-tag-1', '删除');
   const deleteText = await page.evaluate(
     () =>
-      document.querySelector(':is([role="dialog"],[role="alertdialog"])')
-        .textContent,
+      document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ).textContent,
   );
   assert.ok(deleteText.includes('回收站') && deleteText.includes('图片'));
   await layouts('delete-confirm');
@@ -702,7 +779,9 @@ try {
   await page.click(button('删除标签'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('未能删除'),
   );
   await page.waitForSelector(button('重试删除'));
@@ -720,9 +799,11 @@ try {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="tags-notice"]')
+        .querySelector('[data-slot="toast"].toast--success')
         ?.textContent.includes('已不存在') &&
-      !document.querySelector(':is([role="dialog"],[role="alertdialog"])'),
+      !document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ),
   );
   await assertSingleWrite();
   await layouts('delete-success');
@@ -764,9 +845,11 @@ try {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="tags-notice"]')
+        .querySelector('[data-slot="toast"].toast--success')
         ?.textContent.includes('已删除') &&
-      !document.querySelector(':is([role="dialog"],[role="alertdialog"])'),
+      !document.querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      ),
   );
   await sql(
     "UPDATE media_images SET trashed_at=NULL WHERE id='issue176-image-172'",
@@ -794,7 +877,9 @@ try {
   await page.click(button('保存更改'));
   await page.waitForFunction(() =>
     document
-      .querySelector(':is([role="dialog"],[role="alertdialog"])')
+      .querySelector(
+        ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+      )
       ?.textContent.includes('已不存在'),
   );
   await layouts('target-missing');
@@ -803,9 +888,12 @@ try {
     '已经消失的标签',
   );
   await page.click(button('重新加载'));
-  await page.waitForSelector(':is([role="dialog"],[role="alertdialog"])', {
-    state: 'hidden',
-  });
+  await page.waitForSelector(
+    ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"])',
+    {
+      state: 'hidden',
+    },
+  );
   report.checks.push(
     'A real concurrently removed edit target returns 404; same-name recreation keeps a new ID and cannot receive the stale operation.',
   );
@@ -964,7 +1052,7 @@ try {
     await page.focus(button('新建标签'));
     await page.keyboard.press('Enter');
     await page.waitForSelector(
-      ':is([role="dialog"],[role="alertdialog"]) input',
+      ':is([role="dialog"],[role="alertdialog"]):not([data-slot="toast"]) input',
     );
     await fillName('短视口可编辑名称');
     await page.focus(button('创建标签'));
