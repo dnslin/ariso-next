@@ -15,7 +15,7 @@ const { launch, stop } = await import(
 );
 assert.equal(process.versions.node.split('.')[0], '24');
 const mode = process.argv[2] ?? 'submissions';
-assert.ok(['submissions', 'regression', 'polling'].includes(mode));
+assert.ok(['submissions', 'regression', 'polling', 'relations'].includes(mode));
 const spaceId = Number(process.env.EGO_TASK_SPACE);
 assert.ok(
   Number.isInteger(spaceId) && spaceId > 0,
@@ -110,7 +110,7 @@ try {
   const source = await readFile(
     join(
       projectDirectory,
-      `e2e/${{ submissions: 'upload-submissions', regression: 'upload', polling: 'upload-polling' }[mode]}.mjs`,
+      `e2e/${{ submissions: 'upload-submissions', regression: 'upload', polling: 'upload-polling', relations: 'upload-relations' }[mode]}.mjs`,
     ),
     'utf8',
   );

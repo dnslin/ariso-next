@@ -1,0 +1,3364 @@
+{
+  "status": "failed",
+  "checks": [
+    "Holding the real successful relation-settings response displays loading on desktop and mobile; releasing it settles to the actual list without a fixed delay.",
+    "Both initially empty relation lists display the real empty state and leave selection empty.",
+    "Same-name album options expose distinct real IDs; searchable multiple selection preserves hidden selected IDs, keyboard chip removal preserves other IDs, and real owner-link SPA navigation retains both selections.",
+    "Cancelling both quick-create dialogs preserves the previous selections and creates no database record.",
+    "Real SQLite insert triggers cause both quick-create APIs to fail; names and previous IDs remain unchanged, no record is created, and short-viewport modal keyboard focus stays reachable.",
+    "Escaping and reopening an unknown album creation preserves its disabled original input and cannot issue another POST; explicitly ending that operation opens a fresh editable instance.",
+    "Real successful quick creation persists each record once despite repeated pending pointer/keyboard presses, sends only one POST, automatically appends its returned ID, and restores focus to the corresponding selector."
+  ],
+  "layouts": [
+    {
+      "name": "albums-list-loading",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-list-loading-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-list-loading",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-list-loading-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-empty",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-empty-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-empty",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-empty-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-empty",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-empty-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-empty",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-empty-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-search-match",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-search-match-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-search-no-match",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-search-no-match-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-dropdown-selected-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-dropdown-selected-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-dropdown-selected-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-dropdown-selected-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空相册搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建相册",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-dropdown-selected-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天甲",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天乙",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-dropdown-selected-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天甲",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天乙",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-dropdown-selected-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true,
+          "tagFooter": false
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 160,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天甲",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天乙",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 286,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-dropdown-selected-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 83,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择图片",
+          "width": 144,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天甲",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "移除标签 搜索夏天乙",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "开始上传",
+          "width": 358,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "清空标签搜索",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "新建标签",
+          "width": 332,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-initial",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-initial-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "创建",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-initial",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-initial-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "创建",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-initial",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-initial-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "创建",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-initial",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-initial-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "创建",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-create-initial",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-initial-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-initial",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-initial-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-initial",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-initial-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-initial",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-initial-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 430,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 210,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 430,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-light-390-short.png",
+      "width": 390,
+      "height": 400,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "albums-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-albums-create-failed-dark-390-short.png",
+      "width": 390,
+      "height": 400,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "返回核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "重新核对",
+          "width": 157,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "结束本次操作",
+          "width": 324,
+          "height": 48,
+          "navigation": false,
+          "tagFooter": false
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-light-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 116,
+          "height": 40,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "light",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-light-390-short.png",
+      "width": 390,
+      "height": 400,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    },
+    {
+      "name": "tags-create-failed",
+      "theme": "dark",
+      "path": "/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/upload-160-relations/relations-tags-create-failed-dark-390-short.png",
+      "width": 390,
+      "height": 400,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭新建标签",
+          "width": 44,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": false
+        },
+        {
+          "label": "取消关闭",
+          "width": 60,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        },
+        {
+          "label": "创建标签",
+          "width": 88,
+          "height": 44,
+          "navigation": false,
+          "tagFooter": true
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "albums-list-loading",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:55:53.256Z"
+    },
+    {
+      "name": "albums-list-loading",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:55:53.687Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:54.035Z"
+    },
+    {
+      "name": "albums-empty",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:55:54.213Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:54.407Z"
+    },
+    {
+      "name": "albums-empty",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:55:54.706Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:54.800Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:55.146Z"
+    },
+    {
+      "name": "tags-empty",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:55:55.655Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:55.756Z"
+    },
+    {
+      "name": "tags-empty",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:55:56.046Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:56.135Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:55:57.064Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 699,
+      "bottom": 743,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 844,
+      "time": "2026-10-02T09:55:57.124Z"
+    },
+    {
+      "name": "albums-search-match",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:55:57.318Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:57.536Z"
+    },
+    {
+      "name": "albums-search-no-match",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:55:58.101Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:58.319Z"
+    },
+    {
+      "name": "select option",
+      "id": "0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+      "keyboard": true,
+      "time": "2026-10-02T09:55:58.855Z"
+    },
+    {
+      "name": "wait selected option",
+      "id": "0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+      "keyboard": true,
+      "options": [
+        {
+          "id": "0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "selected": "true"
+        },
+        {
+          "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "selected": "false"
+        }
+      ],
+      "time": "2026-10-02T09:55:58.997Z"
+    },
+    {
+      "name": "select option",
+      "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:59.002Z"
+    },
+    {
+      "name": "wait selected option",
+      "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+      "keyboard": false,
+      "options": [
+        {
+          "id": "0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+          "selected": "true"
+        },
+        {
+          "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+          "selected": "true"
+        }
+      ],
+      "time": "2026-10-02T09:55:59.153Z"
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:55:59.158Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:55:59.383Z"
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:55:59.803Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:00.020Z"
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:00.426Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:00.756Z"
+    },
+    {
+      "name": "albums-dropdown-selected",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:01.208Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:01.426Z"
+    },
+    {
+      "name": "remove selected relation",
+      "kind": "albums",
+      "id": "0f0083f2-dd71-4131-8a1c-31d8c97453ca",
+      "time": "2026-10-02T09:56:02.052Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:02.182Z"
+    },
+    {
+      "name": "select option",
+      "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:02.499Z"
+    },
+    {
+      "name": "wait selected option",
+      "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+      "keyboard": false,
+      "options": [
+        {
+          "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+          "selected": "true"
+        },
+        {
+          "id": "fc39e436-ce91-4e81-b828-fed57bb94b34",
+          "selected": "false"
+        }
+      ],
+      "time": "2026-10-02T09:56:02.633Z"
+    },
+    {
+      "name": "select option",
+      "id": "fc39e436-ce91-4e81-b828-fed57bb94b34",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:02.639Z"
+    },
+    {
+      "name": "wait selected option",
+      "id": "fc39e436-ce91-4e81-b828-fed57bb94b34",
+      "keyboard": false,
+      "options": [
+        {
+          "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+          "selected": "true"
+        },
+        {
+          "id": "fc39e436-ce91-4e81-b828-fed57bb94b34",
+          "selected": "true"
+        }
+      ],
+      "time": "2026-10-02T09:56:02.784Z"
+    },
+    {
+      "name": "select option",
+      "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:03.188Z"
+    },
+    {
+      "name": "wait selected option",
+      "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+      "keyboard": false,
+      "options": [
+        {
+          "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+          "selected": "true"
+        },
+        {
+          "id": "fc39e436-ce91-4e81-b828-fed57bb94b34",
+          "selected": "true"
+        }
+      ],
+      "time": "2026-10-02T09:56:03.357Z"
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:56:03.657Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:03.894Z"
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:56:04.316Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:04.530Z"
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:05.205Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:05.535Z"
+    },
+    {
+      "name": "tags-dropdown-selected",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:06.058Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:06.270Z"
+    },
+    {
+      "name": "remove selected relation",
+      "kind": "tags",
+      "id": "f1dea623-8cfb-498a-9eaf-cbf56432f95d",
+      "time": "2026-10-02T09:56:07.067Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:07.716Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "albums",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:07.717Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:07.721Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 388,
+      "bottom": 432,
+      "left": 1073,
+      "right": 1383,
+      "width": 1440,
+      "height": 1080,
+      "time": "2026-10-02T09:56:07.782Z"
+    },
+    {
+      "name": "albums-create-initial",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:56:08.102Z"
+    },
+    {
+      "name": "albums-create-initial",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:56:08.236Z"
+    },
+    {
+      "name": "albums-create-initial",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:08.399Z"
+    },
+    {
+      "name": "albums-create-initial",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:08.776Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "tags",
+      "time": "2026-10-02T09:56:09.234Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "tags",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:09.234Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:09.238Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "tags",
+      "top": 570,
+      "bottom": 614,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 844,
+      "time": "2026-10-02T09:56:09.297Z"
+    },
+    {
+      "name": "tags-create-initial",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:56:09.535Z"
+    },
+    {
+      "name": "tags-create-initial",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:56:09.855Z"
+    },
+    {
+      "name": "tags-create-initial",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:10.066Z"
+    },
+    {
+      "name": "tags-create-initial",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:10.300Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:10.729Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "albums",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:10.730Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:10.734Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 699,
+      "bottom": 743,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 844,
+      "time": "2026-10-02T09:56:10.793Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:56:11.353Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:56:11.699Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:11.883Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:12.208Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 390,
+      "theme": "light",
+      "height": 400,
+      "time": "2026-10-02T09:56:12.410Z"
+    },
+    {
+      "name": "albums-create-failed",
+      "width": 390,
+      "theme": "dark",
+      "height": 400,
+      "time": "2026-10-02T09:56:12.709Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:13.619Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "albums",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:13.620Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:13.624Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 729,
+      "bottom": 773,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 400,
+      "time": "2026-10-02T09:56:13.682Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:15.357Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "albums",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:15.358Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:15.362Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 171.5,
+      "bottom": 215.5,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 400,
+      "time": "2026-10-02T09:56:15.421Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "tags",
+      "time": "2026-10-02T09:56:15.923Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "tags",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:15.925Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:15.928Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "tags",
+      "top": 171.5,
+      "bottom": 215.5,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 400,
+      "time": "2026-10-02T09:56:15.987Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 1440,
+      "theme": "light",
+      "height": 1080,
+      "time": "2026-10-02T09:56:16.658Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 390,
+      "theme": "light",
+      "height": 844,
+      "time": "2026-10-02T09:56:16.960Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 1440,
+      "theme": "dark",
+      "height": 1080,
+      "time": "2026-10-02T09:56:17.192Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 390,
+      "theme": "dark",
+      "height": 844,
+      "time": "2026-10-02T09:56:17.528Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 390,
+      "theme": "light",
+      "height": 400,
+      "time": "2026-10-02T09:56:17.676Z"
+    },
+    {
+      "name": "tags-create-failed",
+      "width": 390,
+      "theme": "dark",
+      "height": 400,
+      "time": "2026-10-02T09:56:17.950Z"
+    },
+    {
+      "name": "快速相册",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:18.745Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "albums",
+      "time": "2026-10-02T09:56:18.745Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "albums",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:18.747Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:18.750Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "albums",
+      "top": 171.5,
+      "bottom": 215.5,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 400,
+      "time": "2026-10-02T09:56:18.810Z"
+    },
+    {
+      "name": "快速标签",
+      "kind": "tags",
+      "time": "2026-10-02T09:56:19.759Z"
+    },
+    {
+      "name": "open quick creation",
+      "kind": "tags",
+      "time": "2026-10-02T09:56:19.759Z"
+    },
+    {
+      "name": "wait prior modal backdrop exit",
+      "kind": "tags",
+      "backdrops": 0,
+      "time": "2026-10-02T09:56:19.760Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": true,
+      "time": "2026-10-02T09:56:19.763Z"
+    },
+    {
+      "name": "position keyboard selector before Enter",
+      "kind": "tags",
+      "top": 171.5,
+      "bottom": 215.5,
+      "left": 33,
+      "right": 357,
+      "width": 390,
+      "height": 400,
+      "time": "2026-10-02T09:56:19.822Z"
+    },
+    {
+      "name": "start real submission",
+      "files": 3,
+      "previousIds": [],
+      "time": "2026-10-02T09:56:21.331Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:23.769Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "tags",
+      "keyboard": false,
+      "time": "2026-10-02T09:56:23.976Z"
+    },
+    {
+      "name": "remove selected relation",
+      "kind": "albums",
+      "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756",
+      "time": "2026-10-02T09:56:24.442Z"
+    }
+  ],
+  "fixtureReset": {
+    "albums": [],
+    "tags": []
+  },
+  "step": {
+    "name": "remove selected relation",
+    "kind": "albums",
+    "id": "242637d7-3dbd-48cd-b41a-93c5f4ff5756"
+  },
+  "error": "ElementResolutionError: page.focus failed: element is not focusable (button, contenteditable=false, tabIndex=0, active=div)\n    at focusInPage (file:////[eval1]:14412:19)\n    at async #retryElementAction (file:////[eval1]:18867:24)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "page": "[p1 \"Ariso\" | space \"Issue 160 实现验证与人工验收\"(1): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=363, url=http://ariso-input-64452.localhost:64452/]\n        text \"Ariso\"\n      button \"菜单\" [ref=364, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=365]\n        container \"上传图片\"\n          container\n            button \"公开 可见性\" [ref=366]\n            container\n              text \"相册\"\n              button \"选择相册\" [ref=367, loc=css:button[aria-label=\"选择相册\"]]\n                text \"已选择 2 个相册\"\n                svg_root\n              grid \"已选相册\" [ref=368, loc=role:grid[name=\"已选相册\"]]\n                row \"同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756\" [ref=369, loc=role:row[name=\"同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756\"]]\n                  text \"同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756\"\n                  button \"移除相册 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756 同名旅行 · 242637d7-3dbd-48cd-b41a-93c5f4ff5756\" [ref=370]\n                    svg_root\n                row \"相册后来更名\" [ref=371, loc=role:row[name=\"相册后来更名\"]]\n                  text \"相册后来更名\"\n                  button \"移除相册 相册后来更名 相册后来更名\" [ref=372]\n                    svg_root\n            container\n              text \"标签\"\n              button \"选择标签\" [ref=373, loc=css:button[aria-label=\"选择标签\"]]\n      container\n        button [ref=374]\n          text \"清空已完成\"\n        button [ref=375]\n          text \"继续添加\"\n        button [ref=376]\n          text \"开始上传\"\n"
+}

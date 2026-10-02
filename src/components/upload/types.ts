@@ -31,6 +31,7 @@ export type UploadItem = {
   batchSize?: number;
   albumIds?: readonly string[];
   tagIds?: readonly string[];
+  frozenSubmission?: UploadSubmissionSummary;
   sessionId?: string;
   imageId?: string;
   jobId?: string;
@@ -67,6 +68,24 @@ export type UploadSubmissionResult = Pick<
 export type UploadSelection = {
   albumIds: readonly string[];
   tagIds: readonly string[];
+  labels?: {
+    storageId: string;
+    storageName: string;
+    albums: readonly UploadRelation[];
+    tags: readonly UploadRelation[];
+  };
+};
+
+export type UploadRelation = { id: string; name: string };
+export type UploadSubmissionSummary = {
+  id: string;
+  number: number;
+  count: number;
+  groups: number[];
+  storageName: string;
+  visibility: 'public' | 'private';
+  albums: UploadRelation[];
+  tags: UploadRelation[];
 };
 
 export type UploadTransport = {

@@ -31,6 +31,7 @@ for (const name of [
   'album-cover.json',
   'upload.json',
   'upload-submissions.json',
+  'upload-relations.json',
   'upload-polling.json',
   'upload-input.json',
   'storage-cors.json',
@@ -391,6 +392,12 @@ try {
         'upload-submissions.log',
       );
       report.uploadSubmissions = 'passed';
+      await runBrowser(
+        '../e2e/upload-relations.mjs',
+        identityConfig,
+        'upload-relations.log',
+      );
+      report.uploadRelations = 'passed';
       report.upload = 'passed';
       report.library = 'passed';
     }

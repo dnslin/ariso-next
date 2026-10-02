@@ -1,0 +1,124 @@
+{
+  "status": "failed",
+  "origin": "http://ariso-review-50012.localhost:50012",
+  "taskSpaceId": 1,
+  "independentTestData": true,
+  "screenshots": [],
+  "steps": [
+    {
+      "name": "initialize preview viewport",
+      "time": "2026-10-02T10:10:33.716Z"
+    },
+    {
+      "name": "sign into independent preview",
+      "time": "2026-10-02T10:10:33.727Z"
+    },
+    {
+      "name": "wait upload input after real sign-in",
+      "time": "2026-10-02T10:10:34.611Z"
+    },
+    {
+      "name": "real preview API",
+      "path": "/api/albums",
+      "method": "POST",
+      "expected": 201,
+      "time": "2026-10-02T10:10:35.051Z"
+    },
+    {
+      "name": "real preview API",
+      "path": "/api/albums",
+      "method": "POST",
+      "expected": 201,
+      "time": "2026-10-02T10:10:35.070Z"
+    },
+    {
+      "name": "real preview API",
+      "path": "/api/albums",
+      "method": "POST",
+      "expected": 201,
+      "time": "2026-10-02T10:10:35.080Z"
+    },
+    {
+      "name": "real preview API",
+      "path": "/api/tags",
+      "method": "POST",
+      "expected": 201,
+      "time": "2026-10-02T10:10:35.088Z"
+    },
+    {
+      "name": "real preview API",
+      "path": "/api/settings/upload",
+      "method": "PATCH",
+      "expected": 200,
+      "time": "2026-10-02T10:10:35.098Z"
+    },
+    {
+      "name": "open choices",
+      "kind": "albums",
+      "selectId": "d43b245d-06cd-4ee9-8139-846c16e7f42e",
+      "time": "2026-10-02T10:10:35.107Z"
+    },
+    {
+      "name": "wait refreshed visible choices",
+      "kind": "albums",
+      "time": "2026-10-02T10:10:35.278Z"
+    },
+    {
+      "name": "select real relation ID",
+      "kind": "albums",
+      "selectId": "d43b245d-06cd-4ee9-8139-846c16e7f42e",
+      "time": "2026-10-02T10:10:35.291Z"
+    },
+    {
+      "name": "wait selected relation ID",
+      "kind": "albums",
+      "selectId": "d43b245d-06cd-4ee9-8139-846c16e7f42e",
+      "time": "2026-10-02T10:10:35.429Z"
+    },
+    {
+      "name": "close choices with Escape",
+      "kind": "albums",
+      "time": "2026-10-02T10:10:35.434Z"
+    },
+    {
+      "name": "wait choices exit and trigger focus",
+      "kind": "albums",
+      "time": "2026-10-02T10:10:35.498Z"
+    }
+  ],
+  "step": {
+    "name": "wait choices exit and trigger focus",
+    "kind": "albums"
+  },
+  "error": {
+    "name": "Error",
+    "message": "page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-review-50012.localhost:50012/upload\"; last title was \"Ariso\".",
+    "stack": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-review-50012.localhost:50012/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+  },
+  "failureSnapshot": "[p1 \"Ariso\" | space \"Issue 160 实现验证与人工验收\"(1): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=377, url=http://ariso-review-50012.localhost:50012/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=378, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=379, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=380, loc=css:a[aria-label=\"上传\"], url=http://ariso-review-50012.localhost:50012/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=381, loc=css:a[aria-label=\"图库\"], url=http://ariso-review-50012.localhost:50012/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=382, loc=css:a[aria-label=\"相册\"], url=http://ariso-review-50012.localhost:50012/albums]\n          svg_root\n          text \"相册\"\n        group \"标签，尚未开放\" [ref=383, loc=role:group[name=\"标签，尚未开放\"]]\n          link \"标签，尚未开放\"\n            svg_root\n            text \"标签\"\n            text \"尚未开放\"\n        group \"分享管理，尚未开放\" [ref=384, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=385, loc=css:a[aria-label=\"回收站\"], url=http://ariso-review-50012.localhost:50012/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=386, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        group \"存储管理，尚未开放\" [ref=387, loc=role:group[name=\"存储管理，尚未开放\"]]\n          link \"存储管理，尚未开放\"\n            svg_root\n            text \"存储管理\"\n            text \"尚未开放\"\n        group \"站点设置，尚未开放\" [ref=388, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=389, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=390]\n        container \"上传图片\"\n          container\n            heading [ref=391]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              svg_root\n              heading\n                text \"把图片放在这里\"\n              paragraph\n                text \"拖入图片或文件夹，也可粘贴截图\"\n              container\n                button [ref=392]\n                  text \"选择图片\"\n                button [ref=393]\n                  text \"选择文件夹\"\n              paragraph\n                text \"支持多选 · 单文件最大\"\n                text \"50.0 MiB\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"默认本地存储 存储位置\" [ref=394]\n                  text \"默认本地存储\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=395]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=396, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=397, loc=css:button[aria-label=\"选择标签\"]]\n                  text \"选择标签（可多选）\"\n                  svg_root\n              paragraph\n                text \"开始上传时固定本次设置。自动拆出的各批共用这些设置。\"\n      button [ref=398]\n        text \"开始上传\"\n  container \"选择相册（可多选）\"\n    dialog \"选择相册\" [ref=399, loc=role:dialog[name=\"选择相册\"]]\n      group\n        svg_root\n        searchbox \"搜索相册\" [ref=400, loc=css:input[placeholder=\"搜索相册名称或 ID\"]]\n          text \"搜索相册名称或 ID\"\n        button \"清空相册搜索\" [ref=401, loc=css:button[aria-label=\"清空相册搜索\"]]\n          svg_root\n      listbox \"相册列表\" [ref=402, loc=role:listbox[name=\"相册列表\"]]\n        listboxoption [ref=403]\n          text \"同名旅行 · e1bde917-a101-4b77-a5d1-fb479c6945b4\"\n          svg_root\n        listboxoption [ref=404]\n          text \"同名旅行 · 5cd8f2b9-946a-4bc3-88b3-3498a83ce8a4\"\n          svg_root\n        listboxoption [ref=405]\n          text \"人工验收相册\"\n          svg_root\n      button [ref=406]\n        text \"新建\"\n        text \"相册\"\n",
+  "failureDom": {
+    "url": "http://ariso-review-50012.localhost:50012/upload",
+    "width": 1440,
+    "height": 1080,
+    "theme": "light",
+    "active": "<div data-slot=\"list-box-item\" data-relation-id=\"d43b245d-06cd-4ee9-8139-846c16e7f42e\" class=\"list-box-item list-box-item--default min-h-11 gap-2 text-sm [overflow-wrap:anywhere]\" data-rac=\"\" role=\"option\" aria-selected=\"false\" tabindex=\"0\" data-collection=\"react-aria1604460947-_r_1d_\" data-key=\"d43b245d-06cd-4ee9-8139-846c16e7f42e\" data-react-aria-pressable=\"true\" id=\"react-aria1604460947-_r_1e_-option-d43b245d-06cd-4ee9-8139-846c16e7f42e\" data-selection-mode=\"multiple\" data-hovered=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><span class=\"min-w-0 flex-1\">人工验收相册</span><span aria-hidden=\"true\" class=\"list-box-item__indicator\" data-slot=\"list-box-item-indicator\"><svg aria-hidden=\"true\" data-slot=\"list-box-item-indicator--checkmark\" fill=\"none\" role=\"presentation\" stroke=\"currentColor\" stroke-dasharray=\"22\" stroke-dashoffset=\"66\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" viewBox=\"0 0 17 18\"><polyline points=\"1 9 7 14 15 4\"></polyline></svg></span></div>",
+    "mainScrollTop": 0,
+    "dialogs": [
+      {
+        "label": "选择相册",
+        "html": "<section id=\"react-aria1604460947-_r_q_\" data-slot=\"popover-dialog\" class=\"popover__dialog grid gap-3 p-3\" data-rac=\"\" aria-label=\"选择相册\" role=\"dialog\" tabindex=\"-1\"><div data-slot=\"search-field\" class=\"search-field search-field--primary\" data-rac=\"\" data-empty=\"true\"><div class=\"search-field__group min-h-11 rounded-lg border border-border bg-background\" data-slot=\"search-field-group\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" fill=\"none\" height=\"16\" role=\"presentation\" viewBox=\"0 0 16 16\" width=\"16\" xmlns=\"http://www.w3.org/2000/svg\" class=\"search-field__search-icon\" data-slot=\"search-field-search-icon\"><path clip-rule=\"evenodd\" d=\"M11.5 7a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-.82 4.74a6 6 0 1 1 1.06-1.06l2.79 2.79a.75.75 0 1 1-1.06 1.06z\" fill=\"currentColor\" fill-rule=\"evenodd\"></path></svg><input aria-label=\"搜索相册\" placeholder=\"搜索相册名称或 ID\" tabindex=\"0\" id=\"react-aria1604460947-_r_16_\" class=\"search-field__input min-w-0 text-base md:text-sm\" data-slot=\"search-field-input\" data-rac=\"\" type=\"search\" value=\"\" title=\"\"><button data-slot=\"search-field-clear-button\" class=\"close-button close-button--default search-field__clear-button size-11 shrink-0\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"清空相册搜索\" id=\"react-aria1604460947-_r_1b_\" slot=\"clear\"><svg aria-hidden=\"true\" fill=\"none\" height=\"16\" role=\"presentation\" viewBox=\"0 0 16 16\" width=\"16\" xmlns=\"http://www.w3.org/2000/svg\" data-slot=\"close-button-icon\"><path clip-rule=\"evenodd\" d=\"M3.47 3.47a.75.75 0 0 1 1.06 0L8 6.94l3.47-3.47a.75.75 0 1 1 1.06 1.06L9.06 8l3.47 3.47a.75.75 0 1 1-1.06 1.06L8 9.06l-3.47 3.47a.75.75 0 0 1-1.06-1.06L6.94 8 3.47 4.53a.75.75 0 0 1 0-1.06Z\" fill=\"currentColor\" fill-rule=\"evenodd\"></path></svg></button></div></div><template></template><span data-focus-scope-start=\"true\" hidden=\"\"></span><div data-slot=\"list-box\" class=\"list-box list-box--default max-h-60 overflow-y-auto\" data-rac=\"\" aria-label=\"相册列表\" aria-multiselectable=\"true\" role=\"listbox\" aria-orientation=\"vertical\" id=\"react-aria1604460947-_r_1e_\" tabindex=\"-1\" data-collection=\"react-aria1604460947-_r_1d_\" data-layout=\"stack\" data-orientation=\"vertical\"><div data-slot=\"list-box-item\" data-relation-id=\"e1bde917-a101-4b77-a5d1-fb479c6945b4\" class=\"list-box-item list-box-item--default min-h-11 gap-2 text-sm [overflow-wrap:anywhere]\" data-rac=\"\" role=\"option\" aria-selected=\"false\" tabindex=\"-1\" data-collection=\"react-aria1604460947-_r_1d_\" data-key=\"e1bde917-a101-4b77-a5d1-fb479c6945b4\" data-react-aria-pressable=\"true\" id=\"react-aria1604460947-_r_1e_-option-e1bde917-a101-4b77-a5d1-fb479c6945b4\" data-selection-mode=\"multiple\"><span class=\"min-w-0 flex-1\">同名旅行 · e1bde917-a101-4b77-a5d1-fb479c6945b4</span><span aria-hidden=\"true\" class=\"list-box-item__indicator\" data-slot=\"list-box-item-indicator\"><svg aria-hidden=\"true\" data-slot=\"list-box-item-indicator--checkmark\" fill=\"none\" role=\"presentation\" stroke=\"currentColor\" stroke-dasharray=\"22\" stroke-dashoffset=\"66\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" viewBox=\"0 0 17 18\"><polyline points=\"1 9 7 14 15 4\"></polyline></svg></span></div><div data-slot=\"list-box-item\" data-relation-id=\"5cd8f2b9-946a-4bc3-88b3-3498a83ce8a4\" class=\"list-box-item list-box-item--default min-h-11 gap-2 text-sm [overflow-wrap:anywhere]\" data-rac=\"\" role=\"option\" aria-selected=\"false\" tabindex=\"-1\" data-collection=\"react-aria1604460947-_r_1d_\" data-key=\"5cd8f2b9-946a-4bc3-88b3-3498a83ce8a4\" data-react-aria-pressable=\"true\" id=\"react-aria1604460947-_r_1e_-option-5cd8f2b9-946a-4bc3-88b3-3498a83ce8a4\" data-selection-mode=\"multiple\"><span class=\"min-w-0 flex-1\">同名旅行 · 5cd8f2b9-946a-4bc3-88b3-3498a83ce8a4</span><span aria-hidden=\"true\" class=\"list-box-item__indicator\" data-slot=\"list-box-item-indicator\"><svg aria-hidden=\"true\" data-slot=\"list-box-item-indicator--checkmark\" fill=\"none\" role=\"presentation\" stroke=\"currentColor\" stroke-dasharray=\"22\" stroke-dashoffset=\"66\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" viewBox=\"0 0 17 18\"><polyline points=\"1 9 7 14 15 4\"></polyline></svg></span></div><div data-slot=\"list-box-item\" data-relation-id=\"d43b245d-06cd-4ee9-8139-846c16e7f42e\" class=\"list-box-item list-box-item--default min-h-11 gap-2 text-sm [overflow-wrap:anywhere]\" data-rac=\"\" role=\"option\" aria-selected=\"false\" tabindex=\"0\" data-collection=\"react-aria1604460947-_r_1d_\" data-key=\"d43b245d-06cd-4ee9-8139-846c16e7f42e\" data-react-aria-pressable=\"true\" id=\"react-aria1604460947-_r_1e_-option-d43b245d-06cd-4ee9-8139-846c16e7f42e\" data-selection-mode=\"multiple\" data-hovered=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><span class=\"min-w-0 flex-1\">人工验收相册</span><span aria-hidden=\"true\" class=\"list-box-item__indicator\" data-slot=\"list-box-item-indicator\"><svg aria-hidden=\"true\" data-slot=\"list-box-item-indicator--checkmark\" fill=\"none\" role=\"presentation\" stroke=\"currentColor\" stroke-dasharray=\"22\" stroke-dashoffset=\"66\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" viewBox=\"0 0 17 18\"><polyline points=\"1 9 7 14 15 4\"></polyline></svg></span></div></div><span data-focus-scope-end=\"true\" hidden=\"\"></span><button data-slot=\"button\" class=\"button button--md button--outline min-h-11 w-full rounded-lg\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria1604460947-_r_1i_\">新建相册</button></section>"
+      }
+    ],
+    "triggers": [
+      {
+        "html": "<button data-slot=\"button\" class=\"button button--md button--outline min-h-11 w-full justify-between rounded-lg px-3 text-left text-sm font-normal data-[pressed=true]:transform-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" aria-expanded=\"true\" id=\"react-aria1604460947-_r_r_\" data-react-aria-pressable=\"true\" aria-label=\"选择相册\" data-pressed=\"true\" aria-controls=\"react-aria1604460947-_r_q_\">选择相册（可多选）<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down size-4 shrink-0\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>"
+      },
+      {
+        "html": "<button data-slot=\"button\" class=\"button button--md button--outline min-h-11 w-full justify-between rounded-lg px-3 text-left text-sm font-normal data-[pressed=true]:transform-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" aria-expanded=\"false\" id=\"react-aria1604460947-_r_v_\" data-react-aria-pressable=\"true\" aria-label=\"选择标签\">选择标签（可多选）<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down size-4 shrink-0\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>"
+      }
+    ],
+    "exiting": [],
+    "items": []
+  },
+  "failureScreenshot": "relations-preview-failure.png"
+}

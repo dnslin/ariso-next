@@ -338,3 +338,83 @@ it('applies refreshed limits to new additions without clearing current files or 
     expect(transport.destroy).not.toHaveBeenCalled(),
   );
 });
+
+it('keeps the frozen names and original submission totals after new settings and cleared rows', async () => {
+  const c = setup(2, 10);
+  c.add(3);
+  const labels = {
+    storageId: 'local',
+    storageName: '本地 A',
+    albums: [{ id: 'album-a', name: '相册 A' }],
+    tags: [{ id: 'tag-a', name: '标签 A' }],
+  };
+  const first = c.controller.start('private', 'local', {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+    labels,
+  });
+  labels.storageName = '本地 B';
+  labels.albums[0].name = '相册 B';
+  labels.tags[0].name = '标签 B';
+  await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
+  const frozen = c.controller.snapshot[0].frozenSubmission;
+  expect(frozen).toMatchObject({
+    number: 1,
+    count: 3,
+    groups: [2, 1],
+    storageName: '本地 A',
+    albums: [{ id: 'album-a', name: '相册 A' }],
+    tags: [{ id: 'tag-a', name: '标签 A' }],
+  });
+  c.add(1);
+  const second = c.controller.start('public', 'local', {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+    labels,
+  });
+  await vi.waitFor(() => expect(c.transports[3].upload).toHaveBeenCalledOnce());
+  expect(c.controller.snapshot[3].frozenSubmission).toMatchObject({
+    number: 2,
+    count: 1,
+    groups: [1],
+    storageName: '本地 B',
+    albums: [{ id: 'album-a', name: '相册 B' }],
+  });
+  expect(c.controller.snapshot[0].frozenSubmission).toBe(frozen);
+  c.settle(0, 'failed');
+  await vi.waitFor(() =>
+    expect(c.controller.snapshot[0].state).toBe('upload-failed'),
+  );
+  c.controller.clearCompleted();
+  expect(c.controller.snapshot[0].frozenSubmission).toBe(frozen);
+  expect(frozen?.count).toBe(3);
+  c.controller.destroy();
+  c.transports[1].reject(new Error('aborted'));
+  c.transports[3].reject(new Error('aborted'));
+  await Promise.all([first, second]);
+  expect(c.controller.hasStarted).toBe(true);
+});
+
+it('uses the accepted storage identity when the default changes after settings were displayed', async () => {
+  const c = setup();
+  c.add(1);
+  const running = c.controller.start('private', undefined, {
+    albumIds: [],
+    tagIds: [],
+    labels: {
+      storageId: 'previous-default',
+      storageName: '原默认存储名称',
+      albums: [],
+      tags: [],
+    },
+  });
+  await vi.waitFor(() => expect(c.transports[0].upload).toHaveBeenCalledOnce());
+  const request = JSON.parse(c.request.mock.calls[0][1]!.body as string);
+  expect(request).not.toHaveProperty('storageId');
+  expect(c.controller.snapshot[0]).toMatchObject({
+    storageId: 'local',
+    frozenSubmission: { storageName: 'local' },
+  });
+  c.settle(0, 'failed');
+  await running;
+});

@@ -16,7 +16,7 @@ import { notifyLibraryChanged } from '../library/library-changes';
 import { DetailReadError } from '../library/read-detail';
 import { UploadController } from './controller';
 import type { UploadSettings } from './settings';
-import type { UploadItem } from './types';
+import type { UploadItem, UploadRelation } from './types';
 
 export const uploadTerminalStates = new Set<UploadItem['state']>([
   'ready',
@@ -52,6 +52,8 @@ function useUploadLifetime() {
   const [chosenStorageId, setStorageId] = useState<string>();
   const [chosenVisibility, setVisibility] =
     useState<UploadSettings['defaultVisibility']>();
+  const [chosenAlbums, setAlbums] = useState<UploadRelation[]>([]);
+  const [chosenTags, setTags] = useState<UploadRelation[]>([]);
   const reset = useCallback(() => {
     // Release synchronously before a login navigation can invoke beforeunload.
     ownedController.current?.destroy();
@@ -60,6 +62,8 @@ function useUploadLifetime() {
     setStarted(false);
     setStorageId(undefined);
     setVisibility(undefined);
+    setAlbums([]);
+    setTags([]);
     client.clear();
   }, [client]);
   useEffect(() => {
@@ -174,6 +178,11 @@ function useUploadLifetime() {
     setStorageId,
     chosenVisibility,
     setVisibility,
+    chosenAlbums,
+    setAlbums,
+    chosenTags,
+    setTags,
+    expire,
     reset,
   };
 }
