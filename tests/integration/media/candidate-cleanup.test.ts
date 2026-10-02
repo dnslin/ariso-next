@@ -35,7 +35,10 @@ it('cleans exact Local/S3 candidates in bounded batches, preserves published obj
     const key = new URL(request.url!, 'http://localhost').pathname
       .split('/')
       .at(-1)!;
-    if (key === 'denied') {
+    if (
+      key === 'denied' ||
+      (key === 'denied-after-head' && request.method === 'DELETE')
+    ) {
       response.writeHead(403, { 'content-type': 'application/xml' });
       response.end(
         '<Error><Code>AccessDenied</Code><Message>Denied cleanup</Message></Error>',
@@ -43,6 +46,8 @@ it('cleans exact Local/S3 candidates in bounded batches, preserves published obj
     } else if (request.method === 'DELETE') {
       deleted.push(key);
       response.writeHead(204).end();
+    } else if (deleted.includes(key)) {
+      response.writeHead(404).end();
     } else {
       response.writeHead(200, { 'content-length': '4' }).end();
     }
@@ -153,7 +158,11 @@ it('cleans exact Local/S3 candidates in bounded batches, preserves published obj
         .from(mediaObjects)
         .where(eq(mediaObjects.id, candidateId))
         .get(),
-    ).toMatchObject({ status: 'deleted', byteSize: 0 });
+    ).toMatchObject({
+      status: 'deleted',
+      byteSize: 0,
+      byteSizeConfirmedAt: expect.any(Date),
+    });
     expect(
       await inspectObject(storageRoot, local, candidatePlan.key),
     ).toBeNull();
@@ -168,6 +177,11 @@ it('cleans exact Local/S3 candidates in bounded batches, preserves published obj
     expect(
       remoteCandidates.filter((object) => object.status === 'deleted'),
     ).toHaveLength(20);
+    expect(
+      remoteCandidates
+        .filter((object) => object.status === 'deleted')
+        .every((object) => object.byteSizeConfirmedAt instanceof Date),
+    ).toBe(true);
     expect(deleted.sort()).toEqual(
       Array.from(
         { length: 20 },
@@ -192,8 +206,75 @@ it('cleans exact Local/S3 candidates in bounded batches, preserves published obj
     await cleanupMediaCandidates(runtime);
     expect(
       db.select().from(mediaObjects).where(eq(mediaObjects.id, deniedId)).get(),
-    ).toMatchObject({ status: 'cleanup_failed', byteSize: 4 });
+    ).toMatchObject({
+      status: 'cleanup_failed',
+      byteSize: 4,
+      byteSizeConfirmedAt: null,
+    });
     expect(deleted).not.toContain('denied');
+    const confirmedFailureId = randomUUID();
+    const settlementId = randomUUID();
+    db.insert(mediaObjects)
+      .values(
+        [
+          { id: confirmedFailureId, key: 'denied-after-head' },
+          { id: settlementId, key: 'settlement-candidate' },
+        ].map((object) => ({
+          ...object,
+          imageId: remote.imageId,
+          jobId: remote.jobId,
+          storageId: remoteId,
+          purpose: 'temporary' as const,
+          status: 'cleanup_pending' as const,
+          byteSize: null,
+          createdAt: now,
+          updatedAt: now,
+        })),
+      )
+      .run();
+    db.$client.exec(
+      `CREATE TRIGGER reject_candidate_settlement BEFORE UPDATE OF status ON media_objects WHEN NEW.id = '${settlementId}' AND NEW.status = 'deleted' BEGIN SELECT RAISE(ABORT, 'candidate settlement failed'); END`,
+    );
+    await expect(cleanupMediaCandidates(runtime)).rejects.toThrow(
+      'candidate settlement failed',
+    );
+    expect(
+      db
+        .select()
+        .from(mediaObjects)
+        .where(eq(mediaObjects.id, confirmedFailureId))
+        .get(),
+    ).toMatchObject({
+      status: 'cleanup_failed',
+      byteSize: 4,
+      byteSizeConfirmedAt: expect.any(Date),
+      error: expect.stringContaining('Denied cleanup'),
+    });
+    expect(
+      db
+        .select()
+        .from(mediaObjects)
+        .where(eq(mediaObjects.id, settlementId))
+        .get(),
+    ).toMatchObject({
+      status: 'cleanup_pending',
+      byteSize: null,
+      byteSizeConfirmedAt: null,
+    });
+    expect(deleted).toContain('settlement-candidate');
+    db.$client.exec('DROP TRIGGER reject_candidate_settlement');
+    await cleanupMediaCandidates(runtime);
+    expect(
+      db
+        .select()
+        .from(mediaObjects)
+        .where(eq(mediaObjects.id, settlementId))
+        .get(),
+    ).toMatchObject({
+      status: 'deleted',
+      byteSize: 0,
+      byteSizeConfirmedAt: expect.any(Date),
+    });
     expect(
       remoteCandidates.find((object) => object.id === remote.objectId)!.status,
     ).toBe('stored');

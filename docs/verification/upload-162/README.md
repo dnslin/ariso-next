@@ -1,10 +1,10 @@
 # T-UP-04 / Issue #162 实施与验证
 
-日期：2026-10-02。Issue：[#162](https://github.com/dnslin/ariso-next/issues/162)。分支：`codex/issue-162-s3-upload`。起点：`origin/main` 的 `e188562257ed8e0c1a5d6304b13ad817797cd579`。使用独立 worktree，原项目目录正在处理其他任务，未混入其改动。
+日期：2026-10-02。Issue：[#162](https://github.com/dnslin/ariso-next/issues/162)。分支：`codex/issue-162-s3-upload`。起点：`origin/main` 的 `e188562257ed8e0c1a5d6304b13ad817797cd579`。创建 PR 后，main 已合入 #154，追加合入 `72c2dc8` 并重新核对受影响范围。使用独立 worktree，原项目目录正在处理其他任务，未混入其改动。
 
 ## 当前交付结论
 
-已实现 Local/S3 共用队列、S3 begin 选路、条件固定和媒体交接、确切对象清理、上传引用/用量，以及当前队列的链路提示与清理失败重试。已实现范围的独立代码审计通过，全部九项发现已修复并复核；清理专项真实浏览器通过，独立设计复核确认已实施状态无剩余本次视觉偏差。完整任务和人工 UI 验收未完成，PR 保持草稿。
+已实现 Local/S3 共用队列、S3 begin 选路、条件固定和媒体交接、确切对象清理、上传引用/用量，以及当前队列的链路提示与清理失败重试。已实现范围的独立代码审计通过，全部九项发现已修复并复核；清理专项真实浏览器通过，独立设计复核确认已实施状态无剩余本次视觉偏差。完整任务和人工 UI 验收未完成，[PR #230](https://github.com/dnslin/ariso-next/pull/230) 保持草稿。
 
 原生 blocked by 全部关闭：#160、#158、#161、#142、#71、#72、#141。原生 blocking #163、#164、#167 保持开放。前置实验的完成不等于本次生产能力或真实服务联验完成。
 
@@ -28,15 +28,15 @@ macOS arm64；Node 24.18.1；pnpm 11.19.0；本机 ImageMagick 7、ExifTool、Eg
 | 实际命令                                                                                                                                                           | 结果                                                                                                                                                                                                                                   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm install --frozen-lockfile`                                                                                                                                   | 通过，锁文件未改                                                                                                                                                                                                                       |
-| `pnpm run db:generate`                                                                                                                                             | 通过；0017 仅新增九个上传会话列，已审 SQL                                                                                                                                                                                              |
-| `pnpm run test:unit`                                                                                                                                               | 最终 70 文件 865 项通过                                                                                                                                                                                                                |
-| `pnpm run test:integration --maxWorkers=2`                                                                                                                         | 120 文件 1133 项通过（356.93s）；普通集成与真实工具组均执行。最后的源目录修复另跑下列受影响检查，没有重复全套                                                                                                                          |
+| `pnpm run db:generate`                                                                                                                                             | 通过；最终 0019 仅新增九个上传会话列；main 原 0017/0018 不变，已审 SQL                                                                                                                                                                 |
+| `pnpm run test:unit`                                                                                                                                               | 实施主轮 70 文件 865 项通过；最新 main 合并增量另见下节                                                                                                                                                                                |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                                         | 实施主轮 120 文件 1133 项通过（356.93s）；普通集成与真实工具组均执行。最后的源目录修复另跑下列受影响检查，没有重复全套                                                                                                                 |
 | `pnpm exec vitest run --project integration tests/integration/upload/s3.test.ts tests/integration/upload/sessions.test.ts tests/integration/media/process.test.ts` | 最后的源目录修复后，实际匹配两个上传文件，56 项通过；process 不属于该 project，不冒称在此执行                                                                                                                                          |
 | `pnpm exec vitest run --project media-tools tests/integration/media/process.test.ts`                                                                               | 正确工具组的媒体处理 25 项通过                                                                                                                                                                                                         |
 | `pnpm exec vitest run --project integration tests/integration/runtime/standalone.test.ts -t '包含编译 CLI'`                                                        | 最终包内容 1 项通过；同文件另 8 项因明确筛选未执行                                                                                                                                                                                     |
 | `pnpm run typecheck`                                                                                                                                               | 最终源码及浏览器脚本定稿后通过                                                                                                                                                                                                         |
 | `pnpm run lint`                                                                                                                                                    | 最终生产源码通过；最后仅浏览器滚轮观察修正另执行 `pnpm exec eslint e2e/upload-s3.mjs scripts/verify-browser.mjs --max-warnings=0` 通过                                                                                                 |
-| `pnpm run build`                                                                                                                                                   | 最终无部署密钥/数据库构建通过；57 个 NFT 与 standalone 的 src/tests/docs 条目均为 0，原生 SQLite、编译 CLI、迁移存在（[产物清单](./reports/artifact-trace.json)）                                                                      |
+| `pnpm run build`                                                                                                                                                   | 最终无部署密钥/数据库构建通过；最新合并包 59 个 NFT 与 standalone 的 src/tests/docs 条目均为 0，原生 SQLite、编译 CLI、迁移存在（[产物清单](./reports/artifact-trace.json)）                                                           |
 | `pnpm run format:check`                                                                                                                                            | 最终全部文档、代码和归档 JSON 格式检查通过                                                                                                                                                                                             |
 | `EGO_TASK_SPACE=12 pnpm run test:browser -- --suite upload-s3`                                                                                                     | 完整首轮整体退出 1，mixed/ready/resubmit 三个实际检查通过；后段 Network 观察缺陷修正后只复跑受影响清理专项，不将原轮写为通过                                                                                                           |
 | `EGO_TASK_SPACE=12 pnpm run test:browser -- --suite upload-s3 --only cleanup`                                                                                      | 最终退出 0，runner 与业务报告均 passed；50 布局 / 2 按下态和诊断首尾实际图，真实失败/accepted 两组、500→pending→maintenance none、单 POST/DELETE、原图字节、禁用/焦点/短视口通过（[最终报告](./browser/cleanup-final/upload-s3.json)） |
@@ -45,6 +45,24 @@ macOS arm64；Node 24.18.1；pnpm 11.19.0；本机 ImageMagick 7、ExifTool、Eg
 初轮 `pnpm run test:integration --maxWorkers=4` 为 15/1109 失败：产物混源码、空流取消、旧存储契约/迁移夹具及资源竞争超时。保留[失败原输出节选](./reports/integration-initial-failed.txt)，未跳过、加长超时或弱化断言；修复后用两个 worker 完整复跑通过。
 
 先取得失败证据再修：accepted 清理诊断和 retry500 后 pending 五项均失败，修复后通过。签名替换测试另发现活动传输被误显示为 waiting-upload，修复后 upload controller/transport 两文件最初 41 项通过；复审又实际复现重提/取消身份竞争，修复后 45 项通过（响应返回前取消、响应丢失后核对、已交接 409 与取消后不发新 begin/PUT）。后端 resubmit/上传/媒体五文件 78 项通过。最后又实际复现成功直传留下空源目录，新增文件系统 ENOENT 断言先失败；修复只删除该会话已知源目录，源字节仍保留在媒体输入中。失败与修后结果见 [目录失败](./reports/directory-red.txt)、[上传回归](./reports/directory-regression.txt)、[媒体回归](./reports/directory-media-regression.txt)。独立代码审计自行执行 19＋33＋4＋1 项聚焦行为通过，详见[代码审计](./code-review.md)。
+
+## 最新 main 合并增量
+
+PR #230 创建后实际发现 main 已合入 #154（PR #228），GitHub 报告 CONFLICTING，原始状态见 [PR 初始核对](./reports/pr-initial-state.json)。在本分支合入 main，保留 Local 永久删除的调度、活动任务中断、有限清理周期、引用/用量和 S3 永久删除限制；不修改其他任务的原工作区。
+
+两个分支均生成了 0017，按现有 Drizzle 工具保留 main 的 0017/0018 原 SQL、snapshot 和 journal，去除本分支未合并的旧 0017，重新生成 0019 九个 nullable 上传字段。新增真实旧 0018 数据库升级覆盖：失败删除任务/周期/诊断保留、历史进度不变、新列默认空、重复迁移不重放及外键完整；迁移和历史存储两文件 35 项通过。
+
+媒体候选清理复用 main 的确切对象清理函数，并沿现有 Local/S3 适配器读实际大小和删除，保留真实确认时间、责任交接以及数据库结算失败向上报错。候选查询不抢永久删除中的对象；队列同时保留删除中断和 media-input 收尾，不增加新限时器或扫描器。独立审计已回读合并增量和迁移链，未发现确定缺陷。
+
+合并后已经重新构建、lint（退出 0），媒体单元 11 文件 / 180 项通过，新包 59 份追踪及 standalone 无 src/tests/docs、SQLite/CLI/迁移存在。相关集成 22 文件 / 252 项和类型检查也通过，完整命令见 [合并回归](./reports/merge-integration.txt)。没有 UI 源或公共外壳变化；已有 Figma/浏览器证据执行于合并前生产包，未将其改记为新合并包重跑，不无谓重复矩阵。
+
+| 合并后实际命令                                                                                                                       | 结果                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run db:generate`                                                                                                               | 0019 九个 nullable 上传列，main 0017/18 原始链保持不变                                                                           |
+| `pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts tests/integration/storage/settings.test.ts` | 2 文件 / 35 项通过                                                                                                               |
+| `pnpm exec vitest run --project unit tests/unit/media`                                                                               | 11 文件 / 180 项通过                                                                                                             |
+| [完整相关集成命令](./reports/merge-integration.txt)                                                                                  | 22 文件 / 252 项通过；实际完整文件列表及命令见 [合并回归](./reports/merge-integration.txt)，没有筛选跳过                         |
+| `pnpm run build` / `pnpm run typecheck` / `pnpm run lint`                                                                            | 最新合并增量均退出 0；[构建](./reports/merge-build.txt)、[类型](./reports/merge-typecheck.txt)、[静态](./reports/merge-lint.txt) |
 
 ## 浏览器历史轮次
 
@@ -94,4 +112,4 @@ macOS arm64；Node 24.18.1；pnpm 11.19.0；本机 ImageMagick 7、ExifTool、Eg
 3. **人工 UI 验收未执行。** agent 的功能/设计评审均不能代替用户人工验收。物理手机和 Release 双架构容器检查按执行约定本次不要求，未记为通过。
 4. 生产迟到孤儿扫描归 #164，S3 永久删除归 #163，公共同步上传 API 归 #167；未伪造这些接口或完成状态。历史实验不代表生产扫描已经接入。
 
-不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue，不删除本分支或 worktree。远端实际检查与 PR 链接在最终交付后更新；空检查列表不会写为 CI 通过。
+不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue，不删除本分支或 worktree。PR #230 初次核对 statusCheckRollup 为空；没有触发远端检查，不能写作 CI 通过。合并后远端状态继续按实际核对更新。

@@ -16,6 +16,7 @@ import {
 } from './candidate-cleanup.ts';
 import { mediaError } from './errors.ts';
 import { discardMediaInput } from './input.ts';
+import { cleanupPermanentDeletes } from './cleanup.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
 export function claimNextMediaJob(db: BetterSQLite3Database) {
@@ -27,6 +28,7 @@ export function claimNextMediaJob(db: BetterSQLite3Database) {
         .where(
           and(
             eq(mediaJobs.status, 'queued'),
+            sql`exists (select 1 from media_images where id = ${mediaJobs.imageId} and deletion_status is null)`,
             sql`(${mediaJobs.nextAttemptAt} is null or ${mediaJobs.nextAttemptAt} <= ${Date.now()})`,
             sql`not exists (select 1 from media_jobs active where active.image_id = ${mediaJobs.imageId} and (active.status = 'running' or (active.status = 'queued' and active.rowid < ${mediaJobs}.rowid)))`,
           ),
@@ -67,7 +69,10 @@ export function claimNextMediaJob(db: BetterSQLite3Database) {
 export function startMediaQueue(runtime: MediaRuntime) {
   const controller = new AbortController();
   const { signal } = controller;
-  const active = new Set<Promise<void>>();
+  const active = new Map<
+    string,
+    { imageId: string; controller: AbortController; execution: Promise<void> }
+  >();
   let failure: unknown;
   async function consume() {
     try {
@@ -108,13 +113,32 @@ export function startMediaQueue(runtime: MediaRuntime) {
       }
       let nextCleanupAt = 0;
       while (!signal.aborted && runtime.db.$client.open) {
+        for (const { imageId, controller } of active.values()) {
+          const image = runtime.db
+            .select({ deletionStatus: mediaImages.deletionStatus })
+            .from(mediaImages)
+            .where(eq(mediaImages.id, imageId))
+            .get();
+          if (image?.deletionStatus)
+            controller.abort(
+              mediaError(
+                'MEDIA_IMAGE_DELETING',
+                `Image is being deleted: ${imageId}`,
+              ),
+            );
+        }
         const limit = readMediaSettings(runtime.db)?.concurrency ?? 1;
         while (!signal.aborted && active.size < limit) {
           const job = claimNextMediaJob(runtime.db);
           if (!job) break;
           const run =
             job.kind === 'metadata' ? processMetadataJob : processMediaJob;
-          const execution = run(runtime, job.id, signal)
+          const jobController = new AbortController();
+          const execution = run(
+            runtime,
+            job.id,
+            AbortSignal.any([signal, jobController.signal]),
+          )
             .catch((err: unknown) => {
               failure ??= err;
               runtime.logger.error(
@@ -125,10 +149,20 @@ export function startMediaQueue(runtime: MediaRuntime) {
                 mediaError('MEDIA_INTERRUPTED', 'Media queue failed', err),
               );
             })
-            .finally(() => active.delete(execution));
-          active.add(execution);
+            .finally(() => active.delete(job.id));
+          active.set(job.id, {
+            imageId: job.imageId,
+            controller: jobController,
+            execution,
+          });
         }
         if (Date.now() >= nextCleanupAt) {
+          await cleanupPermanentDeletes(
+            runtime,
+            new Set([...active.values()].map(({ imageId }) => imageId)),
+            signal,
+          );
+          if (!runtime.db.$client.open) break;
           await cleanupMediaCandidates(runtime, signal);
           nextCleanupAt = Date.now() + 1000;
         }
@@ -147,7 +181,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
         );
       }
     } finally {
-      await Promise.all(active);
+      await Promise.all([...active.values()].map(({ execution }) => execution));
     }
   }
   const completion = consume();

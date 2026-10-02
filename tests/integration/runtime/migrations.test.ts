@@ -210,6 +210,67 @@ describe('runtime forward migrations', () => {
     expect(db.pragma('foreign_key_check')).toEqual([]);
   });
 
+  it('从 Local 永久删除版本升级上传字段时保留清理责任，重复升级不重放', () => {
+    const journal = JSON.parse(
+      readFileSync(resolve('drizzle/meta/_journal.json'), 'utf8'),
+    ) as { entries: { tag: string; when: number }[] };
+    const previousEntries = journal.entries.slice(0, 19);
+    expect(previousEntries.at(-1)?.tag).toBe('0018_closed_nebula');
+    const previousFolder = writeMigrations(
+      join(directory, 'local-deletion-release'),
+      previousEntries.map((entry) => ({
+        ...entry,
+        sql: readFileSync(resolve('drizzle', `${entry.tag}.sql`), 'utf8'),
+      })),
+    );
+    migrate(previousFolder);
+    const db = connection.db.$client;
+    db.exec(`
+      INSERT INTO media_cleanup_jobs
+        (id, image_id, status, cycle, error, created_at, updated_at)
+      VALUES ('retained-delete', 'retained-image', 'failed', 2, 'delete denied', 1000, 2000);
+    `);
+    const retained = db.prepare('SELECT * FROM media_cleanup_jobs').all();
+    const priorProgress = progress();
+    expect(() => db.prepare('SELECT route FROM upload_sessions')).toThrow();
+
+    migrate(resolve('drizzle'));
+    expect(db.prepare('SELECT * FROM media_cleanup_jobs').all()).toEqual(
+      retained,
+    );
+    expect(
+      db.prepare('SELECT byte_size_confirmed_at FROM media_objects').all(),
+    ).toEqual([]);
+    for (const name of [
+      'candidate_job_id',
+      'route',
+      'route_reason',
+      'temporary_path',
+      'signature_expires_at',
+      'source_etag',
+      'temporary_bytes',
+      'final_bytes',
+      'confirmed_at',
+    ]) {
+      expect(
+        db.prepare('PRAGMA table_info(upload_sessions)').all(),
+      ).toContainEqual(
+        expect.objectContaining({ name, notnull: 0, dflt_value: null }),
+      );
+    }
+    const upgradedProgress = progress();
+    expect(upgradedProgress).toHaveLength(journal.entries.length);
+    expect(upgradedProgress.slice(0, priorProgress.length)).toEqual(
+      priorProgress,
+    );
+    migrate(resolve('drizzle'));
+    expect(progress()).toEqual(upgradedProgress);
+    expect(db.prepare('SELECT * FROM media_cleanup_jobs').all()).toEqual(
+      retained,
+    );
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+  });
+
   it('空 journal 可重复执行且没有业务表', () => {
     const folder = writeMigrations(join(directory, 'empty-sql'), []);
     migrate(folder);

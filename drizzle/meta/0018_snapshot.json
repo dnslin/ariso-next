@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "62e6329e-96cc-47cb-aa29-dab91b5b9b8a",
-  "prevId": "7b7e90ea-402d-470c-9e3b-9df039db269a",
+  "id": "d87409b2-1db3-45a4-a0cb-d748d5dc841a",
+  "prevId": "62e6329e-96cc-47cb-aa29-dab91b5b9b8a",
   "tables": {
     "analytics_daily": {
       "name": "analytics_daily",
@@ -1244,6 +1244,13 @@
         },
         "byte_size": {
           "name": "byte_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "byte_size_confirmed_at": {
+          "name": "byte_size_confirmed_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,

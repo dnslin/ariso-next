@@ -632,8 +632,20 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
           .map((v) => v.kind),
       ).toEqual(['original']);
       expect(state(accepted.imageId).latestJob!.status).toBe(
-        condition === 'cancelled' ? 'cancelled' : 'failed',
+        condition === 'cancelled' || condition === 'deleting'
+          ? 'cancelled'
+          : 'failed',
       );
+      if (condition === 'deleting') {
+        expect(state(accepted.imageId).image.processingStatus).toBe(
+          'processing',
+        );
+        expect(state(accepted.imageId).latestJob).toMatchObject({
+          retryCount: 0,
+          nextAttemptAt: null,
+          error: expect.stringContaining('MEDIA_IMAGE_DELETING'),
+        });
+      }
     },
   );
 

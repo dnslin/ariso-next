@@ -552,7 +552,7 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         createdAt: now,
       })
       .run();
-    // Migration 0017 adds nullable transfer fields absent in this historical schema.
+    // Migration 0019 adds nullable transfer fields absent in this historical schema.
     previous.db.$client.exec(`
       INSERT INTO upload_sessions (id, submission_id, queue_item_id, group_index,
         original_name, declared_size, storage_id, state, candidate_image_id, created_at, updated_at)

@@ -1,0 +1,14 @@
+Command: pnpm exec vitest run --project integration --project media-tools tests/integration/upload/s3.test.ts tests/integration/upload/s3-resubmit-http.test.ts tests/integration/upload/session-http.test.ts tests/integration/upload/sessions.test.ts tests/integration/upload/local.test.ts tests/integration/upload/local-http.test.ts tests/integration/media/candidate-cleanup.test.ts tests/integration/media/queue.test.ts tests/integration/media/recovery.test.ts tests/integration/media/delete.test.ts tests/integration/media/delete-tools.test.ts tests/integration/media/references.test.ts tests/integration/media/usage.test.ts tests/integration/media/trash-http.test.ts tests/integration/media/process.test.ts tests/integration/media/metadata.test.ts tests/integration/media/metadata-http.test.ts tests/integration/media/reprocess.test.ts tests/integration/media/reprocess-http.test.ts tests/integration/media/recovery-tools.test.ts tests/integration/delivery/reprocess.test.ts tests/integration/runtime/standalone.test.ts --maxWorkers=2
+Environment: macOS arm64; Node24.18.1; pnpm11.19.0; ImageMagick7; ExifTool
+Exit: 0
+
+Already up to date
+Done in 48ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+
+ Test Files  22 passed (22)
+      Tests  252 passed (252)
+   Start at  22:27:11
+   Duration  78.23s (tests 95%, import 4%)

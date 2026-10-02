@@ -86,12 +86,23 @@ export function saveMediaCandidate(
       mime: result.mime,
     };
     tx.update(mediaObjects)
-      .set({ ...details, status: 'stored', error: null, updatedAt: now })
+      .set({
+        ...details,
+        status: 'stored',
+        byteSizeConfirmedAt: now,
+        error: null,
+        updatedAt: now,
+      })
       .where(eq(mediaObjects.id, objectId))
       .run();
     if (temporaryObjectId)
       tx.update(mediaObjects)
-        .set({ status: 'deleted', byteSize: 0, updatedAt: now })
+        .set({
+          status: 'deleted',
+          byteSize: 0,
+          byteSizeConfirmedAt: now,
+          updatedAt: now,
+        })
         .where(eq(mediaObjects.id, temporaryObjectId))
         .run();
     if (
@@ -334,7 +345,12 @@ export async function reconcileMediaObjects(
     try {
       await deleteMediaObject(runtime, storage, candidate.key, signal);
       db.update(mediaObjects)
-        .set({ status: 'deleted', byteSize: 0, updatedAt: new Date() })
+        .set({
+          status: 'deleted',
+          byteSize: 0,
+          byteSizeConfirmedAt: new Date(),
+          updatedAt: new Date(),
+        })
         .where(eq(mediaObjects.id, candidate.id))
         .run();
     } catch (err) {
@@ -342,6 +358,7 @@ export async function reconcileMediaObjects(
         .set({
           status: 'cleanup_failed',
           byteSize: existing?.size ?? 0,
+          byteSizeConfirmedAt: new Date(),
           error: analyzeMediaError(err).diagnostic,
           updatedAt: new Date(),
         })

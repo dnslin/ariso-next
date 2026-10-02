@@ -1,0 +1,89 @@
+Command: pnpm run build
+Environment: macOS arm64; Node24.18.1; pnpm11.19.0; no deployment key/database
+Exit: 0
+
+Already up to date
+Done in 41ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 65ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.9s
+  Running TypeScript ...
+  Finished TypeScript in 9.4s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/15) ...
+  Generating static pages using 9 workers (3/15)
+  Generating static pages using 9 workers (7/15)
+  Generating static pages using 9 workers (11/15)
+✓ Generating static pages using 9 workers (15/15) in 240ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /albums
+├ ƒ /albums/[albumId]
+├ ƒ /api/albums
+├ ƒ /api/albums/[id]
+├ ƒ /api/albums/[id]/cover
+├ ƒ /api/auth/[...all]
+├ ƒ /api/health
+├ ƒ /api/images
+├ ƒ /api/images/[id]
+├ ƒ /api/images/[id]/cleanup
+├ ƒ /api/images/[id]/cleanup/retry
+├ ƒ /api/images/[id]/collections
+├ ƒ /api/images/[id]/metadata
+├ ƒ /api/images/[id]/metadata/read
+├ ƒ /api/images/[id]/neighbors
+├ ƒ /api/images/[id]/reprocess
+├ ƒ /api/images/[id]/restore
+├ ƒ /api/images/[id]/trash
+├ ƒ /api/images/filter-options
+├ ƒ /api/images/selection
+├ ƒ /api/images/status
+├ ƒ /api/media/watermark-assets
+├ ƒ /api/settings/media
+├ ƒ /api/settings/storage
+├ ƒ /api/settings/upload
+├ ƒ /api/setup
+├ ƒ /api/storages
+├ ƒ /api/storages/[id]
+├ ƒ /api/storages/[id]/cors-tests
+├ ƒ /api/storages/[id]/cors-tests/[probeId]/complete
+├ ƒ /api/storages/[id]/probes/[probeId]/retry-cleanup
+├ ƒ /api/storages/[id]/test
+├ ƒ /api/tags
+├ ƒ /api/tags/[id]
+├ ƒ /api/trash
+├ ƒ /api/trash/[id]/preview
+├ ƒ /api/uploads/cleanup
+├ ƒ /api/uploads/sessions/[id]
+├ ƒ /api/uploads/sessions/[id]/begin
+├ ƒ /api/uploads/sessions/[id]/complete
+├ ƒ /api/uploads/sessions/[id]/content
+├ ƒ /api/uploads/sessions/[id]/resubmit
+├ ƒ /api/uploads/submissions
+├ ƒ /api/uploads/submissions/[id]
+├ ƒ /i/[imageId]
+├ ƒ /library
+├ ƒ /login
+├ ƒ /settings/storage/[id]
+├ ƒ /setup
+├ ƒ /tags
+├ ƒ /trash
+├ ƒ /upload
+└ ƒ /upload/settings
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+Optional cross-platform native tracing warnings remain; no other architecture claimed verified.

@@ -75,6 +75,7 @@ export function acceptOriginal(
       purpose: 'original',
       status: 'stored',
       byteSize: input.byteSize,
+      byteSizeConfirmedAt: now,
       format: input.format,
       mime: input.mime,
       createdAt: now,
