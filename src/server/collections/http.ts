@@ -9,10 +9,18 @@ const failureMessages = {
     log: 'Album management failed',
   },
   tags: {
-    response: '标签创建失败，请重试',
-    log: 'Tag creation failed',
+    response: '标签操作失败，请重试',
+    log: 'Tag management failed',
   },
 };
+
+export function collectionErrorStatus(error: CollectionError) {
+  return error.code === 'COLLECTION_TARGET_NOT_FOUND'
+    ? 404
+    : error.code === 'COLLECTION_TAG_CONFLICT'
+      ? 409
+      : 400;
+}
 
 export async function collectionResponse(
   request: Request,
@@ -29,7 +37,7 @@ export async function collectionResponse(
       return Response.json(
         { code: err.code, message: err.message },
         {
-          status: err.code === 'COLLECTION_TARGET_NOT_FOUND' ? 404 : 400,
+          status: collectionErrorStatus(err),
           headers,
         },
       );

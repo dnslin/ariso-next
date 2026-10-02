@@ -1,8 +1,16 @@
 # Issue #160 完整批次、取消与结果队列实施记录
 
-日期：2026-10-02（Asia/Shanghai）。[Issue #160](https://github.com/dnslin/ariso-next/issues/160)，任务 `T-UP-03`，需求编号与模块职责沿用[任务卡](../../tasks/m3-m4-platform.md#t-up-03-完整批次快照取消与结果队列)。本地功能已实施，专项验证、独立代码审计及独立设计验收通过；用户人工UI验收尚未完成，Issue 不标记验收完成。
+日期：2026-10-02（Asia/Shanghai）。[Issue #160](https://github.com/dnslin/ariso-next/issues/160)，任务 `T-UP-03`，需求编号与模块职责沿用[任务卡](../../tasks/m3-m4-platform.md#t-up-03-完整批次快照取消与结果队列)。本地功能已实施，专项验证、独立代码审计及独立设计验收通过；所有者现明确要求合并PR并关闭Issue，见下方指令记录。
 
-交付：[草稿PR #225](https://github.com/dnslin/ariso-next/pull/225)，分支 `codex/issue-160-upload-queue`。使用 `gh pr view 225 --json number,url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus` 实际回读为OPEN/isDraft=true，检查列表为空；没有触发远端检查，不记为CI通过，不等待不存在的工作流。直接推送连接无响应后，仅在当前命令设置获授权的本机代理重试成功，未修改全局配置。
+实施阶段的交付状态：[草稿PR #225](https://github.com/dnslin/ariso-next/pull/225)，分支 `codex/issue-160-upload-queue`。使用 `gh pr view 225 --json number,url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus` 实际回读为OPEN/isDraft=true，检查列表为空；没有触发远端检查，不记为CI通过，不等待不存在的工作流。直接推送连接无响应后，仅在当前命令设置获授权的本机代理重试成功，未修改全局配置。
+
+## 2026-10-02 所有者合并与关闭指令
+
+用户明确要求“合并pr 清理并更新本地分支 关闭issue”，授权将 [PR #225](https://github.com/dnslin/ariso-next/pull/225) 按当前实现与验证证据交付，并关闭 [Issue #160](https://github.com/dnslin/ariso-next/issues/160)。这条记录说明所有者的交付指令，不将其改写为逐项人工测试已经执行；下方草稿与等待人工验收的文字保留为当时记录。
+
+合并前最新main为 `afbf621`（已合入标签管理PR #226）。解决两处真实冲突：上传快速创建改为消费成熟标签管理 `createTag` 的完整tag/reused契约，GET列表、同名复用、CRUD领域成功/拒绝日志和409保持；所有相册/标签HTTP继续复用认证、Origin、no-store和错误边界，不恢复重复处理。浏览器主入口同时保留full的标签阶段、上传专项及only选择。未修改本次UI样式或已批准设计。
+
+实际Node24.18.1/pnpm11.19.0/macOS arm64：冻结安装、构建、完整类型、受影响源码与runner静态检查通过。`pnpm exec vitest run --project unit tests/unit/collections/tags-route.test.ts tests/unit/collections/tag-query.test.ts tests/unit/collections/validation.test.ts tests/unit/upload/validation.test.ts` 为4文件37项通过；真实 `pnpm exec vitest run --project integration tests/integration/collections/tag-http.test.ts tests/integration/collections/album-http.test.ts tests/integration/upload/settings-http.test.ts tests/integration/collections/tag-management.test.ts --maxWorkers=1` 为4文件6项通过。原始[单元](./reports/merge-tags-unit.txt)、[HTTP集成](./reports/merge-integration.txt)、[构建](./reports/merge-build.txt)、[类型](./reports/merge-typecheck.txt)与[静态](./reports/merge-runner-lint.txt)保留；可选resvg平台追踪诊断不称无警告。
 
 ## 前置与修改范围
 

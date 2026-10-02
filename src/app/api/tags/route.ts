@@ -1,34 +1,33 @@
-import { z } from 'zod';
-import { CollectionError } from '../../../server/collections/errors.ts';
 import {
-  collectionBody,
-  collectionResponse,
-} from '../../../server/collections/http.ts';
-import { getOrCreateTags } from '../../../server/collections/records.ts';
+  createTag,
+  listTags,
+} from '../../../server/collections/tag-management.ts';
+import { parseTagQuery } from '../../../server/collections/tag-query.ts';
+import { collectionBody } from '../../../server/collections/http.ts';
 import { getServerRuntime } from '../../../server/startup/server-start.ts';
+import { tagResponse } from './response.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const inputSchema = z.strictObject({ name: z.string() });
 
-/** Upload quick creation only; management is provided by the collections task. */
+export function GET(request: Request) {
+  return tagResponse(request, () =>
+    listTags(
+      getServerRuntime().connection.db,
+      parseTagQuery(new URL(request.url).searchParams),
+    ),
+  );
+}
+
 export function POST(request: Request) {
-  return collectionResponse(
+  return tagResponse(
     request,
-    'tags',
     async () => {
-      const parsed = inputSchema.safeParse(await collectionBody(request));
-      if (!parsed.success)
-        throw new CollectionError(
-          'COLLECTION_INVALID_INPUT',
-          parsed.error.message,
-        );
-      const { db } = getServerRuntime().connection;
-      const tag = db.transaction(
-        (tx) => getOrCreateTags(tx, [parsed.data.name])[0],
+      const input = await collectionBody(request);
+      return getServerRuntime().connection.db.transaction(
+        (tx) => createTag(tx, input),
         { behavior: 'immediate' },
       );
-      return { tag: { id: tag.id, displayName: tag.displayName } };
     },
     201,
   );

@@ -1,0 +1,40 @@
+Already up to date
+Done in 91ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Volumes/data/project/ariso-issue-176
+
+ ❯ |integration| tests/integration/runtime/server-start.test.ts (12 tests | 8 failed) 60736ms
+   ❯ Web startup and real health handler (7)
+     × 初始化缺失时健康接口返回 503，不按请求偷偷打开数据库 5663ms
+     × 真实连接关闭后返回 503，保留错误日志，响应没有秘密或路径且不会自动重连 5625ms
+     × 初始化失败向上传播，不保存失败状态，修复配置后可以重试 6835ms
+   ❯ Web shutdown ownership (5)
+     × 停止幂等，队列完成前保留连接，停止后健康接口拒绝新访问 5534ms
+     × Next close hook waits for framework cleanup, preserves this, and stops the application once 5208ms
+     × 框架与应用同时清理失败时仍记录框架原因 5612ms
+     × 队列停止失败仍清理统计和数据库，并保留原始错误 5767ms
+     × 统计刷写失败仍关闭数据库，不报告成功 5434ms
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 9 failed) 89235ms
+   × counts each original GET and download once without database writes 9998ms
+   × counts each compressed GET and download once without database writes 8599ms
+   × counts each watermark GET and download once without database writes 10416ms
+   × counts the actual original when the default version is inapplicable 10075ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 8692ms
+   × reads committed timezone after response preparation and keeps already archived dates unchanged 14537ms
+   × does not retry or duplicate a repeated delivery callback within one request 9768ms
+   × logs aggregation failure with event context and still returns complete legal content 10898ms
+   × logs capacity loss without truncating content 5523ms
+ ❯ |integration| tests/integration/identity/auth.test.ts (18 tests | 3 failed) 275185ms
+   ❯ initialized production auth (17)
+     × production constraints reject invalid owners and duplicate providers; incomplete identity is explicit 16134ms
+     × only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not 41706ms
+     × saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins 27970ms
+{"time":"2026-10-01T16:28:02.569Z","level":"info","module":"identity.setup","event":"setup-code","code":"[REDACTED_TEST_SETUP_CODE]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-01T16:28:02.670Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-01T16:28:03.471Z","level":"info","module":"identity.setup","event":"setup-code","code":"[REDACTED_TEST_SETUP_CODE]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-01T16:28:03.477Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso-issue-176/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso-issue-176/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-9XYbae/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-01T16:28:03.487Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-01T16:28:04.055Z","level":"info","module":"identity.setup","event":"setup-code","code":"[REDACTED_TEST_SETUP_CODE]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-01T16:28:04.130Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+[ELIFECYCLE] Command failed with exit code 130.

@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { expect, it, vi } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
+import type { createTag } from '../../../src/server/collections/tag-management.ts';
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
 import { launch, stop } from '../runtime/process-helpers.ts';
 
@@ -128,17 +129,25 @@ it('protects upload settings and quick tag creation with real owner and origin c
       });
       expect(response.status).toBe(201);
       expect(response.headers.get('cache-control')).toBe('no-store');
-      return (await response.json()).tag as { id: string; displayName: string };
+      return (await response.json()).tag as ReturnType<typeof createTag>['tag'];
     };
     const first = await create(' Go ');
-    expect(first).toEqual({ id: expect.any(String), displayName: 'Go' });
+    expect(first).toEqual({
+      id: expect.any(String),
+      displayName: 'Go',
+      imageCount: 0,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+    });
     expect(await create('go')).toEqual(first);
     expect(
       live.db.$client.prepare('SELECT COUNT(*) AS count FROM tags').get(),
     ).toEqual({ count: 1 });
     expect(
       await (await fetch(`${origin}/upload/settings`, { headers })).json(),
-    ).toMatchObject({ tags: [first] });
+    ).toMatchObject({
+      tags: [{ id: first.id, displayName: first.displayName }],
+    });
 
     live.db.$client.exec(
       "CREATE TRIGGER reject_tag BEFORE INSERT ON tags BEGIN SELECT RAISE(ABORT, 'tag database write failure'); END",
@@ -152,7 +161,7 @@ it('protects upload settings and quick tag creation with real owner and origin c
     expect(failed.headers.get('cache-control')).toBe('no-store');
     expect(await failed.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
-      message: '标签创建失败，请重试',
+      message: '标签操作失败，请重试',
     });
     expect(
       live.db.$client.prepare('SELECT COUNT(*) AS count FROM tags').get(),
@@ -175,7 +184,7 @@ it('protects upload settings and quick tag creation with real owner and origin c
           level: 'error',
           method: 'POST',
           path: '/api/tags',
-          msg: 'Tag creation failed',
+          msg: 'Tag management failed',
         }),
       );
     });

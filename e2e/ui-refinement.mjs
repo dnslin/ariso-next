@@ -4,6 +4,78 @@ import { join } from 'node:path';
 const disclosure = 'loc=role:dialog[name="访问说明"]';
 
 export async function verifyAccessDisclosure(page, trigger, report) {
+  const readTrigger = () =>
+    page.evaluate(() => {
+      const node = document.querySelector(
+        'button[aria-label$="：查看访问说明"]',
+      );
+      const bounds = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      const transform = new DOMMatrixReadOnly(
+        style.transform === 'none' ? undefined : style.transform,
+      );
+      return {
+        theme: document.documentElement.classList.contains('dark')
+          ? 'dark'
+          : 'light',
+        width: bounds.width,
+        height: bounds.height,
+        background: style.backgroundColor,
+        radius: parseFloat(style.borderRadius),
+        nestedChip: !!node.querySelector('[data-slot="chip"],.chip'),
+        transform: [
+          transform.a,
+          transform.b,
+          transform.c,
+          transform.d,
+          transform.e,
+          transform.f,
+        ],
+        focused:
+          document.activeElement === node &&
+          node.matches(':focus-visible,[data-focus-visible="true"]'),
+      };
+    });
+  const triggerStates = [];
+  for (const state of ['idle', 'hover', 'focus']) {
+    if (state === 'hover') await page.hover(trigger);
+    if (state === 'focus') {
+      await page.mouse.move(0, 0);
+      await page.focus(trigger);
+      await page.keyboard.press('Tab');
+      await page.keyboard.press('Shift+Tab');
+    }
+    const actual = await readTrigger();
+    assert.equal(
+      actual.background,
+      actual.theme === 'light' ? 'rgb(227, 246, 245)' : 'rgb(37, 61, 64)',
+      `${state}: access control uses one water-green surface`,
+    );
+    assert.equal(
+      actual.nestedChip,
+      false,
+      'Access trigger has no second Chip surface inside its button',
+    );
+    assert.ok(actual.width >= 44 && actual.height >= 44);
+    assert.ok(
+      actual.radius >= actual.height / 2,
+      'Access trigger has a capsule outline',
+    );
+    assert.deepEqual(
+      actual.transform,
+      [1, 0, 0, 1, 0, 0],
+      `${state}: access trigger remains in place`,
+    );
+    if (state === 'focus')
+      assert.equal(
+        actual.focused,
+        true,
+        'Keyboard focus remains visible on the capsule',
+      );
+    triggerStates.push({ state, ...actual });
+  }
+  report.accessDisclosure ??= [];
+  report.accessDisclosure.push(triggerStates);
   assert.equal(
     await page.evaluate(
       () => !!document.querySelector('[role="dialog"][aria-label="访问说明"]'),
@@ -99,7 +171,7 @@ export async function verifyAccessDisclosure(page, trigger, report) {
     );
   }
   report.checks.push(
-    'Access explanation opens by pointer and keyboard, fits the viewport, and Escape closes it and restores its trigger.',
+    'The single water-green access capsule preserves hover and visible keyboard focus; the explanation opens by pointer and keyboard, fits the viewport, and Escape restores its trigger.',
   );
 }
 

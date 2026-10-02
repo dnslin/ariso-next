@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "spaceId": 5,
+  "testOrigin": "http://ariso-tags-manual-50953.localhost:50953",
+  "red": {
+    "status": "reproduced",
+    "cases": 4,
+    "screenshots": 4
+  },
+  "green": {
+    "status": "passed",
+    "cases": 8,
+    "screenshots": 8,
+    "viewports": ["1440x1080/light", "390x844/dark"]
+  },
+  "tags": {
+    "status": "passed",
+    "checks": 14,
+    "layouts": 114,
+    "screenshots": 126
+  },
+  "commands": [
+    "node work/run-tag-reconciliation.mjs red",
+    "node work/refresh-tags-server.mjs work/tags-manual-revision",
+    "node work/run-tag-reconciliation.mjs green",
+    "node work/run-manual-tags-regression.mjs",
+    "node work/restore-review-preview.mjs",
+    "node work/refresh-tags-server.mjs"
+  ],
+  "originalPreview": {
+    "origin": "http://ariso-tags-57635.localhost:57635",
+    "operation": "bundle-only refresh; same database and keys",
+    "tags": 7,
+    "relationships": 454,
+    "images": 173,
+    "goPresent": false,
+    "unchanged": true
+  },
+  "finishedAt": "2026-10-02T11:01:46.917Z"
+}
