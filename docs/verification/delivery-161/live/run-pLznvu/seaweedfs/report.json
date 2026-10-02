@@ -1,0 +1,691 @@
+{
+  "status": "passed",
+  "service": "seaweedfs",
+  "startedAt": "2026-10-01T16:27:59.143Z",
+  "finishedAt": "2026-10-01T16:33:12.570Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://fs.447654.xyz",
+    "bucket": "images"
+  },
+  "checks": [
+    {
+      "name": "real-GET-HEAD-methods-300s-cache-attachment-and-bytes",
+      "status": "passed",
+      "evidence": {
+        "get": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentLength": "6631",
+          "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+          "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+          "cacheControl": "private, no-store, no-transform",
+          "requestId": "18DA74AC4525B8EC8F4D65EF",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        },
+        "head": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentLength": "6631",
+          "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+          "contentDisposition": null,
+          "cacheControl": null,
+          "requestId": "18DA74AC5D543CF97BA8B822",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        },
+        "expiresSeconds": 300,
+        "methodIsolation": true
+      }
+    },
+    {
+      "name": "four-published-version-permissions-and-real-aggregation",
+      "status": "passed",
+      "evidence": {
+        "kinds": ["original", "compressed", "thumbnail", "watermark"],
+        "fixture": "Known published four-version delivery fixture; image processing is verified separately"
+      }
+    },
+    {
+      "name": "new-permissions-revoke-Ariso-access-but-issued-URLs-remain-valid-until-expiry",
+      "status": "passed",
+      "evidence": {
+        "boundaries": [
+          {
+            "condition": "private",
+            "newArisoStatus": 401,
+            "previousGET": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+              "cacheControl": "private, no-store, no-transform",
+              "requestId": "18DA74ACA68C391F6BB27411",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            },
+            "previousHEAD": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": null,
+              "cacheControl": null,
+              "requestId": "18DA74ACBD9E43CC86E6090C",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            }
+          },
+          {
+            "condition": "trashed",
+            "newArisoStatus": 404,
+            "previousGET": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+              "cacheControl": "private, no-store, no-transform",
+              "requestId": "18DA74ACC7B11805D30653A3",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            },
+            "previousHEAD": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": null,
+              "cacheControl": null,
+              "requestId": "18DA74ACDF79E30B9A689FEE",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            }
+          },
+          {
+            "condition": "disabled",
+            "newArisoStatus": 409,
+            "previousGET": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+              "cacheControl": "private, no-store, no-transform",
+              "requestId": "18DA74ACE95851553B9EE9D7",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            },
+            "previousHEAD": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "6631",
+              "etag": "\"fcbb53520700e4147c8782e7286fdac2\"",
+              "contentDisposition": null,
+              "cacheControl": null,
+              "requestId": "18DA74AD00752E6B94C6983C",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            }
+          }
+        ],
+        "limit": "Issued remote access cannot be revoked through Ariso; actual expiry is checked separately"
+      }
+    },
+    {
+      "name": "published-atomic-reference-switch-changes-current-links-and-preserves-old-signed-bytes",
+      "status": "passed",
+      "evidence": {
+        "evidence": [
+          {
+            "query": "?type=compressed",
+            "currentObjectId": "b736a8cd-59da-4305-942a-164a0e71b27e",
+            "remote": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "420",
+              "etag": "\"7943071e7f52d3dd62d92077df47b6c4\"",
+              "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+              "cacheControl": "private, no-store, no-transform",
+              "requestId": "18DA74AD118ABF1A35912469",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            }
+          },
+          {
+            "query": "",
+            "currentObjectId": "b736a8cd-59da-4305-942a-164a0e71b27e",
+            "remote": {
+              "status": 200,
+              "contentType": "image/png",
+              "contentLength": "420",
+              "etag": "\"7943071e7f52d3dd62d92077df47b6c4\"",
+              "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+              "cacheControl": "private, no-store, no-transform",
+              "requestId": "18DA74AD187B735FCCD3EDA1",
+              "server": "SeaweedFS 30GB 4.47",
+              "cfRay": null
+            }
+          }
+        ],
+        "previousBytesPreserved": true,
+        "scope": "Known published atomic reference switch; this does not claim S3 image processing or remote reprocessing"
+      }
+    },
+    {
+      "name": "all-real-special-format-original-bytes-and-default-applicability",
+      "status": "passed",
+      "evidence": [
+        {
+          "id": "source-png",
+          "sha256": "2ad29c518b0a4f72bba1a1f5e0adb706bb555bfcd6f98a52c7bdac42758f4951",
+          "bytes": 420,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentLength": "420",
+            "etag": "\"7943071e7f52d3dd62d92077df47b6c4\"",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD3E50BB53CD8F6E18",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-jpg",
+          "sha256": "c6f0e0945c45f8f1fc089fa0e072ae5548b057a39d5c3dfea157b0c7e1d2282e",
+          "bytes": 373,
+          "remote": {
+            "status": 200,
+            "contentType": "image/jpeg",
+            "contentLength": "373",
+            "etag": "\"27718b4ae8087c7b7b8b8d3b0dca4a92\"",
+            "contentDisposition": "inline; filename=__.final.jpg; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.jpg",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD4BF377F873B4C181",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-webp",
+          "sha256": "7bab8a0a64bb4c4a8cab762430d2d08a5746b98e0a661008a459347b3edb93ec",
+          "bytes": 144,
+          "remote": {
+            "status": 200,
+            "contentType": "image/webp",
+            "contentLength": "144",
+            "etag": "\"a2cb60d5da80965aa5c7759475d57cb5\"",
+            "contentDisposition": "inline; filename=__.final.webp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.webp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD5AAFD6D87990BE4F",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-avif",
+          "sha256": "285d34fbbfec94c3ef58795b40a38e71fb5cee920c4d872cb356ff064d28b4f5",
+          "bytes": 485,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentLength": "485",
+            "etag": "\"630ceda2e2049d57944d5ba79b50a792\"",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD68BA6D01EC438C68",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-bmp",
+          "sha256": "9a7c8029c93cab14994058c5adc036b295966e842a717d61af2e9084daf0ea43",
+          "bytes": 12426,
+          "remote": {
+            "status": 200,
+            "contentType": "image/bmp",
+            "contentLength": "12426",
+            "etag": "\"f264f892b24938115a20cab5f73ee75b\"",
+            "contentDisposition": "inline; filename=__.final.bmp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.bmp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD76E824156D291F36",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-tiff",
+          "sha256": "1d3bba08fbe9df71f08a7ab6d877927aa85586bfcbd339deee9886a3e5bd0d55",
+          "bytes": 12566,
+          "remote": {
+            "status": 200,
+            "contentType": "image/tiff",
+            "contentLength": "12566",
+            "etag": "\"68adeee634a213a830b9875e55917eb0\"",
+            "contentDisposition": "inline; filename=__.final.tiff; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.tiff",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AD90759FCA025E6BB7",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "alpha-heic",
+          "sha256": "896cb17984d9a5675257cde425b4e47a07c348568e07622a88f3dfe76832296a",
+          "bytes": 1417,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1417",
+            "etag": "\"701597d86bd663efc398958360cbf5d2\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADA470E82EED8082CB",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "multiple-heic",
+          "sha256": "9a6cedae06a843f4498c037b1f69dc23cef756bae76a53f7ab8e47203ae48bb2",
+          "bytes": 1332,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1332",
+            "etag": "\"101410b2fdac20c2fccfe50dd922df70\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADB2B59056DD26E439",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-avif",
+          "sha256": "760b2cf4d6e7b6333c874b5a1ee6736cadf18724cb6db8aab6f3e1be3a82e8db",
+          "bytes": 462,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentLength": "462",
+            "etag": "\"b7ef3ee6c0453c55d8df70fc9c591b17\"",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADC2E6EA6E8FEBE4AF",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-avif",
+          "sha256": "dbf96242d222e0432495461f94b0460a27c3dc00e5dd123707fc4425a3e13508",
+          "bytes": 1593,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentLength": "1593",
+            "etag": "\"45c0b2ee6ab426aa271cddce005a95c2\"",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADD21759D6C4B26E9D",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-gif",
+          "sha256": "59141c8631ed1422e39d9ac11d7da94fd1850df98ebfaf5408d36c64ffdbb5e3",
+          "bytes": 344,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentLength": "344",
+            "etag": "\"f2beb26264a11ca5e8fe35eecaf1d7c8\"",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADE23628D30AA5F9C5",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-webp",
+          "sha256": "dcee1058e84350e464fc7afa0b786011d3aa904b3a2175da13a2fd69f416617b",
+          "bytes": 344,
+          "remote": {
+            "status": 200,
+            "contentType": "image/webp",
+            "contentLength": "344",
+            "etag": "\"91b95112de58c527148f772308117c7b\"",
+            "contentDisposition": "inline; filename=__.final.webp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.webp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADF1044A47AC1C29CA",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-tiff",
+          "sha256": "96a8fcec953ab948d744beef035895a8d657bda740a101bd053ad3b50ebf157a",
+          "bytes": 25148,
+          "remote": {
+            "status": 200,
+            "contentType": "image/tiff",
+            "contentLength": "25148",
+            "etag": "\"44b79b4d2e62cbe1ce47d7a78c79ee12\"",
+            "contentDisposition": "inline; filename=__.final.tiff; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.tiff",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74ADFF5C3151500379EE",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-ico",
+          "sha256": "f422a515feab31ddbbe574ca233915282a508402a3c3f3b86a7b16867f9145e0",
+          "bytes": 22382,
+          "remote": {
+            "status": 200,
+            "contentType": "image/x-icon",
+            "contentLength": "22382",
+            "etag": "\"eebc4611b70a3992882b5f970125680c\"",
+            "contentDisposition": "inline; filename=__.final.ico; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.ico",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE117534767A4A84EA",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-png",
+          "sha256": "8e2289bd86c928039ed12f1293d4a104b6cbf68e18866bb329f1744a2898d212",
+          "bytes": 418,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentLength": "418",
+            "etag": "\"4c8757895fbbc22a690517e626f9e1de\"",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE24D77F2F44CCB48A",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "poster-png",
+          "sha256": "a282495f83ef276e192bc2ba43e86e565a0888012c82b24eaf1b4331c1157190",
+          "bytes": 566,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentLength": "566",
+            "etag": "\"9bcc37fa74912e1bfea9c42a6d6c85c0\"",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE337952E411C0018F",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "static-svg",
+          "sha256": "9b2088858d5b3d15d171c2b79571188fdcf5fdd8c9a993f1ffd0f1edfcf165e1",
+          "bytes": 224,
+          "remote": {
+            "status": 200,
+            "contentType": "application/octet-stream",
+            "contentLength": "224",
+            "etag": "\"93ab974aa7511806a13e2c3c4b870425\"",
+            "contentDisposition": "attachment; filename=__.final.svg; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.svg",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE419123D7E35F92C6",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "static-gif",
+          "sha256": "99b38100ab591107b27b0d5b3f6b2f49356918838f1c2eddc774fbe2a872838a",
+          "bytes": 241,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentLength": "241",
+            "etag": "\"ae889dc93aa65ce3ccaa82ed2d748d82\"",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE51066B9A7C9D8786",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "alpha-avif",
+          "sha256": "7b94d61c30666b9fb92e9077ec308240199c70cf234b8ad050bcefb7092ed770",
+          "bytes": 549,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentLength": "549",
+            "etag": "\"5d6461d65ae7e912a4a17e52e3c13ff1\"",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE5F0D8F7DD46D5987",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "oriented-heic",
+          "sha256": "7bc553e8c08b8806aee0933301eeaa93dec70e7ccd5e6651863673d7460b6e13",
+          "bytes": 1174,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1174",
+            "etag": "\"2ad04a28b571d497dd1aa639be1586fc\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE6E8A5F80C93744A7",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "mirrored-heic",
+          "sha256": "4599490a774656885b6ca07cc04c7cc63d0f4a3e622607dbc8b67c8ac8a52830",
+          "bytes": 1174,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1174",
+            "etag": "\"3e812e515f50817c8ab12a1c66f296cf\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE7D9431E5454EE939",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "offset-gif",
+          "sha256": "c8794ae29bdeb0bcbb5d5b6f53d88e326cd3c7e6b1a2ac44bcffbf1efec745d6",
+          "bytes": 138,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentLength": "138",
+            "etag": "\"5734f15e3cfa023328ccd303e8d6f603\"",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE8C451E973BC06D7E",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "primary-second-heic",
+          "sha256": "c213f6e5c0b4d2bdc13b205ed95726e82e742b418487c8d39a394868980cc9b4",
+          "bytes": 1332,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1332",
+            "etag": "\"6e8b2a2bfd2f213b657595de3ab0f40e\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AE9AF538102C31CEF0",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "primary-second-avif",
+          "sha256": "6729a01d14fe521fc6b64bf4ba0b0c8f7af2a721ace1937096d199aa840e11ba",
+          "bytes": 462,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentLength": "462",
+            "etag": "\"b597efd41179a1d285cc117d75831736\"",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AEAA694798A2A6EA5C",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "depth-heic",
+          "sha256": "a4f9684de4706c3c3874ec26f70822ed4436eae469876b466037adc0eacd3684",
+          "bytes": 1417,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "1417",
+            "etag": "\"611300e33d7bf6f8c0581af4c261e810\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AEBA51E605B02E2C5D",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "thumbnail-heic",
+          "sha256": "26726ca88c1b2107daca48406aaaae640421b6b4dc639f5415e5bc7ef3292420",
+          "bytes": 2159,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentLength": "2159",
+            "etag": "\"58b67b6736ba73c2a8970fb94ecf569e\"",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": "18DA74AECA2D931D96989FE2",
+            "server": "SeaweedFS 30GB 4.47",
+            "cfRay": null
+          },
+          "defaultStatus": 404
+        }
+      ]
+    },
+    {
+      "name": "real-service-browser-SVG-cookie-and-external-embed",
+      "status": "passed",
+      "evidence": {
+        "status": "passed",
+        "taskSpaceId": 3,
+        "checks": [
+          "Owner session cookie loads the private original through the real signed redirect.",
+          "SVG redirects to an actual octet-stream attachment; .svg name and every original byte survive browser download.",
+          "A different-site image embed can display the public original, while the owner cookie is excluded and the private image fails."
+        ],
+        "startedAt": "2026-10-01T16:28:16.375Z",
+        "images": {
+          "publicWidth": 64,
+          "privateWidth": 0,
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+        },
+        "finishedAt": "2026-10-01T16:28:20.528Z"
+      }
+    },
+    {
+      "name": "real-memory-collector-graceful-flush",
+      "status": "passed",
+      "evidence": {
+        "imageId": "b7319223-4e8a-406f-9872-fb1b15e3c3b7",
+        "originalCount": 2,
+        "compressedCount": 1,
+        "watermarkCount": 1
+      }
+    },
+    {
+      "name": "real-signatures-expire-after-300-seconds",
+      "status": "passed",
+      "evidence": {
+        "expiresAt": "2026-10-01T16:33:03.000Z",
+        "checkedAt": "2026-10-01T16:33:05.861Z",
+        "get": {
+          "status": 403,
+          "contentType": "application/xml",
+          "contentLength": "481",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "requestId": "18DA74F2347663212AEC7A61",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        },
+        "head": {
+          "status": 403,
+          "contentType": "application/xml",
+          "contentLength": "481",
+          "etag": null,
+          "contentDisposition": null,
+          "cacheControl": null,
+          "requestId": "18DA74F24C3AB10EB65A4FD1",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        }
+      }
+    }
+  ],
+  "cleanup": "All recorded exact keys deleted and HEAD-confirmed absent"
+}

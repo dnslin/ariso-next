@@ -8,6 +8,8 @@ export const deliveryErrors = {
   STORAGE_DISABLED: [409, '图片所属存储已停用'],
   IMAGE_CHANGED: [409, '图片版本发生变化，请重试'],
   STORAGE_OBJECT_MISSING: [404, '图片文件不存在'],
+  STORAGE_OPERATION_FAILED: [502, '远端存储操作失败，请稍后重试'],
+  STORAGE_TIMEOUT: [504, '远端存储操作超时，请稍后重试'],
   PRECONDITION_FAILED: [412, '图片请求前提条件不满足'],
   DELIVERY_FAILED: [500, '图片读取失败，请稍后重试'],
 } as const;

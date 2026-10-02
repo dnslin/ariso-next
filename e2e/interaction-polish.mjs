@@ -198,8 +198,8 @@ try {
       );
     });
     assert.ok(
-      Math.abs(composition.width - available) <= 1,
-      'Wide composition fills the available main content width',
+      Math.abs(composition.width - Math.min(available, 1280)) <= 1,
+      'Wide composition respects the approved 1280px maximum content width',
     );
     assert.ok(
       Math.abs(queue.width - (composition.width - 360 - 24)) <= 1,

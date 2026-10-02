@@ -9,6 +9,7 @@ import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
+import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture.ts';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const output = resolve(
@@ -35,6 +36,7 @@ for (const name of [
   'upload-polling.json',
   'upload-input.json',
   'storage-cors.json',
+  'delivery-s3/browser.json',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -62,6 +64,7 @@ let server;
 let browser;
 let shellServer;
 let corsFixture;
+let deliveryFixture;
 let shellLogs = '';
 let logs = '';
 const secrets = [];
@@ -428,6 +431,20 @@ try {
     report[`workspace-continuity-${width}`] = 'passed';
     await stop(server);
   }
+  deliveryFixture = await launchProtocolDelivery();
+  secrets.push(deliveryFixture.browserInput.credentials.password);
+  await runBrowser(
+    '../e2e/delivery-s3.mjs',
+    {
+      ...deliveryFixture.browserInput,
+      spaceId: report.taskSpaceId,
+      output,
+    },
+    'delivery-s3.log',
+  );
+  report.deliveryS3 = 'passed';
+  await deliveryFixture.close();
+  deliveryFixture = undefined;
   // Reuse the same Ego space for isolated UI/library checks and let its runner
   // close it after the final successful suite (unless the caller keeps it).
   browser = spawn(process.execPath, ['run-browser.mjs'], {
@@ -452,6 +469,7 @@ try {
   await stop(server);
   await stop(shellServer);
   await corsFixture?.close();
+  await deliveryFixture?.close();
   await writeFile(join(output, 'shell-server.log'), shellLogs);
   await writeFile(join(output, 'server.log'), redact(logs));
   await rm(temporary, { recursive: true, force: true });

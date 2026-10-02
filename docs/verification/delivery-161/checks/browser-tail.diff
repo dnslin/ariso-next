@@ -1,0 +1,87 @@
+--- scripts/verify-browser.mjs
++++ work/verify-browser-tail.mjs
+@@ -286,15 +286,15 @@
+       await writeFile(join(output, logName), safeLogs);
+     }
+   }
+-  await runBrowser('../e2e/runtime.mjs', config, 'ego.log');
+-  const runtimeReport = JSON.parse(
+-    await readFile(join(output, 'browser.json'), 'utf8'),
+-  );
+-  report.taskSpaceId = runtimeReport.taskSpaceId;
++  report.taskSpaceId = config.spaceId;
++  assert.ok(report.taskSpaceId, 'Reuse the existing Ego space');
++  report.verificationMode = 'unexecuted-tail-cases-only';
++  report.priorRun = 'test-results/browser-161-approved/runner.json';
++  report.pendingFailedCases = ['library-filters', 'upload-input'];
+   report.identity = [];
+   await stop(server);
+   await stop(shellServer);
+-  for (const width of [1440, 390]) {
++  for (const width of [390]) {
+     const dataDirectory = join(temporary, `identity-${width}`);
+     const codes = await startProduction(dataDirectory);
+     assert.equal(codes.length, 1, 'Empty directory must issue one setup code');
+@@ -334,62 +334,6 @@
+       `identity-${width}-restart.log`,
+     );
+     report.identity.push({ width, setup: 'passed', restart: 'passed' });
+-    if (width === 390) {
+-      corsFixture = await startCorsFixture(origin);
+-      await runBrowser(
+-        '../e2e/storage-cors.mjs',
+-        { ...identityConfig, corsFixture: corsFixture.endpoint },
+-        'storage-cors.log',
+-      );
+-      report.storageCors = 'passed';
+-      await corsFixture.close();
+-      corsFixture = undefined;
+-      await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+-      for (const phase of [
+-        'feedback',
+-        'selection',
+-        'selection-reconciliation',
+-        'query',
+-        'filters',
+-        'scale',
+-      ]) {
+-        await runBrowser(
+-          '../e2e/library-query.mjs',
+-          { ...identityConfig, libraryQueryPhase: phase },
+-          `library-${phase}.log`,
+-        );
+-      }
+-      report.libraryQuery = 'passed';
+-      await runBrowser(
+-        '../e2e/shell-navigation.mjs',
+-        identityConfig,
+-        'shell-navigation.log',
+-      );
+-      report.shellNavigation = 'passed';
+-      await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
+-      report.albums = 'passed';
+-      await runBrowser(
+-        '../e2e/album-cover.mjs',
+-        identityConfig,
+-        'album-cover.log',
+-      );
+-      report.albumCover = 'passed';
+-      await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
+-      await runBrowser(
+-        '../e2e/upload-polling.mjs',
+-        identityConfig,
+-        'upload-polling.log',
+-      );
+-      report.uploadPolling = 'passed';
+-      await runBrowser(
+-        '../e2e/upload-input.mjs',
+-        identityConfig,
+-        'upload-input.log',
+-      );
+-      report.uploadInput = 'passed';
+-      report.upload = 'passed';
+-      report.library = 'passed';
+-    }
+     await runBrowser(
+       '../e2e/m2.mjs',
+       { ...identityConfig, phase: 'before' },

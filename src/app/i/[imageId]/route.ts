@@ -9,6 +9,7 @@ import { getServerRuntime } from '../../../server/startup/server-start.ts';
 import { createRuntimeLogger } from '../../../server/runtime/logger.ts';
 import { getAccessCollector } from '../../../server/analytics/collector.ts';
 import { requireSiteSettings } from '../../../server/site/settings.ts';
+import { createSecretCrypto } from '../../../server/runtime/crypto.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -28,6 +29,7 @@ async function handle(
     return await prepareImageDelivery(request, imageId, {
       db: server.connection.db,
       storageRoot: resolve(server.config.dataDir, 'storage'),
+      secretCrypto: createSecretCrypto(server.config.encryptionKey),
       readOwner: async () => !!(await readOptionalOwner(request)),
       logger: createRuntimeLogger('delivery', server.config.logLevel),
       onAccess(event) {
@@ -35,7 +37,7 @@ async function handle(
         recorded = true;
         let timezone: string | undefined;
         try {
-          // Read committed settings at first-byte delivery, not before awaiting I/O.
+          // Read committed settings at delivery start (first byte or final S3 redirect).
           timezone = requireSiteSettings(server.connection.db).timeZone;
           if (!getAccessCollector().recordAccess(event, timezone)) {
             analyticsLogger.error(

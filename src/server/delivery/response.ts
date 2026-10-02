@@ -3,8 +3,10 @@ import { finished } from 'node:stream/promises';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { Logger } from 'pino';
 import type { VersionKind } from '../media/schema.ts';
+import type { createSecretCrypto } from '../runtime/crypto.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { readObject } from '../storage/local.ts';
+import { requireLocalStorage } from '../storage/settings.ts';
 import { selectImageDelivery } from './access.ts';
 import {
   deliveryErrors,
@@ -15,6 +17,7 @@ import {
 import { makeHeaders, preconditionStatus } from './headers.ts';
 import { parseImageRequest } from './links.ts';
 import { responseStream } from './stream.ts';
+import { sameSignedTarget, signImageDelivery } from './s3.ts';
 
 export type ImageAccessEvent = {
   imageId: string;
@@ -26,6 +29,7 @@ type DeliveryOptions = {
   access?: 'published' | 'trash-preview';
   db: BetterSQLite3Database;
   storageRoot: string;
+  secretCrypto?: ReturnType<typeof createSecretCrypto>;
   readOwner: () => Promise<boolean>;
   // T-ANA-01 supplies the synchronous in-memory consumer at the route boundary.
   onAccess?: (event: ImageAccessEvent) => void;
@@ -79,6 +83,40 @@ export async function prepareImageDelivery(
     for (let attempt = 0; attempt < 2; attempt++) {
       request.signal.throwIfAborted();
       const selected = select(await options.readOwner());
+      if (selected.storage.type === 's3') {
+        if (!options.secretCrypto)
+          throw new Error('S3 delivery requires runtime secret crypto');
+        const signed = await signImageDelivery(
+          selected,
+          request.method,
+          input.download,
+          options.secretCrypto,
+        );
+        const owner = await options.readOwner();
+        request.signal.throwIfAborted();
+        const current = select(owner);
+        if (!sameSignedTarget(selected, current)) {
+          if (attempt === 1) throw deliveryError('IMAGE_CHANGED');
+          continue;
+        }
+        const response = new Response(null, {
+          status: 302,
+          headers: {
+            ...deliveryHeaders,
+            Location: signed.url,
+            'X-Ariso-Image-Version': current.actualVersion,
+          },
+        });
+        if (request.method === 'GET') {
+          try {
+            recordAccess(current, owner);
+          } catch (err) {
+            logger.error({ err, imageId }, 'Image access consumer failed');
+          }
+        }
+        return response;
+      }
+      requireLocalStorage(selected.storage);
       let opened;
       try {
         opened = await readObject(
@@ -145,21 +183,7 @@ export async function prepareImageDelivery(
       const body = responseStream(
         source,
         request.signal,
-        () => {
-          if (
-            !owner &&
-            current.image.visibility === 'public' &&
-            current.image.processingStatus === 'ready' &&
-            current.actualVersion !== 'thumbnail'
-          ) {
-            options.onAccess?.({
-              imageId,
-              storageId: current.storage.id,
-              actualVersion: current.actualVersion,
-              occurredAt: new Date(),
-            });
-          }
-        },
+        () => recordAccess(current, owner),
         (err) =>
           logger.error(
             { err, imageId, objectId: current.object.id },
@@ -173,8 +197,29 @@ export async function prepareImageDelivery(
     if (source) await close(source);
     const code = err instanceof Error && 'code' in err ? err.code : undefined;
     const recognized = isDeliveryErrorCode(code);
-    if (!recognized || code === 'STORAGE_OBJECT_MISSING')
+    if (
+      !recognized ||
+      code === 'STORAGE_OBJECT_MISSING' ||
+      code === 'STORAGE_OPERATION_FAILED' ||
+      code === 'STORAGE_TIMEOUT'
+    )
       logger.error({ err, imageId }, 'Image delivery failed');
     return imageFailure(request, recognized ? code : 'DELIVERY_FAILED');
+  }
+  function recordAccess(current: Selection, owner: boolean) {
+    if (
+      !owner &&
+      options.access !== 'trash-preview' &&
+      current.image.visibility === 'public' &&
+      current.image.processingStatus === 'ready' &&
+      current.actualVersion !== 'thumbnail'
+    ) {
+      options.onAccess?.({
+        imageId,
+        storageId: current.storage.id,
+        actualVersion: current.actualVersion,
+        occurredAt: new Date(),
+      });
+    }
   }
 }
