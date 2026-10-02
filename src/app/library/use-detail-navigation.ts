@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 /** Native history keeps the mounted list, its loaded pages and scroll position. */
@@ -15,12 +15,14 @@ export function useDetailNavigation() {
   const listScroll = useRef(0);
   const trigger = useRef<HTMLElement | null>(null);
   const openedFromList = useRef(false);
+  const [contextImageId, setContextImageId] = useState<string | null>(null);
 
   function open(id: string, element: HTMLElement) {
     trigger.current = element;
     listScroll.current =
       document.getElementById('main-content')?.scrollTop ?? 0;
     openedFromList.current = true;
+    setContextImageId(id);
     const url = new URL(window.location.href);
     url.searchParams.set('image', id);
     window.history.pushState(null, '', url);
@@ -48,7 +50,9 @@ export function useDetailNavigation() {
     requestAnimationFrame(() => {
       const target = trigger.current?.isConnected
         ? trigger.current
-        : document.getElementById('library-title');
+        : document.querySelector<HTMLElement>(
+            '[data-testid="library-toolbar"] input',
+          );
       target?.focus({ preventScroll: true });
     });
   }, []);
@@ -91,9 +95,20 @@ export function useDetailNavigation() {
           )
         : trigger.current?.isConnected
           ? trigger.current
-          : document.getElementById('library-title');
+          : document.querySelector<HTMLElement>(
+              '[data-testid="library-toolbar"] input',
+            );
       target?.focus({ preventScroll: true });
     }
   }, [view, imageId]);
-  return { imageId, view, open, close, dialogRef, openView, returnToDetail };
+  return {
+    imageId,
+    view,
+    open,
+    close,
+    dialogRef,
+    openView,
+    returnToDetail,
+    hasListContext: imageId !== null && contextImageId === imageId,
+  };
 }

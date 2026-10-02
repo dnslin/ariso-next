@@ -1,7 +1,7 @@
 # Spec: library — 图库查询、详情、批量操作与回收站
 
 - 模块 ID：`library`。
-- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，四种布局/加载组合、筛选界面及历史恢复的实施与验证见[Issue #173 记录](../verification/library-173/README.md)，用户已于2026-10-01确认 UI 人工验收通过；选择完整能力和查看器由后续任务承接。
+- 状态：产品行为已确认；基础列表、详情、回收恢复已交付。T-LIB-03 完整查询接口的当前实施与验证见[Issue #172 记录](../verification/library-172/README.md)，四种布局/加载组合、筛选界面及历史恢复的实施与验证见[Issue #173 记录](../verification/library-173/README.md)，用户已于2026-10-01确认 UI 人工验收通过。T-LIB-07 管理大图查看器已接入，实施、验证与待人工验收范围见[Issue #185 记录](../verification/library-185/README.md)；选择和批量能力按各自任务推进。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[delivery](./SPEC-delivery.md)、[collections](./SPEC-collections.md)的已确认契约。upload 提供入口来源，图库不反向依赖其队列实现。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10、13.4、14、15、16、18、22、23、26.8/26.9/26.11/26.13；[覆盖表](../tasks/coverage.md)。
@@ -19,7 +19,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 
 ## 2. 工程与库能力依据
 
-当前已实现基础图库、详情和回收恢复。生产沿用 Node/Next、Drizzle、Zod、Pino、HeroUI 和 TanStack Query；nuqs 已接入所有者图库和相册内容页；Yet Another React Lightbox 已在 EV-LIBRARY-01 隔离实验验证，尚未接入完整产品页面。实际版本以所属 package.json 和锁文件为准。
+当前已实现基础图库、详情和回收恢复。生产沿用 Node/Next、Drizzle、Zod、Pino、HeroUI 和 TanStack Query；nuqs 已接入所有者图库和相册内容页；Yet Another React Lightbox 在 EV-LIBRARY-01 隔离实验验证后，由 T-LIB-07 接入图库/相册/上传结果共用详情的管理查看器。匿名查看器仍由 T-SHR-04 承接。实际版本以所属 package.json 和锁文件为准，管理查看器的最终人工验收状态见本轮记录。
 
 - [TanStack Query 分页](https://tanstack.com/query/latest/docs/framework/react/guides/paginated-queries)用于请求缓存和加载状态。筛选/排序/范围/页码必须进入 query key；切网格与瀑布流不改变数据 key。新查询加载时若暂显旧数据，必须禁用旧数据的选择和操作，不能把旧图当新查询结果。
 - [nuqs 参数选项](https://nuqs.dev/docs/options)用于解析 URL 和浏览器历史。搜索输入先本地编辑，提交搜索、应用筛选和翻页才写一条历史；后退恢复已应用查询，不为每个输入字符创建历史记录。
@@ -27,7 +27,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 - [Fullscreen](https://yet-another-react-lightbox.com/plugins/fullscreen)使用浏览器全屏能力。部分移动浏览器不支持时，仍提供占满视口的查看器，不显示无效的系统全屏按钮；不能因此取消手机缩放和平移。
 - 加载更多使用顺序值与 ID 的游标查询，避免深处反复跳过前面所有记录；这是 [SQLite 滚动窗口查询](https://www.sqlite.org/rowvalue.html)的已有用法。页码跳转仍使用有界 LIMIT/OFFSET，是否达标用真实十万图片数据验证。
 
-本轮仅核对资料和现有目录，不代表浏览器、查询性能或这些依赖已经验证。
+上述工程选型不代替运行证据；各实施任务记录真实浏览器、查询性能和依赖验证结果。
 
 ## 3. 页面、URL 与查询语义
 

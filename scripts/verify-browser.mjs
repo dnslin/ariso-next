@@ -22,19 +22,27 @@ const { values } = parseArgs({
 const suite = values.suite;
 const only = values.only;
 assert.ok(
-  ['full', 'upload', 'upload-regression'].includes(suite),
+  ['full', 'viewer', 'upload', 'upload-regression'].includes(suite),
   'Unknown browser suite',
 );
 assert.ok(
   only === undefined ||
-    (suite === 'upload' && ['relations', 'submissions'].includes(only)),
-  '--only relations/submissions requires --suite upload',
+    (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
+    (suite === 'viewer' &&
+      [
+        'representative',
+        'behavior',
+        'consumers',
+        'deleted-source',
+        'pending-navigation',
+      ].includes(only)),
+  '--only supports upload relations/submissions or viewer representative/behavior/consumers/deleted-source/pending-navigation',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
 assert.ok(
   suite !== 'full' || pageLabel === 'p1',
-  'Full suite requires p1; upload suites support an isolated EGO_PAGE_LABEL',
+  'Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL',
 );
 
 const output = resolve(
@@ -48,6 +56,7 @@ for (const name of [
   'shell-navigation.json',
   'error-recovery.json',
   'library.json',
+  'library-viewer.json',
   'library-query.json',
   'library-feedback.json',
   'library-selection.json',
@@ -276,6 +285,7 @@ try {
     libraryDetailScript: pathToFileURL(resolve('e2e/library-detail.mjs')).href,
     libraryDetail171Script: pathToFileURL(resolve('e2e/library-detail-171.mjs'))
       .href,
+    libraryViewerScript: pathToFileURL(resolve('e2e/library-viewer.mjs')).href,
     storageCorsUiScript: pathToFileURL(resolve('e2e/storage-cors-ui.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
@@ -327,12 +337,16 @@ try {
   if (suite !== 'full') {
     assert.ok(
       config.spaceId,
-      'Upload suite requires an existing EGO_TASK_SPACE',
+      'Focused browser suite requires an existing EGO_TASK_SPACE',
     );
-    assert.equal(codes.length, 1, 'Empty upload runtime issues one setup code');
+    assert.equal(
+      codes.length,
+      1,
+      'Empty focused runtime issues one setup code',
+    );
     secrets.push(codes[0]);
     const credentials = {
-      email: 'upload-browser@example.test',
+      email: `${suite}-browser@example.test`,
       password: randomBytes(24).toString('hex'),
     };
     secrets.push(credentials.password);
@@ -348,25 +362,34 @@ try {
       signal: controller.signal,
     });
     assert.equal(setup.status, 200, await setup.text());
-    const uploadConfig = {
+    const focusedConfig = {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
+      viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
+      viewerCheck: suite === 'viewer' ? only : undefined,
     };
     const stages =
-      suite === 'upload'
-        ? [
-            ['upload-submissions', 'uploadSubmissions'],
-            ['upload-relations', 'uploadRelations'],
-          ]
-        : [
-            ['upload', 'upload'],
-            ['upload-polling', 'uploadPolling'],
-          ];
+      suite === 'viewer'
+        ? [['library-viewer-run', 'libraryViewer']]
+        : suite === 'upload'
+          ? [
+              ['upload-submissions', 'uploadSubmissions'],
+              ['upload-relations', 'uploadRelations'],
+            ]
+          : [
+              ['upload', 'upload'],
+              ['upload-polling', 'uploadPolling'],
+            ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
-      if (only !== undefined && script !== `upload-${only}`) continue;
-      await runBrowser(`../e2e/${script}.mjs`, uploadConfig, `${script}.log`);
+      if (
+        suite === 'upload' &&
+        only !== undefined &&
+        script !== `upload-${only}`
+      )
+        continue;
+      await runBrowser(`../e2e/${script}.mjs`, focusedConfig, `${script}.log`);
       report[result] = 'passed';
     }
   } else {

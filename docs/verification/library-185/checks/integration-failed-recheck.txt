@@ -1,0 +1,41 @@
+Already up to date
+Done in 96ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+ ❯ |media-tools| tests/integration/media/watermark-http.test.ts (8 tests | 1 failed) 22422ms
+   × reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset 2348ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset
+AssertionError: expected '{"level":"info","time":"2026-10-02T12…' to contain '66fead7f-2a8e-4aa8-8c54-70f0f3d6d6eb'
+
+- Expected
++ Received
+
+- 66fead7f-2a8e-4aa8-8c54-70f0f3d6d6eb
++ {"level":"info","time":"2026-10-02T12:53:13.976Z","module":"runtime.prestart","phase":"prestart","msg":"prestart completed"}
++ {"level":"info","time":"2026-10-02T12:53:14.334Z","module":"runtime.console","msg":"▲ Next.js 16.3.5"}
++ {"level":"info","time":"2026-10-02T12:53:14.334Z","module":"runtime.console","msg":"- Local:         http://127.0.0.1:61483"}
++ {"level":"info","time":"2026-10-02T12:53:14.334Z","module":"runtime.console","msg":"- Network:       http://127.0.0.1:61483"}
++ {"level":"info","time":"2026-10-02T12:53:14.335Z","module":"runtime.console","msg":"✓ Ready in 0ms"}
++ {"level":"info","time":"2026-10-02T12:53:14.340Z","module":"runtime.console","msg":"✓ Running next.config took 3ms"}
++ {"time":"2026-10-02T12:53:14.470Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
++
+
+ ❯ tests/integration/media/watermark-http.test.ts:230:26
+    228|   });
+    229|   expect(assets[0].error).toBe(failure.message);
+    230|   expect(server!.logs()).toContain(failure.requestId);
+       |                          ^
+    231| });
+    232|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 38 passed (39)
+   Start at  20:52:33
+   Duration  73.34s (tests 96%, import 3%, transform 1%)

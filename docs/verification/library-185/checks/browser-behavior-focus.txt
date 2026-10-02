@@ -1,0 +1,15 @@
+Error: Object reference chain is too long
+    at handleMessage (file:////[eval1]:8940:27)
+    at file:////[eval1]:8099:47
+    at guardNativeCallback (file:////[eval1]:8087:9)
+    at dispatchCdpMessage (file:////[eval1]:8099:5)
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-viewer-run.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:328:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:391:7
+Browser report: /Volumes/data/project/ariso/test-results/worktrees/issue-185/docs/verification/library-185/browser/behavior-focus

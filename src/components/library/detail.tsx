@@ -2,11 +2,13 @@
 
 import {
   useEffect,
+  useCallback,
   useRef,
   useState,
   type RefCallback,
   type ComponentProps,
 } from 'react';
+import dynamic from 'next/dynamic';
 import { QueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -18,10 +20,13 @@ import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
 import { Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
+import type { LibraryFilters } from '../../server/library/query-schema';
+import type { VersionKind } from '../../server/media/schema';
 import type { useDetailQuery } from './use-detail-query';
 import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
+import { initialViewerVersion } from './viewer-model';
 import { AccessDisclosure } from './access-disclosure';
 import {
   bytesLabel,
@@ -29,6 +34,11 @@ import {
   stepLabels,
   versionLabels,
 } from './detail-labels';
+
+const ImageViewer = dynamic(() => import('./image-viewer'), {
+  ssr: false,
+  loading: () => <p role="status">正在打开大图…</p>,
+});
 
 function DetailContent({
   detail,
@@ -41,6 +51,7 @@ function DetailContent({
   onRefresh,
   mutationPending,
   onVersions,
+  onView,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -52,6 +63,7 @@ function DetailContent({
   onRefresh: () => void;
   mutationPending: boolean;
   onVersions: () => void;
+  onView: () => void;
 }) {
   const [downloadMessage, setDownloadMessage] = useState('');
   const [downloading, setDownloading] = useState(false);
@@ -172,6 +184,14 @@ function DetailContent({
                   {detail.tags.map((t) => t.displayName).join('、') || '无'}
                 </p>
               </div>
+              <Button
+                data-testid="detail-viewer-entry"
+                variant="outline"
+                className="h-12 w-[calc((100%-12px)/2)] rounded-lg text-sm font-normal"
+                onPress={onView}
+              >
+                查看大图
+              </Button>
               {detail.trashedAt || detail.deletionStatus ? (
                 <Alert status="warning">
                   <Alert.Content>
@@ -295,8 +315,10 @@ export function LibraryDetail({
   hidden = false,
   onVersions,
   initialSelected,
+  viewerFilters,
 }: {
   initialSelected?: string;
+  viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
   onVersions: (selected: string) => void;
@@ -319,11 +341,49 @@ export function LibraryDetail({
     initialSelected ?? null,
   );
   const [previewRevision, setPreviewRevision] = useState(0);
+  const [viewer, setViewer] = useState<{
+    initial: Detail;
+    initialVersion: VersionKind;
+    filters?: LibraryFilters;
+  } | null>(null);
+  const returnFromViewer = useRef(false);
+  const detailScroll = useRef(0);
+  const expireViewerSession = useCallback(
+    () => setUnavailable(401),
+    [setUnavailable],
+  );
+  useEffect(() => {
+    if (!returnFromViewer.current || viewer) return;
+    returnFromViewer.current = false;
+    const frame = requestAnimationFrame(() => {
+      const body = document.querySelector<HTMLElement>(
+        '[data-testid="detail-body"]',
+      );
+      if (body) body.scrollTop = detailScroll.current;
+      document
+        .querySelector<HTMLElement>('[data-testid="detail-viewer-entry"]')
+        ?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [viewer]);
   async function refreshDetail() {
     const result = await query.refetch();
     if (result.isSuccess) setPreviewRevision((value) => value + 1);
   }
   if (hidden) return null;
+  if (viewer && !expired)
+    return (
+      <ImageViewer
+        {...viewer}
+        albumId={albumId}
+        onSessionExpired={expireViewerSession}
+        onClose={() => {
+          returnFromViewer.current = true;
+          setViewer(null);
+          void query.refetch();
+        }}
+      />
+    );
   return (
     <Modal.Backdrop
       isOpen
@@ -424,6 +484,19 @@ export function LibraryDetail({
               onVersions={() =>
                 onVersions(selected ?? initialPreview(query.data))
               }
+              onView={() => {
+                detailScroll.current =
+                  document.querySelector<HTMLElement>(
+                    '[data-testid="detail-body"]',
+                  )?.scrollTop ?? 0;
+                setViewer({
+                  initial: query.data!,
+                  initialVersion: selected
+                    ? (selected as VersionKind)
+                    : initialViewerVersion(query.data!),
+                  filters: viewerFilters,
+                });
+              }}
               revision={previewRevision}
               refreshing={query.isFetching || mutationPending}
               mutationPending={mutationPending}

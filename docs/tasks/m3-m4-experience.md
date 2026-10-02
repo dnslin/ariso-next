@@ -246,6 +246,8 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
   - [ ] 1. 同图选版与缩放全屏：真实格式，明确选版不回退。
   - [ ] 2. 当前查询跨页邻居：仅预载两张、删除恢复和关闭归焦。
 
+- 实施证据：[Issue #185 记录](../verification/library-185/README.md)。管理查看器已接入共用详情；自动验证和独立审计在本记录维护，最终整体界面仍待用户人工验收。匿名查看器由 T-SHR-04 承接，不把本次管理范围描述为分享能力完成。
+
 #### DG-LIBRARY T-LIB-07 核对结论
 
 2026-09-30：[核对证据](./evidence/DG-LIBRARY/README.md)。UI-DETAIL / UI-LIBRARY；DES-06-LIBRARY / RG-02/06。责任人为本任务实施者。

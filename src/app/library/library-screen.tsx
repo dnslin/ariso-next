@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useEffectEvent,
   useRef,
   useState,
   type ReactNode,
@@ -19,6 +20,7 @@ import { LibraryLoading } from './library-loading';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
 import { useDetailQuery } from '../../components/library/use-detail-query';
+import { DetailReadError } from '../../components/library/read-detail';
 import { useDetailReprocess } from '../../components/library/use-detail-reprocess';
 import {
   DetailReprocess,
@@ -86,6 +88,19 @@ export function LibraryScreen(props: {
     query.loadingMode,
   ]);
   const selection = useLibrarySelection(selectionIdentity, query.items);
+  const removeMissingSource = useEffectEvent((id: string) => {
+    selection.remove(id);
+    query.onSelectionInvalid([id]);
+  });
+  useEffect(() => {
+    if (
+      detail.imageId &&
+      (detailQuery.unavailable === 404 ||
+        (detailQuery.error instanceof DetailReadError &&
+          detailQuery.error.status === 404))
+    )
+      removeMissingSource(detail.imageId);
+  }, [detail.imageId, detailQuery.unavailable, detailQuery.error]);
   const [notice, setNotice] = useState('');
   const [contextMenu, setContextMenu] = useState<
     (LibraryContextMenu & { identity: string }) | null
@@ -451,6 +466,9 @@ export function LibraryScreen(props: {
           onVersions={(selected) => detail.openView('versions', selected)}
           initialSelected={selectedPreview}
           albumId={props.albumId}
+          viewerFilters={
+            detail.hasListContext ? (query.filters ?? undefined) : undefined
+          }
           client={client}
           onClose={detail.close}
           onTrashed={onTrashed}

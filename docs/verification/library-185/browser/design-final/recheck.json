@@ -1,0 +1,192 @@
+{
+  "status": "passed",
+  "checks": [
+    "真实邻图delivery失败保留当前图；浅深色1440/390错误卡无投影，标题30px/正文21px/说明19.5px行高及两个间距均为设计值。",
+    "Album content consumes the shared viewer with actual album-only neighbor query and keeps its route on close. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row."
+  ],
+  "screenshots": [
+    "library-viewer-adjacent-error-light-1440.png",
+    "library-viewer-adjacent-error-light-390.png",
+    "library-viewer-adjacent-error-dark-1440.png",
+    "library-viewer-adjacent-error-dark-390.png",
+    "library-viewer-album-consumer-1440.png",
+    "library-viewer-upload-consumer-390.png"
+  ],
+  "errorLayouts": [
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "width": 480,
+      "height": 356,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "padding": "24px",
+      "title": {
+        "fontSize": "20px",
+        "lineHeight": "30px",
+        "fontWeight": "500",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "body": {
+        "fontSize": "14px",
+        "lineHeight": "21px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "notice": {
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "12px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "footer": {
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      }
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "width": 358,
+      "height": 356,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "padding": "24px",
+      "title": {
+        "fontSize": "20px",
+        "lineHeight": "30px",
+        "fontWeight": "500",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "body": {
+        "fontSize": "14px",
+        "lineHeight": "21px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "notice": {
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "12px",
+        "color": "rgb(39, 35, 67)"
+      },
+      "footer": {
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(39, 35, 67)"
+      }
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "width": 480,
+      "height": 356,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "padding": "24px",
+      "title": {
+        "fontSize": "20px",
+        "lineHeight": "30px",
+        "fontWeight": "500",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "body": {
+        "fontSize": "14px",
+        "lineHeight": "21px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "notice": {
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "12px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "footer": {
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      }
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "width": 358,
+      "height": 356,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "padding": "24px",
+      "title": {
+        "fontSize": "20px",
+        "lineHeight": "30px",
+        "fontWeight": "500",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "body": {
+        "fontSize": "14px",
+        "lineHeight": "21px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "notice": {
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "12px",
+        "color": "rgb(244, 241, 248)"
+      },
+      "footer": {
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "marginTop": "0px",
+        "padding": "0px",
+        "color": "rgb(244, 241, 248)"
+      }
+    }
+  ],
+  "consumerTheme": "light",
+  "albumSequence": ["issue185-008", "issue185-007"],
+  "uploadViewerCaption": "缩略图 · WebP · 0.3 KiB · 静态预览"
+}
