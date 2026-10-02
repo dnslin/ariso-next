@@ -1,10 +1,10 @@
 # T-DEL-02 S3 内容访问、特殊格式和附件联验
 
-关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../tasks/m3-m4-platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](../../tasks/execution.md)。实现、核心验证与独立代码审计已完成。获批的宽屏旧断言修正已通过；筛选误选已获授权修正并定向验证通过；原生目录枚举取消仍未解决，PR保留草稿。
+关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../tasks/m3-m4-platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](../../tasks/execution.md)。实现、核心验证与独立代码审计已完成。获批的宽屏旧断言修正已通过；筛选误选已获授权修正并定向验证通过；原生目录枚举取消仍未解决；用户现已明确要求合并PR并关闭Issue，详见末节。
 
 2026-10-02 通过 gh 读取 Issue、评论和原生 blocked by / blocking。评论为空，直接前置 #69、#83、#155、#150、#153、#70 全部 CLOSED；实现及交付记录已核对。下游 #162、#164、#169、#193 仍 OPEN。从最新 origin/main `3eb585f` 创建分支 `codex/delivery-s3-161` 与独立 worktree `/Volumes/data/project/ariso-delivery-161`。原目录和真实预览数据未修改。当前必需真实服务按 execution 为 R2 与 SeaweedFS；AWS 实测已取消，不记为通过。
 
-已推送分支并创建 [草稿 PR #224](https://github.com/dnslin/ariso-next/pull/224)。实际 `gh pr view 224 --repo dnslin/ariso-next --json number,url,state,isDraft,mergeable,headRefName,statusCheckRollup` 返回 OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。没有远端检查，不将空列表记作CI通过，也不等待不存在的工作流。未合并、关闭Issue、发布或部署；分支与worktree保留。
+创建时已推送分支并创建 [草稿 PR #224](https://github.com/dnslin/ariso-next/pull/224)。实际 `gh pr view 224 --repo dnslin/ariso-next --json number,url,state,isDraft,mergeable,headRefName,statusCheckRollup` 返回 OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。没有远端检查，不将空列表记作CI通过，也不等待不存在的工作流。未合并、关闭Issue、发布或部署；分支与worktree保留。
 
 ## 实施行为
 
@@ -112,3 +112,9 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-fi
 目录[只读源码诊断](checks/chooser-diagnosis.md)确认高层setInputFiles、拦截chooser和直接CDP共用DOM.setFileInputFiles，webkitdirectory进入浏览器目录枚举。历史独立原生input同样cancel，应用扫描未启动；没有证据支持改产品handler，也不能确定Ego内部取消的具体原因。保留原生失败断言，不以拖入目录或假FileList替代选择器。
 
 已准备同一Space3的独立生产上传页面、专用测试账号及独立数据目录，真实素材包含两个子目录中的同名PNG、空目录和文本。输入监听器在捕获阶段记录真实change/cancel及相对路径，等待用户完成系统选择后再读取队列与汇总。[当前预览记录](checks/directory-preview/preview.json)、[1440×900浅色待选择截图](checks/directory-preview/awaiting-selection.png)。当前明确为awaiting-native-selection，尚未通过；服务仅为这次人工操作保留，完成后停止并清理独立数据。原项目和用户预览未修改。系统文件夹选择必须由用户操作，遵守ego-browser技能原生提示交接规则。
+
+## 用户要求合并与清理（2026-10-02）
+
+在已告知筛选修正通过、原生目录选择仍缺少实际成功证据、PR为草稿且远端检查为空后，用户明确要求“合并PR，然后清理并更新本地分支，关闭这个issue”。按该指令推进合并、关闭Issue和任务清理，不将其解释为目录验证通过。上述失败与等待人工选择的记录保留为历史事实；目录选择属于既有#159验证限制，本次未修改产品UI。
+
+合并后同步原项目main，移除本任务分支和独立worktree，停止本任务目录预览并清理临时素材。其他任务的worktree、分支和数据不清理。实际最终合并状态以[PR #224](https://github.com/dnslin/ariso-next/pull/224)和[Issue #161](https://github.com/dnslin/ariso-next/issues/161)为准。远端没有检查，不将空列表记为CI通过；未发布或部署。
