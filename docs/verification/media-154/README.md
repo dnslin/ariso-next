@@ -65,4 +65,8 @@ macOS / Darwin arm64，Node v24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32 Q16-H
 
 S3删除及远端在途写入归 T-MED-14 / #163；Local/S3孤儿扫描与完整配置引用/删除组合归 T-STO-06 / #164，数量/占用与报表组合归 #168/#169。本次不声称这些任务完成，AWS/R2/SeaweedFS删除未实测。AMD64/ARM64镜像、Linux容器及Release验证按发布流程，未执行且不计通过。本次没有Release、镜像发布、部署、合并、主动关闭Issue、删除分支或worktree。
 
-PR及远端实际检查状态待提交后核对；不把不存在的Actions检查称为CI通过。
+## 提交、PR 与远端状态
+
+实现提交 `f7e6684` 已推送到 `codex/issue-154-local-delete`，创建 [PR #228](https://github.com/dnslin/ariso-next/pull/228)。`gh pr view 228 --repo dnslin/ariso-next --json state,isDraft,headRefName,headRefOid,mergeable,mergeStateStatus,statusCheckRollup` 实际回读创建时为 OPEN / CLEAN / MERGEABLE，提交一致，检查列表为空。`gh pr checks 228 --repo dnslin/ariso-next` 返回 no checks reported，退出1表示没有检查，不记作CI通过，也不等待不存在的工作流。适用本地检查及独立审计完成后，`gh pr ready 228 --repo dnslin/ariso-next` 已成功转为正式待评审。
+
+首次推送停在系统钥匙串读取，终止仅本次推送进程后，使用命令级 `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin codex/issue-154-local-delete` 成功。仅沿用指定代理和已有GitHub CLI登录，不改全局Git/代理配置。PR使用 Refs #154 关联任务，没有主动关闭Issue。独立验证worktree保留，并对齐实现提交；未合并、发布、部署或删除分支/worktree。
