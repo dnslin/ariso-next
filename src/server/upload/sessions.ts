@@ -4,7 +4,7 @@ import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { prepareUploadSelection } from '../collections/memberships.ts';
 import { mediaImages, mediaJobs } from '../media/schema.ts';
 import { createProcessingSnapshot } from '../media/settings.ts';
-import { resolveLocalUploadStorage } from '../storage/defaults.ts';
+import { resolveUploadStorage } from '../storage/defaults.ts';
 import { UploadError } from './errors.ts';
 import {
   uploadSettings,
@@ -21,7 +21,11 @@ export function getSession(db: BetterSQLite3Database, id: string) {
     .where(eq(uploadSessions.id, id))
     .get();
   if (!session)
-    throw new UploadError('UPLOAD_SESSION_NOT_FOUND', '上传会话不存在', 404);
+    throw new UploadError(
+      'UPLOAD_SESSION_NOT_FOUND',
+      '上传会话不存在或结果已过期，请到图库查看已接收图片',
+      404,
+    );
   return session;
 }
 
@@ -35,7 +39,7 @@ export function getSubmission(db: BetterSQLite3Database, id: string) {
     if (!submission)
       throw new UploadError(
         'UPLOAD_SUBMISSION_NOT_FOUND',
-        '上传提交不存在',
+        '上传提交不存在或结果已过期，请到图库查看已接收图片',
         404,
       );
     const sessions = tx
@@ -69,7 +73,7 @@ export function requireSessionStorage(
   db: BetterSQLite3Database,
   session: UploadSession,
 ) {
-  return resolveLocalUploadStorage(db, session.storageId);
+  return resolveUploadStorage(db, session.storageId);
 }
 
 export function createSubmission(db: BetterSQLite3Database, input: unknown) {
@@ -121,7 +125,7 @@ export function createSubmission(db: BetterSQLite3Database, input: unknown) {
           '文件大小超过上传上限',
           413,
         );
-      const storage = resolveLocalUploadStorage(tx, data.storageId);
+      const storage = resolveUploadStorage(tx, data.storageId);
       const selection = prepareUploadSelection(tx, data);
       const snapshot = createProcessingSnapshot(tx);
       const id = randomUUID();
@@ -154,6 +158,7 @@ export function createSubmission(db: BetterSQLite3Database, input: unknown) {
             storageId: storage.id,
             state: 'queued',
             candidateImageId: randomUUID(),
+            candidateJobId: randomUUID(),
             createdAt: now,
             updatedAt: now,
           })
@@ -166,7 +171,11 @@ export function createSubmission(db: BetterSQLite3Database, input: unknown) {
 }
 
 /** The receiver settles in-flight writes before deleting registered object keys. */
-export function cancelSession(db: BetterSQLite3Database, id: string) {
+export function cancelSession(
+  db: BetterSQLite3Database,
+  id: string,
+  transferFailed = false,
+) {
   return db.transaction(
     (tx) => {
       const session = getSession(tx, id);
@@ -183,15 +192,108 @@ export function cancelSession(db: BetterSQLite3Database, id: string) {
       return tx
         .update(uploadSessions)
         .set({
-          state: 'cancelled',
+          state: transferFailed ? 'failed' : 'cancelled',
+          ...(transferFailed
+            ? {
+                errorCode: 'UPLOAD_TRANSFER_FAILED',
+                error: '浏览器文件传输未完成，请重新选择文件',
+              }
+            : {}),
           cleanupStatus:
-            session.temporaryKey || session.finalKey ? 'pending' : 'none',
-          nextCleanupAt: session.temporaryKey || session.finalKey ? now : null,
+            session.temporaryKey || session.finalKey || session.temporaryPath
+              ? 'pending'
+              : 'none',
+          nextCleanupAt:
+            session.temporaryKey || session.finalKey || session.temporaryPath
+              ? now
+              : null,
           updatedAt: now,
         })
         .where(eq(uploadSessions.id, id))
         .returning()
         .get()!;
+    },
+    { behavior: 'immediate' },
+  );
+}
+
+/** Replace an unused near-expiry signature without changing the frozen submission. */
+export function resubmitSession(
+  db: BetterSQLite3Database,
+  id: string,
+  requestId: string,
+) {
+  const requestInput = JSON.stringify({ requestId, previousSessionId: id });
+  return db.transaction(
+    (tx) => {
+      const existing = tx
+        .select()
+        .from(uploadSubmissions)
+        .where(eq(uploadSubmissions.requestId, requestId))
+        .get();
+      if (existing) {
+        if (existing.requestInput !== requestInput)
+          throw new UploadError(
+            'UPLOAD_REQUEST_CONFLICT',
+            '同一请求 ID 的重新提交参数不同',
+            409,
+          );
+        return getSubmission(tx, existing.id);
+      }
+      const previous = getSession(tx, id);
+      const now = new Date();
+      if (
+        previous.route !== 'direct' ||
+        previous.state !== 'receiving' ||
+        !previous.signatureExpiresAt ||
+        previous.signatureExpiresAt.getTime() > now.getTime() + 10_000
+      )
+        throw new UploadError(
+          'UPLOAD_STATE_CONFLICT',
+          '只有尚未完成且签名即将过期的直传会话可以重新提交',
+          409,
+          previous.imageId,
+        );
+      requireSessionStorage(tx, previous);
+      const source = tx
+        .select()
+        .from(uploadSubmissions)
+        .where(eq(uploadSubmissions.id, previous.submissionId))
+        .get()!;
+      prepareUploadSelection(tx, {
+        albumIds: source.albumIds,
+        tagIds: source.tagIds,
+      });
+      const submissionId = randomUUID();
+      tx.insert(uploadSubmissions)
+        .values({
+          ...source,
+          id: submissionId,
+          requestId,
+          requestInput,
+          lastActivityAt: now,
+          createdAt: now,
+        })
+        .run();
+      cancelSession(tx, id);
+      tx.insert(uploadSessions)
+        .values({
+          id: randomUUID(),
+          submissionId,
+          queueItemId: previous.queueItemId,
+          groupIndex: 0,
+          originalName: previous.originalName,
+          declaredSize: previous.declaredSize,
+          declaredMime: previous.declaredMime,
+          storageId: previous.storageId,
+          state: 'queued',
+          candidateImageId: randomUUID(),
+          candidateJobId: randomUUID(),
+          createdAt: now,
+          updatedAt: now,
+        })
+        .run();
+      return getSubmission(tx, submissionId);
     },
     { behavior: 'immediate' },
   );

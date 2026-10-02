@@ -1,4 +1,5 @@
 import {
+  readUploadJson,
   sessionResult,
   uploadResponse,
 } from '../../../../../server/upload/http.ts';
@@ -7,7 +8,15 @@ export async function DELETE(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return uploadResponse(request, async ({ uploads }) =>
-    sessionResult(await uploads.cancel((await context.params).id)),
-  );
+  return uploadResponse(request, async ({ uploads }) => {
+    const input = await readUploadJson(request, { optional: true });
+    const transferFailed =
+      !!input &&
+      typeof input === 'object' &&
+      'reason' in input &&
+      input.reason === 'transfer-failed';
+    return sessionResult(
+      await uploads.cancel((await context.params).id, transferFailed),
+    );
+  });
 }

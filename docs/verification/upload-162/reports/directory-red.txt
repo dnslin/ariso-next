@@ -1,0 +1,51 @@
+Already up to date
+Done in 43ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |integration| tests/integration/upload/s3.test.ts (36 tests | 1 failed | 35 skipped) 274ms
+   ❯ S3 upload routing and handoff through real SDK HTTP (36)
+     × conditional GET/Copy admits actual format and creates one image, job and frozen relationships for concurrent complete 274ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/upload/s3.test.ts > S3 upload routing and handoff through real SDK HTTP > conditional GET/Copy admits actual format and creates one image, job and frozen relationships for concurrent complete
+AssertionError: promise resolved "Stats{ dev: 16777229, …(13) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ Stats {
++   "atimeMs": 1790948402368.9792,
++   "birthtimeMs": 1790948402368.9792,
++   "blksize": 4096,
++   "blocks": 0,
++   "ctimeMs": 1790948402490.944,
++   "dev": 16777229,
++   "gid": 20,
++   "ino": 43002803,
++   "mode": 16877,
++   "mtimeMs": 1790948402490.944,
++   "nlink": 2,
++   "rdev": 0,
++   "size": 64,
++   "uid": 501,
+  }
+
+ ❯ tests/integration/upload/s3.test.ts:459:75
+    457|     });
+    458|     expect(second.imageId).toBe(first.imageId);
+    459|     await expect(stat(join(fixture.temporaryRoot, 'uploads', session.i…
+       |                                                                           ^
+    460|     expect((await fixture.runtime.complete(session.id)).imageId).toBe(
+    461|       first.imageId,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 skipped (36)
+   Start at  21:40:01
+   Duration  982ms (import 47%, tests 30%, transform 23%)

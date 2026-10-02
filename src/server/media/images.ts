@@ -26,6 +26,7 @@ export type AcceptOriginalInput = Pick<
     >
   > & {
     imageId: string;
+    jobId?: string;
     key: string;
     snapshot: ProcessingSnapshot;
     expectedVersions: DerivedVersionKind[];
@@ -93,7 +94,7 @@ export function acceptOriginal(
       createdAt: now,
     })
     .run();
-  const jobId = randomUUID();
+  const jobId = input.jobId ?? randomUUID();
   tx.insert(mediaJobs)
     .values({
       id: jobId,

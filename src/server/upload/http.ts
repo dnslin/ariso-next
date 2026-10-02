@@ -20,6 +20,8 @@ export function sessionResult(session: UploadSession) {
     errorCode: session.errorCode,
     error: session.error,
     cleanupStatus: session.cleanupStatus,
+    route: session.route,
+    routeReason: session.routeReason,
   };
 }
 export function submissionResult(submission: ReturnType<typeof getSubmission>) {
@@ -98,9 +100,14 @@ export async function uploadResponse(
 }
 
 /** Metadata has a separate bounded budget; image bytes use the streaming receiver. */
-export async function readUploadJson(request: Request) {
-  if (!request.body)
+export async function readUploadJson(
+  request: Request,
+  { optional = false }: { optional?: boolean } = {},
+) {
+  if (!request.body) {
+    if (optional) return null;
     throw new UploadError('UPLOAD_INVALID_INPUT', '缺少请求内容');
+  }
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
   let size = 0;
@@ -119,6 +126,7 @@ export async function readUploadJson(request: Request) {
       }
       chunks.push(value);
     }
+    if (optional && size === 0) return null;
     return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown;
   } finally {
     reader.releaseLock();

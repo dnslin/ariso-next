@@ -69,13 +69,6 @@ export function requestMetadataRead(
           409,
           `存储已停用：${storage.id}`,
         );
-      // The current production media reader is local-only; S3 is connected by T-DEL-02/T-UP-04.
-      if (storage.type !== 'local')
-        throw new MediaMetadataError(
-          'STORAGE_TYPE_UNSUPPORTED',
-          409,
-          '当前媒体读取仅支持本地存储',
-        );
       const active = tx
         .select()
         .from(mediaJobs)

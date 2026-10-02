@@ -1,4 +1,4 @@
-import { join } from 'node:path';
+import { sep } from 'node:path';
 import { ZodError } from 'zod';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { inspectImageFile } from './file-formats.ts';
@@ -44,7 +44,7 @@ export async function validateWatermarkFile(
       contentFailureExitCode = 2;
       const tool = startSvgPreview(
         path,
-        join(workspace, 'preview.png'),
+        `${workspace}${sep}preview.png`,
         workspace,
         signal,
       );

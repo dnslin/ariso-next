@@ -76,12 +76,6 @@ export function reprocessUnavailableError(
       409,
       `存储已停用：${storage.id}`,
     );
-  if (storage.type !== 'local')
-    return new MediaReprocessError(
-      'STORAGE_TYPE_UNSUPPORTED',
-      409,
-      '当前重处理仅支持本地存储',
-    );
   if (hasActiveJob)
     return new MediaReprocessError(
       'MEDIA_JOB_CONFLICT',

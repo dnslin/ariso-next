@@ -1,0 +1,208 @@
+Initial full integration failure (actual output excerpt; fixes and rerun follow in README)
+cancels before acceptance and rejects later content without creating media 1847ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+    118| }
+    119|
+    120| it.each(['original', 'compressed', 'watermark'])(
+       |                                                 ^
+    121|   'counts each %s GET and download once without database writes',
+    122|   async (version) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:183:1
+    181| });
+    182|
+    183| it('reads committed timezone after response preparation and keeps alre…
+       | ^
+    184|   const ready = Promise.withResolvers<void>();
+    185|   const release = Promise.withResolvers<void>();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:208:1
+    206| });
+    207|
+    208| it('does not retry or duplicate a repeated delivery callback within on…
+       | ^
+    209|   const prepare = delivery.prepareImageDelivery;
+    210|   vi.spyOn(delivery, 'prepareImageDelivery').mockImplementation(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯
+
+ FAIL  |integration| tests/integration/identity/auth.test.ts > initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/auth.test.ts:247:3
+    245|   });
+    246|
+    247|   it('production constraints reject invalid owners and duplicate provi…
+       |   ^
+    248|     for (const value of ['NULL', '0', '2']) {
+    249|       expect(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/15]⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts > 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接
+AssertionError: expected [ '.next', 'dist', 'docs', …(9741) ] to not include 'tests'
+ ❯ tests/integration/runtime/health.test.ts:139:23
+    137|     }
+    138|     const files = await readdir(app, { recursive: true });
+    139|     expect(files).not.toContain('tests');
+       |                       ^
+    140|     expect(files.some((file) => file.includes('health-failure'))).toBe…
+    141|   } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/15]⎯
+
+ FAIL  |integration| tests/integration/runtime/logging.test.ts > 隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/integration/runtime/logging.test.ts:80:5
+     78|   expect(
+     79|     files.some((file) => /framework-error|log-event|^tests/.test(file)…
+     80|   ).toBe(false);
+       |     ^
+     81| }, 30000);
+     82|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/15]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+AssertionError: expected [ '.next', 'dist', 'docs', …(9715) ] to not include 'tests'
+ ❯ tests/integration/runtime/secret-preflight.test.ts:203:21
+    201|   }
+    202|   const files = await readdir(app, { recursive: true });
+    203|   expect(files).not.toContain('tests');
+       |                     ^
+    204|   expect(files.some((file) => file.includes('secret-preflight'))).toBe…
+    205| }, 30000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/15]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码
+AssertionError: expected [ '.next', 'dist', 'docs', …(9741) ] to not include 'src'
+ ❯ tests/integration/runtime/standalone.test.ts:54:23
+     52|       );
+     53|     }
+     54|     expect(files).not.toContain('src');
+       |                       ^
+     55|     expect(files).not.toContain('tests');
+     56|     expect(await readFile(join(app, 'server.js'), 'utf8')).not.toConta…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/15]⎯
+
+ FAIL  |integration| tests/integration/storage/settings-http.test.ts > 现有本地上传入口拒绝显式或默认 S3，在分配会话前返回明确冲突
+AssertionError: {"id":"e49893b5-f008-4b39-beff-d894d84ae3a6","storageId":"bec92320-6c78-469f-9d1d-fe83f2fa3482","visibility":"public","maxFileBytes":52428800,"batchSize":20,"albumIds":[],"tagIds":[],"sessions":[{"id":"597fb643-066a-4c5b-9ddf-6fa0d0fee14c","queueItemId":"9fb06b96-07ac-4d02-8390-f4e3e5b8cbb8","groupIndex":0,"originalName":"boundary.png","declaredSize":32,"state":"queued","imageId":null,"jobId":null,"byteSize":null,"errorCode":null,"error":null,"cleanupStatus":"none","route":null,"routeReason":null,"image":null,"job":null}]}: expected 201 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 201
+
+ ❯ tests/integration/storage/settings-http.test.ts:254:62
+    252|         ...(explicit ? { storageId: storage.id } : {}),
+    253|       });
+    254|       expect(rejected.status, await rejected.clone().text()).toBe(409);
+       |                                                              ^
+    255|       expect(await rejected.json()).toMatchObject({
+    256|         code: 'STORAGE_TYPE_UNSUPPORTED',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/15]⎯
+
+ FAIL  |integration| tests/integration/storage/settings.test.ts > 从旧 schema 升级保留默认、图片对象和上传会话引用，外键仍有效
+SqliteError: table upload_sessions has no column named candidate_job_id
+ ❯ Database.prepare node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21
+ ❯ BetterSQLiteSession.prepareQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:60:28
+ ❯ BetterSQLiteSession.prepareOneTimeQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/session.ts:250:15
+ ❯ QueryPromise._prepare node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:380:78
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:15
+ ❯ tests/integration/storage/settings.test.ts:570:8
+    568|         updatedAt: now,
+    569|       })
+    570|       .run();
+       |        ^
+    571|     const readReferences = () => [
+    572|       previous.db.select().from(mediaImages).all(),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/15]⎯
+
+ FAIL  |media-tools| tests/integration/upload/local-http.test.ts > accepts exact PNG bytes once and recovers an unread acceptance response by querying the submission
+AssertionError: expected 400 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 400
+
+ ❯ tests/integration/upload/local-http.test.ts:227:26
+    225|   expect(connection!.db.select().from(mediaJobs).all()).toHaveLength(1…
+    226|   const tooLate = await cancel(id);
+    227|   expect(tooLate.status).toBe(409);
+       |                          ^
+    228|   expect(await tooLate.json()).toMatchObject({ imageId: saved.imageId …
+    229|   expect(connection!.db.select().from(mediaImages).all()).toHaveLength…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/15]⎯
+
+ FAIL  |media-tools| tests/integration/upload/local-http.test.ts > cancels before acceptance and rejects later content without creating media
+AssertionError: {"code":"UPLOAD_INTERNAL_ERROR","message":"Unexpected end of JSON input","imageId":null,"requestId":"8a3b47f4-f28c-41cd-8b66-855e262aac58"}: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ tests/integration/upload/local-http.test.ts:236:58
+    234|   const id = submission.sessions[0].id;
+    235|   const canceled = await cancel(id);
+    236|   expect(canceled.status, await canceled.clone().text()).toBe(200);
+       |                                                          ^
+    237|   expect(await canceled.json()).toMatchObject({ id, state: 'cancelled'…
+    238|   const lateContent = await content(id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/15]⎯
+
+
+ Test Files  9 failed | 109 passed (118)
+      Tests  15 failed | 1094 passed (1109)
+   Start at  20:48:59
+   Duration  386.92s (tests 96%, import 4%, transform 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.

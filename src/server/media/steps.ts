@@ -1,9 +1,13 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { resolveLocalUploadStorage } from '../storage/defaults.ts';
+import { resolveUploadStorage } from '../storage/defaults.ts';
 import { inspectImage } from './formats.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
-import { readObject, inspectObject, deleteObject } from '../storage/local.ts';
+import {
+  readMediaObject,
+  inspectMediaObject,
+  deleteMediaObject,
+} from './storage.ts';
 import type { MediaRuntime } from './process.ts';
 import { startMediaTool } from './tools.ts';
 import { markUnpublishedMediaObjects } from './objects.ts';
@@ -34,7 +38,7 @@ export function activeMediaJob(db: BetterSQLite3Database, jobId: string) {
       'MEDIA_IMAGE_DELETING',
       `Image is being deleted: ${image.id}`,
     );
-  const storage = resolveLocalUploadStorage(db, image.storageId);
+  const storage = resolveUploadStorage(db, image.storageId);
   return { job, image, storage };
 }
 
@@ -213,7 +217,7 @@ export async function reconcileMediaObjects(
   diskLimitBytes: number,
   signal: AbortSignal,
 ) {
-  const { db, storageRoot, logger } = runtime;
+  const { db, logger } = runtime;
   const { storage, job } = activeMediaJob(db, jobId);
   const outputFormat =
     kind === 'thumbnail' ? 'webp' : job.snapshot.outputFormat;
@@ -236,7 +240,12 @@ export async function reconcileMediaObjects(
     if (candidate.purpose !== kind && candidate.purpose !== 'temporary')
       continue;
     signal.throwIfAborted();
-    const existing = await inspectObject(storageRoot, storage, candidate.key);
+    const existing = await inspectMediaObject(
+      runtime,
+      storage,
+      candidate.key,
+      signal,
+    );
     if (
       existing &&
       candidate.purpose === kind &&
@@ -245,8 +254,8 @@ export async function reconcileMediaObjects(
     ) {
       let verified: Awaited<ReturnType<typeof inspectImage>> | undefined;
       try {
-        const data = await readObject(
-          storageRoot,
+        const data = await readMediaObject(
+          runtime,
           storage,
           candidate.key,
           'image/webp',
@@ -258,8 +267,8 @@ export async function reconcileMediaObjects(
             'MEDIA_OUTPUT_INVALID',
             'Recovered candidate has unexpected encoding',
           );
-        const full = await readObject(
-          storageRoot,
+        const full = await readMediaObject(
+          runtime,
           storage,
           candidate.key,
           'image/webp',
@@ -323,7 +332,7 @@ export async function reconcileMediaObjects(
       }
     }
     try {
-      await deleteObject(storageRoot, storage, candidate.key);
+      await deleteMediaObject(runtime, storage, candidate.key, signal);
       db.update(mediaObjects)
         .set({ status: 'deleted', byteSize: 0, updatedAt: new Date() })
         .where(eq(mediaObjects.id, candidate.id))

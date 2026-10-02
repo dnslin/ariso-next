@@ -1,5 +1,5 @@
 import { and, eq, inArray, sql } from 'drizzle-orm';
-import { deleteObject, inspectObject } from '../storage/local.ts';
+import { deleteMediaObject, inspectMediaObject } from './storage.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import { analyzeMediaError } from './errors.ts';
 import type { MediaRuntime } from './process.ts';
@@ -18,23 +18,18 @@ export function recoverMediaCandidateCleanup(db: MediaRuntime['db']) {
     .run();
 }
 
-/** Cleanup is independent of content success and can run on disabled local storage. */
+/** Cleanup is independent of content success and can run on disabled storage. */
 export async function cleanupMediaCandidates(
   runtime: MediaRuntime,
   signal?: AbortSignal,
 ) {
-  const { db, storageRoot, logger } = runtime;
+  const { db, logger } = runtime;
   const objects = db
     .select({ object: mediaObjects, storage: storageConfigs })
     .from(mediaObjects)
     .innerJoin(storageConfigs, eq(storageConfigs.id, mediaObjects.storageId))
     .where(
-      and(
-        eq(mediaObjects.status, 'cleanup_pending'),
-        eq(storageConfigs.type, 'local'),
-        unreferenced,
-        settled,
-      ),
+      and(eq(mediaObjects.status, 'cleanup_pending'), unreferenced, settled),
     )
     .limit(20)
     .all();
@@ -43,18 +38,9 @@ export async function cleanupMediaCandidates(
     let size = object.byteSize;
     try {
       size =
-        (
-          await inspectObject(
-            storageRoot,
-            { ...storage, localPath: storage.localPath! },
-            object.key,
-          )
-        )?.size ?? 0;
-      await deleteObject(
-        storageRoot,
-        { ...storage, localPath: storage.localPath! },
-        object.key,
-      );
+        (await inspectMediaObject(runtime, storage, object.key, signal))
+          ?.size ?? 0;
+      await deleteMediaObject(runtime, storage, object.key, signal);
       db.update(mediaObjects)
         .set({
           status: 'deleted',

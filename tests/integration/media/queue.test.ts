@@ -1,5 +1,11 @@
 import { randomUUID } from 'node:crypto';
-import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
@@ -94,6 +100,50 @@ const job = (id: string) =>
   connection.db.select().from(mediaJobs).where(eq(mediaJobs.id, id)).get()!;
 
 describe('persistent media queue', () => {
+  it('preserves interrupted input and only removes inputs of known terminal media jobs', async () => {
+    const active = enqueue();
+    const settled = enqueue();
+    connection.db
+      .update(mediaJobs)
+      .set({ status: 'running' })
+      .where(eq(mediaJobs.id, active.jobId))
+      .run();
+    connection.db
+      .update(mediaJobs)
+      .set({ status: 'failed' })
+      .where(eq(mediaJobs.id, settled.jobId))
+      .run();
+    const unknownId = randomUUID();
+    for (const id of [active.jobId, settled.jobId, unknownId]) {
+      const input = join(directory, 'tmp', `media-input-${id}`);
+      mkdirSync(input);
+      writeFileSync(join(input, 'original'), 'owned input');
+    }
+    vi.spyOn(processing, 'processMediaJob').mockImplementation(
+      async (runtime, jobId) => {
+        expect(jobId).toBe(active.jobId);
+        expect(
+          existsSync(
+            join(runtime.temporaryRoot, `media-input-${jobId}`, 'original'),
+          ),
+        ).toBe(true);
+      },
+    );
+    start();
+    await vi.waitFor(() =>
+      expect(processing.processMediaJob).toHaveBeenCalledOnce(),
+    );
+    expect(job(active.jobId).recoveryCount).toBe(1);
+    expect(
+      existsSync(join(directory, 'tmp', `media-input-${settled.jobId}`)),
+    ).toBe(false);
+    expect(
+      existsSync(
+        join(directory, 'tmp', `media-input-${unknownId}`, 'original'),
+      ),
+    ).toBe(true);
+  });
+
   it('claims only queued work and persists its timestamp, snapshot and processing state', () => {
     const accepted = enqueue();
     const before = job(accepted.jobId);

@@ -1,12 +1,18 @@
 import { and, eq, inArray } from 'drizzle-orm';
+import { createReadStream } from 'node:fs';
 import { mkdir, rm } from 'node:fs/promises';
-import { once } from 'node:events';
 import { sep } from 'node:path';
 import { createMediaResources } from './resources.ts';
 import { startMediaTool, terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
-import { readObject, writeObject } from '../storage/local.ts';
+import type { createSecretCrypto } from '../runtime/crypto.ts';
+import {
+  mediaSourcePath,
+  readMediaObject,
+  writeMediaObject,
+} from './storage.ts';
+import { discardMediaInput, readMediaInput } from './input.ts';
 import { readAndStoreMetadata } from './metadata.ts';
 import { inspectImage } from './formats.ts';
 import { inspectImageFile } from './file-formats.ts';
@@ -36,6 +42,7 @@ export type MediaRuntime = {
   storageRoot: string;
   temporaryRoot: string;
   watermarksRoot?: string;
+  secretCrypto?: ReturnType<typeof createSecretCrypto>;
   logger: Pick<Logger, 'info' | 'error'>;
   resources?: ReturnType<typeof createMediaResources>;
 };
@@ -65,6 +72,7 @@ export async function processMediaJob(
     ? AbortSignal.any([externalSignal, deadline.signal])
     : deadline.signal;
   const workspace = `${temporaryRoot}${sep}media-${jobId}`;
+  const inputDirectory = `${temporaryRoot}${sep}media-input-${jobId}`;
   const resources = (runtime.resources ??= createMediaResources());
   let budget: ReturnType<typeof resources.beginStep> | undefined;
   let workspaceReady = false;
@@ -75,10 +83,14 @@ export async function processMediaJob(
     await rm(workspace, { recursive: true, force: true });
     await mkdir(workspace, { recursive: true });
     workspaceReady = true;
+    if (storage.type === 's3') await mkdir(inputDirectory, { recursive: true });
     const beginStep = () =>
       resources.beginStep({
         temporaryDirectory: workspace,
-        storageDirectory: `${storageRoot}${sep}${storage.localPath}`,
+        storageDirectory:
+          storage.type === 'local'
+            ? `${storageRoot}${sep}${storage.localPath}`
+            : inputDirectory,
       });
     const { snapshot } = job;
     const original = db
@@ -92,28 +104,28 @@ export async function processMediaJob(
         ),
       )
       .get()!;
-    const openOriginal = async () => {
-      signal?.throwIfAborted();
-      const { storage } = activeMediaJob(db, jobId);
-      return readObject(
-        storageRoot,
-        storage,
-        original.media_objects.key,
-        original.media_objects.mime!,
-        signal,
-      );
-    };
     budget = beginStep();
     let stepSignal = AbortSignal.any([signal, budget.signal]);
-    const source = await openOriginal();
-    source.stream.destroy();
-    await once(source.stream, 'close');
+    const input = await readMediaInput(temporaryRoot, jobId);
+    const { storage: sourceStorage } = activeMediaJob(db, jobId);
+    const sourcePath =
+      input?.path ??
+      (await mediaSourcePath(
+        runtime,
+        sourceStorage,
+        original.media_objects,
+        `${inputDirectory}${sep}original`,
+        stepSignal,
+      ));
+    activeMediaJob(db, jobId);
     const facts = await inspectImageFile(
-      source.path,
+      sourcePath,
       workspace,
       stepSignal,
       budget.diskLimitBytes,
+      input?.facts,
     );
+    const generatedPaths = new Map<string, string>();
     job.expectedVersions = reprocessVersions(
       job.scope,
       facts.classification,
@@ -160,14 +172,14 @@ export async function processMediaJob(
     });
 
     step = 'metadata';
-    await readAndStoreMetadata(runtime, jobId, source.path, workspace, signal);
+    await readAndStoreMetadata(runtime, jobId, sourcePath, workspace, signal);
     step = 'identify';
 
-    let previewInput = `${facts.coder}:${source.path}[0]`;
+    let previewInput = `${facts.coder}:${sourcePath}[0]`;
     if (facts.format === 'SVG') {
       const previewPath = `${workspace}${sep}preview.png`;
       const tool = startSvgPreview(
-        source.path,
+        sourcePath,
         previewPath,
         workspace,
         stepSignal,
@@ -194,7 +206,7 @@ export async function processMediaJob(
           '1',
           ...(facts.format === 'PNG' ? ['-f', 'apng'] : []),
           '-i',
-          source.path,
+          sourcePath,
           '-map',
           '0:v:0',
           '-frames:v',
@@ -261,7 +273,9 @@ export async function processMediaJob(
           .where(
             inArray(mediaObjects.id, [
               candidate.objectId,
-              candidate.temporaryObjectId,
+              ...(candidate.temporaryObjectId
+                ? [candidate.temporaryObjectId]
+                : []),
             ]),
           )
           .run();
@@ -298,16 +312,16 @@ export async function processMediaJob(
               '本次任务压缩结果尚未生成',
             );
           const { storage } = activeMediaJob(db, jobId);
-          const content = await readObject(
-            storageRoot,
-            storage,
-            compressed.key,
-            compressed.mime!,
-            cancelSignal,
-          );
-          content.stream.destroy();
-          await once(content.stream, 'close');
-          sourceArgs = [`${snapshot.outputFormat}:${content.path}`];
+          const compressedPath =
+            generatedPaths.get(compressed.key) ??
+            (await mediaSourcePath(
+              runtime,
+              storage,
+              compressed,
+              `${inputDirectory}${sep}compressed-source`,
+              cancelSignal,
+            ));
+          sourceArgs = [`${snapshot.outputFormat}:${compressedPath}`];
         }
         sourceArgs = await prepareWatermark({
           sourceArgs,
@@ -352,11 +366,13 @@ export async function processMediaJob(
       let saved;
       try {
         const { storage } = activeMediaJob(db, jobId);
-        saved = await writeObject(
-          storageRoot,
+        saved = await writeMediaObject(
+          runtime,
           storage,
           plan,
           budget.countOutput(child.readable()),
+          `image/${kind === 'thumbnail' ? 'webp' : snapshot.outputFormat}`,
+          `${inputDirectory}${sep}derived-${plan.objectId}`,
           cancelSignal,
         );
       } catch (error) {
@@ -384,13 +400,16 @@ export async function processMediaJob(
       const toolError = await settled;
       if (toolError) throw toolError;
       const { storage } = activeMediaJob(db, jobId);
-      const output = await readObject(
-        storageRoot,
-        storage,
-        saved.key,
-        'image/webp',
-        signal,
-      );
+      if (saved.path) generatedPaths.set(saved.key, saved.path);
+      const output = saved.path
+        ? { stream: createReadStream(saved.path) }
+        : await readMediaObject(
+            runtime,
+            storage,
+            saved.key,
+            'image/webp',
+            stepSignal,
+          );
       const result = await inspectImage(output.stream, workspace, stepSignal);
       const outputFormat =
         kind === 'thumbnail' ? 'webp' : snapshot.outputFormat;
@@ -455,7 +474,10 @@ export async function processMediaJob(
         if (plan)
           markMediaCandidates(
             tx,
-            [plan.objectId, plan.temporaryObjectId],
+            [
+              plan.objectId,
+              ...(plan.temporaryObjectId ? [plan.temporaryObjectId] : []),
+            ],
             failure,
           );
         const terminal = tx
@@ -478,5 +500,16 @@ export async function processMediaJob(
     budget?.close();
     if (workspaceReady && !toolCleanupFailed)
       await rm(workspace, { recursive: true, force: true });
+    const settled = db
+      .select({ status: mediaJobs.status })
+      .from(mediaJobs)
+      .where(eq(mediaJobs.id, jobId))
+      .get();
+    if (
+      settled &&
+      !['queued', 'running'].includes(settled.status) &&
+      !toolCleanupFailed
+    )
+      await discardMediaInput(temporaryRoot, jobId);
   }
 }

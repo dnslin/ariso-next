@@ -1,4 +1,5 @@
 import {
+  createWriteStream,
   mkdtempSync,
   mkdirSync,
   rmSync,
@@ -9,6 +10,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PassThrough, Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createMediaResources } from '../../../src/server/media/resources.ts';
 
@@ -250,4 +252,37 @@ it('fails downstream when a tool closes its output without end or an error event
     code: 'ERR_STREAM_PREMATURE_CLOSE',
   });
   expect(output.destroyed).toBe(true);
+});
+
+it('writes S3 staging output to disk outside a zero-allowance decoder cache', async () => {
+  free = 300 * MiB;
+  const resources = createMediaResources();
+  const held = begin(resources, 'held-cache');
+  expect(held.diskLimitBytes).toBe(44 * MiB);
+  const cacheDirectory = join(root, 'media-job');
+  const outputDirectory = join(root, 'media-input-job');
+  mkdirSync(cacheDirectory);
+  mkdirSync(outputDirectory);
+  const step = resources.beginStep({
+    temporaryDirectory: cacheDirectory,
+    storageDirectory: outputDirectory,
+  });
+  steps.push(step);
+  expect(step.diskLimitBytes).toBe(0);
+  const outputPath = join(outputDirectory, 'derived-object');
+  await pipeline(
+    step.countOutput(Readable.from([Buffer.alloc(4096)])),
+    createWriteStream(outputPath),
+  );
+  expect(statSync(outputPath).size).toBe(4096);
+  expect(statSync(outputPath).blocks).toBeGreaterThan(0);
+  expect(() => step.check()).not.toThrow();
+  expect(step.signal.aborted).toBe(false);
+  free = 256 * MiB + 2;
+  await expect(
+    pipeline(
+      step.countOutput(Readable.from([Buffer.alloc(4096)])),
+      createWriteStream(join(outputDirectory, 'too-large')),
+    ),
+  ).rejects.toMatchObject({ code: 'INSUFFICIENT_DISK_SPACE' });
 });

@@ -8,7 +8,10 @@ import {
 } from '../../../src/server/collections/records.ts';
 import { patchUploadSettings } from '../../../src/server/upload/settings.ts';
 import { submissionResult } from '../../../src/server/upload/http.ts';
-import { expireQueuedSessions } from '../../../src/server/upload/cleanup.ts';
+import {
+  expireUploadSessions,
+  purgeUploadResults,
+} from '../../../src/server/upload/cleanup.ts';
 import {
   createSubmission,
   cancelSession,
@@ -50,6 +53,117 @@ const input = (requestId = 'request', count = 1, size = 10) => ({
 });
 
 describe('persisted upload submissions', () => {
+  it('purges full terminal submissions exactly at the 24-hour boundary while retaining newer results', () => {
+    const { db } = fixture;
+    const now = new Date('2026-10-02T12:00:00.000Z');
+    const cutoff = new Date(now.getTime() - 86400000);
+    const terminal = createSubmission(db, input('terminal', 4));
+    const states = ['accepted', 'failed', 'cancelled', 'expired'] as const;
+    for (const [index, session] of terminal.sessions.entries())
+      db.update(uploadSessions)
+        .set({ state: states[index], updatedAt: cutoff })
+        .where(eq(uploadSessions.id, session.id))
+        .run();
+    const recent = createSubmission(db, input('recent', 2));
+    for (const [index, session] of recent.sessions.entries())
+      db.update(uploadSessions)
+        .set({ state: 'failed', updatedAt: new Date(cutoff.getTime() + index) })
+        .where(eq(uploadSessions.id, session.id))
+        .run();
+    purgeUploadResults(db, now);
+    expect(
+      db
+        .select()
+        .from(uploadSubmissions)
+        .all()
+        .map((row) => row.id),
+    ).toEqual([recent.id]);
+    expect(
+      db
+        .select()
+        .from(uploadSessions)
+        .all()
+        .map((row) => row.id),
+    ).toEqual(recent.sessions.map((session) => session.id));
+    expect(() => getSubmission(db, terminal.id)).toThrow(
+      expect.objectContaining({ code: 'UPLOAD_SUBMISSION_NOT_FOUND' }),
+    );
+  });
+
+  it.each([
+    { name: 'queued', values: { state: 'queued' as const } },
+    { name: 'receiving', values: { state: 'receiving' as const } },
+    { name: 'validating', values: { state: 'validating' as const } },
+    { name: 'finalizing', values: { state: 'finalizing' as const } },
+    { name: 'pending cleanup', values: { cleanupStatus: 'pending' as const } },
+    { name: 'failed cleanup', values: { cleanupStatus: 'failed' as const } },
+    {
+      name: 'known temporary object',
+      values: { temporaryKey: 'uploads/old/source' },
+    },
+    {
+      name: 'known formal candidate',
+      values: { finalKey: 'original/old.png' },
+    },
+    {
+      name: 'known local temporary path',
+      values: { temporaryPath: '/controlled/tmp/uploads/old/source' },
+    },
+  ])(
+    'retains an entire old submission with $name responsibility',
+    ({ values }) => {
+      const { db } = fixture;
+      const now = new Date();
+      const submission = createSubmission(db, input('owned', 2));
+      db.update(uploadSessions)
+        .set({ state: 'failed', updatedAt: new Date(now.getTime() - 86400001) })
+        .where(eq(uploadSessions.submissionId, submission.id))
+        .run();
+      db.update(uploadSessions)
+        .set(values)
+        .where(eq(uploadSessions.id, submission.sessions[1].id))
+        .run();
+      const before = getSubmission(db, submission.id);
+      purgeUploadResults(db, now);
+      expect(getSubmission(db, submission.id)).toEqual(before);
+    },
+  );
+
+  it('purges accepted upload history without deleting the transferred media image, job, object or version', () => {
+    const { db } = fixture;
+    const imageId = fixture.image();
+    const job = db
+      .select()
+      .from(mediaJobs)
+      .where(eq(mediaJobs.imageId, imageId))
+      .get()!;
+    const submission = createSubmission(db, input('accepted'));
+    db.update(uploadSessions)
+      .set({
+        state: 'accepted',
+        imageId,
+        jobId: job.id,
+        updatedAt: new Date(Date.now() - 86400001),
+      })
+      .where(eq(uploadSessions.id, submission.sessions[0].id))
+      .run();
+    const before = {
+      images: db.select().from(mediaImages).all(),
+      jobs: db.select().from(mediaJobs).all(),
+      objects: db.select().from(mediaObjects).all(),
+      versions: db.select().from(mediaVersions).all(),
+    };
+    purgeUploadResults(db);
+    expect(db.select().from(uploadSessions).all()).toEqual([]);
+    expect(db.select().from(uploadSubmissions).all()).toEqual([]);
+    expect({
+      images: db.select().from(mediaImages).all(),
+      jobs: db.select().from(mediaJobs).all(),
+      objects: db.select().from(mediaObjects).all(),
+      versions: db.select().from(mediaVersions).all(),
+    }).toEqual(before);
+  });
+
   it('splits 45 files into 20/20/5 with one settings and relationship snapshot despite later changes', () => {
     const { db, storage } = fixture;
     const album = db.transaction((tx) =>
@@ -160,7 +274,7 @@ describe('persisted upload submissions', () => {
     );
   });
 
-  it('expires only idle queued sessions with constant SQL count despite completed history', () => {
+  it('expires idle pre-accept sessions with constant SQL count despite completed history', () => {
     const { db } = fixture;
     const now = new Date();
     const cutoff = new Date(now.getTime() - 3_600_000);
@@ -178,7 +292,9 @@ describe('persisted upload submissions', () => {
           .run();
         expected.set(
           submission.sessions[0].id,
-          state === 'queued' ? 'expired' : state,
+          ['queued', 'receiving', 'validating', 'finalizing'].includes(state)
+            ? 'expired'
+            : state,
         );
       }
       const recent = createSubmission(tx, input('recent'));
@@ -196,7 +312,7 @@ describe('persisted upload submissions', () => {
         },
       },
     });
-    expireQueuedSessions(observed, now);
+    expireUploadSessions(observed, now);
     expect(
       new Map(
         db
@@ -222,7 +338,7 @@ describe('persisted upload submissions', () => {
       }
     });
     queries.length = 0;
-    expireQueuedSessions(observed, now);
+    expireUploadSessions(observed, now);
     // Bound database round trips, not machine-dependent execution time.
     expect(queries).toHaveLength(firstQueryCount);
     const after = db.select().from(uploadSessions).all();

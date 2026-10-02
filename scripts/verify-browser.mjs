@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { once } from 'node:events';
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
@@ -10,10 +10,12 @@ import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { setTimeout as delay } from 'node:timers/promises';
 import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
+import { startUploadEndpoint } from '../tests/integration/upload/s3-endpoint.ts';
 import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture.ts';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
+  args: process.argv.slice(process.argv[2] === '--' ? 3 : 2),
   options: {
     suite: { type: 'string', default: 'full' },
     only: { type: 'string' },
@@ -22,13 +24,14 @@ const { values } = parseArgs({
 const suite = values.suite;
 const only = values.only;
 assert.ok(
-  ['full', 'upload', 'upload-regression'].includes(suite),
+  ['full', 'upload', 'upload-regression', 'upload-s3'].includes(suite),
   'Unknown browser suite',
 );
 assert.ok(
   only === undefined ||
-    (suite === 'upload' && ['relations', 'submissions'].includes(only)),
-  '--only relations/submissions requires --suite upload',
+    (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
+    (suite === 'upload-s3' && only === 'cleanup'),
+  '--only relations/submissions requires --suite upload; --only cleanup requires --suite upload-s3',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
@@ -62,6 +65,7 @@ for (const name of [
   'upload-relations.json',
   'upload-polling.json',
   'upload-input.json',
+  'upload-s3.json',
   'storage-cors.json',
   'delivery-s3/browser.json',
   'm2-1440.json',
@@ -95,6 +99,7 @@ let browser;
 let shellServer;
 let corsFixture;
 let deliveryFixture;
+const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
 const secrets = [];
@@ -352,20 +357,83 @@ try {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
+      onlyCleanup: suite === 'upload-s3' && only === 'cleanup',
     };
+    if (suite === 'upload-s3') {
+      const { openRuntimeDatabase } =
+        await import('../src/server/runtime/db.ts');
+      const { createSecretCrypto } =
+        await import('../src/server/runtime/crypto.ts');
+      const { storageConfigs } =
+        await import('../src/server/storage/schema.ts');
+      const crypto = createSecretCrypto(
+        Buffer.from(productionEnv.ARISO_ENCRYPTION_KEY, 'hex'),
+      );
+      const connection = openRuntimeDatabase(config.databasePath);
+      const targets = {};
+      try {
+        for (const route of ['direct', 'relay']) {
+          const endpoint = await startUploadEndpoint({
+            corsOrigin: origin,
+            control: true,
+          });
+          uploadFixtures.push(endpoint);
+          const id = randomUUID();
+          const now = new Date();
+          connection.db
+            .insert(storageConfigs)
+            .values({
+              id,
+              name: route === 'direct' ? '浏览器 S3 直传' : '浏览器 S3 中转',
+              type: 's3',
+              enabled: true,
+              endpoint: endpoint.target.endpoint,
+              region: endpoint.target.region,
+              bucket: endpoint.target.bucket,
+              pathPrefix: 'browser-upload',
+              forcePathStyle: true,
+              accessKeyEncrypted: crypto.encryptSecret(
+                endpoint.target.credentials.accessKeyId,
+              ),
+              secretKeyEncrypted: crypto.encryptSecret(
+                endpoint.target.credentials.secretAccessKey,
+              ),
+              connectionStatus: 'passed',
+              connectionRevision: 1,
+              corsStatus: route === 'direct' ? 'passed' : 'untested',
+              corsRevision: route === 'direct' ? 1 : null,
+              corsOrigin: route === 'direct' ? origin : null,
+              createdAt: now,
+              updatedAt: now,
+            })
+            .run();
+          targets[route] = { id, endpoint: endpoint.target.endpoint };
+        }
+      } finally {
+        connection.close();
+      }
+      uploadConfig.uploadS3 = targets;
+    }
     const stages =
-      suite === 'upload'
-        ? [
-            ['upload-submissions', 'uploadSubmissions'],
-            ['upload-relations', 'uploadRelations'],
-          ]
-        : [
-            ['upload', 'upload'],
-            ['upload-polling', 'uploadPolling'],
-          ];
+      suite === 'upload-s3'
+        ? [['upload-s3', 'uploadS3']]
+        : suite === 'upload'
+          ? [
+              ['upload-submissions', 'uploadSubmissions'],
+              ['upload-relations', 'uploadRelations'],
+            ]
+          : [
+              ['upload', 'upload'],
+              ['upload-polling', 'uploadPolling'],
+            ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
-      if (only !== undefined && script !== `upload-${only}`) continue;
+      if (
+        suite === 'upload' &&
+        only !== undefined &&
+        script !== `upload-${only}`
+      )
+        continue;
       await runBrowser(`../e2e/${script}.mjs`, uploadConfig, `${script}.log`);
       report[result] = 'passed';
     }
@@ -561,9 +629,10 @@ try {
   await stop(shellServer);
   await corsFixture?.close();
   await deliveryFixture?.close();
+  for (const endpoint of uploadFixtures) await endpoint.close();
   await writeFile(join(output, 'shell-server.log'), shellLogs);
   await writeFile(join(output, 'server.log'), redact(logs));
-  await rm(temporary, { recursive: true, force: true });
+  await rm(temporary, { recursive: true, force: true, maxRetries: 3 });
   report.finishedAt = new Date().toISOString();
   report.temporaryDirectoryRemoved = true;
   await writeFile(

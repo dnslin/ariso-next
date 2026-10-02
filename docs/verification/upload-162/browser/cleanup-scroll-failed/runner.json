@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-10-02T13:48:32.023Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "upload-s3",
+  "only": "cleanup",
+  "pageLabel": "p1",
+  "origin": "http://ariso-51830.localhost:51830",
+  "taskSpaceId": 12,
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-s3.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso/scripts/verify-browser.mjs:324:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso/scripts/verify-browser.mjs:437:7",
+  "finishedAt": "2026-10-02T13:50:53.567Z",
+  "temporaryDirectoryRemoved": true
+}

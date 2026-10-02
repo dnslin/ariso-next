@@ -96,7 +96,7 @@ export function UploadSettingsFields({
         </p>
       ) : !selected?.enabled ? (
         <p role="alert" className="text-sm">
-          默认存储缺失或已停用，请明确选择可用的本地存储。
+          默认存储缺失或已停用，请明确选择可用的存储。
         </p>
       ) : null}
       <Select

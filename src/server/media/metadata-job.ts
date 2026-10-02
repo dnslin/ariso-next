@@ -1,8 +1,8 @@
 import { and, eq } from 'drizzle-orm';
 import { mkdir, rm } from 'node:fs/promises';
-import { once } from 'node:events';
 import { sep } from 'node:path';
-import { readObject } from '../storage/local.ts';
+import { mediaSourcePath } from './storage.ts';
+import { discardMediaInput } from './input.ts';
 import { analyzeMediaError } from './errors.ts';
 import { readAndStoreMetadata } from './metadata.ts';
 import type { MediaRuntime } from './process.ts';
@@ -40,19 +40,17 @@ export async function processMetadataJob(
       )
       .get()!;
     const { storage } = activeMediaJob(db, jobId);
-    const source = await readObject(
-      runtime.storageRoot,
+    const sourcePath = await mediaSourcePath(
+      runtime,
       storage,
-      original.object.key,
-      original.object.mime!,
+      original.object,
+      `${runtime.temporaryRoot}${sep}media-input-${jobId}${sep}original`,
       signal,
     );
-    source.stream.destroy();
-    await once(source.stream, 'close');
     const result = await readAndStoreMetadata(
       runtime,
       jobId,
-      source.path,
+      sourcePath,
       workspace,
       signal,
     );
@@ -85,5 +83,16 @@ export async function processMetadataJob(
   } finally {
     if (workspaceReady && !toolCleanupFailed)
       await rm(workspace, { recursive: true, force: true });
+    const settled = db
+      .select({ status: mediaJobs.status })
+      .from(mediaJobs)
+      .where(eq(mediaJobs.id, jobId))
+      .get();
+    if (
+      settled &&
+      !['queued', 'running'].includes(settled.status) &&
+      !toolCleanupFailed
+    )
+      await discardMediaInput(runtime.temporaryRoot, jobId);
   }
 }

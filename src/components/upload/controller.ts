@@ -37,10 +37,12 @@ type Entry = {
   groupIndex?: number;
   readVersion: number;
   notifiedLibraryState?: string;
+  resubmission?: Promise<void>;
   transferState: 'idle' | 'active' | 'finished';
 };
 type Batch = {
   metadata: string;
+  submitUrl?: string;
   entries: Entry[];
   submissionId?: string;
   reading: boolean;
@@ -165,11 +167,14 @@ export class UploadController {
     return body as T;
   }
   private submit(batch: Batch) {
-    return this.json<UploadSubmissionResult>('/api/uploads/submissions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: batch.metadata,
-    });
+    return this.json<UploadSubmissionResult>(
+      batch.submitUrl ?? '/api/uploads/submissions',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: batch.metadata,
+      },
+    );
   }
   private applySession(entry: Entry, session: UploadSessionResult) {
     this.update(entry, {
@@ -177,6 +182,12 @@ export class UploadController {
       imageId: session.imageId ?? undefined,
       jobId: session.jobId ?? undefined,
       cleanupStatus: session.cleanupStatus,
+      cleanupError:
+        session.cleanupStatus === 'none'
+          ? undefined
+          : session.error?.split('\n清理失败:').at(-1),
+      route: session.route ?? entry.item.route,
+      routeReason: session.routeReason ?? entry.item.routeReason,
       error: undefined,
       step: session.job?.step,
     });
@@ -271,7 +282,8 @@ export class UploadController {
         !entry ||
         !this.current(entry) ||
         entry.item.cancelling ||
-        terminal.has(entry.item.state) ||
+        (terminal.has(entry.item.state) &&
+          entry.item.cleanupStatus !== 'pending') ||
         (revisions && revisions.get(entry) !== entry.readVersion)
       )
         continue;
@@ -281,7 +293,9 @@ export class UploadController {
         storageId: result.storageId,
         visibility: result.visibility,
         frozenSubmission: batch.summary,
-        ...(initial && session.state === 'queued'
+        ...(initial &&
+        session.state === 'queued' &&
+        entry.transferState === 'idle'
           ? { state: 'waiting-upload' as const }
           : {}),
       });
@@ -394,6 +408,33 @@ export class UploadController {
               state: progress === 100 ? 'saving' : 'uploading',
             });
         },
+        (route, routeReason) => this.update(entry, { route, routeReason }),
+        async (requestId, previousSessionId, submission) => {
+          if (!this.current(entry)) return;
+          const previous = entry.batch!;
+          previous.entries = previous.entries.filter(
+            (other) => other !== entry,
+          );
+          entry.readVersion++;
+          entry.batch = {
+            entries: [entry],
+            reading: false,
+            number: ++this.submissionNumber,
+            labels: previous.labels,
+            metadata: JSON.stringify({ requestId }),
+            submitUrl: `/api/uploads/sessions/${encodeURIComponent(previousSessionId)}/resubmit`,
+          };
+          entry.groupIndex = 0;
+          const pending = submission.then((result) =>
+            this.applyReplacement(entry, result),
+          );
+          entry.resubmission = pending;
+          try {
+            await pending;
+          } finally {
+            if (entry.resubmission === pending) entry.resubmission = undefined;
+          }
+        },
       );
       entry.transferState = 'finished';
       if (
@@ -424,6 +465,16 @@ export class UploadController {
     )
       await this.refresh(entry.item.id);
   }
+  private applyReplacement(entry: Entry, submission: UploadSubmissionResult) {
+    if (!this.current(entry)) return;
+    this.applySubmission(entry.batch!, submission, undefined, true);
+    // Cancellation must follow the replacement even while normal result updates pause.
+    this.update(entry, {
+      sessionId: submission.sessions[0].id,
+      submissionId: submission.id,
+      frozenSubmission: entry.batch!.summary,
+    });
+  }
   async refresh(id?: string) {
     const selected = id
       ? [this.entries.get(id)].filter((entry): entry is Entry => !!entry)
@@ -434,7 +485,8 @@ export class UploadController {
           (entry) =>
             entry.batch &&
             !entry.item.cancelling &&
-            !terminal.has(entry.item.state),
+            (!terminal.has(entry.item.state) ||
+              entry.item.cleanupStatus === 'pending'),
         )
         .map((entry) => entry.batch!),
     );
@@ -502,6 +554,26 @@ export class UploadController {
     entry.readVersion++;
     this.update(entry, { cancelling: true });
     try {
+      const batch = entry.batch!;
+      if (batch.submitUrl) {
+        // Stop before replacement begin/PUT. The metadata response may already be lost.
+        entry.transport?.destroy();
+        entry.transport = undefined;
+        try {
+          await entry.resubmission;
+        } catch (error) {
+          try {
+            this.applyReplacement(entry, await this.submit(batch));
+          } catch (readError) {
+            throw new Error(
+              `${error instanceof Error ? error.message : String(error)}；重提结果读取失败：${readError instanceof Error ? readError.message : String(readError)}`,
+              { cause: error },
+            );
+          }
+        }
+        if (!batch.submissionId)
+          this.applyReplacement(entry, await this.submit(batch));
+      }
       const session = await this.json<UploadSessionResult>(
         `/api/uploads/sessions/${encodeURIComponent(entry.item.sessionId)}`,
         { method: 'DELETE' },
@@ -531,6 +603,48 @@ export class UploadController {
         if (!terminal.has(entry.item.state)) await this.refresh(id);
         void this.schedule();
       }
+    }
+  }
+  async retryCleanup(id: string) {
+    const entry = this.entries.get(id);
+    if (!entry?.item.sessionId) return;
+    try {
+      const result = await this.json<UploadSessionResult>(
+        '/api/uploads/cleanup',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: entry.item.sessionId }),
+        },
+      );
+      this.update(entry, {
+        cleanupStatus: result.cleanupStatus,
+        cleanupError:
+          result.cleanupStatus === 'none'
+            ? undefined
+            : result.error?.split('\n清理失败:').at(-1),
+        ...(result.state === 'accepted'
+          ? {}
+          : { error: result.error ?? undefined }),
+      });
+    } catch (error) {
+      // A failed DELETE has already started a new finite retry cycle on the server.
+      // Read the actual responsibility so polling can follow it to completion.
+      try {
+        const result = await this.json<UploadSubmissionResult>(
+          `/api/uploads/submissions/${encodeURIComponent(entry.batch!.submissionId!)}`,
+        );
+        const session = result.sessions.find(
+          (session) => session.id === entry.item.sessionId,
+        );
+        if (session && this.current(entry)) this.applySession(entry, session);
+      } catch (readError) {
+        throw new Error(
+          `${error instanceof Error ? error.message : String(error)}；清理结果读取失败：${readError instanceof Error ? readError.message : String(readError)}`,
+          { cause: error },
+        );
+      }
+      throw error;
     }
   }
   remove(id: string) {

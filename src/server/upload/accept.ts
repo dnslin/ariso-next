@@ -11,7 +11,10 @@ import { UploadError } from './errors.ts';
 export function acceptSession(
   db: BetterSQLite3Database,
   id: string,
-  facts: Awaited<ReturnType<typeof identifyImageFile>>,
+  facts: Omit<
+    Awaited<ReturnType<typeof identifyImageFile>>,
+    'identificationTags'
+  >,
 ) {
   return db.transaction(
     (tx) => {
@@ -35,6 +38,9 @@ export function acceptSession(
         .get()!;
       const result = acceptOriginal(tx, {
         imageId: session.candidateImageId,
+        ...(session.route === 'direct' || session.route === 'relay'
+          ? { jobId: session.candidateJobId! }
+          : {}),
         storageId: session.storageId,
         originalName: session.originalName,
         visibility: submission.visibility,
@@ -55,9 +61,13 @@ export function acceptSession(
           state: 'accepted',
           imageId: result.imageId,
           jobId: result.jobId,
-          temporaryKey: null,
+          temporaryKey:
+            session.route === 'direct' ? session.temporaryKey : null,
+          temporaryPath: null,
           finalKey: null,
-          cleanupStatus: 'none',
+          finalBytes: null,
+          cleanupStatus: session.route === 'direct' ? 'pending' : 'none',
+          nextCleanupAt: session.route === 'direct' ? new Date() : null,
           updatedAt: new Date(),
         })
         .where(eq(uploadSessions.id, id))

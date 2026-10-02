@@ -1,4 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import { createServer } from 'node:http';
+import { once } from 'node:events';
 import { mkdtemp, mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -24,9 +26,31 @@ import {
 import { acceptOriginal } from '../../../src/server/media/images.ts';
 import { mediaJobs, mediaObjects } from '../../../src/server/media/schema.ts';
 import { cleanupMediaCandidates } from '../../../src/server/media/candidate-cleanup.ts';
+import { createSecretCrypto } from '../../../src/server/runtime/crypto.ts';
 import { createRuntimeLogger } from '../../../src/server/runtime/logger.ts';
 
-it('cleans local candidates behind twenty S3 records without deleting published original or remote objects', async () => {
+it('cleans exact Local/S3 candidates in bounded batches, preserves published objects and records remote failure', async () => {
+  const deleted: string[] = [];
+  const server = createServer((request, response) => {
+    const key = new URL(request.url!, 'http://localhost').pathname
+      .split('/')
+      .at(-1)!;
+    if (key === 'denied') {
+      response.writeHead(403, { 'content-type': 'application/xml' });
+      response.end(
+        '<Error><Code>AccessDenied</Code><Message>Denied cleanup</Message></Error>',
+      );
+    } else if (request.method === 'DELETE') {
+      deleted.push(key);
+      response.writeHead(204).end();
+    } else {
+      response.writeHead(200, { 'content-length': '4' }).end();
+    }
+  });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const address = server.address() as { port: number };
+  const crypto = createSecretCrypto(Buffer.alloc(32, 1));
   const directory = await mkdtemp(join(tmpdir(), 'ariso-candidate-cleanup-'));
   const storageRoot = join(directory, 'storage');
   await mkdir(storageRoot);
@@ -45,6 +69,13 @@ it('cleans local candidates behind twenty S3 records without deleting published 
         name: 'remote boundary',
         type: 's3',
         enabled: true,
+        endpoint: `http://127.0.0.1:${address.port}`,
+        region: 'test',
+        bucket: 'test',
+        pathPrefix: 'test',
+        forcePathStyle: true,
+        accessKeyEncrypted: crypto.encryptSecret('test-access'),
+        secretKeyEncrypted: crypto.encryptSecret('test-secret'),
         createdAt: now,
         updatedAt: now,
       })
@@ -107,12 +138,15 @@ it('cleans local candidates behind twenty S3 records without deleting published 
         updatedAt: now,
       })
       .run();
-    await cleanupMediaCandidates({
+    const runtime = {
       db,
+      secretCrypto: crypto,
       storageRoot,
       temporaryRoot: join(directory, 'tmp'),
       logger: createRuntimeLogger('cleanup.test', 'fatal'),
-    });
+    };
+    await cleanupMediaCandidates(runtime);
+    await cleanupMediaCandidates(runtime);
     expect(
       db
         .select()
@@ -132,13 +166,43 @@ it('cleans local candidates behind twenty S3 records without deleting published 
       .where(eq(mediaObjects.storageId, remoteId))
       .all();
     expect(
-      remoteCandidates.filter((object) => object.status === 'cleanup_pending'),
+      remoteCandidates.filter((object) => object.status === 'deleted'),
     ).toHaveLength(20);
+    expect(deleted.sort()).toEqual(
+      Array.from(
+        { length: 20 },
+        (_, index) => `remote-candidate-${index}`,
+      ).sort(),
+    );
+    const deniedId = randomUUID();
+    db.insert(mediaObjects)
+      .values({
+        id: deniedId,
+        imageId: remote.imageId,
+        jobId: remote.jobId,
+        storageId: remoteId,
+        key: 'denied',
+        purpose: 'temporary',
+        status: 'cleanup_pending',
+        byteSize: 4,
+        createdAt: now,
+        updatedAt: now,
+      })
+      .run();
+    await cleanupMediaCandidates(runtime);
+    expect(
+      db.select().from(mediaObjects).where(eq(mediaObjects.id, deniedId)).get(),
+    ).toMatchObject({ status: 'cleanup_failed', byteSize: 4 });
+    expect(deleted).not.toContain('denied');
     expect(
       remoteCandidates.find((object) => object.id === remote.objectId)!.status,
     ).toBe('stored');
   } finally {
     connection.close();
     await rm(directory, { recursive: true, force: true });
+    server.closeAllConnections();
+    await new Promise<void>((resolve, reject) =>
+      server.close((error) => (error ? reject(error) : resolve())),
+    );
   }
 });

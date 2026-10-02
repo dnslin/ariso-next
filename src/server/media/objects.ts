@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { and, eq, inArray, sql } from 'drizzle-orm';
+import { storageConfigs } from '../storage/schema.ts';
 import { planLocalWrite } from '../storage/local.ts';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { MediaTransaction } from './images.ts';
@@ -25,17 +26,26 @@ export function planDerivedObject(
     .get()!;
   const write = planLocalWrite(`images/${image.id}/${purpose}`);
   const objectId = randomUUID();
-  const temporaryObjectId = randomUUID();
+  const storage = tx
+    .select({ type: storageConfigs.type })
+    .from(storageConfigs)
+    .where(eq(storageConfigs.id, image.storageId))
+    .get()!;
+  const temporaryObjectId = storage.type === 'local' ? randomUUID() : undefined;
   const now = new Date();
   tx.insert(mediaObjects)
     .values(
       [
         { id: objectId, key: write.key, purpose },
-        {
-          id: temporaryObjectId,
-          key: write.temporaryKey,
-          purpose: 'temporary' as const,
-        },
+        ...(temporaryObjectId
+          ? [
+              {
+                id: temporaryObjectId,
+                key: write.temporaryKey,
+                purpose: 'temporary' as const,
+              },
+            ]
+          : []),
       ].map((object) => ({
         ...object,
         imageId: image.id,

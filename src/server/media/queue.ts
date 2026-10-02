@@ -15,6 +15,7 @@ import {
   recoverMediaCandidateCleanup,
 } from './candidate-cleanup.ts';
 import { mediaError } from './errors.ts';
+import { discardMediaInput } from './input.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
 export function claimNextMediaJob(db: BetterSQLite3Database) {
@@ -83,6 +84,17 @@ export function startMediaQueue(runtime: MediaRuntime) {
       }
       for (const entry of entries) {
         if (signal.aborted) break;
+        if (entry.startsWith('media-input-')) {
+          const jobId = entry.slice('media-input-'.length);
+          const job = runtime.db
+            .select({ status: mediaJobs.status })
+            .from(mediaJobs)
+            .where(eq(mediaJobs.id, jobId))
+            .get();
+          if (job && !['queued', 'running'].includes(job.status))
+            await discardMediaInput(runtime.temporaryRoot, jobId);
+          continue;
+        }
         if (!entry.startsWith('media-')) continue;
         const job = runtime.db
           .select({ id: mediaJobs.id })

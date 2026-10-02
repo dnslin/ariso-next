@@ -552,22 +552,13 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         createdAt: now,
       })
       .run();
-    previous.db
-      .insert(uploadSessions)
-      .values({
-        id: 'existing-session',
-        submissionId: 'existing-submission',
-        queueItemId: 'item',
-        groupIndex: 0,
-        originalName: 'pending.png',
-        declaredSize: 3,
-        storageId: 'existing-storage',
-        state: 'queued',
-        candidateImageId: 'pending-image',
-        createdAt: now,
-        updatedAt: now,
-      })
-      .run();
+    // Migration 0017 adds nullable transfer fields absent in this historical schema.
+    previous.db.$client.exec(`
+      INSERT INTO upload_sessions (id, submission_id, queue_item_id, group_index,
+        original_name, declared_size, storage_id, state, candidate_image_id, created_at, updated_at)
+      VALUES ('existing-session', 'existing-submission', 'item', 0,
+        'pending.png', 3, 'existing-storage', 'queued', 'pending-image', 1000, 1000);
+    `);
     const readReferences = () => [
       previous.db.select().from(mediaImages).all(),
       previous.db.$client
@@ -577,7 +568,14 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         )
         .all(),
       previous.db.select().from(uploadSubmissions).all(),
-      previous.db.select().from(uploadSessions).all(),
+      previous.db.$client
+        .prepare(
+          `SELECT id, submission_id, queue_item_id, group_index, original_name,
+        declared_size, declared_mime, storage_id, state, candidate_image_id,
+        temporary_key, final_key, byte_size, image_id, job_id, error_code, error,
+        cleanup_status, cleanup_attempts, next_cleanup_at, created_at, updated_at FROM upload_sessions`,
+        )
+        .all(),
     ];
     const before = readReferences();
     migrateRuntimeDatabase(previous.db, resolve('drizzle'));
@@ -585,6 +583,17 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
     expect(previous.db.select().from(mediaObjects).get()).toMatchObject({
       width: null,
       height: null,
+    });
+    expect(previous.db.select().from(uploadSessions).get()).toMatchObject({
+      candidateJobId: null,
+      route: null,
+      routeReason: null,
+      temporaryPath: null,
+      signatureExpiresAt: null,
+      sourceEtag: null,
+      temporaryBytes: null,
+      finalBytes: null,
+      confirmedAt: null,
     });
     expect(readStorage(previous.db, 'existing-storage')).toMatchObject({
       name: '原有本地',
