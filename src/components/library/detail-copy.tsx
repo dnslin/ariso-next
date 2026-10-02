@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { ButtonGroup } from '@heroui/react/button-group';
+import { Dropdown } from '@heroui/react/dropdown';
 import { CloseButton } from '@heroui/react/close-button';
 import { toast } from '@heroui/react/toast';
 import { Label } from '@heroui/react/label';
@@ -11,6 +11,7 @@ import { ListBox } from '@heroui/react/list-box';
 import { Modal } from '@heroui/react/modal';
 import { Select } from '@heroui/react/select';
 import { TextArea } from '@heroui/react/textarea';
+import { ChevronDown } from 'lucide-react';
 import type {
   LibraryDetail,
   LibraryDetailLinks,
@@ -65,26 +66,25 @@ export function DetailCopy({
       }}
     >
       <Modal.Container
-        size="sm"
         placement="center"
         scroll="inside"
         className="p-4 sm:p-4"
       >
         <Modal.Dialog
           aria-label="复制图片链接"
-          className="gap-4 rounded-xl border border-border bg-background p-6 [&_.button]:min-h-12"
+          className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 rounded-xl border border-border bg-background p-6 dark:bg-surface [&_.button]:min-h-12"
         >
           <Modal.Header className="flex flex-row items-center justify-between gap-3">
-            <Modal.Heading>
+            <Modal.Heading className="text-xl font-medium leading-normal">
               {manual !== null ? '浏览器未允许自动复制' : '复制图片链接'}
             </Modal.Heading>
             <CloseButton
               aria-label="关闭复制链接"
-              className="size-11 shrink-0 rounded-lg border border-border"
+              className="size-11 shrink-0 rounded-lg border border-border data-[pressed=true]:transform-none"
               onPress={onClose}
             />
           </Modal.Header>
-          <Modal.Body className="grid min-w-0 gap-4">
+          <Modal.Body className="m-0 grid min-w-0 gap-4 p-0 text-sm leading-normal text-foreground">
             {manual !== null ? (
               <>
                 <p>请选中下面的文本，手动复制。</p>
@@ -108,7 +108,7 @@ export function DetailCopy({
             ) : (
               <>
                 <p className="break-all">{detail.displayName}</p>
-                <p className="rounded-lg bg-default p-3 text-sm">
+                <p className="rounded-lg bg-default p-3 text-[13px]">
                   默认链接跟随站点设置。当前预览版本不会自动改变复制模式。
                 </p>
                 <Select
@@ -169,31 +169,49 @@ export function DetailCopy({
                         : `固定请求${versionLabels[mode as keyof typeof versionLabels]}`)}
                   </p>
                 )}
-                <ButtonGroup
-                  aria-label="复制格式"
-                  orientation="vertical"
-                  fullWidth
-                  variant="outline"
-                  className="rounded-lg [&_.button]:rounded-lg"
-                >
-                  {(['url', 'markdown', 'html'] as const).map((format) => (
-                    <Button
-                      key={format}
-                      variant="outline"
-                      isDisabled={
-                        pending || !!error || !selected?.links || writing
-                      }
-                      onPress={() => {
-                        void copy(format);
-                      }}
-                    >
-                      复制{' '}
-                      {format === 'markdown'
-                        ? 'Markdown'
-                        : format.toUpperCase()}
-                    </Button>
-                  ))}
-                </ButtonGroup>
+                <Dropdown>
+                  <Button
+                    variant="outline"
+                    aria-label="选择复制格式"
+                    className="h-12 w-full rounded-lg text-sm font-normal"
+                    isDisabled={
+                      pending || !!error || !selected?.links || writing
+                    }
+                    isPending={writing}
+                  >
+                    复制链接
+                    <ChevronDown size={16} aria-hidden />
+                  </Button>
+                  <Dropdown.Popover
+                    placement="bottom"
+                    className="w-[var(--trigger-width)] max-w-none rounded-xl border border-border bg-background dark:bg-surface"
+                  >
+                    <Dropdown.Menu aria-label="复制格式">
+                      {(['url', 'markdown', 'html'] as const).map((format) => {
+                        const label =
+                          format === 'markdown'
+                            ? 'Markdown'
+                            : format.toUpperCase();
+                        return (
+                          <Dropdown.Item
+                            key={format}
+                            id={format}
+                            textValue={`复制 ${label}`}
+                            className="min-h-11 text-sm"
+                            isDisabled={
+                              pending || !!error || !selected?.links || writing
+                            }
+                            onAction={() => {
+                              void copy(format);
+                            }}
+                          >
+                            复制 {label}
+                          </Dropdown.Item>
+                        );
+                      })}
+                    </Dropdown.Menu>
+                  </Dropdown.Popover>
+                </Dropdown>
               </>
             )}
             {restricted && manual === null ? (
@@ -206,7 +224,7 @@ export function DetailCopy({
             ) : null}
           </Modal.Body>
           {manual !== null ? (
-            <Modal.Footer>
+            <Modal.Footer className="mt-0">
               <Button
                 className="w-full rounded-lg"
                 aria-label="返回复制选项"

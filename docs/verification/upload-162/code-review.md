@@ -140,3 +140,21 @@ queue 保留主分支的活动任务 Map、每任务删除取消信号、实际�
 数据边界核对：每服务新建独立临时 SQLite 和随机 storageId，使用随机密钥保护夹具凭据；生产对象路径统一为 bucket 下 `ariso/upload-162-<UUID>/<登记的相对 Key>`，pathPrefix 为空。脚本只跟踪当前会话、媒体对象及其确切责任，收尾先停止上传 runtime，再逐个确切 DELETE、HEAD 断言 null。DELETE 或 HEAD 失败会将报告改为 failed 并最终非零退出；成功报告有完整 finishedAt 与八条清理结果，不是收尾前的 running 快照。未遍历 bucket/前缀，未改用户真实数据库、已有对象、bucket 策略或 CORS；报告没有凭据或完整签名 URL，正常收尾释放客户端并删除本轮临时数据库和工作目录。
 
 覆盖边界核对：direct/relay 选路使用独立数据库预置的 CORS passed/failed 状态；请求由 Node fetch 执行，所有者读取也由后端夹具提供。本轮不证明真实服务浏览器 CORS、浏览器鉴权和 UI 全矩阵，也不替代其他格式、负向条件变更、故障注入、AWS、容器或人工验收。迟到临时 Key 是脚本 finally 使用登记 Key 确切删除的；HEAD absent 仅说明本轮检查时点不存在，不证明旧签名已失效或生产扫描/迟到自动回收已实现。#164 扫描、#163 S3 永久删除、任务 UI 缺口及用户人工验收边界均保留。前两次自动审批阻塞继续作为历史事实；本轮获授权并执行成功，不能继续将上述已执行对象操作记为当前阻塞。
+
+## 人工验收后的复制格式单入口复审
+
+本轮人工反馈要求将拥挤的三个复制按钮收成单一入口。以 `25983d7` 为起点，实际回读 DetailCopy、LibraryDetail、上传/图库/相册调用路径、LibraryDetailLinks、既有浏览器复制断言，以及已安装 HeroUI 3.2.6 的 Button/Dropdown 类型和实现、React Aria MenuItem 的动作调用。复核遵守本项目设计交接和 React 最佳实践；本审计只追加本记录，没有修改业务，没有运行全套或浏览器。
+
+**当前源码与既有测试入口增量复审通过，未发现新的确定代码缺陷；本次浏览器与设计验收尚未结算。** 原垂直 ButtonGroup 替换为一个 48px HeroUI 按钮和三个至少 44px 菜单项，使用既有 Lucide 下拉图标。版本 Select、默认/固定链接选择、三个原始输出字符串、限制提示和权限拒绝后的手动文本保持原实现；copy 函数未修改。MenuItem 的可信点击同步执行 onAction，直接进入原 copy，navigator.clipboard.writeText 前没有新增 await，不会由本增量把写入延迟到菜单关闭后的异步任务。
+
+禁用与结算核对：pending、读取错误、所选链接缺失和 writing 同时禁用触发按钮及菜单项；copy 的原同步 busy ref 仍防止写入未结束时重复调用。writing 继续禁用版本选择，成功 Toast、失败时完整原文本、autoFocus/select 与返回选项状态均保留。没有新增复制格式状态、改变预览/链接模式、重新获取链接、依赖或公共抽象。Modal 最大宽高、正文间距、字体、CloseButton 按压及 manual Footer 的改动只作用于该复制弹窗；没有全局样式或公共外壳改动。菜单关闭恢复、错误页焦点和短视口可达性不能仅据库默认行为记为实测通过。
+
+已有 upload、library-detail、m2-core 和 interaction-polish 复制操作均改为共享 selectCopyFormat：使用真实 pointer 展开“选择复制格式”，等待真实 menuitem 再点击，未用 DOM click、修改剪贴板结果或自动复制绕过新入口。原实际 writeText 委托、Toast、URL 身份与模式、下载字节、权限拒绝后的完整手动文本/焦点/整段选中、弹窗几何断言仍保留。helper 只是四个现有消费脚本的重复操作，没有改变业务或放宽断言；模块导入沿 runner 提供的真实 libraryDetailScript 或其相邻文件路径，仍可加载现有消费者。
+
+浏览器新空间授权在本轮复核时仍待用户回复，本审计未运行浏览器。尚须以获授权后的聚焦实际报告核对上传/图库/相册共用页面、三个输出、原生剪贴板激活、真实拒绝、在途禁用、读取错误/无链接，以及菜单 Escape/返回焦点和短视口布局；此处不把既有历史浏览器通过记录当成本次 Dropdown 实测。Figma 还原与此次人类授权的设计调整由独立设计记录结算，最终用户人工验收仍独立保留。
+
+另实际回读新增 `e2e/library-copy-dropdown.mjs` 全文和临时聚焦 runner。脚本从真实菜单动作进入原生 Clipboard 写入，写入完成后才挂起返回 Promise，以观察 writing 禁用及一次调用；拒绝路径使用实际 HTTP Permissions-Policy，比较后端返回的完整 URL/Markdown/HTML 与手动文本并检查焦点、整段选中。图库、相册和上传共用入口均按实际页面点击；相册关系走所有者 API，上传走真实 Local 上传和媒体 ready 后读取图片详情。读取 pending/error 只在真实响应的浏览器传输边界等待或抛错，无链接为独立数据库中明确缺少对象的测试夹具，不冒充真实上传成功。现有文案/正文、完整复制字符串、固定 header/footer、实际 wheel、菜单/父弹窗分别 Escape、真实 pressed 和返回原触发控件的断言均保留。
+
+runner 为本轮复制的独立 production 包、临时 SQLite、随机端口和随机账号，显式拒绝 49241，使用指定 Ego space/page。收尾释放 Clipboard 等待、恢复原剪贴板，停止独立进程后删除本轮临时数据。没有重复远端存储写入、修改生产状态或真实预览数据。RED 使用旧产物并要求旧三按钮无法满足单入口断言，GREEN 必须完整退出 0 才能写运行通过。
+
+源码审查提出的两处聚焦证据问题已补齐并回读：默认 Markdown 通过真实 Enter 展开、Home/ArrowDown 定位并核对活动菜单项，再 Enter 选择；每次复制重新计数，委托原生 writeText 成功后记录本次完整文本，要求恰好一次实际写入，再读取 macOS pasteboard。旧 Toast 或相同旧剪贴板值不能满足该计数和当次文本断言。写入仍发生在可信菜单动作中，probe 没有向原生写入之前加 await，也没有伪造成功。中间 360/430/768 宽度仅增加真实几何检查，没有重复业务矩阵；主 verify-browser 新增 copy-dropdown 聚焦入口，使用独立 setup/数据目录与指定 pageLabel，full 默认和原 upload 分支均保留。当前源码与测试设计增量复审通过；实际新浏览器运行、设计对照及用户人工验收仍待各自结算，不把源码断言存在写成已经运行通过。

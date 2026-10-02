@@ -4,6 +4,7 @@ const { copyFile, readFile, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { setTimeout: delay } = await import('node:timers/promises');
 const { identitySql } = await import(config.identitySessionScript);
+const { selectCopyFormat } = await import(config.libraryDetailScript);
 const task = await taskSpace(config.spaceId);
 const page = task.page('p1');
 const sql = (statement) => identitySql(config, statement);
@@ -438,7 +439,7 @@ try {
   const beforeToast = await geometry(
     '[role="dialog"][aria-label="复制图片链接"]',
   );
-  await page.click(button('复制 URL'));
+  await selectCopyFormat(page, '复制 URL');
   await page.waitForSelector('[data-slot="toast"]');
   assert.deepEqual(
     await page.evaluate(() => {

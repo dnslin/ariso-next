@@ -3,6 +3,7 @@ const { default: assert } = await import('node:assert/strict');
 const { writeFile, readFile, mkdir } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
+const { selectCopyFormat } = await import(config.libraryDetailScript);
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
@@ -332,7 +333,7 @@ try {
       navigator.clipboard.writeText = write;
     };
   });
-  await page.click(button('复制 URL'));
+  await selectCopyFormat(page, '复制 URL');
   await page.waitForFunction(() =>
     document
       .querySelector('[data-slot="toast"]')
@@ -352,7 +353,7 @@ try {
         );
       };
     });
-    await page.click(button(`复制 ${label}`));
+    await selectCopyFormat(page, `复制 ${label}`);
     await page.waitForSelector('textarea[aria-label="手动复制文本"]');
     const manual = await page.evaluate(() => {
       const input = document.querySelector(

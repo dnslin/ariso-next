@@ -24,7 +24,13 @@ const { values } = parseArgs({
 const suite = values.suite;
 const only = values.only;
 assert.ok(
-  ['full', 'upload', 'upload-regression', 'upload-s3'].includes(suite),
+  [
+    'full',
+    'upload',
+    'upload-regression',
+    'upload-s3',
+    'copy-dropdown',
+  ].includes(suite),
   'Unknown browser suite',
 );
 assert.ok(
@@ -37,7 +43,7 @@ const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
 assert.ok(
   suite !== 'full' || pageLabel === 'p1',
-  'Full suite requires p1; upload suites support an isolated EGO_PAGE_LABEL',
+  'Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL',
 );
 
 const output = resolve(
@@ -66,6 +72,7 @@ for (const name of [
   'upload-polling.json',
   'upload-input.json',
   'upload-s3.json',
+  'copy-dropdown.json',
   'storage-cors.json',
   'delivery-s3/browser.json',
   'm2-1440.json',
@@ -332,7 +339,7 @@ try {
   if (suite !== 'full') {
     assert.ok(
       config.spaceId,
-      'Upload suite requires an existing EGO_TASK_SPACE',
+      'Focused suites require an existing EGO_TASK_SPACE',
     );
     assert.equal(codes.length, 1, 'Empty upload runtime issues one setup code');
     secrets.push(codes[0]);
@@ -358,6 +365,7 @@ try {
       credentials,
       dataDirectory: join(temporary, 'data'),
       onlyCleanup: suite === 'upload-s3' && only === 'cleanup',
+      phase: suite === 'copy-dropdown' ? 'green' : undefined,
     };
     if (suite === 'upload-s3') {
       const { openRuntimeDatabase } =
@@ -415,17 +423,19 @@ try {
       uploadConfig.uploadS3 = targets;
     }
     const stages =
-      suite === 'upload-s3'
-        ? [['upload-s3', 'uploadS3']]
-        : suite === 'upload'
-          ? [
-              ['upload-submissions', 'uploadSubmissions'],
-              ['upload-relations', 'uploadRelations'],
-            ]
-          : [
-              ['upload', 'upload'],
-              ['upload-polling', 'uploadPolling'],
-            ];
+      suite === 'copy-dropdown'
+        ? [['library-copy-dropdown', 'copyDropdown']]
+        : suite === 'upload-s3'
+          ? [['upload-s3', 'uploadS3']]
+          : suite === 'upload'
+            ? [
+                ['upload-submissions', 'uploadSubmissions'],
+                ['upload-relations', 'uploadRelations'],
+              ]
+            : [
+                ['upload', 'upload'],
+                ['upload-polling', 'uploadPolling'],
+              ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
