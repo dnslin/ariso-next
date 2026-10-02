@@ -1,6 +1,6 @@
 # Issue #177 / T-LIB-08 实施与验收记录
 
-本记录是本次PR的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](../../tasks/execution.md)，不另建验收规则。实现、905项单元回归与代码审计已完成；最新可见性44/45状态仍缺真实浏览器截图与最终设计复验，完整浏览器还有主分支已有焦点失败。用户人工UI验收未执行，PR保持草稿。
+本记录是[草稿PR #231](https://github.com/dnslin/ariso-next/pull/231)的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](../../tasks/execution.md)，不另建验收规则。实现、905项单元回归与代码审计已完成；最新可见性44/45状态仍缺真实浏览器截图与最终设计复验，完整浏览器还有主分支已有焦点失败。用户人工UI验收未执行，PR保持草稿。
 
 ## 范围与前置
 
@@ -80,7 +80,7 @@
 
 [独立代码审计](./code-audit.md) 已通过主体及全部44/45返修。原代码审计5项发现和新invalid缩略图P2均在本次修复；最后界面由未编写该界面的browser agent审计，新e2e由未编写该脚本的backend agent反向独立审计，均无未解决发现。独立设计评审已通过主体107图和边框8图对照；新增44/45真实截图尚缺，最终设计结论未通过。用户人工UI验收未执行。
 
-按执行约定，本次未进行物理设备软键盘/非零安全区实测，也未执行 AMD64/ARM64 镜像容器验证。后者在 Release 流程完成，本次不创建 Release。实际 GitHub PR 状态、检查列表和 PR 链接在创建后补齐；空检查列表不能记为 CI 通过。
+按执行约定，本次未进行物理设备软键盘/非零安全区实测，也未执行 AMD64/ARM64 镜像容器验证。后者在 Release 流程完成，本次不创建 Release。已通过gh核对[PR #231](https://github.com/dnslin/ariso-next/pull/231)：OPEN、isDraft=true、base=main、head=codex/issue-177-library-batch、MERGEABLE。statusCheckRollup=[]，gh pr checks报告没有检查；没有远端检查，不记为CI通过，也不等待不存在的工作流。PR已附加到本对话，未合并。
 
 ## 人工验收入口
 
