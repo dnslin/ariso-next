@@ -130,3 +130,13 @@ queue 保留主分支的活动任务 Map、每任务删除取消信号、实际�
 - 原型“等待远端写入结算”不能直接替代当前扫描交接语义；所需 UI 状态批准及设计还原由独立设计记录维护。
 - R2、SeaweedFS、浏览器、全量检查和用户人工验收必须保留各自真实结论；代码审计、无溢出截图或远端批准不能代替它们。AWS 和 Release 容器验证按当前执行约定，不冒充已运行。
 - 仍有范围内缺口、缺少必要设计证据或设计偏差未修复/未获批准时，PR 保持草稿。
+
+## 获授权后的真实服务证据独立复核
+
+用户对 R2 `image` 与 SeaweedFS `images` 的本轮随机 Key 写入、读取、删除回复“允许允许”后，主 agent 在 `f430897586bb150bdc40f4e3a309c242a4a0e951` 实际执行既有 `s3-live.ts`，退出 0。命令与环境见[主执行记录](./reports/live-authorized.txt)。本审计实际读取完整脚本、生产 createS3Storage 的对象路径/签名/HEAD/条件 Copy/DELETE 实现、独立数据库夹具，以及归档的 [R2 报告](./live/run-TdjQuC/r2.json)和 [SeaweedFS 报告](./live/run-TdjQuC/seaweedfs.json)；两份归档报告与原始文件逐字节一致。本审计没有重复远端操作，没有修改业务，没有额外运行测试。
+
+**两服务本轮后端联验通过的结论有实际断言与报告支持。** SeaweedFS 在 `2026-10-02T15:10:41.548Z–15:10:49.176Z`、R2 在 `15:10:49.197Z–15:11:07.789Z` 各六组检查 passed，各八个登记 Key cleanup 为 absent。覆盖签名 PUT、条件 GET/Copy 成功交接、并发/重复 complete 返回同一图片身份；直传及中转的真实媒体处理进入 succeeded/ready 并保存缩略图；通过生产外链准备函数取得签名地址，实际 HTTP 下载原图与本轮 PNG 源字节逐字节相同；旧签名重写临时对象不改变正式原图；取消后迟到 PUT 可成功，但 complete 返回 UPLOAD_STATE_CONFLICT 且没有对应图片。不是只检查响应码或预置 accepted/ready。
+
+数据边界核对：每服务新建独立临时 SQLite 和随机 storageId，使用随机密钥保护夹具凭据；生产对象路径统一为 bucket 下 `ariso/upload-162-<UUID>/<登记的相对 Key>`，pathPrefix 为空。脚本只跟踪当前会话、媒体对象及其确切责任，收尾先停止上传 runtime，再逐个确切 DELETE、HEAD 断言 null。DELETE 或 HEAD 失败会将报告改为 failed 并最终非零退出；成功报告有完整 finishedAt 与八条清理结果，不是收尾前的 running 快照。未遍历 bucket/前缀，未改用户真实数据库、已有对象、bucket 策略或 CORS；报告没有凭据或完整签名 URL，正常收尾释放客户端并删除本轮临时数据库和工作目录。
+
+覆盖边界核对：direct/relay 选路使用独立数据库预置的 CORS passed/failed 状态；请求由 Node fetch 执行，所有者读取也由后端夹具提供。本轮不证明真实服务浏览器 CORS、浏览器鉴权和 UI 全矩阵，也不替代其他格式、负向条件变更、故障注入、AWS、容器或人工验收。迟到临时 Key 是脚本 finally 使用登记 Key 确切删除的；HEAD absent 仅说明本轮检查时点不存在，不证明旧签名已失效或生产扫描/迟到自动回收已实现。#164 扫描、#163 S3 永久删除、任务 UI 缺口及用户人工验收边界均保留。前两次自动审批阻塞继续作为历史事实；本轮获授权并执行成功，不能继续将上述已执行对象操作记为当前阻塞。

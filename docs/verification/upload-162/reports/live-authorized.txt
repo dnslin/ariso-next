@@ -1,0 +1,14 @@
+执行点：f430897586bb150bdc40f4e3a309c242a4a0e951
+环境：macOS arm64 / Node v24.18.1 / pnpm 11.19.0 / ImageMagick 7 / ExifTool
+授权：用户对 R2 image 与 SeaweedFS images 本次随机 Key 测试对象写入、读取和删除回复“允许允许”。
+仅在当前命令环境设置 http_proxy/https_proxy/all_proxy、NODE_USE_ENV_PROXY=1，NO_PROXY/no_proxy 保留并追加 localhost、127.0.0.1、::1、.localhost；未改全局代理配置。
+实际命令：
+node tests/integration/upload/s3-live.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output test-results/upload-162-live
+退出：0
+原始输出：
+/Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso/test-results/upload-162-live/run-TdjQuC
+
+SeaweedFS：2026-10-02T15:10:41.548Z 至 15:10:49.176Z，6组检查通过，8个登记Key均删除后HEAD不存在。
+R2：2026-10-02T15:10:49.197Z 至 15:11:07.789Z，6组检查通过，8个登记Key均删除后HEAD不存在。
+报告：../live/run-TdjQuC/seaweedfs.json、../live/run-TdjQuC/r2.json
+边界：隔离临时数据库与随机 storageId 命名空间；不操作用户真实数据库、其他对象或bucket策略。预置独立数据库当前CORS状态以执行两条路由，本轮不验证真实浏览器CORS、生产扫描或AWS。测试清理只确认本轮登记Key在检查时不存在，不承诺仍有效的旧签名无法再写入。

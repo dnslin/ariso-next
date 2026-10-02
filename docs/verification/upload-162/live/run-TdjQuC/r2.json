@@ -1,0 +1,112 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "storageId": "upload-162-bb33fec6-451b-45d7-84bc-abc6d6a52bf1",
+  "databasePath": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-collections-H5RgCL/ariso.db",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-02T15:10:49.197Z",
+  "finishedAt": "2026-10-02T15:11:07.789Z",
+  "status": "passed",
+  "keys": [
+    "uploads/23ff0380-490f-41be-b9b8-8982364dcf6f/808bec86-07b5-4b88-b4b7-026accc0f20a",
+    "original/808bec86-07b5-4b88-b4b7-026accc0f20a.png",
+    "images/808bec86-07b5-4b88-b4b7-026accc0f20a/compressed/e1b35e6d-1fc9-4d94-a09b-b243487d5f49",
+    "images/808bec86-07b5-4b88-b4b7-026accc0f20a/thumbnail/f3328cb1-e4f1-4423-8e02-04a5807022f9",
+    "uploads/97de2848-528d-42da-9a5a-70abdbe8ab72/5edc2f45-c9dd-42b7-8a09-b805f360b2b9",
+    "original/a5b432e4-2d68-499d-9fc8-c5c4344489b8.png",
+    "images/a5b432e4-2d68-499d-9fc8-c5c4344489b8/compressed/6908b7fb-00e3-4288-9b11-6ea626b3eb25",
+    "images/a5b432e4-2d68-499d-9fc8-c5c4344489b8/thumbnail/4d710565-e9e8-4d80-a6c7-a639c7c5067b"
+  ],
+  "checks": [
+    {
+      "name": "direct-put-conditional-complete-idempotent",
+      "status": "passed",
+      "detail": {
+        "imageId": "808bec86-07b5-4b88-b4b7-026accc0f20a",
+        "jobId": "cd61e3ab-8fe4-49bd-9b4a-5aec14599ede"
+      }
+    },
+    {
+      "name": "direct-media-and-original-delivery",
+      "status": "passed",
+      "detail": {
+        "imageId": "808bec86-07b5-4b88-b4b7-026accc0f20a",
+        "jobId": "cd61e3ab-8fe4-49bd-9b4a-5aec14599ede",
+        "processingStatus": "ready"
+      }
+    },
+    {
+      "name": "old-signed-put-does-not-replace-formal-original",
+      "status": "passed",
+      "detail": {
+        "lateTemporaryKey": "uploads/23ff0380-490f-41be-b9b8-8982364dcf6f/808bec86-07b5-4b88-b4b7-026accc0f20a",
+        "formalImageId": "808bec86-07b5-4b88-b4b7-026accc0f20a"
+      }
+    },
+    {
+      "name": "cancel-and-late-complete-cannot-create-image",
+      "status": "passed",
+      "detail": {
+        "sessionId": "97de2848-528d-42da-9a5a-70abdbe8ab72",
+        "lateKey": "uploads/97de2848-528d-42da-9a5a-70abdbe8ab72/5edc2f45-c9dd-42b7-8a09-b805f360b2b9"
+      }
+    },
+    {
+      "name": "relay-receive-publish-and-transfer",
+      "status": "passed",
+      "detail": {
+        "sessionId": "153a9c8c-f964-4d90-96e5-98e7e8eed78f",
+        "imageId": "a5b432e4-2d68-499d-9fc8-c5c4344489b8",
+        "reason": "当前站点的跨域检测未通过或已失效，本次文件通过 Ariso 服务器上传到 S3。"
+      }
+    },
+    {
+      "name": "relay-media-and-original-delivery",
+      "status": "passed",
+      "detail": {
+        "imageId": "a5b432e4-2d68-499d-9fc8-c5c4344489b8",
+        "jobId": "3025fe8b-527d-4b57-89ba-175587651c7d",
+        "processingStatus": "ready"
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "key": "uploads/23ff0380-490f-41be-b9b8-8982364dcf6f/808bec86-07b5-4b88-b4b7-026accc0f20a",
+      "currentObject": "absent"
+    },
+    {
+      "key": "original/808bec86-07b5-4b88-b4b7-026accc0f20a.png",
+      "currentObject": "absent"
+    },
+    {
+      "key": "images/808bec86-07b5-4b88-b4b7-026accc0f20a/compressed/e1b35e6d-1fc9-4d94-a09b-b243487d5f49",
+      "currentObject": "absent"
+    },
+    {
+      "key": "images/808bec86-07b5-4b88-b4b7-026accc0f20a/thumbnail/f3328cb1-e4f1-4423-8e02-04a5807022f9",
+      "currentObject": "absent"
+    },
+    {
+      "key": "uploads/97de2848-528d-42da-9a5a-70abdbe8ab72/5edc2f45-c9dd-42b7-8a09-b805f360b2b9",
+      "currentObject": "absent"
+    },
+    {
+      "key": "original/a5b432e4-2d68-499d-9fc8-c5c4344489b8.png",
+      "currentObject": "absent"
+    },
+    {
+      "key": "images/a5b432e4-2d68-499d-9fc8-c5c4344489b8/compressed/6908b7fb-00e3-4288-9b11-6ea626b3eb25",
+      "currentObject": "absent"
+    },
+    {
+      "key": "images/a5b432e4-2d68-499d-9fc8-c5c4344489b8/thumbnail/4d710565-e9e8-4d80-a6c7-a639c7c5067b",
+      "currentObject": "absent"
+    }
+  ],
+  "limits": [
+    "Backend S3/direct/relay/media/delivery only; route fixtures seed current CORS status. Browser CORS is verified separately.",
+    "No bucket policy/CORS changes, AWS service, container release or scanner validation."
+  ]
+}
