@@ -1,0 +1,183 @@
+{
+  "status": "passed",
+  "spaceId": 5,
+  "origin": "http://ariso-tags-manual-50953.localhost:50953",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-02T09:20:59.231Z",
+  "screenshots": [
+    "final-toast-keyboard-light-1440.png",
+    "final-toast-keyboard-dark-1440.png",
+    "final-toast-keyboard-light-390.png",
+    "final-toast-keyboard-dark-390.png",
+    "final-edit-input-light-390.png",
+    "final-edit-input-dark-1440.png",
+    "final-access-pointer-hover-light-1440.png"
+  ],
+  "keyboard": [
+    {
+      "theme": "light",
+      "width": 1440,
+      "name": "关闭通知",
+      "focused": true,
+      "opacity": "1",
+      "pointer": "auto",
+      "rect": {
+        "x": 910,
+        "y": 12,
+        "width": 44,
+        "height": 44,
+        "top": 12,
+        "right": 954,
+        "bottom": 56,
+        "left": 910
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "text": "KeyboardFinal-1440-light 已创建 · 0 张图片。",
+      "inlineNotice": false,
+      "enterClosed": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "name": "关闭通知",
+      "focused": true,
+      "opacity": "1",
+      "pointer": "auto",
+      "rect": {
+        "x": 910,
+        "y": 12,
+        "width": 44,
+        "height": 44,
+        "top": 12,
+        "right": 954,
+        "bottom": 56,
+        "left": 910
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "text": "KeyboardFinal-1440-dark 已创建 · 0 张图片。",
+      "inlineNotice": false,
+      "enterClosed": true
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "name": "关闭通知",
+      "focused": true,
+      "opacity": "1",
+      "pointer": "auto",
+      "rect": {
+        "x": 334,
+        "y": 12,
+        "width": 44,
+        "height": 44,
+        "top": 12,
+        "right": 378,
+        "bottom": 56,
+        "left": 334
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "text": "KeyboardFinal-390-light 已创建 · 0 张图片。",
+      "inlineNotice": false,
+      "enterClosed": true
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "name": "关闭通知",
+      "focused": true,
+      "opacity": "1",
+      "pointer": "auto",
+      "rect": {
+        "x": 334,
+        "y": 12,
+        "width": 44,
+        "height": 44,
+        "top": 12,
+        "right": 378,
+        "bottom": 56,
+        "left": 334
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "text": "KeyboardFinal-390-dark 已创建 · 0 张图片。",
+      "inlineNotice": false,
+      "enterClosed": true
+    }
+  ],
+  "editing": [
+    {
+      "width": 390,
+      "theme": "light",
+      "heading": "重命名标签",
+      "value": "Go",
+      "icon": true,
+      "iconWidth": 16,
+      "iconHeight": 16,
+      "groupHeight": 48,
+      "inputFont": "14px"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "heading": "重命名标签",
+      "value": "Go",
+      "icon": true,
+      "iconWidth": 16,
+      "iconHeight": 16,
+      "groupHeight": 48,
+      "inputFont": "14px"
+    }
+  ],
+  "checks": [
+    "Updated complete tags regression passes; final toast close stays visible under real keyboard focus and Enter closes it in both themes and viewports.",
+    "The requested mobile-light/desktop-dark edit inputs show a 16px Tag prefix and 48px group. Pointer-only private access hover has no nested Chip or keyboard ring."
+  ],
+  "tagsRegression": {
+    "status": "passed",
+    "checks": 12,
+    "layouts": 114,
+    "screenshots": 118
+  },
+  "pointerHover": {
+    "label": "私有",
+    "focused": false,
+    "background": "rgb(227, 246, 245)",
+    "chip": false
+  },
+  "finishedAt": "2026-10-02T09:21:09.271Z",
+  "originalPreview": {
+    "origin": "http://ariso-tags-57635.localhost:57635",
+    "operation": "bundle-only refresh with the same database and runtime keys",
+    "tags": 8,
+    "relationships": 458,
+    "images": 173,
+    "goPresent": false,
+    "unchanged": true
+  },
+  "commands": [
+    "node work/run-manual-tags-browser.mjs red",
+    "node work/refresh-tags-server.mjs work/tags-manual-revision",
+    "node work/run-manual-tags-browser.mjs green",
+    "node work/run-manual-tags-browser.mjs access",
+    "node work/run-manual-tags-regression.mjs",
+    "node work/run-manual-tags-browser.mjs final",
+    "node work/refresh-tags-server.mjs"
+  ],
+  "environment": {
+    "node": "v24.18.1",
+    "browser": "installed Ego Lite; explicitly authorized new TaskSpace 5",
+    "data": "read-only SQLite backup to a new temporary database at independent port 50953; original preview not seeded",
+    "testScopes": "updated complete tags suite; affected UI success feedback; library and album-content AccessDisclosure; final toast keyboard and edit-input evidence"
+  }
+}

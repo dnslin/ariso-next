@@ -28,7 +28,7 @@ const navigation = [
   { href: '/upload', label: '上传', icon: <CloudUpload /> },
   { href: '/library', label: '图库', icon: <Images /> },
   { href: '/albums', label: '相册', icon: <Folder /> },
-  { href: '/tags', label: '标签', icon: <Tags />, unavailable: true },
+  { href: '/tags', label: '标签', icon: <Tags /> },
   { href: '/shares', label: '分享管理', icon: <LinkIcon />, unavailable: true },
   { href: '/trash', label: '回收站', icon: <Trash2 /> },
   {

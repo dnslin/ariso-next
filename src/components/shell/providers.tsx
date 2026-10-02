@@ -23,7 +23,7 @@ export function Providers({ children }: { children: ReactNode }) {
                 variant={notification.content.variant}
               >
                 <Toast.Indicator variant={notification.content.variant} />
-                <Toast.Content>
+                <Toast.Content className="min-w-0 pr-8 wrap-anywhere">
                   <Toast.Title>{notification.content.title}</Toast.Title>
                   {notification.content.description ? (
                     <Toast.Description>
@@ -31,7 +31,10 @@ export function Providers({ children }: { children: ReactNode }) {
                     </Toast.Description>
                   ) : null}
                 </Toast.Content>
-                <Toast.CloseButton aria-label="关闭通知" className="size-11" />
+                <Toast.CloseButton
+                  aria-label="关闭通知"
+                  className="size-11 focus-visible:pointer-events-auto focus-visible:opacity-100"
+                />
               </Toast>
             )}
           </ToastProvider>

@@ -1,0 +1,47 @@
+{
+  "status": "failed",
+  "spaceId": 4,
+  "origin": "http://ariso-tags-57635.localhost:57635",
+  "checks": [
+    {
+      "state": "empty",
+      "status": "failed",
+      "expected": {
+        "heading": "请输入标签名称",
+        "submit": "修改名称"
+      },
+      "actual": {
+        "heading": "新建标签",
+        "buttons": ["取消", "创建标签"],
+        "fieldError": "名称须包含 1–50 个 Unicode 码点",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'新建标签' !== '请输入标签名称'\n",
+      "screenshot": "tags-validation-before-empty-light-390.png"
+    },
+    {
+      "state": "long",
+      "status": "failed",
+      "expected": {
+        "heading": "标签名称过长",
+        "submit": "修改名称"
+      },
+      "actual": {
+        "heading": "新建标签",
+        "buttons": ["取消", "创建标签"],
+        "fieldError": "名称须包含 1–50 个 Unicode 码点",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'新建标签' !== '标签名称过长'\n",
+      "screenshot": "tags-validation-before-long-light-390.png"
+    }
+  ]
+}
