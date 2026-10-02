@@ -31,6 +31,8 @@ function item(id: string): LibraryItem {
     thumbnailDimensions: { width: 640, height: 480 },
     activeJob: null,
     latestFailedJob: null,
+    metadataJob: null,
+    processingJob: null,
     trashedAt: null,
     deletionStatus: null,
   };

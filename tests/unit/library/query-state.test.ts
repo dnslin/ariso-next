@@ -32,6 +32,24 @@ describe('applied library URL', () => {
       libraryListKey(first.filters, 'pages', 2),
     );
   });
+  it('keeps detail workspace and preview state out of the applied query and selection identity', () => {
+    const query = 'q=photo&status=failed&tagId=tag&page=3';
+    const list = parse(query);
+    for (const detail of [
+      'image=one&detailView=versions&preview=compressed',
+      'image=one&detailView=reprocess&preview=original',
+      'image=one&preview=thumbnail',
+    ]) {
+      const page = parse(`${query}&${detail}`);
+      expect(page).toEqual(list);
+      expect(libraryListKey(page.filters, 'pages', page.page)).toEqual(
+        libraryListKey(list.filters, 'pages', list.page),
+      );
+      expect(parse(`${query}&${detail}`, 'album').filters).toEqual(
+        parse(query, 'album').filters,
+      );
+    }
+  });
   it.each([
     '__proto__=ignored',
     'page=1.5',

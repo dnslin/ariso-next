@@ -1,5 +1,24 @@
 import type { VersionKind } from '../media/schema.ts';
-import type { LibraryJobSummary } from './types.ts';
+import type {
+  LibraryJobSummary,
+  LibraryMetadataJob,
+  LibraryProcessingJob,
+} from './types.ts';
+import type {
+  GroupedMetadata,
+  PhotographyFields,
+} from '../media/metadata-values.ts';
+
+export interface LibraryMetadata {
+  imageId: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed';
+  data: GroupedMetadata | null;
+  photography: PhotographyFields | null;
+  readAt: string | null;
+  attemptedAt: string | null;
+  error: string | null;
+  historical: boolean;
+}
 
 export interface LibraryDetailLinks {
   url: string;
@@ -11,6 +30,7 @@ export interface LibraryDetailVersion {
   kind: VersionKind;
   applicable: boolean | null;
   saved: boolean;
+  status: 'saved' | 'not_applicable' | 'disabled' | 'failed' | 'not_generated';
   format: string | null;
   mime: string | null;
   width: number | null;
@@ -51,4 +71,20 @@ export interface LibraryDetail {
   };
   activeJob: LibraryJobSummary | null;
   latestFailedJob: LibraryJobSummary | null;
+  metadataJob: LibraryMetadataJob | null;
+  processingJob: LibraryProcessingJob | null;
+  reprocess: {
+    scopes: Record<
+      'all' | 'compressed' | 'thumbnail' | 'watermark',
+      string | null
+    >;
+    expectedVersions: ('compressed' | 'thumbnail' | 'watermark')[];
+    compressionEnabled: boolean;
+    watermarkEnabled: boolean;
+  };
+  actions: {
+    editUnavailableReason: string | null;
+    reprocessUnavailableReason: string | null;
+    metadataReadUnavailableReason: string | null;
+  };
 }

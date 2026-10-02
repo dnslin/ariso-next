@@ -50,6 +50,38 @@ export function planDerivedObject(
   return { objectId, temporaryObjectId, storageId: image.storageId, ...write };
 }
 
+/** Stored results for the supplied jobs; this does not imply publication in media_versions. */
+export function readGeneratedMediaVersions(
+  db: BetterSQLite3Database,
+  jobs: Pick<typeof mediaJobs.$inferSelect, 'id' | 'expectedVersions'>[],
+) {
+  if (!jobs.length) return new Map<string, DerivedVersionKind[]>();
+  const objects = db
+    .select({ jobId: mediaObjects.jobId, purpose: mediaObjects.purpose })
+    .from(mediaObjects)
+    .where(
+      and(
+        inArray(
+          mediaObjects.jobId,
+          jobs.map((job) => job.id),
+        ),
+        inArray(mediaObjects.purpose, ['compressed', 'thumbnail', 'watermark']),
+        eq(mediaObjects.status, 'stored'),
+      ),
+    )
+    .all();
+  return new Map(
+    jobs.map((job) => [
+      job.id,
+      job.expectedVersions.filter((kind) =>
+        objects.some(
+          (object) => object.jobId === job.id && object.purpose === kind,
+        ),
+      ),
+    ]),
+  );
+}
+
 /** Preserve current versions; terminal failures release every other owned object. */
 export function markUnpublishedMediaObjects(
   db: BetterSQLite3Database,

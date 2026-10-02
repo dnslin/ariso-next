@@ -40,6 +40,7 @@ import {
 } from '../../../src/server/media/process.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import { recoverMediaJobs } from '../../../src/server/media/recovery.ts';
+import { readGeneratedMediaVersions } from '../../../src/server/media/objects.ts';
 import {
   requestReprocess,
   MediaReprocessError,
@@ -146,6 +147,10 @@ it.each(['all', 'compressed', 'thumbnail', 'watermark'] as const)(
       watermarkFont: 'latin',
     });
     const accepted = requestReprocess(connection.db, asset.imageId, { scope });
+    expect(accepted.scope).toBe(scope);
+    expect(accepted.expectedVersions).toEqual(
+      job(accepted.jobId).expectedVersions,
+    );
     patchMediaSettings(connection.db, { quality: 95, maxEdge: 16 });
     expect(job(accepted.jobId).snapshot).toMatchObject({
       quality: 47,
@@ -437,6 +442,11 @@ it('recovers a stored unpublished candidate without exposing it early or regener
   const asset = await accept();
   const before = versions(asset.imageId);
   const accepted = requestReprocess(connection.db, asset.imageId, {});
+  expect(
+    readGeneratedMediaVersions(connection.db, [job(accepted.jobId)]).get(
+      accepted.jobId,
+    ),
+  ).toEqual([]);
   const actualStart = tools.startMediaTool;
   const controller = new AbortController();
   let interrupted = false;
@@ -486,6 +496,11 @@ it('recovers a stored unpublished candidate without exposing it early or regener
     )
     .get()!;
   expect(stored).toBeDefined();
+  expect(
+    readGeneratedMediaVersions(connection.db, [job(accepted.jobId)]).get(
+      accepted.jobId,
+    ),
+  ).toEqual(['compressed']);
   vi.restoreAllMocks();
   connection.close();
   connection = openRuntimeDatabase(join(directory, 'ariso.db'));
@@ -496,6 +511,11 @@ it('recovers a stored unpublished candidate without exposing it early or regener
     status: 'succeeded',
     retryCount: 0,
   });
+  expect(
+    readGeneratedMediaVersions(connection.db, [job(accepted.jobId)]).get(
+      accepted.jobId,
+    ),
+  ).toEqual(['compressed', 'thumbnail']);
   expect(
     versions(asset.imageId).find((row) => row.kind === 'compressed')!.objectId,
   ).toBe(stored.id);
@@ -615,11 +635,43 @@ it.each([false, true])(
     const accepted = requestReprocess(connection.db, asset.imageId, {
       scope: 'watermark',
     });
+    const actualStart = tools.startMediaTool;
+    let checkedIntermediate = false;
+    vi.spyOn(tools, 'startMediaTool').mockImplementation(
+      (command, args, options) => {
+        const intermediate = connection.db
+          .select()
+          .from(mediaObjects)
+          .where(
+            and(
+              eq(mediaObjects.jobId, accepted.jobId),
+              eq(mediaObjects.purpose, 'compressed'),
+              eq(mediaObjects.status, 'stored'),
+            ),
+          )
+          .get();
+        if (intermediate) {
+          checkedIntermediate = true;
+          expect(
+            readGeneratedMediaVersions(connection.db, [
+              job(accepted.jobId),
+            ]).get(accepted.jobId),
+          ).not.toContain('compressed');
+        }
+        return actualStart(command, args, options);
+      },
+    );
     if (fail)
       connection.db.$client.exec(
         `CREATE TRIGGER reject_watermark_candidate BEFORE UPDATE OF status ON media_objects WHEN NEW.status='stored' AND NEW.purpose='watermark' AND NEW.job_id='${accepted.jobId}' BEGIN SELECT RAISE(ABORT, 'injected watermark intermediate consumer failure'); END`,
       );
     await processNext();
+    expect(checkedIntermediate).toBe(true);
+    expect(
+      readGeneratedMediaVersions(connection.db, [job(accepted.jobId)]).get(
+        accepted.jobId,
+      ),
+    ).toEqual(fail ? [] : ['watermark']);
     expect(job(accepted.jobId).status).toBe(fail ? 'failed' : 'succeeded');
     for (const row of before)
       expect(

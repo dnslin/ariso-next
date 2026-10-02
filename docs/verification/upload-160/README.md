@@ -10,7 +10,9 @@
 
 合并前最新main为 `afbf621`（已合入标签管理PR #226）。解决两处真实冲突：上传快速创建改为消费成熟标签管理 `createTag` 的完整tag/reused契约，GET列表、同名复用、CRUD领域成功/拒绝日志和409保持；所有相册/标签HTTP继续复用认证、Origin、no-store和错误边界，不恢复重复处理。浏览器主入口同时保留full的标签阶段、上传专项及only选择。未修改本次UI样式或已批准设计。
 
-实际Node24.18.1/pnpm11.19.0/macOS arm64：冻结安装、构建、完整类型、受影响源码与runner静态检查通过。`pnpm exec vitest run --project unit tests/unit/collections/tags-route.test.ts tests/unit/collections/tag-query.test.ts tests/unit/collections/validation.test.ts tests/unit/upload/validation.test.ts` 为4文件37项通过；真实 `pnpm exec vitest run --project integration tests/integration/collections/tag-http.test.ts tests/integration/collections/album-http.test.ts tests/integration/upload/settings-http.test.ts tests/integration/collections/tag-management.test.ts --maxWorkers=1` 为4文件6项通过。原始[单元](./reports/merge-tags-unit.txt)、[HTTP集成](./reports/merge-integration.txt)、[构建](./reports/merge-build.txt)、[类型](./reports/merge-typecheck.txt)与[静态](./reports/merge-runner-lint.txt)保留；可选resvg平台追踪诊断不称无警告。
+实际Node24.18.1/pnpm11.19.0/macOS arm64：冻结安装、构建、完整类型、受影响源码与runner静态检查通过。`pnpm exec vitest run --project unit tests/unit/collections/tags-route.test.ts tests/unit/collections/tag-query.test.ts tests/unit/collections/validation.test.ts tests/unit/collections/album-query.test.ts` 为4文件37项通过；真实 `pnpm exec vitest run --project integration tests/integration/collections/tag-http.test.ts tests/integration/collections/album-http.test.ts tests/integration/upload/settings-http.test.ts tests/integration/collections/tag-management.test.ts --maxWorkers=1` 为4文件6项通过。原始[单元](./reports/merge-tags-unit.txt)、[HTTP集成](./reports/merge-integration.txt)、[构建](./reports/merge-build.txt)、[类型](./reports/merge-typecheck.txt)与[静态](./reports/merge-runner-lint.txt)保留；可选resvg平台追踪诊断不称无警告。
+
+随后同步main `0d821a7`（图片详情PR #227）；浏览器的libraryDetail171Script配置和上传页新详情query/版本入口自动合并，完整保留冻结摘要和关系选择。设计交接末尾的两份已批准补充仅按原文并存，不改写产品/设计。该main功能采用自身已有验收证据，本次补查组合的类型、构建及相关单元，不重复其整站浏览器。
 
 ## 前置与修改范围
 

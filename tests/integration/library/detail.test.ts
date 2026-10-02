@@ -26,6 +26,7 @@ import {
   mediaJobs,
   mediaObjects,
   mediaVersions,
+  mediaMetadata,
 } from '../../../src/server/media/schema.ts';
 import {
   prepareInitialMedia,
@@ -426,6 +427,190 @@ describe('owner-only detail HTTP', () => {
         defaultLink: { links: null },
       });
       expect(response.headers.get('cache-control')).toBe('no-store');
+      const id = 'http-private-failed';
+      for (const headers of [
+        {},
+        { authorization: `Bearer ${token}` },
+      ] as Record<string, string>[]) {
+        const unauthenticated = await fetch(
+          `${origin}/api/images/${id}/metadata`,
+          { headers },
+        );
+        expect(unauthenticated.status).toBe(401);
+        expect(unauthenticated.headers.get('cache-control')).toBe('no-store');
+        for (const path of [
+          `/api/images/${id}`,
+          `/api/images/${id}/collections`,
+        ]) {
+          const rejected = await fetch(`${origin}${path}`, {
+            method: 'PATCH',
+            headers: { ...headers, origin, 'content-type': 'application/json' },
+            body: '{}',
+          });
+          expect(rejected.status).toBe(401);
+          expect(rejected.headers.get('cache-control')).toBe('no-store');
+        }
+      }
+      let metadata = await fetch(`${origin}/api/images/${id}/metadata`, {
+        headers: { cookie },
+      });
+      expect(metadata.status).toBe(200);
+      expect(await metadata.json()).toBeNull();
+      const data = {
+        'ExifIFD:Main:SerialNumber': '12345678901234567890',
+        'XMP:Main:Version': '1.10',
+        'XMP:Main:Nested': { value: ['a', 'b', { text: '<private>&' }] },
+        'GPS:Main:GPSLatitude': '30.0',
+      };
+      live.db
+        .insert(mediaMetadata)
+        .values({
+          imageId: id,
+          status: 'failed',
+          data,
+          readAt: new Date(1000),
+          attemptedAt: new Date(2000),
+          error: 'ExifTool timeout',
+        })
+        .run();
+      live.db.update(storageConfigs).set({ enabled: false }).run();
+      metadata = await fetch(`${origin}/api/images/${id}/metadata`, {
+        headers: { cookie },
+      });
+      expect(metadata.status).toBe(200);
+      expect(await metadata.json()).toMatchObject({
+        imageId: id,
+        data,
+        status: 'failed',
+        historical: true,
+        error: 'ExifTool timeout',
+        readAt: new Date(1000).toISOString(),
+        attemptedAt: new Date(2000).toISOString(),
+      });
+      const patch = (path: string, body: string, requestOrigin = origin) =>
+        fetch(`${origin}${path}`, {
+          method: 'PATCH',
+          headers: {
+            cookie,
+            origin: requestOrigin,
+            'content-type': 'application/json',
+          },
+          body,
+        });
+      for (const path of [
+        `/api/images/${id}`,
+        `/api/images/${id}/collections`,
+      ]) {
+        expect((await patch(path, '{}', 'https://foreign.test')).status).toBe(
+          403,
+        );
+        expect((await patch(path, '{}')).status).toBe(400);
+        expect((await patch(path, '{')).status).toBe(400);
+      }
+      for (const input of [
+        { displayName: ' ' },
+        { displayName: '\nname' },
+        { displayName: '😀'.repeat(256) },
+        { originalName: 'overwrite' },
+        { visibility: 'other' },
+      ])
+        expect(
+          (await patch(`/api/images/${id}`, JSON.stringify(input))).status,
+        ).toBe(400);
+      let saved = await patch(
+        `/api/images/${id}`,
+        JSON.stringify({ displayName: ' 新名称.png ', visibility: 'public' }),
+      );
+      expect(saved.status).toBe(200);
+      expect(await saved.json()).toMatchObject({
+        id,
+        displayName: '新名称.png',
+        originalName: '私有.png',
+        visibility: 'public',
+        storage: { enabled: false },
+        actions: { editUnavailableReason: null },
+      });
+      const now = new Date();
+      live.db
+        .insert(albums)
+        .values({
+          id: 'http-album',
+          name: '关系相册',
+          description: '',
+          createdAt: now,
+          updatedAt: now,
+        })
+        .run();
+      saved = await patch(
+        `/api/images/${id}/collections`,
+        JSON.stringify({ albumIds: ['http-album'] }),
+      );
+      expect(saved.status).toBe(200);
+      expect(await saved.json()).toMatchObject({
+        albums: [{ id: 'http-album', name: '关系相册' }],
+      });
+      expect(
+        (
+          await patch(
+            `/api/images/${id}/collections`,
+            JSON.stringify({ albumIds: ['missing'] }),
+          )
+        ).status,
+      ).toBe(409);
+      expect(live.db.select().from(albumImages).all()).toMatchObject([
+        { imageId: id, albumId: 'http-album' },
+      ]);
+      live.db
+        .update(mediaImages)
+        .set({ trashedAt: new Date() })
+        .where(eq(mediaImages.id, id))
+        .run();
+      expect(
+        (
+          await patch(
+            `/api/images/${id}`,
+            JSON.stringify({ displayName: '不可写' }),
+          )
+        ).status,
+      ).toBe(409);
+      expect(
+        (
+          await patch(
+            `/api/images/${id}/collections`,
+            JSON.stringify({ albumIds: [] }),
+          )
+        ).status,
+      ).toBe(409);
+      expect(
+        (
+          await fetch(`${origin}/api/images/${id}/metadata`, {
+            headers: { cookie },
+          })
+        ).status,
+      ).toBe(200);
+      expect(
+        (
+          await fetch(`${origin}/api/images/missing/metadata`, {
+            headers: { cookie },
+          })
+        ).status,
+      ).toBe(404);
+      expect(
+        (
+          await patch(
+            '/api/images/missing',
+            JSON.stringify({ displayName: 'missing' }),
+          )
+        ).status,
+      ).toBe(404);
+      expect(
+        (
+          await patch(
+            '/api/images/missing/collections',
+            JSON.stringify({ albumIds: [] }),
+          )
+        ).status,
+      ).toBe(404);
       const missing = await fetch(`${origin}/api/images/missing`, {
         headers: { cookie },
       });
@@ -483,11 +668,173 @@ it('does not let metadata jobs replace processing or version summaries', () => {
       id: process.id,
       error: 'thumbnail failed',
     });
-    expect(JSON.stringify(record)).not.toContain('ExifTool');
+    expect(record.processingJob).toMatchObject({
+      id: process.id,
+      status: 'failed',
+      expectedVersions: process.expectedVersions,
+    });
+    expect(JSON.stringify(record.activeJob)).not.toContain('ExifTool');
+    expect(JSON.stringify(record.latestFailedJob)).not.toContain('ExifTool');
   }
+  for (const record of [detail, item, status, neighbor]) {
+    expect(record.metadataJob).toMatchObject({
+      id: 'metadata-running',
+      status: 'running',
+    });
+  }
+  connection.db
+    .update(mediaJobs)
+    .set({ status: 'succeeded', step: 'complete' })
+    .where(eq(mediaJobs.id, 'metadata-running'))
+    .run();
+  expect(
+    readLibraryStatus(connection.db, { ids: ['metadata-isolation'] }).items[0]
+      .metadataJob,
+  ).toMatchObject({ id: 'metadata-running', status: 'succeeded' });
   const state = getImageAccessState(connection.db, 'metadata-isolation')!;
   expect(state.latestJob!.id).toBe(process.id);
   expect(
     state.versions.find((version) => version.kind === 'thumbnail')!.status,
   ).toBe('failed');
+  for (const terminal of ['succeeded', 'cancelled'] as const) {
+    connection.db
+      .update(mediaJobs)
+      .set({ status: terminal })
+      .where(eq(mediaJobs.id, process.id))
+      .run();
+    expect(
+      readLibraryStatus(connection.db, { ids: ['metadata-isolation'] }).items[0]
+        .processingJob,
+    ).toMatchObject({ id: process.id, status: terminal });
+  }
+});
+
+it('reports only stored expected objects from each latest processing job without publishing candidates', () => {
+  const first = seed('candidate-first');
+  const second = seed('candidate-second');
+  const original = connection.db.select().from(mediaObjects).get()!;
+  const previous = connection.db.select().from(mediaJobs).get()!;
+  connection.db.update(mediaJobs).set({ status: 'succeeded' }).run();
+  connection.db
+    .insert(mediaJobs)
+    .values([
+      {
+        ...previous,
+        id: 'latest-first',
+        createdAt: new Date(previous.createdAt.getTime() + 1000),
+        imageId: first.imageId,
+        status: 'running',
+        step: 'watermark',
+        expectedVersions: ['compressed', 'thumbnail', 'watermark'],
+      },
+      {
+        ...previous,
+        id: 'latest-second',
+        createdAt: new Date(previous.createdAt.getTime() + 1000),
+        imageId: second.imageId,
+        scope: 'watermark',
+        status: 'running',
+        step: 'watermark',
+        expectedVersions: ['watermark'],
+      },
+    ])
+    .run();
+  const object = (
+    id: string,
+    imageId: string,
+    jobId: string,
+    purpose: typeof mediaObjects.$inferSelect.purpose,
+    status: typeof mediaObjects.$inferSelect.status,
+  ) => ({ ...original, id, imageId, jobId, key: id, purpose, status });
+  connection.db
+    .insert(mediaObjects)
+    .values([
+      object(
+        'old-thumbnail',
+        first.imageId,
+        first.jobId,
+        'thumbnail',
+        'stored',
+      ),
+      object(
+        'new-compressed',
+        first.imageId,
+        'latest-first',
+        'compressed',
+        'stored',
+      ),
+      object(
+        'partial-thumbnail',
+        first.imageId,
+        'latest-first',
+        'thumbnail',
+        'writing',
+      ),
+      object(
+        'planned-watermark',
+        first.imageId,
+        'latest-first',
+        'watermark',
+        'planned',
+      ),
+      object('temporary', first.imageId, 'latest-first', 'temporary', 'stored'),
+      object(
+        'intermediate',
+        second.imageId,
+        'latest-second',
+        'compressed',
+        'stored',
+      ),
+      object(
+        'cleanup-watermark',
+        second.imageId,
+        'latest-second',
+        'watermark',
+        'cleanup_pending',
+      ),
+    ])
+    .run();
+  const status = readLibraryStatus(connection.db, {
+    ids: [first.imageId, second.imageId],
+  });
+  expect(status.items[0].processingJob).toMatchObject({
+    id: 'latest-first',
+    generatedVersions: ['compressed'],
+  });
+  expect(status.items[1].processingJob).toMatchObject({
+    id: 'latest-second',
+    generatedVersions: [],
+  });
+  const detail = readLibraryDetail(connection.db, first.imageId);
+  expect(detail.processingJob).toMatchObject({
+    id: 'latest-first',
+    generatedVersions: ['compressed'],
+  });
+  expect(
+    detail.versions.find((version) => version.kind === 'compressed'),
+  ).toMatchObject({
+    saved: false,
+    downloadPath: null,
+    links: null,
+  });
+  connection.db
+    .update(mediaObjects)
+    .set({ status: 'stored' })
+    .where(eq(mediaObjects.id, 'partial-thumbnail'))
+    .run();
+  expect(
+    readLibraryDetail(connection.db, first.imageId).processingJob,
+  ).toMatchObject({
+    generatedVersions: ['compressed', 'thumbnail'],
+  });
+  connection.db
+    .update(mediaJobs)
+    .set({ status: 'queued', expectedVersions: ['thumbnail'] })
+    .where(eq(mediaJobs.id, 'latest-second'))
+    .run();
+  expect(
+    readLibraryDetail(connection.db, second.imageId).processingJob,
+  ).toMatchObject({
+    generatedVersions: [],
+  });
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
@@ -9,6 +10,7 @@ import { Tooltip } from '@heroui/react/tooltip';
 import { CheckCircle2, CloudUpload } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
+import { useDetailQuery } from '../library/use-detail-query';
 import { bytesLabel } from '../library/detail-labels';
 import { UploadSettingsFields } from './settings';
 import { useUploadQueue, uploadTerminalStates } from './provider';
@@ -24,6 +26,7 @@ type ScreenProps = {
   initialSidebarCollapsed: boolean;
 };
 export function UploadScreen(props: ScreenProps) {
+  const router = useRouter();
   const {
     client,
     query,
@@ -38,6 +41,7 @@ export function UploadScreen(props: ScreenProps) {
     chosenTags,
   } = useUploadQueue();
   const [detailId, setDetailId] = useState<string | null>(null);
+  const detailQuery = useDetailQuery(client, detailId, '/upload');
   const input = useUploadInput(controller);
   const trigger = useRef<HTMLElement | null>(null);
   const openDetail = useCallback((id: string, element: HTMLElement) => {
@@ -345,7 +349,12 @@ export function UploadScreen(props: ScreenProps) {
         <LibraryDetail
           key={detailId}
           imageId={detailId}
-          returnTo="/upload"
+          query={detailQuery}
+          onVersions={(selected) => {
+            router.push(
+              `/library?image=${encodeURIComponent(detailId)}&detailView=versions&preview=${encodeURIComponent(selected)}`,
+            );
+          }}
           client={client}
           dialogRef={dialogRef}
           onClose={() => setDetailId(null)}
