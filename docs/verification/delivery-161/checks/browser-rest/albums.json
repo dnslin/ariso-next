@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "checks": [
+    "Blank names, 101 code points and 2001 description characters do not write; 100 astral Unicode code points and 2000 description characters persist through the actual form.",
+    "Duplicate names retain different IDs; edit validation failure preserves input, and a committed PATCH with a lost response is reconciled by ID without a second write or changing its namesake.",
+    "Cancel does not delete; a real DELETE with a lost response is reconciled with 404 and returns to the list, leaving its namesake intact.",
+    "A lost POST response retains inputs and disables Create across closing and reopening; rechecking never duplicates the album. The ending control is reachable in a short viewport, restores keyboard focus to New Album, and allows a fresh creation in the same page while retaining exactly one original album.",
+    "Default pagination uses 40 real records with no overlaps; search resets the page, matches % and _ literally and distinguishes no results.",
+    "A held real list response displays loading; a lost read displays an actionable error rather than an empty album library, and Retry recovers.",
+    "Keyboard opens creation, Escape restores its trigger, and both 390×400 and 1440×400 retain visible form actions; light/dark layouts cover 360/390/430/768/1440.",
+    "After real logout, a real album detail requires sign-in and returns to the same full album ID with its edit control available.",
+    "A final real logout restores the anonymous session expected by the following upload suite; /upload presents its sign-in form."
+  ],
+  "record": "Summary of an actually passed existing UI check; not a design acceptance record",
+  "fullReport": "https://github.com/dnslin/ariso-next/blob/b478c7c/docs/verification/delivery-161/checks/browser-rest/albums.json",
+  "layoutsCount": 70
+}

@@ -7,6 +7,7 @@ import {
 import { parseImageRequest } from '../../../../../server/delivery/links.ts';
 import { getServerRuntime } from '../../../../../server/startup/server-start.ts';
 import { createRuntimeLogger } from '../../../../../server/runtime/logger.ts';
+import { createSecretCrypto } from '../../../../../server/runtime/crypto.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,6 +31,7 @@ async function handle(
       access: 'trash-preview',
       db: server.connection.db,
       storageRoot: resolve(server.config.dataDir, 'storage'),
+      secretCrypto: createSecretCrypto(server.config.encryptionKey),
       readOwner: async () => !!(await readOptionalOwner(request)),
       logger: createRuntimeLogger(
         'delivery.trash-preview',

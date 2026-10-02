@@ -1,0 +1,466 @@
+{
+  "status": "failed",
+  "service": "r2",
+  "startedAt": "2026-10-01T16:19:31.774Z",
+  "finishedAt": "2026-10-01T16:21:33.846Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "bucket": "image"
+  },
+  "checks": [
+    {
+      "name": "real-GET-HEAD-methods-300s-cache-attachment-and-bytes",
+      "status": "passed",
+      "evidence": {
+        "get": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+          "cacheControl": "private, no-store, no-transform",
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a43cca49bf468401-SIN"
+        },
+        "head": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentDisposition": null,
+          "cacheControl": null,
+          "requestId": null,
+          "server": "cloudflare",
+          "cfRay": "a43cca4f58a287ad-SIN"
+        },
+        "expiresSeconds": 300,
+        "methodIsolation": true
+      }
+    },
+    {
+      "name": "four-published-version-permissions-and-real-aggregation",
+      "status": "passed",
+      "evidence": {
+        "kinds": ["original", "compressed", "thumbnail", "watermark"],
+        "fixture": "Known published four-version delivery fixture; image processing is verified separately"
+      }
+    },
+    {
+      "name": "all-real-special-format-original-bytes-and-default-applicability",
+      "status": "passed",
+      "evidence": [
+        {
+          "id": "source-png",
+          "sha256": "2ad29c518b0a4f72bba1a1f5e0adb706bb555bfcd6f98a52c7bdac42758f4951",
+          "bytes": 420,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca61df7135b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-jpg",
+          "sha256": "c6f0e0945c45f8f1fc089fa0e072ae5548b057a39d5c3dfea157b0c7e1d2282e",
+          "bytes": 373,
+          "remote": {
+            "status": 200,
+            "contentType": "image/jpeg",
+            "contentDisposition": "inline; filename=__.final.jpg; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.jpg",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca6509a935b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-webp",
+          "sha256": "7bab8a0a64bb4c4a8cab762430d2d08a5746b98e0a661008a459347b3edb93ec",
+          "bytes": 144,
+          "remote": {
+            "status": 200,
+            "contentType": "image/webp",
+            "contentDisposition": "inline; filename=__.final.webp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.webp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca67fa9f35b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-avif",
+          "sha256": "285d34fbbfec94c3ef58795b40a38e71fb5cee920c4d872cb356ff064d28b4f5",
+          "bytes": 485,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca6b5da335b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-bmp",
+          "sha256": "9a7c8029c93cab14994058c5adc036b295966e842a717d61af2e9084daf0ea43",
+          "bytes": 12426,
+          "remote": {
+            "status": 200,
+            "contentType": "image/bmp",
+            "contentDisposition": "inline; filename=__.final.bmp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.bmp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca6e4f2435b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "static-tiff",
+          "sha256": "1d3bba08fbe9df71f08a7ab6d877927aa85586bfcbd339deee9886a3e5bd0d55",
+          "bytes": 12566,
+          "remote": {
+            "status": 200,
+            "contentType": "image/tiff",
+            "contentDisposition": "inline; filename=__.final.tiff; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.tiff",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca7159d435b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "alpha-heic",
+          "sha256": "896cb17984d9a5675257cde425b4e47a07c348568e07622a88f3dfe76832296a",
+          "bytes": 1417,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca74ac2435b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "multiple-heic",
+          "sha256": "9a6cedae06a843f4498c037b1f69dc23cef756bae76a53f7ab8e47203ae48bb2",
+          "bytes": 1332,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca77eeaa35b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-avif",
+          "sha256": "760b2cf4d6e7b6333c874b5a1ee6736cadf18724cb6db8aab6f3e1be3a82e8db",
+          "bytes": 462,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca7acf8735b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-avif",
+          "sha256": "dbf96242d222e0432495461f94b0460a27c3dc00e5dd123707fc4425a3e13508",
+          "bytes": 1593,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca7d781735b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-gif",
+          "sha256": "59141c8631ed1422e39d9ac11d7da94fd1850df98ebfaf5408d36c64ffdbb5e3",
+          "bytes": 344,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca80eab135b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-webp",
+          "sha256": "dcee1058e84350e464fc7afa0b786011d3aa904b3a2175da13a2fd69f416617b",
+          "bytes": 344,
+          "remote": {
+            "status": 200,
+            "contentType": "image/webp",
+            "contentDisposition": "inline; filename=__.final.webp; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.webp",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca843c6035b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-tiff",
+          "sha256": "96a8fcec953ab948d744beef035895a8d657bda740a101bd053ad3b50ebf157a",
+          "bytes": 25148,
+          "remote": {
+            "status": 200,
+            "contentType": "image/tiff",
+            "contentDisposition": "inline; filename=__.final.tiff; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.tiff",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca888a4235b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "multiple-ico",
+          "sha256": "f422a515feab31ddbbe574ca233915282a508402a3c3f3b86a7b16867f9145e0",
+          "bytes": 22382,
+          "remote": {
+            "status": 200,
+            "contentType": "image/x-icon",
+            "contentDisposition": "inline; filename=__.final.ico; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.ico",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca8bccd735b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "animated-png",
+          "sha256": "8e2289bd86c928039ed12f1293d4a104b6cbf68e18866bb329f1744a2898d212",
+          "bytes": 418,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca8eded135b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "poster-png",
+          "sha256": "a282495f83ef276e192bc2ba43e86e565a0888012c82b24eaf1b4331c1157190",
+          "bytes": 566,
+          "remote": {
+            "status": 200,
+            "contentType": "image/png",
+            "contentDisposition": "inline; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca92093935b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "static-svg",
+          "sha256": "9b2088858d5b3d15d171c2b79571188fdcf5fdd8c9a993f1ffd0f1edfcf165e1",
+          "bytes": 224,
+          "remote": {
+            "status": 200,
+            "contentType": "application/octet-stream",
+            "contentDisposition": "attachment; filename=__.final.svg; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.svg",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca958bc935b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "static-gif",
+          "sha256": "99b38100ab591107b27b0d5b3f6b2f49356918838f1c2eddc774fbe2a872838a",
+          "bytes": 241,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca99582535b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "alpha-avif",
+          "sha256": "7b94d61c30666b9fb92e9077ec308240199c70cf234b8ad050bcefb7092ed770",
+          "bytes": 549,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43cca9f6c9f35b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "oriented-heic",
+          "sha256": "7bc553e8c08b8806aee0933301eeaa93dec70e7ccd5e6651863673d7460b6e13",
+          "bytes": 1174,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccaa30fe735b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "mirrored-heic",
+          "sha256": "4599490a774656885b6ca07cc04c7cc63d0f4a3e622607dbc8b67c8ac8a52830",
+          "bytes": 1174,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccaa7be2735b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "offset-gif",
+          "sha256": "c8794ae29bdeb0bcbb5d5b6f53d88e326cd3c7e6b1a2ac44bcffbf1efec745d6",
+          "bytes": 138,
+          "remote": {
+            "status": 200,
+            "contentType": "image/gif",
+            "contentDisposition": "inline; filename=__.final.gif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.gif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccaaa9f7935b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "primary-second-heic",
+          "sha256": "c213f6e5c0b4d2bdc13b205ed95726e82e742b418487c8d39a394868980cc9b4",
+          "bytes": 1332,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccaae6bf235b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "primary-second-avif",
+          "sha256": "6729a01d14fe521fc6b64bf4ba0b0c8f7af2a721ace1937096d199aa840e11ba",
+          "bytes": 462,
+          "remote": {
+            "status": 200,
+            "contentType": "image/avif",
+            "contentDisposition": "inline; filename=__.final.avif; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.avif",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccab1defa35b2-SIN"
+          },
+          "defaultStatus": 302
+        },
+        {
+          "id": "depth-heic",
+          "sha256": "a4f9684de4706c3c3874ec26f70822ed4436eae469876b466037adc0eacd3684",
+          "bytes": 1417,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccab6be8c35b2-SIN"
+          },
+          "defaultStatus": 404
+        },
+        {
+          "id": "thumbnail-heic",
+          "sha256": "26726ca88c1b2107daca48406aaaae640421b6b4dc639f5415e5bc7ef3292420",
+          "bytes": 2159,
+          "remote": {
+            "status": 200,
+            "contentType": "image/heic",
+            "contentDisposition": "inline; filename=__.final.heic; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.heic",
+            "cacheControl": "private, no-store, no-transform",
+            "requestId": null,
+            "server": "cloudflare",
+            "cfRay": "a43ccabaaaef35b2-SIN"
+          },
+          "defaultStatus": 404
+        }
+      ]
+    },
+    {
+      "name": "real-memory-collector-graceful-flush",
+      "status": "passed",
+      "evidence": {
+        "imageId": "0b995cfd-0ecd-4f1f-86c9-cb1cd8ba8970",
+        "originalCount": 1,
+        "compressedCount": 1,
+        "watermarkCount": 1
+      }
+    },
+    {
+      "name": "setup-or-interruption",
+      "status": "failed",
+      "evidence": {
+        "message": "The operation was aborted",
+        "code": "ABORT_ERR"
+      }
+    }
+  ],
+  "cleanup": "All recorded exact keys deleted and HEAD-confirmed absent"
+}

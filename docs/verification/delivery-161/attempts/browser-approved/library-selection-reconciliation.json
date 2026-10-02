@@ -1,0 +1,21 @@
+{
+  "phase": "selection-reconciliation",
+  "status": "passed",
+  "checks": [
+    "Normal desktop/mobile light/dark gallery and selected-popover screenshots contain at least two decoded production thumbnail images, seeded into the independent fixture storage.",
+    "241 explicit IDs across four pages survive page select/deselect, Back/Forward and grid-to-masonry changes; newly displayed page records stay unselected until chosen.",
+    "The actual 201st selected item can be removed from page 11; selected-list pages mount only 20 rows and perform no list or reconciliation requests.",
+    "Real deletion, recycling and search mismatch remove exactly three choices across current and other pages after a domain change; the visible invalid card disappears, valid other-page choices persist, and a changed sort position, names and disabled-storage labels refresh.",
+    "Returning to the previously cached second page and traversing Back/Forward never restores invalid cards or their checkbox targets; valid selections survive in both cached pages.",
+    "A fresh production list response independently reconciles the selected IDs and removes a newly deleted off-page image without clearing valid choices.",
+    "A failed batch preserves all 236 explicit choices with an accessible error; retry reads the real API, removes the newly deleted ID and clears the error.",
+    "Real selected-list screenshots cover light/dark 360, 390, 430, 768, 1440 widths and a 390×560 short viewport; the panel has bounded dimensions, 44px mobile/tablet targets, initial keyboard focus and Escape focus restoration.",
+    "Both light/dark 390×560 panels fit a complete readable row; real wheel scrolling exposes a non-first selected row, opening and closing its detail retains all choices, and removing it decrements only the explicit selection.",
+    "Pending reconciliation disables selection actions; changing the search aborts its old request, and deliberately releasing that late successful response never recreates the old selection.",
+    "Network receipts show bounded POST batches containing only still-explicit selected IDs and an unpositioned query; successful responses are lightweight projections, with no all-library scans or original-image preloads."
+  ],
+  "record": "Summary of an actually passed existing UI check; not a design acceptance record",
+  "fullReport": "https://github.com/dnslin/ariso-next/blob/b478c7c/docs/verification/delivery-161/attempts/browser-approved/library-selection-reconciliation.json",
+  "screenshotsCount": 28,
+  "combinationsCount": 0
+}

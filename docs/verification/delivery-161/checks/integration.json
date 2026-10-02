@@ -1,0 +1,38 @@
+{
+  "initial": {
+    "command": "pnpm run test:integration --maxWorkers=1",
+    "exitCode": 1,
+    "files": {
+      "passed": 108,
+      "failed": 2
+    },
+    "tests": {
+      "passed": 1029,
+      "failed": 2
+    },
+    "durationSeconds": 1257.57,
+    "failures": [
+      {
+        "file": "tests/integration/identity/auth.test.ts",
+        "test": "production constraints reject invalid owners and duplicate providers; incomplete identity is explicit",
+        "error": "Test timed out in 5000ms"
+      },
+      {
+        "file": "tests/integration/identity/setup.test.ts",
+        "test": "malformed or non-object JSON null is a client error with no business writes",
+        "error": "fetch failed: connect ECONNREFUSED 127.0.0.1:49661"
+      }
+    ]
+  },
+  "retry": {
+    "command": "pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts tests/integration/identity/setup.test.ts --maxWorkers=1",
+    "exitCode": 0,
+    "files": {
+      "passed": 2
+    },
+    "tests": {
+      "passed": 46
+    },
+    "sourceTimeoutsAssertionsChanged": false
+  }
+}

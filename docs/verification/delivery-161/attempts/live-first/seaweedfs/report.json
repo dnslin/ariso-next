@@ -1,0 +1,60 @@
+{
+  "status": "failed",
+  "service": "seaweedfs",
+  "startedAt": "2026-10-01T16:19:31.773Z",
+  "finishedAt": "2026-10-01T16:19:40.411Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://fs.447654.xyz",
+    "bucket": "images"
+  },
+  "checks": [
+    {
+      "name": "real-GET-HEAD-methods-300s-cache-attachment-and-bytes",
+      "status": "passed",
+      "evidence": {
+        "get": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentDisposition": "attachment; filename=__.final.png; filename*=UTF-8''%E6%97%85%E8%A1%8C.final.png",
+          "cacheControl": "private, no-store, no-transform",
+          "requestId": "18DA743614D25B8962332FB5",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        },
+        "head": {
+          "status": 200,
+          "contentType": "image/png",
+          "contentDisposition": null,
+          "cacheControl": null,
+          "requestId": "18DA74362C711B33B17F5C47",
+          "server": "SeaweedFS 30GB 4.47",
+          "cfRay": null
+        },
+        "expiresSeconds": 300,
+        "methodIsolation": true
+      }
+    },
+    {
+      "name": "four-published-version-permissions-and-real-aggregation",
+      "status": "passed",
+      "evidence": {
+        "kinds": ["original", "compressed", "thumbnail", "watermark"],
+        "fixture": "Known published four-version delivery fixture; image processing is verified separately"
+      }
+    },
+    {
+      "name": "all-real-special-format-original-bytes-and-default-applicability",
+      "status": "failed",
+      "evidence": {
+        "message": "database is locked",
+        "code": "SQLITE_BUSY"
+      }
+    }
+  ],
+  "cleanup": "All recorded exact keys deleted and HEAD-confirmed absent"
+}

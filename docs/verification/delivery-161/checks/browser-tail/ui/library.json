@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "checks": [
+    "Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input",
+    "Layout preserves query/cache/selection; same-query page history preserves explicit selection",
+    "Three-slide finite window, controlled image identity after rebuilding slides, zoom and keyboard pan, real desktop fullscreen enter/exit, Escape restores URL/scroll/selection/focus without list HTTP",
+    "Light/dark at 360/390/430/768/1440, 44px controls, short viewport; emulated missing Fullscreen API hides its button but retains viewport viewer and zoom",
+    "Pending hides stale actions; HTTP 503, empty and cached recovery; changed query clears selection"
+  ],
+  "limitations": [
+    "HTTP fixture has 120 lightweight records, separate SQLite experiment supplies 100k scale evidence",
+    "Fullscreen unavailable is an explicit capability override, not real mobile Safari",
+    "No production library, cross-page neighbor API, permissions or physical-device acceptance"
+  ],
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "fullscreenEnabled": true
+  },
+  "record": "Summary of an actually passed existing UI check; not a design acceptance record",
+  "fullReport": "https://github.com/dnslin/ariso-next/blob/b478c7c/docs/verification/delivery-161/checks/browser-tail/ui/library.json",
+  "layoutsCount": 10
+}
