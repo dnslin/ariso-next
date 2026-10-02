@@ -1,0 +1,23 @@
+Error: page.waitForFunction timed out after 10000ms on page p4; last URL was "http://ariso-65136.localhost:65136/upload"; last title was "Ariso".
+    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)
+    at file:////[eval1]:18564:19
+    at async file:////[eval1]:16691:28
+{ relationStep: { name: 'albums-list-loading', width: 1440, theme: 'light', height: 1080 } }
+{ relationStep: { name: 'wait choices overlay exit and restored focus', kind: 'albums' } }
+{ relationStep: { name: 'albums-list-loading', width: 390, theme: 'dark', height: 844 } }
+{ relationStep: { name: 'wait choices overlay exit and restored focus', kind: 'albums' } }
+{ relationStep: { name: 'open choices', kind: 'albums', keyboard: false } }
+{ relationStep: { name: 'albums-empty', width: 1440, theme: 'light', height: 1080 } }
+{ relationStep: { name: 'wait choices overlay exit and restored focus', kind: 'albums' } }
+{ relationStep: { name: 'open choices', kind: 'albums', keyboard: false } }
+{ relationStep: { name: 'albums-empty', width: 390, theme: 'light', height: 844 } }
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-relations.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/scripts/verify-browser.mjs:316:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/scripts/verify-browser.mjs:366:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/browser-upload-relations-fixed

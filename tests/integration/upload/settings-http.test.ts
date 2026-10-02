@@ -113,9 +113,12 @@ it('protects upload settings and quick tag creation with real owner and origin c
     ]) {
       const response = await fetch(tagsUrl, { method: 'POST', headers, body });
       expect(response.status).toBe(400);
-      expect(await response.json()).toMatchObject({
+      expect(response.headers.get('cache-control')).toBe('no-store');
+      const error = await response.json();
+      expect(error).toMatchObject({
         code: 'COLLECTION_INVALID_INPUT',
       });
+      if (body === '{') expect(error.message).toBe('请求内容必须是有效的 JSON');
     }
     const create = async (name: string) => {
       const response = await fetch(tagsUrl, {
@@ -146,15 +149,36 @@ it('protects upload settings and quick tag creation with real owner and origin c
       body: '{"name":"another"}',
     });
     expect(failed.status).toBe(500);
-    expect(await failed.json()).toMatchObject({
+    expect(failed.headers.get('cache-control')).toBe('no-store');
+    expect(await failed.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
+      message: '标签创建失败，请重试',
     });
     expect(
       live.db.$client.prepare('SELECT COUNT(*) AS count FROM tags').get(),
     ).toEqual({ count: 1 });
-    await vi.waitFor(() =>
-      expect(server.logs()).toContain('tag database write failure'),
-    );
+    await vi.waitFor(() => {
+      expect(server.logs()).toContain('tag database write failure');
+      const records = server
+        .logs()
+        .split('\n')
+        .flatMap((line) => {
+          try {
+            return [JSON.parse(line)];
+          } catch {
+            return [];
+          }
+        });
+      expect(records).toContainEqual(
+        expect.objectContaining({
+          module: 'collections.tags',
+          level: 'error',
+          method: 'POST',
+          path: '/api/tags',
+          msg: 'Tag creation failed',
+        }),
+      );
+    });
   } finally {
     live?.close();
     await stop(server.child, server.closed);

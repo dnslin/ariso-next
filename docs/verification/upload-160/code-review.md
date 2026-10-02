@@ -2,7 +2,7 @@
 
 审计日期：2026-10-02。审计者为未参与实现的独立 agent，采用 `code-review-and-quality`，React 部分同时核对 `vercel-react-best-practices`。本记录只给代码与功能覆盖结论，设计还原和用户人工验收另行记录。
 
-最新结论见文末“用户批准关系方案后的追加审计”。以下首轮记录保留当时的设计前置、失败与复验事实，不作为本轮新增关系 UI 的当前状态。
+最新结论见文末“PR 双角度评审修复后的独立复审”。以下历史记录保留当时的设计前置、失败与复验事实。
 
 ## 首轮结论（设计批准前的历史记录）
 
@@ -130,3 +130,28 @@
 新增 `escapeFocusedOption` 分别覆盖相册、标签：先断言搜索为空、目标真实已选，聚焦后严格核对 activeElement 为指定 option；只发送一次原生 Escape；要求弹层与退出动画结束、触发器 expanded=false 且真实回焦；再核对全部选择 ID 与之前完全相同。该测试没有改成从搜索框 Escape，也没有发送第二次 Escape 使失败场景侥幸通过。
 
 该追加修复静态与行为回归审计均通过。审计者已实际读取最终[关系专项](./reports/approved-relations.json)及[运行报告](./reports/approved-relations-runner.json)：两者 passed，47布局/11项；2026-10-02 10:13:54–10:14:38 UTC，Node24.18.1、Darwin arm64，真实独立生产实例且临时数据已清理。新增相册、标签两项均实际确认空查询、真实选项焦点、一次原生 Escape 关闭、全部选择 ID 保留与触发器回焦。此前47布局/9项[业务报告](./reports/relations-before-option-escape.json)与[运行报告](./reports/relations-before-option-escape-runner.json)单独保留，修前失败证据也未改记为通过；没有重复运行无关全套检查。
+
+## PR 双角度评审修复后的独立复审（2026-10-02）
+
+最终两位独立评审者均为 **Approve**，Critical / Required / Optional / Nit 无未关闭发现。分别实际采用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`，未参与本轮实现；各自读取相关需求、契约、调用路径、改动和测试，再回读真实最终浏览器报告。完整原始结论为[代码质量复审](./reports/review-fixes-code-quality.md)与[结构复审](./reports/review-fixes-structure.md)。
+
+| 原评审项                                 | 复审结论                                                                                                                                   |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| R1 albums/tags重复HTTP边界与固定日志级别 | 共用collections/http，成功/400/404/401/403/500的no-store和认证/Origin边界保留，资源中文错误与原始诊断保留；debug/fatal修前失败、修后通过。 |
+| R2 几何重复与关系脚本职责混合            | 复用公共viewport/theme/geometry，选择、快建、冻结/删除、布局分别承担明确职责；原真实API、键盘、点击尺寸及错误断言保留。                    |
+| O1 UploadItem冗余快照                    | 删除无消费者副本，保留Entry实际调度、服务端契约和共享冻结摘要；测试转为验证POST、摘要及分组发送边界。                                      |
+| O2 第二套专项运行器                      | 删除文档runner，主入口显式suite/only选择，复用临时实例、收尾和报告；p4隔离不会导航用户p1预览，不把未执行阶段称为通过。                     |
+| O3 关系列表平方级扫描                    | ID Map、名称单遍扫描、匹配Set；同名完整ID、失效原名称、隐藏选择及搜索语义不变，无新缓存框架。                                              |
+| O4 GET错误恢复缺口                       | 真实临时数据库表缺失产生500，恢复后重试200；两类非空选中IDs保留、错误消失，finally还原表。最终浏览器实际执行通过。                         |
+
+统一几何检查另发现桌面搜索框36px input的44px外框留白无法点击聚焦。新增Group直接命中点击处理后，评审者核对HeroUI真实props转发与事件边界，确认不覆盖输入/清空行为，不改变布局；最终18组搜索记录共36次原生上下边缘点击均实际聚焦。手机自身44px input按原始尺寸验证，桌面Group只在证明真实命中后使用，未按尺寸过滤控件或放宽断言。
+
+两位评审者各自执行定向单元命令：
+
+```bash
+pnpm exec vitest run --project unit tests/unit/collections/tags-route.test.ts tests/unit/upload/queue.test.ts tests/unit/upload/controller.test.ts tests/unit/upload/settings-route.test.ts tests/unit/upload/page-settings-route.test.ts
+```
+
+各5文件46项通过。主审统一命令与环境集中在[主记录](./README.md#pr-双角度评审后的修复2026-10-02)，两位实际回读了单元782项、最终构建/类型、提交62布局4检查、关系49布局12检查、旧上传130布局15检查和轮询4检查的日志。全量集成首轮1056/1057通过、构建回归未暂存删除导致ENOENT；暂存后该1项定向通过，不修改测试，不把首轮退出1倒写为成功。
+
+代码审计通过不代表用户人工UI验收通过。设计结论由[独立设计记录](./design-review.md)维护；本轮没有重新运行完整全站浏览器。PR保持草稿，不合并、不关闭Issue。

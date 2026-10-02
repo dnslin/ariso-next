@@ -6,7 +6,7 @@
 
 ## 前置与修改范围
 
-实际读取 Issue 正文、评论（无评论）和 GitHub 原生 blocked by / blocking。直接前置 #81、#159、#66、#153、#151、#77、#71、#72、#141 均已 CLOSED；下游为 #162 和 #200。基于最新 `origin/main` 的 `3eb585f` 创建 `codex/issue-160-upload-queue`，独立 worktree 为 `/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso`；原 `/Volumes/data/project/ariso` 未改动。
+实际读取 Issue 正文、评论（无评论）和 GitHub 原生 blocked by / blocking。直接前置 #81、#159、#66、#153、#151、#77、#71、#72、#141 均已 CLOSED；下游为 #162 和 #200。最初基于当时最新 `origin/main` 的 `3eb585f` 创建 `codex/issue-160-upload-queue`，独立 worktree 为 `/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso`；原 `/Volumes/data/project/ariso` 未改动。
 
 已实现的增量：所有者 GET/PATCH `/api/settings/upload`，默认50 MiB/20/500，整数MiB转换字节值，批次1–200、队列100–2000、批次不大于队列；旧 submission 保持快照。提交返回冻结关系IDs、批次大小及实际组号。限制刷新更新原 controller，不销毁队列。标签快速创建提供方为薄 POST `/api/tags`，复用 collections 的规范名称键与事务，不重新实现名称规则。
 
@@ -64,7 +64,7 @@ Darwin arm64，Node24.18.1、pnpm11.19.0、HeroUI3.2.6、Uppy5.2.0、现有Ego L
 
 [独立代码审计](./code-review.md)和[独立设计评审](./design-review.md)分别维护结论。功能证据、设计还原和用户人工验收不互相替代。设计评审者自行读取Figma并查看真实页面截图。
 
-初次增量代码审计和设计复验的结论保留在对应记录。用户批准后的新UI已完成独立代码审计，没有未解决Required；独立设计验收实际读取Figma并复验真实两端截图，标签三处偏差及顶部整页证据缺口均在本次修复，没有剩余本次设计偏差。表达缺口的实施前批准已满足；人工验收和既有全量浏览器失败尚未解决，保持草稿。
+初次增量代码审计和设计复验的结论保留在对应记录。用户批准后的新UI已完成独立代码审计，没有未解决Required；独立设计验收实际读取Figma并复验真实两端截图，标签三处偏差及顶部整页证据缺口均在本次修复，没有剩余本次设计偏差。表达缺口的实施前批准已满足；人工验收尚未完成，保持草稿。旧全量浏览器失败及后续 main 修正分别保留为历史事实，本轮状态见文末。
 
 Figma实际读取与截图在 [figma](./figma/)：主页面30:97/101:1014、批次317:4617/4776、A/B316:5306/5232、取消317:4016/4025、失败317:4052/4063、相册37:304/102:3243、标签37:313/102:3729和默认链接不可用317:4308。[context](./figma/context.json)包含读取结果；截图是设计参照，不作为网页资产。实际网页精选截图在 [screenshots](./screenshots/)，完整62组本地截图在 `test-results/upload-160-submissions/`；批准后关系专项截图在 `test-results/upload-160-relations/`。设计逐项对照、修前/修后证据和最终结论集中在同一[设计评审](./design-review.md)，不以功能或截图数量替代设计验收。
 
@@ -86,10 +86,55 @@ Figma实际读取与截图在 [figma](./figma/)：主页面30:97/101:1014、批�
 | `EGO_TASK_SPACE=1 node docs/verification/upload-160/run-browser.mjs relations`   | 最终退出0，47组布局、11组真实行为检查；[业务报告](./reports/approved-relations.json)、[环境与临时数据清理](./reports/approved-relations-runner.json)                                                     |
 | `EGO_TASK_SPACE=1 node docs/verification/upload-160/run-browser.mjs regression`  | 新UI构建后退出0，130组布局及15组真实行为检查；[业务报告](./reports/approved-regression.json)、[环境与清理](./reports/approved-regression-runner.json)                                                    |
 
-新关系专项已接入完整浏览器入口。它用真实200读取延迟、SQLite触发器产生真实500与真实201结果，在独立临时数据库核对名称、ID和关系记录；不以假接口完成业务。已经复现的失败与修前截图保留在reports/screenshots。全量浏览器旧宽布局断言的失败仍然适用；该范围外冲突不因新专项通过而改记通过。
+新关系专项已接入完整浏览器入口。它用真实200读取延迟、SQLite触发器产生真实500与真实201结果，在独立临时数据库核对名称、ID和关系记录；不以假接口完成业务。已经复现的失败与修前截图保留在reports/screenshots。当时全量浏览器旧宽布局断言失败。该断言后来由 main 的 `e68ed01` 修复；本轮已同步 main，历史失败不改记通过，也不再描述为当前 main 未解决的问题。
 
 相册/标签选中后焦点停留列表项时，库默认Escape会清空选择并吞掉关闭事件。通过实际预览失败取得[修前报告](./reports/relations-option-escape-before-failed.json)和[截图](./screenshots/relations-option-escape-before-light-1440.png)，本次以ListBox现有`escapeKeyBehavior="none"`修复，外层Popover处理关闭，SearchField仍保留清空搜索行为。新增两组真实键盘回归，严格核对一次Escape后已选IDs不变、弹层关闭并回到原触发按钮；最终47布局/11检查通过，不用此前9检查的报告冒充这次修复证据。
 
 最终人工预览由 `node /tmp/ariso-160-approved-preview.mjs` 准备，使用已复制的稳定构建和独立临时数据。实际 A 提交3张（2/1、公开、原名称），B提交2张（1/1、私有、已更名），3成功/2处理失败；故障触发器已撤除，可实际点击同ID重处理。预览入口 `http://ariso-review-50509.localhost:50509/upload`，仅供本机人工验收。刷新不恢复浏览器队列，已有图片保留在图库。页面尚未经用户验收。
 
 原关系专项的双摘要截图留在滚动中段，不能作为顶部整页证据。本次在上述真实预览补拍360/390/430/768×844、1440×1080的浅深色顶部overview共10张，实际`#main-content.scrollTop=0`且标题在视口。手机截图不扩展内部滚动容器，配同视口原下方设置图核对整页区域顺序；不把单张顶部截图叫成完整长页。实际状态、两提交快照和捕获边界在[预览记录](./reports/approved-relations-preview.json)，图片在screenshots/relations-two-frozen-overview-*；独立设计结论只维护在[设计评审](./design-review.md)。
+
+## PR 双角度评审后的修复（2026-10-02）
+
+用户要求修复两项 Required 和四项 Optional。本轮在原分支合并最新 main `d120460`（合并提交 `e6c4e78`），保留原工作区与正在人工验收的50509预览。冻结安装使用 Node24.18.1 / pnpm11.19.0 / macOS arm64；不新增依赖、不修改冻结PRD、公共界面外观或已批准方案。
+
+| 评审项                      | 实际处理                                                                                                                                                                                                                                                                                                  |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R1 集合HTTP边界重复         | 将已有相册边界提升到 `src/server/collections/http.ts`，相册与标签直接复用认证、Origin、no-store、400/404和500处理；保留各自中文500与日志上下文。修前debug/fatal两项回归实际失败，修后遵守runtime日志级别。[修前](./reports/review-fixes-http-before.txt)、[修后](./reports/review-fixes-http-after.txt)。 |
+| R2 浏览器几何与业务职责混合 | 两个上传脚本直接复用公共resizeViewport/setTheme/readGeometry；关系入口按选择、快建、冻结/删除分模块。保留44px、桌面导航40px、标签桌面116×40、失败弹窗全宽动作与16px间距，并检测main溢出。                                                                                                                 |
+| 逐文件冗余快照              | 删除UploadItem的groupIndex/batchSize/albumIds/tagIds副本，保留实际调度Entry.groupIndex、服务端契约及共享冻结摘要；测试核对真实POST、摘要和下一组发送边界。                                                                                                                                                |
+| 关系列表重复扫描            | 按ID建Map，单次扫描计算相册同名集合；标签不再执行无用同名计算。搜索和保留隐藏选择使用Set，不加缓存或选择器框架。                                                                                                                                                                                          |
+| GET列表读取错误恢复覆盖     | 隔离数据库缺失表产生真实GET500，恢复表后点击重试取得真实200；核对两类旧选中IDs不变、错误消失、列表恢复。异常路径也还原表。                                                                                                                                                                                |
+| 第二套专项运行器            | 删除文档内run-browser.mjs，主运行器提供 `--suite upload`（提交+关系）及 `--suite upload-regression`（旧上传+轮询），复用生产临时实例和收尾；用EGO_PAGE_LABEL隔离测试页面。                                                                                                                                |
+
+首轮主入口专项的提交62布局通过，关系专项在新增输入框几何检查发现搜索input为36px而外框44px，整轮退出1。[首轮运行器](./reports/review-fixes-first-runner.json)、[关系失败](./reports/review-fixes-first-upload-relations.json)、[截图](./screenshots/review-fixes-search-target-before.png)保留。实际点击外框上沿留白也未聚焦input，[点击后的截图](./screenshots/review-fixes-search-margin-before.png)保留。已在SearchField.Group仅对直接命中外框的点击聚焦input，保留清空/输入/键盘行为和像素；复验必须先移走焦点再物理点击上下留白，证明目标有效后才按44px外框核验，原始input尺寸仍记录，不过滤失败输入或弱化按钮断言。
+
+原专项脚本命令保留为历史执行事实，文件现已删除。当前入口为：
+
+```bash
+EGO_TASK_SPACE=1 EGO_PAGE_LABEL=p4 BROWSER_REPORT_DIR=test-results/browser-upload-fixed node scripts/verify-browser.mjs --suite upload
+EGO_TASK_SPACE=1 EGO_PAGE_LABEL=p4 BROWSER_REPORT_DIR=test-results/browser-upload-relations-accepted node scripts/verify-browser.mjs --suite upload --only relations
+EGO_TASK_SPACE=1 EGO_PAGE_LABEL=p4 BROWSER_REPORT_DIR=test-results/browser-upload-regression-fixed node scripts/verify-browser.mjs --suite upload-regression
+```
+
+`--only` 只允许上传专项选择现有 relations/submissions 阶段，报告明确记录选择，不把未执行阶段标为通过。首轮输入缺陷修复后，第二轮提交62布局通过，但手机原生input已经44px，测试错误要求点击点必须在input外，该轮关系失败；第三/四轮在浮层未关闭时切换手机视口，定位等待超时。失败原样保留：[第二轮](./reports/review-fixes-submissions-runner.json)、[第三轮](./reports/review-fixes-viewport-first-runner.json)、[第四轮](./reports/review-fixes-viewport-retry-runner.json)。最终测试分别核对手机44px原生input上下内沿、桌面36px input外的44px Group上下留白；先移走焦点，物理点击后确认实际聚焦，保留原始尺寸。代表状态先关闭浮层、切换主题/视口、重新打开并恢复查询，未放宽尺寸或焦点断言。最终49布局中18组搜索记录共36次边缘点击均通过。
+
+| 实际命令                                                                                            | 本轮修复结果与证据                                                                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                    | 退出0，无新增依赖/锁变更。[日志](./reports/review-fixes-install.txt)。                                                                                                                                                                                                                               |
+| `pnpm run test:unit`                                                                                | 退出0，63文件782项。[日志](./reports/review-fixes-unit.txt)。                                                                                                                                                                                                                                        |
+| `pnpm run build`                                                                                    | HTTP与测试修复后通过；搜索点击修复后的最终构建也退出0。resvg其他平台可选包追踪诊断保留。[首轮](./reports/review-fixes-build.txt)、[最终](./reports/review-fixes-final-build.txt)。                                                                                                                   |
+| `pnpm run test:integration --maxWorkers=1`                                                          | 首轮退出1：112文件1056项通过，1文件1项失败。未暂存删除的旧runner仍由git ls-files列出，构建回归复制时报ENOENT。[首轮原始日志](./reports/review-fixes-integration-first.txt)。暂存删除与新增源码后定向复验，不改测试/断言；未机械重跑其余1056项。                                                      |
+| `pnpm exec vitest run --project integration tests/integration/runtime/build.test.ts --maxWorkers=1` | 退出0，1文件1项；确认无数据库/部署密钥的真实构建回归恢复。[日志](./reports/review-fixes-build-regression.txt)。首轮全量命令不倒改为通过。                                                                                                                                                            |
+| `pnpm run lint`、`pnpm run typecheck`                                                               | 全量均退出0；搜索修复后全量类型复验退出0，最后9个浏览器脚本/运行器的定向eslint退出0。[lint](./reports/review-fixes-lint.txt)、[最终类型](./reports/review-fixes-final-typecheck.txt)、[浏览器静态检查](./reports/review-fixes-browser-static.txt)。                                                  |
+| `node scripts/verify-browser.mjs --suite upload`（以上p4配置）                                      | 最终提交阶段passed，62布局/4行为；该整轮随后手机测试仪器失败，退出1，不能记为suite全通过。[提交报告](./reports/review-fixes-submissions-upload-submissions.json)、[整轮](./reports/review-fixes-submissions-runner.json)。生产代码此后未改变。                                                       |
+| `node scripts/verify-browser.mjs --suite upload --only relations`（以上p4配置）                     | 退出0，49布局/12行为；含真实GET500→200、选择保留、点击与焦点、取消、快建失败/未知/201一次提交、冻结与删除目标。[业务](./reports/review-fixes-relations-upload-relations.json)、[运行器](./reports/review-fixes-relations-runner.json)、[日志](./reports/review-fixes-browser-relations-passed.txt)。 |
+| `node scripts/verify-browser.mjs --suite upload-regression`（以上p4配置）                           | 退出0，旧上传130布局/15行为、轮询4行为。[上传](./reports/review-fixes-regression-upload.json)、[轮询](./reports/review-fixes-regression-upload-polling.json)、[运行器](./reports/review-fixes-regression-runner.json)。                                                                              |
+
+浏览器使用同一Ego Space1的独立p4，主运行器复制稳定standalone并初始化独立数据库/存储；通过的两次运行都记录临时目录已删除。专项只证明对应上传范围。本轮不让旧全套脚本导航仍保存队列的人工p1预览，不把专项结果称为完整浏览器通过。旧1920宽布局断言已经main修复，本轮没有复跑全套；历史失败保留。镜像/容器按Release验证，物理设备未实测，人工验收仍待用户完成。
+
+两位独立代码复审分别采用 code-review-and-quality 与 thermo-nuclear-code-quality-review，最终均Approve，无未关闭发现；[代码审计记录](./code-review.md)链接原始报告。另位独立设计评审实际读取Figma和本轮截图，最终设计验收通过，无未解决设计偏差；[设计记录](./design-review.md)逐项维护节点、视口/主题、截图与复核结论。
+
+本轮最终人工预览为 `http://ariso-review-50657.localhost:50657/upload`（Ego Space1/p4），独立临时数据与稳定构建，真实两次提交保留3成功/2处理失败；故障触发器已移除，可实际点击同ID重处理。[实际准备与顶部截图记录](./reports/review-fixes-relations-preview.json)的ready只表示准备完成，不算人工通过。原50509/p1预览、队列与数据未覆盖。刷新会清空浏览器队列，已持久图片仍在图库。用户人工验收待完成，PR保持草稿。
+
+证据末段追加后README格式检查退出1，[原始日志](./reports/review-fixes-evidence-format-failed.txt)保留，已格式化修复。最终 `pnpm run format:check` 退出0；`node docs/tasks/check.mjs` 退出0（120任务/298需求，无缺失/循环）。[格式日志](./reports/review-fixes-final-format.txt)、[文档日志](./reports/review-fixes-final-docs.txt)。`git diff --check HEAD -- src scripts e2e tests docs/verification/upload-160/README.md docs/verification/upload-160/code-review.md docs/verification/upload-160/design-review.md` 退出0；证据链接文件核对无缺失。原始终端日志保留输出控制字符/换行，未用其空白格式替代源码质量结论。

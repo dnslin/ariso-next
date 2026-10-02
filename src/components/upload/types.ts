@@ -27,10 +27,6 @@ export type UploadItem = {
   visibility?: 'public' | 'private';
   storageId?: string;
   submissionId?: string;
-  groupIndex?: number;
-  batchSize?: number;
-  albumIds?: readonly string[];
-  tagIds?: readonly string[];
   frozenSubmission?: UploadSubmissionSummary;
   sessionId?: string;
   imageId?: string;

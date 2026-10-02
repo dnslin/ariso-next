@@ -3,8 +3,11 @@ const { default: assert } = await import('node:assert/strict');
 const { copyFile, mkdir, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
+const { resizeViewport, setTheme, readGeometry } = await import(
+  new URL('./browser-geometry.mjs', config.identitySessionScript).href
+);
 const task = await taskSpace(config.spaceId);
-const page = task.page('p1');
+const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
 const button = (name) => `loc=role:button[name="${name}"]`;
 const input = 'input[aria-label="选择图片文件"]';
@@ -20,71 +23,31 @@ async function settings(body) {
 }
 async function layouts(name) {
   for (const theme of ['light', 'dark']) {
-    await page.cdp('Emulation.setEmulatedMedia', {
-      features: [
-        { name: 'prefers-color-scheme', value: theme },
-        { name: 'prefers-reduced-motion', value: 'reduce' },
-      ],
-    });
-    await page.waitForFunction(
-      (value) => document.documentElement.classList.contains(value),
-      theme,
-    );
+    await setTheme(page, theme);
     for (const width of [360, 390, 430, 768, 1440]) {
-      await page.cdp('Emulation.setDeviceMetricsOverride', {
-        width,
-        height: width >= 1200 ? 1080 : 844,
-        deviceScaleFactor: 1,
-        mobile: width < 768,
+      await resizeViewport(page, width);
+      const geometry = await readGeometry(page);
+      geometry.modal = await page.evaluate(() => {
+        const footer = document.querySelector('[data-slot="modal-footer"]');
+        if (!footer) return null;
+        const body = document.querySelector('[data-slot="modal-body"]');
+        return {
+          width: footer.getBoundingClientRect().width,
+          gap:
+            footer.getBoundingClientRect().top -
+            body.getBoundingClientRect().bottom,
+          buttons: [
+            ...footer.querySelectorAll('button[data-slot="button"]'),
+          ].map((node) => node.getBoundingClientRect().width),
+        };
       });
-      const geometry = await page.evaluate(() => ({
-        width: innerWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-        targets: [...document.querySelectorAll('button,a')]
-          .filter((node) => {
-            if (
-              !node.getClientRects().length ||
-              node.closest('[inert],[aria-hidden="true"]')
-            )
-              return false;
-            // React Aria's clipped DismissButton is for screen readers only.
-            for (let parent = node; parent; parent = parent.parentElement) {
-              const style = getComputedStyle(parent);
-              if (
-                style.clipPath === 'inset(50%)' ||
-                style.clip === 'rect(0px, 0px, 0px, 0px)'
-              )
-                return false;
-            }
-            return true;
-          })
-          .map((node) => ({
-            label: node.getAttribute('aria-label') || node.textContent,
-            width: node.getBoundingClientRect().width,
-            height: node.getBoundingClientRect().height,
-            navigation: node.classList.contains('shell-nav-link'),
-          })),
-        modal: (() => {
-          const footer = document.querySelector('[data-slot="modal-footer"]');
-          if (!footer) return null;
-          const body = document.querySelector('[data-slot="modal-body"]');
-          return {
-            width: footer.getBoundingClientRect().width,
-            gap:
-              footer.getBoundingClientRect().top -
-              body.getBoundingClientRect().bottom,
-            buttons: [
-              ...footer.querySelectorAll('button[data-slot="button"]'),
-            ].map((node) => node.getBoundingClientRect().width),
-          };
-        })(),
-      }));
-      assert.ok(geometry.scrollWidth <= width, `${name}: no overflow`);
+      assert.equal(geometry.overflow, false, `${name}: document overflow`);
+      assert.equal(geometry.mainOverflow, false, `${name}: main overflow`);
       for (const target of geometry.targets)
         assert.ok(
           target.width >= 44 &&
             target.height >= (width >= 1200 && target.navigation ? 40 : 44),
-          `${target.label}: minimum click target`,
+          `${target.name}: minimum click target (${target.width}×${target.height})`,
         );
       if (geometry.modal) {
         assert.equal(
@@ -105,12 +68,7 @@ async function layouts(name) {
       report.layouts.push({ name, theme, ...geometry });
     }
     if (name === 'processing-options') {
-      await page.cdp('Emulation.setDeviceMetricsOverride', {
-        width: 390,
-        height: 400,
-        deviceScaleFactor: 1,
-        mobile: true,
-      });
+      await resizeViewport(page, 390, 400);
       await page.focus(button('重新处理'));
       await page.keyboard.press('Tab');
       assert.equal(

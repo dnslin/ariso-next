@@ -148,14 +148,21 @@ it('freezes a shared submission, leaves additions for next start and shares thre
     ['private', 2],
     ['public', 3],
   ]);
-  expect(
-    c.controller.snapshot.slice(0, 2).map((item) => item.albumIds),
-  ).toEqual([['album-a'], ['album-a']]);
-  expect(c.controller.snapshot.slice(2).map((item) => item.tagIds)).toEqual([
-    ['tag-b'],
-    ['tag-b'],
-    ['tag-b'],
+  const submitted = c.request.mock.calls
+    .filter(([, init]) => init?.method === 'POST')
+    .map(([, init]) => JSON.parse(init!.body as string));
+  expect(submitted).toMatchObject([
+    { albumIds: ['album-a'], tagIds: ['tag-a'] },
+    { albumIds: ['album-b'], tagIds: ['tag-b'] },
   ]);
+  expect(c.controller.snapshot[0].frozenSubmission).toMatchObject({
+    albums: [{ id: 'album-a' }],
+    tags: [{ id: 'tag-a' }],
+  });
+  expect(c.controller.snapshot[2].frozenSubmission).toMatchObject({
+    albums: [{ id: 'album-b' }],
+    tags: [{ id: 'tag-b' }],
+  });
   c.settle(0);
   await vi.waitFor(() => expect(c.transports[3].upload).toHaveBeenCalledOnce());
   c.settle(1);
@@ -299,23 +306,25 @@ it('freezes relation IDs per submission and preserves groups of 20/20/5 across s
   await vi.waitFor(() => expect(c.transports[2].upload).toHaveBeenCalledOnce());
   const metadata = JSON.parse(c.request.mock.calls[0][1]!.body as string);
   expect(metadata).toMatchObject({ albumIds: ['album-a'], tagIds: ['tag-a'] });
-  expect(c.controller.snapshot.map((item) => item.groupIndex)).toEqual([
-    ...Array(20).fill(0),
-    ...Array(20).fill(1),
-    ...Array(5).fill(2),
-  ]);
+  const frozen = c.controller.snapshot[0].frozenSubmission;
+  expect(frozen).toMatchObject({
+    count: 45,
+    groups: [20, 20, 5],
+    albums: [{ id: 'album-a' }],
+    tags: [{ id: 'tag-a' }],
+  });
   for (let index = 0; index < 45; index++) {
     await vi.waitFor(() =>
       expect(c.transports[index].upload).toHaveBeenCalledOnce(),
     );
+    if (index === 19 || index === 39)
+      expect(c.transports[index + 1].upload).not.toHaveBeenCalled();
     c.settle(index, 'failed');
   }
   await first;
   expect(c.peak()).toBe(3);
   expect(
-    c.controller.snapshot.every(
-      (item) => item.albumIds?.[0] === 'album-a' && item.tagIds?.length === 1,
-    ),
+    c.controller.snapshot.every((item) => item.frozenSubmission === frozen),
   ).toBe(true);
 });
 

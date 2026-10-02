@@ -35,32 +35,31 @@ export function UploadRelations({
   const [search, setSearch] = useState('');
   const trigger = useRef<HTMLButtonElement>(null);
   const label = kind === 'albums' ? '相册' : '标签';
-  const allChoices = [
-    ...choices,
-    ...selected.filter(
-      (item) => !choices.some((choice) => choice.id === item.id),
-    ),
-  ];
-  const sameNames = new Set(
-    allChoices
-      .filter(
-        (item, index) =>
-          allChoices.findIndex((other) => other.name === item.name) !== index,
-      )
-      .map((item) => item.name),
-  );
+  const choicesById = new Map(choices.map((item) => [item.id, item]));
+  const sameNames = new Set<string>();
+  if (kind === 'albums') {
+    const names = new Set<string>();
+    const allChoices = [
+      ...choices,
+      ...selected.filter((item) => !choicesById.has(item.id)),
+    ];
+    for (const item of allChoices) {
+      if (names.has(item.name)) sameNames.add(item.name);
+      else names.add(item.name);
+    }
+  }
   const display = (item: UploadRelation) => {
-    const current = choices.find((choice) => choice.id === item.id);
+    const current = choicesById.get(item.id);
     const name = current?.name ?? item.name;
     const identity =
       kind === 'albums' && sameNames.has(name) ? `${name} · ${item.id}` : name;
     return current ? identity : `${identity}（已不存在）`;
   };
+  const searchTerm = search.trim().toLocaleLowerCase();
   const matching = choices.filter((item) =>
-    `${item.name} ${item.id}`
-      .toLocaleLowerCase()
-      .includes(search.trim().toLocaleLowerCase()),
+    `${item.name} ${item.id}`.toLocaleLowerCase().includes(searchTerm),
   );
+  const matchingIds = new Set(matching.map((item) => item.id));
   return (
     <div data-testid={`upload-${kind}`} className="grid min-w-0 gap-2">
       <Label id={`upload-${kind}-label`}>{label}</Label>
@@ -114,7 +113,13 @@ export function UploadRelations({
               onChange={setSearch}
               aria-label={`搜索${label}`}
             >
-              <SearchField.Group className="min-h-11 rounded-lg border border-border bg-background">
+              <SearchField.Group
+                className="min-h-11 rounded-lg border border-border bg-background"
+                onClick={(event) => {
+                  if (event.target === event.currentTarget)
+                    event.currentTarget.querySelector('input')?.focus();
+                }}
+              >
                 <SearchField.SearchIcon />
                 <SearchField.Input
                   autoFocus
@@ -135,7 +140,7 @@ export function UploadRelations({
               selectedKeys={selected.map((item) => item.id)}
               onSelectionChange={(keys) => {
                 const retained = selected.filter(
-                  (item) => !matching.some((choice) => choice.id === item.id),
+                  (item) => !matchingIds.has(item.id),
                 );
                 const visible = matching.filter(
                   (item) => keys === 'all' || keys.has(item.id),

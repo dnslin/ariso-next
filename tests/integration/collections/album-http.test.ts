@@ -81,9 +81,12 @@ it('authenticates every album operation, checks write origins, and returns real 
         body,
       });
       expect(response.status).toBe(400);
-      expect(await response.json()).toMatchObject({
+      expect(response.headers.get('cache-control')).toBe('no-store');
+      const error = await response.json();
+      expect(error).toMatchObject({
         code: 'COLLECTION_INVALID_INPUT',
       });
+      if (body === '{') expect(error.message).toBe('请求内容必须是有效的 JSON');
     }
     const created = await fetch(`${origin}/api/albums`, {
       method: 'POST',
@@ -235,6 +238,7 @@ it('authenticates every album operation, checks write origins, and returns real 
       body: JSON.stringify({ name: '不应保存' }),
     });
     expect(failed.status).toBe(500);
+    expect(failed.headers.get('cache-control')).toBe('no-store');
     expect(
       (
         await fetch(coverUrl, {
@@ -244,8 +248,9 @@ it('authenticates every album operation, checks write origins, and returns real 
         })
       ).status,
     ).toBe(500);
-    expect(await failed.json()).toMatchObject({
+    expect(await failed.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
+      message: '相册操作失败，请重试',
     });
     expect(await (await fetch(url, { headers })).json()).toMatchObject({
       album: { name: '更名' },
@@ -255,8 +260,10 @@ it('authenticates every album operation, checks write origins, and returns real 
     );
     const rejectedDelete = await fetch(url, { method: 'DELETE', headers });
     expect(rejectedDelete.status).toBe(500);
-    expect(await rejectedDelete.json()).toMatchObject({
+    expect(rejectedDelete.headers.get('cache-control')).toBe('no-store');
+    expect(await rejectedDelete.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
+      message: '相册操作失败，请重试',
     });
     await vi.waitFor(() => {
       const records = server
@@ -290,6 +297,7 @@ it('authenticates every album operation, checks write origins, and returns real 
         body: method === 'PATCH' ? JSON.stringify({ name: '有效' }) : undefined,
       });
       expect(response.status).toBe(404);
+      expect(response.headers.get('cache-control')).toBe('no-store');
       expect(await response.json()).toMatchObject({
         code: 'COLLECTION_TARGET_NOT_FOUND',
       });

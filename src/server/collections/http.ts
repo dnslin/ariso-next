@@ -1,10 +1,22 @@
-import { CollectionError } from '../../../server/collections/errors.ts';
-import { requireOwner } from '../../../server/identity/owner.ts';
-import { createRuntimeLogger } from '../../../server/runtime/logger.ts';
-import { getServerRuntime } from '../../../server/startup/server-start.ts';
+import { requireOwner } from '../identity/owner.ts';
+import { createRuntimeLogger } from '../runtime/logger.ts';
+import { getServerRuntime } from '../startup/server-start.ts';
+import { CollectionError } from './errors.ts';
 
-export async function albumResponse(
+const failureMessages = {
+  albums: {
+    response: '相册操作失败，请重试',
+    log: 'Album management failed',
+  },
+  tags: {
+    response: '标签创建失败，请重试',
+    log: 'Tag creation failed',
+  },
+};
+
+export async function collectionResponse(
   request: Request,
+  resource: keyof typeof failureMessages,
   operation: () => Promise<unknown> | unknown,
   status = 200,
 ) {
@@ -33,20 +45,23 @@ export async function albumResponse(
         { status: err.status, headers },
       );
     createRuntimeLogger(
-      'collections.albums',
+      `collections.${resource}`,
       getServerRuntime().config.logLevel,
     ).error(
       { err, method: request.method, path: new URL(request.url).pathname },
-      'Album management failed',
+      failureMessages[resource].log,
     );
     return Response.json(
-      { code: 'INTERNAL_SERVER_ERROR', message: '相册操作失败，请重试' },
+      {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: failureMessages[resource].response,
+      },
       { status: 500, headers },
     );
   }
 }
 
-export async function albumBody(request: Request): Promise<unknown> {
+export async function collectionBody(request: Request): Promise<unknown> {
   try {
     return await request.json();
   } catch {

@@ -1,0 +1,24 @@
+{ status: 'passed', checks: [ 'Owner settings API rejects illegal ranges without changing the persisted valid settings.', 'A failed reprocess displays the real new job failure and allows another explicit retry. Losing an accepted retry response disables duplicate POST and keeps the real image detail available for reconciliation.', 'Processing failure retains the real original; reprocess creates a new job for the same image ID and reaches ready without a new image/submission, while the first upload failure remains visible.', '45 real files split into 20/20/5; changed settings apply to a second submission only; two submissions share three transfer slots and create 47 real images. Terminal File/Blob references are released and clearing keeps persisted images.' ], layouts: 62 }
+
+AssertionError [ERR_ASSERTION]: 搜索相册: top hit is outside the smaller input
+
+false !== true
+
+    at captureRelationLayout (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/e2e/upload-relation-layouts.mjs:93:16)
+    at async screenshot (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/e2e/upload-relation-choices.mjs:305:5)
+    at async loadingStates (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/e2e/upload-relation-choices.mjs:363:9)
+    at async verifyUploadRelationChoices (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/e2e/upload-relation-choices.mjs:502:3)
+    at async file:////[eval2]:50:19
+{ relationStep: { name: 'albums-list-loading', width: 1440, theme: 'light', height: 1080 } }
+{ relationStep: { name: 'wait choices overlay exit and restored focus', kind: 'albums' } }
+{ relationStep: { name: 'albums-list-loading', width: 390, theme: 'dark', height: 844 } }
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-relations.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/scripts/verify-browser.mjs:306:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/scripts/verify-browser.mjs:355:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso/test-results/browser-upload-fixed

@@ -1,0 +1,72 @@
+以下为 2026-10-02 首次运行 tools.exec_command 已返回输出的逐字摘录，未重新运行或修改失败结果。
+命令：pnpm exec vitest run --project unit tests/unit/collections/tags-route.test.ts
+环境：Node 24.18.1 / pnpm 11.19.0
+
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso
+
+ ❯ |unit| tests/unit/collections/tags-route.test.ts (2 tests | 2 failed) 12ms
+   × retains tag database failure details using the configured debug log level 11ms
+   × retains tag database failure details using the configured fatal log level 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/collections/tags-route.test.ts > retains tag database failure details using the configured debug log level
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'collections.tags', 'debug' ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    "collections.tags",
+-   "debug",
++   "info",
+  ]
+
+
+Number of calls: 1
+
+ ❯ tests/unit/collections/tags-route.test.ts:46:33
+     44|       message: '标签创建失败，请重试',
+     45|     });
+     46|     expect(createRuntimeLogger).toHaveBeenCalledWith(
+       |                                 ^
+     47|       'collections.tags',
+     48|       logLevel,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/collections/tags-route.test.ts > retains tag database failure details using the configured fatal log level
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'collections.tags', 'fatal' ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    "collections.tags",
+-   "fatal",
++   "info",
+  ]
+
+
+Number of calls: 1
+
+ ❯ tests/unit/collections/tags-route.test.ts:46:33
+     44|       message: '标签创建失败，请重试',
+     45|     });
+     46|     expect(createRuntimeLogger).toHaveBeenCalledWith(
+       |                                 ^
+     47|       'collections.tags',
+     48|       logLevel,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  18:53:37
+   Duration  340ms (import 78%, transform 17%, tests 4%)

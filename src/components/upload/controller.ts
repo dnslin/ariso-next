@@ -280,10 +280,6 @@ export class UploadController {
         submissionId: result.id,
         storageId: result.storageId,
         visibility: result.visibility,
-        groupIndex: session.groupIndex,
-        batchSize: result.batchSize,
-        albumIds: [...result.albumIds],
-        tagIds: [...result.tagIds],
         frozenSubmission: batch.summary,
         ...(initial && session.state === 'queued'
           ? { state: 'waiting-upload' as const }
