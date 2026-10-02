@@ -1,0 +1,8469 @@
+{
+  "status": "passed",
+  "checks": [
+    "Owner settings API rejects illegal ranges without changing the persisted valid settings.",
+    "A failed reprocess displays the real new job failure and allows another explicit retry. Losing an accepted retry response disables duplicate POST and keeps the real image detail available for reconciliation.",
+    "Processing failure retains the real original; reprocess creates a new job for the same image ID and reaches ready without a new image/submission, while the first upload failure remains visible.",
+    "45 real files split into 20/20/5; changed settings apply to a second submission only; two submissions share three transfer slots and create 47 real images. Terminal File/Blob references are released and clearing keeps persisted images."
+  ],
+  "layouts": [
+    {
+      "name": "two-frozen",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 159,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 172,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 194,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 192,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 159,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 172,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 194,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 192,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "two-frozen",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "请求取消",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 100,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 110,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 125.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 125.3359375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 123.3359375,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 294,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 100,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 110,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 364,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 125.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 125.3359375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 123.3359375,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "label": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "47-ready",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "label": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "label": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "label": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "默认本地存储",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "私有",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "清空已完成",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": null
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "light",
+      "short": {
+        "width": 390,
+        "height": 400,
+        "bottom": 359
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "processing-options",
+      "theme": "dark",
+      "short": {
+        "width": 390,
+        "height": 400,
+        "bottom": 359
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-failed",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-ready",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 278,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 278,
+        "gap": 16,
+        "buttons": [278, 278, 278]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 308,
+        "gap": 16,
+        "buttons": [308, 308, 308]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 348,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 348,
+        "gap": 16,
+        "buttons": [348, 348, 348]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    },
+    {
+      "name": "reprocess-unknown",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "label": "关闭处理选项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "label": "重新处理",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "查看详情",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "label": "删除图片",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "modal": {
+        "width": 430,
+        "gap": 16,
+        "buttons": [430, 430, 430]
+      }
+    }
+  ]
+}

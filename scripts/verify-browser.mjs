@@ -7,13 +7,39 @@ import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { parseArgs } from 'node:util';
 import { setTimeout as delay } from 'node:timers/promises';
 import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
 import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture.ts';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
+const { values } = parseArgs({
+  options: {
+    suite: { type: 'string', default: 'full' },
+    only: { type: 'string' },
+  },
+});
+const suite = values.suite;
+const only = values.only;
+assert.ok(
+  ['full', 'upload', 'upload-regression'].includes(suite),
+  'Unknown browser suite',
+);
+assert.ok(
+  only === undefined ||
+    (suite === 'upload' && ['relations', 'submissions'].includes(only)),
+  '--only relations/submissions requires --suite upload',
+);
+const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
+assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
+assert.ok(
+  suite !== 'full' || pageLabel === 'p1',
+  'Full suite requires p1; upload suites support an isolated EGO_PAGE_LABEL',
+);
+
 const output = resolve(
-  process.env.BROWSER_REPORT_DIR ?? 'test-results/browser',
+  process.env.BROWSER_REPORT_DIR ??
+    `test-results/browser${suite === 'full' ? '' : `-${suite}`}`,
 );
 await mkdir(output, { recursive: true });
 for (const name of [
@@ -32,6 +58,8 @@ for (const name of [
   'album-cover.json',
   'tags.json',
   'upload.json',
+  'upload-submissions.json',
+  'upload-relations.json',
   'upload-polling.json',
   'upload-input.json',
   'storage-cors.json',
@@ -54,6 +82,9 @@ const report = {
   arch: process.arch,
   node: process.version,
   status: 'failed',
+  suite,
+  only,
+  pageLabel,
 };
 await writeFile(
   join(output, 'runner.json'),
@@ -176,60 +207,63 @@ try {
     }
     return setupCodes(logs.slice(logStart));
   }
-  await startProduction(join(temporary, 'data'));
-  const shellSocket = createServer();
-  shellSocket.listen(0, '127.0.0.1');
-  await once(shellSocket, 'listening');
-  const shellPort = shellSocket.address().port;
-  await new Promise((resolve, reject) =>
-    shellSocket.close((error) => (error ? reject(error) : resolve())),
-  );
-  const shellOrigin = `http://127.0.0.1:${shellPort}`;
-  shellServer = spawn(
-    process.execPath,
-    [
-      resolve('node_modules/next/dist/bin/next'),
-      'start',
-      resolve('tests/experiments/shell'),
-      '--hostname',
-      '127.0.0.1',
-      '--port',
-      String(shellPort),
-    ],
-    { detached: true, stdio: ['ignore', 'pipe', 'pipe'] },
-  );
-  shellServer.stdout.on('data', (chunk) => {
-    shellLogs += chunk;
-  });
-  shellServer.stderr.on('data', (chunk) => {
-    shellLogs += chunk;
-  });
-  shellServer.on('error', (error) => {
-    spawnError = error;
-  });
-  const shellDeadline = Date.now() + 30000;
-  while (true) {
-    controller.signal.throwIfAborted();
-    if (spawnError) throw spawnError;
-    assert.equal(
-      shellServer.exitCode,
-      null,
-      `Shell fixture exited: ${shellLogs}`,
+  const codes = await startProduction(join(temporary, 'data'));
+  let shellOrigin;
+  if (suite === 'full') {
+    const shellSocket = createServer();
+    shellSocket.listen(0, '127.0.0.1');
+    await once(shellSocket, 'listening');
+    const shellPort = shellSocket.address().port;
+    await new Promise((resolve, reject) =>
+      shellSocket.close((error) => (error ? reject(error) : resolve())),
     );
-    try {
-      if (
-        (
-          await fetch(`${shellOrigin}/dashboard`, {
-            signal: AbortSignal.timeout(1000),
-          })
-        ).status === 200
-      )
-        break;
-    } catch (error) {
-      if (Date.now() >= shellDeadline) throw error;
+    shellOrigin = `http://127.0.0.1:${shellPort}`;
+    shellServer = spawn(
+      process.execPath,
+      [
+        resolve('node_modules/next/dist/bin/next'),
+        'start',
+        resolve('tests/experiments/shell'),
+        '--hostname',
+        '127.0.0.1',
+        '--port',
+        String(shellPort),
+      ],
+      { detached: true, stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    shellServer.stdout.on('data', (chunk) => {
+      shellLogs += chunk;
+    });
+    shellServer.stderr.on('data', (chunk) => {
+      shellLogs += chunk;
+    });
+    shellServer.on('error', (error) => {
+      spawnError = error;
+    });
+    const shellDeadline = Date.now() + 30000;
+    while (true) {
+      controller.signal.throwIfAborted();
+      if (spawnError) throw spawnError;
+      assert.equal(
+        shellServer.exitCode,
+        null,
+        `Shell fixture exited: ${shellLogs}`,
+      );
+      try {
+        if (
+          (
+            await fetch(`${shellOrigin}/dashboard`, {
+              signal: AbortSignal.timeout(1000),
+            })
+          ).status === 200
+        )
+          break;
+      } catch (error) {
+        if (Date.now() >= shellDeadline) throw error;
+      }
+      assert.ok(Date.now() < shellDeadline, 'Shell fixture startup timed out');
+      await delay(100, undefined, { signal: controller.signal });
     }
-    assert.ok(Date.now() < shellDeadline, 'Shell fixture startup timed out');
-    await delay(100, undefined, { signal: controller.signal });
   }
   const config = {
     nodeExecutable: process.execPath,
@@ -251,6 +285,7 @@ try {
       ? Number(process.env.EGO_TASK_SPACE)
       : undefined,
     keepSpace: true,
+    pageLabel,
   };
   if (config.spaceId !== undefined)
     assert.ok(
@@ -289,167 +324,232 @@ try {
       await writeFile(join(output, logName), safeLogs);
     }
   }
-  await runBrowser('../e2e/runtime.mjs', config, 'ego.log');
-  const runtimeReport = JSON.parse(
-    await readFile(join(output, 'browser.json'), 'utf8'),
-  );
-  report.taskSpaceId = runtimeReport.taskSpaceId;
-  report.identity = [];
-  await stop(server);
-  await stop(shellServer);
-  for (const width of [1440, 390]) {
-    const dataDirectory = join(temporary, `identity-${width}`);
-    const codes = await startProduction(dataDirectory);
-    assert.equal(codes.length, 1, 'Empty directory must issue one setup code');
+  if (suite !== 'full') {
+    assert.ok(
+      config.spaceId,
+      'Upload suite requires an existing EGO_TASK_SPACE',
+    );
+    assert.equal(codes.length, 1, 'Empty upload runtime issues one setup code');
     secrets.push(codes[0]);
     const credentials = {
-      email: `owner-${width}@example.test`,
-      password: randomBytes(18).toString('hex'),
+      email: 'upload-browser@example.test',
+      password: randomBytes(24).toString('hex'),
     };
     secrets.push(credentials.password);
-    const identityConfig = {
+    const setup = await fetch(`${origin}/api/setup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: origin },
+      body: JSON.stringify({
+        code: codes[0],
+        ...credentials,
+        publicUrl: origin,
+        timeZone: 'Asia/Shanghai',
+      }),
+      signal: controller.signal,
+    });
+    assert.equal(setup.status, 200, await setup.text());
+    const uploadConfig = {
       ...config,
-      spaceId: report.taskSpaceId,
-      width,
-      code: codes[0],
       credentials,
-      databasePath: join(dataDirectory, 'ariso.db'),
-      dataDirectory,
+      dataDirectory: join(temporary, 'data'),
     };
-    await runBrowser(
-      '../e2e/identity.mjs',
-      { ...identityConfig, phase: 'setup' },
-      `identity-${width}-setup.log`,
-    );
-    await stop(server);
-    assert.deepEqual(
-      await startProduction(dataDirectory),
-      [],
-      'Initialized restart must not issue another code',
-    );
-    await runBrowser(
-      '../e2e/identity.mjs',
-      {
-        ...identityConfig,
-        phase: 'restart',
-        keepSpace: true,
-      },
-      `identity-${width}-restart.log`,
-    );
-    report.identity.push({ width, setup: 'passed', restart: 'passed' });
-    if (width === 390) {
-      corsFixture = await startCorsFixture(origin);
-      await runBrowser(
-        '../e2e/storage-cors.mjs',
-        { ...identityConfig, corsFixture: corsFixture.endpoint },
-        'storage-cors.log',
-      );
-      report.storageCors = 'passed';
-      await corsFixture.close();
-      corsFixture = undefined;
-      await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
-      for (const phase of [
-        'feedback',
-        'selection',
-        'selection-reconciliation',
-        'query',
-        'filters',
-        'scale',
-      ]) {
-        await runBrowser(
-          '../e2e/library-query.mjs',
-          { ...identityConfig, libraryQueryPhase: phase },
-          `library-${phase}.log`,
-        );
-      }
-      report.libraryQuery = 'passed';
-      await runBrowser(
-        '../e2e/shell-navigation.mjs',
-        identityConfig,
-        'shell-navigation.log',
-      );
-      report.shellNavigation = 'passed';
-      await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
-      report.albums = 'passed';
-      await runBrowser(
-        '../e2e/album-cover.mjs',
-        identityConfig,
-        'album-cover.log',
-      );
-      report.albumCover = 'passed';
-      await runBrowser('../e2e/tags.mjs', identityConfig, 'tags.log');
-      report.tags = 'passed';
-      await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
-      await runBrowser(
-        '../e2e/upload-polling.mjs',
-        identityConfig,
-        'upload-polling.log',
-      );
-      report.uploadPolling = 'passed';
-      await runBrowser(
-        '../e2e/upload-input.mjs',
-        identityConfig,
-        'upload-input.log',
-      );
-      report.uploadInput = 'passed';
-      report.upload = 'passed';
-      report.library = 'passed';
+    const stages =
+      suite === 'upload'
+        ? [
+            ['upload-submissions', 'uploadSubmissions'],
+            ['upload-relations', 'uploadRelations'],
+          ]
+        : [
+            ['upload', 'upload'],
+            ['upload-polling', 'uploadPolling'],
+          ];
+    report.taskSpaceId = config.spaceId;
+    for (const [script, result] of stages) {
+      if (only !== undefined && script !== `upload-${only}`) continue;
+      await runBrowser(`../e2e/${script}.mjs`, uploadConfig, `${script}.log`);
+      report[result] = 'passed';
     }
-    await runBrowser(
-      '../e2e/m2.mjs',
-      { ...identityConfig, phase: 'before' },
-      `m2-${width}-before.log`,
+  } else {
+    await runBrowser('../e2e/runtime.mjs', config, 'ego.log');
+    const runtimeReport = JSON.parse(
+      await readFile(join(output, 'browser.json'), 'utf8'),
     );
+    report.taskSpaceId = runtimeReport.taskSpaceId;
+    report.identity = [];
     await stop(server);
-    assert.deepEqual(await startProduction(dataDirectory), []);
+    await stop(shellServer);
+    for (const width of [1440, 390]) {
+      const dataDirectory = join(temporary, `identity-${width}`);
+      const codes = await startProduction(dataDirectory);
+      assert.equal(
+        codes.length,
+        1,
+        'Empty directory must issue one setup code',
+      );
+      secrets.push(codes[0]);
+      const credentials = {
+        email: `owner-${width}@example.test`,
+        password: randomBytes(18).toString('hex'),
+      };
+      secrets.push(credentials.password);
+      const identityConfig = {
+        ...config,
+        spaceId: report.taskSpaceId,
+        width,
+        code: codes[0],
+        credentials,
+        databasePath: join(dataDirectory, 'ariso.db'),
+        dataDirectory,
+      };
+      await runBrowser(
+        '../e2e/identity.mjs',
+        { ...identityConfig, phase: 'setup' },
+        `identity-${width}-setup.log`,
+      );
+      await stop(server);
+      assert.deepEqual(
+        await startProduction(dataDirectory),
+        [],
+        'Initialized restart must not issue another code',
+      );
+      await runBrowser(
+        '../e2e/identity.mjs',
+        {
+          ...identityConfig,
+          phase: 'restart',
+          keepSpace: true,
+        },
+        `identity-${width}-restart.log`,
+      );
+      report.identity.push({ width, setup: 'passed', restart: 'passed' });
+      if (width === 390) {
+        corsFixture = await startCorsFixture(origin);
+        await runBrowser(
+          '../e2e/storage-cors.mjs',
+          { ...identityConfig, corsFixture: corsFixture.endpoint },
+          'storage-cors.log',
+        );
+        report.storageCors = 'passed';
+        await corsFixture.close();
+        corsFixture = undefined;
+        await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+        for (const phase of [
+          'feedback',
+          'selection',
+          'selection-reconciliation',
+          'query',
+          'filters',
+          'scale',
+        ]) {
+          await runBrowser(
+            '../e2e/library-query.mjs',
+            { ...identityConfig, libraryQueryPhase: phase },
+            `library-${phase}.log`,
+          );
+        }
+        report.libraryQuery = 'passed';
+        await runBrowser(
+          '../e2e/shell-navigation.mjs',
+          identityConfig,
+          'shell-navigation.log',
+        );
+        report.shellNavigation = 'passed';
+        await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
+        report.albums = 'passed';
+        await runBrowser(
+          '../e2e/album-cover.mjs',
+          identityConfig,
+          'album-cover.log',
+        );
+        report.albumCover = 'passed';
+        await runBrowser('../e2e/tags.mjs', identityConfig, 'tags.log');
+        report.tags = 'passed';
+        await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
+        await runBrowser(
+          '../e2e/upload-polling.mjs',
+          identityConfig,
+          'upload-polling.log',
+        );
+        report.uploadPolling = 'passed';
+        await runBrowser(
+          '../e2e/upload-input.mjs',
+          identityConfig,
+          'upload-input.log',
+        );
+        report.uploadInput = 'passed';
+        await runBrowser(
+          '../e2e/upload-submissions.mjs',
+          identityConfig,
+          'upload-submissions.log',
+        );
+        report.uploadSubmissions = 'passed';
+        await runBrowser(
+          '../e2e/upload-relations.mjs',
+          identityConfig,
+          'upload-relations.log',
+        );
+        report.uploadRelations = 'passed';
+        report.upload = 'passed';
+        report.library = 'passed';
+      }
+      await runBrowser(
+        '../e2e/m2.mjs',
+        { ...identityConfig, phase: 'before' },
+        `m2-${width}-before.log`,
+      );
+      await stop(server);
+      assert.deepEqual(await startProduction(dataDirectory), []);
+      await runBrowser(
+        '../e2e/m2.mjs',
+        { ...identityConfig, phase: 'after' },
+        `m2-${width}-after.log`,
+      );
+      report[`m2-${width}`] = 'passed';
+      await runBrowser(
+        '../e2e/interaction-polish.mjs',
+        identityConfig,
+        `interaction-polish-${width}.log`,
+      );
+      report[`interaction-polish-${width}`] = 'passed';
+      await runBrowser(
+        '../e2e/workspace-continuity.mjs',
+        identityConfig,
+        `workspace-continuity-${width}.log`,
+      );
+      report[`workspace-continuity-${width}`] = 'passed';
+      await stop(server);
+    }
+    deliveryFixture = await launchProtocolDelivery();
+    secrets.push(deliveryFixture.browserInput.credentials.password);
     await runBrowser(
-      '../e2e/m2.mjs',
-      { ...identityConfig, phase: 'after' },
-      `m2-${width}-after.log`,
+      '../e2e/delivery-s3.mjs',
+      {
+        ...deliveryFixture.browserInput,
+        spaceId: report.taskSpaceId,
+        output,
+      },
+      'delivery-s3.log',
     );
-    report[`m2-${width}`] = 'passed';
-    await runBrowser(
-      '../e2e/interaction-polish.mjs',
-      identityConfig,
-      `interaction-polish-${width}.log`,
-    );
-    report[`interaction-polish-${width}`] = 'passed';
-    await runBrowser(
-      '../e2e/workspace-continuity.mjs',
-      identityConfig,
-      `workspace-continuity-${width}.log`,
-    );
-    report[`workspace-continuity-${width}`] = 'passed';
-    await stop(server);
+    report.deliveryS3 = 'passed';
+    await deliveryFixture.close();
+    deliveryFixture = undefined;
+    // Reuse the same Ego space for isolated UI/library checks and let its runner
+    // close it after the final successful suite (unless the caller keeps it).
+    browser = spawn(process.execPath, ['run-browser.mjs'], {
+      cwd: resolve('tests/experiments/ui'),
+      detached: true,
+      stdio: ['ignore', 'inherit', 'inherit'],
+      env: {
+        ...process.env,
+        EGO_TASK_SPACE: String(report.taskSpaceId),
+        BROWSER_REPORT_DIR: join(output, 'ui'),
+      },
+    });
+    const [uiCode] = await once(browser, 'close', {
+      signal: controller.signal,
+    });
+    assert.equal(uiCode, 0, 'Isolated UI/library browser verification failed');
   }
-  deliveryFixture = await launchProtocolDelivery();
-  secrets.push(deliveryFixture.browserInput.credentials.password);
-  await runBrowser(
-    '../e2e/delivery-s3.mjs',
-    {
-      ...deliveryFixture.browserInput,
-      spaceId: report.taskSpaceId,
-      output,
-    },
-    'delivery-s3.log',
-  );
-  report.deliveryS3 = 'passed';
-  await deliveryFixture.close();
-  deliveryFixture = undefined;
-  // Reuse the same Ego space for isolated UI/library checks and let its runner
-  // close it after the final successful suite (unless the caller keeps it).
-  browser = spawn(process.execPath, ['run-browser.mjs'], {
-    cwd: resolve('tests/experiments/ui'),
-    detached: true,
-    stdio: ['ignore', 'inherit', 'inherit'],
-    env: {
-      ...process.env,
-      EGO_TASK_SPACE: String(report.taskSpaceId),
-      BROWSER_REPORT_DIR: join(output, 'ui'),
-    },
-  });
-  const [uiCode] = await once(browser, 'close', { signal: controller.signal });
-  assert.equal(uiCode, 0, 'Isolated UI/library browser verification failed');
   report.status = 'passed';
 } catch (error) {
   report.error = redact(error.stack ?? String(error));

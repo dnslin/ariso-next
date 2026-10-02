@@ -27,6 +27,9 @@ function setup(batchSize = 20, queueLimit = 20) {
         id: `batch-${batches.length}`,
         storageId: 'local',
         visibility: input.visibility,
+        batchSize,
+        albumIds: input.albumIds,
+        tagIds: input.tagIds,
         sessions: input.files.map(
           (file: { queueItemId: string }, index: number) => ({
             id: `${batches.length}-${index}`,
@@ -120,7 +123,10 @@ function setup(batchSize = 20, queueLimit = 20) {
 it('freezes a shared submission, leaves additions for next start and shares three slots across submissions', async () => {
   const c = setup();
   c.add(2);
-  const first = c.controller.start('private');
+  const first = c.controller.start('private', undefined, {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+  });
   await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
   c.add(3);
   expect(
@@ -129,7 +135,10 @@ it('freezes a shared submission, leaves additions for next start and shares thre
   expect(
     c.request.mock.calls.filter(([, init]) => init?.method === 'POST'),
   ).toHaveLength(1);
-  const second = c.controller.start('public');
+  const second = c.controller.start('public', undefined, {
+    albumIds: ['album-b'],
+    tagIds: ['tag-b'],
+  });
   await vi.waitFor(() => expect(c.transports[2].upload).toHaveBeenCalledOnce());
   expect(c.transports[3].upload).not.toHaveBeenCalled();
   expect(c.peak()).toBe(3);
@@ -139,6 +148,21 @@ it('freezes a shared submission, leaves additions for next start and shares thre
     ['private', 2],
     ['public', 3],
   ]);
+  const submitted = c.request.mock.calls
+    .filter(([, init]) => init?.method === 'POST')
+    .map(([, init]) => JSON.parse(init!.body as string));
+  expect(submitted).toMatchObject([
+    { albumIds: ['album-a'], tagIds: ['tag-a'] },
+    { albumIds: ['album-b'], tagIds: ['tag-b'] },
+  ]);
+  expect(c.controller.snapshot[0].frozenSubmission).toMatchObject({
+    albums: [{ id: 'album-a' }],
+    tags: [{ id: 'tag-a' }],
+  });
+  expect(c.controller.snapshot[2].frozenSubmission).toMatchObject({
+    albums: [{ id: 'album-b' }],
+    tags: [{ id: 'tag-b' }],
+  });
   c.settle(0);
   await vi.waitFor(() => expect(c.transports[3].upload).toHaveBeenCalledOnce());
   c.settle(1);
@@ -270,4 +294,136 @@ it('merges overlapping item queries into one submission read without losing per-
     'image-0',
     'image-1',
   ]);
+});
+
+it('freezes relation IDs per submission and preserves groups of 20/20/5 across setting edits', async () => {
+  const c = setup(20, 50);
+  c.add(45);
+  const selection = { albumIds: ['album-a'], tagIds: ['tag-a'] };
+  const first = c.controller.start('private', 'local', selection);
+  selection.albumIds[0] = 'album-b';
+  selection.tagIds.push('tag-b');
+  await vi.waitFor(() => expect(c.transports[2].upload).toHaveBeenCalledOnce());
+  const metadata = JSON.parse(c.request.mock.calls[0][1]!.body as string);
+  expect(metadata).toMatchObject({ albumIds: ['album-a'], tagIds: ['tag-a'] });
+  const frozen = c.controller.snapshot[0].frozenSubmission;
+  expect(frozen).toMatchObject({
+    count: 45,
+    groups: [20, 20, 5],
+    albums: [{ id: 'album-a' }],
+    tags: [{ id: 'tag-a' }],
+  });
+  for (let index = 0; index < 45; index++) {
+    await vi.waitFor(() =>
+      expect(c.transports[index].upload).toHaveBeenCalledOnce(),
+    );
+    if (index === 19 || index === 39)
+      expect(c.transports[index + 1].upload).not.toHaveBeenCalled();
+    c.settle(index, 'failed');
+  }
+  await first;
+  expect(c.peak()).toBe(3);
+  expect(
+    c.controller.snapshot.every((item) => item.frozenSubmission === frozen),
+  ).toBe(true);
+});
+
+it('applies refreshed limits to new additions without clearing current files or results', () => {
+  const c = setup(20, 2);
+  c.add(2);
+  const before = c.controller.snapshot;
+  c.controller.updateLimits({ maxFileBytes: 1, queueLimit: 3 });
+  expect(c.controller.snapshot).toBe(before);
+  expect(c.controller.add(new File(['xx'], 'large.png'))).toMatchObject({
+    reason: 'size',
+  });
+  c.add(1);
+  c.controller.updateLimits({ maxFileBytes: 100, queueLimit: 1 });
+  expect(c.controller.snapshot).toHaveLength(3);
+  expect(c.controller.add(new File(['x'], 'extra.png'))).toMatchObject({
+    reason: 'capacity',
+  });
+  c.transports.forEach((transport) =>
+    expect(transport.destroy).not.toHaveBeenCalled(),
+  );
+});
+
+it('keeps the frozen names and original submission totals after new settings and cleared rows', async () => {
+  const c = setup(2, 10);
+  c.add(3);
+  const labels = {
+    storageId: 'local',
+    storageName: '本地 A',
+    albums: [{ id: 'album-a', name: '相册 A' }],
+    tags: [{ id: 'tag-a', name: '标签 A' }],
+  };
+  const first = c.controller.start('private', 'local', {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+    labels,
+  });
+  labels.storageName = '本地 B';
+  labels.albums[0].name = '相册 B';
+  labels.tags[0].name = '标签 B';
+  await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
+  const frozen = c.controller.snapshot[0].frozenSubmission;
+  expect(frozen).toMatchObject({
+    number: 1,
+    count: 3,
+    groups: [2, 1],
+    storageName: '本地 A',
+    albums: [{ id: 'album-a', name: '相册 A' }],
+    tags: [{ id: 'tag-a', name: '标签 A' }],
+  });
+  c.add(1);
+  const second = c.controller.start('public', 'local', {
+    albumIds: ['album-a'],
+    tagIds: ['tag-a'],
+    labels,
+  });
+  await vi.waitFor(() => expect(c.transports[3].upload).toHaveBeenCalledOnce());
+  expect(c.controller.snapshot[3].frozenSubmission).toMatchObject({
+    number: 2,
+    count: 1,
+    groups: [1],
+    storageName: '本地 B',
+    albums: [{ id: 'album-a', name: '相册 B' }],
+  });
+  expect(c.controller.snapshot[0].frozenSubmission).toBe(frozen);
+  c.settle(0, 'failed');
+  await vi.waitFor(() =>
+    expect(c.controller.snapshot[0].state).toBe('upload-failed'),
+  );
+  c.controller.clearCompleted();
+  expect(c.controller.snapshot[0].frozenSubmission).toBe(frozen);
+  expect(frozen?.count).toBe(3);
+  c.controller.destroy();
+  c.transports[1].reject(new Error('aborted'));
+  c.transports[3].reject(new Error('aborted'));
+  await Promise.all([first, second]);
+  expect(c.controller.hasStarted).toBe(true);
+});
+
+it('uses the accepted storage identity when the default changes after settings were displayed', async () => {
+  const c = setup();
+  c.add(1);
+  const running = c.controller.start('private', undefined, {
+    albumIds: [],
+    tagIds: [],
+    labels: {
+      storageId: 'previous-default',
+      storageName: '原默认存储名称',
+      albums: [],
+      tags: [],
+    },
+  });
+  await vi.waitFor(() => expect(c.transports[0].upload).toHaveBeenCalledOnce());
+  const request = JSON.parse(c.request.mock.calls[0][1]!.body as string);
+  expect(request).not.toHaveProperty('storageId');
+  expect(c.controller.snapshot[0]).toMatchObject({
+    storageId: 'local',
+    frozenSubmission: { storageName: 'local' },
+  });
+  c.settle(0, 'failed');
+  await running;
 });

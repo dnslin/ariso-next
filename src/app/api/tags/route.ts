@@ -3,8 +3,9 @@ import {
   listTags,
 } from '../../../server/collections/tag-management.ts';
 import { parseTagQuery } from '../../../server/collections/tag-query.ts';
+import { collectionBody } from '../../../server/collections/http.ts';
 import { getServerRuntime } from '../../../server/startup/server-start.ts';
-import { tagBody, tagResponse } from './response.ts';
+import { tagResponse } from './response.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export function POST(request: Request) {
   return tagResponse(
     request,
     async () => {
-      const input = await tagBody(request);
+      const input = await collectionBody(request);
       return getServerRuntime().connection.db.transaction(
         (tx) => createTag(tx, input),
         { behavior: 'immediate' },

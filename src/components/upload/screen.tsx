@@ -16,6 +16,7 @@ import { UploadSettingsFields } from './settings';
 import { useUploadQueue, uploadTerminalStates } from './provider';
 import { UploadQueueItem } from './item';
 import { useUploadInput, UploadInputDialog } from './input-controls';
+import { UploadSubmissionSummaries } from './submission-summary';
 
 type ScreenProps = {
   name: string;
@@ -36,6 +37,8 @@ export function UploadScreen(props: ScreenProps) {
     setStorageId,
     chosenVisibility,
     setVisibility,
+    chosenAlbums,
+    chosenTags,
   } = useUploadQueue();
   const [detailId, setDetailId] = useState<string | null>(null);
   const detailQuery = useDetailQuery(client, detailId, '/upload');
@@ -141,6 +144,26 @@ export function UploadScreen(props: ScreenProps) {
                   chosenStorageId !== undefined
                     ? selectedStorage.id
                     : undefined,
+                  {
+                    albumIds: chosenAlbums.map((album) => album.id),
+                    tagIds: chosenTags.map((tag) => tag.id),
+                    labels: {
+                      storageId: selectedStorage.id,
+                      storageName: selectedStorage.name,
+                      albums: chosenAlbums.map(
+                        (album) =>
+                          settings.albums.find(
+                            (current) => current.id === album.id,
+                          ) ?? album,
+                      ),
+                      tags: chosenTags.map((tag) => ({
+                        id: tag.id,
+                        name:
+                          settings.tags.find((current) => current.id === tag.id)
+                            ?.displayName ?? tag.name,
+                      })),
+                    },
+                  },
                 );
             }}
           >
@@ -198,8 +221,9 @@ export function UploadScreen(props: ScreenProps) {
           <div
             data-testid="upload-input-zone"
             {...input.zoneProps}
-            className={`min-w-0 rounded-[20px] ${input.dragging ? 'outline-2 outline-offset-2 outline-focus' : ''}`}
+            className={`grid min-w-0 gap-3 rounded-[20px] ${input.dragging ? 'outline-2 outline-offset-2 outline-focus' : ''}`}
           >
+            <UploadSubmissionSummaries items={items} />
             {items.length ? (
               <Card
                 data-testid="upload-queue"

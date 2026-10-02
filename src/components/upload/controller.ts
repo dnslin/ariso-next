@@ -9,6 +9,8 @@ import type {
   CreateUploadTransport,
   UploadItem,
   UploadSessionResult,
+  UploadSelection,
+  UploadSubmissionSummary,
   UploadSubmissionResult,
   UploadTransport,
 } from './types.ts';
@@ -42,6 +44,9 @@ type Batch = {
   entries: Entry[];
   submissionId?: string;
   reading: boolean;
+  number: number;
+  labels?: UploadSelection['labels'];
+  summary?: UploadSubmissionSummary;
 };
 
 /** One page queue. Submissions own immutable settings; entries own file/response lifetimes. */
@@ -51,6 +56,7 @@ export class UploadController {
   private listeners = new Set<() => void>();
   private destroyed = false;
   private activeTransfers = 0;
+  private submissionNumber = 0;
   private abort = new AbortController();
   private readonly request: typeof fetch;
   private readonly createTransport: CreateUploadTransport;
@@ -69,6 +75,12 @@ export class UploadController {
   }
   get snapshot() {
     return this.items;
+  }
+  get hasStarted() {
+    return this.submissionNumber > 0;
+  }
+  updateLimits(limits: { maxFileBytes: number; queueLimit: number }) {
+    Object.assign(this.options, limits);
   }
   getSnapshot = () => this.items;
   subscribe = (listener: () => void) => {
@@ -226,6 +238,31 @@ export class UploadController {
     initial = false,
   ) {
     batch.submissionId = result.id;
+    if (!batch.summary) {
+      const groups: number[] = [];
+      for (const session of result.sessions)
+        groups[session.groupIndex] = (groups[session.groupIndex] ?? 0) + 1;
+      batch.summary = {
+        id: result.id,
+        number: batch.number,
+        count: result.sessions.length,
+        groups,
+        storageName:
+          batch.labels?.storageId === result.storageId
+            ? batch.labels.storageName
+            : result.storageId,
+        visibility: result.visibility,
+        albums: result.albumIds.map((id) => ({
+          id,
+          name:
+            batch.labels?.albums.find((album) => album.id === id)?.name ?? id,
+        })),
+        tags: result.tagIds.map((id) => ({
+          id,
+          name: batch.labels?.tags.find((tag) => tag.id === id)?.name ?? id,
+        })),
+      };
+    }
     for (const session of result.sessions) {
       const entry = batch.entries.find(
         (entry) => entry.item.id === session.queueItemId,
@@ -243,6 +280,7 @@ export class UploadController {
         submissionId: result.id,
         storageId: result.storageId,
         visibility: result.visibility,
+        frozenSubmission: batch.summary,
         ...(initial && session.state === 'queued'
           ? { state: 'waiting-upload' as const }
           : {}),
@@ -250,7 +288,11 @@ export class UploadController {
       this.applySession(entry, session);
     }
   }
-  async start(visibility: 'public' | 'private', storageId?: string) {
+  async start(
+    visibility: 'public' | 'private',
+    storageId?: string,
+    selection: UploadSelection = { albumIds: [], tagIds: [] },
+  ) {
     const entries = [...this.entries.values()].filter(
       (entry) => entry.item.state === 'queued' && !entry.batch,
     );
@@ -258,6 +300,8 @@ export class UploadController {
     const batch: Batch = {
       entries,
       reading: true,
+      number: ++this.submissionNumber,
+      labels: selection.labels ? structuredClone(selection.labels) : undefined,
       metadata: JSON.stringify({
         requestId: crypto.randomUUID(),
         files: entries.map(({ item }) => ({
@@ -266,6 +310,8 @@ export class UploadController {
           declaredSize: item.size,
         })),
         visibility,
+        albumIds: [...selection.albumIds],
+        tagIds: [...selection.tagIds],
         ...(storageId ? { storageId } : {}),
       }),
     };

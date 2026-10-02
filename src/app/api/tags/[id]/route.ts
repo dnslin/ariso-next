@@ -4,7 +4,8 @@ import {
 } from '../../../../server/collections/tag-management.ts';
 import { deleteTag } from '../../../../server/collections/records.ts';
 import { getServerRuntime } from '../../../../server/startup/server-start.ts';
-import { tagBody, tagResponse } from '../response.ts';
+import { collectionBody } from '../../../../server/collections/http.ts';
+import { tagResponse } from '../response.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export function GET(request: Request, context: Context) {
 export function PATCH(request: Request, context: Context) {
   return tagResponse(request, async () => {
     const { id } = await context.params;
-    const input = await tagBody(request);
+    const input = await collectionBody(request);
     return getServerRuntime().connection.db.transaction(
       (tx) => renameTag(tx, id, input),
       { behavior: 'immediate' },

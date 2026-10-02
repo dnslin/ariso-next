@@ -2,6 +2,12 @@ import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { collectionFixture } from '../collections/helpers.ts';
+import {
+  createAlbum,
+  getOrCreateTags,
+} from '../../../src/server/collections/records.ts';
+import { patchUploadSettings } from '../../../src/server/upload/settings.ts';
+import { submissionResult } from '../../../src/server/upload/http.ts';
 import { expireQueuedSessions } from '../../../src/server/upload/cleanup.ts';
 import {
   createSubmission,
@@ -44,6 +50,77 @@ const input = (requestId = 'request', count = 1, size = 10) => ({
 });
 
 describe('persisted upload submissions', () => {
+  it('splits 45 files into 20/20/5 with one settings and relationship snapshot despite later changes', () => {
+    const { db, storage } = fixture;
+    const album = db.transaction((tx) =>
+      createAlbum(tx, { name: '固定相册' }),
+    )!;
+    const [tag] = db.transaction((tx) => getOrCreateTags(tx, ['固定标签']));
+    db.update(mediaSettings)
+      .set({ watermarkMode: 'text', watermarkText: '开始时水印' })
+      .run();
+    const data = {
+      ...input('45-files', 45, 2 * 1024 * 1024),
+      albumIds: [album.id],
+      tagIds: [tag.id],
+    };
+    const first = createSubmission(db, data);
+    expect(
+      [0, 1, 2].map(
+        (group) => first.sessions.filter((s) => s.groupIndex === group).length,
+      ),
+    ).toEqual([20, 20, 5]);
+    patchUploadSettings(db, { maxFileMiB: 1, batchSize: 1, queueLimit: 100 });
+    db.update(mediaSettings)
+      .set({
+        watermarkText: '后来水印',
+        quality: 33,
+        defaultVisibility: 'private',
+      })
+      .run();
+    db.update(storageSettings).set({ defaultStorageId: null }).run();
+    const frozen = getSubmission(db, first.id);
+    expect(frozen).toMatchObject({
+      storageId: storage.id,
+      visibility: 'public',
+      maxFileBytes: 50 * 1024 * 1024,
+      batchSize: 20,
+      queueLimit: 500,
+      albumIds: [album.id],
+      tagIds: [tag.id],
+      snapshot: { quality: 82, watermarkText: '开始时水印' },
+    });
+    expect(createSubmission(db, data)).toEqual(frozen);
+    expect(submissionResult(frozen)).toMatchObject({
+      batchSize: 20,
+      albumIds: [album.id],
+      tagIds: [tag.id],
+    });
+    expect(() =>
+      createSubmission(db, {
+        ...data,
+        requestId: 'new-files',
+        storageId: storage.id,
+      }),
+    ).toThrowError(expect.objectContaining({ code: 'UPLOAD_FILE_TOO_LARGE' }));
+    expect(
+      createSubmission(db, {
+        ...input('new-small-files', 2),
+        storageId: storage.id,
+      }),
+    ).toMatchObject({
+      visibility: 'private',
+      batchSize: 1,
+      maxFileBytes: 1024 * 1024,
+      snapshot: { quality: 33, watermarkText: '后来水印' },
+      albumIds: [],
+      tagIds: [],
+      sessions: [
+        expect.objectContaining({ groupIndex: 0 }),
+        expect.objectContaining({ groupIndex: 1 }),
+      ],
+    });
+  });
   it('freezes one multi-file submission and assigns groups from its saved batch size', () => {
     const { db } = fixture;
     db.update(uploadSettings).set({ batchSize: 2 }).run();

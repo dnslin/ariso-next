@@ -22,8 +22,12 @@ export function useUploadResult(
       retry: false,
       networkMode: 'always',
       refetchOnWindowFocus: true,
-      refetchInterval:
-        state === 'processing' || state === 'processing-queued' ? 2000 : false,
+      refetchInterval: (query) =>
+        state === 'processing' ||
+        state === 'processing-queued' ||
+        query.state.data?.activeJob
+          ? 2000
+          : false,
     },
     client,
   );

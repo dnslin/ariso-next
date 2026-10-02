@@ -16,7 +16,7 @@ import { notifyLibraryChanged } from '../library/library-changes';
 import { DetailReadError } from '../library/read-detail';
 import { UploadController } from './controller';
 import type { UploadSettings } from './settings';
-import type { UploadItem } from './types';
+import type { UploadItem, UploadRelation } from './types';
 
 export const uploadTerminalStates = new Set<UploadItem['state']>([
   'ready',
@@ -52,6 +52,8 @@ function useUploadLifetime() {
   const [chosenStorageId, setStorageId] = useState<string>();
   const [chosenVisibility, setVisibility] =
     useState<UploadSettings['defaultVisibility']>();
+  const [chosenAlbums, setAlbums] = useState<UploadRelation[]>([]);
+  const [chosenTags, setTags] = useState<UploadRelation[]>([]);
   const reset = useCallback(() => {
     // Release synchronously before a login navigation can invoke beforeunload.
     ownedController.current?.destroy();
@@ -60,6 +62,8 @@ function useUploadLifetime() {
     setStarted(false);
     setStorageId(undefined);
     setVisibility(undefined);
+    setAlbums([]);
+    setTags([]);
     client.clear();
   }, [client]);
   useEffect(() => {
@@ -87,20 +91,21 @@ function useUploadLifetime() {
       enabled: started,
       retry: false,
       networkMode: 'always',
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
+      staleTime: 0,
+      refetchOnWindowFocus: true,
     },
     client,
   );
   const settings = query.data;
   const maxFileBytes = settings?.maxFileBytes;
   const queueLimit = settings?.queueLimit;
+  const settingsAvailable = settings !== undefined;
   useEffect(() => {
-    if (!started || maxFileBytes === undefined || queueLimit === undefined)
-      return;
+    if (!started || !settingsAvailable) return;
+    const initial = client.getQueryData<UploadSettings>(['upload-settings'])!;
     const instance = new UploadController({
-      maxFileBytes,
-      queueLimit,
+      maxFileBytes: initial.maxFileBytes,
+      queueLimit: initial.queueLimit,
       onUnauthorized: expire,
       onLibraryChanged: notifyLibraryChanged,
     });
@@ -111,7 +116,11 @@ function useUploadLifetime() {
       instance.destroy();
       if (ownedController.current === instance) ownedController.current = null;
     };
-  }, [started, maxFileBytes, queueLimit, expire]);
+  }, [started, settingsAvailable, expire, client]);
+  useEffect(() => {
+    if (maxFileBytes !== undefined && queueLimit !== undefined)
+      controller?.updateLimits({ maxFileBytes, queueLimit });
+  }, [controller, maxFileBytes, queueLimit]);
   useEffect(() => () => client.clear(), [client]);
   const items = useSyncExternalStore(
     controller?.subscribe ?? emptySubscribe,
@@ -169,6 +178,11 @@ function useUploadLifetime() {
     setStorageId,
     chosenVisibility,
     setVisibility,
+    chosenAlbums,
+    setAlbums,
+    chosenTags,
+    setTags,
+    expire,
     reset,
   };
 }

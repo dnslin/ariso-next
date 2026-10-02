@@ -1,18 +1,21 @@
 import { readOwnerAlbum } from '../../../../server/library/album-covers.ts';
 import { CollectionError } from '../../../../server/collections/errors.ts';
 import {
+  collectionBody,
+  collectionResponse,
+} from '../../../../server/collections/http.ts';
+import {
   deleteAlbum,
   updateAlbum,
 } from '../../../../server/collections/records.ts';
 import { getServerRuntime } from '../../../../server/startup/server-start.ts';
-import { albumBody, albumResponse } from '../response.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 type Context = { params: Promise<{ id: string }> };
 
 export function GET(request: Request, context: Context) {
-  return albumResponse(request, async () => {
+  return collectionResponse(request, 'albums', async () => {
     const { id } = await context.params;
     return getServerRuntime().connection.db.transaction((tx) => ({
       album: readOwnerAlbum(tx, id),
@@ -20,9 +23,9 @@ export function GET(request: Request, context: Context) {
   });
 }
 export function PATCH(request: Request, context: Context) {
-  return albumResponse(request, async () => {
+  return collectionResponse(request, 'albums', async () => {
     const { id } = await context.params;
-    const input = await albumBody(request);
+    const input = await collectionBody(request);
     return getServerRuntime().connection.db.transaction(
       (tx) => {
         updateAlbum(tx, id, input);
@@ -33,7 +36,7 @@ export function PATCH(request: Request, context: Context) {
   });
 }
 export function DELETE(request: Request, context: Context) {
-  return albumResponse(request, async () => {
+  return collectionResponse(request, 'albums', async () => {
     const { id } = await context.params;
     return getServerRuntime().connection.db.transaction(
       (tx) => {

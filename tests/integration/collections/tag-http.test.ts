@@ -165,8 +165,10 @@ it('requires owner sessions and write origins, exposes Unicode CRUD results, and
     );
     const failed = await rename('不应保存');
     expect(failed.status).toBe(500);
-    expect(await failed.json()).toMatchObject({
+    expect(failed.headers.get('cache-control')).toBe('no-store');
+    expect(await failed.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
+      message: '标签操作失败，请重试',
     });
     expect(await (await fetch(url, { headers })).json()).toMatchObject({
       tag: { displayName: 'é' },
@@ -176,8 +178,10 @@ it('requires owner sessions and write origins, exposes Unicode CRUD results, and
     );
     const rejectedDelete = await fetch(url, { method: 'DELETE', headers });
     expect(rejectedDelete.status).toBe(500);
-    expect(await rejectedDelete.json()).toMatchObject({
+    expect(rejectedDelete.headers.get('cache-control')).toBe('no-store');
+    expect(await rejectedDelete.json()).toEqual({
       code: 'INTERNAL_SERVER_ERROR',
+      message: '标签操作失败，请重试',
     });
     await vi.waitFor(() => {
       const records = server

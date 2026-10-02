@@ -1,9 +1,12 @@
 import { z } from 'zod';
 import { setAlbumCover } from '../../../../../server/collections/cover.ts';
 import { CollectionError } from '../../../../../server/collections/errors.ts';
+import {
+  collectionBody,
+  collectionResponse,
+} from '../../../../../server/collections/http.ts';
 import { readOwnerAlbum } from '../../../../../server/library/album-covers.ts';
 import { getServerRuntime } from '../../../../../server/startup/server-start.ts';
-import { albumBody, albumResponse } from '../../response.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -13,9 +16,9 @@ export function PUT(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return albumResponse(request, async () => {
+  return collectionResponse(request, 'albums', async () => {
     const { id } = await context.params;
-    const parsed = inputSchema.safeParse(await albumBody(request));
+    const parsed = inputSchema.safeParse(await collectionBody(request));
     if (!parsed.success)
       throw new CollectionError(
         'COLLECTION_INVALID_INPUT',

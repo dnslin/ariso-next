@@ -4,7 +4,7 @@ const { writeFile, readFile, mkdir } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
 const task = await taskSpace(config.spaceId);
-const page = task.page('p1');
+const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
 const report = {
   status: 'failed',
