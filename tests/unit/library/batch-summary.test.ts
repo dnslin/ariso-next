@@ -60,11 +60,9 @@ function state(overrides: Partial<LibraryBatch> = {}): LibraryBatch {
       message: '',
       checkFailed: false,
       retrying: false,
-      retrySource: null,
       phase: 'result',
     },
     returnLabel: '返回图库',
-    hasRemainingSelection: false,
     targetReady: true,
     setTargetReady: vi.fn(),
     showFailures: false,
@@ -301,7 +299,7 @@ it('keeps invalid failure reasons visible while disabling failure-only retry', (
 });
 
 it.each(['public', 'private'] as const)(
-  'uses a one-button success dialog only after actual %s failure-only retry reaches all desired states',
+  'never renders a separate success dialog after %s failure-only retry',
   (action) => {
     const batch = state();
     batch.workspace = {
@@ -320,34 +318,19 @@ it.each(['public', 'private'] as const)(
         },
       ],
     };
-    Object.assign(batch.workspace, { retrySource: 'failures' });
-    const html = render(batch);
-    expect(html).toContain('role="dialog"');
-    expect(html).toContain(
-      `2张图片已设为${action === 'public' ? '公开' : '私有'}`,
-    );
-    expect(html).toContain('失败项重试成功。');
-    expect(html).toContain('本次选择已清空。');
-    expect(html.match(/<button\b/g)).toHaveLength(1);
-    expect(html).toContain('data-testid="batch-done"');
-    expect(
-      renderToStaticMarkup(createElement(BatchSummaryFooter, { batch })),
-    ).toBe('');
+    expect(render(batch)).not.toContain('role="dialog"');
+    expect(render(batch)).not.toContain('失败项重试成功');
   },
 );
 
-it.each([null, 'remaining'] as const)(
-  'does not label initial success or continued unsent work as successful failure retry (%s)',
-  (retrySource) => {
+it.each([false, true])(
+  'does not add a success dialog for initial or continued visibility work (retrying=%s)',
+  (retrying) => {
     const batch = state();
-    Object.assign(batch.workspace!, {
-      retrySource,
-      retrying: retrySource === 'remaining',
-    });
+    batch.workspace!.retrying = retrying;
     const html = render(batch);
     expect(html).not.toContain('role="dialog"');
     expect(html).not.toContain('失败项重试成功');
-    expect(html).toContain('data-testid="batch-result-summary"');
   },
 );
 
@@ -355,7 +338,6 @@ it('keeps a completed failure retry in summary when unsubmitted selected items r
   const batch = state();
   batch.workspace = {
     ...batch.workspace!,
-    retrySource: 'failures',
     retrying: true,
     items: [item('first'), item('remaining')],
     unsentIds: ['remaining'],
@@ -373,7 +355,6 @@ it.each(['pending', 'unknown', 'failed'] as const)(
       pending: condition === 'pending',
       unresolved: condition === 'unknown',
     });
-    batch.workspace!.retrySource = 'failures';
     if (condition === 'unknown') batch.workspace!.unknownIds = ['first'];
     if (condition === 'failed')
       batch.workspace!.results = [
@@ -382,20 +363,6 @@ it.each(['pending', 'unknown', 'failed'] as const)(
     expect(render(batch)).not.toContain('失败项重试成功');
   },
 );
-
-it('retains outside selection and uses the real album return label after a successful failure-only retry', () => {
-  const batch = state({
-    hasRemainingSelection: true,
-    returnLabel: '返回相册内容',
-  });
-  batch.workspace!.retrySource = 'failures';
-  const html = render(batch);
-  expect(html).toContain('失败项重试成功。');
-  expect(html).toContain('本次重试的项目已移出选择，其余选择仍保留。');
-  expect(html).not.toContain('本次选择已清空。');
-  expect(html).toContain('返回相册内容');
-  expect(html).not.toContain('返回图库');
-});
 
 it('uses the real album source in the original result overview and retained failure footer', () => {
   const batch = state({ returnLabel: '返回相册内容' });

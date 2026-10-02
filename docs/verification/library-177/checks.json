@@ -124,13 +124,12 @@
       "result": "NOT RUN: existing Ego TaskSpace 10 is agentDelegatedToUser; waitForControl timed out at 1000ms and 30000ms; no alternate space or weakened checks"
     }
   ],
-  "codeAudit": "passed including latest visibility UI and independent new browser-script review",
-  "designAudit": "Core107 + last8 representative screenshots reviewed; latest visibility retained/success 44/45 real screenshots missing",
-  "humanAcceptance": "pending",
+  "codeAudit": "passed including visibility controller, tag chooser/cache/error retry, and independent new browser script review",
+  "designAudit": "passed for this scope: independently read actual Figma and final 47 feedback screenshots plus affected supplemental tag-state screenshots from final41 report",
+  "humanAcceptance": "new draft pending after user feedback",
   "releaseContainers": "not run; Release stage only",
   "remaining": [
-    "Existing Ego control must be returned for visibility retained/success real browser verification and final independent design acceptance",
-    "User UI acceptance",
+    "User final UI acceptance of the revised Toast/tag chooser",
     "Full browser existing direct reprocess deep-link focus defect; repair authorization pending"
   ],
   "pullRequest": {
@@ -143,5 +142,77 @@
     "mergeable": "MERGEABLE",
     "remoteChecks": [],
     "remoteCheckConclusion": "No checks reported; not CI passed"
-  }
+  },
+  "feedbackChecks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "lockfile unchanged"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-lint.txt"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-typecheck.txt"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "testFilesPassed": 75,
+      "testsPassed": 927,
+      "evidence": "reports/feedback-unit.txt"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-targets.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testFilesPassed": 5,
+      "testsPassed": 60,
+      "result": "After final retry guard repair",
+      "evidence": "reports/feedback-final-affected.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "After final retry guard repair; existing optional cross-platform binary trace warnings retained",
+      "evidence": "reports/feedback-final-build.txt"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only feedback",
+      "exitCode": 0,
+      "screenshots": 47,
+      "evidence": "reports/feedback-browser.json"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only tag-states",
+      "exitCode": 1,
+      "result": "Confirmed unrelated cached album GET on tag retry",
+      "evidence": "reports/tag-cache-retry-red.json"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only tag-states",
+      "exitCode": 0,
+      "screenshots": 41,
+      "layouts": 38,
+      "result": "Repaired guard; only actual /api/tags GET on retry",
+      "evidence": "reports/feedback-tag-states.json"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-format.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ]
 }

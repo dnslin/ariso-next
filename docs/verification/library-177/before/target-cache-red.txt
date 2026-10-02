@@ -1,0 +1,96 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+$ vitest run --project unit tests/unit/library/batch-targets.test.ts --maxWorkers=1
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso
+
+ ❯ |unit| tests/unit/library/batch-targets.test.ts (6 tests | 5 failed) 39ms
+   × keeps cached album identities out of real add-tags target controls 19ms
+   × keeps cached album identities out of real remove-tags target controls 4ms
+   × does not show an unrelated cached current-album error in add-tags target selection 6ms
+   × does not show an unrelated cached current-album error in remove-tags target selection 4ms
+   × uses one focusable Button as the tag tips trigger without duplicating its DOM ID 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-targets.test.ts > keeps cached album identities out of real add-tags target controls
+ FAIL  |unit| tests/unit/library/batch-targets.test.ts > keeps cached album identities out of real remove-tags target controls
+AssertionError: expected [ Array(3) ] to deeply equal [ 'tag-one', 'tag-two' ]
+
+- Expected
++ Received
+
+  [
++   "cached-album",
+    "tag-one",
+    "tag-two",
+  ]
+
+ ❯ tests/unit/library/batch-targets.test.ts:124:29
+    122|     cache.setQueryData(['batch-current-album', album.id], { album });
+    123|     const html = render(batch(action), cache);
+    124|     expect(targetIds(html)).toEqual(['tag-one', 'tag-two']);
+       |                             ^
+    125|     expect(html).not.toContain('之前读取的相册');
+    126|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |unit| tests/unit/library/batch-targets.test.ts > does not show an unrelated cached current-album error in add-tags target selection
+AssertionError: expected '<div class="flex min-w-0 items-center…' not to contain 'role="alert"'
+
+Expected: "role="alert""
+Received: "<div class="flex min-w-0 items-center gap-3 border-b border-border pb-5"><div class="flex shrink-0 -space-x-3" aria-hidden="true"><span class="rounded-xl border-2 border-background"><span class="flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-default size-12"><img src="/i/image?type=thumbnail" alt="" width="48" height="48" loading="lazy" class="size-full object-cover"/></span></span></div><div class="grid min-w-0 gap-1"><p class="text-sm font-medium">已选 1 张图片</p><p class="text-xs text-muted">当前页 1 张 · 其他页 0 张</p></div></div><div class="flex min-w-0 flex-wrap items-center gap-3 pt-1"><div class="relative min-w-0 flex-1 sm:max-w-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search pointer-events-none absolute left-3 top-3.5 text-muted" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg><input class="input input--primary h-11 w-full min-w-0 rounded-lg border border-border bg-background text-base md:text-sm pl-10" data-slot="input" aria-label="搜索目标标签" placeholder="搜索标签" data-rac="" value=""/></div><button data-slot="button" class="button button--md button--outline h-11 shrink-0 rounded-lg font-normal" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_12_"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>新建标签</button></div><div class="flex min-h-8 items-center justify-between gap-3"><h2 class="text-sm font-medium">选择标签</h2><p role="status" class="text-xs text-muted">已选 1 个标签</p></div><div role="alert" class="grid gap-3 rounded-xl border border-border p-3"><p>目标读取失败：之前的相册读取失败。已有目标选择已保留。</p><button data-slot="button" class="button button--md button--outline h-11 w-fit rounded-lg" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_15_">重试读取目标</button></div><div data-testid="batch-target-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="标签目标"><div data-slot="checkbox" data-target-id="tag-one" class="checkbox checkbox--primary w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default data-[selected=true]:border-accent dark:bg-surface" data-rac="" data-selected="true"><label data-slot="checkbox-content" data-react-aria-pressable="true" class="checkbox__content flex w-full min-w-0 items-start gap-3 p-3 min-h-16" data-rac="" data-selected="true"><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input aria-label="选择标签：tag-one · tag-one" aria-describedby="react-aria-_R_n_ react-aria-_R_nH1_" type="checkbox" data-react-aria-pressable="true" tabindex="0" checked=""/></span><span class="flex min-w-0 flex-1 items-start gap-2"><span class="checkbox__control mt-1 size-4 shrink-0 rounded-none border shadow-none before:bg-transparent! border-transparent! bg-transparent!" data-slot="checkbox-control"><span aria-hidden="true" class="checkbox__indicator size-4 text-foreground" data-slot="checkbox-indicator"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></span><span class="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]"><span class="text-sm font-medium">tag-one</span><span class="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted"><span>tag-one</span><span>1 张图片</span></span></span></span></label></div><div data-slot="checkbox" data-target-id="tag-two" class="checkbox checkbox--primary w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default data-[selected=true]:border-accent dark:bg-surface" data-rac=""><label data-slot="checkbox-content" data-react-aria-pressable="true" class="checkbox__content flex w-full min-w-0 items-start gap-3 p-3 min-h-16" data-rac=""><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input aria-label="选择标签：tag-two · tag-two" aria-describedby="react-aria-_R_17_ react-aria-_R_17H1_" type="checkbox" data-react-aria-pressable="true" tabindex="0"/></span><span class="flex min-w-0 flex-1 items-start gap-2"><span class="checkbox__control mt-1 size-4 shrink-0 rounded-none border shadow-none before:bg-transparent! border-foreground bg-background" data-slot="checkbox-control"><span aria-hidden="true" class="checkbox__indicator size-4 text-foreground" data-slot="checkbox-indicator"></span></span><span class="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]"><span class="text-sm font-medium">tag-two</span><span class="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted"><span>tag-two</span><span>1 张图片</span></span></span></span></label></div></div><div class="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3"><p class="text-xs text-muted">可多选，按标签 ID 区分同名标签。</p><div class="popover__trigger" data-slot="popover-trigger" role="button" aria-expanded="false" id="react-aria-_R_19H1_" data-react-aria-pressable="true" tabindex="0"><button data-slot="button" class="button button--md button--ghost h-11 gap-1.5 rounded-lg px-2 text-xs font-normal text-muted" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_19H1_" data-react-aria-pressable="true" aria-label="标签操作说明"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>操作说明</button></div></div>"
+
+ ❯ tests/unit/library/batch-targets.test.ts:143:22
+    141|     const html = render(batch(action), cache);
+    142|     expect(targetIds(html)).toEqual(['tag-one', 'tag-two']);
+    143|     expect(html).not.toContain('role="alert"');
+       |                      ^
+    144|     expect(html).not.toContain('之前的相册读取失败');
+    145|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |unit| tests/unit/library/batch-targets.test.ts > does not show an unrelated cached current-album error in remove-tags target selection
+AssertionError: expected '<div class="flex min-w-0 items-center…' not to contain 'role="alert"'
+
+Expected: "role="alert""
+Received: "<div class="flex min-w-0 items-center gap-3 border-b border-border pb-5"><div class="flex shrink-0 -space-x-3" aria-hidden="true"><span class="rounded-xl border-2 border-background"><span class="flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-default size-12"><img src="/i/image?type=thumbnail" alt="" width="48" height="48" loading="lazy" class="size-full object-cover"/></span></span></div><div class="grid min-w-0 gap-1"><p class="text-sm font-medium">已选 1 张图片</p><p class="text-xs text-muted">当前页 1 张 · 其他页 0 张</p></div></div><div class="flex min-w-0 flex-wrap items-center gap-3 pt-1"><div class="relative min-w-0 flex-1 sm:max-w-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search pointer-events-none absolute left-3 top-3.5 text-muted" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg><input class="input input--primary h-11 w-full min-w-0 rounded-lg border border-border bg-background text-base md:text-sm pl-10" data-slot="input" aria-label="搜索目标标签" placeholder="搜索标签" data-rac="" value=""/></div></div><div class="flex min-h-8 items-center justify-between gap-3"><h2 class="text-sm font-medium">选择标签</h2><p role="status" class="text-xs text-muted">已选 1 个标签</p></div><div role="alert" class="grid gap-3 rounded-xl border border-border p-3"><p>目标读取失败：之前的相册读取失败。已有目标选择已保留。</p><button data-slot="button" class="button button--md button--outline h-11 w-fit rounded-lg" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_15_">重试读取目标</button></div><div data-testid="batch-target-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="标签目标"><div data-slot="checkbox" data-target-id="tag-one" class="checkbox checkbox--primary w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default data-[selected=true]:border-accent dark:bg-surface" data-rac="" data-selected="true"><label data-slot="checkbox-content" data-react-aria-pressable="true" class="checkbox__content flex w-full min-w-0 items-start gap-3 p-3 min-h-16" data-rac="" data-selected="true"><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input aria-label="选择标签：tag-one · tag-one" aria-describedby="react-aria-_R_n_ react-aria-_R_nH1_" type="checkbox" data-react-aria-pressable="true" tabindex="0" checked=""/></span><span class="flex min-w-0 flex-1 items-start gap-2"><span class="checkbox__control mt-1 size-4 shrink-0 rounded-none border shadow-none before:bg-transparent! border-transparent! bg-transparent!" data-slot="checkbox-control"><span aria-hidden="true" class="checkbox__indicator size-4 text-foreground" data-slot="checkbox-indicator"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></span><span class="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]"><span class="text-sm font-medium">tag-one</span><span class="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted"><span>tag-one</span><span>1 张图片</span></span></span></span></label></div><div data-slot="checkbox" data-target-id="tag-two" class="checkbox checkbox--primary w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default data-[selected=true]:border-accent dark:bg-surface" data-rac=""><label data-slot="checkbox-content" data-react-aria-pressable="true" class="checkbox__content flex w-full min-w-0 items-start gap-3 p-3 min-h-16" data-rac=""><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input aria-label="选择标签：tag-two · tag-two" aria-describedby="react-aria-_R_17_ react-aria-_R_17H1_" type="checkbox" data-react-aria-pressable="true" tabindex="0"/></span><span class="flex min-w-0 flex-1 items-start gap-2"><span class="checkbox__control mt-1 size-4 shrink-0 rounded-none border shadow-none before:bg-transparent! border-foreground bg-background" data-slot="checkbox-control"><span aria-hidden="true" class="checkbox__indicator size-4 text-foreground" data-slot="checkbox-indicator"></span></span><span class="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]"><span class="text-sm font-medium">tag-two</span><span class="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted"><span>tag-two</span><span>1 张图片</span></span></span></span></label></div></div><div class="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3"><p class="text-xs text-muted">可多选，按标签 ID 区分同名标签。</p><div class="popover__trigger" data-slot="popover-trigger" role="button" aria-expanded="false" id="react-aria-_R_19H1_" data-react-aria-pressable="true" tabindex="0"><button data-slot="button" class="button button--md button--ghost h-11 gap-1.5 rounded-lg px-2 text-xs font-normal text-muted" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_19H1_" data-react-aria-pressable="true" aria-label="标签操作说明"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>操作说明</button></div></div>"
+
+ ❯ tests/unit/library/batch-targets.test.ts:143:22
+    141|     const html = render(batch(action), cache);
+    142|     expect(targetIds(html)).toEqual(['tag-one', 'tag-two']);
+    143|     expect(html).not.toContain('role="alert"');
+       |                      ^
+    144|     expect(html).not.toContain('之前的相册读取失败');
+    145|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  |unit| tests/unit/library/batch-targets.test.ts > uses one focusable Button as the tag tips trigger without duplicating its DOM ID
+AssertionError: expected [ …(3) ] to have a length of 2 but got 3
+
+- Expected
++ Received
+
+- 2
++ 3
+
+ ❯ tests/unit/library/batch-targets.test.ts:162:36
+    160|   const id = button?.match(/\bid="([^"]+)"/)?.[1];
+    161|   expect(id).toBeDefined();
+    162|   expect(html.split(`id="${id}"`)).toHaveLength(2);
+       |                                    ^
+    163|   expect(html).not.toMatch(
+    164|     /<div[^>]*role="button"[^>]*>\s*<button[^>]*aria-label="标签操作说明"/,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  23:43:45
+   Duration  410ms (import 73%, transform 15%, tests 11%)
+
+[ELIFECYCLE] Command failed with exit code 1.

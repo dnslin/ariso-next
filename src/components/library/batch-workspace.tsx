@@ -37,6 +37,8 @@ export function BatchWorkspaceContent({
   }, [batch.visible, workspace?.phase, batch.showFailures]);
   if (!workspace || !batch.visible) return null;
   const label = batchLabels[workspace.action];
+  const choosingTags =
+    workspace.phase === 'choose' && workspace.action.endsWith('tags');
   const changed = workspace.results.filter(
     (result) => result.status === 'changed',
   ).length;
@@ -90,6 +92,7 @@ export function BatchWorkspaceContent({
                   data-testid="batch-return"
                   variant="outline"
                   className="h-12 w-full rounded-lg font-normal"
+                  isDisabled={batch.pending}
                   onPress={batch.close}
                 >
                   取消
@@ -97,9 +100,10 @@ export function BatchWorkspaceContent({
                 <Button
                   data-testid="batch-submit"
                   className="h-12 w-full rounded-lg font-normal"
+                  isDisabled={batch.pending}
                   onPress={batch.submit}
                 >
-                  确认{label}
+                  {batch.pending ? '正在设置…' : `确认${label}`}
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>
@@ -142,14 +146,23 @@ export function BatchWorkspaceContent({
   return (
     <section
       data-testid="library-batch"
+      data-batch-view={choosingTags ? 'tag-choose' : undefined}
       aria-busy={batch.pending}
-      className="grid min-w-0 gap-3"
+      className={
+        choosingTags
+          ? 'grid w-full min-w-0 max-w-240 gap-4'
+          : 'grid min-w-0 gap-3'
+      }
       aria-labelledby="batch-title"
     >
       <Button
         data-testid="batch-return"
-        variant="outline"
-        className={`${buttonClass} w-45 md:w-55`}
+        variant={choosingTags ? 'ghost' : 'outline'}
+        className={
+          choosingTags
+            ? `${buttonClass} w-fit justify-start bg-transparent px-0 text-sm text-muted hover:bg-transparent data-[hovered=true]:bg-transparent data-[pressed=true]:bg-transparent`
+            : `${buttonClass} w-45 md:w-55`
+        }
         isDisabled={batch.pending}
         onPress={retained ? batch.toggleFailures : batch.close}
       >
@@ -157,7 +170,9 @@ export function BatchWorkspaceContent({
         {retained
           ? '返回操作结果'
           : workspace.phase === 'choose'
-            ? '返回操作选择'
+            ? workspace.action.endsWith('tags')
+              ? batch.returnLabel
+              : '返回操作选择'
             : workspace.action === 'restore'
               ? '返回回收站'
               : currentAlbumId
@@ -168,7 +183,7 @@ export function BatchWorkspaceContent({
         ref={heading}
         id="batch-title"
         tabIndex={-1}
-        className="text-[23px] font-normal leading-normal md:text-[30px]"
+        className={`text-[23px] leading-normal md:text-[30px] ${choosingTags ? 'font-medium' : 'font-normal'}`}
       >
         {title}
       </h1>
@@ -312,6 +327,44 @@ export function BatchWorkspaceFooter({ batch }: { batch: LibraryBatch }) {
     !batch.unresolved
   )
     return <BatchSummaryFooter batch={batch} />;
+  if (workspace.action.endsWith('tags') && workspace.phase === 'choose') {
+    const count =
+      workspace.command && 'tagIds' in workspace.command
+        ? workspace.command.tagIds.length
+        : 0;
+    return (
+      <div
+        data-testid="batch-tag-footer"
+        className="mr-auto flex w-full max-w-240 flex-wrap items-center gap-x-4 gap-y-3"
+      >
+        <p className="w-full text-xs text-muted sm:w-auto sm:flex-1">
+          {workspace.items.length} 张图片 × {count} 个标签
+        </p>
+        <div className="flex w-full gap-3 sm:w-auto">
+          <Button
+            data-testid="batch-cancel"
+            variant="outline"
+            className="h-12 min-h-12 w-28 shrink-0 rounded-lg font-normal"
+            onPress={batch.close}
+          >
+            取消
+          </Button>
+          <Button
+            data-testid="batch-submit"
+            className="h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal sm:w-45 sm:flex-none"
+            isDisabled={
+              !workspace.command || !batch.targetReady || batch.pending
+            }
+            onPress={batch.submit}
+          >
+            {workspace.command
+              ? `${batchLabels[workspace.action]} · ${workspace.items.length}张`
+              : '请选择标签'}
+          </Button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="grid h-34 w-full content-start gap-2 xl:h-37">
       {workspace.phase === 'choose' ? (

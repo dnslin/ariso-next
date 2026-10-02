@@ -5,7 +5,8 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Checkbox } from '@heroui/react/checkbox';
 import { Input } from '@heroui/react/input';
-import { Check, ImageOff } from 'lucide-react';
+import { Popover } from '@heroui/react/popover';
+import { Check, ImageOff, Info, Plus, Search } from 'lucide-react';
 import {
   albumRequest,
   AlbumRequestError,
@@ -33,6 +34,8 @@ export function BatchThumbnail({
         <img // eslint-disable-line @next/next/no-img-element
           src={url}
           alt=""
+          width={size}
+          height={size}
           loading="lazy"
           className="size-full object-cover"
           onError={() => setFailed(true)}
@@ -58,6 +61,8 @@ export function BatchTargets({
   const workspace = batch.workspace!;
   const albums = workspace.action.endsWith('albums');
   const noun = albums ? '相册' : '标签';
+  const needsCurrentAlbum =
+    workspace.action === 'remove-albums' && !!currentAlbumId;
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
   const [creating, setCreating] = useState(false);
@@ -91,14 +96,14 @@ export function BatchTargets({
       queryKey: ['batch-current-album', currentAlbumId],
       queryFn: ({ signal }) =>
         albumRequest<{ album: Album }>(albumUrl(currentAlbumId!), { signal }),
-      enabled: workspace.action === 'remove-albums' && !!currentAlbumId,
+      enabled: needsCurrentAlbum,
       retry: false,
       refetchOnWindowFocus: false,
       networkMode: 'always',
     },
     client,
   );
-  const error = list.error ?? current.error;
+  const error = list.error ?? (needsCurrentAlbum ? current.error : null);
   const { setTargetReady } = batch;
   useEffect(() => {
     setTargetReady(
@@ -128,6 +133,7 @@ export function BatchTargets({
   }, [error, batch]);
   const targets = [...(list.data?.items ?? [])];
   if (
+    needsCurrentAlbum &&
     !q &&
     current.data &&
     !targets.some((target) => target.id === current.data!.album.id)
@@ -150,32 +156,89 @@ export function BatchTargets({
   }
   return (
     <>
-      <p className="text-sm text-muted">
-        本次已选{workspace.items.length}张 ·{' '}
-        {ids.length ? `已选${ids.length}个目标` : '尚未选择目标'}
-      </p>
-      <p>按{noun}ID区分同名目标</p>
-      <div className="flex min-w-0 gap-3">
-        <Input
-          aria-label={`搜索目标${noun}`}
-          value={q}
-          onChange={(event) => {
-            setQ(event.target.value);
-            setPage(1);
-          }}
-          className="h-11 min-w-0 flex-1 rounded-lg border border-border bg-background text-base md:text-sm"
-          placeholder={`搜索${noun}`}
-        />
+      {albums ? (
+        <>
+          <p className="text-sm text-muted">
+            本次已选{workspace.items.length}张 ·{' '}
+            {ids.length ? `已选${ids.length}个目标` : '尚未选择目标'}
+          </p>
+          <p>按相册ID区分同名目标</p>
+        </>
+      ) : (
+        <div className="flex min-w-0 items-center gap-3 border-b border-border pb-5">
+          <div className="flex shrink-0 -space-x-3" aria-hidden="true">
+            {workspace.items.slice(0, 3).map((item) => (
+              <span
+                key={item.id}
+                className="rounded-xl border-2 border-background"
+              >
+                <BatchThumbnail
+                  url={item.storage.enabled ? item.thumbnailUrl : null}
+                  size={48}
+                />
+              </span>
+            ))}
+          </div>
+          <div className="grid min-w-0 gap-1">
+            <p className="text-sm font-medium">
+              已选 {workspace.items.length} 张图片
+            </p>
+            <p className="text-xs text-muted">
+              当前页 {workspace.currentCount} 张 · 其他页{' '}
+              {workspace.items.length - workspace.currentCount} 张
+            </p>
+          </div>
+        </div>
+      )}
+      <div
+        className={
+          albums
+            ? 'flex min-w-0 gap-3'
+            : 'flex min-w-0 flex-wrap items-center gap-3 pt-1'
+        }
+      >
+        <div
+          className={
+            albums ? 'min-w-0 flex-1' : 'relative min-w-0 flex-1 sm:max-w-100'
+          }
+        >
+          {!albums ? (
+            <Search
+              size={16}
+              aria-hidden
+              className="pointer-events-none absolute left-3 top-3.5 text-muted"
+            />
+          ) : null}
+          <Input
+            aria-label={`搜索目标${noun}`}
+            value={q}
+            onChange={(event) => {
+              setQ(event.target.value);
+              setPage(1);
+            }}
+            className={`h-11 w-full min-w-0 rounded-lg border border-border bg-background text-base md:text-sm ${albums ? '' : 'pl-10'}`}
+            placeholder={`搜索${noun}`}
+          />
+        </div>
         {!albums && workspace.action === 'add-tags' ? (
           <Button
             variant="outline"
             className="h-11 shrink-0 rounded-lg font-normal"
             onPress={() => setCreating(true)}
           >
+            <Plus size={16} aria-hidden />
             新建标签
           </Button>
         ) : null}
       </div>
+      {!albums ? (
+        <div className="flex min-h-8 items-center justify-between gap-3">
+          <h2 className="text-sm font-medium">选择标签</h2>
+          <p role="status" className="text-xs text-muted">
+            已选 {ids.length} 个标签
+          </p>
+        </div>
+      ) : null}
       {list.isPending ? <p role="status">正在读取{noun}目标…</p> : null}
       {error ? (
         <div
@@ -188,7 +251,7 @@ export function BatchTargets({
             className="h-11 w-fit rounded-lg"
             onPress={() => {
               void list.refetch();
-              if (current.error) void current.refetch();
+              if (needsCurrentAlbum && current.error) void current.refetch();
             }}
           >
             重试读取目标
@@ -200,7 +263,13 @@ export function BatchTargets({
           {q ? '没有匹配目标，请修改搜索条件。' : `还没有${noun}目标。`}
         </p>
       ) : null}
-      <div className="grid gap-3" aria-label={`${noun}目标`}>
+      <div
+        data-testid="batch-target-grid"
+        className={
+          albums ? 'grid gap-3' : 'grid gap-3 sm:grid-cols-2 lg:grid-cols-3'
+        }
+        aria-label={`${noun}目标`}
+      >
         {targets.map((target) => (
           <Checkbox
             key={target.id}
@@ -214,9 +283,11 @@ export function BatchTargets({
                   : ids.filter((id) => id !== target.id),
               )
             }
-            className="w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default"
+            className={`w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default ${albums ? '' : 'data-[selected=true]:border-accent dark:bg-surface'}`}
           >
-            <Checkbox.Content className="flex min-h-18 w-full min-w-0 items-start gap-3 p-3">
+            <Checkbox.Content
+              className={`flex w-full min-w-0 items-start gap-3 p-3 ${albums ? 'min-h-18' : 'min-h-16'}`}
+            >
               {'cover' in target ? (
                 <BatchThumbnail
                   key={target.cover.thumbnailUrl}
@@ -235,16 +306,31 @@ export function BatchTargets({
                   </Checkbox.Indicator>
                 </Checkbox.Control>
                 <span className="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]">
-                  <span className="text-base font-normal">
-                    {'name' in target ? target.name : target.displayName} ·{' '}
-                    {target.id}
-                  </span>
-                  <span className="text-xs text-muted">
-                    {target.imageCount}张 · 创建于
-                    {new Date(target.createdAt).toLocaleDateString('zh-CN', {
-                      timeZone,
-                    })}
-                  </span>
+                  {albums ? (
+                    <>
+                      <span className="text-base font-normal">
+                        {'name' in target ? target.name : target.displayName} ·{' '}
+                        {target.id}
+                      </span>
+                      <span className="text-xs text-muted">
+                        {target.imageCount}张 · 创建于
+                        {new Date(target.createdAt).toLocaleDateString(
+                          'zh-CN',
+                          { timeZone },
+                        )}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-sm font-medium">
+                        {'name' in target ? target.name : target.displayName}
+                      </span>
+                      <span className="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted">
+                        <span>{target.id}</span>
+                        <span>{target.imageCount} 张图片</span>
+                      </span>
+                    </>
+                  )}
                 </span>
               </span>
             </Checkbox.Content>
@@ -274,17 +360,56 @@ export function BatchTargets({
           </Button>
         </div>
       ) : null}
-      <p className="text-sm">
-        作用范围：{workspace.items.length}张图片 × {ids.length}个{noun}。
-      </p>
-      <p className="text-sm">
-        {workspace.action.startsWith('add')
-          ? '已有关系会显示“无需修改”。'
-          : '不存在的关系会显示“无需修改”。'}
-      </p>
-      <p className="text-xs text-muted">
-        每张图的多个目标一起保存。任一目标失效，该图整项失败；其他图片继续。
-      </p>
+      {albums ? (
+        <>
+          <p className="text-sm">
+            作用范围：{workspace.items.length}张图片 × {ids.length}个{noun}。
+          </p>
+          <p className="text-sm">
+            {workspace.action.startsWith('add')
+              ? '已有关系会显示“无需修改”。'
+              : '不存在的关系会显示“无需修改”。'}
+          </p>
+          <p className="text-xs text-muted">
+            每张图的多个目标一起保存。任一目标失效，该图整项失败；其他图片继续。
+          </p>
+        </>
+      ) : (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
+          <p className="text-xs text-muted">可多选，按标签 ID 区分同名标签。</p>
+          <Popover>
+            <Button
+              variant="ghost"
+              aria-label="标签操作说明"
+              className="h-11 gap-1.5 rounded-lg px-2 text-xs font-normal text-muted"
+            >
+              <Info size={15} aria-hidden />
+              操作说明
+            </Button>
+            <Popover.Content
+              placement="top end"
+              className="max-w-[min(320px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4"
+            >
+              <Popover.Dialog
+                data-testid="batch-tag-tips"
+                className="grid gap-2 text-xs leading-relaxed"
+              >
+                <Popover.Heading className="text-sm font-medium">
+                  标签操作说明
+                </Popover.Heading>
+                <p>
+                  {workspace.action.startsWith('add')
+                    ? '已有标签关系无需修改。'
+                    : '不存在的标签关系无需修改。'}
+                </p>
+                <p>
+                  同一张图片的所选标签一起保存。任一标签失效，该图片整项失败；其他图片继续。
+                </p>
+              </Popover.Dialog>
+            </Popover.Content>
+          </Popover>
+        </div>
+      )}
       {creating ? (
         <UploadCreateTag
           isOpen

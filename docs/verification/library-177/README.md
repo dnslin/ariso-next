@@ -1,6 +1,6 @@
 # Issue #177 / T-LIB-08 实施与验收记录
 
-本记录是[草稿PR #231](https://github.com/dnslin/ariso-next/pull/231)的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](../../tasks/execution.md)，不另建验收规则。实现、905项单元回归与代码审计已完成；最新可见性44/45状态仍缺真实浏览器截图与最终设计复验，完整浏览器还有主分支已有焦点失败。用户人工UI验收未执行，PR保持草稿。
+本记录是[草稿PR #231](https://github.com/dnslin/ariso-next/pull/231)的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](../../tasks/execution.md)，不另建验收规则。主体实现已有证据。人工验收提出的Toast与标签新稿已完成本地验证和独立代码/设计复审，最新结果见本文末尾；旧通过记录不替代新稿验收，新稿仍待用户人工验收。完整浏览器仍有主分支已有焦点失败，PR保持草稿。
 
 ## 范围与前置
 
@@ -40,9 +40,11 @@
 
 独立评审先对照整页及公共区域，再核对业务顺序、48/64px 缩略图、字号/间距/颜色、底栏与流程。发现的整行点击、底栏宽度、失败文字颜色、保留说明、只读查看与明确重试、Checkbox 默认圆底、未选方框、标签额外缩进、确认按钮宽度和结果说明背景均在本次修复。搜索/分页和动态数量沿 DG-LIBRARY 已确认容器；原型照片与固定数量只作示例，不复制到产品。“阅读入口”是原型演示入口，不伪造生产按钮。没有请求或批准新的设计偏离。
 
-主体完整107图与边框颜色8图复验已归档，逐图来源见[screenshot-sources.json](./screenshot-sources.json)。独立评审补读44/45发现原可见性保留页与失败重试成功容器遗漏；4节点设计信息和原尺寸截图已补齐。本次已修正为独立失败页和单返回成功Modal，严格区分失败重试与继续未提交项，按冻结当前页标记统计，并保留未参与本轮的选择。动态说明沿交接已确认字段组合，没有新布局偏离。实际组件回归先5失败/9通过，最后21项全部通过；仍需新窄真实浏览器和最终设计复验。逐项结论由独立设计评审更新到 [design-audit.md](./design-audit.md)。功能验证不能替代设计验收；用户人工验收仍待执行。
+主体107图和边框8图的历史复验已归档，逐图来源见[screenshot-sources.json](./screenshot-sources.json)。补读44/45后取得4节点的设计信息和原尺寸图，初次组件回归先5失败/9通过，修复后21项通过。随后用户明确要求全成功提醒用Toast，原43成功概要与45成功Modal已由本轮批准的新反馈替代；44保留失败页及其他失败/未知/未提交状态继续沿原节点。本轮47图反馈与41图标签状态的实际行为通过，并分别完成独立设计对照，详见 [design-audit.md](./design-audit.md)。用户对新稿的人工验收仍待执行。
 
 ## 环境与实际命令
+
+以下表保留人工反馈前的实际运行与失败历史。Toast和标签新稿的最新运行单列在本文末尾，不以905项或旧107图替代本轮检查。
 
 环境：macOS / Darwin arm64，Node 24.18.1，pnpm 11.19.0，16 GiB 内存、10 逻辑 CPU；已有 ImageMagick 7 与 ExifTool。浏览器使用现有 Ego Lite、TaskSpace 10 / p1；隔离数据库和 201 张测试图片，不修改用户预览数据，不下载浏览器。
 
@@ -78,7 +80,7 @@
 
 ## 审计与剩余边界
 
-[独立代码审计](./code-audit.md) 已通过主体及全部44/45返修。原代码审计5项发现和新invalid缩略图P2均在本次修复；最后界面由未编写该界面的browser agent审计，新e2e由未编写该脚本的backend agent反向独立审计，均无未解决发现。独立设计评审已通过主体107图和边框8图对照；新增44/45真实截图尚缺，最终设计结论未通过。用户人工UI验收未执行。
+[独立代码审计](./code-audit.md)覆盖主体、Toast控制器、标签新稿与新增浏览器脚本；审计者分别审查非本人实现的文件。本次缓存污染、提示双交互节点及缓存错误重试问题均以真实失败证据修复并复验，没有未解决的本次代码发现。[独立设计评审](./design-audit.md)实际重读Figma及新稿两轮真实页面，已通过本次范围；用户提出返修后的最终人工UI验收仍待执行，PR保持草稿。
 
 按执行约定，本次未进行物理设备软键盘/非零安全区实测，也未执行 AMD64/ARM64 镜像容器验证。后者在 Release 流程完成，本次不创建 Release。已通过gh核对[PR #231](https://github.com/dnslin/ariso-next/pull/231)：OPEN、isDraft=true、base=main、head=codex/issue-177-library-batch、MERGEABLE。statusCheckRollup=[]，gh pr checks报告没有检查；没有远端检查，不记为CI通过，也不等待不存在的工作流。PR已附加到本对话，未合并。
 
@@ -86,4 +88,34 @@
 
 含全部返修的本地独立预览：[图库](http://127.0.0.1:3177/library) 。使用201张测试图片与独立数据库，可自由尝试批量操作；不是用户原预览环境。测试账号 `owner@example.test`，测试密码 `production-auth-test-password`。服务在本机运行，仅供本次人工验收，不作为部署或发布证据。
 
-可从图库勾选图片查看相册/标签、公开/私有、回收；回收站勾选后恢复。检查桌面/手机及浅深色，重点查看多目标、已选清单、结果说明、失败保留/只读查看/明确重试与固定底栏。最终截图和独立设计结论作为同一验收的对照入口。原预览已在已有Ego TaskSpace 10 / p1交还用户控制；最终返修构建已重启相同独立服务，可能需要重新登录。新增窄场景需要该空间重新交还Agent控制，1000ms和30000ms等待均超时，尚未执行。用户验收之前，不转正式待评审、不合并或关闭Issue。
+本轮主要人工验收：在图库或相册内容页选图，检查公开/私有完成Toast及添加/移除标签新稿，比较桌面/手机和浅深色。Ego中已准备3张图片、2个标签的选择代表状态，尚未提交；可以先看排版和短按钮，再尝试搜索、多选和快速新建。主体相册批量、回收与恢复仍可从原入口使用。最终截图和独立设计结论作为同一验收的对照入口。早期验证因控制权等待超时未执行；用户继续提出新稿需求后，已沿技能收回同一个Ego TaskSpace 10 / p1，完成新稿定向验证。服务复用同一独立测试数据，重启后可能需要重新登录。用户验收之前，不转正式待评审、不合并或关闭Issue。
+
+## 人工反馈后的新稿（2026-10-02）
+
+用户在人工验收中明确要求：批量设公开/私有的完成提醒用 Toast，标签选择页重新设计一稿。[用户实际截图](./before/user-tag-layout.png)指出全宽低密度列表与过长底栏按钮。本次按此请求修正既定节点局部，不修改Figma，不扩大数据契约或服务端实现；用户本次请求授权重设，最终新稿仍须用户人工验收。
+
+适用技能：`using-agent-skills` 选择 `ui-design-guided`、`frontend-ui-engineering`；React遵守 `vercel-react-best-practices`；实际重读 `figma-design-to-code` 并取得标签桌面523:11832、手机523:12435的设计信息和截图，独立评审另读移除节点523:12806/523:13438。原Figma的长列表与长底栏属于本次明确要求调整的局部，其余公共区域和主题继续对照原节点。
+
+新稿将目标选择限制为960px、桌面3列/平板2列/手机1列，标签名称优先、ID与图片数量次级；使用实际已选图片作为上下文，保留搜索/分页/快速新建与同名区分。固定底栏采用自然高度、48px短按钮，次要说明使用现有HeroUI Popover；不改变标签结果/未知/保留失败页设计。公开/私有全成功关闭工作区返回原列表并Toast真实计数，失败/未知/未提交继续原处理入口。
+
+新稿适用检查实际结果（Node24.18.1、pnpm11.19.0；2026-10-02/03）：最终 `pnpm run format:check`、`node docs/tasks/check.mjs`、`git diff --check` 均exit0，任务文档为120任务/298需求、无缺失ID或环；[最终格式原始输出](./reports/feedback-final-format.txt)。
+
+| 实际命令                                                                                                                                                                      | 结果与证据                                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                              | exit0，锁文件和依赖版本未改                                                                                                                 |
+| `pnpm run lint`、`pnpm run typecheck`                                                                                                                                         | 最终修复后exit0；[lint](./reports/feedback-final-lint.txt)、[类型](./reports/feedback-final-typecheck.txt)                                  |
+| `pnpm run test:unit`                                                                                                                                                          | 75文件、927项通过，exit0；[原始输出](./reports/feedback-unit.txt)                                                                           |
+| `pnpm run build`                                                                                                                                                              | 最终缓存重试修复后exit0；[最终输出](./reports/feedback-final-build.txt)，现有可选跨平台二进制trace警告仍如实保留                            |
+| `EGO_TASK_SPACE=10 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-library-177-feedback-ready node scripts/verify-browser.mjs --suite library-batch --only feedback` | exit0，3组真实行为、47张新图、errors=[]、sessionWaits=[]；[报告](./reports/feedback-browser.json)、[运行器](./reports/feedback-runner.json) |
+
+该定向浏览器用真实HTTP、真实SQL核对：首次公开/私有为1已修改+1无需修改，回到原图库第2页或原相册URL，期间无结果页闪现；实际写入失败后有效失败跨页保留，只读查看不发请求，明确重试只发送2个失败ID，最后Toast报告2已修改；标签搜索/分页保留已选ID，快速新建真实标签后自动选中，4张图×3个标签实际添加12条关系，再用相同3个明确ID全部移除。360/390×600短视口、390/768/1440浅深色、键盘Space/Esc和焦点、Popover及快速新建均有真实证据。
+
+新稿截图在 [screenshots/feedback/](./screenshots/feedback/)，逐图来源登记在 [screenshot-sources.json](./screenshot-sources.json)。未覆盖旧图，旧107图和旧成功Modal仍只属历史结果。最新代表图：[桌面深色](./screenshots/feedback/library-batch-add-tags-dark-1440.png)、[手机浅色](./screenshots/feedback/library-batch-add-tags-light-390.png)、[短手机视口](./screenshots/feedback/library-batch-tag-short-dark-360.png)、[公开Toast](./screenshots/feedback/library-batch-public-success-toast-light-390.png)。
+
+失败与修复证据保留：Toast成功结果页闪现先取得组件失败，再保持确认弹窗直到请求及列表刷新结束；相册缓存混入标签与Popover双按钮先取得真实组件5失败/1通过，再修复为6项通过；首次新稿浏览器失败为测试标签规范化字段写错，按生产tagNameSchema修正夹具，保留名称搜索断言；第二轮失败为短视口滚动菜单的目标半截可见，实际Home/ArrowDown使44px目标进入弹层后再正常点击，未改产品菜单或使用强制点击。可见性概要与保留页24px纵向偏移按原节点修正，最新32张权限状态图已独立复核。[首次报告](./reports/feedback-first.json)、[菜单失败报告](./reports/feedback-menu-failed.json)、[缺陷证据](./before/)保留失败状态。
+
+补充定向执行：`EGO_TASK_SPACE=10 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-library-177-tag-states-ready node scripts/verify-browser.mjs --suite library-batch --only tag-states`，exit0，41图、38布局、3组行为、errors=[]和sessionWaits=[]；[实际报告](./reports/feedback-tag-states.json)、[运行器](./reports/feedback-tag-states-runner.json)。新增0目标禁用、430、移除标签、加载/错误/空状态及相册缓存错误上下文分别有390/1440浅深色真实图，位于 [screenshots/feedback-tag-states/](./screenshots/feedback-tag-states/)。独立设计评审实际打开受影响状态逐项对照，结论通过。
+
+该补查先复现缓存错误后的标签重试额外GET相册（[红报告](./reports/tag-cache-retry-red.json)）；最小修复为仅remove-albums使用当前相册读取重试，绿报告精确记录只GET标签。最终修复后另执行 `pnpm exec vitest run --project unit tests/unit/library/batch-targets.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts --maxWorkers=1`，5文件60项通过、exit0，[输出](./reports/feedback-final-affected.txt)。没有删除检查、改变真实请求计数或放宽断言。
+
+927项已通过后不机械重复全量集成或完整浏览器。服务端、schema、依赖和数据契约本轮没有变动，原集成执行及真实拆批证据仍按上方历史范围记录；主分支已有详情重处理深链焦点失败未获范围外修复授权，本轮保持原缺陷与失败结论。本次范围内功能、独立代码审计和设计评审均已完成，用户对新稿的人工验收仍待执行。预览已重启到最终构建，使用同一独立数据库，保留用户之前在该测试环境内的操作。

@@ -142,3 +142,78 @@ pnpm exec vitest run --project unit tests/unit/library/batch.test.ts tests/unit/
 - 正常重试和最终清理均删除新增触发器。夹具使用运行器独立 DATA_DIR，最终删除专属记录和文件并恢复原本地偏好；完整运行器仍在 finally 停止测试进程并移除临时目录，不影响用户预览数据。
 
 审计者实际执行 Node 24 的 `node --check e2e/library-batch.mjs`、`node --check scripts/verify-browser.mjs` 和 `git diff --check`，退出码均为 0。未运行浏览器、构建或完整测试，未控制已交回用户的 Ego 页面。以上是代码及测试有效性的静态审计结论；新增公开／私有场景、四个节点的新实际截图及设计验收仍待执行，不把既有浏览器报告作为本轮新增场景的通过证据。
+
+## 人工反馈后标签选择新稿的独立代码审计（2026-10-02）
+
+审计者：`batch_backend`，使用 `code-review-and-quality`，只读审查主 agent 编写的 `batch-targets.tsx`、`batch-workspace.tsx` 新稿增量；本人实施的公开/私有 Toast 控制器不计入本段独立结论。依据本轮用户授权与 [最新交接](../../design/handoff.md#批量操作反馈与标签选择返修2026-10-02)，实际读取两文件完整调用路径、目标 API/类型、现有快速新建组件、HeroUI Popover 类型及实现、图库与公共布局消费路径。没有修改作者的应用文件，没有控制已交回用户的 Ego 页面。
+
+- 新稿的960px上限、3/2/1列卡片、图片身份与真实页数、名称/ID/数量层次、自然高度48px底栏仅作用于标签 `choose` 状态；相册目标与标签结果/未知/保留失败沿用原布局。固定底栏复用公共 `shell-footer`，没有复制外壳或改变消费路由的公共结构。
+- 搜索/分页仍以 query key 切换读取，已有目标选择留在批量 command 中；提交继续要求真实 command、目标读取成功及非 pending。错误说明和重新读取入口保留，未用 Popover 隐藏错误或失败后果。新增操作说明使用 HeroUI `Popover.Trigger/Content/Dialog/Heading` 标准组合，点击与键盘生命周期由既有控件管理；快速新建继续复用现有组件并使用原 QueryClient 失效流程。
+- 正常可见性确认框提交中禁止取消、重复提交与键盘关闭。标签选择页顶部与底栏返回继续调用同一批量 close；没有新增窗口监听器、后台任务或资源管理层。
+
+审查新稿时发现原有组合路径问题（P2 / Required，非新稿样式增量）：当前相册查询 `enabled=false` 时仍可返回同 query key 的缓存，目标注入条件没有限定 `albums`。在同一相册内容页先打开“从相册移除”，再打开标签目标，缓存的相册会被注入标签列表，成为失效的标签目标。已报主 agent，建议只将既有注入条件限定为相册操作；本段审计者没有改动作者文件。
+
+取得小成本实际证据：Node24 使用已安装的 `@tanstack/react-query`，先以 QueryClient 写入专属 `batch-current-album/audit-album` 缓存，再创建 `enabled:false` 的 QueryObserver。实际输出 `status=success` 且 `currentData.album.id=audit-album`；代入当前注入条件后标签目标 ID 为 `[audit-album,audit-tag]`，证明禁用读取不会清除缓存。该命令仅使用内存夹具并清空专属 QueryClient，没有请求真实 API 或修改预览数据。
+
+新稿增量没有其他 Required/Critical 发现；上述组合路径问题等待作者修复后回读。实际页面布局、Popover焦点与人工验收仍需独立浏览器证据，本段代码审计不将这些标为通过。
+
+## 人工反馈后公开/私有 Toast 的独立代码审计（2026-10-02）
+
+审计者：独立 `batch_browser` agent，使用 `code-review-and-quality` 与适用 `vercel-react-best-practices` 规则。本轮未实施 `use-library-batch.ts`、`batch-summary.tsx`、`batch-feedback.test.ts` 或 `batch-summary.test.ts`；自己编写的 e2e 不计入本段独立结论。按用户最新授权将全部成功反馈改为原页 Toast，前文成功概要/成功 Modal 审计保留为历史，不再作为本轮验收要求。本轮只读应用与单元文件，追加本报告，没有控制 Ego、启动服务或构建。
+
+- `visibilityFeedback` 按当前固定 items 的 ID 查实际 results；空清单、缺结果、有效/失效失败、unknown 或 unsent 任一存在均不能生成完成 Toast。changed/unchanged 单独统计；failed-only 重试和最终未提交项的本轮清单收窄，不会累加先前成功数量。删除旧 retrySource 与成功 Modal 分支符合已批准的新反馈范围，没有留下兼容路径。
+- 每轮请求使用局部 Map 累计实际返回结果，Set 保留尚未消费的原 unsent。check 保留未发送 ID，只核对 unknown；retryFailures 仍只写有效失败，retry 才包含未提交项。已有固定查询、目标、来源页和 current-page 标记不改变；选择清除只消费实际已确认的逐图结果，失效失败仍留原因。
+- 正常首次 visibility apply 保持确认状态到请求和列表刷新结束；只有无失败、无未知、无未发且逐图齐全才直接关闭并 Toast。异常、部分结果和顶层错误转 result，保留原核对/继续入口。已移除成功 Modal，不新增成功概要路由或新的状态引擎。
+- 重复提交与执行中关闭继续由 inFlight guard 限制，卸载仍取消当前 AbortController。逐图回调、请求结果、catch 与最终 Toast 均检查取消状态；await refresh 后再次检查 signal，避免卸载后的完成通知。焦点返回复用原来源/图库或回收站后备目标。
+- 列表刷新失败与业务写入成功分开处理：真实写入计数仍准确，Toast 明确附“列表刷新失败”及原因，不把已提交项目重新记成失败或未发送。业务尚未全部成功时刷新异常继续进入原结果说明，不生成完成通知。
+- React 状态更新继续使用函数形式，派生反馈直接消费本轮局部结果，不依赖读取异步 setState 后的旧快照。复用现有 HeroUI Toast 和 Map/Set，没有新增依赖、通用状态层、后台任务或全局监听器。
+
+实际回读新增单元：真实 hook 验证两种 visibility 的请求、changed/unchanged、选择回调、重复提交、等待刷新、已知失败/未知禁止通知、刷新异常和焦点调用；纯反馈函数覆盖缺失结果、失效失败、只重试失败及只继续最后一项。组件回归保留失败页、真实原因/来源/有效数量和失效预览，按新授权拒绝旧成功 Modal。
+
+这些 hook 测试采用已有服务端渲染方法，能够证明请求与通知回调，不能证明后续异步 DOM 已关闭、刷新期间未闪概要页或真实焦点恢复。真实浏览器的原 URL、选择、等待确认按钮和整个提交窗口的 DOM 变化观察仍需执行；不以静态单元结果代替这些行为或设计验收。
+
+审计者实际读取 `test-results/issue-177-visibility-toast-red.log`：先 6 失败 / 20 通过，失败包含旧成功 Modal 与缺少 Toast。修复后 `test-results/issue-177-visibility-toast-green.log` 为 4 文件、52 项通过；`test-results/issue-177-feedback-unit.log` 为 74 文件、921 项通过。本轮没有重复运行这些刚完成的检查，实际执行 `git diff --check` 退出码 0。
+
+本段独立代码审计结论：通过，公开/私有新版反馈增量没有 Required/Critical 发现。标签目标缓存混入问题由另一独立审计段跟进；最新 feedback 真实浏览器、设计对照与用户复验仍待主记录收齐，不将旧报告或单元通过当作本轮实际页面完成。
+
+追加真实导出组件证据：按主 agent 要求新增 `tests/unit/library/batch-targets.test.ts`，实际 QueryClient 缓存相册/标签并渲染生产 `BatchTargets`，没有 mock 查询组件、HeroUI 或目标响应。公开目录之外的当前相册仍可用于移除这一正向回归通过；添加/移除标签均多出相册目标，旧相册读取错误均成为错误标签 alert，共4项失败。
+
+同时发现新稿新增 P2 / Required：`Popover.Trigger` 包裹已有 HeroUI Button，真实 SSR 输出外层 `div role=button tabindex=0` 与内层 Button 两个交互节点，两个节点共享同一个 ID。已实际读3.2.6的 Trigger 实现与 DOMRenderProps 类型：其默认渲染 Pressable 与 dom.div，没有 asChild API。仓库现有 `AccessDisclosure`、`DetailTip` 和账号菜单均直接用 Button 作为 Popover 子层触发器；建议删除新稿额外 Trigger 包裹，复用既有单按钮方案。前述“标准组合生命周期”判断只说明使用了现有控件，不能替代实际输出的交互结构；该发现纠正这一初步结论。
+
+新增真实组件回归要求操作说明 Button 的实际 ID 在全文唯一，并拒绝 `role=button` 的 div 内嵌该按钮。最终红证据为6项中5失败/1通过，Vitest exit1，保存于 `test-results/issue-177-target-cache-red.log`。两项问题已交作者修改，审计者未改作者应用文件；通过结论须在修复回读与同一回归实际转绿后记录。
+
+### 标签新稿审计发现关闭与夹具修正复审
+
+主 agent 已完成最小修复，审计者独立回读：`needsCurrentAlbum` 仅在 `remove-albums` 且有当前相册 ID 时为真，当前相册查询 enabled、读取错误消费及目标注入都使用该业务条件。标签读取和选择不再消费旧相册缓存/错误，缺席列表的当前相册仍可用于移除。操作说明移除额外 Trigger，直接复用现有 HeroUI Button 触发 Popover；真实输出只有一处按钮 ID，没有交互容器嵌套按钮。没有新增缓存清理、抽象、依赖或特殊生命周期。
+
+实际执行 Node24 的 `pnpm run test:unit tests/unit/library/batch-targets.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts --maxWorkers=1`，5文件60项通过；其中同一真实目标组件6项全部转绿，日志 `test-results/issue-177-target-cache-green.log`。`pnpm exec tsc --noEmit --project tsconfig.json` 与新增目标回归的定向 ESLint 均 exit0。两项 P2 / Required 已关闭，标签新稿代码审计通过，没有未解决代码发现；真实浏览器布局、键盘/焦点和用户人工验收仍分别判断。
+
+另独立审查 browser agent 的两处 e2e 修正，不自审本人实施的 Toast UI：`library-batch-fixture.mjs` 的3个基础标签、21个分页标签，以及 `library-batch.mjs` 的长名称标签，均从现有生产 `tagNameSchema` 获取 displayName/normalizedKey，替代把 ID 当搜索规范化值的失真夹具。实际回读生产 `parseTagQuery` 与标签列表的字面子串查询；两端使用同一 Unicode caseFold/NFC 规则。没有修改业务接口、搜索断言、请求/结果计数、图片关系检查或 fixture finally 清理；新增长标签仍使用专属 Issue177 ID，正常流程与最终清理均能移除。
+
+实际执行 Node24 的 `node --check e2e/library-batch-fixture.mjs`、`node --check e2e/library-batch.mjs`，均 exit0；实际导入 fixture 与生产 schema/query 成功，“Issue 177 标签 B”的规范化查询只匹配预期B名称，长名称实际44个Unicode码点并通过生产50码点限制。该结果证明运行时导入和数据规则一致，不作为真实浏览器搜索通过。e2e 本轮静态审计无 Required/Critical 发现；完整反馈场景的实际重跑由主流程记录，审计者没有控制 Ego 页面或重跑浏览器。
+
+## 标签新稿与菜单定位脚本的最后增量复审（2026-10-03）
+
+独立审计者 `batch_backend` 使用 `code-review-and-quality`，复审主 agent 的标签 UI 与 browser agent 的 `action` 菜单辅助函数；本人实施的 visibility 控制器不计入本段独立范围。没有操作浏览器或重跑全量检查。
+
+`action` 先读取真实已打开菜单的 enabled menuitem 文本顺序，要求目标动作确实存在；使用 Home 定位首项，再执行与实际索引相等次数的 ArrowDown。随后等待实际焦点所在 menuitem 文本与目标完全一致，读取真实条目及 Popover 几何位置，要求整项顶部/底部都落在弹层内，最后仍以真实 role 定位进行普通点击。没有 force 点击、直接派发业务 action、改 DOM 或放宽尺寸/遮挡断言；普通点击若被拦截仍会失败。此调整使用产品现有键盘滚动能力，让短视口中部分可见的目标自然完整进入可点击区域。原390×560菜单的44px目标、main边界、End到最后一项及完整可见断言均保留。
+
+标签新稿的 current-album enabled/错误消费/列表注入 guard，以及 Tips 单 Button 修复仍保持；网格/自然底栏限定标签 choose，分页、真实选择、快速新建和结果边界未扩展。菜单辅助函数新增定位无 Required/Critical 发现。实际执行 Node24 的三份 e2e/运行器 `node --check` 及 `git diff --check`，均 exit0。
+
+审计者实际读取本轮全量单元日志为75文件927项通过，构建日志包含成功编译与最终路由输出；没有重复运行这些检查。实际读取 `browser-library-177-feedback-ready/runner.json` 为 passed，批量报告为 phase=feedback/status=passed，47张截图、errors=[]，两种权限正常/失败重试与标签行为均有记录。此结果属于该轮已完成真实运行，不把它外推为后来追加标签 loading/error/retry/empty 状态已经通过。
+
+主流程复读又识别同一缓存边界的错误重试分支：`if (current.error) current.refetch()` 会主动重试 enabled=false 的旧相册查询，即使当前操作是标签。需要同样限定 `needsCurrentAlbum && current.error`，仅移除相册时允许该关联读取重试。审计者本段实际回读仍是旧条件，因此该行暂不记关闭；作者正在修正并补新标签适用状态的真实请求/截图证据。当前最终代码结论须在该单行实际修复回读后收尾；新适用状态、设计及用户人工验收继续分别记录。
+
+### 标签错误重试发现关闭与新增状态 e2e 的最终独立复审
+
+审计者 `batch_backend` 独立回读最终 `BatchTargets` 错误重试处理：`list.refetch()` 保留，当前相册只在 `needsCurrentAlbum && current.error` 时重新读取。该业务条件与查询 enabled、错误消费和目标注入一致；添加/移除标签不会主动重试旧相册缓存，当前相册移除仍保留原重试能力。只修改这一处已有条件，没有增加缓存清理、兼容分支或新抽象。前一段待关闭的 P2 / Required 源码发现现已关闭。
+
+新增 `verifyTagTargetReads` 和 `verifyTagRetryAfterAlbumError` 由另一 agent 编写，本轮独立审查其实际 fetch 包装、目标 DOM、请求计数、真实数据库断言、夹具与执行分支，没有自审本人实施的 visibility hook。读取故障均先等待真实 GET 成功再延迟或丢弃响应，不伪造 HTTP 返回、QueryClient 缓存或界面状态。加载/错误要求真实提交按钮禁用且两项选择保留；空状态来自真实无匹配搜索，恢复原查询后检查原两项真实 checkbox。相册缓存错误由真实当前相册 GET 的成功响应丢失形成；取消相册操作再打开标签，要求无旧相册目标/错误，并在真实标签读取失败后测试明确重试。
+
+重试请求记录在点击前清空，并在实际 fetch 调用开始时入队，随后才等待响应；精确要求路径列表为 `['/api/tags']`，同时核对 GET、200 和实际搜索参数，因此额外相册请求即使尚未完成也会被计入。查询、错误重试和取消均要求批量写入请求为空。原四张图片、三个明确标签目标、精确 add/remove 命令、数据库 12 条添加关系与最终 0 条关系断言继续保留；新 mode 仅在适用 library-batch suite 接入，不跳过原完整模式的行为。读取包装没有硬编码成功结果，原夹具 finally 清理与偏好恢复保留。本次新增 e2e 无 Required/Critical 发现。
+
+审计者实际读取红报告 `test-results/browser-library-177-tag-states-red/library-batch.json`：`status=failed`，错误重试实际请求为标签与当前相册两个 GET，精确路径断言失败；41 张截图不作为该次通过证据。修复后实际读取 [最终标签状态报告](./reports/feedback-tag-states.json)：`status=passed`、`phase=tag-states`、3 组行为、41 张实际截图、`errors=[]`。其中 `tagAlbumCacheRetry.retryReads` 只有真实 `/api/tags` GET 200，实际搜索参数为 `Issue 177 标签 A`；两项真实标签选择保留。标签加载、读取失败、明确重试、空搜索、零目标、移除与短视口记录均由此轮新增场景取得，不使用旧 47 张报告代替这些状态。
+
+实际读取 [最终受影响单元记录](./reports/feedback-final-affected.txt)：5 文件、60 项通过。审计者此前实际执行 Node24 的 `node --check e2e/library-batch.mjs`、`node --check scripts/verify-browser.mjs` 与 `git diff --check` 均 exit0；本轮只回读最终源码和已完成报告，没有重跑浏览器、构建或全量检查，没有操作交给用户的 Ego 页面。
+
+最终独立代码/测试审计结论：标签新稿与新增状态 e2e 通过，本次范围没有未解决 Required/Critical 发现。设计还原与用户人工 UI 验收继续由各自记录判断；本段不将代码、单元或浏览器行为通过替代设计验收。

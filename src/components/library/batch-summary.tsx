@@ -10,22 +10,6 @@ import { BatchThumbnail } from './batch-targets';
 import { bytesLabel } from './detail-labels';
 import type { LibraryBatch } from './use-library-batch';
 
-function failureRetrySucceeded(batch: LibraryBatch) {
-  const workspace = batch.workspace;
-  return (
-    !!workspace &&
-    (workspace.action === 'public' || workspace.action === 'private') &&
-    workspace.retrySource === 'failures' &&
-    !batch.pending &&
-    !batch.unresolved &&
-    !workspace.unknownIds.length &&
-    !workspace.unsentIds.length &&
-    workspace.items.length > 0 &&
-    workspace.results.length === workspace.items.length &&
-    workspace.results.every((result) => result.status !== 'failed')
-  );
-}
-
 const footerButton =
   'h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal md:w-50 md:flex-none';
 
@@ -70,48 +54,6 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
     !workspace.unsentIds.length &&
     !failures.length &&
     workspace.results.length === workspace.items.length;
-  if (failureRetrySucceeded(batch))
-    return (
-      <Modal
-        isOpen
-        onOpenChange={(open) => {
-          if (!open) batch.close();
-        }}
-      >
-        <Modal.Backdrop>
-          <Modal.Container placement="center" className="p-4">
-            <Modal.Dialog
-              data-testid="library-batch"
-              data-batch-view="retry-success"
-              className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6 dark:bg-surface"
-            >
-              <Modal.Header className="p-0">
-                <Modal.Heading className="text-xl font-medium">
-                  {changed + unchanged}张图片已设为{visibility}
-                </Modal.Heading>
-              </Modal.Header>
-              <Modal.Body className="m-0 grid gap-4 p-0">
-                <p className="text-sm">失败项重试成功。</p>
-                <p className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-                  {batch.hasRemainingSelection
-                    ? '本次重试的项目已移出选择，其余选择仍保留。'
-                    : '本次选择已清空。'}
-                </p>
-              </Modal.Body>
-              <Modal.Footer className="m-0 grid w-full grid-cols-1 justify-stretch gap-4 p-0">
-                <Button
-                  data-testid="batch-done"
-                  className="h-12 w-full rounded-lg font-normal"
-                  onPress={batch.close}
-                >
-                  {visibilityReturn}
-                </Button>
-              </Modal.Footer>
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
-    );
   if (changingVisibility && batch.showFailures && !batch.pending) {
     const retained = failures.filter((result) =>
       batch.failedIds.includes(result.id),
@@ -130,7 +72,7 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
         <Button
           data-testid="batch-return"
           variant="ghost"
-          className="h-11 w-fit gap-1 rounded-lg bg-transparent p-0 text-xs font-normal text-muted hover:bg-transparent data-[pressed=true]:bg-transparent"
+          className="-my-3 h-11 w-fit gap-1 rounded-lg bg-transparent p-0 text-xs font-normal text-muted hover:bg-transparent data-[pressed=true]:bg-transparent"
           onPress={batch.close}
         >
           <ArrowLeft size={14} aria-hidden />
@@ -351,7 +293,7 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
       <Button
         data-testid="batch-return"
         variant="ghost"
-        className="h-11 w-fit gap-1 rounded-lg bg-transparent p-0 text-xs font-normal text-muted hover:bg-transparent data-[pressed=true]:bg-transparent"
+        className={`h-11 w-fit gap-1 rounded-lg bg-transparent p-0 text-xs font-normal text-muted hover:bg-transparent data-[pressed=true]:bg-transparent ${changingVisibility ? '-my-3' : ''}`}
         isDisabled={batch.pending}
         onPress={batch.close}
       >
@@ -507,7 +449,6 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
 export function BatchSummaryFooter({ batch }: { batch: LibraryBatch }) {
   const workspace = batch.workspace;
   if (!workspace) return null;
-  if (failureRetrySucceeded(batch)) return null;
   if (
     (workspace.action === 'public' || workspace.action === 'private') &&
     batch.showFailures &&

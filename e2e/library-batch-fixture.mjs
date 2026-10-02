@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { tagNameSchema } from '../src/server/collections/validation.ts';
 
 export const batchImageId = (index) =>
   `issue177-${String(index).padStart(3, '0')}`;
@@ -56,13 +57,32 @@ export async function seedLibraryBatch(config, sql) {
     `INSERT INTO albums (id,name,description,created_at,updated_at) VALUES ${['a', 'b', 'c'].map((suffix) => `('issue177-album-${suffix}','${suffix === 'c' ? 'Issue 177 并发删除相册' : `Issue 177 相册 ${suffix.toUpperCase()}`}','批量真实验证',${created},${created})`).join(',')}`,
   );
   await sql(
-    `INSERT INTO tags (id,display_name,normalized_key,created_at,updated_at) VALUES ${['a', 'b', 'c'].map((suffix) => `('issue177-tag-${suffix}','Issue 177 标签 ${suffix.toUpperCase()}','issue177-tag-${suffix}',${created},${created})`).join(',')}`,
+    `INSERT INTO tags (id,display_name,normalized_key,created_at,updated_at) VALUES ${[
+      'a',
+      'b',
+      'c',
+    ]
+      .map((suffix) => {
+        const { displayName, normalizedKey } = tagNameSchema.parse(
+          `Issue 177 标签 ${suffix.toUpperCase()}`,
+        );
+        return `('issue177-tag-${suffix}','${displayName}','${normalizedKey}',${created},${created})`;
+      })
+      .join(',')}`,
   );
   await sql(
     `INSERT INTO albums (id,name,description,created_at,updated_at) VALUES ${Array.from({ length: 21 }, (_, index) => `('issue177-page-album-${index}','Issue 177 分页相册 ${String(index).padStart(2, '0')}','目标分页验证',${created - 1},${created - 1})`).join(',')}`,
   );
   await sql(
-    `INSERT INTO tags (id,display_name,normalized_key,created_at,updated_at) VALUES ${Array.from({ length: 21 }, (_, index) => `('issue177-page-tag-${index}','Issue 177 分页标签 ${String(index).padStart(2, '0')}','issue177-page-tag-${index}',${created - 1},${created - 1})`).join(',')}`,
+    `INSERT INTO tags (id,display_name,normalized_key,created_at,updated_at) VALUES ${Array.from(
+      { length: 21 },
+      (_, index) => {
+        const { displayName, normalizedKey } = tagNameSchema.parse(
+          `Issue 177 分页标签 ${String(index).padStart(2, '0')}`,
+        );
+        return `('issue177-page-tag-${index}','${displayName}','${normalizedKey}',${created - 1},${created - 1})`;
+      },
+    ).join(',')}`,
   );
   const originalJoinedAt = created - 86400000;
   await sql(

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { toast } from '@heroui/react/toast';
 import type {
   BatchCommand,
   BatchItemResult,
@@ -28,7 +29,6 @@ export interface BatchWorkspace {
   message: string;
   checkFailed: boolean;
   retrying: boolean;
-  retrySource: 'failures' | 'remaining' | null;
   phase: 'choose' | 'confirm' | 'result';
 }
 export const batchLabels: Record<BatchAction, string> = {
@@ -41,6 +41,34 @@ export const batchLabels: Record<BatchAction, string> = {
   trash: '移入回收站',
   restore: '恢复所选',
 };
+
+export function visibilityFeedback(
+  workspace: Pick<
+    BatchWorkspace,
+    'command' | 'items' | 'results' | 'unknownIds' | 'unsentIds'
+  >,
+) {
+  if (
+    workspace.command?.type !== 'visibility' ||
+    !workspace.items.length ||
+    workspace.unknownIds.length ||
+    workspace.unsentIds.length
+  )
+    return null;
+  const byId = new Map(workspace.results.map((result) => [result.id, result]));
+  let changed = 0;
+  let unchanged = 0;
+  for (const item of workspace.items) {
+    const status = byId.get(item.id)?.status;
+    if (status === 'changed') changed++;
+    else if (status === 'unchanged') unchanged++;
+    else return null;
+  }
+  return {
+    title: `批量设为${workspace.command.visibility === 'public' ? '公开' : '私有'}完成`,
+    description: `${changed}张已修改 · ${unchanged}张无需修改`,
+  };
+}
 
 export function useLibraryBatch({
   selection,
@@ -103,15 +131,11 @@ export function useLibraryBatch({
       message: '',
       checkFailed: false,
       retrying: false,
-      retrySource: null,
       phase: command && action !== 'remove-albums' ? 'confirm' : 'choose',
     });
     setVisible(true);
   }
-  function close() {
-    if (inFlight.current) return;
-    setVisible(false);
-    if (!workspace?.unknownIds.length) setWorkspace(null);
+  function focusSource() {
     requestAnimationFrame(() => {
       const target = source.current;
       if (target?.isConnected) target.focus({ preventScroll: true });
@@ -122,6 +146,12 @@ export function useLibraryBatch({
           )
           ?.focus({ preventScroll: true });
     });
+  }
+  function close() {
+    if (inFlight.current) return;
+    setVisible(false);
+    if (!workspace?.unknownIds.length) setWorkspace(null);
+    focusSource();
   }
   async function run(
     command: BatchCommand,
@@ -134,38 +164,37 @@ export function useLibraryBatch({
     setPending(true);
     setShowFailures(false);
     const retrying = mode === 'apply' && workspace.phase === 'result';
-    const retrySource = retrying
-      ? ids.every((id) => failedIds.includes(id))
-        ? 'failures'
-        : 'remaining'
-      : null;
+    const keepVisibilityConfirmation =
+      command.type === 'visibility' &&
+      mode === 'apply' &&
+      workspace.phase === 'confirm';
+    const items = retrying
+      ? workspace.items.filter(
+          (item) =>
+            ids.includes(item.id) || workspace.unsentIds.includes(item.id),
+        )
+      : workspace.items;
+    const previousResults = retrying
+      ? []
+      : workspace.results.filter((result) => !ids.includes(result.id));
+    const resultsById = new Map(
+      previousResults.map((result) => [result.id, result]),
+    );
+    const remainingUnsent = new Set(workspace.unsentIds);
     const active = new AbortController();
     controller.current = active;
     setWorkspace(
       (previous) =>
         previous && {
           ...previous,
-          items: retrying
-            ? previous.items.filter(
-                (item) =>
-                  ids.includes(item.id) || previous.unsentIds.includes(item.id),
-              )
-            : previous.items,
+          items,
           currentCount: retrying
-            ? previous.items.filter(
-                (item) =>
-                  item.inCurrentPage &&
-                  (ids.includes(item.id) ||
-                    previous.unsentIds.includes(item.id)),
-              ).length
+            ? items.filter((item) => item.inCurrentPage).length
             : previous.currentCount,
           retrying: previous.retrying || retrying,
-          retrySource: mode === 'check' ? previous.retrySource : retrySource,
-          results: retrying
-            ? []
-            : previous.results.filter((result) => !ids.includes(result.id)),
+          results: previousResults,
           command,
-          phase: 'result',
+          phase: keepVisibilityConfirmation ? 'confirm' : 'result',
           checkFailed: false,
           message: '',
         },
@@ -179,20 +208,20 @@ export function useLibraryBatch({
         active.signal,
         (results) => {
           if (active.signal.aborted) return;
-          for (const result of results)
+          for (const result of results) {
+            resultsById.set(result.id, result);
+            remainingUnsent.delete(result.id);
             if (result.status !== 'failed' || !result.inQuery)
               selection.remove(result.id);
             else selection.recordFailure(result.id, result.message);
+          }
+          const currentResults = [...resultsById.values()];
           setWorkspace((previous) => {
             if (!previous) return previous;
-            const byId = new Map(
-              previous.results.map((result) => [result.id, result]),
-            );
-            for (const result of results) byId.set(result.id, result);
             const done = new Set(results.map((result) => result.id));
             return {
               ...previous,
-              results: [...byId.values()],
+              results: currentResults,
               unknownIds: previous.unknownIds.filter((id) => !done.has(id)),
               unsentIds: previous.unsentIds.filter((id) => !done.has(id)),
             };
@@ -200,26 +229,53 @@ export function useLibraryBatch({
         },
       );
       if (active.signal.aborted) return;
+      const unsentIds =
+        mode === 'check'
+          ? [...remainingUnsent]
+          : [
+              ...new Set([
+                ...[...remainingUnsent].filter((id) => !ids.includes(id)),
+                ...outcome.unsentIds,
+              ]),
+            ];
+      const feedback = visibilityFeedback({
+        command,
+        items,
+        results: [...resultsById.values()],
+        unknownIds: outcome.unknownIds,
+        unsentIds,
+      });
       setWorkspace(
         (previous) =>
           previous && {
             ...previous,
             ...outcome,
+            phase:
+              keepVisibilityConfirmation && feedback ? 'confirm' : 'result',
             checkFailed: mode === 'check' && outcome.unknownIds.length > 0,
-            unsentIds:
-              mode === 'check'
-                ? previous.unsentIds
-                : [
-                    ...new Set([
-                      ...previous.unsentIds.filter((id) => !ids.includes(id)),
-                      ...outcome.unsentIds,
-                    ]),
-                  ],
+            unsentIds,
           },
       );
       if (!outcome.unknownIds.length) {
         notifyLibraryChanged();
-        await onRefresh();
+        let refreshError: string | null = null;
+        try {
+          await onRefresh();
+        } catch (error) {
+          if (!feedback) throw error;
+          refreshError = error instanceof Error ? error.message : String(error);
+        }
+        if (feedback && !active.signal.aborted) {
+          setWorkspace(null);
+          setVisible(false);
+          focusSource();
+          toast.success(feedback.title, {
+            description:
+              refreshError !== null
+                ? `${feedback.description}。列表刷新失败：${refreshError}，请刷新页面。`
+                : feedback.description,
+          });
+        }
       }
     } catch (error) {
       if (active.signal.aborted) return;
@@ -234,6 +290,7 @@ export function useLibraryBatch({
         (previous) =>
           previous && {
             ...previous,
+            phase: 'result',
             checkFailed: mode === 'check',
             message: error instanceof Error ? error.message : String(error),
             unsentIds:
@@ -267,7 +324,6 @@ export function useLibraryBatch({
   return {
     workspace,
     returnLabel: currentAlbumId ? '返回相册内容' : '返回图库',
-    hasRemainingSelection: selection.selected.size > 0,
     targetReady,
     setTargetReady,
     showFailures,

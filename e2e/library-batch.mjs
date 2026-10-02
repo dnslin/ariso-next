@@ -3,6 +3,10 @@ const assert = (await import('node:assert/strict')).default;
 const { writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
+const { tagNameSchema } = await import(
+  new URL('../src/server/collections/validation.ts', config.libraryDetailScript)
+    .href
+);
 const {
   batchImageId,
   batchImageName,
@@ -19,6 +23,9 @@ const { signInToLibrary } = await import(
 );
 const { installBrowserErrors, assertNoBrowserErrors } = await import(
   config.errorsScript
+);
+const { verifyToastTextLayout } = await import(
+  new URL('./toast-layout.mjs', config.libraryDetailScript).href
 );
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
@@ -86,6 +93,33 @@ async function choose(index) {
 async function action(name, count) {
   await selected(count);
   await page.click(button(`操作已选 ${count} 张图片`));
+  await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
+  const actions = await page.evaluate(() =>
+    [...document.querySelectorAll('[role="menuitem"]')]
+      .filter((node) => node.getAttribute('aria-disabled') !== 'true')
+      .map((node) => node.textContent.trim()),
+  );
+  const index = actions.indexOf(name);
+  assert.ok(index >= 0, `The actual menu exposes an enabled ${name} action`);
+  for (let step = 0; step <= index; step++)
+    await page.keyboard.press(step === 0 ? 'Home' : 'ArrowDown');
+  await page.waitForFunction(
+    (name) =>
+      document.activeElement
+        ?.closest('[role="menuitem"]')
+        ?.textContent.trim() === name,
+    name,
+  );
+  const visible = await page.evaluate(() => {
+    const item = document.activeElement
+      .closest('[role="menuitem"]')
+      .getBoundingClientRect();
+    const popup = document
+      .querySelector('[data-slot="dropdown-popover"]')
+      .getBoundingClientRect();
+    return item.top >= popup.top && item.bottom <= popup.bottom;
+  });
+  assert.equal(visible, true, `The complete ${name} click target is visible`);
   await page.click(`loc=role:menuitem[name="${name}"]`);
   if (!['全选当前页', '全选已加载', '清空全部选择'].includes(name))
     await page.waitForSelector(batch);
@@ -131,9 +165,15 @@ async function done() {
     const result =
       document.querySelector(
         '[data-testid="batch-results"],[data-testid="batch-summary"]',
-      ) ||
-      workspace?.textContent.includes('图片已移入回收站') ||
-      workspace?.textContent.includes('失败项重试成功');
+      ) || workspace?.textContent.includes('图片已移入回收站');
+    if (!workspace)
+      return (
+        !!document.querySelector('[data-testid="library-list"]') &&
+        [...document.querySelectorAll('[data-slot="toast-title"]')].some(
+          (node) =>
+            ['批量设为公开完成', '批量设为私有完成'].includes(node.textContent),
+        )
+      );
     return (
       !!result &&
       (workspace?.getAttribute('aria-busy') === 'false' ||
@@ -357,6 +397,14 @@ async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
         assert.equal(unchecked.borderStyle, 'solid');
         layout.uncheckedControl = unchecked;
       }
+      if (
+        await page.evaluate(
+          () =>
+            document.querySelector('[data-testid="library-batch"]')?.dataset
+              .batchView === 'tag-choose',
+        )
+      )
+        layout.tags = await tagGeometry();
       report.layouts.push({ state, theme, ...layout });
       await shot(state, width, theme);
     }
@@ -407,7 +455,11 @@ async function expectResults(expected) {
         summary:
           document.querySelector('[data-testid="batch-summary"]')
             ?.textContent ??
-          document.querySelector('[data-testid="library-batch"]')?.textContent,
+          document.querySelector('[data-testid="library-batch"]')
+            ?.textContent ??
+          document.querySelector(
+            '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-description"]',
+          )?.textContent,
       }),
       status,
     );
@@ -429,12 +481,938 @@ async function expectResults(expected) {
   return actual;
 }
 
+async function tagGeometry() {
+  const geometry = await page.evaluate(() => {
+    const workspace = document.querySelector('[data-batch-view="tag-choose"]');
+    const grid = workspace.querySelector('[data-testid="batch-target-grid"]');
+    const footer = document.querySelector('[data-testid="batch-tag-footer"]');
+    const cancel = footer.querySelector('[data-testid="batch-cancel"]');
+    const submit = footer.querySelector('[data-testid="batch-submit"]');
+    const rect = (node) => node.getBoundingClientRect().toJSON();
+    return {
+      width: innerWidth,
+      height: innerHeight,
+      workspace: rect(workspace),
+      footer: rect(footer),
+      summary: footer.querySelector('p').textContent,
+      cancel: rect(cancel),
+      submit: rect(submit),
+      buttonGroup: rect(submit.parentElement),
+      columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+      context: [...workspace.querySelectorAll('img')].map((node) => ({
+        width: rect(node).width,
+        height: rect(node).height,
+        decorative: !!node.closest('[aria-hidden="true"]'),
+      })),
+      cards: [...grid.querySelectorAll('[data-target-id]')].map((node) => {
+        const label = node.querySelector('input').closest('label');
+        const name = label.querySelector('span.font-medium');
+        const fragments = [];
+        const walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
+        let text;
+        while ((text = walker.nextNode())) {
+          if (!text.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(text);
+          for (const fragment of range.getClientRects())
+            if (fragment.width && fragment.height)
+              fragments.push(fragment.toJSON());
+        }
+        return {
+          id: node.dataset.targetId,
+          rect: rect(label),
+          text: label.textContent,
+          nameFont: getComputedStyle(name).fontSize,
+          fragments,
+        };
+      }),
+    };
+  });
+  assert.ok(geometry.workspace.width <= 960);
+  assert.equal(
+    geometry.columns,
+    geometry.width >= 1024 ? 3 : geometry.width >= 640 ? 2 : 1,
+  );
+  assert.equal(geometry.cancel.width, 112);
+  assert.equal(geometry.cancel.height, 48);
+  assert.equal(geometry.submit.height, 48);
+  if (geometry.width >= 640) assert.equal(geometry.submit.width, 180);
+  else
+    assert.ok(
+      Math.abs(
+        geometry.submit.width +
+          geometry.cancel.width +
+          12 -
+          geometry.buttonGroup.width,
+      ) < 1,
+      'Mobile submit uses the space after the 112px cancel target',
+    );
+  assert.ok(
+    geometry.cancel.top >= 0 &&
+      geometry.submit.top >= 0 &&
+      geometry.cancel.bottom <= geometry.height &&
+      geometry.submit.bottom <= geometry.height,
+    'Both tag footer actions remain reachable',
+  );
+  for (const image of geometry.context) {
+    assert.equal(image.width, 48);
+    assert.equal(image.height, 48);
+    assert.equal(image.decorative, true);
+  }
+  for (const card of geometry.cards) {
+    assert.ok(card.rect.height >= 64);
+    assert.equal(card.nameFont, '14px');
+    assert.ok(card.text.includes(card.id));
+    assert.ok(!card.text.includes('创建于'));
+    for (const rect of card.fragments)
+      assert.ok(
+        rect.left >= card.rect.left - 1 &&
+          rect.right <= card.rect.right + 1 &&
+          rect.top >= card.rect.top - 1 &&
+          rect.bottom <= card.rect.bottom + 1,
+        'Every long tag name and ID fragment stays readable inside its real card',
+      );
+  }
+  return geometry;
+}
+async function verifyTagTargetReads(count) {
+  report.activeCheck = 'tag-target-loading-error-empty-retry';
+  const selectedTargets = async (disabled) => {
+    await page.waitForFunction(
+      (disabled) =>
+        document.querySelector('[data-testid="batch-submit"]').disabled ===
+        disabled,
+      disabled,
+    );
+    const state = await page.evaluate(() => ({
+      disabled: document.querySelector('[data-testid="batch-submit"]').disabled,
+      count: [...document.querySelectorAll('[role="status"]')].find((node) =>
+        /已选\s*2\s*个标签/.test(node.textContent),
+      )?.textContent,
+      footer: document.querySelector('[data-testid="batch-tag-footer"] p')
+        .textContent,
+    }));
+    assert.equal(state.disabled, disabled);
+    assert.ok(state.count, 'Target reads retain both explicit tag selections');
+    assert.match(
+      state.footer,
+      new RegExp(`${count}\\s*张图片\\s*×\\s*2\\s*个标签`),
+    );
+  };
+  await page.evaluate(() => {
+    const original = window.fetch;
+    window.__tagTargetRead = null;
+    window.__tagTargetRelease = null;
+    window.fetch = async (...args) => {
+      const url = new URL(String(args[0]), location.href);
+      if (url.pathname !== '/api/tags') return original(...args);
+      window.fetch = original;
+      const response = await original(...args);
+      window.__tagTargetRead = { url: url.href, status: response.status };
+      await new Promise((resolve) => {
+        window.__tagTargetRelease = resolve;
+      });
+      return response;
+    };
+  });
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 分页标签');
+  await page.waitForFunction(
+    () => typeof window.__tagTargetRelease === 'function',
+  );
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('[role="status"]')].some(
+      (node) =>
+        node.getClientRects().length &&
+        node.textContent.includes('正在读取标签目标'),
+    ),
+  );
+  await selectedTargets(true);
+  await layouts('tag-target-loading', [390, 1440]);
+  const held = await page.evaluate(() => window.__tagTargetRead);
+  assert.equal(
+    held.status,
+    200,
+    'Loading holds the successful real target response',
+  );
+  await page.evaluate(() => {
+    window.__tagTargetRelease();
+    window.__tagTargetRelease = null;
+  });
+  await page.waitForSelector('[data-target-id="issue177-page-tag-0"]');
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="batch-submit"]').disabled,
+  );
+  await selectedTargets(false);
+  await page.evaluate(() => {
+    const original = window.fetch;
+    window.__tagTargetRead = null;
+    window.fetch = async (...args) => {
+      const url = new URL(String(args[0]), location.href);
+      if (url.pathname !== '/api/tags') return original(...args);
+      window.fetch = original;
+      const response = await original(...args);
+      window.__tagTargetRead = {
+        url: url.href,
+        status: response.status,
+        discarded: true,
+      };
+      throw new TypeError('Verification: actual tag target read response lost');
+    };
+  });
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177');
+  await page.waitForSelector(
+    '[role="alert"]:has-text("actual tag target read response lost")',
+  );
+  await selectedTargets(true);
+  await layouts('tag-target-error', [390, 1440]);
+  const lost = await page.evaluate(() => window.__tagTargetRead);
+  assert.equal(
+    lost.status,
+    200,
+    'Error discards the real successful target response',
+  );
+  assert.equal(lost.discarded, true);
+  await page.click(button('重试读取目标'));
+  await page.waitForFunction(
+    () =>
+      ![...document.querySelectorAll('[role="alert"]')].some((node) =>
+        node.textContent.includes('目标读取失败'),
+      ) && !document.querySelector('[data-testid="batch-submit"]').disabled,
+  );
+  for (const id of batchTagIds) {
+    await page.waitForSelector(`[data-target-id="${id}"]`);
+    assert.equal(
+      await page.evaluate(
+        (id) =>
+          document.querySelector(`[data-target-id="${id}"] input`).checked,
+        id,
+      ),
+      true,
+    );
+  }
+  await selectedTargets(false);
+  await page.fill(
+    'input[aria-label="搜索目标标签"]',
+    'issue177-no-tag-target-exists',
+  );
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('[role="status"]')].some(
+      (node) =>
+        node.getClientRects().length &&
+        node.textContent.includes('没有匹配目标，请修改搜索条件。'),
+    ),
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelectorAll('[data-target-id]').length,
+    ),
+    0,
+  );
+  await selectedTargets(false);
+  await layouts('tag-target-empty', [390, 1440]);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签');
+  for (const id of batchTagIds) {
+    await page.waitForSelector(`[data-target-id="${id}"]`);
+    assert.equal(
+      await page.evaluate(
+        (id) =>
+          document.querySelector(`[data-target-id="${id}"] input`).checked,
+        id,
+      ),
+      true,
+    );
+  }
+  await selectedTargets(false);
+  report.tagTargetReads = { held, lost, selectedIds: batchTagIds };
+  report.checks.push(
+    'Real held/lost tag GET responses show loading/error with submission disabled and retain both selected tags; explicit retry restores actual checked targets. An actual empty search keeps the explicit command and original-query recovery preserves both IDs. Desktop/mobile light/dark screenshots cover all three states.',
+  );
+}
+
+async function verifyTagRetryAfterAlbumError() {
+  report.activeCheck = 'tag-retry-after-current-album-cache-error';
+  const albumPath = `/api/albums/${batchAlbumIds[0]}`;
+  await page.goto(
+    `${config.origin}/albums/${batchAlbumIds[0]}?q=issue177-000&pageSize=80&page=1`,
+  );
+  await loaded(1);
+  const sourceUrl = await page.url();
+  await choose(0);
+  await monitor();
+  await page.evaluate((albumPath) => {
+    const original = window.fetch;
+    window.__collectionReadRequests = [];
+    window.__collectionReadFault = albumPath;
+    window.fetch = async (...args) => {
+      const url = new URL(String(args[0]), location.href);
+      if (!/^\/api\/(?:albums|tags)(?:\/|$)/.test(url.pathname))
+        return original(...args);
+      const entry = {
+        path: url.pathname,
+        query: url.search,
+        method: args[1]?.method ?? 'GET',
+      };
+      window.__collectionReadRequests.push(entry);
+      const lost = window.__collectionReadFault === url.pathname;
+      if (lost) window.__collectionReadFault = null;
+      const response = await original(...args);
+      entry.status = response.status;
+      if (lost) {
+        entry.discarded = true;
+        throw new TypeError(
+          `Verification: actual collection read response lost ${url.pathname}`,
+        );
+      }
+      return response;
+    };
+  }, albumPath);
+  await action('从相册移除', 1);
+  await page.waitForSelector(
+    '[role="alert"]:has-text("actual collection read response lost")',
+  );
+  const albumReads = await page.evaluate(() => window.__collectionReadRequests);
+  assert.ok(
+    albumReads.some(
+      (entry) =>
+        entry.path === albumPath && entry.status === 200 && entry.discarded,
+    ),
+    'The current-album cache error comes from its discarded successful real GET',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('[data-testid="batch-submit"]').disabled,
+    ),
+    true,
+  );
+  await returnToLibrary();
+  await selected(1);
+  assert.equal(await page.url(), sourceUrl);
+  await action('添加标签', 1);
+  await page.waitForSelector(`[data-target-id="${batchTagIds[0]}"]`);
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelectorAll(
+          '[data-batch-view="tag-choose"] [role="alert"]',
+        ).length,
+    ),
+    0,
+    'The current-album cached error never appears as a tag-target error',
+  );
+  assert.equal(
+    await page.evaluate(
+      (albumId) => !!document.querySelector(`[data-target-id="${albumId}"]`),
+      batchAlbumIds[0],
+    ),
+    false,
+    'The cached album is not injected into actual tag targets',
+  );
+  await target(batchTagIds[0]);
+  await target(batchTagIds[1]);
+  await page.evaluate(() => {
+    window.__collectionReadFault = '/api/tags';
+  });
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签 A');
+  await page.waitForSelector(
+    '[role="alert"]:has-text("actual collection read response lost /api/tags")',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('[data-testid="batch-submit"]').disabled,
+    ),
+    true,
+  );
+  const tagErrorReads = await page.evaluate(
+    () => window.__collectionReadRequests,
+  );
+  assert.ok(
+    tagErrorReads.some(
+      (entry) =>
+        entry.path === '/api/tags' && entry.status === 200 && entry.discarded,
+    ),
+  );
+  await layouts('tag-album-cache-read-error', [390, 1440]);
+  await page.evaluate(() => {
+    window.__collectionReadRequests = [];
+  });
+  await page.click(button('重试读取目标'));
+  await page.waitForFunction(
+    () =>
+      ![...document.querySelectorAll('[role="alert"]')].some((node) =>
+        node.textContent.includes('目标读取失败'),
+      ) && !document.querySelector('[data-testid="batch-submit"]').disabled,
+  );
+  const retryReads = await page.evaluate(() => window.__collectionReadRequests);
+  report.tagAlbumCacheRetry = {
+    sourceUrl,
+    albumReads,
+    tagErrorReads,
+    retryReads,
+    selectedIds: batchTagIds,
+  };
+  assert.deepEqual(
+    retryReads.map((entry) => entry.path),
+    ['/api/tags'],
+    'Retrying tag targets never refetches the disabled cached current-album query',
+  );
+  assert.equal(retryReads[0].method, 'GET');
+  assert.equal(retryReads[0].status, 200);
+  assert.equal(
+    new URLSearchParams(retryReads[0].query).get('q'),
+    'Issue 177 标签 A',
+  );
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签');
+  for (const id of batchTagIds) {
+    await page.waitForSelector(`[data-target-id="${id}"]`);
+    assert.equal(
+      await page.evaluate(
+        (id) =>
+          document.querySelector(`[data-target-id="${id}"] input`).checked,
+        id,
+      ),
+      true,
+      'Tag retry retains both explicit choices despite an unrelated cached album error',
+    );
+  }
+  assert.deepEqual(
+    await traffic(),
+    [],
+    'Target reads, retry and cancellation never submit a batch mutation',
+  );
+  await page.click('[data-testid="batch-cancel"]');
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="library-batch"]'),
+  );
+  await selected(1);
+  assert.equal(await page.url(), sourceUrl);
+  await action('清空全部选择', 1);
+  await selected(0);
+  report.checks.push(
+    'On a real album route, a discarded successful current-album GET creates its query-cache error. Closing removal and opening tags hides the unrelated album error and identity; discarding a real tag GET and explicitly retrying fetches only tags, preserves both chosen IDs and sends no batch mutation.',
+  );
+}
+
+async function verifyTagTargets(indices = [0, 1, 2, 3]) {
+  report.activeCheck = 'compact-tag-selection-search-create-submit';
+  const ids = indices.map(batchImageId);
+  assert.deepEqual(
+    await sql(
+      `SELECT image_id,tag_id FROM image_tags WHERE image_id IN ('${ids.join("','")}')`,
+    ),
+    [],
+  );
+  const longId =
+    'issue177-tag-very-long-identifier-for-the-compact-layout-verification-177';
+  const { displayName: longName, normalizedKey: longKey } = tagNameSchema.parse(
+    'Issue 177 标签 这是一段需要完整读取并自然换行的很长标签名称用于手机与桌面验证',
+  );
+  await sql(
+    `INSERT INTO tags(id,display_name,normalized_key,created_at,updated_at) VALUES('${longId}','${longName}','${longKey}',1810000000001,1810000000001)`,
+  );
+  await visit();
+  const sourceUrl = await page.url();
+  for (const index of indices) await choose(index);
+  await action('添加标签', indices.length);
+  await page.waitForSelector('[data-batch-view="tag-choose"]');
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('[data-testid="batch-submit"]').disabled,
+    ),
+    true,
+  );
+  await page.waitForSelector(
+    '[data-testid="batch-target-grid"] [data-target-id]',
+  );
+  await layouts('tag-zero-target', [390, 1440]);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签');
+  await target(batchTagIds[0]);
+  await target(batchTagIds[1]);
+  await page.waitForSelector(`[data-target-id="${longId}"]`);
+  if (['feedback', 'tag-states'].includes(config.libraryBatchPhase))
+    await verifyTagTargetReads(indices.length);
+  await layouts('add-tags', [390, 430, 768, 1440]);
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelectorAll('[data-batch-view="tag-choose"] img').length,
+    ),
+    Math.min(ids.length, 3),
+  );
+  for (const width of [360, 390]) {
+    await resize(width, 600);
+    const geometry = await tagGeometry();
+    report.layouts.push({ state: 'tag-short', theme: 'dark', ...geometry });
+    await shot('tag-short', width, 'dark');
+  }
+  await page.click(button('标签操作说明'));
+  await page.waitForSelector('[data-testid="batch-tag-tips"]');
+  assert.ok(
+    await page.evaluate(() =>
+      document
+        .querySelector('[data-testid="batch-tag-tips"]')
+        .textContent.includes('任一标签失效'),
+    ),
+  );
+  await shot('tag-help', 390, 'dark');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[data-testid="batch-tag-tips"]', {
+    state: 'hidden',
+  });
+  assert.equal(
+    await page.evaluate(() =>
+      document.activeElement?.getAttribute('aria-label'),
+    ),
+    '标签操作说明',
+  );
+  await monitor();
+  await page.click('[data-testid="batch-cancel"]');
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="library-batch"]'),
+  );
+  await selected(indices.length);
+  assert.equal(
+    await page.url(),
+    sourceUrl,
+    'Cancelling tag target selection retains the original library page',
+  );
+  assert.deepEqual(
+    await traffic(),
+    [],
+    'Cancelling target selection never sends a batch request',
+  );
+  await action('添加标签', indices.length);
+  await target(batchTagIds[0]);
+  await target(batchTagIds[1]);
+  await resize(1440);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 分页标签');
+  await page.waitForSelector(
+    '[data-testid="batch-target-grid"] [data-target-id]',
+  );
+  await page.waitForFunction(() => {
+    const grid = document.querySelector('[data-testid="batch-target-grid"]');
+    const next = [...document.querySelectorAll('button')].find(
+      (node) => node.textContent === '下一页目标',
+    );
+    return (
+      !!grid?.querySelector('[data-target-id^="issue177-page-tag-"]') &&
+      next?.disabled === false
+    );
+  });
+  await page.click(button('下一页目标'));
+  await page.waitForFunction(() =>
+    document
+      .querySelector('[aria-label="目标分页"]')
+      ?.textContent.includes('2/2'),
+  );
+  const [last] = await sql(
+    "SELECT id FROM tags WHERE display_name LIKE 'Issue 177 分页标签%' ORDER BY created_at DESC,id ASC LIMIT 1 OFFSET 20",
+  );
+  await page.waitForSelector(`[data-target-id="${last.id}"]`);
+  await page.focus(`[data-target-id="${last.id}"] input`);
+  await page.keyboard.press('Space');
+  assert.equal(
+    await page.evaluate(
+      (id) => document.querySelector(`[data-target-id="${id}"] input`).checked,
+      last.id,
+    ),
+    true,
+  );
+  await page.keyboard.press('Space');
+  assert.equal(
+    await page.evaluate(
+      (id) => document.querySelector(`[data-target-id="${id}"] input`).checked,
+      last.id,
+    ),
+    false,
+  );
+  await layouts('tag-target-page-two', [390, 1440]);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签');
+  for (const id of batchTagIds) {
+    await page.waitForSelector(`[data-target-id="${id}"]`);
+    assert.equal(
+      await page.evaluate(
+        (id) =>
+          document.querySelector(`[data-target-id="${id}"] input`).checked,
+        id,
+      ),
+      true,
+    );
+  }
+  await page.click(button('新建标签'));
+  await page.waitForSelector('[data-testid="upload-create-tag"]');
+  await page.fill(
+    '[data-testid="upload-create-tag"] input',
+    'Issue 177 快建标签',
+  );
+  await resize(390);
+  await shot('quick-create', 390, 'dark');
+  await resize(1440);
+  await shot('quick-create', 1440, 'dark');
+  await page.click(button('创建标签'));
+  await page.waitForFunction(
+    () => !document.querySelector('[data-testid="upload-create-tag"]'),
+  );
+  const [createdTag] = await sql(
+    "SELECT id FROM tags WHERE display_name='Issue 177 快建标签'",
+  );
+  assert.ok(createdTag?.id);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 快建标签');
+  await page.waitForSelector(`[data-target-id="${createdTag.id}"]`);
+  assert.equal(
+    await page.evaluate(
+      (id) => document.querySelector(`[data-target-id="${id}"] input`).checked,
+      createdTag.id,
+    ),
+    true,
+  );
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="batch-tag-footer"] p')
+          .textContent,
+    ),
+    new RegExp(`${ids.length}\\s*张图片\\s*×\\s*3\\s*个标签`),
+  );
+  await monitor();
+  await page.click(submit);
+  await done();
+  await expectResults({ changed: ids.length });
+  const add = await traffic();
+  assert.equal(add.length, 1);
+  assert.deepEqual(add[0].request.ids, ids);
+  assert.deepEqual(add[0].request.command, {
+    type: 'add-tags',
+    tagIds: [...batchTagIds, createdTag.id],
+  });
+  assert.equal(
+    (
+      await sql(
+        `SELECT count(*) AS count FROM image_tags WHERE image_id IN ('${ids.join("','")}')`,
+      )
+    )[0].count,
+    ids.length * 3,
+  );
+  await returnToLibrary();
+  await visit();
+  for (const index of indices) await choose(index);
+  await action('移除标签', ids.length);
+  await page.waitForSelector(
+    '[data-testid="batch-target-grid"] [data-target-id]',
+  );
+  await layouts('remove-tags', [390, 1440]);
+  await target(batchTagIds[0]);
+  await target(batchTagIds[1]);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 快建标签');
+  await page.waitForSelector(`[data-target-id="${createdTag.id}"]`);
+  await target(createdTag.id);
+  await monitor();
+  await page.click(submit);
+  await done();
+  await expectResults({ changed: ids.length });
+  const remove = await traffic();
+  assert.equal(remove.length, 1);
+  assert.deepEqual(remove[0].request.command, {
+    type: 'remove-tags',
+    tagIds: [...batchTagIds, createdTag.id],
+  });
+  assert.deepEqual(remove[0].request.ids, ids);
+  assert.deepEqual(
+    await sql(
+      `SELECT image_id,tag_id FROM image_tags WHERE image_id IN ('${ids.join("','")}')`,
+    ),
+    [],
+  );
+  await returnToLibrary();
+  await sql(`DELETE FROM tags WHERE id='${longId}'`);
+  report.tagFeedback = {
+    ids,
+    add: add[0].request,
+    remove: remove[0].request,
+    createdTagId: createdTag.id,
+    longId,
+  };
+  report.checks.push(
+    'The approved compact tag chooser renders three/two/one readable columns with 64px cards and 48px context images, 48px natural footer actions, long names/IDs, 360/390×600 scrolling and real Escape/Space focus. Real target search and paging preserve explicit choices; quick creation persists and selects a real tag; add/remove submit the exact three target IDs and persist then remove every image relationship.',
+  );
+}
+
+async function observeVisibilitySubmit() {
+  await page.evaluate(() => {
+    window.__visibilityTransitions = [];
+    const record = () => {
+      const workspace = document.querySelector('[data-testid="library-batch"]');
+      const overview =
+        workspace?.dataset.batchView === 'overview' ||
+        !!workspace?.querySelector('[data-testid="batch-summary"]');
+      if (overview)
+        window.__visibilityTransitions.push({
+          overview: true,
+          title: workspace?.querySelector('h1')?.textContent,
+        });
+    };
+    window.__visibilityObserver = new MutationObserver(record);
+    window.__visibilityObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-batch-view', 'aria-busy'],
+    });
+    record();
+  });
+}
+async function readVisibilitySubmit() {
+  const transitions = await page.evaluate(() => {
+    window.__visibilityObserver.disconnect();
+    return window.__visibilityTransitions;
+  });
+  assert.deepEqual(
+    transitions,
+    [],
+    'Normal successful visibility work never flashes an overview before returning with Toast',
+  );
+  return transitions;
+}
+async function assertNoVisibilityToast() {
+  assert.equal(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[data-slot="toast-title"]')].some((node) =>
+        ['批量设为公开完成', '批量设为私有完成'].includes(node.textContent),
+      ),
+    ),
+    false,
+    'Failed, unknown and unsent work never announces completed visibility',
+  );
+}
+
+async function setTheme(theme) {
+  await page.cdp('Emulation.setEmulatedMedia', {
+    features: [
+      { name: 'prefers-color-scheme', value: theme },
+      { name: 'prefers-reduced-motion', value: 'reduce' },
+    ],
+  });
+  await page.waitForFunction(
+    (theme) => document.documentElement.classList.contains(theme),
+    theme,
+  );
+}
+async function visibilityToast(visibility, changed, unchanged, sourceUrl) {
+  const title = `批量设为${visibility === 'public' ? '公开' : '私有'}完成`;
+  const description = `${changed}张已修改 · ${unchanged}张无需修改`;
+  await page.waitForFunction(
+    ({ title, description }) => {
+      const toast = document.querySelector(
+        '[data-slot="toast"][data-frontmost="true"]',
+      );
+      return (
+        !document.querySelector('[data-testid="library-batch"]') &&
+        toast?.querySelector('[data-slot="toast-title"]')?.textContent ===
+          title &&
+        toast?.querySelector('[data-slot="toast-description"]')?.textContent ===
+          description
+      );
+    },
+    { title, description },
+  );
+  await page.hover('[data-slot="toast"][data-frontmost="true"]');
+  assert.equal(
+    await page.url(),
+    sourceUrl,
+    'Completed visibility work returns to the exact original route and page',
+  );
+  await selected(0);
+  return { title, description, sourceUrl };
+}
+async function toastLayouts(state, expected, widths = [390, 1440]) {
+  for (const theme of ['light', 'dark']) {
+    await setTheme(theme);
+    for (const width of widths) {
+      await resize(width);
+      await page.hover('[data-slot="toast"][data-frontmost="true"]');
+      const toast = await verifyToastTextLayout(page);
+      assert.ok(
+        toast,
+        'The real success Toast remains visible during the viewport comparison',
+      );
+      assert.equal(toast.title, expected.title);
+      const rendered = await page.evaluate(() => {
+        const toast = document.querySelector(
+          '[data-slot="toast"][data-frontmost="true"]',
+        );
+        const node = toast.querySelector('[data-slot="toast-description"]');
+        const rect = toast.getBoundingClientRect();
+        const close = toast
+          .querySelector('[data-slot="toast-close"]')
+          .getBoundingClientRect();
+        const fragments = [];
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+        let text;
+        while ((text = walker.nextNode())) {
+          const range = document.createRange();
+          range.selectNodeContents(text);
+          for (const fragment of range.getClientRects())
+            if (fragment.width && fragment.height)
+              fragments.push(fragment.toJSON());
+        }
+        return {
+          description: node.textContent,
+          rect: rect.toJSON(),
+          close: close.toJSON(),
+          fragments,
+          workspace: !!document.querySelector('[data-testid="library-batch"]'),
+          documentWidth: document.documentElement.scrollWidth,
+          width: innerWidth,
+        };
+      });
+      assert.equal(rendered.description, expected.description);
+      assert.equal(rendered.workspace, false);
+      assert.ok(rendered.documentWidth <= width);
+      assert.ok(rendered.rect.left >= 0 && rendered.rect.right <= width);
+      assert.ok(rendered.close.width >= 44 && rendered.close.height >= 44);
+      assert.ok(rendered.fragments.length > 0);
+      for (const rect of rendered.fragments) {
+        assert.ok(
+          rect.left >= rendered.rect.left - 1 &&
+            rect.right <= rendered.rect.right + 1 &&
+            rect.top >= rendered.rect.top - 1 &&
+            rect.bottom <= rendered.rect.bottom + 1,
+          'Every actual Toast description line fits its surface',
+        );
+        assert.equal(
+          rect.left < rendered.close.right &&
+            rect.right > rendered.close.left &&
+            rect.top < rendered.close.bottom &&
+            rect.bottom > rendered.close.top,
+          false,
+          'The close target does not cover the actual changed/unchanged text',
+        );
+      }
+      report.layouts.push({
+        state,
+        theme,
+        width,
+        toast,
+        description: rendered,
+      });
+      await shot(state, width, theme);
+    }
+  }
+  await page.focus(
+    '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+  );
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(
+    (title) =>
+      ![...document.querySelectorAll('[data-slot="toast-title"]')].some(
+        (node) => node.textContent === title,
+      ),
+    expected.title,
+  );
+  await resize(1440);
+}
+async function verifyVisibilitySuccess() {
+  report.visibilitySuccess = [];
+  const ids = [batchImageId(80), batchImageId(81)];
+  for (const visibility of ['public', 'private']) {
+    report.activeCheck = `${visibility}-changed-unchanged-toast`;
+    const inverse = visibility === 'public' ? 'private' : 'public';
+    await sql(
+      `UPDATE media_images SET visibility='${visibility}' WHERE id='${ids[0]}'`,
+    );
+    await sql(
+      `UPDATE media_images SET visibility='${inverse}' WHERE id='${ids[1]}'`,
+    );
+    const added = [];
+    if (visibility === 'public') {
+      await page.goto(
+        `${config.origin}/library?q=issue177-&pageSize=80&page=2`,
+      );
+      await loaded(80);
+    } else {
+      for (const id of ids) {
+        const existing = await sql(
+          `SELECT image_id FROM album_images WHERE album_id='${batchAlbumIds[0]}' AND image_id='${id}'`,
+        );
+        if (!existing.length) {
+          await sql(
+            `INSERT INTO album_images(album_id,image_id,joined_at) VALUES('${batchAlbumIds[0]}','${id}',1712345678901)`,
+          );
+          added.push(id);
+        }
+      }
+      await page.goto(
+        `${config.origin}/albums/${batchAlbumIds[0]}?q=issue177-08&pageSize=80&page=1`,
+      );
+      // Existing full-suite relationships may also include 082–089.
+      const rows = await sql(
+        `SELECT count(*) AS count FROM album_images WHERE album_id='${batchAlbumIds[0]}' AND image_id LIKE 'issue177-08%'`,
+      );
+      await loaded(rows[0].count);
+    }
+    const sourceUrl = await page.url();
+    await choose(80);
+    await choose(81);
+    await action(visibility === 'public' ? '设为公开' : '设为私有', 2);
+    await observeVisibilitySubmit();
+    await monitor('hold');
+    await page.click(submit);
+    await page.waitForFunction(
+      () => typeof window.__batchRelease === 'function',
+    );
+    const pending = await page.evaluate(() => ({
+      dialog: !!document.querySelector(
+        '[role="dialog"][data-testid="library-batch"]',
+      ),
+      disabled: document.querySelector('[data-testid="batch-submit"]')
+        ?.disabled,
+      text: document.querySelector('[data-testid="batch-submit"]')?.textContent,
+    }));
+    assert.equal(pending.dialog, true);
+    assert.equal(pending.disabled, true);
+    assert.ok(pending.text.includes('正在设置'));
+    await page.evaluate(() => window.__batchRelease());
+    await done();
+    const transitions = await readVisibilitySubmit();
+    await expectResults({ changed: 1, unchanged: 1 });
+    const sent = await traffic();
+    assert.equal(sent.length, 1);
+    assert.deepEqual(sent[0].request.ids, ids);
+    assert.deepEqual(sent[0].request.command, {
+      type: 'visibility',
+      visibility,
+    });
+    const toast = await visibilityToast(visibility, 1, 1, sourceUrl);
+    assert.deepEqual(
+      await sql(
+        `SELECT id,visibility FROM media_images WHERE id IN ('${ids.join("','")}') ORDER BY id`,
+      ),
+      ids.map((id) => ({ id, visibility })),
+    );
+    await toastLayouts(`${visibility}-success-toast`, toast);
+    report.visibilitySuccess.push({
+      visibility,
+      ids,
+      toast,
+      results: sent[0].response.results,
+      pending,
+      transitions,
+    });
+    for (const id of added)
+      await sql(
+        `DELETE FROM album_images WHERE album_id='${batchAlbumIds[0]}' AND image_id='${id}'`,
+      );
+  }
+  report.checks.push(
+    'Real public/private writes report one changed and one unchanged item in the native success Toast, clear actual selection, retain the exact original library page or album route, and render readable 44px feedback in desktop/mobile light/dark themes.',
+  );
+}
+
 async function verifyVisibilityFailures() {
   const ids = [batchImageId(0), batchImageId(1), batchImageId(80)];
   const failedIds = ids.slice(1);
   report.visibilityFailures = [];
   for (const visibility of ['public', 'private']) {
-    report.activeCheck = `${visibility}-cross-page-failures-and-success-modal`;
+    report.activeCheck = `${visibility}-cross-page-failures-and-success-toast`;
     const original = visibility === 'public' ? 'private' : 'public';
     await sql(
       `UPDATE media_images SET visibility = '${original}' WHERE id IN ('${ids.join("','")}')`,
@@ -446,6 +1424,7 @@ async function verifyVisibilityFailures() {
     await loaded(80);
     await choose(80);
     await selected(3);
+    const sourceUrl = await page.url();
     await action(visibility === 'public' ? '设为公开' : '设为私有', 3);
     await sql(
       `CREATE TRIGGER issue177_visibility_failure BEFORE UPDATE OF visibility ON media_images WHEN OLD.id IN ('${failedIds.join("','")}') AND NEW.visibility = '${visibility}' BEGIN SELECT RAISE(ABORT, 'Issue 177 real per-image visibility write failure'); END`,
@@ -454,6 +1433,7 @@ async function verifyVisibilityFailures() {
     await page.click(submit);
     await done();
     const results = await expectResults({ changed: 1, failed: 2 });
+    await assertNoVisibilityToast();
     const failures = results.filter((row) => row.status === 'failed');
     const initial = await traffic();
     assert.equal(initial.length, 1);
@@ -602,48 +1582,8 @@ async function verifyVisibilityFailures() {
       finalVisibility,
       ids.map((id) => ({ id, visibility })),
     );
-    const modal = await page.evaluate(() => {
-      const dialog = document.querySelector(
-        '[role="dialog"][data-testid="library-batch"]',
-      );
-      return dialog
-        ? {
-            view: dialog.dataset.batchView,
-            heading: dialog
-              .querySelector('[data-slot="modal-heading"]')
-              ?.textContent.replace(/\s+/g, ''),
-            text: dialog.textContent,
-            buttons: [...dialog.querySelectorAll('button')].map((node) => ({
-              name: node.textContent.trim(),
-              height: node.getBoundingClientRect().height,
-              disabled: node.disabled,
-            })),
-            inlineSummary: !!document.querySelector(
-              '[data-testid="batch-summary"]',
-            ),
-            inlineRows: document.querySelectorAll('[data-batch-result-id]')
-              .length,
-          }
-        : null;
-    });
-    assert.ok(modal, 'Successful failed-item retry opens the short real Modal');
-    assert.equal(modal.view, 'retry-success');
-    assert.equal(
-      modal.heading,
-      `2张图片已设为${visibility === 'public' ? '公开' : '私有'}`,
-    );
-    assert.ok(modal.text.includes('失败项重试成功'));
-    assert.ok(modal.text.includes('本次选择已清空'));
-    assert.deepEqual(
-      modal.buttons,
-      [{ name: '返回图库', height: 48, disabled: false }],
-      'Retry success exposes one 48px return action',
-    );
-    assert.equal(modal.inlineSummary, false);
-    assert.equal(modal.inlineRows, 0);
-    await layouts(`${visibility}-retry-success`, [390, 1440]);
-    await returnToLibrary();
-    await selected(0);
+    const toast = await visibilityToast(visibility, 2, 0, sourceUrl);
+    await toastLayouts(`${visibility}-retry-success-toast`, toast);
     report.visibilityFailures.push({
       visibility,
       ids,
@@ -656,11 +1596,11 @@ async function verifyVisibilityFailures() {
         mode: entry.request.mode,
         statuses: entry.response.results.map((row) => row.status),
       })),
-      modal,
+      toast,
     });
   }
   report.checks.push(
-    'Actual public/private UPDATE failures return one committed image and two retained failures across pages; viewing the dedicated retained page performs no request and shows an actual failed sample, one current-page/one other-page failure and actual causes; explicit retry sends only failed IDs, persists all three target visibility values, opens the single-return success Modal and clears the real selection.',
+    'Actual public/private UPDATE failures return one committed image and two retained failures across pages; viewing the dedicated retained page performs no request and shows an actual failed sample, one current-page/one other-page failure and actual causes; explicit retry sends only failed IDs, persists all three target visibility values, returns to the exact original page with a native two-changed success Toast and clears the real selection.',
   );
 }
 
@@ -714,7 +1654,9 @@ try {
   ));
   await resize(1440);
 
-  if (config.libraryBatchPhase !== 'visibility') {
+  if (
+    !['visibility', 'feedback', 'tag-states'].includes(config.libraryBatchPhase)
+  ) {
     report.activeCheck = 'target-selection-and-responsive';
     await visit();
     for (const index of [0, 1, 2, 3]) await choose(index);
@@ -1195,72 +2137,7 @@ try {
         [],
       );
       await returnToLibrary();
-      await pickFirstTwo('添加标签');
-      await target(batchTagIds[0]);
-      await target(batchTagIds[1]);
-      await layouts('add-tags', [390, 1440]);
-      await page.click(button('新建标签'));
-      await page.waitForSelector('[data-testid="upload-create-tag"]');
-      await page.fill(
-        '[data-testid="upload-create-tag"] input',
-        'Issue 177 快建标签',
-      );
-      await resize(390);
-      await shot('quick-create', 390, 'dark');
-      await resize(1440);
-      await shot('quick-create', 1440, 'dark');
-      await page.click(button('创建标签'));
-      await page.waitForFunction(
-        () => !document.querySelector('[data-testid="upload-create-tag"]'),
-      );
-      const [createdTag] = await sql(
-        "SELECT id FROM tags WHERE display_name = 'Issue 177 快建标签'",
-      );
-      assert.ok(
-        createdTag?.id,
-        'Quick creation persists a real tag before referencing it',
-      );
-      await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 快建标签');
-      await page.waitForSelector(`[data-target-id="${createdTag.id}"]`);
-      assert.equal(
-        await page.evaluate(
-          (id) =>
-            document.querySelector(`[data-target-id="${id}"] input`).checked,
-          createdTag.id,
-        ),
-        true,
-        'The created real tag is automatically selected',
-      );
-      await monitor();
-      await page.click(submit);
-      await done();
-      await expectResults({ changed: 2 });
-      assert.equal(
-        (
-          await sql(
-            `SELECT count(*) AS count FROM image_tags WHERE image_id IN ('${batchImageId(0)}','${batchImageId(1)}')`,
-          )
-        )[0].count,
-        6,
-      );
-      await returnToLibrary();
-      await pickFirstTwo('移除标签');
-      await target(batchTagIds[0]);
-      await target(batchTagIds[1]);
-      await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 快建标签');
-      await page.waitForSelector(`[data-target-id="${createdTag.id}"]`);
-      await target(createdTag.id);
-      await monitor();
-      await page.click(submit);
-      await done();
-      await expectResults({ changed: 2 });
-      assert.deepEqual(
-        await sql(
-          `SELECT * FROM image_tags WHERE image_id IN ('${batchImageId(0)}','${batchImageId(1)}')`,
-        ),
-        [],
-      );
-      await returnToLibrary();
+      await verifyTagTargets([0, 1]);
       await page.goto(
         `${config.origin}/albums/${batchAlbumIds[0]}?pageSize=80&page=1`,
       );
@@ -1374,6 +2251,7 @@ try {
         'private',
         'The unsent final image is unchanged',
       );
+      await assertNoVisibilityToast();
       await layouts('unknown', [390, 1440]);
       await page.evaluate(() => {
         window.__batchFault = 'check-lose';
@@ -1387,6 +2265,7 @@ try {
             .querySelector('[data-testid="batch-check"]')
             ?.textContent.includes('再次核对'),
       );
+      await assertNoVisibilityToast();
       await layouts('check-failed', [390, 1440]);
       sent = await traffic();
       assert.deepEqual(
@@ -1416,6 +2295,7 @@ try {
         true,
         'Check preserves the single unsent image',
       );
+      await assertNoVisibilityToast();
       await page.waitForSelector('[data-testid="batch-retry"]');
       assert.equal(
         await page.evaluate(
@@ -1424,6 +2304,7 @@ try {
         false,
         'The unsent image has an explicit continuation action',
       );
+      const continuedSourceUrl = await page.url();
       await page.click('[data-testid="batch-retry"]');
       await done();
       sent = await traffic();
@@ -1444,43 +2325,37 @@ try {
         )[0].count,
         201,
       );
-      const continuedView = await page.evaluate(() => ({
-        summary: document
-          .querySelector('[data-testid="batch-summary"]')
-          ?.textContent.replace(/\s+/g, ' ')
-          .trim(),
-        name: document
-          .querySelector('[data-testid="library-batch"]')
-          ?.textContent.includes('issue177-200.png'),
-      }));
-      assert.equal(
-        continuedView.summary,
-        '1张 · 1张已修改 · 0张无需修改 · 0张失败',
-        'Continuation summary describes only the final one-image attempt',
-      );
-      assert.equal(
-        continuedView.name,
-        true,
-        'Continuation displays the actual last image instead of the previous chunk sample',
+      const continuedView = await visibilityToast(
+        'public',
+        1,
+        0,
+        continuedSourceUrl,
       );
       report.continuedView = continuedView;
-      await layouts('public-summary', [390, 1440]);
+      await toastLayouts('public-continued-toast', continuedView);
       report.lostResponse = {
         applied: 200,
         checked: 200,
         explicitlyContinued: sent[3].request.ids,
         modes: sent.map((entry) => entry.request.mode),
       };
-      await returnToLibrary();
       await selected(0);
       await pickFirstTwo('设为私有');
+      const privateSourceUrl = await page.url();
       await layouts('private-confirm', [390, 1440]);
+      await observeVisibilitySubmit();
       await monitor();
       await page.click(submit);
       await done();
+      await readVisibilitySubmit();
       await expectResults({ changed: 2 });
-      await layouts('private-summary', [390, 1440]);
-      await returnToLibrary();
+      const privateToast = await visibilityToast(
+        'private',
+        2,
+        0,
+        privateSourceUrl,
+      );
+      await toastLayouts('private-two-changed-toast', privateToast);
       assert.deepEqual(
         (
           await sql(
@@ -1493,6 +2368,7 @@ try {
         'Discarding the real committed first 200-image public response stops the final unsent item; check reads only the 200 unknown IDs; explicit continuation writes only the last ID; private action only changes visibility.',
       );
 
+      await verifyVisibilitySuccess();
       await verifyVisibilityFailures();
       report.activeCheck = 'trash-restore-preserves-surviving-data';
       const joinedAt = 1712345678901;
@@ -1645,8 +2521,14 @@ try {
       );
     }
   }
-  if (config.libraryBatchPhase === 'visibility')
+  if (['visibility', 'feedback'].includes(config.libraryBatchPhase)) {
+    await verifyVisibilitySuccess();
     await verifyVisibilityFailures();
+  }
+  if (['feedback', 'tag-states'].includes(config.libraryBatchPhase)) {
+    await verifyTagTargets();
+    await verifyTagRetryAfterAlbumError();
+  }
   const sessionResponses = await page.evaluate(
     (key) => JSON.parse(sessionStorage.getItem(key) ?? '[]'),
     sessionEvidenceKey,
@@ -1669,6 +2551,10 @@ try {
   }
   throw error;
 } finally {
+  await page.evaluate(() => {
+    window.__visibilityObserver?.disconnect();
+    window.__tagTargetRelease?.();
+  });
   if (fixture) await cleanLibraryBatch(sql, fixture);
   if (savedPreference !== undefined)
     await page.evaluate(
