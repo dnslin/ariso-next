@@ -2,6 +2,8 @@
 
 2026-10-02，T-LIB-07 / R-15.5-01 / LIBRARY-QUERY。依据 [SPEC-library §6](../../specs/SPEC-library.md#6-大图查看)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。本记录维护一次证据；PR 链接同一记录，不复制规则。
 
+已提交并推送 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。代码审计通过，本次已反馈设计偏差已修复；两项范围外检查失败、全屏位置批准及最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。
+
 ## 范围与前置
 
 [Issue #185](https://github.com/dnslin/ariso-next/issues/185) 没有评论。通过 `gh api` 读取原生 blocked_by：#173、#171、#75、#131 均 CLOSED；blocking 为尚未实施的匿名查看器 #193。原始回读见 [Issue](./github.json)、[前置](./prerequisites.json)、[消费关系](./consumers.json)。本次无前置阻塞，不实施匿名分享。
@@ -87,4 +89,6 @@ pnpm exec vitest run --project integration --project media-tools tests/integrati
 
 已准备[独立本地验收环境](http://ariso-185-62014.localhost:62014/library)，Ego Lite同一空间的p1已登录，并从列表打开大图，保留当前查询上下文。数据位于 `/private/tmp/ariso-185-preview-F6s53v/data`，仅含本次独立样本和真实验收上传，未使用用户预览数据库；本地服务不是部署。请在Ego窗口核对整体界面与关闭左侧的44px全屏入口。尚未收到人工批准，不将此环境已打开记为验收通过。
 
-匿名分享查看器由 T-SHR-04 / #193 承接。物理手机、Safari系统全屏、软键盘、刘海安全区未实测；AMD64/ARM64镜像与容器验证仅Release流程执行，本次没有触发Release、发布镜像或部署。PR创建后核对真实远端检查，空列表只记为没有远端检查。
+匿名分享查看器由 T-SHR-04 / #193 承接。查看器打开期间的真实会话过期只完成源码边界和接口错误单测，未单独取得浏览器场景，不冒充实测。物理手机、Safari系统全屏、软键盘、刘海安全区未实测；AMD64/ARM64镜像与容器验证仅Release流程执行，本次没有触发Release、发布镜像或部署。
+
+创建PR后已运行 `gh pr view 229 --repo dnslin/ariso-next --json number,url,state,isDraft,baseRefName,headRefName,statusCheckRollup` 和 `gh pr checks 229 --repo dnslin/ariso-next`。PR为OPEN / Draft，目标main、源分支正确，statusCheckRollup为空；checks返回“no checks reported”，退出1表示没有可列出的检查。见[PR回读](./pr.json)、[检查输出](./checks/pr-checks.txt)。按实际仓库策略没有远端PR检查，不记CI通过，也不等待或新增工作流。
