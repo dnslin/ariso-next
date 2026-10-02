@@ -8,6 +8,7 @@ import { RadioGroup } from '@heroui/react/radio-group';
 import { useEffect, useRef } from 'react';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailIdentity } from './detail-workspace';
+import { DetailReturn, DetailTip } from './detail-controls';
 import { processingLabels, versionLabels } from './detail-labels';
 import type { useDetailReprocess } from './use-detail-reprocess';
 import type { useDetailQuery } from './use-detail-query';
@@ -38,6 +39,11 @@ export function DetailReprocess({
   onReturn: () => void;
 }) {
   const failed = detail.processingStatus === 'failed';
+  const commonReason = scopes.every(
+    (scope) => detail.reprocess.scopes[scope] === detail.reprocess.scopes.all,
+  )
+    ? detail.reprocess.scopes.all
+    : null;
   const job = state.receipt ? receiptJob(detail, state.receipt) : null;
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -69,27 +75,36 @@ export function DetailReprocess({
         <div className="absolute top-[476px] -left-[90px] size-65 rounded-full bg-accent/15 blur-[90px] xl:top-[700px] xl:-left-3 xl:size-115" />
         <div className="absolute top-4 left-45 size-65 rounded-full bg-default/35 blur-[90px] xl:top-20 xl:left-[668px] xl:size-115" />
       </div>
-      <Button
-        variant="ghost"
-        className="-my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted"
-        onPress={state.confirmed ? state.reset : onReturn}
-      >
-        {state.confirmed ? '← 重新选择范围' : '← 返回图片详情'}
-      </Button>
-      <h1
-        ref={heading}
-        data-testid="detail-workspace-title"
-        tabIndex={-1}
-        className="text-2xl font-normal leading-[37px] xl:text-[30px] xl:leading-[47px]"
-      >
-        {state.receipt
-          ? '重新处理已排队'
-          : state.confirmed
-            ? '确认处理范围'
-            : failed
-              ? '重试首次处理失败'
-              : '重新处理这张图片'}
-      </h1>
+      <DetailReturn onPress={state.confirmed ? state.reset : onReturn}>
+        {state.confirmed ? '重新选择范围' : '返回图片详情'}
+      </DetailReturn>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+        <h1
+          ref={heading}
+          data-testid="detail-workspace-title"
+          tabIndex={-1}
+          className="text-2xl font-normal leading-[37px] xl:text-[30px] xl:leading-[47px]"
+        >
+          {state.receipt
+            ? '重新处理已排队'
+            : state.confirmed
+              ? '确认处理范围'
+              : failed
+                ? '重试首次处理失败'
+                : '重新处理这张图片'}
+        </h1>
+        <DetailTip label="处理说明">
+          <p>
+            {failed
+              ? '按最新设置重试，保留图片 ID、原图和已保存版本。'
+              : '按提交时的最新设置处理。所选新版本全部成功后一起替换，旧版本在处理期间继续可用。'}
+          </p>
+          <p>关闭处理开关不会删除或隐藏已有压缩图、水印图。</p>
+          {state.receipt ? (
+            <p>提交时的最新设置已记录，之后修改设置不影响本任务。</p>
+          ) : null}
+        </DetailTip>
+      </div>
       <DetailIdentity detail={detail} reprocess />
       {state.receipt ? (
         <>
@@ -100,7 +115,7 @@ export function DetailReprocess({
           >
             {processingLabels[detail.processingStatus]} · 任务已受理
           </p>
-          <div className="rounded-[10px] bg-default px-3 py-2.5 text-[13px] leading-5">
+          <div className="max-w-160 rounded-lg bg-default px-3 py-2.5 text-[13px] leading-5">
             <p>任务范围：{scopeLabels[state.receipt.scope]}</p>
             <p>
               本次应生成：
@@ -108,21 +123,17 @@ export function DetailReprocess({
                 .map((kind) => versionLabels[kind])
                 .join('、')}
             </p>
-            <p>提交时的最新设置已记录，之后修改设置不影响本任务。</p>
             {!job ? (
               <p>最后已知状态：已排队，尚未读取到本任务的最新状态。</p>
             ) : null}
           </div>
-          <p className="text-sm leading-[22px]">
-            当前已保存版本继续可用。所选新版本全部成功后一起替换。
-          </p>
         </>
       ) : state.confirmed ? (
         <>
           <p className="text-lg leading-7">
             本次范围：{scopeLabels[state.scope]}
           </p>
-          <div className="rounded-[10px] bg-default px-3 py-2.5 text-[13px] leading-5">
+          <div className="max-w-160 rounded-lg bg-default px-3 py-2.5 text-[13px] leading-5">
             <p>
               {state.scope === 'watermark'
                 ? '只替换水印图，当前压缩图与缩略图保持不变。'
@@ -136,9 +147,6 @@ export function DetailReprocess({
               </p>
             ) : null}
           </div>
-          <p className="text-sm leading-[22px] text-muted">
-            提交时记录最新设置。当前已保存版本继续可用，直到新结果成功。
-          </p>
         </>
       ) : (
         <>
@@ -153,32 +161,40 @@ export function DetailReprocess({
                   ? '当前图片可用'
                   : processingLabels[detail.processingStatus]}
           </p>
-          <div className="rounded-[10px] bg-default px-3 py-2.5 text-[13px] leading-5">
-            {failed
-              ? '首次失败只允许全部派生。按最新设置重试，保留图片 ID、原图和已保存版本。'
-              : '按提交时的最新设置处理。所选新版本全部成功后一起替换，旧版本在处理期间继续可用。'}
-          </div>
+          {failed ? (
+            <p className="text-[13px] leading-5 text-muted">
+              首次失败仅支持全部派生重试。
+            </p>
+          ) : null}
           <RadioGroup
             aria-label="处理范围"
             value={state.scope}
             onChange={(value) => state.choose(value as ReprocessScope)}
             isDisabled={state.pending || query.isFetching}
-            className="gap-2"
+            className="grid w-full max-w-160 grid-cols-1 gap-3 md:grid-cols-2"
           >
+            {commonReason ? (
+              <Description
+                data-testid="reprocess-scope-unavailable"
+                className="col-span-full text-[13px] leading-5 text-muted"
+              >
+                {commonReason}
+              </Description>
+            ) : null}
             {scopes.map((scope) => (
               <Radio
                 key={scope}
                 value={scope}
                 isDisabled={!!detail.reprocess.scopes[scope]}
-                className="group mt-0 gap-2 data-[disabled=true]:opacity-100"
+                className="group mt-0 min-w-0 gap-1.5 data-[disabled=true]:opacity-100"
               >
                 <Radio.Content
                   data-testid={`reprocess-scope-${scope}`}
-                  className="h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background px-3 text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus"
+                  className={`min-h-14 w-full justify-start gap-3 rounded-lg border px-4 py-3 text-sm font-normal transition-colors motion-reduce:transition-none group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus ${state.scope === scope ? 'border-foreground/30 bg-default' : 'border-border bg-background data-[hovered=true]:border-foreground/25 data-[hovered=true]:bg-default/40'}`}
                 >
-                  <span aria-hidden="true">
-                    {state.scope === scope ? '●' : '○'}
-                  </span>
+                  <Radio.Control>
+                    <Radio.Indicator />
+                  </Radio.Control>
                   {scopeLabels[scope]}
                   {detail.reprocess.scopes[scope]
                     ? ' · 不可选'
@@ -186,16 +202,7 @@ export function DetailReprocess({
                       ? ' · 已选'
                       : ''}
                 </Radio.Content>
-                {scope === 'all' ? (
-                  <Description className="ps-0 text-[13px] leading-5 text-muted opacity-100">
-                    本次将更新：
-                    {detail.reprocess.expectedVersions
-                      .map((kind) => versionLabels[kind])
-                      .join('、')}
-                    。
-                  </Description>
-                ) : null}
-                {detail.reprocess.scopes[scope] ? (
+                {detail.reprocess.scopes[scope] && !commonReason ? (
                   <Description className="ps-0 text-xs leading-[19px] text-muted opacity-100">
                     {detail.reprocess.scopes[scope]}
                   </Description>
@@ -203,13 +210,14 @@ export function DetailReprocess({
               </Radio>
             ))}
           </RadioGroup>
-          {detail.processingStatus === 'ready' &&
-          (!detail.reprocess.compressionEnabled ||
-            !detail.reprocess.watermarkEnabled) ? (
-            <p className="text-[13px] leading-5 text-muted">
-              关闭开关不会删除或隐藏已有压缩图、水印图。
-            </p>
-          ) : null}
+          <p className="text-[13px] leading-5 text-muted">
+            本次将更新：
+            {state.scope === 'all'
+              ? detail.reprocess.expectedVersions
+                  .map((kind) => versionLabels[kind])
+                  .join('、')
+              : versionLabels[state.scope]}
+          </p>
           {!detail.reprocess.compressionEnabled &&
           detail.reprocess.watermarkEnabled &&
           !failed ? (
@@ -217,7 +225,7 @@ export function DetailReprocess({
               <Button
                 variant="outline"
                 isDisabled
-                className="h-11 w-full rounded-lg"
+                className="h-11 w-fit rounded-lg"
               >
                 去设置开启压缩
               </Button>
@@ -309,10 +317,10 @@ export function DetailReprocessFooter({
     );
   }
   return (
-    <div className="grid w-full grid-cols-2 gap-3">
+    <div className="grid w-full grid-cols-2 gap-3 xl:w-auto xl:grid-cols-[200px_200px]">
       <Button
         variant="outline"
-        className="h-11 w-full rounded-lg"
+        className="h-12 w-full rounded-lg"
         isDisabled={state.pending}
         onPress={state.confirmed && !state.receipt ? state.reset : onReturn}
       >
@@ -321,14 +329,14 @@ export function DetailReprocessFooter({
       {state.receipt ? (
         <Button
           variant="outline"
-          className="h-11 w-full rounded-lg"
+          className="h-12 w-full rounded-lg"
           onPress={state.reset}
         >
           返回处理范围
         </Button>
       ) : (
         <Button
-          className="h-11 w-full rounded-lg"
+          className="h-12 w-full rounded-lg"
           data-testid="reprocess-submit"
           isDisabled={
             !detail ||

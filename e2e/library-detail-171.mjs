@@ -2,6 +2,105 @@ import assert from 'node:assert/strict';
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+async function verifyDetailControls(page, { tip, returnText, explanation }) {
+  const returned = '[data-testid="detail-return"]';
+  await page.focus(returned);
+  await page.hover(returned);
+  const returnState = await page.evaluate(() => {
+    const node = document.querySelector('[data-testid="detail-return"]');
+    const rect = node.getBoundingClientRect();
+    return {
+      text: node.textContent.trim(),
+      icon: !!node.querySelector('svg[aria-hidden="true"]'),
+      focused: document.activeElement === node,
+      background: getComputedStyle(node).backgroundColor,
+      width: rect.width,
+      height: rect.height,
+    };
+  });
+  assert.equal(returnState.text, returnText);
+  assert.equal(returnState.text.includes('←'), false);
+  assert.equal(returnState.icon, true);
+  assert.equal(
+    returnState.focused,
+    true,
+    'Hover preserves return-control focus',
+  );
+  assert.equal(returnState.background, 'rgba(0, 0, 0, 0)');
+  assert.ok(returnState.width >= 44 && returnState.height >= 44);
+  if (!tip) return;
+
+  const trigger = `loc=role:button[name="查看${tip}"]`;
+  const dialog = `loc=role:dialog[name="${tip}"]`;
+  const assertClosed = async () => {
+    await page.waitForSelector(dialog, { state: 'hidden' });
+    await page.waitForFunction(
+      (text) => !document.body.innerText.includes(text),
+      explanation,
+    );
+    assert.equal(
+      await page.evaluate(
+        (text) => document.body.innerText.includes(text),
+        explanation,
+      ),
+      false,
+      'Closed tip keeps its secondary explanation out of the visible page',
+    );
+  };
+  await assertClosed();
+  const triggerState = await page.evaluate((label) => {
+    const node = document.querySelector(`button[aria-label="查看${label}"]`);
+    const rect = node.getBoundingClientRect();
+    return {
+      popup: node.getAttribute('aria-haspopup'),
+      width: rect.width,
+      height: rect.height,
+    };
+  }, tip);
+  assert.equal(triggerState.popup, 'dialog');
+  assert.ok(triggerState.width >= 44 && triggerState.height >= 44);
+  for (const method of ['pointer', 'keyboard']) {
+    if (method === 'pointer') await page.click(trigger);
+    else {
+      await page.focus(trigger);
+      await page.keyboard.press('Enter');
+    }
+    await page.waitForSelector(dialog);
+    const popup = await page.evaluate(
+      ({ label, text }) => {
+        const node = document.querySelector(
+          `[role="dialog"][aria-label="${label}"]`,
+        );
+        const rect = node.getBoundingClientRect();
+        return {
+          explanation: node.innerText.includes(text),
+          insideViewport:
+            rect.left >= 0 &&
+            rect.right <= innerWidth &&
+            rect.top >= 0 &&
+            rect.bottom <= innerHeight,
+          overflow: node.scrollWidth > node.clientWidth,
+        };
+      },
+      { label: tip, text: explanation },
+    );
+    assert.equal(popup.explanation, true);
+    assert.equal(
+      popup.insideViewport,
+      true,
+      `${method} tip stays inside viewport`,
+    );
+    assert.equal(popup.overflow, false);
+    await page.keyboard.press('Escape');
+    await assertClosed();
+    await page.waitForFunction(
+      (label) =>
+        document.activeElement?.getAttribute('aria-label') === `查看${label}`,
+      tip,
+    );
+  }
+}
+
 // These records belong to verify-browser's disposable DATA_DIR, never a preview account.
 export async function verifyLibraryDetail171({ page, config, sql, report }) {
   const image = 'library-007';
@@ -192,6 +291,12 @@ export async function verifyLibraryDetail171({ page, config, sql, report }) {
           target.width >= 44 && target.height >= 44,
           `Version action target ${target.name}`,
         );
+      if ([390, 1440].includes(width))
+        await verifyDetailControls(page, {
+          tip: '版本说明',
+          returnText: '返回图库',
+          explanation: '这里展示当前已保存的版本，没有历史回滚功能。',
+        });
       await page.screenshot({
         path: join(config.output, `detail-171-versions-${theme}-${width}.png`),
       });
@@ -210,12 +315,13 @@ export async function verifyLibraryDetail171({ page, config, sql, report }) {
   );
   await page.click('[data-testid="detail-version-entry"]');
   await page.waitForSelector('[data-testid="detail-versions"]');
-  await page.click('loc=role:button[name="← 返回图库"]');
+  await page.click('[data-testid="detail-return"]');
   await page.waitForFunction(
     () => !new URL(location.href).searchParams.has('image'),
   );
   report.checks.push(
     'Version workspace uses one owner shell, shows four actual states across five widths/light-dark, preserves the explicit compressed preview on keyboard return, and closes subview directly to the source list.',
+    'Version explanation defaults closed; pointer and Enter open its real dialog, Escape restores trigger focus, popup fits desktop/phone viewport, and the icon return control keeps transparent hover and keyboard focus.',
   );
   await verifyReprocess({ page, config, sql, report, image });
   await verifyDetail171Consumers({ page, config, sql, report });
@@ -266,12 +372,52 @@ async function verifyReprocess({ page, config, sql, report, image }) {
             .dataset.jobStatus,
           targets: [
             ...document.querySelectorAll(
-              '[data-testid="detail-reprocess"] button,[data-testid^="reprocess-scope-"],.shell-footer button',
+              '[data-testid="detail-reprocess"] button,[data-slot="radio-content"][data-testid^="reprocess-scope-"],.shell-footer button',
             ),
           ]
             .filter((node) => node.getClientRects().length)
             .map((node) => ({
               name: node.textContent.trim(),
+              width: node.getBoundingClientRect().width,
+              height: node.getBoundingClientRect().height,
+            })),
+          tip: !!document.querySelector('button[aria-label="查看处理说明"]'),
+          scopeLayout: (() => {
+            const group = document.querySelector(
+              '[data-testid="detail-reprocess"] [role="radiogroup"]',
+            );
+            if (!group) return null;
+            const options = [
+              ...group.querySelectorAll('[data-slot="radio-content"]'),
+            ];
+            const updates = [
+              ...group.parentElement.querySelectorAll('p'),
+            ].filter((node) =>
+              node.textContent.trim().startsWith('本次将更新：'),
+            );
+            return {
+              width: group.getBoundingClientRect().width,
+              display: getComputedStyle(group).display,
+              columns:
+                getComputedStyle(group).gridTemplateColumns.split(/\s+/).length,
+              controls: options.map((option) => ({
+                x: option.getBoundingClientRect().x,
+                y: option.getBoundingClientRect().y,
+                height: option.getBoundingClientRect().height,
+                native: option.querySelector('input')?.type === 'radio',
+                control: !!option.querySelector('[data-slot="radio-control"]'),
+              })),
+              updates: updates.map((node) => ({
+                insideGroup: group.contains(node),
+                singleLine:
+                  node.getBoundingClientRect().height <=
+                  Number.parseFloat(getComputedStyle(node).lineHeight) + 1,
+              })),
+            };
+          })(),
+          footer: [...document.querySelectorAll('.shell-footer button')]
+            .filter((node) => node.getClientRects().length)
+            .map((node) => ({
               width: node.getBoundingClientRect().width,
               height: node.getBoundingClientRect().height,
             })),
@@ -282,6 +428,47 @@ async function verifyReprocess({ page, config, sql, report, image }) {
             target.width >= 44 && target.height >= 44,
             `${state}: ${target.name} has a 44px target`,
           );
+        if (measured.scopeLayout) {
+          const scope = measured.scopeLayout;
+          assert.equal(scope.display, 'grid');
+          assert.ok(
+            scope.width <= 640,
+            'Scope choices stay within their 640px content width',
+          );
+          assert.equal(scope.columns, width < 768 ? 1 : 2);
+          assert.equal(scope.controls.length, 4);
+          for (const control of scope.controls) {
+            assert.equal(control.native, true);
+            assert.equal(control.control, true);
+            assert.ok(
+              control.height >= 56,
+              'Scope choice retains its 56px target',
+            );
+          }
+          if (width < 768)
+            for (const control of scope.controls)
+              assert.ok(Math.abs(control.x - scope.controls[0].x) <= 1);
+          else {
+            assert.ok(scope.controls[1].x > scope.controls[0].x);
+            assert.ok(Math.abs(scope.controls[1].y - scope.controls[0].y) <= 1);
+          }
+          assert.deepEqual(scope.updates, [
+            { insideGroup: false, singleLine: true },
+          ]);
+        }
+        if (measured.scopeLayout || state.startsWith('reprocess-confirm'))
+          for (const action of measured.footer) {
+            assert.equal(action.height, 48);
+            if (width === 1440) assert.equal(action.width, 200);
+          }
+        if ([390, 1440].includes(width))
+          await verifyDetailControls(page, {
+            tip: measured.tip ? '处理说明' : null,
+            returnText: state.startsWith('reprocess-confirm')
+              ? '重新选择范围'
+              : '返回图片详情',
+            explanation: '关闭处理开关不会删除或隐藏已有压缩图、水印图。',
+          });
         await page.screenshot({
           path: join(
             config.output,
@@ -684,31 +871,70 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       false,
     );
     const assertDisabledReasons = async () => {
-      const styles = await page.evaluate(() =>
-        [...document.querySelectorAll('[data-testid^="reprocess-scope-"]')]
-          .filter((content) => content.querySelector('input').disabled)
-          .map((content) => {
-            const description = content.parentElement.querySelector(
-              '[data-slot="description"]',
-            );
+      const result = await page.evaluate(() => {
+        const contents = [
+          ...document.querySelectorAll(
+            '[data-slot="radio-content"][data-testid^="reprocess-scope-"]',
+          ),
+        ];
+        const common = document.querySelector(
+          '[data-testid="reprocess-scope-unavailable"]',
+        );
+        const disabled = contents.filter(
+          (content) => content.querySelector('input').disabled,
+        );
+        return {
+          total: contents.length,
+          disabled: disabled.length,
+          commonCount: document.querySelectorAll(
+            '[data-testid="reprocess-scope-unavailable"]',
+          ).length,
+          styles: disabled.map((content) => {
+            const local = content
+              .closest('[data-slot="radio"]')
+              .querySelector('[data-slot="description"]');
+            const description = local ?? common;
             let opacity = 1;
+            let visible = !!description?.getClientRects().length;
             for (
               let node = description;
               node && node.closest('[data-testid="detail-reprocess"]');
               node = node.parentElement
-            )
-              opacity *= Number(getComputedStyle(node).opacity);
+            ) {
+              const style = getComputedStyle(node);
+              opacity *= Number(style.opacity);
+              visible &&=
+                style.display !== 'none' && style.visibility === 'visible';
+            }
             return {
               content: Number(getComputedStyle(content).opacity),
-              reason: description?.textContent,
+              reason: description?.textContent.trim(),
+              local: !!local,
+              visible,
               opacity,
             };
           }),
-      );
-      assert.ok(styles.length > 0);
-      for (const style of styles) {
+        };
+      });
+      assert.equal(result.total, 4);
+      assert.ok(result.styles.length > 0);
+      if (result.commonCount) {
+        assert.equal(
+          result.commonCount,
+          1,
+          'Shared unavailability reason appears once',
+        );
+        assert.equal(
+          result.disabled,
+          4,
+          'Shared reason applies only when all choices are disabled',
+        );
+        assert.ok(result.styles.every((style) => !style.local));
+      }
+      for (const style of result.styles) {
         assert.equal(style.content, 0.42, 'Only disabled choice is faded');
         assert.ok(style.reason, 'Disabled choice explains why');
+        assert.equal(style.visible, true, 'Disabled reason is visible');
         assert.equal(
           style.opacity,
           1,
@@ -793,7 +1019,7 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       await page.evaluate(() =>
         document
           .querySelector('[data-testid="detail-reprocess"]')
-          .textContent.includes('关闭开关不会删除'),
+          .innerText.includes('关闭处理开关不会删除或隐藏已有压缩图、水印图。'),
       ),
       false,
     );

@@ -16,6 +16,7 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
+import { Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { useDetailQuery } from './use-detail-query';
 import { TrashAction } from './trash-actions';
@@ -120,9 +121,25 @@ function DetailContent({
               }}
             />
             <div className="grid min-w-0 content-start gap-2.5 text-sm leading-[22px] [overflow-wrap:anywhere]">
-              <h2 className="text-[22px] leading-8 font-medium">
-                {detail.displayName}
-              </h2>
+              <div className="flex min-w-0 items-start gap-2">
+                <h2 className="min-w-0 pt-1.5 text-[22px] leading-8 font-medium">
+                  {detail.displayName}
+                </h2>
+                <Tooltip>
+                  <Button
+                    data-testid="detail-version-entry"
+                    aria-label="版本信息"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 shrink-0 rounded-lg text-muted hover:text-foreground"
+                    isDisabled={refreshing}
+                    onPress={onVersions}
+                  >
+                    <Layers aria-hidden size={20} />
+                  </Button>
+                  <Tooltip.Content>版本信息</Tooltip.Content>
+                </Tooltip>
+              </div>
               <AccessDisclosure
                 label={detail.visibility === 'private' ? '私有' : '公开'}
               >
@@ -154,17 +171,6 @@ function DetailContent({
                   标签：
                   {detail.tags.map((t) => t.displayName).join('、') || '无'}
                 </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Button
-                  data-testid="detail-version-entry"
-                  variant="outline"
-                  className="col-start-2 h-12 rounded-lg"
-                  isDisabled={refreshing}
-                  onPress={onVersions}
-                >
-                  版本信息
-                </Button>
               </div>
               {detail.trashedAt || detail.deletionStatus ? (
                 <Alert status="warning">

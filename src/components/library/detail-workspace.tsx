@@ -9,6 +9,7 @@ import type {
   LibraryDetailVersion,
 } from '../../server/library/detail-types';
 import { bytesLabel, versionLabels } from './detail-labels';
+import { DetailReturn, DetailTip } from './detail-controls';
 
 const versionStatusLabels = {
   saved: '已保存',
@@ -81,30 +82,26 @@ export function DetailVersions({
       data-testid="detail-versions"
       className="grid min-w-0 gap-3 xl:gap-4"
     >
-      <Button
-        variant="ghost"
-        className="-my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted"
-        onPress={onClose}
-      >
-        ← 返回图库
-      </Button>
-      <h1
-        ref={heading}
-        tabIndex={-1}
-        data-testid="detail-workspace-title"
-        className="text-[28px] font-medium leading-normal xl:text-[30px]"
-      >
-        当前版本与已有文件
-      </h1>
+      <DetailReturn onPress={onClose}>返回图库</DetailReturn>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+        <h1
+          ref={heading}
+          tabIndex={-1}
+          data-testid="detail-workspace-title"
+          className="text-[28px] font-medium leading-normal xl:text-[30px]"
+        >
+          当前版本与已有文件
+        </h1>
+        <DetailTip label="版本说明">
+          <p>这里展示当前已保存的版本，没有历史回滚功能。</p>
+          <p>关闭处理开关也不会删除已保存的旧版本。</p>
+        </DetailTip>
+      </div>
       <p className="text-[13px] leading-normal [overflow-wrap:anywhere]">
         {detail.displayName} · 当前预览
         {versionLabels[selected as keyof typeof versionLabels]}
       </p>
       <DetailIdentity detail={detail} />
-      <div className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-        <p>这里展示当前已保存的版本，没有历史回滚功能。</p>
-        <p>关闭处理开关也不会删除已保存的旧版本。</p>
-      </div>
       <dl className="rounded-2xl border border-border px-3 py-2 text-sm leading-normal xl:px-5">
         {detail.versions.map((version) => (
           <div

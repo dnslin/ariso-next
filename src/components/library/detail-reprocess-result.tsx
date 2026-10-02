@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@heroui/react/button';
 import { useEffect, useRef } from 'react';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import type { LibraryProcessingJob } from '../../server/library/types';
 import type { ReprocessReceipt } from './request-reprocess';
 import { DetailIdentity } from './detail-workspace';
+import { DetailReturn } from './detail-controls';
 import { stepLabels, versionLabels } from './detail-labels';
 
 export const scopeLabels = {
@@ -78,13 +78,7 @@ export function DetailReprocessResult({
       data-job-status={status}
       className="grid min-w-0 gap-3 xl:gap-4"
     >
-      <Button
-        variant="ghost"
-        className="-my-3 min-h-11 w-fit justify-start px-0 text-xs font-normal text-muted"
-        onPress={onReturn}
-      >
-        ← 返回图片详情
-      </Button>
+      <DetailReturn onPress={onReturn}>返回图片详情</DetailReturn>
       <h1
         ref={heading}
         tabIndex={-1}
