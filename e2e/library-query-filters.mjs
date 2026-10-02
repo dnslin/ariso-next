@@ -570,9 +570,11 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     await page.click('[data-filter-category="tags"] button[aria-haspopup]');
     await page.waitForSelector(button('重新读取选项'));
     await page.waitForFunction(() =>
-      document
-        .querySelector('[role="alert"]')
-        ?.textContent.includes('Controlled filter-options transport failure'),
+      [...document.querySelectorAll('[role="alert"]')].some((alert) =>
+        alert.textContent.includes(
+          'Controlled filter-options transport failure',
+        ),
+      ),
     );
     await screenshot('options-failure');
     await page.click(button('重新读取选项'));
