@@ -1,10 +1,8 @@
 import { jsx } from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it } from 'vitest';
-import {
-  DetailReprocessResult,
-  receiptJob,
-} from '../../../src/components/library/detail-reprocess-result';
+import { DetailReprocessResult } from '../../../src/components/library/detail-reprocess-result';
+import { receiptJob } from '../../../src/components/library/detail-reprocess-model';
 import type { LibraryDetail } from '../../../src/server/library/detail-types';
 import type { LibraryProcessingJob } from '../../../src/server/library/types';
 import type { ReprocessReceipt } from '../../../src/components/library/request-reprocess';

@@ -7,19 +7,13 @@ import { Description } from '@heroui/react/description';
 import { Radio } from '@heroui/react/radio';
 import { RadioGroup } from '@heroui/react/radio-group';
 import { useEffect, useRef } from 'react';
-import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailIdentity } from './detail-workspace';
 import { DetailReturn, DetailTip } from './detail-controls';
 import { DetailReprocessConfirmation } from './detail-reprocess-confirmation';
 import { processingLabels, versionLabels } from './detail-labels';
-import type { useDetailReprocess } from './use-detail-reprocess';
-import type { useDetailQuery } from './use-detail-query';
+import type { DetailReprocessController } from './use-detail-reprocess';
 import type { ReprocessScope } from './request-reprocess';
-import {
-  DetailReprocessResult,
-  receiptJob,
-  scopeLabels,
-} from './detail-reprocess-result';
+import { DetailReprocessResult, scopeLabels } from './detail-reprocess-result';
 
 const scopes: ReprocessScope[] = [
   'all',
@@ -27,32 +21,19 @@ const scopes: ReprocessScope[] = [
   'thumbnail',
   'watermark',
 ];
-type Controller = ReturnType<typeof useDetailReprocess>;
-
 export function DetailReprocess({
-  detail,
   state,
-  query,
-  onReturn,
 }: {
-  detail: LibraryDetail;
-  state: Controller;
-  query: ReturnType<typeof useDetailQuery>;
-  onReturn: () => void;
+  state: DetailReprocessController;
 }) {
-  const failed = detail.processingStatus === 'failed';
-  const commonReason = scopes.every(
-    (scope) => detail.reprocess.scopes[scope] === detail.reprocess.scopes.all,
-  )
-    ? detail.reprocess.scopes.all
-    : null;
-  const job = state.receipt ? receiptJob(detail, state.receipt) : null;
+  const detail = state.detail;
+  const job = state.view.kind === 'selection' ? null : state.view.job;
   const heading = useRef<HTMLHeadingElement>(null);
-  function cancelConfirmation() {
+  function restoreChoice(scope: ReprocessScope, action: () => void) {
     const control = document.querySelector<HTMLInputElement>(
-      `[data-testid="reprocess-scope-${state.scope}"] input`,
+      `[data-testid="reprocess-scope-${scope}"] input`,
     );
-    state.cancelConfirmation();
+    action();
     // Restore the surviving choice after the overlay finishes restoring focus.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -61,22 +42,29 @@ export function DetailReprocess({
       });
     });
   }
+  const cancelConfirmation = () =>
+    restoreChoice(state.scope, state.cancelConfirmation);
+  const resume = () => restoreChoice('all', state.resume);
   useEffect(() => {
     if (
       !document.activeElement?.closest('[data-testid="reprocess-confirmation"]')
     )
       heading.current?.focus({ preventScroll: true });
   }, [state.receipt?.jobId, job?.status]);
-  if (
-    state.receipt &&
-    (state.receipt.scope !== 'all' || (job && job.status !== 'queued'))
-  ) {
+  if (!detail) return null;
+  const failed = detail.processingStatus === 'failed';
+  const commonReason = scopes.every(
+    (scope) => detail.reprocess.scopes[scope] === detail.reprocess.scopes.all,
+  )
+    ? detail.reprocess.scopes.all
+    : null;
+  if (state.view.kind === 'result') {
     return (
       <DetailReprocessResult
         detail={detail}
-        receipt={state.receipt}
-        job={job}
-        onReturn={onReturn}
+        receipt={state.view.receipt}
+        job={state.view.job}
+        onReturn={state.returnToDetail}
       />
     );
   }
@@ -93,7 +81,7 @@ export function DetailReprocess({
         <div className="absolute top-[476px] -left-[90px] size-65 rounded-full bg-accent/15 blur-[90px] xl:top-[700px] xl:-left-3 xl:size-115" />
         <div className="absolute top-4 left-45 size-65 rounded-full bg-default/35 blur-[90px] xl:top-20 xl:left-[668px] xl:size-115" />
       </div>
-      <DetailReturn onPress={onReturn}>返回图片详情</DetailReturn>
+      <DetailReturn onPress={state.returnToDetail}>返回图片详情</DetailReturn>
       <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
         <h1
           ref={heading}
@@ -164,7 +152,7 @@ export function DetailReprocess({
             aria-label="处理范围"
             value={state.scope}
             onChange={(value) => state.choose(value as ReprocessScope)}
-            isDisabled={state.pending || query.isFetching || query.isError}
+            isDisabled={state.choicesDisabled}
             className="grid w-full max-w-160 grid-cols-1 gap-3 md:grid-cols-2"
           >
             {commonReason ? (
@@ -228,27 +216,40 @@ export function DetailReprocess({
           ) : null}
         </>
       )}
-      {state.error && !state.confirmed ? (
+      {state.error &&
+      state.view.kind === 'selection' &&
+      !state.view.confirmation ? (
         <Alert status="danger">
           <Alert.Content>
             <Alert.Title>
               {state.unknown ? '提交结果待核对' : '重处理提交失败'}
             </Alert.Title>
             <Alert.Description>{state.error}</Alert.Description>
-            <Button
-              variant="outline"
-              className="mt-3 min-h-11"
-              isDisabled={query.isFetching}
-              onPress={() => {
-                void query.refetch();
-              }}
-            >
-              核对详情
-            </Button>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Button
+                variant="outline"
+                className="min-h-11 rounded-lg"
+                isDisabled={state.checking}
+                onPress={() => {
+                  void state.reconcile();
+                }}
+              >
+                核对详情
+              </Button>
+              {state.canResume ? (
+                <Button
+                  variant="outline"
+                  className="min-h-11 rounded-lg"
+                  onPress={resume}
+                >
+                  重新选择处理范围
+                </Button>
+              ) : null}
+            </div>
           </Alert.Content>
         </Alert>
       ) : null}
-      {state.confirmed && !state.receipt && state.scope !== 'all' ? (
+      {state.view.kind === 'selection' && state.view.confirmation ? (
         <AlertDialog.Backdrop
           isOpen
           isKeyboardDismissDisabled={state.pending}
@@ -259,10 +260,10 @@ export function DetailReprocess({
           <AlertDialog.Container placement="center" className="p-4">
             <DetailReprocessConfirmation
               detail={detail}
-              scope={state.scope}
-              state={state}
-              query={query}
+              scope={state.view.confirmation}
+              controls={state}
               onCancel={cancelConfirmation}
+              onResume={resume}
             />
           </AlertDialog.Container>
         </AlertDialog.Backdrop>
@@ -272,107 +273,27 @@ export function DetailReprocess({
 }
 
 export function DetailReprocessFooter({
-  detail,
-  state,
-  query,
-  onReturn,
-  onClose,
-  onVersions,
+  actions,
 }: {
-  detail: LibraryDetail | undefined;
-  state: Controller;
-  query: ReturnType<typeof useDetailQuery>;
-  onReturn: () => void;
-  onClose: () => void;
-  onVersions: () => void;
+  actions: DetailReprocessController['footerActions'];
 }) {
-  const job =
-    detail && state.receipt ? receiptJob(detail, state.receipt) : null;
-  if (
-    state.receipt &&
-    (state.receipt.scope !== 'all' || (job && job.status !== 'queued'))
-  ) {
-    const queued = !job || job.status === 'queued';
-    return (
-      <div
-        className={`grid w-full gap-3 xl:w-auto ${queued ? 'xl:grid-cols-[200px]' : 'grid-cols-2 xl:grid-cols-[200px_200px]'}`}
-      >
-        <Button
-          variant={queued ? 'primary' : 'outline'}
-          className="h-12 w-full rounded-lg"
-          onPress={job?.status === 'succeeded' ? onClose : onReturn}
-        >
-          {job?.status === 'succeeded'
-            ? '返回图库'
-            : queued
-              ? '返回图片详情'
-              : '返回详情'}
-        </Button>
-        {!queued ? (
-          <Button
-            className="h-12 w-full rounded-lg"
-            onPress={
-              job?.status === 'failed' || job?.status === 'cancelled'
-                ? state.reset
-                : job?.status === 'succeeded'
-                  ? onReturn
-                  : onVersions
-            }
-          >
-            {job?.status === 'failed' || job?.status === 'cancelled'
-              ? '按最新设置重试'
-              : job?.status === 'succeeded'
-                ? '查看图片详情'
-                : '查看处理结果'}
-          </Button>
-        ) : null}
-      </div>
-    );
-  }
+  if (!actions) return null;
   return (
-    <div className="grid w-full grid-cols-2 gap-3 xl:w-auto xl:grid-cols-[200px_200px]">
-      <Button
-        variant="outline"
-        className="h-12 w-full rounded-lg"
-        isDisabled={state.pending}
-        onPress={onReturn}
-      >
-        返回详情
-      </Button>
-      {state.receipt ? (
+    <div
+      className={`grid w-full gap-3 xl:w-auto ${actions.length === 1 ? 'xl:grid-cols-[200px]' : 'grid-cols-2 xl:grid-cols-[200px_200px]'}`}
+    >
+      {actions.map((action) => (
         <Button
-          variant="outline"
+          key={action.label}
+          variant={action.variant}
           className="h-12 w-full rounded-lg"
-          onPress={state.reset}
+          isDisabled={action.disabled}
+          onPress={action.onPress}
+          data-testid={action.testId}
         >
-          返回处理范围
+          {action.label}
         </Button>
-      ) : (
-        <Button
-          className="h-12 w-full rounded-lg"
-          data-testid="reprocess-submit"
-          isDisabled={
-            !detail ||
-            state.pending ||
-            state.unknown ||
-            query.isFetching ||
-            query.isError ||
-            !!detail.reprocess.scopes[state.scope]
-          }
-          onPress={() => {
-            if (state.scope === 'all') void state.submit();
-            else state.choose(state.scope);
-          }}
-        >
-          {state.pending
-            ? '正在提交…'
-            : state.scope !== 'all'
-              ? `重新生成${versionLabels[state.scope]}`
-              : detail?.processingStatus === 'failed'
-                ? '重试全部处理'
-                : '开始全部重处理'}
-        </Button>
-      )}
+      ))}
     </div>
   );
 }

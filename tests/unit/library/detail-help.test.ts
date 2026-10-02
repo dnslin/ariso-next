@@ -5,7 +5,11 @@ import { expect, it } from 'vitest';
 import { DetailVersions } from '../../../src/components/library/detail-workspace';
 import { DetailReprocess } from '../../../src/components/library/detail-reprocess';
 import { DetailReprocessConfirmation } from '../../../src/components/library/detail-reprocess-confirmation';
-import { useDetailReprocess } from '../../../src/components/library/use-detail-reprocess';
+import {
+  useDetailReprocess,
+  type ReprocessQuery,
+  type ReprocessNavigation,
+} from '../../../src/components/library/use-detail-reprocess';
 import type { LibraryDetail } from '../../../src/server/library/detail-types';
 
 const detail: LibraryDetail = {
@@ -75,27 +79,49 @@ const detail: LibraryDetail = {
 };
 type Props = ComponentProps<typeof DetailReprocess>;
 const state: Props['state'] = {
-  imageId: detail.id,
   scope: 'all',
   confirmed: false,
   receipt: null,
   error: '',
   unknown: false,
   pending: false,
-  dismissedJobId: null,
   choose: () => {},
   cancelConfirmation: () => {},
   reset: () => {},
   submit: async () => {},
+  detail,
+  view: { kind: 'selection', confirmation: null },
+  canSubmit: true,
+  choicesDisabled: false,
+  checking: false,
+  readError: null,
+  canResume: false,
+  reconcile: async () => {},
+  resume: () => {},
+  open: () => {},
+  returnToDetail: () => {},
+  footerActions: [],
 };
-const query = { isFetching: false } as Props['query'];
+const query: ReprocessQuery = {
+  data: detail,
+  isFetching: false,
+  isError: false,
+  error: null,
+  expired: false,
+  refetch: async () => ({ data: detail, isError: false, error: null }),
+  onMutationPending: () => {},
+  setUnavailable: () => {},
+};
+const navigation: ReprocessNavigation = {
+  onReturn: () => {},
+  onClose: () => {},
+  onVersions: () => {},
+  onOpen: () => {},
+};
 const renderReprocess = (record = detail, controller = state) =>
   renderToStaticMarkup(
     jsx(DetailReprocess, {
-      detail: record,
-      state: controller,
-      query,
-      onReturn: () => {},
+      state: { ...controller, detail: record },
     }),
   );
 
@@ -151,9 +177,9 @@ it('keeps the replacement contract visible before submitting a single scope', ()
     jsx(DetailReprocessConfirmation, {
       detail,
       scope: 'compressed',
-      state: { ...state, scope: 'compressed', confirmed: true },
-      query,
+      controls: state,
       onCancel: () => {},
+      onResume: () => {},
     }),
   );
   expect(html).toContain('role="alertdialog"');
@@ -171,15 +197,13 @@ it('keeps uncertain submission errors visible and disables duplicate submission 
     jsx(DetailReprocessConfirmation, {
       detail,
       scope: 'thumbnail',
-      state: {
+      controls: {
         ...state,
-        scope: 'thumbnail',
-        confirmed: true,
-        unknown: true,
+        canSubmit: false,
         error: '连接中断，提交结果待核对',
       },
-      query,
       onCancel: () => {},
+      onResume: () => {},
     }),
   );
   expect(html).toContain('连接中断，提交结果待核对');
@@ -192,13 +216,13 @@ it('keeps detail reconciliation failures visible and blocks submission while can
     jsx(DetailReprocessConfirmation, {
       detail,
       scope: 'thumbnail',
-      state: { ...state, confirmed: true, scope: 'thumbnail' },
-      query: {
-        isError: true,
-        isFetching: false,
-        error: new Error('图片记录不存在'),
-      } as Props['query'],
+      controls: {
+        ...state,
+        canSubmit: false,
+        readError: new Error('图片记录不存在'),
+      },
       onCancel: () => {},
+      onResume: () => {},
     }),
   );
   expect(html).toContain('详情核对失败：图片记录不存在');
@@ -209,10 +233,7 @@ it('keeps detail reconciliation failures visible and blocks submission while can
 it('retains the chosen scope on cancel and reopens confirmation without creating a receipt', () => {
   function Probe() {
     const [step, setStep] = useState(0);
-    const controller = useDetailReprocess(detail.id, {
-      isFetching: false,
-      data: detail,
-    } as Props['query']);
+    const controller = useDetailReprocess(detail.id, query, navigation);
     if (step === 0) controller.choose('thumbnail');
     if (step === 1) {
       expect(controller.confirmed).toBe(true);
@@ -242,4 +263,23 @@ it('never collapses actionable submission errors into help', () => {
   });
   expect(html).toContain('提交结果待核对，请核对详情后再操作');
   expect(html).toContain('核对详情');
+});
+
+it('offers manual range recovery only when the controller confirms it is available', () => {
+  const html = renderReprocess(detail, {
+    ...state,
+    unknown: true,
+    canSubmit: false,
+    canResume: true,
+    error: '提交结果待核对，请核对详情后再操作',
+  });
+  expect(html).toContain('重新选择处理范围');
+  const blocked = renderReprocess(detail, {
+    ...state,
+    unknown: true,
+    canSubmit: false,
+    canResume: false,
+    error: '提交结果待核对，请核对详情后再操作',
+  });
+  expect(blocked).not.toContain('重新选择处理范围');
 });

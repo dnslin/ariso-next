@@ -68,7 +68,12 @@ export function LibraryScreen(props: {
     returnTo,
     props.albumId,
   );
-  const reprocess = useDetailReprocess(detail.imageId, detailQuery);
+  const reprocess = useDetailReprocess(detail.imageId, detailQuery, {
+    onReturn: detail.returnToDetail,
+    onClose: detail.close,
+    onVersions: () => detail.openView('versions'),
+    onOpen: () => detail.openView('reprocess'),
+  });
   const preview = params.get('preview');
   const selectedPreview =
     preview &&
@@ -150,31 +155,13 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        detail.view === 'reprocess' &&
-        reprocess.confirmed &&
-        !reprocess.receipt ? null : detail.view === 'reprocess' ? (
-          <DetailReprocessFooter
-            detail={detailQuery.data}
-            state={reprocess}
-            query={detailQuery}
-            onReturn={detail.returnToDetail}
-            onClose={detail.close}
-            onVersions={() => detail.openView('versions')}
-          />
+        detail.view === 'reprocess' ? (
+          <DetailReprocessFooter actions={reprocess.footerActions} />
         ) : detail.view ? (
           <DetailVersionsFooter
             detail={detailQuery.data}
             onReturn={detail.returnToDetail}
-            onReprocess={() => {
-              const job = detailQuery.data?.processingJob;
-              if (
-                job?.id === reprocess.receipt?.jobId &&
-                job &&
-                ['succeeded', 'failed', 'cancelled'].includes(job.status)
-              )
-                reprocess.reset();
-              detail.openView('reprocess');
-            }}
+            onReprocess={reprocess.open}
           />
         ) : props.workspace ? (
           props.workspace.footer
@@ -403,24 +390,17 @@ export function LibraryScreen(props: {
         </section>
         {props.children}
       </div>
-      {detail.view &&
-      detailQuery.data &&
-      (!detailQuery.isError || detail.view === 'reprocess') &&
-      !detailQuery.expired ? (
-        detail.view === 'reprocess' ? (
-          <DetailReprocess
-            detail={detailQuery.data}
-            state={reprocess}
-            query={detailQuery}
-            onReturn={detail.returnToDetail}
-          />
-        ) : (
-          <DetailVersions
-            detail={detailQuery.data}
-            selected={selectedPreview ?? initialPreview(detailQuery.data)}
-            onClose={detail.close}
-          />
-        )
+      {detail.view === 'reprocess' ? (
+        <DetailReprocess state={reprocess} />
+      ) : detail.view &&
+        detailQuery.data &&
+        !detailQuery.isError &&
+        !detailQuery.expired ? (
+        <DetailVersions
+          detail={detailQuery.data}
+          selected={selectedPreview ?? initialPreview(detailQuery.data)}
+          onClose={detail.close}
+        />
       ) : null}
       {detail.view && detailQuery.isPending ? (
         <p role="status">正在读取图片详情…</p>

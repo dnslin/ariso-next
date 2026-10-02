@@ -14,11 +14,6 @@ export const scopeLabels = {
   thumbnail: '仅缩略图',
   watermark: '仅水印图',
 };
-export function receiptJob(detail: LibraryDetail, receipt: ReprocessReceipt) {
-  return detail.processingJob?.id === receipt.jobId
-    ? detail.processingJob
-    : null;
-}
 
 function StatusRow({
   name,

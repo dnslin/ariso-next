@@ -4,29 +4,38 @@ import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import type { ReprocessScope } from './request-reprocess';
-import type { useDetailReprocess } from './use-detail-reprocess';
-import type { useDetailQuery } from './use-detail-query';
+import type { DetailReprocessController } from './use-detail-reprocess';
 import { DetailIdentity } from './detail-workspace';
 import { versionLabels } from './detail-labels';
 
 export function DetailReprocessConfirmation({
   detail,
   scope,
-  state,
-  query,
+  controls,
   onCancel,
+  onResume,
 }: {
   detail: LibraryDetail;
   scope: Exclude<ReprocessScope, 'all'>;
-  state: ReturnType<typeof useDetailReprocess>;
-  query: ReturnType<typeof useDetailQuery>;
+  controls: Pick<
+    DetailReprocessController,
+    | 'pending'
+    | 'canSubmit'
+    | 'checking'
+    | 'readError'
+    | 'error'
+    | 'canResume'
+    | 'reconcile'
+    | 'submit'
+  >;
   onCancel: () => void;
+  onResume: () => void;
 }) {
   const unavailable = detail.reprocess.scopes[scope];
   return (
     <AlertDialog.Dialog
       data-testid="reprocess-confirmation"
-      aria-busy={state.pending}
+      aria-busy={controls.pending}
       className="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-5 overflow-hidden rounded-xl border border-border bg-surface p-5 sm:p-6"
     >
       <AlertDialog.Header className="shrink-0">
@@ -53,24 +62,33 @@ export function DetailReprocessConfirmation({
           </p>
         ) : null}
         {unavailable ? <p role="alert">{unavailable}</p> : null}
-        {query.isError ? (
-          <p role="alert">详情核对失败：{query.error.message}</p>
+        {controls.readError ? (
+          <p role="alert">详情核对失败：{controls.readError.message}</p>
         ) : null}
-        {state.error ? (
+        {controls.error ? (
           <div className="grid justify-items-start gap-2">
             <p role="alert" className="text-danger">
-              {state.error}
+              {controls.error}
             </p>
             <Button
               variant="outline"
               className="min-h-11 rounded-lg"
-              isDisabled={query.isFetching}
+              isDisabled={controls.checking}
               onPress={() => {
-                void query.refetch();
+                void controls.reconcile();
               }}
             >
               核对详情
             </Button>
+            {controls.canResume ? (
+              <Button
+                variant="outline"
+                className="min-h-11 rounded-lg"
+                onPress={onResume}
+              >
+                重新选择处理范围
+              </Button>
+            ) : null}
           </div>
         ) : null}
       </AlertDialog.Body>
@@ -79,7 +97,7 @@ export function DetailReprocessConfirmation({
           autoFocus
           variant="outline"
           className="h-12 w-full rounded-lg"
-          isDisabled={state.pending}
+          isDisabled={controls.pending}
           onPress={onCancel}
         >
           取消
@@ -87,18 +105,12 @@ export function DetailReprocessConfirmation({
         <Button
           data-testid="reprocess-submit"
           className="h-12 w-full rounded-lg"
-          isDisabled={
-            state.pending ||
-            state.unknown ||
-            query.isFetching ||
-            query.isError ||
-            !!unavailable
-          }
+          isDisabled={!controls.canSubmit}
           onPress={() => {
-            void state.submit();
+            void controls.submit();
           }}
         >
-          {state.pending ? '正在提交…' : `提交仅${versionLabels[scope]}`}
+          {controls.pending ? '正在提交…' : `提交仅${versionLabels[scope]}`}
         </Button>
       </AlertDialog.Footer>
     </AlertDialog.Dialog>
