@@ -112,4 +112,4 @@ PR #230 创建后实际发现 main 已合入 #154（PR #228），GitHub 报告 C
 3. **人工 UI 验收未执行。** agent 的功能/设计评审均不能代替用户人工验收。物理手机和 Release 双架构容器检查按执行约定本次不要求，未记为通过。
 4. 生产迟到孤儿扫描归 #164，S3 永久删除归 #163，公共同步上传 API 归 #167；未伪造这些接口或完成状态。历史实验不代表生产扫描已经接入。
 
-不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue，不删除本分支或 worktree。PR #230 初次核对 statusCheckRollup 为空；没有触发远端检查，不能写作 CI 通过。合并后远端状态继续按实际核对更新。
+不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue，不删除本分支或 worktree。PR #230 初次核对 statusCheckRollup 为空；没有触发远端检查，不能写作 CI 通过。合并版本推送后再次核对：OPEN、isDraft=true、MERGEABLE、CLEAN，statusCheckRollup 仍为空，见 [实际 PR 核对](./reports/pr-merged-state.json)。没有 CI 运行结果，未等待不存在的工作流。
