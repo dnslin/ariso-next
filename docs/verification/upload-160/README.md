@@ -14,6 +14,10 @@
 
 随后同步main `0d821a7`（图片详情PR #227）；浏览器的libraryDetail171Script配置和上传页新详情query/版本入口自动合并，完整保留冻结摘要和关系选择。设计交接末尾的两份已批准补充仅按原文并存，不改写产品/设计。该main功能采用自身已有验收证据，本次补查组合的类型、构建及相关单元，不重复其整站浏览器。
 
+最终组合的 `pnpm run build` 退出0；`pnpm exec vitest run --project unit tests/unit/upload/controller.test.ts tests/unit/upload/queue.test.ts tests/unit/library/query-hook.test.ts tests/unit/library/detail-status.test.ts` 为4文件49项通过；`pnpm exec eslint scripts/verify-browser.mjs src/components/upload/screen.tsx --max-warnings=0` 退出0。[构建](./reports/merge-final-build.txt)、[相关单元](./reports/merge-final-unit.txt)、[入口静态检查](./reports/merge-final-lint.txt)。独立[冲突复审](./reports/merge-review.md)结论Approve，无新增Required，实际核对两侧所有runner阶段、成熟标签契约、上传冻结摘要和新版详情参数完整保留。
+
+最终 `pnpm run typecheck`、`pnpm run format:check` 与 `node docs/tasks/check.mjs` 均退出0；文档检查仍为120任务/298需求。[完整类型](./reports/merge-final-typecheck.txt)、[完整格式](./reports/merge-final-format.txt)、[文档](./reports/merge-final-docs.txt)。没有为本次日常合并创建Release、发布镜像或部署，也没有将空远端检查列表记为CI通过。
+
 ## 前置与修改范围
 
 实际读取 Issue 正文、评论（无评论）和 GitHub 原生 blocked by / blocking。直接前置 #81、#159、#66、#153、#151、#77、#71、#72、#141 均已 CLOSED；下游为 #162 和 #200。最初基于当时最新 `origin/main` 的 `3eb585f` 创建 `codex/issue-160-upload-queue`，独立 worktree 为 `/Users/dnslin/.codex/worktrees/issue-160-upload-queue/ariso`；原 `/Volumes/data/project/ariso` 未改动。
