@@ -119,3 +119,5 @@
 该补查先复现缓存错误后的标签重试额外GET相册（[红报告](./reports/tag-cache-retry-red.json)）；最小修复为仅remove-albums使用当前相册读取重试，绿报告精确记录只GET标签。最终修复后另执行 `pnpm exec vitest run --project unit tests/unit/library/batch-targets.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts --maxWorkers=1`，5文件60项通过、exit0，[输出](./reports/feedback-final-affected.txt)。没有删除检查、改变真实请求计数或放宽断言。
 
 927项已通过后不机械重复全量集成或完整浏览器。服务端、schema、依赖和数据契约本轮没有变动，原集成执行及真实拆批证据仍按上方历史范围记录；主分支已有详情重处理深链焦点失败未获范围外修复授权，本轮保持原缺陷与失败结论。本次范围内功能、独立代码审计和设计评审均已完成，用户对新稿的人工验收仍待执行。预览已重启到最终构建，使用同一独立数据库，保留用户之前在该测试环境内的操作。
+
+最终暂存差异检查发现归档终端输出的回车/行尾空白与末尾空行，已仅规范化文本空白，保留实际命令结果和全部诊断；原始终端日志仍位于test-results。修复后整个分支 `git diff e188562257ed8e0c1a5d6304b13ad817797cd579 --check` 与 `git diff --cached --check` 均exit0，不能以未暂存时的检查覆盖新证据文件。

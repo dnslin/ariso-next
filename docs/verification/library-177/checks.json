@@ -213,6 +213,21 @@
     {
       "command": "git diff --check",
       "exitCode": 0
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 2,
+      "result": "New archived terminal text contained CR/trailing whitespace and blank EOF; normalized whitespace without changing results or diagnostics"
+    },
+    {
+      "command": "git diff e188562257ed8e0c1a5d6304b13ad817797cd579 --check",
+      "exitCode": 0,
+      "result": "Final whole-branch diff after terminal whitespace repair"
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 0,
+      "result": "After terminal whitespace repair"
     }
   ]
 }
