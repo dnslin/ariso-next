@@ -176,3 +176,25 @@ try {
 实际短补验命令 `node work/run-manual-tags-browser.mjs toast-content` 在 Node 24.18.1、保留的独立 Ego Space 5、独立 50953 数据库执行，结果 **passed**。390×844 浅深两主题均通过真实 50 码点标签创建后的通知检查，文本四行完整容纳且不覆盖关闭按钮；关闭按钮为 44×44，键盘 focus-visible 时 opacity 1 / pointer auto，Enter 实际关闭。生成 [浅色截图](manual-revision/toast-content-light-390.png) 与 [深色截图](manual-revision/toast-content-dark-390.png)，测试创建的标签随后由真实 API 删除。记录确认原 57635 预览数据不变。
 
 **最终独立源码审计：Critical 0、Required 0。** 完整标签专项的 12 项功能检查、114 个布局和 118 张截图是在最后 Toast.Content 排版补修之前执行；最后补修后只运行上述两主题短补验，没有再执行完整标签专项或完整 browser 流程。其余先前限制和范围外上传失败保留，最后人工复验仍由用户完成。本审计者只读源码与已生成证据并更新本报告，没有重复执行检查；AccessDisclosure 的独立源码复读仍由主实施者完成。
+
+## PR #226 双角度审查与修复后独立复审
+
+2026-10-02，用户要求两个独立agent分别应用code-review-and-quality和thermo-nuclear-code-quality-review。两者均审查完整 `3eb585f910e21518dd1061094fe556b1884f3fe4...af6b8d830b7915b7c596967f63b683a481bc5d7a` 两提交，读取项目规则、现行规格/交接/执行约定、调用链、安装包类型和相关测试，不重新评审已批准产品选择。此前源码通过结论保留为历史；本轮发现说明前次审计未覆盖以下故障。
+
+| 原发现                                                                       | 原严重度                                 | 修复后结论                                                         |
+| ---------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| 真实写入提交后5xx进入failed，错误宣称关系未改变且不发核对GET                 | 五维审查Required/P2                      | 已解决。仅`<500`进入明确失败；5xx复用unknown/verify，不自动重写    |
+| 目标已读回但列表刷新失败覆盖成unknown                                        | 结构审查Required/P2；五维审查Optional/P3 | 已解决。列表保留自己的query错误展示，不将列表error重抛给目标核对   |
+| 新增标签脚本1122行，视觉测量/业务混杂，26处重复弹窗selector和5处重复成功等待 | 结构审查Required/P2                      | 已解决。按现有视觉模块模式提取布局，集中小型业务等待，未建通用框架 |
+
+原五维审查在自建临时SQLite实际执行createTag/deleteTag后交付HTML502，确认原失败分支与真实提交不一致；还用Node24.19.0执行3文件24项定向单元/集成，exit0。这是修复前的审查运行，不冒称修复后新运行。结构审查执行源码/差异/AST读取及三文件语法检查，没有运行浏览器或构建。两份原审查均Request changes，Critical0；同一列表发现仅计一项，最终处理三项。
+
+### 修复后独立代码结论
+
+最终复审者没有实施客户端、测试重组或新增故障场景，仅独立复读并输出结论。实际检查安装的TanStack Query QueryObserver：refetch默认不启用throwOnError，失败更新query结果后返回；screen仍用list.error/isError显示错误，401仍由既有effect退出会话。未发现静默吞错或错误归因残留。
+
+独立AST比对确认原71处assert在最终主脚本59+布局12处全部保留；69处除空白一致，2处仅提取相同textContent读取。SQL校验、单次写入、布局矩阵、连续操作顺序与finally清理均保留。最终tags.mjs855行、tags-layout158行、tags-dialog27行；纯重组净减86行，新增reconciliation408行另计。没有改服务端、schema、依赖或公共UI配置。
+
+实际回读[旧包4案失败证据](review-fixes/tag-reconciliation-red.json)、[修复后8案](review-fixes/tag-reconciliation-green.json)、[完整流程内8案](review-fixes/tags-regression/tag-reconciliation-green.json)和[最终完整标签报告](review-fixes/tags-regression/tags.json)。逐案核对真实提交状态、交付状态、SQL关系、图片ID、核对请求及一次写入；502/丢响应确实发生在真实写入后，模拟400则明确在写入前拒绝，`realStatus:null`。完整标签结果passed，14项检查、114布局、126截图。新增8案交替桌面浅色与手机深色，不声称四组合全矩阵。
+
+**最终独立代码复审Approve，Critical0 / Required0。** 复审者执行只读分析、AST对比和`git diff --check`（exit0），没有重复运行浏览器/产品全套，也不从日志片段自行推断主流程构建退出码。适用实际命令、环境与运行结果集中在[审查修复记录](review-fixes/README.md)。独立设计状态复核见[设计报告最新节](design-review.md#pr-226-审查修复后的受影响状态复核2026-10-02)，不以代码Approve替代设计或用户人工验收。历史整站浏览器范围外上传失败、未执行物理设备/发布验证和后置能力均保留。

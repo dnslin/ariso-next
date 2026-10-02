@@ -285,7 +285,7 @@ export function TagDialog({
           kind: 'missing',
           message: '标签已不存在。输入已保留，无法继续保存。',
         });
-      else if (error instanceof TagRequestError)
+      else if (error instanceof TagRequestError && error.status < 500)
         setOutcome({
           kind: error.status === 409 ? 'conflict' : 'failed',
           message: `${error.message}。输入已保留，图片关系未改变。`,
@@ -294,7 +294,7 @@ export function TagDialog({
         setOutcome({
           kind: 'unknown',
           message:
-            '连接中断，正在重新读取并核对当前标签。不会把未知结果当作成功或自动重复提交。',
+            '未收到可确认的操作结果，正在重新读取并核对当前标签。不会把未知结果当作成功或自动重复提交。',
         });
         await verify();
       }

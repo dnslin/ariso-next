@@ -319,8 +319,8 @@ export function TagsScreen(props: {
           onClose={close}
           onExpire={expire}
           onRefresh={async () => {
-            const result = await list.refetch();
-            if (result.error) throw result.error;
+            // 列表错误由 query 展示，不改变已经取得的目标核对结果。
+            await list.refetch();
           }}
           onComplete={(message, status = 'success') => {
             if (message) {
