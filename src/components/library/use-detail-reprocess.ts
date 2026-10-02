@@ -99,6 +99,8 @@ export function useDetailReprocess(
         confirmed: scope !== 'all',
         error: current.unknown ? current.error : '',
       })),
+    cancelConfirmation: () =>
+      setState((current) => ({ ...current, confirmed: false })),
     reset: () =>
       setState({
         ...initial,

@@ -330,6 +330,13 @@ export async function verifyLibraryDetail171({ page, config, sql, report }) {
 async function verifyReprocess({ page, config, sql, report, image }) {
   const endpoint = `/api/images/${image}`;
   const workspace = '[data-testid="detail-reprocess"]';
+  const confirmation = '[data-testid="reprocess-confirmation"]';
+  const versionNames = {
+    original: '原图',
+    compressed: '压缩图',
+    thumbnail: '缩略图',
+    watermark: '水印图',
+  };
   const button = (name) => `loc=role:button[name="${name}"]`;
   const direct = async (id = image, view = 'reprocess') => {
     await page.goto(
@@ -338,6 +345,80 @@ async function verifyReprocess({ page, config, sql, report, image }) {
     await page.waitForSelector(
       view ? workspace : '[data-testid="detail-body"]',
     );
+  };
+  const confirmationLayout = async () => {
+    const measured = await page.evaluate(() => {
+      const dialog = document.querySelector(
+        '[data-testid="reprocess-confirmation"]',
+      );
+      const rect = dialog.getBoundingClientRect();
+      const body = dialog.querySelector('[data-slot="alert-dialog-body"]');
+      const footer = dialog.querySelector('[data-slot="alert-dialog-footer"]');
+      const footerRect = footer.getBoundingClientRect();
+      return {
+        width: innerWidth,
+        height: innerHeight,
+        overflow: document.documentElement.scrollWidth > innerWidth,
+        role: dialog.getAttribute('role'),
+        dialog: {
+          width: rect.width,
+          left: rect.left,
+          right: rect.right,
+          top: rect.top,
+          bottom: rect.bottom,
+          overflow: dialog.scrollWidth > dialog.clientWidth,
+          tip: !!dialog.querySelector('[aria-haspopup="dialog"]'),
+          returned: !!dialog.querySelector('[data-testid="detail-return"]'),
+        },
+        body: {
+          overflowY: getComputedStyle(body).overflowY,
+          minHeight: getComputedStyle(body).minHeight,
+          overflowX: body.scrollWidth > body.clientWidth,
+        },
+        footer: {
+          shrink: getComputedStyle(footer).flexShrink,
+          columns:
+            getComputedStyle(footer).gridTemplateColumns.split(/\s+/).length,
+          top: footerRect.top,
+          bottom: footerRect.bottom,
+        },
+        targets: [...footer.querySelectorAll('button')].map((node) => ({
+          name: node.textContent.trim(),
+          width: node.getBoundingClientRect().width,
+          height: node.getBoundingClientRect().height,
+        })),
+        shellFooter: !!document.querySelector('.shell-footer'),
+      };
+    });
+    assert.equal(measured.role, 'alertdialog');
+    assert.equal(measured.overflow, false);
+    assert.ok(measured.dialog.width <= Math.min(480, measured.width - 32));
+    assert.ok(
+      measured.dialog.left >= 15 &&
+        measured.dialog.right <= measured.width - 15 &&
+        measured.dialog.top >= 15 &&
+        measured.dialog.bottom <= measured.height - 15,
+      'Confirmation fits the viewport with its 16px outer space',
+    );
+    assert.equal(measured.dialog.overflow, false);
+    assert.equal(measured.dialog.tip, false);
+    assert.equal(measured.dialog.returned, false);
+    assert.equal(measured.body.overflowX, false);
+    assert.equal(measured.body.overflowY, 'auto');
+    assert.equal(measured.body.minHeight, '0px');
+    assert.equal(measured.footer.shrink, '0');
+    assert.equal(measured.footer.columns, 2);
+    assert.ok(
+      measured.footer.top >= measured.dialog.top &&
+        measured.footer.bottom <= measured.dialog.bottom,
+    );
+    assert.equal(measured.targets.length, 2);
+    for (const target of measured.targets) {
+      assert.ok(target.width >= 44);
+      assert.equal(target.height, 48);
+    }
+    assert.equal(measured.shellFooter, false);
+    return measured;
   };
   const layout = async (state, widths = [390, 1440]) => {
     for (const theme of ['light', 'dark']) {
@@ -365,6 +446,21 @@ async function verifyReprocess({ page, config, sql, report, image }) {
               requestAnimationFrame(() => requestAnimationFrame(resolve)),
             ),
         );
+        if (state.startsWith('reprocess-confirm')) {
+          const measured = await confirmationLayout();
+          await page.screenshot({
+            path: join(
+              config.output,
+              `detail-171-${state}-${theme}-${width}.png`,
+            ),
+          });
+          report.layouts.push({
+            state: `detail-171-${state}`,
+            theme,
+            ...measured,
+          });
+          continue;
+        }
         const measured = await page.evaluate(() => ({
           width: innerWidth,
           overflow: document.documentElement.scrollWidth > innerWidth,
@@ -456,7 +552,7 @@ async function verifyReprocess({ page, config, sql, report, image }) {
             { insideGroup: false, singleLine: true },
           ]);
         }
-        if (measured.scopeLayout || state.startsWith('reprocess-confirm'))
+        if (measured.scopeLayout)
           for (const action of measured.footer) {
             assert.equal(action.height, 48);
             if (width === 1440) assert.equal(action.width, 200);
@@ -464,9 +560,7 @@ async function verifyReprocess({ page, config, sql, report, image }) {
         if ([390, 1440].includes(width))
           await verifyDetailControls(page, {
             tip: measured.tip ? '处理说明' : null,
-            returnText: state.startsWith('reprocess-confirm')
-              ? '重新选择范围'
-              : '返回图片详情',
+            returnText: '返回图片详情',
             explanation: '关闭处理开关不会删除或隐藏已有压缩图、水印图。',
           });
         await page.screenshot({
@@ -519,53 +613,184 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       'detail-workspace-title',
     );
     await layout('reprocess-selection', [360, 390, 430, 768, 1440]);
-    for (const [scope, label] of [
-      ['compressed', '仅压缩图'],
-      ['watermark', '仅水印图'],
-      ['thumbnail', '仅缩略图'],
-    ]) {
-      await page.focus(`[data-testid="reprocess-scope-${scope}"] input`);
-      await page.keyboard.press('Space');
+    const selectionDetail = JSON.parse((await page.fetch(endpoint)).body);
+    await page.evaluate((image) => {
+      const original = window.fetch;
+      window.__detail171ConfirmationFetch = original;
+      window.__detail171ConfirmationPosts = 0;
+      window.fetch = (...args) => {
+        if (
+          new URL(String(args[0]), location.href).pathname ===
+            `/api/images/${image}/reprocess` &&
+          args[1]?.method === 'POST'
+        )
+          window.__detail171ConfirmationPosts++;
+        return original(...args);
+      };
+    }, image);
+    const assertSelected = async (scope) => {
+      await page.waitForSelector(confirmation, { state: 'hidden' });
       await page.waitForFunction(
-        (label) =>
-          document
-            .querySelector('[data-testid="detail-reprocess"]')
-            .textContent.includes(`本次范围：${label}`),
-        label,
+        (scope) =>
+          document.activeElement ===
+          document.querySelector(
+            `[data-testid="reprocess-scope-${scope}"] input`,
+          ),
+        scope,
       );
       assert.equal(
-        await page.evaluate(() => document.activeElement?.dataset.testid),
-        'detail-workspace-title',
+        await page.evaluate(
+          (scope) =>
+            document.querySelector(
+              `[data-testid="reprocess-scope-${scope}"] input`,
+            ).checked,
+          scope,
+        ),
+        true,
       );
-      if (scope === 'thumbnail') await layout('reprocess-confirm-thumbnail');
-      if (scope === 'thumbnail') {
-        await page.cdp('Emulation.setDeviceMetricsOverride', {
-          width: 390,
-          height: 400,
-          deviceScaleFactor: 1,
-          mobile: true,
-        });
-        await page.waitForFunction(() => innerHeight === 400);
-        await page.evaluate(() => {
-          const main = document.querySelector('main');
-          main.scrollTop = main.scrollHeight;
-        });
-        assert.ok(
-          await page.evaluate(() => {
-            const submit = document
-              .querySelector('[data-testid="reprocess-submit"]')
-              .getBoundingClientRect();
-            return submit.top >= 0 && submit.bottom <= innerHeight;
-          }),
-          'Short viewport keeps the fixed confirmation action reachable',
+      assert.equal(
+        await page.evaluate(() =>
+          document
+            .querySelector('.shell-footer [data-testid="reprocess-submit"]')
+            .textContent.trim(),
+        ),
+        `重新生成${versionNames[scope]}`,
+      );
+      assert.equal(
+        await page.evaluate(() => window.__detail171ConfirmationPosts),
+        0,
+        'Choosing, canceling and reopening confirmation never submits a job',
+      );
+    };
+    try {
+      for (const scope of ['compressed', 'watermark', 'thumbnail']) {
+        await page.focus(`[data-testid="reprocess-scope-${scope}"] input`);
+        await page.keyboard.press('Space');
+        await page.waitForSelector(confirmation);
+        await page.waitForFunction(
+          () =>
+            document.activeElement?.textContent.trim() === '取消' &&
+            !!document.activeElement.closest(
+              '[data-testid="reprocess-confirmation"]',
+            ),
         );
-        await page.screenshot({
-          path: join(config.output, 'detail-171-reprocess-short-dark-390.png'),
+        const content = await page.evaluate(() => {
+          const dialog = document.querySelector(
+            '[data-testid="reprocess-confirmation"]',
+          );
+          const rows = [...dialog.querySelectorAll('dt')].map((node) => [
+            node.textContent.trim(),
+            node.nextElementSibling.textContent.trim(),
+          ]);
+          return {
+            heading: dialog
+              .querySelector('[data-slot="alert-dialog-heading"]')
+              .textContent.trim(),
+            rows,
+            backgroundTitle: document
+              .querySelector('[data-testid="detail-workspace-title"]')
+              .textContent.trim(),
+            fullPageConfirmation: document
+              .querySelector('[data-testid="detail-reprocess"]')
+              .innerText.includes('本次范围：'),
+          };
         });
+        assert.equal(content.heading, `重新生成${versionNames[scope]}`);
+        assert.equal(content.backgroundTitle, '重新处理这张图片');
+        assert.equal(content.fullPageConfirmation, false);
+        assert.deepEqual(content.rows, [
+          ['更新', versionNames[scope]],
+          [
+            '保留',
+            selectionDetail.versions
+              .filter((version) => version.saved && version.kind !== scope)
+              .map((version) => versionNames[version.kind])
+              .join('、') || '无其他已保存版本',
+          ],
+        ]);
+        if (scope === 'thumbnail') {
+          await layout('reprocess-confirm-thumbnail');
+          for (const height of [400, 280]) {
+            await page.cdp('Emulation.setDeviceMetricsOverride', {
+              width: 390,
+              height,
+              deviceScaleFactor: 1,
+              mobile: true,
+            });
+            await page.waitForFunction(
+              (height) => innerHeight === height,
+              height,
+            );
+            const measured = await confirmationLayout();
+            const scroll = await page.evaluate(() => {
+              const main = document.querySelector('main');
+              const before = main.scrollTop;
+              const body = document.querySelector(
+                '[data-testid="reprocess-confirmation"] [data-slot="alert-dialog-body"]',
+              );
+              body.scrollTop = body.scrollHeight;
+              return {
+                overflowing: body.scrollHeight > body.clientHeight + 1,
+                scrolled: body.scrollTop > 0,
+                mainUnchanged: main.scrollTop === before,
+              };
+            });
+            if (height === 280) assert.equal(scroll.overflowing, true);
+            if (scroll.overflowing) assert.equal(scroll.scrolled, true);
+            assert.equal(
+              scroll.mainUnchanged,
+              true,
+              'Short confirmation scrolls its own body',
+            );
+            await page.screenshot({
+              path: join(
+                config.output,
+                `detail-171-reprocess-confirm-short-dark-390-${height}.png`,
+              ),
+            });
+            report.layouts.push({
+              state: 'detail-171-reprocess-confirm-short',
+              theme: 'dark',
+              ...measured,
+              scroll,
+            });
+          }
+        }
+        if (scope === 'compressed')
+          await page.click(
+            `${confirmation} [data-slot="alert-dialog-footer"] button:first-child`,
+          );
+        else await page.keyboard.press('Escape');
+        await assertSelected(scope);
+        // The retained single scope opens the same small dialog from the footer.
+        await page.click('.shell-footer [data-testid="reprocess-submit"]');
+        await page.waitForSelector(confirmation);
+        await page.waitForFunction(
+          () =>
+            document.activeElement?.textContent.trim() === '取消' &&
+            !!document.activeElement.closest(
+              '[data-testid="reprocess-confirmation"]',
+            ),
+        );
+        await page.keyboard.press('Escape');
+        await assertSelected(scope);
       }
-      await page.click(button('重新选择'));
-      await page.waitForSelector(`${workspace} [role="radiogroup"]`);
+    } finally {
+      await page.evaluate(() => {
+        window.fetch = window.__detail171ConfirmationFetch;
+      });
     }
+    await page.cdp('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await page.click('[data-testid="reprocess-scope-all"]');
+    await page.waitForSelector(confirmation, { state: 'hidden' });
+    report.checks.push(
+      'Single-version selection opens a small real AlertDialog with saved-version update/retain rows and cancel autofocus; cancel/Escape preserve scope, restore its input focus, make no POST, and the retained-scope footer reopens confirmation. Desktop/phone light-dark dialog fits its viewport, hides the shell footer, and short-view content scrolls inside the dialog while both 48px actions stay reachable.',
+    );
     // Every successful response below is from the real worker and actual tools.
     const saved = await versions();
     await sql(
@@ -650,7 +875,8 @@ async function verifyReprocess({ page, config, sql, report, image }) {
     await page.click(button('重新处理'));
     await page.waitForSelector(`${workspace} [role="radiogroup"]`);
     await page.click('[data-testid="reprocess-scope-thumbnail"]');
-    await page.click('[data-testid="reprocess-submit"]');
+    await page.waitForSelector(confirmation);
+    await page.click(`${confirmation} [data-testid="reprocess-submit"]`);
     await page.waitForSelector(`${workspace}[data-job-status="succeeded"]`, {
       timeout: 30000,
     });
@@ -698,6 +924,7 @@ async function verifyReprocess({ page, config, sql, report, image }) {
     // Lose a real accepted POST response; never replace it with fabricated API data.
     await direct();
     await page.click('[data-testid="reprocess-scope-thumbnail"]');
+    await page.waitForSelector(confirmation);
     const [priorCount] = await sql(
       `SELECT COUNT(*) AS count FROM media_jobs WHERE image_id='${image}' AND kind='process'`,
     );
@@ -709,8 +936,31 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       window.__detail171LostReceipt = null;
       window.__detail171LostRelease = undefined;
       window.__detail171LostHoldUsed = false;
+      window.__detail171LostReadFailure = true;
+      window.__detail171LostReads = 0;
+      window.__detail171LostDetails = 0;
       window.fetch = async (...args) => {
         const path = new URL(String(args[0]), location.href).pathname;
+        if (path === `/api/images/${image}` && window.__detail171LostReceipt)
+          window.__detail171LostDetails++;
+        if (
+          path === `/api/images/${image}` &&
+          window.__detail171LostReceipt &&
+          !window.__detail171LostHoldUsed
+        ) {
+          window.__detail171LostHoldUsed = true;
+          await new Promise((resolve) => {
+            window.__detail171LostRelease = resolve;
+          });
+        }
+        if (
+          path === `/api/images/${image}` &&
+          window.__detail171LostReceipt &&
+          window.__detail171LostReadFailure
+        ) {
+          window.__detail171LostReads++;
+          throw new TypeError('Verification: detail read lost in transport');
+        }
         const response = await original(...args);
         if (path === `/api/images/${image}/reprocess`) {
           window.__detail171LostPosts++;
@@ -723,35 +973,54 @@ async function verifyReprocess({ page, config, sql, report, image }) {
             'Verification: accepted response lost in transport',
           );
         }
-        if (
-          path === `/api/images/${image}` &&
-          window.__detail171LostReceipt &&
-          !window.__detail171LostHoldUsed
-        ) {
-          window.__detail171LostHoldUsed = true;
-          await new Promise((resolve) => {
-            window.__detail171LostRelease = resolve;
-          });
-        }
         return response;
       };
     }, image);
-    await page.click('[data-testid="reprocess-submit"]');
+    await page.click(`${confirmation} [data-testid="reprocess-submit"]`);
     await page.waitForFunction(() => !!window.__detail171LostReceipt);
     await page.waitForFunction(() =>
       document
-        .querySelector('[data-testid="detail-reprocess"]')
+        .querySelector('[data-testid="reprocess-confirmation"] [role="alert"]')
         ?.textContent.includes('提交结果待核对'),
     );
     await page.waitForFunction(
       () => typeof window.__detail171LostRelease === 'function',
     );
-    await page.evaluate(() => window.__detail171LostRelease());
+    assert.equal(
+      await page.evaluate(() => {
+        const dialog = document.querySelector(
+          '[data-testid="reprocess-confirmation"]',
+        );
+        const cancel = dialog.querySelector(
+          '[data-slot="alert-dialog-footer"] button:first-child',
+        );
+        return (
+          dialog.getAttribute('aria-busy') === 'true' &&
+          cancel.disabled &&
+          dialog.querySelector('[data-testid="reprocess-submit"]').disabled
+        );
+      }),
+      true,
+      'Pending confirmation disables both actions',
+    );
+    await page.keyboard.press('Escape');
+    await page.waitForSelector(confirmation);
+    assert.equal(
+      await page.evaluate(() =>
+        document
+          .querySelector('[data-testid="reprocess-confirmation"]')
+          .getAttribute('aria-busy'),
+      ),
+      'true',
+      'Escape cannot cancel an in-flight real submission',
+    );
     const receipt = await page.evaluate(() => window.__detail171LostReceipt);
     assert.equal(receipt.scope, 'thumbnail');
+    // The UI read is deliberately disconnected. Observe the actual worker
+    // through the saved native fetch; no success response is invented.
     await page.waitForFunction(
       async ({ endpoint, job }) => {
-        const response = await fetch(endpoint);
+        const response = await window.__detail171Fetch(endpoint);
         if (!response.ok) throw new Error(`Detail HTTP ${response.status}`);
         const detail = await response.json();
         return (
@@ -761,6 +1030,165 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       },
       { endpoint, job: receipt.jobId },
       { timeout: 30000 },
+    );
+    await page.evaluate(() => window.__detail171LostRelease());
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector('[data-testid="reprocess-confirmation"]')
+          ?.getAttribute('aria-busy') === 'false',
+    );
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-testid="reprocess-confirmation"]')
+        ?.innerText.includes('详情核对失败：连接中断'),
+    );
+    assert.equal(
+      await page.evaluate(() => {
+        const dialog = document.querySelector(
+          '[data-testid="reprocess-confirmation"]',
+        );
+        const cancel = dialog.querySelector(
+          '[data-slot="alert-dialog-footer"] button:first-child',
+        );
+        const verify = [...dialog.querySelectorAll('button')].find(
+          (node) => node.textContent.trim() === '核对详情',
+        );
+        return (
+          !cancel.disabled &&
+          dialog.querySelector('[data-testid="reprocess-submit"]').disabled &&
+          !!verify &&
+          !verify.disabled
+        );
+      }),
+      true,
+      'Lost detail read retains the popup, enables cancel/verification and disables resubmission',
+    );
+    await layout('reprocess-confirm-read-error');
+    const failedReads = await page.evaluate(() => window.__detail171LostReads);
+    await page.focus(`${confirmation} [data-slot="alert-dialog-body"] button`);
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      (before) => window.__detail171LostReads > before,
+      failedReads,
+    );
+    await page.waitForFunction(() => {
+      const verify = document.querySelector(
+        '[data-testid="reprocess-confirmation"] [data-slot="alert-dialog-body"] button',
+      );
+      return !!verify && !verify.disabled;
+    });
+    assert.ok(
+      await page.evaluate(() =>
+        document
+          .querySelector('[data-testid="reprocess-confirmation"]')
+          .innerText.includes('详情核对失败：连接中断'),
+      ),
+    );
+    assert.equal(await page.evaluate(() => window.__detail171LostPosts), 1);
+    await page.click(
+      `${confirmation} [data-slot="alert-dialog-footer"] button:first-child`,
+    );
+    await page.waitForSelector(confirmation, { state: 'hidden' });
+    assert.equal(
+      await page.evaluate(() => {
+        const selected = document.querySelector(
+          '[data-testid="reprocess-scope-thumbnail"] input',
+        );
+        return (
+          selected.checked &&
+          document.querySelector(
+            '.shell-footer [data-testid="reprocess-submit"]',
+          ).disabled &&
+          document
+            .querySelector('[data-testid="detail-reprocess"]')
+            .innerText.includes('提交结果待核对') &&
+          document
+            .querySelector('main')
+            .innerText.includes('图片详情读取失败') &&
+          [
+            ...document.querySelectorAll(
+              '[data-slot="radio-content"][data-testid^="reprocess-scope-"] input',
+            ),
+          ].every((input) => input.disabled)
+        );
+      }),
+      true,
+      'Cancel after a lost GET preserves unknown/error/scope and exposes real detail-read retry while all scopes are disabled',
+    );
+    await page.waitForFunction(
+      () => document.activeElement?.dataset.testid === 'detail-workspace-title',
+    );
+    await page.evaluate(() => {
+      window.__detail171LostReadFailure = false;
+    });
+    await page.focus(button('刷新详情'));
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => {
+      const input = document.querySelector(
+        '[data-testid="reprocess-scope-thumbnail"] input',
+      );
+      return (
+        !!input &&
+        !input.disabled &&
+        !document.querySelector('main').innerText.includes('图片详情读取失败')
+      );
+    });
+    // A different scope must not clear the lost-response error or enable POST.
+    await page.click('[data-testid="reprocess-scope-compressed"]');
+    await page.waitForSelector(confirmation);
+    assert.equal(
+      await page.evaluate(() => {
+        const dialog = document.querySelector(
+          '[data-testid="reprocess-confirmation"]',
+        );
+        return (
+          dialog.querySelector('[data-testid="reprocess-submit"]').disabled &&
+          dialog
+            .querySelector('[role="alert"]')
+            .textContent.includes('提交结果待核对')
+        );
+      }),
+      true,
+    );
+    await layout('reprocess-confirm-unknown');
+    const realReads = await page.evaluate(() => window.__detail171LostDetails);
+    await page.focus(`${confirmation} [data-slot="alert-dialog-body"] button`);
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      (before) => window.__detail171LostDetails > before,
+      realReads,
+    );
+    await page.waitForFunction(() => {
+      const verify = document.querySelector(
+        '[data-testid="reprocess-confirmation"] [data-slot="alert-dialog-body"] button',
+      );
+      return !!verify && !verify.disabled;
+    });
+    assert.equal(await page.evaluate(() => window.__detail171LostPosts), 1);
+    await page.keyboard.press('Escape');
+    await page.waitForSelector(confirmation, { state: 'hidden' });
+    await page.waitForFunction(
+      () =>
+        document.activeElement ===
+        document.querySelector(
+          '[data-testid="reprocess-scope-compressed"] input',
+        ),
+    );
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.querySelector(
+            '[data-testid="reprocess-scope-compressed"] input',
+          ).checked &&
+          document.querySelector(
+            '.shell-footer [data-testid="reprocess-submit"]',
+          ).disabled &&
+          document
+            .querySelector('[data-testid="detail-reprocess"]')
+            .innerText.includes('提交结果待核对'),
+      ),
+      true,
     );
     const single = JSON.parse((await page.fetch(endpoint)).body);
     assert.equal(single.processingJob.status, 'succeeded');
@@ -784,7 +1212,7 @@ async function verifyReprocess({ page, config, sql, report, image }) {
       window.fetch = window.__detail171Fetch;
     });
     report.checks.push(
-      'A real accepted thumbnail-only response is lost at fetch transport; the browser submits once and the DB gains one job; real worker success replaces only thumbnail while original/compressed/watermark object IDs remain unchanged.',
+      'A real accepted thumbnail-only response and its follow-up detail read are disconnected at fetch transport; pending dialog actions and Escape cannot cancel, the retained popup shows the GET error with cancel/explicit keyboard verification, and cancel exposes cached scope plus parent retry with choices disabled. Restoring transport reads the actual terminal receipt; changing scope/reopening preserves unknown/error and disabled resubmission. The browser submits once and the DB gains one real job; actual worker success replaces only thumbnail while original/compressed/watermark object IDs remain unchanged.',
     );
 
     await direct(image, '');

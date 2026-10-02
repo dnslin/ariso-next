@@ -1,6 +1,7 @@
 'use client';
 
 import { Alert } from '@heroui/react/alert';
+import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
 import { Description } from '@heroui/react/description';
 import { Radio } from '@heroui/react/radio';
@@ -9,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailIdentity } from './detail-workspace';
 import { DetailReturn, DetailTip } from './detail-controls';
+import { DetailReprocessConfirmation } from './detail-reprocess-confirmation';
 import { processingLabels, versionLabels } from './detail-labels';
 import type { useDetailReprocess } from './use-detail-reprocess';
 import type { useDetailQuery } from './use-detail-query';
@@ -46,9 +48,25 @@ export function DetailReprocess({
     : null;
   const job = state.receipt ? receiptJob(detail, state.receipt) : null;
   const heading = useRef<HTMLHeadingElement>(null);
+  function cancelConfirmation() {
+    const control = document.querySelector<HTMLInputElement>(
+      `[data-testid="reprocess-scope-${state.scope}"] input`,
+    );
+    state.cancelConfirmation();
+    // Restore the surviving choice after the overlay finishes restoring focus.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (control?.isConnected && !control.disabled) control.focus();
+        else heading.current?.focus({ preventScroll: true });
+      });
+    });
+  }
   useEffect(() => {
-    heading.current?.focus({ preventScroll: true });
-  }, [state.confirmed, state.receipt?.jobId, job?.status]);
+    if (
+      !document.activeElement?.closest('[data-testid="reprocess-confirmation"]')
+    )
+      heading.current?.focus({ preventScroll: true });
+  }, [state.receipt?.jobId, job?.status]);
   if (
     state.receipt &&
     (state.receipt.scope !== 'all' || (job && job.status !== 'queued'))
@@ -75,9 +93,7 @@ export function DetailReprocess({
         <div className="absolute top-[476px] -left-[90px] size-65 rounded-full bg-accent/15 blur-[90px] xl:top-[700px] xl:-left-3 xl:size-115" />
         <div className="absolute top-4 left-45 size-65 rounded-full bg-default/35 blur-[90px] xl:top-20 xl:left-[668px] xl:size-115" />
       </div>
-      <DetailReturn onPress={state.confirmed ? state.reset : onReturn}>
-        {state.confirmed ? '重新选择范围' : '返回图片详情'}
-      </DetailReturn>
+      <DetailReturn onPress={onReturn}>返回图片详情</DetailReturn>
       <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
         <h1
           ref={heading}
@@ -87,11 +103,9 @@ export function DetailReprocess({
         >
           {state.receipt
             ? '重新处理已排队'
-            : state.confirmed
-              ? '确认处理范围'
-              : failed
-                ? '重试首次处理失败'
-                : '重新处理这张图片'}
+            : failed
+              ? '重试首次处理失败'
+              : '重新处理这张图片'}
         </h1>
         <DetailTip label="处理说明">
           <p>
@@ -128,26 +142,6 @@ export function DetailReprocess({
             ) : null}
           </div>
         </>
-      ) : state.confirmed ? (
-        <>
-          <p className="text-lg leading-7">
-            本次范围：{scopeLabels[state.scope]}
-          </p>
-          <div className="max-w-160 rounded-lg bg-default px-3 py-2.5 text-[13px] leading-5">
-            <p>
-              {state.scope === 'watermark'
-                ? '只替换水印图，当前压缩图与缩略图保持不变。'
-                : state.scope === 'compressed'
-                  ? '只替换压缩图，缩略图和水印图保持不变。'
-                  : '只替换缩略图，压缩图和水印图保持不变。'}
-            </p>
-            {state.scope === 'watermark' ? (
-              <p>
-                压缩开启时，可使用新临时压缩结果制作水印；不会替换当前压缩图。
-              </p>
-            ) : null}
-          </div>
-        </>
       ) : (
         <>
           <p className="text-sm leading-[22px] text-muted">
@@ -170,7 +164,7 @@ export function DetailReprocess({
             aria-label="处理范围"
             value={state.scope}
             onChange={(value) => state.choose(value as ReprocessScope)}
-            isDisabled={state.pending || query.isFetching}
+            isDisabled={state.pending || query.isFetching || query.isError}
             className="grid w-full max-w-160 grid-cols-1 gap-3 md:grid-cols-2"
           >
             {commonReason ? (
@@ -234,7 +228,7 @@ export function DetailReprocess({
           ) : null}
         </>
       )}
-      {state.error ? (
+      {state.error && !state.confirmed ? (
         <Alert status="danger">
           <Alert.Content>
             <Alert.Title>
@@ -253,6 +247,25 @@ export function DetailReprocess({
             </Button>
           </Alert.Content>
         </Alert>
+      ) : null}
+      {state.confirmed && !state.receipt && state.scope !== 'all' ? (
+        <AlertDialog.Backdrop
+          isOpen
+          isKeyboardDismissDisabled={state.pending}
+          onOpenChange={(open) => {
+            if (!open && !state.pending) cancelConfirmation();
+          }}
+        >
+          <AlertDialog.Container placement="center" className="p-4">
+            <DetailReprocessConfirmation
+              detail={detail}
+              scope={state.scope}
+              state={state}
+              query={query}
+              onCancel={cancelConfirmation}
+            />
+          </AlertDialog.Container>
+        </AlertDialog.Backdrop>
       ) : null}
     </section>
   );
@@ -322,9 +335,9 @@ export function DetailReprocessFooter({
         variant="outline"
         className="h-12 w-full rounded-lg"
         isDisabled={state.pending}
-        onPress={state.confirmed && !state.receipt ? state.reset : onReturn}
+        onPress={onReturn}
       >
-        {state.confirmed && !state.receipt ? '重新选择' : '返回详情'}
+        返回详情
       </Button>
       {state.receipt ? (
         <Button
@@ -343,16 +356,18 @@ export function DetailReprocessFooter({
             state.pending ||
             state.unknown ||
             query.isFetching ||
+            query.isError ||
             !!detail.reprocess.scopes[state.scope]
           }
           onPress={() => {
-            void state.submit();
+            if (state.scope === 'all') void state.submit();
+            else state.choose(state.scope);
           }}
         >
           {state.pending
             ? '正在提交…'
-            : state.confirmed
-              ? `提交${scopeLabels[state.scope]}`
+            : state.scope !== 'all'
+              ? `重新生成${versionLabels[state.scope]}`
               : detail?.processingStatus === 'failed'
                 ? '重试全部处理'
                 : '开始全部重处理'}

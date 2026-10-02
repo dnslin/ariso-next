@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { jsx } from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it } from 'vitest';
 import { DetailVersions } from '../../../src/components/library/detail-workspace';
 import { DetailReprocess } from '../../../src/components/library/detail-reprocess';
+import { DetailReprocessConfirmation } from '../../../src/components/library/detail-reprocess-confirmation';
+import { useDetailReprocess } from '../../../src/components/library/use-detail-reprocess';
 import type { LibraryDetail } from '../../../src/server/library/detail-types';
 
 const detail: LibraryDetail = {
@@ -82,6 +84,7 @@ const state: Props['state'] = {
   pending: false,
   dismissedJobId: null,
   choose: () => {},
+  cancelConfirmation: () => {},
   reset: () => {},
   submit: async () => {},
 };
@@ -144,14 +147,91 @@ it('keeps storage unavailability visible once when all scopes share the reason',
 });
 
 it('keeps the replacement contract visible before submitting a single scope', () => {
-  const html = renderReprocess(detail, {
-    ...state,
-    scope: 'compressed',
-    confirmed: true,
-  });
-  expect(html).toContain('只替换压缩图，缩略图和水印图保持不变');
-  expect(html).toContain('aria-label="查看处理说明"');
+  const html = renderToStaticMarkup(
+    jsx(DetailReprocessConfirmation, {
+      detail,
+      scope: 'compressed',
+      state: { ...state, scope: 'compressed', confirmed: true },
+      query,
+      onCancel: () => {},
+    }),
+  );
+  expect(html).toContain('role="alertdialog"');
+  expect(html).toContain('重新生成压缩图');
+  expect(html).toContain('<dt class="text-muted">更新</dt><dd>压缩图</dd>');
+  expect(html).toContain('<dt class="text-muted">保留</dt><dd>原图</dd>');
+  expect(html).not.toContain('查看处理说明');
+  expect(html).toContain('取消');
+  expect(html).toContain('提交仅压缩图');
   expect(html).not.toContain('提交时记录最新设置');
+});
+
+it('keeps uncertain submission errors visible and disables duplicate submission in the dialog', () => {
+  const html = renderToStaticMarkup(
+    jsx(DetailReprocessConfirmation, {
+      detail,
+      scope: 'thumbnail',
+      state: {
+        ...state,
+        scope: 'thumbnail',
+        confirmed: true,
+        unknown: true,
+        error: '连接中断，提交结果待核对',
+      },
+      query,
+      onCancel: () => {},
+    }),
+  );
+  expect(html).toContain('连接中断，提交结果待核对');
+  expect(html).toContain('核对详情');
+  expect(html.match(/disabled=""/g)).toHaveLength(1);
+});
+
+it('keeps detail reconciliation failures visible and blocks submission while cancellation remains available', () => {
+  const html = renderToStaticMarkup(
+    jsx(DetailReprocessConfirmation, {
+      detail,
+      scope: 'thumbnail',
+      state: { ...state, confirmed: true, scope: 'thumbnail' },
+      query: {
+        isError: true,
+        isFetching: false,
+        error: new Error('图片记录不存在'),
+      } as Props['query'],
+      onCancel: () => {},
+    }),
+  );
+  expect(html).toContain('详情核对失败：图片记录不存在');
+  expect(html).toContain('取消');
+  expect(html.match(/disabled=""/g)).toHaveLength(1);
+});
+
+it('retains the chosen scope on cancel and reopens confirmation without creating a receipt', () => {
+  function Probe() {
+    const [step, setStep] = useState(0);
+    const controller = useDetailReprocess(detail.id, {
+      isFetching: false,
+      data: detail,
+    } as Props['query']);
+    if (step === 0) controller.choose('thumbnail');
+    if (step === 1) {
+      expect(controller.confirmed).toBe(true);
+      controller.cancelConfirmation();
+    }
+    if (step === 2) {
+      expect(controller.scope).toBe('thumbnail');
+      expect(controller.confirmed).toBe(false);
+      expect(controller.receipt).toBeNull();
+      controller.choose(controller.scope);
+    }
+    if (step === 3) {
+      expect(controller.scope).toBe('thumbnail');
+      expect(controller.confirmed).toBe(true);
+      expect(controller.receipt).toBeNull();
+    } else setStep(step + 1);
+    return null;
+  }
+  renderToStaticMarkup(jsx(Probe, {}));
 });
 
 it('never collapses actionable submission errors into help', () => {

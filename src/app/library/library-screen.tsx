@@ -150,7 +150,9 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        detail.view === 'reprocess' ? (
+        detail.view === 'reprocess' &&
+        reprocess.confirmed &&
+        !reprocess.receipt ? null : detail.view === 'reprocess' ? (
           <DetailReprocessFooter
             detail={detailQuery.data}
             state={reprocess}
@@ -403,7 +405,7 @@ export function LibraryScreen(props: {
       </div>
       {detail.view &&
       detailQuery.data &&
-      !detailQuery.isError &&
+      (!detailQuery.isError || detail.view === 'reprocess') &&
       !detailQuery.expired ? (
         detail.view === 'reprocess' ? (
           <DetailReprocess

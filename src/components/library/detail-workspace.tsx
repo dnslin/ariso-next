@@ -28,18 +28,22 @@ export function versionDescription(version: LibraryDetailVersion) {
 export function DetailIdentity({
   detail,
   reprocess = false,
+  compact = false,
 }: {
   detail: LibraryDetail;
   reprocess?: boolean;
+  compact?: boolean;
 }) {
   const thumbnail = detail.versions.find(
     (version) => version.kind === 'thumbnail',
   );
   const [failed, setFailed] = useState(false);
   return (
-    <div className="flex min-w-0 items-center gap-3 xl:gap-6">
+    <div
+      className={`flex min-w-0 items-center gap-3 ${compact ? '' : 'xl:gap-6'}`}
+    >
       <div
-        className={`grid shrink-0 place-items-center overflow-hidden rounded-lg bg-default xl:h-21 xl:w-28 ${reprocess ? 'h-16 w-[85px]' : 'h-15 w-20'}`}
+        className={`grid shrink-0 place-items-center overflow-hidden rounded-lg bg-default ${compact ? 'h-12 w-16' : `xl:h-21 xl:w-28 ${reprocess ? 'h-16 w-[85px]' : 'h-15 w-20'}`}`}
       >
         {thumbnail?.previewPath && !failed ? (
           // eslint-disable-next-line @next/next/no-img-element
