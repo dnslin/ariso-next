@@ -18,7 +18,7 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { Layers } from 'lucide-react';
+import { Expand, Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
@@ -65,6 +65,13 @@ function DetailContent({
   onVersions: () => void;
   onView: () => void;
 }) {
+  const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
+  useEffect(() => {
+    if (!viewerTooltipOpen) return;
+    const close = () => setViewerTooltipOpen(false);
+    window.addEventListener('resize', close);
+    return () => window.removeEventListener('resize', close);
+  }, [viewerTooltipOpen]);
   const [downloadMessage, setDownloadMessage] = useState('');
   const [downloading, setDownloading] = useState(false);
   const downloadRequest = useRef<AbortController | null>(null);
@@ -151,6 +158,22 @@ function DetailContent({
                   </Button>
                   <Tooltip.Content>版本信息</Tooltip.Content>
                 </Tooltip>
+                <Tooltip
+                  isOpen={viewerTooltipOpen}
+                  onOpenChange={setViewerTooltipOpen}
+                >
+                  <Button
+                    data-testid="detail-viewer-entry"
+                    aria-label="查看大图"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 shrink-0 rounded-lg text-muted hover:text-foreground"
+                    onPress={onView}
+                  >
+                    <Expand aria-hidden size={20} />
+                  </Button>
+                  <Tooltip.Content>查看大图</Tooltip.Content>
+                </Tooltip>
               </div>
               <AccessDisclosure
                 label={detail.visibility === 'private' ? '私有' : '公开'}
@@ -184,14 +207,6 @@ function DetailContent({
                   {detail.tags.map((t) => t.displayName).join('、') || '无'}
                 </p>
               </div>
-              <Button
-                data-testid="detail-viewer-entry"
-                variant="outline"
-                className="h-12 w-[calc((100%-12px)/2)] rounded-lg text-sm font-normal"
-                onPress={onView}
-              >
-                查看大图
-              </Button>
               {detail.trashedAt || detail.deletionStatus ? (
                 <Alert status="warning">
                   <Alert.Content>

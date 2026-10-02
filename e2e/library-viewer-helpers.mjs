@@ -9,8 +9,6 @@ import {
 export const viewer = '[data-testid="image-viewer"]';
 export const entry = '[data-testid="detail-viewer-entry"]';
 export const button = (name) => `loc=role:button[name="${name}"]`;
-export const tab = (name) =>
-  `${viewer} [role="tablist"][aria-label="大图查看版本"] [role="tab"]:text-is("${name}")`;
 export const kindNames = {
   original: '原图',
   compressed: '压缩图',
@@ -56,8 +54,6 @@ export async function viewerState(page) {
       kind: root?.dataset.version,
       src: current?.getAttribute('src'),
       decoded: !!current?.complete && current.naturalWidth > 0,
-      info: root?.querySelector('[data-testid="viewer-current-version"]')
-        ?.textContent,
       placeholder: root?.querySelector('[data-testid="viewer-placeholder"]')
         ?.textContent,
       url: location.href,
@@ -82,10 +78,6 @@ export async function waitViewerImage(page, id, kind) {
   await waitViewerOverlayStable(page);
   const state = await viewerState(page);
   assert.match(state.src, new RegExp(`/i/${id}\\?type=${kind}(?:&|$)`));
-  assert.ok(
-    state.info.includes(kindNames[kind]),
-    'Actual selected version is named',
-  );
   assert.equal(
     state.src.includes('/_next/image'),
     false,
@@ -157,6 +149,7 @@ export async function openViewerSource(
   await page.focus(source);
   await page.keyboard.press('Enter');
   await page.waitForSelector('[data-testid="detail-body"]');
+  await monitorViewerRequests(page);
   await page.click(entry);
   await page.waitForSelector(viewer);
   await waitViewerImage(page, viewerId(index), 'compressed');
@@ -164,16 +157,50 @@ export async function openViewerSource(
 
 export async function monitorViewerRequests(page) {
   await page.evaluate(() => {
+    if (window.__viewerFetch) window.fetch = window.__viewerFetch;
     window.__viewerFetch = window.fetch;
     window.__viewerRequests = [];
     window.fetch = async (...args) => {
       const url = new URL(String(args[0]), location.href);
-      if (url.pathname.startsWith('/api/images'))
-        window.__viewerRequests.push({ path: url.pathname, query: url.search });
-      return window.__viewerFetch(...args);
+      const request = url.pathname.startsWith('/api/images')
+        ? { path: url.pathname, query: url.search, completed: false }
+        : null;
+      if (request) window.__viewerRequests.push(request);
+      const response = await window.__viewerFetch(...args);
+      if (request) {
+        request.status = response.status;
+        if (url.pathname.endsWith('/neighbors'))
+          request.neighbors = await response.clone().json();
+        request.completed = true;
+      }
+      return response;
     };
     performance.clearResourceTimings();
   });
+}
+
+export async function waitViewerNeighbors(page, id) {
+  await page.waitForFunction(
+    (id) =>
+      window.__viewerRequests?.some(
+        (request) =>
+          request.path === `/api/images/${id}/neighbors` &&
+          request.completed &&
+          request.status === 200,
+      ),
+    id,
+  );
+  await settleViewer(page);
+  return page.evaluate(
+    (id) =>
+      window.__viewerRequests.findLast(
+        (request) =>
+          request.path === `/api/images/${id}/neighbors` &&
+          request.completed &&
+          request.status === 200,
+      ).neighbors,
+    id,
+  );
 }
 
 export async function restoreViewerFetch(page) {

@@ -11,13 +11,13 @@ import {
   entry,
   findViewerCard,
   monitorViewerRequests,
-  openViewerDirect,
   openViewerSource,
   restoreViewerFetch,
   settleViewer,
   viewerShot,
   viewerState,
   waitViewerImage,
+  waitViewerNeighbors,
 } from './library-viewer-helpers.mjs';
 
 export async function verifyViewerPendingNavigation({ page, config, report }) {
@@ -48,11 +48,12 @@ export async function verifyViewerPendingNavigation({ page, config, report }) {
   try {
     await page.click(entry);
     await waitViewerImage(page, viewerId(7), 'compressed');
+    await waitViewerNeighbors(page, viewerId(7));
     await page.waitForFunction(
       () => typeof window.__viewerRelease === 'function',
     );
     const before = await viewerState(page);
-    await page.click(button('下一张'));
+    await page.keyboard.press('ArrowRight');
     await page.waitForFunction(() =>
       document
         .querySelector('[data-testid="image-viewer"]')
@@ -65,9 +66,8 @@ export async function verifyViewerPendingNavigation({ page, config, report }) {
     assert.equal(
       pendingFocus,
       true,
-      'Pending navigation disables its button while retaining viewer focus',
+      'Pending keyboard navigation retains viewer focus',
     );
-    await page.focus('[data-testid="image-viewer"] .yarl__container');
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     await settleViewer(page);
@@ -96,13 +96,19 @@ export async function verifyViewerPendingNavigation({ page, config, report }) {
 
 export async function verifyViewerDecodeFailures({ page, config, report }) {
   for (const kind of ['compressed', 'watermark']) {
-    if (kind === 'compressed') {
-      await page.goto(`${config.origin}/library?image=${viewerId(7)}`);
-      await page.waitForSelector('[data-testid="detail-body"]');
-    } else {
-      await openViewerDirect(page, config, viewerId(7));
-      await waitViewerImage(page, viewerId(7), 'compressed');
-    }
+    await page.goto(`${config.origin}/library?image=${viewerId(7)}`);
+    await page.waitForSelector('[data-testid="detail-body"]');
+    if (kind === 'watermark') await page.click('loc=role:tab[name="水印图"]');
+    await page.waitForFunction(
+      (kind) =>
+        [...document.querySelectorAll('[data-testid="detail-preview"]')].some(
+          (image) =>
+            image.src.includes('type=' + kind) &&
+            image.complete &&
+            image.naturalWidth > 0,
+        ),
+      kind,
+    );
     await page.evaluate(
       ({ id, kind }) => {
         const original = HTMLImageElement.prototype.decode;
@@ -126,11 +132,7 @@ export async function verifyViewerDecodeFailures({ page, config, report }) {
       { id: viewerId(7), kind },
     );
     try {
-      if (kind === 'compressed') await page.click(entry);
-      else
-        await page.click(
-          '[data-testid="image-viewer"] [role="tab"]:text-is("水印图")',
-        );
+      await page.click(entry);
       await page.waitForFunction(
         () =>
           window.__viewerDecodeRejected &&
@@ -180,11 +182,7 @@ export async function verifyViewerDeletedSource({ page, config, sql, report }) {
       ),
     );
   await openViewerSource(page, config, 7);
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll('[data-testid="image-viewer"] button')].some(
-      (node) => node.textContent.trim() === '下一张' && !node.disabled,
-    ),
-  );
+  await waitViewerNeighbors(page, id);
   try {
     await sql(`DELETE FROM media_versions WHERE image_id='${id}'`);
     await sql(`DELETE FROM media_objects WHERE image_id='${id}'`);
@@ -207,7 +205,7 @@ export async function verifyViewerDeletedSource({ page, config, sql, report }) {
         ?.textContent.includes('不存在'),
     );
     await viewerShot(page, config, report, 'current-deleted');
-    await page.click(button('下一张'));
+    await page.keyboard.press('ArrowRight');
     await waitViewerImage(page, viewerId(8), 'compressed');
     await page.click(button('关闭大图'));
     await page.waitForSelector('[data-testid="image-viewer"]', {

@@ -1,0 +1,6 @@
+AssertionError [ERR_ASSERTION]: 缩略图单边尺寸缺失时应按实际比例支持纵向平移
+    at file:////[eval2]:23:9
+{ source: { width: 1200, height: 900 }, thumbnail: { kind: 'thumbnail', applicable: true, saved: true, status: 'saved', format: 'webp', mime: 'image/webp', width: null, height: 300, byteSize: 3704, previewPath: '/i/issue185-007?type=thumbnail', downloadPath: '/i/issue185-007?type=thumbnail&download=1', links: { url: 'http://ariso-185-62014.localhost:62014/i/issue185-007?type=thumbnail', markdown: '![issue185-query-7.png](<http://ariso-185-62014.localhost:62014/i/issue185-007?type=thumbnail>)', html: '<img src="http://ariso-185-62014.localhost:62014/i/issue185-007?type=thumbnail" alt="issue185-query-7.png">', downloadUrl: 'http://ariso-185-62014.localhost:62014/i/issue185-007?type=thumbnail&download=1' }, unavailableReason: null } }
+{ beforePan: 'scale(4) translateX(0px) translateY(0px)', afterPan: 'scale(4) translateX(0px) translateY(0px)' }
+
+ego's nodejs process exited with code 1.

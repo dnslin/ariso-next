@@ -14,6 +14,7 @@ import {
   viewerShot,
   viewerState,
   waitViewerImage,
+  waitViewerNeighbors,
 } from './library-viewer-helpers.mjs';
 
 export async function verifyViewerConsumers({ page, config, report }) {
@@ -60,11 +61,8 @@ export async function verifyViewerConsumers({ page, config, report }) {
     await monitorViewerRequests(page);
     await page.click(entry);
     await waitViewerImage(page, viewerId(8), 'compressed');
-    await page.waitForFunction(() =>
-      window.__viewerRequests.some((request) =>
-        request.path.endsWith('/neighbors'),
-      ),
-    );
+    const neighbors = await waitViewerNeighbors(page, viewerId(8));
+    assert.equal(neighbors.next.id, viewerId(7));
     const query = await page.evaluate(
       () =>
         window.__viewerRequests.find((request) =>
@@ -73,12 +71,7 @@ export async function verifyViewerConsumers({ page, config, report }) {
     );
     assert.equal(new URLSearchParams(query).get('scope'), 'album');
     assert.equal(new URLSearchParams(query).get('albumId'), album.id);
-    await page.waitForFunction(() =>
-      [
-        ...document.querySelectorAll('[data-testid="image-viewer"] button'),
-      ].some((node) => node.textContent.trim() === '下一张' && !node.disabled),
-    );
-    await page.click(button('下一张'));
+    await page.keyboard.press('ArrowRight');
     await waitViewerImage(page, viewerId(7), 'compressed');
     assert.equal(await page.url(), url);
     await viewerShot(page, config, report, 'album-consumer-1440');
@@ -124,11 +117,17 @@ export async function verifyViewerConsumers({ page, config, report }) {
   await monitorViewerRequests(page);
   await page.click(entry);
   await waitViewerImage(page, item.id, 'thumbnail');
-  report.uploadViewerCaption = (await viewerState(page)).info;
-  assert.ok(
-    report.uploadViewerCaption.startsWith('缩略图 · WebP · '),
-    'Actual uploaded WEBP thumbnail uses the designed WebP format caption',
+  report.uploadViewer = await viewerState(page);
+  const uploaded = await page.fetch(`/api/images/${item.id}`);
+  assert.equal(uploaded.status, 200);
+  const thumbnail = JSON.parse(uploaded.body).versions.find(
+    (version) => version.kind === 'thumbnail',
   );
+  assert.equal(thumbnail.saved, true);
+  assert.equal(thumbnail.format.toLowerCase(), 'webp');
+  const delivery = await page.fetch(report.uploadViewer.src);
+  assert.equal(delivery.status, 200);
+  assert.equal(delivery.headers['content-type'], 'image/webp');
   assert.equal(
     await page.evaluate(() =>
       window.__viewerRequests.some((request) =>

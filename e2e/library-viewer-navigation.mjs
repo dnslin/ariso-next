@@ -16,10 +16,13 @@ import {
   settleViewer,
   viewerState,
   waitViewerImage,
+  waitViewerNeighbors,
 } from './library-viewer-helpers.mjs';
 
 export async function verifyViewerNavigation({ page, config, report }) {
+  report.stage = 'navigation:viewport-390x400';
   await setDetail171Viewport(page, 390, 400);
+  report.stage = 'navigation:source-query-load';
   await page.goto(`${config.origin}/library?${viewerQuery}`);
   await page.waitForFunction(
     () =>
@@ -29,6 +32,7 @@ export async function verifyViewerNavigation({ page, config, report }) {
   const savedLayout = await page.evaluate(
     () => document.querySelector('[data-testid="library-list"]').dataset.layout,
   );
+  report.stage = 'navigation:source-layout-control';
   await page.evaluate(() => {
     const main = document.querySelector('main');
     const mainRect = main.getBoundingClientRect();
@@ -64,6 +68,7 @@ export async function verifyViewerNavigation({ page, config, report }) {
   );
   report.navigationLayoutControl = layoutControl;
   await page.click('loc=role:radio[name="瀑布流"]');
+  report.stage = 'navigation:source-card-selection-and-detail';
   await findViewerCard(page, 19);
   const source = button(`查看图片：${viewerName(19)}`);
   await page.hover(source);
@@ -98,19 +103,10 @@ export async function verifyViewerNavigation({ page, config, report }) {
   });
   await monitorViewerRequests(page);
   try {
+    report.stage = 'navigation:initial-neighbor-window';
     await page.click(entry);
     await waitViewerImage(page, viewerId(19), 'compressed');
-    await page.waitForFunction(() =>
-      window.__viewerRequests.some((request) =>
-        request.path.endsWith('/neighbors'),
-      ),
-    );
-    await page.waitForFunction(() =>
-      [
-        ...document.querySelectorAll('[data-testid="image-viewer"] button'),
-      ].some((node) => node.textContent.trim() === '下一张' && !node.disabled),
-    );
-    await settleViewer(page);
+    await waitViewerNeighbors(page, viewerId(19));
     const windowState = await page.evaluate(() => ({
       requests: window.__viewerRequests,
       imageIds: [
@@ -168,6 +164,7 @@ export async function verifyViewerNavigation({ page, config, report }) {
       'private',
     );
     report.preload = windowState;
+    report.stage = 'navigation:cross-page-keyboard';
     await page.keyboard.press('ArrowRight');
     await waitViewerImage(page, viewerId(20), 'compressed');
     assert.equal(
@@ -176,22 +173,13 @@ export async function verifyViewerNavigation({ page, config, report }) {
       'Cross-page viewer navigation preserves underlying image/page URL',
     );
     for (let index = 21; index < 25; index++) {
-      await page.waitForFunction(() =>
-        [
-          ...document.querySelectorAll('[data-testid="image-viewer"] button'),
-        ].some(
-          (node) => node.textContent.trim() === '下一张' && !node.disabled,
-        ),
-      );
-      await page.click(button('下一张'));
+      await waitViewerNeighbors(page, viewerId(index - 1));
+      await page.keyboard.press('ArrowRight');
       await waitViewerImage(page, viewerId(index), 'compressed');
     }
-    await page.waitForFunction(() =>
-      [
-        ...document.querySelectorAll('[data-testid="image-viewer"] button'),
-      ].some((node) => node.textContent.trim() === '最后一张' && node.disabled),
-    );
+    assert.equal((await waitViewerNeighbors(page, viewerId(24))).next, null);
     await page.keyboard.press('ArrowRight');
+    await settleViewer(page);
     assert.equal(
       (await viewerState(page)).id,
       viewerId(24),
@@ -202,9 +190,10 @@ export async function verifyViewerNavigation({ page, config, report }) {
         () => !!document.activeElement?.closest('[data-testid="image-viewer"]'),
       ),
       true,
-      'Reaching the disabled last-image boundary keeps keyboard focus inside the viewer',
+      'Reaching the last-image boundary keeps keyboard focus inside the viewer',
     );
     await closeViewer(page, true);
+    report.stage = 'navigation:source-detail-scroll-and-list-return';
     const detailScroll = await page.evaluate(() => {
       const body = document.querySelector('[data-testid="detail-body"]');
       return {
@@ -263,12 +252,10 @@ export async function verifyViewerNavigation({ page, config, report }) {
     await restoreViewerFetch(page);
   }
   await openViewerSource(page, config, 0);
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll('[data-testid="image-viewer"] button')].some(
-      (node) => node.textContent.trim() === '第一张' && node.disabled,
-    ),
-  );
+  report.stage = 'navigation:first-boundary';
+  assert.equal((await waitViewerNeighbors(page, viewerId(0))).previous, null);
   await page.keyboard.press('ArrowLeft');
+  await settleViewer(page);
   assert.equal(
     (await viewerState(page)).id,
     viewerId(0),
@@ -278,6 +265,6 @@ export async function verifyViewerNavigation({ page, config, report }) {
   await page.click(button('关闭图片详情'));
   if (savedLayout === 'grid') await page.click('loc=role:radio[name="网格"]');
   report.checks.push(
-    'A real filtered private query crosses page 1 index 19→20 and reaches index 24 without looping; first/last disable correctly. Only three slides/current±1 delivery requests are allowed. Closing first restores original detail entry, then exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.',
+    'A real filtered private query crosses page 1 index 19→20 and reaches index 24 through ArrowRight without looping; actual first/last neighbor responses have no preceding/following item and extra arrow input preserves the boundary image. Only three slides/current±1 delivery requests are allowed. Closing first restores original detail entry, then exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.',
   );
 }

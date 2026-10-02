@@ -2,7 +2,13 @@
 
 日期：2026-10-02（Asia/Shanghai）。审计者：独立 `code_audit` agent。审计范围为本 Issue 的工作区差异，包含新增、未跟踪的生产代码与测试。本记录只说明代码与功能证据；设计还原由独立设计评审记录说明，最终界面仍需用户人工验收。
 
-## 当前结论
+## 当前结论（人工反馈返修）
+
+**当前独立代码审计通过：Critical 0，未解决 Required 0。** 本轮尺寸与新增 Tooltip 的三项实际缺陷已修复，静态预览名称已改为实际输出的可读名称。源码、测试及实际分阶段报告已复核。完整尝试仍为 failed；该次已执行的正常布局／版本场景、后续 `--only behavior` 13 项／29 张截图和最后 `--only recovery` 3 项／17 张截图共同提供本轮功能证据，不能写成完整命令一次退出 0。具体结论见[本轮续记](#人工反馈返修审计续记2026-10-02)。
+
+水印 requestId 与统一浏览器旧 Chip 断言两项范围外检查失败仍未解决，最终人工验收仍待用户完成，PR 保留草稿。此结论不代替设计评审、人工批准或整套适用检查通过。
+
+## 首次交付结论（历史）
 
 **本次独立代码审计通过：无未解决的 Critical／Required。** 十项本次范围内问题已修正，已核对源码、单测及最终真实浏览器回归。大图专项为 passed，14 项检查、49 张截图。整套适用检查仍有水印日志 requestId 和统一浏览器旧 Chip 断言两项范围外失败，PR 应保留草稿。本结论不代表整套检查通过、任务完成或设计验收通过。
 
@@ -73,3 +79,40 @@
 已实际读取 [behavior-remaining](./browser/behavior-remaining/library-viewer.json)：切图／还原／首尾焦点、实际系统全屏与错误层、触摸双轴平移、真实错误与状态恢复、迟到响应、pending 重复方向键、严格解码失败、真实删除及工具栏回焦均有已执行断言与截图。pending 时和成功后焦点均在查看器，实际 src 保持当前 `/i/issue185-007?type=compressed`。该报告最后在相册场景失败，原因是测试传了规格禁止的显式 sort；测试现已沿既有固定 joined_desc 核对真实 API 返回的 8→7 顺序，没有修改生产契约。该次消费者和长标题尚未完成，整份中间报告仍为 failed；最终完整专项已覆盖并通过，见上方最终记录。设计字重、间距、圆角等修正的设计批准另见独立记录。
 
 [consumers-initial](./browser/consumers-initial/library-viewer.json)已完成相册 8→7 顺序、同相册邻居请求、关闭路由保留，以及真实上传文件→worker ready→明确缩略图→零邻居请求→原 ready 队列行恢复。此报告后续复现了长标题失败，整体仍为 failed。新增稳定等待只读取六类 Modal／AlertDialog 目标自身的进出标记与有限动画是否结束，不检查后代 ScrollShadow／Skeleton／Spinner，不禁用产品动画或改写样式；消费者显式设置既有浅色与 reduced-motion，避免截图捕获有限进场变换。上述中间报告作为失败过程保留；最终完整大图专项已经覆盖并通过同一组断言。
+
+## 人工反馈返修审计续记（2026-10-02）
+
+本轮依据所有者明确要求的图标入口、整视口图片、仅关闭图标／Esc，以及已更新的[设计交接](../../design/handoff.md#管理大图人工反馈调整2026-10-02)与 SPEC §6，审查相对首次交付 HEAD 的源码和测试。先读新版测试，再检查完整调用路径及安装依赖源码。上文的正常栏位、系统 Fullscreen 和对应行号保留为历史，不代表返修后的实现。
+
+### 实际问题与修复
+
+| 分类             | 实际问题与失败证据                                                                                                                                                                                                    | 修复及复核结果                                                                                                                                                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required，已修复 | 版本宽高均为 NULL 时，真实 1200×900 图片成功解码，按 `+` 后仍为 scale(1)。[失败记录](./checks/ui-feedback-missing-dimensions-before-fix.txt)包含真实详情／版本与天然尺寸；首次只清 objects 的夹具核对不算复现证据。   | `ViewerImage` 成功 `decode()` 后提供整对 naturalWidth／naturalHeight；按真实 previewPath 记录展示尺寸，再交给 YARL Zoom。源码及两次行为回归已核对，实际缺尺寸图片可缩放并双轴平移。                                                           |
+| Required，已修复 | 缩略图仅缺宽时，独立 `??` 将原图宽与缩略图高拼成错误比例。真实 scale(4) 后纵向拖动仍为 0。[失败记录](./checks/ui-feedback-partial-dimensions-before-fix.txt)保留。                                                    | [image-viewer.tsx:70](../../../src/components/library/image-viewer.tsx#L70)只使用完整有效的版本尺寸对，否则使用该文件成功解码的完整天然尺寸，不混原图单边值。真实 320×240、width=NULL／height=240、原图1200×900的独立夹具通过纵向及横向平移。 |
+| Required，已修复 | 新图标入口回焦后 Tooltip 打开，桌面缩至390×400仍保留旧位置。实际 document clientWidth=390、scrollWidth=1100、visualScale约0.3545。[失败页](./browser/ui-feedback-tooltip-resize-before-fix/library-viewer.json)保留。 | [detail.tsx:68](../../../src/components/library/detail.tsx#L68)使用现有 HeroUI 受控 Tooltip；仅打开时监听 window resize 关闭，关闭／卸载移除监听，不改变焦点。实际回归 scrollWidth=390、visualScale=1、提示消失、activeElement仍为入口。      |
+
+另有实际无障碍修正：HeroUI Dialog 没有输出传入的 `aria-description`，[首轮失败](./browser/ui-feedback-preview-label-initial/library-viewer.json)实际读回 null。[image-viewer.tsx:161](../../../src/components/library/image-viewer.tsx#L161)改用“大图查看（静态预览）”的真实可访问名称；正常态保持“大图查看”，视觉上不新增说明。后续真实 SVG／HEIC 场景验证该名称及既有 WebP 内容，明确选择附件原图后保留原因、没有换版。
+
+### 源码与测试有效性
+
+- 已实际读取 YARL `useContainerRect`、`ImageSlide`、Inline、ZoomWrapper 和 `useZoomImageRect`。图片完整 contain 铺满舞台，slide 的展示尺寸与 Zoom 使用相同比例，源元数据未改变；没有重新实现图片交互。解码尺寸记录最多三条，写入时按当次相邻窗口剪除，关闭随查看器卸载释放。YARL 挂载 key 只看 src，加载回调稳定；补尺寸不触发重复挂载或渲染循环。迟到 decode 仍检查挂载标记，ResizeObserver 使用依赖自身的 disconnect。
+- 已读 HeroUI Tooltip 类型／实现，确认 `isOpen`／`onOpenChange` 为现有能力；已读 React Aria `useOverlayPosition` 的 visualViewport scale 变化时冻结定位分支。修复只关闭本次新增提示，没有复制定位算法或修改既有版本入口。
+- `LibraryDetail` 的明确版本状态带入查看器；成功换图后选择目标自动版本，关闭恢复原详情选择、滚动和图标焦点。imageId、最多三张 slides、真实内容验证后导航、失败不回退、取消／会话清缓存逻辑保留。图库和相册通过 `LibraryScreen`、上传结果通过同一个 `LibraryDetail` 消费；回收详情没有新增入口。已删除旧正常栏位、Fullscreen、布局插件与查看器内选版函数；取消相应测试符合明确范围调整。
+- 双指失败属于测试前置不足：[初轮实际 scale1.92028](./browser/ui-feedback-pinch-precondition-initial/library-viewer.json)时画面高度仍未超过844px，不能据此要求纵向平移。增加真实移动距离后，仍严格要求实际绘制的两轴超过视口，再检查 scale 不变及真实 translateY 变化；未修改生产手势、放宽断言或增加时限。
+- 加载前置失败因详情先解码同 URL，进入大图时直接命中解码缓存，[完整尝试](./browser/ui-feedback-loading-precondition-initial/library-viewer.json)仍为 failed。新独立 loading 夹具使用真实文件及生产端点；在现有 CDP Fetch 的 Response 边界暂持实际200响应及原始 headers，确认详情尚未解码后打开查看器，观察真实 Skeleton，再原样 continue。没有 fulfill／替换成功响应。暂停 requestId 在 finally 继续，嵌套 finally 保证 Fetch.disable，外层恢复网络缓存与拦截设置；运行器最终删除独立数据目录。
+- 审计要求补充成功后 Skeleton 真正消失，不能只依赖 complete／naturalWidth。最终源码保留10秒实际 DOM隐藏等待及 `loading.skeletonHidden === true` 读回断言；该新增断言由最后局部 recovery 实际执行，没有把先前行为报告冒充这条断言已执行。新增 `--only recovery` 仅在现有枚举与入口中复用 `verifyViewerRecovery`，完整入口仍执行原有所有场景。
+
+### 本轮实际验证与限制
+
+审计 agent 没有重复运行大套测试、构建或浏览器。已实际读取本轮[冻结安装](./checks/ui-feedback-install.txt)、[lint](./checks/ui-feedback-lint.txt)、[类型](./checks/ui-feedback-typecheck.txt)、[文档](./checks/ui-feedback-docs.txt)、[格式](./checks/ui-feedback-format.txt)、[869项单测](./checks/ui-feedback-unit.txt)及[构建](./checks/ui-feedback-build.txt)输出。主 agent 记录这些命令退出0；构建完成编译与15页生成，日志仍保留输出追踪的依赖解析消息，不能据此宣称其他架构或容器已验证。最终文档与测试收尾后的静态检查由主 agent 统一收齐。
+
+环境为 Node24.18.1、macOS ARM64、Ego Lite TaskSpace11／p1，独立临时数据。实际命令与结果分别为：
+
+| 实际运行                                                                                                                                                                                                                                               | 结果与本审计实际核对内容                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-final node scripts/verify-browser.mjs --suite viewer`（保存为 [loading-precondition-initial](./browser/ui-feedback-loading-precondition-initial/runner.json)） | 退出1／failed，8项已执行、34截图。正常五宽浅深与390／1440×400、四版本、实际动画像素、静态预览名称、Tooltip缩屏、导航与尺寸／手势边界已经执行；停在旧加载前置。没有把整轮改写通过。                                                                                                                                                                                     |
+| `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-final node scripts/verify-browser.mjs --suite viewer --only behavior`                                                                                          | 退出0；[运行器](./browser/ui-feedback-final/runner.json)与[业务报告](./browser/ui-feedback-final/library-viewer.json)passed，13项、29截图。实际3张窗口、007当前src保持、pending与成功焦点true、详情244.5px滚动恢复、触摸scale3.74454且横移60／纵移30、真实404与回工具栏、相册008→007、真实上传thumbnail、255字名称360×400均已核对。此报告尚无后补的 Skeleton消失字段。 |
+| `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-loading-final node scripts/verify-browser.mjs --suite viewer --only recovery`                                                                                  | 退出0；[运行器](./browser/ui-feedback-loading-final/runner.json)与[业务报告](./browser/ui-feedback-loading-final/library-viewer.json)passed，3项、17截图。真实200／image/webp／16180字节、transferSize16480、暂停时 complete=false／naturalWidth=0、成功后 skeletonHidden=true；本次与此前 Runtime事件均按报告保留，当前数组均空。                                     |
+
+本轮范围内没有未解决 Critical／Required。分阶段证据覆盖适用行为，未声称本轮完整命令一次成功或统一 `test:browser` 通过。原水印 requestId 与旧 Chip 断言失败仍为范围外未解决项，不能以创建／更新 PR 代替这些结果。查看器打开期间真实会话过期、物理设备、Safari、软键盘、非零安全区及 Release 容器仍未执行；原生 Fullscreen 已按人工指令撤销，旧证据只属历史。设计结论由[独立设计评审](./design-review.md)维护，最终整体界面仍需用户人工验收，草稿状态应保留。

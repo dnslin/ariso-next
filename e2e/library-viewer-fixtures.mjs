@@ -87,6 +87,41 @@ export async function seedViewerFixtures(config, sql) {
     for (const kind of Object.keys(assets))
       await version(id, kind, assets[kind]);
   }
+  // This delivery URL is reserved for the loading scenario so no earlier
+  // detail, version or neighbor check can populate Chromium's decoded cache.
+  await image('issue185-loading', 'issue185-loading.png', assets.original);
+  for (const kind of ['original', 'compressed'])
+    await version('issue185-loading', kind, assets[kind]);
+  // Legacy/imported records can lack dimensions while their real bytes remain
+  // valid. Both image and object/version metadata intentionally stay NULL.
+  const noDimensions = (asset) => ({ ...asset, width: null, height: null });
+  await image(
+    'issue185-no-dimensions',
+    'issue185-no-dimensions.png',
+    noDimensions(assets.original),
+  );
+  for (const kind of ['original', 'compressed'])
+    await version('issue185-no-dimensions', kind, noDimensions(assets[kind]));
+  await run('magick', [
+    join(directory, 'original.png'),
+    '-resize',
+    '320x240!',
+    join(directory, 'partial-thumbnail.webp'),
+  ]);
+  const partialThumbnail = {
+    bytes: await readFile(join(directory, 'partial-thumbnail.webp')),
+    format: 'webp',
+    mime: 'image/webp',
+    width: null,
+    height: 240,
+  };
+  await image(
+    'issue185-partial-dimensions',
+    'issue185-partial-dimensions.png',
+    assets.original,
+  );
+  await version('issue185-partial-dimensions', 'original', assets.original);
+  await version('issue185-partial-dimensions', 'thumbnail', partialThumbnail);
   const formatDirectory = join(
     config.projectDirectory,
     'tests/fixtures/media-formats',
@@ -139,7 +174,7 @@ export async function seedViewerFixtures(config, sql) {
   const result = await sql(
     `SELECT count(*) AS count FROM media_images WHERE storage_id='${viewerStorage}'`,
   );
-  assert.equal(result[0].count, 33);
+  assert.equal(result[0].count, 36);
   return {
     directory,
     async cleanup() {

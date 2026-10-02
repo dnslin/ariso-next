@@ -2,7 +2,70 @@
 
 2026-10-02，T-LIB-07 / R-15.5-01 / LIBRARY-QUERY。依据 [SPEC-library §6](../../specs/SPEC-library.md#6-大图查看)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。本记录维护一次证据；PR 链接同一记录，不复制规则。
 
-已提交并推送 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。代码审计通过，本次已反馈设计偏差已修复；两项范围外检查失败、全屏位置批准及最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。
+分支 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。本次人工反馈已改为图片占满视口、图标入口和单一关闭入口，已取得最终构建、分段浏览器复验和独立审计证据。两项范围外检查失败及返修后的最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。
+
+## 人工反馈后的简化查看器（2026-10-02）
+
+所有者明确要求入口“用图标去展示”，大图“整个页面都是图片”，“只需要……一个关闭按钮……或者通过 Esc 去关闭”。按本次明确指令实施，已同步[设计交接](../../design/handoff.md#管理大图人工反馈调整2026-10-02)、SPEC §6 和原任务卡，冻结 PRD 未修改。
+
+- 共用详情标题旁以44px HeroUI 图标按钮和Lucide Expand打开大图，保留可读名称“查看大图”和 Tooltip；实际SVG桌面16×16、手机20×20，与既有版本图标沿同一HeroUI ghost响应式样式。图库、相册和上传结果继续共用同一入口。
+- 正常大图舞台覆盖整个真实视口，不再保留文件名、版本栏、版本资料、提示语、底栏或系统Fullscreen按钮。仅右上44px HeroUI CloseButton，保留安全区和清楚焦点。
+- 图片按真实比例完整显示，至少一轴占满可用视口；不裁切、不拉伸。缩放、平移、键盘左右和滑动切图沿成熟YARL；同图四版本在既有详情选择，大图继承明确选择，关闭恢复原详情选择/滚动/焦点。
+- 必要错误说明与恢复操作仅在实际失败时出现。取消、迟到响应、失效内容、跨页查询和三张预载边界保留。
+
+旧Figma正常390:6943 / 390:6996、放大391:6682 / 391:6735的页眉/版本/资料/底栏按以上明确指令移除，旧系统全屏位置待批准项不再适用。详情36:312 / 102:3228的查看入口改图标，其他已批准公共区域不变；错误391:6787 / 391:6800继续适用。实施者重新实际读取正常节点的设计信息和截图；独立设计评审重新实际读取详情与错误节点，并检查本轮真实截图。此设计调整依据本轮明确反馈，返修页面仍需再次人工验收。
+
+代表核对见[手机结果](./browser/ui-feedback-representative/mobile-report.json)、[桌面截图](./browser/ui-feedback-representative/ready-light-1440.png)、[手机截图](./browser/ui-feedback-representative/ready-light-390.png)及[图标入口桌面](./browser/ui-feedback-representative/entry-light-1440.png)/[手机](./browser/ui-feedback-representative/entry-light-390.png)。实测舞台分别0/0/1440×1080、0/0/390×844，正常控件只有关闭SVG，入口44×44，关闭可命中，Esc关闭后回焦。手机4:3图片实际绘制390×292.5，上下留白来自完整保比例。独立代表评审未发现本轮偏差。连续主题/视口代表检查两次等待失败保留[首轮](./checks/ui-feedback-representative-initial.txt)与[阶段记录](./checks/ui-feedback-representative.txt)；聚焦手机重新实际通过，未把前两轮记录记作全量通过。
+
+代码审计发现两个相关边界：版本尺寸均空时成功解码仍不能缩放；版本单边尺寸空时混用原图尺寸会导致纵向平移范围错误。先在独立预览数据实际复现，见[双空失败](./checks/ui-feedback-missing-dimensions-before-fix.txt)及[单边空失败](./checks/ui-feedback-partial-dimensions-before-fix.txt)，均有真实接口和图片解码结果。初次夹具只改objects、版本表仍有尺寸，记录在[夹具核对](./checks/ui-feedback-dimensions-setup-initial.txt)，不作为缺尺寸失败证据。修复只在展示层取得成功解码的整对天然尺寸，解码尺寸记录最多三条，写入时按相邻窗口剪除，随查看器卸载释放；不混拼原图尺寸，不修改持久化资料或接口。
+
+完整浏览器首轮发现静态预览的 `aria-description` 未被现有 HeroUI Dialog 输出，见[失败记录](./browser/ui-feedback-preview-label-initial/library-viewer.json)；现已用实际可访问名称“大图查看（静态预览）”声明。正常画面不因此增加可见说明。
+
+随后实际复现新增入口 Tooltip 在桌面缩至手机时保留旧定位：页面宽390px，提示仍在left1071.95px，导致scrollWidth1100px、visualViewport缩小。见[缩屏失败页与截图](./browser/ui-feedback-tooltip-resize-before-fix/library-viewer.json)。读取已安装 ReactAria `useOverlayPosition`，确认其打开期间遇到 visualViewport scale 改变会冻结位置；只为本次新增 Tooltip 使用现有受控开关，在窗口变化时关闭提示，保留入口焦点，卸载时释放监听。既有版本入口未改。
+
+下一轮已通过上述修复和两类尺寸边界，停在双指测试的放大前置，见[真实失败记录](./browser/ui-feedback-pinch-precondition-initial/library-viewer.json)。390×844下实际scale1.92028，完整横图高度仍小于视口，不能据此断言纵向平移。调整真实双指移动距离以形成可平移区域，保留“两个绘制轴均超过视口”和双轴平移断言；未增加超时或修改生产手势算法。
+
+随后实际双指scale3.74454、横移60px/纵移30px、捏回1倍及来回滑动均通过，见[行为及加载前置失败记录](./browser/ui-feedback-loading-precondition-initial/library-viewer.json)。该轮加载断言失败的原因是先在详情读取水印后再以同URL打开大图，浏览器直接复用已解码图像；不能把没有实际加载的前置记作加载通过。加载验证改用未读取过的独立图像和真实延迟网络。
+
+最终预览脚本先后将SVG统一要求为20px/16px，分别在桌面/手机实测失败，见[桌面测量](./browser/ui-feedback-icon-measure-initial/report.json)与[手机测量](./browser/ui-feedback-mobile-icon-measure-initial/report.json)。读取现有HeroUI Button CSS，确认 `size-5 sm:size-4`，实际为手机20px、桌面16px；旁边既有版本按钮相同。最终检查直接对照两枚真实图标的宽高并记录，44px点击目标不变，不为测量假设修改公共设计。
+
+最终构建的独立预览检查已退出0，见[实际记录](./browser/ui-feedback-preview-final/report.json)及[命令输出](./checks/ui-feedback-preview.txt)。入口与正常态的1440×1080、390×844浅深色共八张最终截图及逐项设计对照在[独立设计评审](./design-review.md#用户人工反馈后的独立复核)。图标实测桌面16px、手机20px，与相邻版本图标一致；44px命中、满视口舞台、最大完整保比例、正常唯一关闭及真实Esc回焦均已检查。
+
+本轮浏览器按已有定向入口分段完成，未机械重复已通过场景，也未改写失败整轮的状态：
+
+- 五宽度360/390/430/768/1440浅深色、390/1440×400短视口、四版本继承/默认外链独立、GIF/APNG实际多帧、SVG/HEIC静态预览与显式错误、禁用及Tooltip缩屏的成功断言在[最后一次完整尝试](./browser/ui-feedback-loading-precondition-initial/library-viewer.json)。该命令整体退出1，停在上述已修正的加载前置，不称完整命令通过。
+- `--only behavior` 实际退出0，13条检查、29张截图，见[业务结果](./browser/ui-feedback-final/library-viewer.json)、[运行器](./browser/ui-feedback-final/runner.json)和[输出](./checks/ui-feedback-browser.txt)。覆盖跨页/首尾/三张预载、关闭详情/列表上下文恢复、鼠标与键盘/双指缩放平移、两类缺尺寸、真实加载/空/错误/失效、decode失败、迟到响应、真实删除、相册与真实ready上传、255字名称360×400。
+- 代码审计另要求加载成功后实际确认Skeleton消失。补原10秒时限的DOM隐藏断言，并按现有模式增加 `--only recovery`，只复验既有恢复函数。该命令实际退出0，3条检查、17张截图，见[最终恢复结果](./browser/ui-feedback-loading-final/library-viewer.json)、[运行器](./browser/ui-feedback-loading-final/runner.json)和[输出](./checks/ui-feedback-loading-final.txt)。独立新图的实际200响应保持原内容，详情naturalWidth0时打开大图确有骨架；释放后WebP正文16180字节、实际transfer16480、自然解码及 `skeletonHidden: true`，没有伪造成功响应。
+
+| 适用状态 / 对照依据                             | 本轮最终实际页面                                                                                                                                                                                                                                                                                                                           | 结论                                                                                          |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| 正常与入口 / 用户明确调整，详情36:312、102:3228 | [桌浅入口](./browser/ui-feedback-preview-final/entry-light-1440.png)、[手深入口](./browser/ui-feedback-preview-final/entry-dark-390.png)、[桌浅大图](./browser/ui-feedback-preview-final/ready-light-1440.png)、[手深大图](./browser/ui-feedback-preview-final/ready-dark-390.png)                                                         | 整页及公共区一致；图标风格相同，舞台覆盖视口，只有关闭。其余主题组合见同目录和设计评审。      |
+| 邻图失败 / 391:6787、391:6800，两端浅深         | [桌浅](./browser/ui-feedback-final/library-viewer-adjacent-error-light-1440.png)、[手深](./browser/ui-feedback-final/library-viewer-adjacent-error-dark-390.png)                                                                                                                                                                           | 保留当前像素，480/358px错误对话框及原字体/间距/操作；没有恢复旧正常栏位。其他两端主题同目录。 |
+| 真实加载 / 390×844                              | [响应暂停](./browser/ui-feedback-loading-final/library-viewer-real-delivery-loading-390.png)                                                                                                                                                                                                                                               | 满视口Skeleton与关闭；原内容释放后真实解码且遮罩消失。                                        |
+| 缺内容、无版本与失效 / 两端浅深及实际状态       | [内容错桌浅](./browser/ui-feedback-final/library-viewer-delivery-error-light-1440.png)、[无版本手深](./browser/ui-feedback-final/library-viewer-no-readable-version-dark-390.png)、[停用](./browser/ui-feedback-final/library-viewer-current-storage-disabled.png)、[删除](./browser/ui-feedback-final/library-viewer-current-deleted.png) | 仅真实失败出现必要原因与恢复操作，当前内容移除，无隐式换版；其余主题及回收/删除中状态同目录。 |
+| 放大与短视口 / 用户明确调整                     | [双指/平移](./browser/ui-feedback-final/library-viewer-touch-pinch-pan.png)、[360×400长名](./browser/ui-feedback-final/library-viewer-long-name-360-short.png)                                                                                                                                                                             | 图片按整个视口裁切，关闭可达；长名不占用大图空间，Esc可返回。                                 |
+| 全部已实现消费者 / 共用LibraryDetail            | [相册1440浅](./browser/ui-feedback-final/library-viewer-album-consumer-1440.png)、[上传390浅](./browser/ui-feedback-final/library-viewer-upload-consumer-390.png)                                                                                                                                                                          | 与图库同一查看器；相册真实独立顺序，上传明确缩略图且无伪造邻居上下文。                        |
+
+环境沿本记录：macOS ARM64、Node24.18.1、pnpm11.19.0、现有真实媒体工具、Ego Chromium152，同一TaskSpace11，独立DATA_DIR。没有新增依赖或下载浏览器。
+
+| 本轮实际命令                                                                                                                                                          | 结果 / 证据                                                                                                        |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                                                                                      | 退出0，[安装](./checks/ui-feedback-install.txt)                                                                    |
+| `pnpm run test:unit`                                                                                                                                                  | 71文件、869项通过，[单测](./checks/ui-feedback-unit.txt)；后续仅展示层及实际浏览器测试修正，模型未改               |
+| `pnpm run build`                                                                                                                                                      | 最终生产源码退出0，[构建](./checks/ui-feedback-build.txt)；其他平台可选原生包nft警告保留                           |
+| `pnpm run typecheck` / `pnpm run lint`                                                                                                                                | 退出0，[类型](./checks/ui-feedback-typecheck.txt)、[静态检查](./checks/ui-feedback-lint.txt)                       |
+| `pnpm run format:check` / `node docs/tasks/check.mjs` / `git diff --check`                                                                                            | 均退出0；文档检查120任务/298需求，见[格式](./checks/ui-feedback-format.txt)、[文档](./checks/ui-feedback-docs.txt) |
+| `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-final node scripts/verify-browser.mjs --suite viewer --only behavior`         | 退出0，13条行为检查，29张实际截图                                                                                  |
+| `EGO_TASK_SPACE=11 BROWSER_REPORT_DIR=docs/verification/library-185/browser/ui-feedback-loading-final node scripts/verify-browser.mjs --suite viewer --only recovery` | 退出0，3条恢复检查，17张实际截图，包含新增Skeleton隐藏断言                                                         |
+| `ego-browser nodejs < /private/tmp/ariso-185-feedback-final-preview.mjs`                                                                                              | 最终构建四种主题/视口入口与正常态、Esc回焦退出0；[八图与实测](./browser/ui-feedback-preview-final/report.json)     |
+
+独立[代码审计](./code-audit.md)和[设计评审](./design-review.md)分别记录本轮结论。自动功能检查和设计复核不替代用户人工验收。统一集成水印日志requestId断言及统一浏览器旧Chip断言仍按历史记录保留失败，未改范围外路径，未再重复这两项已知失败检查；日常远端PR没有实际检查，不记CI通过。真实会话过期、物理设备及Release镜像/容器仍未执行，匿名查看器由#193承接。
+
+[独立本地验收服务](http://ariso-185-62014.localhost:62014/library)已更新最终构建，沿原独立数据 `/private/tmp/ariso-185-preview-F6s53v/data`。已实际执行 `ego-browser nodejs < /private/tmp/ariso-185-final-handoff.mjs`，退出0；[交回记录](./browser/ui-feedback-preview-final/handoff.json)及[输出](./checks/ui-feedback-handoff.txt)确认同一空间p1保留图库来源查询、1440×1080浅色大图并已交回用户。再次人工检查图标入口及图片/关闭体验。没有收到本轮最终人工通过，PR继续草稿；本地预览不是部署。
+
+## 首次交付的历史证据
+
+以下记录描述人工反馈前的实现、设计比较与检查结果；正常栏位和系统Fullscreen的结论已由上面的明确调整替代。保留原始通过/失败记录，不把历史结果冒充返修后的验收。
 
 ## 范围与前置
 

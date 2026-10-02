@@ -32,11 +32,12 @@ assert.ok(
       [
         'representative',
         'behavior',
+        'recovery',
         'consumers',
         'deleted-source',
         'pending-navigation',
       ].includes(only)),
-  '--only supports upload relations/submissions or viewer representative/behavior/consumers/deleted-source/pending-navigation',
+  '--only supports upload relations/submissions or viewer representative/behavior/recovery/consumers/deleted-source/pending-navigation',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');

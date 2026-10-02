@@ -6,8 +6,12 @@ import { Skeleton } from '@heroui/react/skeleton';
 
 export function ViewerImage({
   onError,
+  onDimensions,
   ...props
-}: RenderSlideProps & { onError: () => void }) {
+}: RenderSlideProps & {
+  onError: () => void;
+  onDimensions: (width: number, height: number) => void;
+}) {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const mounted = useRef(true);
@@ -27,17 +31,28 @@ export function ViewerImage({
       {!loaded && !failed ? (
         <Skeleton
           aria-label="正在加载图片"
-          className="absolute inset-0 size-full rounded-xl"
+          className="absolute inset-0 size-full"
         />
       ) : null}
       <ImageSlide
         {...props}
-        imageProps={{ className: 'rounded-xl', draggable: false }}
+        imageProps={{
+          draggable: false,
+          style: {
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+          },
+        }}
         render={{ iconLoading: () => null, iconError: () => null }}
         onLoad={async (image) => {
           try {
             await image.decode();
-            if (mounted.current) setLoaded(true);
+            if (mounted.current) {
+              onDimensions(image.naturalWidth, image.naturalHeight);
+              setLoaded(true);
+            }
           } catch {
             fail();
           }

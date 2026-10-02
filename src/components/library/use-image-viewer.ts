@@ -264,10 +264,6 @@ export function useImageViewer({
     neighborsLoading: neighbors.isFetching,
     statusError: detailQuery.error ?? status.error,
     navigate,
-    selectVersion: (kind: VersionKind) => {
-      setSelection({ imageId, kind });
-      setNavigationError(null);
-    },
     dismissNavigationError: () => setNavigationError(null),
     retryNeighbors: refreshNeighbors,
     retryStatus: refreshStatus,

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { setTimeout } from 'node:timers/promises';
 import {
   viewerId,
   viewerName,
@@ -23,6 +24,7 @@ import {
   viewerShot,
   viewerState,
   waitViewerImage,
+  waitViewerNeighbors,
 } from './library-viewer-helpers.mjs';
 import { verifyViewerLayouts } from './library-viewer-layouts.mjs';
 
@@ -76,30 +78,197 @@ export async function verifyViewerRecovery(context) {
     await verifyViewerLayouts(context, 'no-readable-version', true);
     await closeViewer(page);
 
-    await openViewerDirect(page, config, viewerId(7));
-    await waitViewerImage(page, viewerId(7), 'compressed');
-    await page.cdp('Network.emulateNetworkConditions', {
-      offline: false,
-      latency: 3000,
-      downloadThroughput: -1,
-      uploadThroughput: -1,
+    report.stage = 'recovery:loading-fresh-response-setup';
+    const loadingId = 'issue185-loading';
+    const loadingUrl = new URL(`/i/${loadingId}?type=compressed`, config.origin)
+      .href;
+    report.loading = {
+      url: loadingUrl,
+      previouslyCompleted: await page.evaluate(
+        (url) =>
+          performance
+            .getEntriesByType('resource')
+            .some((entry) => entry.name === url),
+        loadingUrl,
+      ),
+      pausedResponses: [],
+      requests: [],
+      browserEvents: [],
+    };
+    assert.equal(
+      report.loading.previouslyCompleted,
+      false,
+      'Independent compressed delivery has not been read by an earlier scenario',
+    );
+    // Keep earlier intentionally failing resource events distinct from this
+    // fresh, successful delivery. Every drained browser error stays recorded.
+    report.loading.priorBrowserEvents = (await page.events()).filter(
+      ({ method }) =>
+        ['Runtime.bindingCalled', 'Runtime.exceptionThrown'].includes(method),
+    );
+    const paused = new Set();
+    async function collectLoadingEvents() {
+      for (const { method, params } of await page.events()) {
+        if (
+          method === 'Fetch.requestPaused' &&
+          params.request.url === loadingUrl
+        ) {
+          paused.add(params.requestId);
+          report.loading.pausedResponses.push({
+            requestId: params.requestId,
+            networkId: params.networkId,
+            url: params.request.url,
+            status: params.responseStatusCode,
+            headers: params.responseHeaders,
+          });
+        } else if (
+          method === 'Network.requestWillBeSent' &&
+          params.request.url === loadingUrl
+        ) {
+          report.loading.requests.push({
+            requestId: params.requestId,
+            url: params.request.url,
+            type: params.type,
+            timestamp: params.timestamp,
+          });
+        } else if (
+          ['Runtime.bindingCalled', 'Runtime.exceptionThrown'].includes(method)
+        ) {
+          report.loading.browserEvents.push({ method, params });
+        }
+      }
+    }
+    await page.cdp('Fetch.enable', {
+      patterns: [{ urlPattern: loadingUrl, requestStage: 'Response' }],
     });
     try {
-      await page.click(`${viewer} [role="tab"]:text-is("水印图")`);
+      report.stage = 'recovery:loading-real-response-paused';
+      // DOMContentLoaded lets the real response remain in flight while the
+      // default detail preview and then the viewer mount the same saved kind.
+      await page.goto(`${config.origin}/library?image=${loadingId}`, {
+        waitUntil: 'domcontentloaded',
+      });
+      await page.waitForSelector('[data-testid="detail-body"]');
+      const deadline = Date.now() + 10000;
+      while (!paused.size && Date.now() < deadline) {
+        await collectLoadingEvents();
+        if (!paused.size) await setTimeout(50);
+      }
+      assert.ok(
+        paused.size,
+        'The actual compressed response reaches the existing Fetch pause boundary within 10 seconds',
+      );
+      const response = await page.fetch(`/api/images/${loadingId}`);
+      assert.equal(response.status, 200);
+      const version = JSON.parse(response.body).versions.find(
+        (version) => version.kind === 'compressed',
+      );
+      const held = report.loading.pausedResponses[0];
+      const header = (name) =>
+        held.headers.find((header) => header.name.toLowerCase() === name)
+          ?.value;
+      assert.equal(held.status, 200);
+      assert.equal(header('content-type'), version.mime);
+      assert.equal(Number(header('content-length')), version.byteSize);
+      report.loading.detail = await page.evaluate(() => {
+        const image = document.querySelector('[data-testid="detail-preview"]');
+        return {
+          src: image?.src,
+          complete: image?.complete,
+          naturalWidth: image?.naturalWidth,
+          selected: document
+            .querySelector(
+              '[data-testid="detail-body"] [role="tab"][aria-selected="true"]',
+            )
+            ?.textContent.trim(),
+        };
+      });
+      assert.equal(report.loading.detail.src, loadingUrl);
+      assert.equal(
+        report.loading.detail.naturalWidth,
+        0,
+        'Paused real bytes have not populated the decoded image cache',
+      );
+      assert.equal(report.loading.detail.complete, false);
+      assert.equal(report.loading.detail.selected, '压缩图');
+      report.stage = 'recovery:loading-viewer-skeleton';
+      await page.click(entry);
       await page.waitForSelector(
         `${viewer} .yarl__slide_current [aria-label="正在加载图片"]`,
       );
+      const state = await viewerState(page);
+      assert.equal(state.id, loadingId);
+      assert.equal(state.kind, 'compressed');
+      assert.equal(state.decoded, false);
       await viewerShot(page, config, report, 'real-delivery-loading-390');
+      await collectLoadingEvents();
+      assert.ok(
+        report.loading.requests.some((request) => request.type === 'Image'),
+        'CDP records the actual compressed Image request',
+      );
+      assert.deepEqual(
+        report.loading.browserEvents,
+        [],
+        'The held successful delivery has no browser runtime or resource error',
+      );
+      report.stage = 'recovery:loading-release-and-decode';
+      for (const requestId of paused)
+        await page.cdp('Fetch.continueRequest', { requestId });
+      paused.clear();
+      await waitViewerImage(page, loadingId, 'compressed');
+      await page.waitForSelector(
+        `${viewer} .yarl__slide_current [aria-label="正在加载图片"]`,
+        { state: 'hidden', timeout: 10000 },
+      );
+      report.loading.skeletonHidden = await page.evaluate(
+        () =>
+          document.querySelector(
+            '[data-testid="image-viewer"] .yarl__slide_current [aria-label="正在加载图片"]',
+          ) === null,
+      );
+      assert.equal(
+        report.loading.skeletonHidden,
+        true,
+        'Natural decode removes the current loading Skeleton from the actual DOM',
+      );
+      report.loading.delivered = await page.evaluate(
+        (url) =>
+          performance
+            .getEntriesByName(url)
+            .filter((entry) => entry.entryType === 'resource')
+            .map((entry) => ({
+              name: entry.name,
+              initiatorType: entry.initiatorType,
+              responseStatus: entry.responseStatus,
+              transferSize: entry.transferSize,
+              encodedBodySize: entry.encodedBodySize,
+              decodedBodySize: entry.decodedBodySize,
+              duration: entry.duration,
+            })),
+        loadingUrl,
+      );
+      assert.ok(
+        report.loading.delivered.some(
+          (delivery) =>
+            delivery.responseStatus === 200 &&
+            delivery.transferSize > 0 &&
+            delivery.encodedBodySize === version.byteSize,
+        ),
+        'A real network transfer of the stored compressed bytes completes before natural decoding succeeds',
+      );
+      await collectLoadingEvents();
+      assert.deepEqual(report.loading.browserEvents, []);
     } finally {
-      await page.cdp('Network.emulateNetworkConditions', {
-        offline: false,
-        latency: 0,
-        downloadThroughput: -1,
-        uploadThroughput: -1,
-      });
+      try {
+        for (const requestId of paused)
+          await page.cdp('Fetch.continueRequest', { requestId });
+      } finally {
+        await page.cdp('Fetch.disable');
+      }
     }
-    await waitViewerImage(page, viewerId(7), 'watermark');
     await closeViewer(page);
+
+    report.stage = 'recovery:neighbors-transport-error';
 
     // Reject a real neighbor response, then retry the actual server response.
     await openViewerSource(page, config, 7);
@@ -142,19 +311,14 @@ export async function verifyViewerRecovery(context) {
     await closeViewer(page);
 
     // Actual delivery rejection of an adjacent image must keep the current one.
+    report.stage = 'recovery:adjacent-delivery-error';
     await page.cdp('Network.setBlockedURLs', {
       urls: [`*${'/i/'}${viewerId(8)}?type=compressed*`],
     });
     try {
       await openViewerSource(page, config, 7);
-      await page.waitForFunction(() =>
-        [
-          ...document.querySelectorAll('[data-testid="image-viewer"] button'),
-        ].some(
-          (node) => node.textContent.trim() === '下一张' && !node.disabled,
-        ),
-      );
-      await page.click(button('下一张'));
+      await waitViewerNeighbors(page, viewerId(7));
+      await page.keyboard.press('ArrowRight');
       await page.waitForSelector('[data-testid="viewer-navigation-error"]');
       assert.equal((await viewerState(page)).id, viewerId(7));
       assert.equal((await viewerState(page)).kind, 'compressed');
@@ -174,6 +338,50 @@ export async function verifyViewerRecovery(context) {
             report,
             `adjacent-error-${theme}-${width}`,
           );
+          const targets = await page.evaluate(() =>
+            [
+              ...document.querySelectorAll(
+                '[data-testid="viewer-navigation-error"] button',
+              ),
+            ].map((button) => {
+              const rect = button.getBoundingClientRect();
+              const hit = document.elementFromPoint(
+                rect.x + rect.width / 2,
+                rect.y + rect.height / 2,
+              );
+              return {
+                name: button.textContent.trim(),
+                width: rect.width,
+                height: rect.height,
+                inViewport:
+                  rect.left >= 0 &&
+                  rect.top >= 0 &&
+                  rect.right <= innerWidth &&
+                  rect.bottom <= innerHeight,
+                reachable: button === hit || button.contains(hit),
+              };
+            }),
+          );
+          assert.deepEqual(
+            targets.map((target) => target.name),
+            ['返回当前图片', '关闭大图'],
+          );
+          assert.ok(
+            targets.every(
+              (target) =>
+                target.width >= 44 &&
+                target.height >= 44 &&
+                target.inViewport &&
+                target.reachable,
+            ),
+            'Error recovery actions are visible actual 44px pointer targets',
+          );
+          report.layouts.push({
+            state: 'viewer-adjacent-error',
+            theme,
+            width,
+            targets,
+          });
         }
       }
       await page.click(button('返回当前图片'));
@@ -181,58 +389,6 @@ export async function verifyViewerRecovery(context) {
         state: 'hidden',
       });
       await waitViewerImage(page, viewerId(7), 'compressed');
-      const supported = await page.evaluate(
-        () =>
-          !!document.querySelector(
-            '[data-testid="image-viewer"] button[aria-label="全屏"]',
-          ),
-      );
-      if (supported) {
-        await page.click(button('全屏'));
-        await page.waitForFunction(() => !!document.fullscreenElement);
-        await page.click(button('下一张'));
-        await page.waitForSelector('[data-testid="viewer-navigation-error"]');
-        const errorLayer = await page.evaluate(() => {
-          const dialog = document.querySelector(
-            '[data-testid="viewer-navigation-error"]',
-          );
-          const button = [...dialog.querySelectorAll('button')].find(
-            (node) => node.textContent.trim() === '返回当前图片',
-          );
-          const rect = button.getBoundingClientRect();
-          const hit = document.elementFromPoint(
-            rect.x + rect.width / 2,
-            rect.y + rect.height / 2,
-          );
-          return {
-            insideFullscreen: document.fullscreenElement.contains(dialog),
-            recoveryVisible: !!hit && button.contains(hit),
-            rect: {
-              x: rect.x,
-              y: rect.y,
-              width: rect.width,
-              height: rect.height,
-            },
-          };
-        });
-        assert.equal(
-          errorLayer.insideFullscreen,
-          true,
-          'Error portal remains inside the fullscreen subtree',
-        );
-        assert.equal(
-          errorLayer.recoveryVisible,
-          true,
-          'Fullscreen recovery button is actually visible and hit-testable',
-        );
-        await viewerShot(page, config, report, 'fullscreen-adjacent-error');
-        await page.click(button('返回当前图片'));
-        await page.waitForSelector('[data-testid="viewer-navigation-error"]', {
-          state: 'hidden',
-        });
-        await page.click(button('退出全屏'));
-        await page.waitForFunction(() => !document.fullscreenElement);
-      }
       await closeViewer(page);
     } finally {
       await page.cdp('Network.setBlockedURLs', { urls: [] });
@@ -248,6 +404,7 @@ export async function verifyViewerRecovery(context) {
       'deleting',
       'query-detached',
     ]) {
+      report.stage = `recovery:current-${state}`;
       if (state === 'private')
         await sql(
           `UPDATE media_images SET visibility='public' WHERE id='${viewerId(7)}'`,
@@ -260,6 +417,7 @@ export async function verifyViewerRecovery(context) {
           ? viewerQuery.replace('visibility=private&', '')
           : viewerQuery,
       );
+      await waitViewerNeighbors(page, viewerId(7));
       try {
         if (state === 'storage-disabled')
           await sql(
@@ -330,16 +488,7 @@ export async function verifyViewerRecovery(context) {
           );
           await viewerShot(page, config, report, `current-${state}`);
           if (state === 'storage-disabled') continue;
-          await page.waitForFunction(() =>
-            [
-              ...document.querySelectorAll(
-                '[data-testid="image-viewer"] button',
-              ),
-            ].some(
-              (node) => node.textContent.trim() === '下一张' && !node.disabled,
-            ),
-          );
-          await page.click(button('下一张'));
+          await page.keyboard.press('ArrowRight');
           await waitViewerImage(page, viewerId(8), 'compressed');
         }
       } finally {
@@ -359,6 +508,7 @@ export async function verifyViewerRecovery(context) {
 
     // Hold a real neighbor response across close/reopen. The old response is
     // released only after the newer explicit-original viewer is displaying.
+    report.stage = 'recovery:late-response-after-reopen';
     await page.goto(`${config.origin}/library?${viewerQuery}`);
     await page.waitForSelector('[data-testid="library-gallery"]');
     await findViewerCard(page, 7);

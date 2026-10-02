@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
 import { promisify } from 'node:util';
 import { viewerId } from './library-viewer-fixtures.mjs';
+import { setDetail171Viewport } from './library-detail-171-helpers.mjs';
 import {
   button,
   closeViewer,
@@ -12,19 +13,14 @@ import {
   monitorViewerRequests,
   openViewerDirect,
   restoreViewerFetch,
-  tab,
   viewer,
   viewerShot,
   viewerState,
   waitViewerImage,
 } from './library-viewer-helpers.mjs';
 
-const bytesLabel = (bytes) =>
-  bytes >= 1048576
-    ? `${(bytes / 1048576).toFixed(1)} MiB`
-    : `${(bytes / 1024).toFixed(1)} KiB`;
-
 export async function verifyViewerVersions({ page, config, sql, report }) {
+  report.stage = 'versions:default-and-explicit-selection';
   const [settings] = await sql(
     'SELECT default_link_version FROM media_settings WHERE id=1',
   );
@@ -52,17 +48,28 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
       'Direct URL detail must not request neighbors',
     );
     for (const kind of Object.keys(kindNames)) {
-      await page.click(tab(kindNames[kind]));
+      await closeViewer(page, true);
+      await page.click(`loc=role:tab[name="${kindNames[kind]}"]`);
+      await page.click(entry);
       await waitViewerImage(page, viewerId(7), kind);
       const selected = detail.versions.find((version) => version.kind === kind);
       const state = await viewerState(page);
-      assert.ok(
-        state.info.toLowerCase().includes(selected.format.toLowerCase()),
-        `${kind}: actual format`,
+      const delivered = await page.fetch(state.src);
+      assert.equal(delivered.status, 200);
+      assert.equal(delivered.headers['content-type'], selected.mime);
+      assert.equal(
+        Number(delivered.headers['content-length']),
+        selected.byteSize,
       );
-      assert.ok(
-        state.info.includes(bytesLabel(selected.byteSize)),
-        `${kind}: actual saved byte size`,
+      assert.equal(
+        await page.evaluate(
+          () =>
+            document.querySelector(
+              '[data-testid="image-viewer"] [role="tab"]',
+            ) === null,
+        ),
+        true,
+        'Version choice stays in detail',
       );
     }
     assert.equal(
@@ -89,14 +96,6 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     );
     await closeViewer(page, true);
     await restoreViewerFetch(page);
-    await page.click('loc=role:tab[name="缩略图"]');
-    await page.click(entry);
-    await waitViewerImage(page, viewerId(7), 'thumbnail');
-    await closeViewer(page);
-    await page.click('loc=role:tab[name="原图"]');
-    await page.click(entry);
-    await waitViewerImage(page, viewerId(7), 'original');
-    await closeViewer(page);
   } finally {
     await restoreViewerFetch(page);
     await sql(
@@ -104,10 +103,11 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     );
   }
   report.checks.push(
-    'Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Four actual saved versions show their format and byte size; explicit detail original/thumbnail choice carries into the viewer. Version selection never changes the default and the viewer has no download/share/slideshow controls.',
+    'Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Selecting each saved version in detail is inherited by the immersive viewer, whose actual delivery MIME and byte length match the saved metadata. Selection never changes the default; the viewer has no version/download/share/slideshow controls.',
   );
 
   for (const id of ['issue185-animation', 'issue185-apng']) {
+    report.stage = `versions:${id}:animation`;
     await openViewerDirect(page, config, id);
     await waitViewerImage(page, id, 'original');
     const animation = await page.evaluate(() => {
@@ -115,14 +115,20 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
         '[data-testid="image-viewer"] .yarl__slide_current img',
       );
       const rect = image.getBoundingClientRect();
+      const scale = Math.min(
+        rect.width / image.naturalWidth,
+        rect.height / image.naturalHeight,
+      );
+      const width = image.naturalWidth * scale;
+      const height = image.naturalHeight * scale;
       return {
         width: image.naturalWidth,
         height: image.naturalHeight,
         clip: {
-          x: Math.ceil(rect.left + 1),
-          y: Math.ceil(rect.top + 1),
-          width: Math.floor(rect.width - 2),
-          height: Math.floor(rect.height - 2),
+          x: Math.ceil(rect.left + (rect.width - width) / 2 + 1),
+          y: Math.ceil(rect.top + (rect.height - height) / 2 + 1),
+          width: Math.floor(width - 2),
+          height: Math.floor(height - 2),
         },
         viewport: { width: innerWidth, height: innerHeight },
       };
@@ -175,22 +181,17 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     await closeViewer(page);
   }
   for (const id of ['issue185-svg', 'issue185-heic']) {
+    report.stage = `versions:${id}:saved-preview`;
     await openViewerDirect(page, config, id);
     await waitViewerImage(page, id, 'thumbnail');
     assert.equal(
-      await page.evaluate(
-        (label) =>
-          document
-            .querySelector(
-              `[data-testid="image-viewer"] [role="tab"][aria-disabled="true"]`,
-            )
-            ?.textContent.trim() === label,
-        '原图',
+      await page.evaluate(() =>
+        document
+          .querySelector('[data-testid="image-viewer"]')
+          .getAttribute('aria-label'),
       ),
-      true,
-      `${id}: attachment-only original is unavailable in the viewer`,
+      '大图查看（静态预览）',
     );
-    assert.ok((await viewerState(page)).info.includes('预览'));
     assert.equal(
       await page.evaluate(
         (id) =>
@@ -203,19 +204,39 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     );
     await viewerShot(page, config, report, id);
     await closeViewer(page);
+    // HEIC detail may already have original selected implicitly. Select a
+    // different saved tab first so the explicit-original event really occurs.
+    await page.click('loc=role:tab[name="缩略图"]');
+    await page.click('loc=role:tab[name="原图"]');
+    report.stage = `versions:${id}:explicit-original`;
+    await page.click(entry);
+    await page.waitForSelector(
+      '[data-testid="image-viewer"] .yarl__slide_current [data-testid="viewer-placeholder"]',
+    );
+    assert.equal((await viewerState(page)).kind, 'original');
+    assert.match((await viewerState(page)).placeholder, /附件|格式|预览/);
+    assert.equal(
+      (await viewerState(page)).decoded,
+      false,
+      'Explicit attachment-only original cannot silently substitute the thumbnail',
+    );
+    await closeViewer(page);
   }
+  report.stage = 'versions:failed-saved-original';
   await openViewerDirect(page, config, 'issue185-failed');
   await waitViewerImage(page, 'issue185-failed', 'original');
   await closeViewer(page);
+  report.stage = 'versions:missing-saved-original';
   await openViewerDirect(page, config, 'issue185-missing');
   await waitViewerImage(page, 'issue185-missing', 'original');
+  await closeViewer(page);
   for (const kind of ['compressed', 'watermark'])
     assert.equal(
       await page.evaluate(
         (name) =>
           [
             ...document.querySelectorAll(
-              '[data-testid="image-viewer"] [role="tab"]',
+              '[data-testid="detail-body"] [role="tab"]',
             ),
           ]
             .find((node) => node.textContent.trim() === name)
@@ -223,8 +244,12 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
         kindNames[kind],
       ),
       'true',
-      'Absent versions are visibly disabled instead of silently substituted',
+      'Absent versions are disabled in detail instead of silently substituted',
     );
+  report.stage = 'versions:missing-reopen-for-keyboard';
+  await page.click(entry);
+  await waitViewerImage(page, 'issue185-missing', 'original');
+  report.stage = 'versions:missing-tab-containment';
   await page.focus(button('关闭大图'));
   await page.keyboard.press('Tab');
   assert.equal(
@@ -234,8 +259,50 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     true,
     'Tab remains in the open viewer',
   );
+  report.stage = 'versions:missing-escape-and-entry-focus';
   await closeViewer(page, true);
-  report.checks.push(
-    'Real GIF and APNG original pixels change across frames; SVG/HEIC use existing WebP preview without requesting original. Attachment-only and absent versions disable explicitly. Failed images retain actual saved original; keyboard focus remains in the viewer and Escape returns to its entry.',
+  report.stage = 'versions:focused-entry-tooltip-resize';
+  await page.waitForSelector('[role="tooltip"]');
+  const readTooltipViewport = () =>
+    page.evaluate(() => ({
+      innerWidth,
+      innerHeight,
+      clientWidth: document.documentElement.clientWidth,
+      clientHeight: document.documentElement.clientHeight,
+      scrollWidth: document.documentElement.scrollWidth,
+      bodyClientWidth: document.body.clientWidth,
+      bodyScrollWidth: document.body.scrollWidth,
+      visualWidth: window.visualViewport?.width,
+      visualHeight: window.visualViewport?.height,
+      visualScale: window.visualViewport?.scale,
+      activeTestId: document.activeElement?.dataset.testid,
+      tooltipPresent: !!document.querySelector('[role="tooltip"]'),
+    }));
+  report.tooltipResize = { before: await readTooltipViewport() };
+  await setDetail171Viewport(page, 390, 400);
+  await page.waitForSelector('[role="tooltip"]', { state: 'hidden' });
+  report.tooltipResize.after = await readTooltipViewport();
+  const viewport = report.tooltipResize.after;
+  assert.equal(viewport.innerWidth, 390);
+  assert.equal(viewport.innerHeight, 400);
+  assert.equal(viewport.clientWidth, 390);
+  assert.equal(viewport.clientHeight, 400);
+  assert.ok(
+    viewport.scrollWidth <= viewport.clientWidth,
+    'Focused entry tooltip cannot expand the document viewport after resize',
   );
+  assert.ok(
+    viewport.bodyScrollWidth <= viewport.bodyClientWidth,
+    'Resize preserves the actual body width without horizontal overflow',
+  );
+  assert.equal(viewport.visualScale, 1);
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.dataset.testid),
+    'detail-viewer-entry',
+    'Window resize closes the entry tooltip without moving the returned focus',
+  );
+  report.checks.push(
+    'Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original; Tab/Escape preserve viewer and return focus; resizing the focused entry closes its tooltip without viewport expansion or moving focus.',
+  );
+  report.stage = 'versions:completed';
 }

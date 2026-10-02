@@ -2,7 +2,9 @@
 
 2026-10-02。评审者独立读取 Figma 的设计信息和截图，并查看 Ego 保存的真实页面截图。评审没有修改 Figma、实现代码或其他任务文档。
 
-当前结论：本Issue完整浏览器专项和最后局部复验通过。本次反馈的布局、字体、文案、投影和长名称偏差已修复并取得真实截图。系统全屏按钮具体位置仍未获用户批准，最终用户人工验收未执行，整体设计验收保持未完成。
+当前结论：用户人工反馈后的图标入口、满视口图片及适用状态已完成独立设计复核，未发现本次需修复的还原偏差。最终预览、behavior专项和recovery局部复验分别通过；新版full中间失败记录保留，不能称完整命令通过。最终用户人工验收未执行，PR保留草稿。系统Fullscreen入口已按用户指令删除，旧位置审批事项不再适用。
+
+首轮至“最后局部修正与最终结论”属于本轮人工反馈前的方案，保留其原结论供追溯。最新结果见文末“用户人工反馈后的独立复核”，不能用旧方案的通过记录代替新版验证。
 
 ## 依据与范围
 
@@ -139,3 +141,77 @@
 **最终功能结论：本Issue完整专项及受影响局部复验通过。** 结论只覆盖真实运行记录内的行为。统一检查的范围外失败和真实会话过期、物理设备、Safari、安全区、软键盘及Release容器等未执行项，沿[代码审计的限制记录](./code-audit.md)和[实施记录](./README.md)维护；未执行项不记通过。
 
 **最终设计结论：本次范围内已反馈的还原偏差全部修复并复核；整体设计验收仍未完成。** 唯一待批准的具体视觉差异是390:6943/390:6996页眉关闭按钮之前新增44px系统全屏图标。SPEC要求全屏能力，但这两个节点没有该入口，既有交接没有批准此位置。用户已收到基于实际页面的具体批准问题，目前没有批准证据；同时最终用户人工验收尚未执行。两项由用户决定，PR应继续保留草稿。
+
+## 用户人工反馈后的独立复核
+
+2026-10-02。用户明确要求查看入口使用图标，大图整个页面只呈现图片和关闭图标，支持Esc关闭。以现有[本轮设计交接](../../design/handoff.md#管理大图人工反馈调整2026-10-02)记录为依据，移除大图页眉、版本栏、资料说明、底部按钮及系统Fullscreen入口。选版由详情承载，大图继承明确选择；真实失败仍显示必要错误与恢复操作。
+
+这项明确指令替代正常与放大节点390:6943、390:6996、391:6682、391:6735的上述栏位。旧系统Fullscreen位置审批事项随入口删除而失效，无须对已删除入口再次申请批准。最终用户人工复验仍待完成。
+
+评审者重新实际读取以下节点的设计信息和截图，而非仅查看链接：详情[36:312](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=36-312)、[102:3228](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3228)，邻图错误[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。详情仅调整查看入口，标题旁版本图标及其他区域沿#171既有批准；错误节点继续适用，没有修改Figma。
+
+### 最终构建的入口与正常态
+
+独立查看最终生产构建的八张截图，并读取[同视口、主题和实测记录](./browser/ui-feedback-preview-final/report.json)：
+
+| 视口 / 主题      | 详情图标入口                                                     | 满视口图片                                                         |
+| ---------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 1440×1080 / 浅色 | [入口](./browser/ui-feedback-preview-final/entry-light-1440.png) | [正常态](./browser/ui-feedback-preview-final/ready-light-1440.png) |
+| 390×844 / 浅色   | [入口](./browser/ui-feedback-preview-final/entry-light-390.png)  | [正常态](./browser/ui-feedback-preview-final/ready-light-390.png)  |
+| 1440×1080 / 深色 | [入口](./browser/ui-feedback-preview-final/entry-dark-1440.png)  | [正常态](./browser/ui-feedback-preview-final/ready-dark-1440.png)  |
+| 390×844 / 深色   | [入口](./browser/ui-feedback-preview-final/entry-dark-390.png)   | [正常态](./browser/ui-feedback-preview-final/ready-dark-390.png)   |
+
+| 逐项对照           | 独立结论                                                                                                                                                                                                                                        |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 公共区域与详情结构 | 先核对整页与公共区域：桌面侧栏、品牌、账号和列表布局没有被此次修改；详情的预览、资料和固定操作区顺序保持，手机仍由既有正文滚动承载。没有复制公共布局。                                                                                          |
+| 标题旁图标         | 查看入口使用Lucide Expand，与既有Layers同一HeroUI ghost按钮和Tooltip组合。两端浅深均实测44×44px命中；SVG桌面16×16px、手机20×20px，与相邻Layers实际尺寸一致。                                                                                    |
+| 图标尺寸的依据     | 早前20px来自Lucide声明，不能当作全部视口的实测结论；手机确为20px、桌面受既有HeroUI响应式样式影响为16px。Figma原节点没有此图标，#171批准与本轮指令均未新增20px视觉尺寸要求，复用既有公共样式符合授权范围，没有为错误尺寸假设修改生产或版本入口。 |
+| 满视口图区         | 两端查看器及舞台均从0/0铺满视口。1200×900真实图在1440×1080按原比例完整铺满；390×844按390×292.5显示于y=275.75，上下留白是保留完整4:3比例的结果。没有裁切或拉伸。                                                                                 |
+| 正常态唯一控件     | 四张正常态只见右上关闭图标，44×44px，顶部/右侧16px并保留安全区；实际点击命中。旧文件名、版本、资料、底栏和Fullscreen入口均不存在。                                                                                                              |
+| 浅深主题           | 浅色暖白、深色#181A22留白沿现有语义；照片不反色。关闭按钮在照片和留白上均清晰可见。                                                                                                                                                             |
+| 键盘与返回         | 预览实际检查四种视口/主题的Esc关闭并回到图标入口焦点；来源保留真实列表查询。正常态截图本身不作为完整导航与故障行为的通过证据。                                                                                                                  |
+
+本轮入口与正常态设计结论：**符合用户本次明确调整，未发现需修复的还原偏差。** 实测尺寸只按对应视口记录，不能把声明值或单一视口值扩展成全端结论。
+
+### 中间专项的短视口与缩放证据
+
+独立实际查看[桌面400px短视口](./browser/ui-feedback-pinch-precondition-initial/library-viewer-short-1440.png)、[手机400px短视口](./browser/ui-feedback-pinch-precondition-initial/library-viewer-short-390.png)、[桌面滚轮放大](./browser/ui-feedback-pinch-precondition-initial/library-viewer-desktop-wheel-zoom.png)，以及[全部尺寸为空](./browser/ui-feedback-pinch-precondition-initial/library-viewer-null-dimensions-zoom-pan.png)、[单边尺寸为空](./browser/ui-feedback-pinch-precondition-initial/library-viewer-partial-dimensions-zoom-pan.png)的实际放大平移截图。短视口仍按比例完整显示，关闭图标可达；放大后图片按整个视口裁切，关闭仍在上层，没有恢复旧栏位；缺尺寸截图没有可见拉伸。
+
+对应[中间运行记录](./browser/ui-feedback-pinch-precondition-initial/library-viewer.json)整体为 `failed`，已取得正常布局、选版继承、导航、桌面缩放和两类缺尺寸成功检查，但停在手机双指测试前置不足处。仅保留已观察到的证据，不将此失败记录写为整项功能通过。当时新版最终错误、消费者、长名和功能结论待后续实际结果；其后取得的定向复验见下文，最终用户人工验收未执行。
+
+### 最终适用状态与来源消费
+
+独立实际打开 `ui-feedback-final` 的最终状态、消费者和长名称截图，并查看 `ui-feedback-loading-final` 的最后真实读取等待及四张邻图错误截图。评审依次核对整页、图片舞台、关闭入口，再核对错误容器与控件。以下结论来自实际图像对照及对应运行记录，不以截图数量或无溢出断言替代设计判断。
+
+| 状态 / 视口 / 主题                           | 实际截图                                                                                                                                                                                                                                                                                                                                                       | 逐项设计结论                                                                                                                                                                                                                 |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 邻图错误 / 1440×1080 / 浅深                  | [浅色](./browser/ui-feedback-loading-final/library-viewer-adjacent-error-light-1440.png)、[深色](./browser/ui-feedback-loading-final/library-viewer-adjacent-error-dark-1440.png)                                                                                                                                                                              | 对照391:6787：480px宽、24px内边距、12px圆角、16px区域间距、两枚48px操作、标题20/30、正文14/21与说明13/19.5维持已校准结果；无原稿外可见投影。保留当前图片，错误卡遮罩居中；照片不反色。                                       |
+| 邻图错误 / 390×844 / 浅深                    | [浅色](./browser/ui-feedback-loading-final/library-viewer-adjacent-error-light-390.png)、[深色](./browser/ui-feedback-loading-final/library-viewer-adjacent-error-dark-390.png)                                                                                                                                                                                | 对照391:6800：358px卡片、同一字体与间距、48px操作均正确。真实诊断使卡片自然高于325px样例，未删原因。手机正文原生细滚动条可见，当前文字完整；未采Body滚动尺寸，不据此声称Body无滚动，也未为隐藏指示修改公共样式。焦点环清楚。 |
+| 当前版本读取失败 / 1440×1080、390×844 / 浅深 | [桌面浅](./browser/ui-feedback-final/library-viewer-delivery-error-light-1440.png)、[桌面深](./browser/ui-feedback-final/library-viewer-delivery-error-dark-1440.png)、[手机浅](./browser/ui-feedback-final/library-viewer-delivery-error-light-390.png)、[手机深](./browser/ui-feedback-final/library-viewer-delivery-error-dark-390.png)                     | 全视口保留关闭图标，中央显示真实失败原因与44px重试；没有照片像素或旧版本栏。错误文本完整，没有以其他版本图片掩盖失败。                                                                                                       |
+| 全部版本未保存 / 1440×1080、390×844 / 浅深   | [桌面浅](./browser/ui-feedback-final/library-viewer-no-readable-version-light-1440.png)、[桌面深](./browser/ui-feedback-final/library-viewer-no-readable-version-dark-1440.png)、[手机浅](./browser/ui-feedback-final/library-viewer-no-readable-version-light-390.png)、[手机深](./browser/ui-feedback-final/library-viewer-no-readable-version-dark-390.png) | 明确显示“该版本尚未保存”，图标、原因与重试集中在中央，关闭入口可见。没有虚构成功图片或选版栏。                                                                                                                               |
+| 真实读取等待 / 390×844 / 深色                | [最后等待截图](./browser/ui-feedback-loading-final/library-viewer-real-delivery-loading-390.png)                                                                                                                                                                                                                                                               | 图片响应真实暂停时仍是完整舞台和右上关闭，不重新出现旧资料、底栏或可见Skeleton。等待没有挤压或改变几何；释放响应后实际读取与解码成功沿recovery记录确认。                                                                     |
+| 邻图上下文读取失败 / 390×844 / 深色          | [上下文错误](./browser/ui-feedback-final/library-viewer-neighbors-transport-error-390.png)                                                                                                                                                                                                                                                                     | 当前图按比例完整保留，底部仅增加真实错误说明及刷新操作，44px关闭不移位。必要恢复信息适用本轮交接的真实失败例外，没有恢复正常态旧栏位。                                                                                       |
+| 当前图外部失效 / 1440×1080 / 深色            | [回收站](./browser/ui-feedback-final/library-viewer-current-trashed.png)、[停用存储](./browser/ui-feedback-final/library-viewer-current-storage-disabled.png)、[删除中](./browser/ui-feedback-final/library-viewer-current-deleting.png)、[已删除](./browser/ui-feedback-final/library-viewer-current-deleted.png)                                             | 当前图片像素移除，舞台分别给出实际原因；关闭、重试及适用上下文刷新可见，没有把不可读状态画成正常成功。                                                                                                                       |
+| 解码失败 / 1440×1080 / 深色                  | [水印](./browser/ui-feedback-final/library-viewer-decode-error-watermark.png)、[压缩图](./browser/ui-feedback-final/library-viewer-decode-error-compressed.png)                                                                                                                                                                                                | 明确选定版本失败，错误与重试布局沿同一舞台，没有自动代入原图或缩略图。                                                                                                                                                       |
+| 缩放与平移 / 桌面、手机                      | [桌面滚轮](./browser/ui-feedback-final/library-viewer-desktop-wheel-zoom.png)、[手机双指及平移](./browser/ui-feedback-final/library-viewer-touch-pinch-pan.png)、[全部尺寸为空](./browser/ui-feedback-final/library-viewer-null-dimensions-zoom-pan.png)、[单边尺寸为空](./browser/ui-feedback-final/library-viewer-partial-dimensions-zoom-pan.png)           | 放大图像以满视口直角裁切，比例保持，关闭图标仍在上层，未添加可见缩放或恢复按钮。缺尺寸两例使用实际解码比例，没有可见拉伸。双指是Chromium触摸仿真，不能当物理设备结果。                                                       |
+| 相册 / 1440×1080 / 浅色                      | [实际相册消费](./browser/ui-feedback-final/library-viewer-album-consumer-1440.png)                                                                                                                                                                                                                                                                             | 共用满视口查看器，图片完整铺满4:3视口，仅保留关闭图标；没有复制页眉或公共布局。相册限定邻图及关闭来源沿行为记录确认。                                                                                                        |
+| 上传结果 / 390×844 / 浅色                    | [真实上传消费](./browser/ui-feedback-final/library-viewer-upload-consumer-390.png)                                                                                                                                                                                                                                                                             | 真实缩略图按390×292.5完整居中，缩略图本身低分辨率如实显示；关闭保持44px命中，稳定页面没有入场过渡透出后台。没有把缩略图描述成原图。                                                                                          |
+| 合法255字名称 / 360×400 / 浅色               | [最终短视口](./browser/ui-feedback-final/library-viewer-long-name-360-short.png)                                                                                                                                                                                                                                                                               | 文件名按用户要求从查看器移除。舞台360×400，4:3照片360×270于y=65完整显示；44px关闭顶部/右侧16px，长名称不挤占图区或控制区。                                                                                                   |
+| 邻图等待与删除后返回 / 1440×1080 / 深色      | [连续方向输入等待](./browser/ui-feedback-final/library-viewer-pending-navigation-repeated-arrow.png)、[删除来源后的真实回焦](./browser/ui-feedback-final/library-viewer-deleted-source-toolbar-focus.png)                                                                                                                                                      | 等待期间当前照片保持，没有用空舞台代替；删除来源后回到原列表搜索焦点。公共侧栏、品牌、账号、列表及分页保持既有统一结构。                                                                                                     |
+
+本轮设计结论：**入口、正常态、短视口、缩放、真实失败及已实现来源消费符合用户明确调整和仍适用的Figma节点，未发现本次待修复的还原偏差。** 已删除的正常态栏位与Fullscreen入口按用户指令处理，其缺席不再作为旧节点偏差。真实失败的原因和恢复操作依据本轮交接保留。此结论是独立agent的技术设计复核，用户最终人工复验仍待完成。
+
+### 本轮独立功能结论与验证边界
+
+评审读取实际[behavior运行记录](./browser/ui-feedback-final/runner.json)及[13项行为结果](./browser/ui-feedback-final/library-viewer.json)，并读取[最后recovery运行记录](./browser/ui-feedback-loading-final/runner.json)及[3项局部复验](./browser/ui-feedback-loading-final/library-viewer.json)。环境为macOS ARM64、Node24.18.1、已有Ego Chromium和TaskSpace11，均为实际 `status: passed`，分别为 `only: behavior` 与 `only: recovery`。这是对实施者真实运行证据的独立核对，评审没有另开浏览器或另行运行测试。
+
+功能结论分开记录：
+
+- 最终生产[预览记录](./browser/ui-feedback-preview-final/report.json)通过：四种视口/主题的真实详情入口、44px命中、相邻图标实际一致、满视口等比图、正常态仅关闭及Esc归焦。
+- `behavior`专项通过：真实过滤查询跨页和有限边界、同图显式选版保持、桌面鼠标/键盘/滚轮缩放与平移、两类缺尺寸、真实双指/滑动仿真、读取与解码失败、外部状态回收、迟到响应与重复方向输入、删除后焦点、相册、真实上传和255字名称短视口。图片身份和版本未被静默切换。
+- `recovery`局部复验通过：真实等待、缺版本/缺字节、邻图与上下文读取失败、外部状态和迟到响应。最后loading记录实际为200响应被暂停、`complete: false`、`naturalWidth: 0`，`skeletonHidden: true`；释放后200响应、16180字节及实际解码取得成功检查。没有把占位截图本身当作加载行为通过。
+- 新版full中间运行仍是 `failed`。其正常五宽浅深、短视口、选版继承及动画/静态能力的已成功检查保留，双指和加载前置修正后以以上定向专项复验。不能把这些组合证据改写为full命令整体通过，也不能沿用人工反馈前旧方案的完整专项通过。
+
+**最终功能结论：本轮最终预览及受影响behavior/recovery专项证据通过；新版full命令未取得整体通过。** 统一浏览器入口的范围外旧Chip断言失败沿实施记录保留，没有修改范围外脚本来获得通过。物理设备、Safari、软键盘、非零设备安全区、真实会话过期及Release容器等未执行范围沿[代码审计](./code-audit.md)和[实施记录](./README.md)维护，未记通过。
+
+**最终设计验收状态：独立技术复核完成，用户人工复验待完成，PR继续保留草稿。** 没有待批准的Fullscreen位置事项；未把用户新指令或agent复核当作用户对最终页面的人工验收。
