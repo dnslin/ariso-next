@@ -84,7 +84,7 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 node scripts/verify-delivery-s3.ts --config /V
 | `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-rest node work/verify-browser-rest.mjs`                      | 退出1；规模/导航/相册/封面/上传/轮询通过，原生目录枚举取消              |
 | `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-161-tail node work/verify-browser-tail.mjs`                      | 退出0；仅剩余手机持久化/交互/连续性、S3、隔离UI通过；仍标明两个失败场景 |
 
-生产模块未再改动，沿用本轮已执行的安装、单元、集成、类型和构建证据，没有机械重跑无变化的检查。新增记录执行格式与文档检查。已通过的既有界面大型报告归档结果摘要，并在摘要中链接完整原始记录；失败、宽屏实测及本次S3证据不压缩。各临时生产实例、数据库及测试素材已清理；原项目、分支和worktree保留。Ego空间3因整体检查仍有错误保留供继续验证，没有创建新的空间。
+生产模块未再改动，沿用本轮已执行的安装、单元、集成、类型和构建证据，没有机械重跑无变化的检查。新增记录执行格式与文档检查。已通过的既有界面大型报告归档结果摘要，并在摘要中链接完整原始记录；失败、宽屏实测及本次S3证据不压缩。此前自动化验证实例、数据库及测试素材已清理；本轮目录人工预览仍保留，见末节。原项目、分支和worktree保留。Ego空间3因整体检查仍有错误保留供继续验证，没有创建新的空间。
 
 ## 独立审计
 
@@ -96,7 +96,7 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 node scripts/verify-delivery-s3.ts --config /V
 
 ## 用户授权后的筛选修正与目录排查（2026-10-02）
 
-用户明确要求修正这两项问题。`e2e/library-query-filters.mjs` 改为遍历全部真实 `role=alert` 提示并匹配完整受控错误，保留原超时、真实重新读取按钮、服务端选项、请求次数和焦点断言。没有修改限流或产品界面。初次定向Prettier检查报告换行格式问题，规范化后再次检查通过。
+用户明确要求修正这两项问题。`e2e/library-query-filters.mjs` 改为遍历全部真实 `role=alert` 提示并匹配完整受控错误，保留原超时、真实重新读取按钮、服务端选项、请求次数和焦点断言。没有修改限流或产品界面。初次定向Prettier检查报告换行格式问题，规范化后再次检查通过。完整格式检查首次还指出临时预览驱动的格式问题；将该中间脚本移到项目外work后，完整格式检查退出0。
 
 实际 Node24.19.0 / pnpm11.19.0 / macOS arm64、同一 Ego Space3 执行：
 
