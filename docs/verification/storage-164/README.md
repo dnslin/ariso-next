@@ -1,6 +1,6 @@
 # T-STO-06 / Issue #164 实施记录
 
-本轮交付 Local/S3 自有命名空间的**只读分批对象列举**。完整 Issue 仍受 [T-MED-14 / #163](https://github.com/dnslin/ariso-next/issues/163) 阻塞，生产孤儿扫描、定期调度、完整引用约束、位置修改和配置删除未实现。此记录不作为 ST-12–17 或原需求的全量完成证据。关联 [Issue #164](https://github.com/dnslin/ariso-next/issues/164)；PR 待创建。
+本轮交付 Local/S3 自有命名空间的**只读分批对象列举**。完整 Issue 仍受 [T-MED-14 / #163](https://github.com/dnslin/ariso-next/issues/163) 阻塞，生产孤儿扫描、定期调度、完整引用约束、位置修改和配置删除未实现。此记录不作为 ST-12–17 或原需求的全量完成证据。关联 [Issue #164](https://github.com/dnslin/ariso-next/issues/164) 与[草稿 PR #233](https://github.com/dnslin/ariso-next/pull/233)。
 
 ## 前置和范围
 
@@ -78,4 +78,4 @@ S3 请求感知失败回归的实际命令为 `pnpm exec vitest run --project in
 
 #163 完成并进入主分支后，由本任务原有范围继续聚合 media/upload/probe 真实引用与本地活动、删除前复核、已登记用量、扫描错误和重试、停用维护、启动调度与重启恢复、短事务位置修改/配置删除及真实跨模块联验。不得使用已完成列举的结果绕过这些步骤。配置删除后不再扫描、极晚对象由管理员处理的既定边界仍有效。
 
-PR 保持草稿，因为本 Issue 所需提供方和全量验收尚未齐备。不会因草稿 PR 创建而标记本任务完成，不合并、不关闭 Issue、不删除分支或 worktree。远端检查状态待创建 PR 后实际回读。
+PR 保持草稿，因为本 Issue 所需提供方和全量验收尚未齐备。不会因草稿 PR 创建而标记本任务完成，不合并、不关闭 Issue、不删除分支或 worktree。通过 `gh pr view 233 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,statusCheckRollup,mergeable` 回读：OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。`gh pr checks 233 --repo dnslin/ariso-next` 退出 1，明确报告 no checks；`gh run list --repo dnslin/ariso-next --branch codex/issue-164-storage-listing --limit 10 --json databaseId,status,conclusion,url` 返回 []。当前没有远端检查或运行记录，不将空列表记作 CI 通过，也不等待不存在的工作流。
