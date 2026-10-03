@@ -1,5 +1,5 @@
 import { and, eq, inArray, ne } from 'drizzle-orm';
-import type { MediaTransaction } from './images.ts';
+import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import {
   mediaCleanupJobs,
   mediaImages,
@@ -8,8 +8,30 @@ import {
   mediaVersions,
 } from './schema.ts';
 
+/** Indexed exact-key ownership check used immediately before orphan deletion. */
+export function readMediaObjectReferences(
+  db: BetterSQLite3Database,
+  storageId: string,
+  key: string,
+) {
+  return db
+    .select({ key: mediaObjects.key })
+    .from(mediaObjects)
+    .where(
+      and(
+        eq(mediaObjects.storageId, storageId),
+        eq(mediaObjects.key, key),
+        ne(mediaObjects.status, 'deleted'),
+      ),
+    )
+    .all();
+}
+
 /** The storage management caller owns the transaction and combines all providers. */
-export function getStorageReferences(tx: MediaTransaction, storageId: string) {
+export function getStorageReferences(
+  tx: BetterSQLite3Database,
+  storageId: string,
+) {
   return {
     storageId,
     images: tx

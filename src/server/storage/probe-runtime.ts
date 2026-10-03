@@ -104,6 +104,9 @@ export function startStorageProbeRuntime(
     return promise;
   }
   return {
+    activeWrites(storageId: string) {
+      return active.has(storageId) ? 1 : 0;
+    },
     startCors(storageId: string, revision: number, origin: string | null) {
       return corsOperation(storageId, () =>
         createCorsTest(context, storageId, revision, origin),

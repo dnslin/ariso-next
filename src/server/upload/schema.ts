@@ -104,6 +104,8 @@ export const uploadSessions = sqliteTable(
   (t) => [
     unique('upload_sessions_queue_item').on(t.submissionId, t.queueItemId),
     index('upload_sessions_cleanup').on(t.cleanupStatus, t.nextCleanupAt),
+    index('upload_sessions_temporary_key').on(t.storageId, t.temporaryKey),
+    index('upload_sessions_final_key').on(t.storageId, t.finalKey),
     check(
       'upload_sessions_state',
       sql`${t.state} in ('queued', 'receiving', 'validating', 'finalizing', 'accepted', 'cancelled', 'failed', 'expired')`,

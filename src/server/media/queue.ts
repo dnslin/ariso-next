@@ -71,7 +71,12 @@ export function startMediaQueue(runtime: MediaRuntime) {
   const { signal } = controller;
   const active = new Map<
     string,
-    { imageId: string; controller: AbortController; execution: Promise<void> }
+    {
+      imageId: string;
+      storageId: string;
+      controller: AbortController;
+      execution: Promise<void>;
+    }
   >();
   let failure: unknown;
   let maintenance: Promise<void> | undefined;
@@ -132,6 +137,11 @@ export function startMediaQueue(runtime: MediaRuntime) {
         while (!signal.aborted && active.size < limit) {
           const job = claimNextMediaJob(runtime.db);
           if (!job) break;
+          const { storageId } = runtime.db
+            .select({ storageId: mediaImages.storageId })
+            .from(mediaImages)
+            .where(eq(mediaImages.id, job.imageId))
+            .get()!;
           const run =
             job.kind === 'metadata' ? processMetadataJob : processMediaJob;
           const jobController = new AbortController();
@@ -153,6 +163,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
             .finally(() => active.delete(job.id));
           active.set(job.id, {
             imageId: job.imageId,
+            storageId,
             controller: jobController,
             execution,
           });
@@ -215,6 +226,11 @@ export function startMediaQueue(runtime: MediaRuntime) {
   }
   const completion = consume();
   return {
+    activeWrites(storageId: string) {
+      return [...active.values()].filter(
+        (operation) => operation.storageId === storageId,
+      ).length;
+    },
     async stop() {
       controller.abort(
         mediaError('MEDIA_INTERRUPTED', 'Web runtime is stopping'),

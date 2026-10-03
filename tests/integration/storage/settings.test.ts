@@ -5,6 +5,7 @@ import {
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -35,7 +36,11 @@ import {
   uploadSessions,
   uploadSubmissions,
 } from '../../../src/server/upload/schema.ts';
-import { storageConfigs } from '../../../src/server/storage/schema.ts';
+import { readStorageReferences } from '../../../src/server/startup/storage-references.ts';
+import {
+  storageConfigs,
+  storageOrphans,
+} from '../../../src/server/storage/schema.ts';
 import {
   createStorage,
   listStorages,
@@ -79,6 +84,7 @@ const update = (id: string, input: unknown) =>
     id,
     storageUpdateInputSchema.parse(input),
     context(),
+    readStorageReferences,
   );
 const row = (id: string) =>
   connection.db
@@ -447,18 +453,220 @@ describe('T-STO-03 多配置持久行为', () => {
     expect(resolveUploadStorage(connection.db).id).toBe(second.id);
   });
 
+  function referenceImage(storageId: string) {
+    return connection.db.transaction((tx) => {
+      prepareInitialMedia(tx);
+      return acceptOriginal(tx, {
+        imageId: randomUUID(),
+        storageId,
+        key: 'images/retained-original',
+        originalName: 'retained.png',
+        visibility: 'private',
+        format: 'PNG',
+        mime: 'image/png',
+        byteSize: 3,
+        snapshot: createProcessingSnapshot(tx),
+        expectedVersions: ['thumbnail'],
+      });
+    });
+  }
+
   it.each([
-    { localPath: 'other' },
-    { type: 's3' },
     { endpoint: 'https://other.example.test' },
+    { region: 'other-region' },
     { bucket: 'other' },
     { pathPrefix: 'other' },
     { forcePathStyle: false },
-  ])('完整引用接入前拒绝位置或类型修改 %j', (patch) => {
+    { type: 'local', localPath: 'other-local' },
+  ])('真实media引用阻止S3位置或类型修改并保留原配置 %j', (patch) => {
+    const created = create(s3Input);
+    referenceImage(created.id);
+    const before = row(created.id);
+    expect(() => update(created.id, patch)).toThrowError(
+      expect.objectContaining({ code: 'STORAGE_IN_USE' }),
+    );
+    expect(row(created.id)).toEqual(before);
+    expect(
+      update(created.id, {
+        name: '仍可改名',
+        enabled: false,
+        secretKey: 'replaced-with-reference',
+      }),
+    ).toMatchObject({
+      name: '仍可改名',
+      configRevision: 2,
+      enabled: false,
+    });
+  });
+
+  it('实际S3位置变更递增revision并失效测试，规范化后的相同位置在有引用时可保存', () => {
+    const created = create(s3Input);
+    passedFixture(created.id);
+    update(created.id, { enabled: true });
+    setDefaultStorage(connection.db, created.id);
+    const changed = update(created.id, {
+      endpoint: 'https://OTHER.example.test:443/',
+      region: 'new-region',
+      bucket: 'new-bucket',
+      pathPrefix: '/new-prefix/',
+      forcePathStyle: false,
+    });
+    expect(changed).toMatchObject({
+      endpoint: 'https://other.example.test',
+      region: 'new-region',
+      bucket: 'new-bucket',
+      pathPrefix: 'new-prefix',
+      forcePathStyle: false,
+      configRevision: 2,
+      enabled: false,
+      connectionStatus: 'untested',
+      connectionRevision: null,
+      corsStatus: 'invalidated',
+      corsRevision: null,
+    });
+    expect(readStorageSettings(connection.db).defaultStorageId).toBe(
+      created.id,
+    );
+    referenceImage(created.id);
+    expect(
+      update(created.id, {
+        type: 's3',
+        endpoint: 'https://OTHER.example.test:443/',
+        region: 'new-region',
+        bucket: ' new-bucket ',
+        pathPrefix: '/new-prefix/',
+        forcePathStyle: false,
+      }),
+    ).toMatchObject({ configRevision: 2 });
+    const before = row(created.id);
+    expect(() =>
+      update(created.id, {
+        endpoint: 'https://third.example.test',
+        enabled: true,
+      }),
+    ).toThrow();
+    expect(row(created.id)).toEqual(before);
+  });
+
+  it('根内符号链接和规范化的相同本地目录不误拒绝，有引用时真实换目录或换类型失败', () => {
+    const created = create({
+      type: 'local',
+      name: 'canonical-local',
+      localPath: 'canonical-local',
+    });
+    symlinkSync('canonical-local', join(storageRoot, 'alias-local'));
+    referenceImage(created.id);
+    expect(update(created.id, { localPath: 'alias-local' })).toMatchObject({
+      localPath: 'alias-local',
+      configRevision: 1,
+    });
+    expect(
+      update(created.id, { localPath: './canonical-local/' }),
+    ).toMatchObject({ configRevision: 1 });
+    const before = row(created.id);
+    for (const patch of [
+      { localPath: 'different-local' },
+      { ...s3Input, name: undefined },
+    ]) {
+      expect(() => update(created.id, patch)).toThrowError(
+        expect.objectContaining({ code: 'STORAGE_IN_USE' }),
+      );
+      expect(row(created.id)).toEqual(before);
+    }
+    expect(
+      update(created.id, { name: 'new-name', enabled: false }),
+    ).toMatchObject({ configRevision: 1 });
+  });
+
+  it('无引用允许类型切换，要求新类型必要字段并清空另一类型的旧字段', () => {
+    const created = create({
+      type: 'local',
+      name: 'switch',
+      localPath: 'switch-local',
+    });
+    const original = row(created.id);
+    expect(() =>
+      update(created.id, { type: 's3', endpoint: 'https://s3.example.test' }),
+    ).toThrow();
+    expect(row(created.id)).toEqual(original);
+    expect(update(created.id, s3Input)).toMatchObject({
+      type: 's3',
+      localPath: null,
+      enabled: false,
+      configRevision: 2,
+      hasAccessKey: true,
+      hasSecretKey: true,
+    });
+    expect(() => update(created.id, { type: 'local' })).toThrow();
+    expect(() =>
+      update(created.id, {
+        type: 'local',
+        localPath: 'new-local',
+        secretKey: 'foreign',
+      }),
+    ).toThrow();
+    expect(
+      update(created.id, {
+        type: 'local',
+        localPath: 'new-local',
+        enabled: true,
+      }),
+    ).toMatchObject({
+      type: 'local',
+      localPath: 'new-local',
+      endpoint: null,
+      region: null,
+      bucket: null,
+      pathPrefix: null,
+      forcePathStyle: null,
+      hasAccessKey: false,
+      hasSecretKey: false,
+      enabled: true,
+      configRevision: 3,
+    });
+  });
+
+  it('修改位置在SQLite事务内读取真实引用，提供方失败时不写入配置', () => {
     const created = create(s3Input);
     const before = row(created.id);
-    expect(() => update(created.id, patch)).toThrow();
+    expect(() =>
+      updateStorage(
+        connection.db,
+        created.id,
+        storageUpdateInputSchema.parse({ bucket: 'new-bucket' }),
+        context(),
+        (tx, id) => {
+          expect(connection.db.$client.inTransaction).toBe(true);
+          readStorageReferences(tx, id);
+          throw new Error('reference provider failed');
+        },
+      ),
+    ).toThrow('reference provider failed');
     expect(row(created.id)).toEqual(before);
+  });
+
+  it('已发现但未清理的真实孤儿记录阻止位置修改，名称和启停仍可更新', () => {
+    const created = create(s3Input);
+    connection.db
+      .insert(storageOrphans)
+      .values({
+        storageId: created.id,
+        key: 'uploads/late-orphan',
+        size: 7,
+        confirmedAt: new Date(),
+      })
+      .run();
+    const before = row(created.id);
+    expect(() => update(created.id, { bucket: 'other' })).toThrowError(
+      expect.objectContaining({
+        code: 'STORAGE_IN_USE',
+        references: expect.objectContaining({ orphans: 1 }),
+      }),
+    );
+    expect(row(created.id)).toEqual(before);
+    expect(
+      update(created.id, { name: '待清理存储', enabled: false }),
+    ).toMatchObject({ name: '待清理存储', configRevision: 1 });
   });
 });
 

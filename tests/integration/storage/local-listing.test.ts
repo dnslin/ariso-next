@@ -156,3 +156,15 @@ it.each(['last-file', 'empty-directory'])(
     }
   },
 );
+
+it('命名空间目录别名不得把邻接对象当作孤儿列举', async () => {
+  mkdirSync(join(root, 'disk/ariso/two'), { recursive: true });
+  writeFileSync(join(root, 'disk/ariso/two/sentinel'), 'keep');
+  symlinkSync('two', owned());
+  await expect(collect()).rejects.toMatchObject({
+    code: 'STORAGE_OPERATION_FAILED',
+  });
+  expect(readFileSync(join(root, 'disk/ariso/two/sentinel'), 'utf8')).toBe(
+    'keep',
+  );
+});

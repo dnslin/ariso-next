@@ -1,5 +1,13 @@
 import { createWriteStream } from 'node:fs';
-import { lstat, open, opendir, rename, stat, unlink } from 'node:fs/promises';
+import {
+  lstat,
+  open,
+  opendir,
+  rename,
+  rmdir,
+  stat,
+  unlink,
+} from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { finished, pipeline } from 'node:stream/promises';
 import { randomUUID } from 'node:crypto';
@@ -72,6 +80,49 @@ function requireEnabled(storage: LocalStorage) {
 function namespace(root: string, storage: LocalStorage, create: boolean) {
   const directory = controlledPath(root, storage.localPath, create);
   return controlledPath(directory, `ariso/${storage.id}`, create);
+}
+
+/** Configuration aliases are allowed; aliases of the owned namespace are not ownership. */
+function maintenanceNamespace(root: string, storage: LocalStorage) {
+  const directory = controlledPath(root, storage.localPath, false);
+  let path = directory;
+  for (const part of ['ariso', storage.id]) {
+    path = `${path}${sep}${part}`;
+    if (!lstatSync(path).isDirectory())
+      throw Object.assign(
+        new Error(`Owned namespace is not a regular directory: ${path}`),
+        { code: 'ENOTDIR', path },
+      );
+  }
+  return path;
+}
+
+/** Remove only empty owned directories. Unknown entries keep the configuration for diagnosis. */
+export async function removeEmptyNamespace(
+  root: string,
+  storage: LocalStorage,
+) {
+  let path: string | undefined;
+  try {
+    try {
+      path = maintenanceNamespace(root, storage);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return;
+      throw error;
+    }
+    async function remove(directory: string) {
+      for await (const entry of await opendir(directory)) {
+        const child = join(directory, entry.name);
+        if (!(await lstat(child)).isDirectory())
+          throw new Error(`Owned namespace is not empty: ${child}`);
+        await remove(child);
+      }
+      await rmdir(directory);
+    }
+    await remove(path);
+  } catch (cause) {
+    throw operationError(cause, storage, '', 'remove-empty-namespace', path);
+  }
 }
 
 function objectPath(root: string, key: string, createParent = false) {
@@ -266,7 +317,7 @@ export async function* listObjects(
     options.signal?.throwIfAborted();
     let directory: string;
     try {
-      directory = namespace(root, storage, false);
+      directory = maintenanceNamespace(root, storage);
     } catch (cause) {
       // An unused or already cleaned namespace has no objects; do not create it.
       if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return;
@@ -306,6 +357,12 @@ export async function* listObjects(
     options.signal?.throwIfAborted();
     if (batch.length) yield batch;
   } catch (cause) {
-    throw operationError(cause, storage, '', 'list', path);
+    throw operationError(
+      cause,
+      storage,
+      '',
+      'list',
+      path ?? (cause as NodeJS.ErrnoException).path,
+    );
   }
 }

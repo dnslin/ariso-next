@@ -1,0 +1,2 @@
+CREATE INDEX `upload_sessions_temporary_key` ON `upload_sessions` (`storage_id`,`temporary_key`);--> statement-breakpoint
+CREATE INDEX `upload_sessions_final_key` ON `upload_sessions` (`storage_id`,`final_key`);

@@ -1,8 +1,14 @@
 # T-STO-06 / Issue #164 实施记录
 
-本轮交付 Local/S3 自有命名空间的**只读分批对象列举**。完整 Issue 仍受 [T-MED-14 / #163](https://github.com/dnslin/ariso-next/issues/163) 阻塞，生产孤儿扫描、定期调度、完整引用约束、位置修改和配置删除未实现。此记录不作为 ST-12–17 或原需求的全量完成证据。关联 [Issue #164](https://github.com/dnslin/ariso-next/issues/164) 与[草稿 PR #233](https://github.com/dnslin/ariso-next/pull/233)。
+当前已完整实现本 Issue 的引用组合、位置修改、Local/S3 周期孤儿维护和配置删除。#163 已合并，完整实现的独立代码审计及本地适用检查均取得通过证据；R2/SeaweedFS 各 14 项通过。当前结论见 2026-10-04 完整实施，以下保留只读切片的历史范围和失败记录。
 
-## 前置和范围
+2026-10-03 首轮交付 Local/S3 自有命名空间的**只读分批对象列举**。当时完整 Issue 仍受 [T-MED-14 / #163](https://github.com/dnslin/ariso-next/issues/163) 阻塞，生产孤儿扫描、定期调度、完整引用约束、位置修改和配置删除未实现。此记录不作为 ST-12–17 或原需求的全量完成证据。关联 [Issue #164](https://github.com/dnslin/ariso-next/issues/164) 与[PR #233](https://github.com/dnslin/ariso-next/pull/233)。
+
+## 2026-10-03 只读切片历史
+
+以下保留首轮实际范围、失败、检查与草稿状态；当前完整实施见后续记录。
+
+### 前置和范围
 
 2026-10-03 通过 `gh issue view 164 --repo dnslin/ariso-next --json number,title,body,state,comments,url` 读取正文及评论（无评论），通过 `gh api repos/dnslin/ariso-next/issues/164/dependencies/blocked_by` 和 `.../blocking` 回读原生关系。#158、#162、#161、#142 为 completed；#163 为 OPEN，没有已提交的开放 PR。后置 #168 与 #198 仍开放。未修改原生依赖或完成状态。
 
@@ -79,3 +85,79 @@ S3 请求感知失败回归的实际命令为 `pnpm exec vitest run --project in
 #163 完成并进入主分支后，由本任务原有范围继续聚合 media/upload/probe 真实引用与本地活动、删除前复核、已登记用量、扫描错误和重试、停用维护、启动调度与重启恢复、短事务位置修改/配置删除及真实跨模块联验。不得使用已完成列举的结果绕过这些步骤。配置删除后不再扫描、极晚对象由管理员处理的既定边界仍有效。
 
 PR 保持草稿，因为本 Issue 所需提供方和全量验收尚未齐备。不会因草稿 PR 创建而标记本任务完成，不合并、不关闭 Issue、不删除分支或 worktree。通过 `gh pr view 233 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,statusCheckRollup,mergeable` 回读：OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]。`gh pr checks 233 --repo dnslin/ariso-next` 退出 1，明确报告 no checks；`gh run list --repo dnslin/ariso-next --branch codex/issue-164-storage-listing --limit 10 --json databaseId,status,conclusion,url` 返回 []。当前没有远端检查或运行记录，不将空列表记作 CI 通过，也不等待不存在的工作流。
+
+## 2026-10-04 完整实施
+
+### 前置、模块边界与接口
+
+用户确认 #163 已合并后，用 gh 回读原生前置 #158/#162/#163/#161/#142 均已 completed。#163 合并为 main 的 `24bd06c`（PR #235）；在既有隔离 worktree 合并最新 origin/main，继续同一分支及 PR #233。原工作区仍为干净 main，没有混入用户预览数据。
+
+startup 管理组合显式读取 media/upload/probe 的真实引用与本地活动；storage 不反向导入业务模块。真实媒体正常/回收/处理失败资产、版本、对象、排队/运行任务、候选及清理责任，活动或未清理上传，以及探测与探测清理全部参与检查。删除前按确切 Key 重读提供方；媒体复用唯一索引，上传新增两项 `(storageId, temporaryKey/finalKey)` 索引。配置变更和最终配置删除在短 SQLite 事务内读引用，没有网络事务或全仓库锁。
+
+位置和类型修改已开放；有引用时仍可改名称、启停和凭据，相同规范化位置可保存。实际位置或凭据变化递增 revision、失效连接/CORS 结果，S3 停用至当前测试通过；切换类型清空另一类型字段。
+
+扫描复用 Local/S3 分页适配器，仅覆盖每配置自己的命名空间。Web 启动即执行一轮，此后每轮结束后间隔 60 秒继续；停用配置仍维护。历史失败对象分批重试，再从头枚举；每次删除前重读实际引用和活动，失败留具体 Key/错误。`storage_orphans` 只保存已发现的待清理对象与确认大小；成功后移除，业务已持有 Key 的发现记录不重复计量。`storage_scans` 保存范围、时间、发现/删除/保护/失败数量和诊断。重启重新扫描，中断记录不被冒充成功。对象写前登记、Key 不复用和终态任务不发布仍消费既有提供方约定。
+
+`GET /api/storages/:id` 保留原配置与 probes，并返回引用分类数量、本地活动、扫描状态和发现的待清理用量。`PATCH` 接入真实引用组合。所有者 `DELETE` 无有效引用后停用新写入、完整扫描清理，并在最后短事务复核配置及全部提供方、清空默认指针和删除配置。已终态、无任何对象路径且无需清理的短期上传结果由 upload 自己在该事务释放；活动、失败责任、媒体和统计历史不由此删除。未知链接或非普通条目阻止本地配置删除；只移除自有空目录，保留所选根目录、Bucket 和外部对象。失败保留配置、默认指针和诊断。
+
+迁移 `0020_swift_madelyne_pryor.sql` 新增发现及扫描两表，`0021_military_rhino.sql` 新增上传确切 Key 查询索引。未新增/升级依赖，未改冻结 PRD、需求编号或既定模块职责。
+
+### 实际对象与恢复证据
+
+[完整维护真实报告](./live-maintenance.json)由以下命令首次运行取得退出 0，两服务各 14 项通过：
+
+```sh
+node tests/experiments/storage-s3/verify-maintenance.ts \
+  --config /Volumes/data/project/ariso/.data/upload-v02.json \
+  --output docs/verification/storage-164/live-maintenance.json
+```
+
+R2 与 SeaweedFS 每服务 7 个预登记的新随机 Key，验证真实媒体/回收/候选、上传与 probe 引用保护、分页、停用维护、删除失败后已知用量和下一轮重试、迟到对象、新建维护实例的数据库恢复、存在引用拒删配置及解除测试引用后真实删配置。每服务全部计划 Key 最后 HEAD 不存在，两个测试命名空间完整列举为空。私有 SQLite 已移除，报告没有密钥和签名。
+
+真实服务中的删除失败是一次适配器边界故障注入，不冒充服务权限失败；恢复是停止维护、重开 SQLite、再启动维护，不冒充独立 Web 进程；业务行是独立真实持久 fixture，不代替既有 #161/#163 的完整上传/处理证据。独立 Web 进程重启另由本轮本地集成测试验证，以最终检查表为准。命令使用当前环境代理并保留本地服务绕过，没有修改全局代理或服务配置。
+
+### 审计、失败与检查
+
+独立 [代码审计](./code-audit.md)实际检查实现、测试、真实对象报告与查询计划。发现并修复短期上传历史外键、全量逐对象引用查询、整轮 Key 内存集合、活动期间已发现用量遗漏和扫描 HTTP 错误分类。按 Key 查询使用真实索引；远端超时 504、远端操作失败 502、配置竞争 409，本地磁盘/数据库或未知目录失败 500。不存在将失败当空存储的路径。
+
+命名空间别名回归先实际失败 1 项（其余 14 项通过），见 `/tmp/ariso-164-resume-alias-red.log`。修复后保留旧非目录错误的实际路径与 ENOTDIR，相关 32 项通过。历史外键的遗漏路径真实触发 `FOREIGN KEY constraint failed`，修后真实组合可删空配置，证据在审计记录。首次范围扩展的类型检查暴露 callback 参数过窄及确切 Key 参数次序不兼容，修正为一致契约后通过，未弱化类型。首次新局部检查因错误上下文缺失 1 项失败，补回上下文后通过。
+
+本地适用检查实际执行如下，未把首次失败改写为通过：
+
+| 命令                                                                 | 实际结果                                                                                          |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                     | 退出 0，无依赖或锁文件变化                                                                        |
+| `pnpm run db:generate`                                               | 两次实际生成上述表与确切 Key 索引迁移，SQL 已审查                                                 |
+| `pnpm run typecheck`                                                 | 最终退出 0，Next 与 runtime 类型均通过                                                            |
+| `pnpm run lint`                                                      | 全仓最终退出 0；构建路径修复后另查 Local 文件                                                     |
+| `pnpm run test:unit --maxWorkers=4`                                  | 78 文件 / 1013 项通过，9.35 秒                                                                    |
+| `pnpm run build`                                                     | 最终路径修复后退出 0，Next 与 runtime 编译及静态生成通过；仍有既有可选原生包跟踪诊断              |
+| `pnpm run test:integration --maxWorkers=4`                           | 首次 129 文件通过、4 文件失败；1270 项通过、4 项失败，278.57 秒；普通与真实媒体工具两组均实际执行 |
+| `pnpm run format:check`                                              | 首次仅三份新增迁移元数据格式失败；修后全仓退出 0，最终文档更新另做定向检查                        |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` | 120 任务 / 298 需求无缺失或环；5 项拒绝夹具通过                                                   |
+| `git diff --check`                                                   | 退出 0                                                                                            |
+
+首次集成四项失败分两类：logging、secret-preflight、standalone 的真实生产包边界断言发现构建追踪把仓库源码/测试目录带入 standalone；health 的精确生产表清单尚未包含本轮新增的 storage_orphans/storage_scans，已补齐两张实际表并保留严格清单断言。按 `vercel-react-best-practices` 的 `bundle-analyzable-paths` 和既有受控路径写法，将新增命名空间循环内的动态 `join(path, part)` 改为既有分隔符字符串追加。只改这一处源码后重新构建，路由追踪从 9350 项降至 441 项，实际生产包不再含仓库 src/tests/AGENTS；没有改打包脚本、构建排除配置或在出产后删文件掩盖问题。修前四项原始失败保留于 `/tmp/ariso-164-resume-integration.log`。受影响十文件包含这四项及 Local/扫描/真实引用/HTTP/实际 Web 重启，修后 9 文件 / 85 项通过，仍有 health 精确表清单的 1 项失败；补齐合法迁移表清单后 health 单文件 4 项全过（8.51 秒）。至此所有失败逐项取得通过证据，没有把首次全量退出 1 改写为退出 0。其余已通过工具检查不无谓重复。独立审计对本次修复追加复审。
+
+日志为 `/tmp/ariso-164-resume-*.log`。本轮无 UI、公共组件或布局变化，Figma/页面截图/设计还原/人工 UI 验收不适用；完整存储界面与其人工验收仍归 #198 / T-STO-07。AWS S3 未验证且按现行约定取消实测要求。Release 双架构镜像、实际容器与部署未执行，由既有 Release 流程承接，不创建 Release。配置删除后不再维护其命名空间，极晚远端对象由管理员清理；一次完整扫描不承诺未来无写入。
+
+受影响实际命令（17.33 秒）：
+
+```sh
+pnpm exec vitest run --project integration --maxWorkers=4 \
+  tests/integration/runtime/secret-preflight.test.ts \
+  tests/integration/runtime/health.test.ts \
+  tests/integration/runtime/standalone.test.ts \
+  tests/integration/runtime/logging.test.ts \
+  tests/integration/storage/local.test.ts \
+  tests/integration/storage/local-listing.test.ts \
+  tests/integration/storage/scans.test.ts \
+  tests/integration/storage/references.test.ts \
+  tests/integration/storage/restart.test.ts \
+  tests/integration/storage/settings-http.test.ts
+pnpm exec vitest run --project integration tests/integration/runtime/health.test.ts
+```
+
+实际 Web 重启通过：同一独立 DATA_DIR 启动、正常停机、停用配置并写入未知对象、再次实际启动后清理；扫描记录时间/范围及数量正确，邻接目录和外部文件保留，SIGTERM 后维护结束再关数据库。R2/SeaweedFS 报告仍如实保留其重开数据库模拟范围。独立代码审计完成所有六项问题复核，当前无 Required/Optional；功能接口与持久行为通过，设计验收不适用。
+
+分支 `codex/issue-164-storage-listing`；PR #233 的完整正文沿用本记录作为唯一实施证据。正式状态在推送后回读记录；不合并、不关闭 Issue、不发布或部署，不删除分支/worktree。

@@ -1,3 +1,4 @@
+import { readStorageReferences } from '../../../src/server/startup/storage-references.ts';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -165,7 +166,14 @@ for (const service of selected) {
     });
     report.logs = logs;
     assert.throws(
-      () => updateStorage(connection.db, stored.id, { enabled: true }, context),
+      () =>
+        updateStorage(
+          connection.db,
+          stored.id,
+          { enabled: true },
+          context,
+          readStorageReferences,
+        ),
       { code: 'STORAGE_TEST_REQUIRED' },
     );
     const result = await runtime.test(stored.id, {
@@ -191,8 +199,13 @@ for (const service of selected) {
     );
     assert.equal(readStorage(connection.db, stored.id).enabled, false);
     assert.equal(
-      updateStorage(connection.db, stored.id, { enabled: true }, context)
-        .enabled,
+      updateStorage(
+        connection.db,
+        stored.id,
+        { enabled: true },
+        context,
+        readStorageReferences,
+      ).enabled,
       true,
     );
     verifier = createS3Storage({
@@ -239,6 +252,7 @@ for (const service of selected) {
       stored.id,
       { secretKey: invalidSecret },
       context,
+      readStorageReferences,
     );
     assert.equal(changed.configRevision, stored.configRevision + 1);
     assert.equal(changed.enabled, false);
@@ -311,7 +325,14 @@ for (const service of selected) {
     );
     assert.equal(readStorage(connection.db, stored.id).enabled, false);
     assert.throws(
-      () => updateStorage(connection.db, stored.id, { enabled: true }, context),
+      () =>
+        updateStorage(
+          connection.db,
+          stored.id,
+          { enabled: true },
+          context,
+          readStorageReferences,
+        ),
       { code: 'STORAGE_TEST_REQUIRED' },
     );
     const restored = updateStorage(
@@ -319,12 +340,20 @@ for (const service of selected) {
       stored.id,
       { secretKey: target.credentials.secretAccessKey },
       context,
+      readStorageReferences,
     );
     assert.equal(restored.configRevision, changed.configRevision + 1);
     assert.equal(restored.connectionStatus, 'untested');
     assert.equal(restored.enabled, false);
     assert.throws(
-      () => updateStorage(connection.db, stored.id, { enabled: true }, context),
+      () =>
+        updateStorage(
+          connection.db,
+          stored.id,
+          { enabled: true },
+          context,
+          readStorageReferences,
+        ),
       { code: 'STORAGE_TEST_REQUIRED' },
     );
     if (service === 'r2') {
@@ -353,7 +382,14 @@ for (const service of selected) {
       'untested',
     );
     assert.throws(
-      () => updateStorage(connection.db, stored.id, { enabled: true }, context),
+      () =>
+        updateStorage(
+          connection.db,
+          stored.id,
+          { enabled: true },
+          context,
+          readStorageReferences,
+        ),
       { code: 'STORAGE_TEST_REQUIRED' },
     );
     const retried = await runtime.test(stored.id, {
@@ -388,8 +424,13 @@ for (const service of selected) {
     assert.deepEqual(readProbeReferences(connection.db, stored.id), []);
     assert.deepEqual(readProbeUsage(connection.db), []);
     assert.equal(
-      updateStorage(connection.db, stored.id, { enabled: true }, context)
-        .enabled,
+      updateStorage(
+        connection.db,
+        stored.id,
+        { enabled: true },
+        context,
+        readStorageReferences,
+      ).enabled,
       true,
     );
     report.recoveryAssertions = {
