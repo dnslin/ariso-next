@@ -247,9 +247,20 @@ describe('persistent media queue', () => {
   });
 
   it('stop waits for the current task to persist its outcome without claiming the next task', async () => {
+    const actual = processing.processMediaJob;
+    const processor = vi
+      .spyOn(processing, 'processMediaJob')
+      .mockImplementation(async (runtime, id, signal) => {
+        // Hold the real processor at entry so shutdown, rather than a missing-source failure, ends this job.
+        await new Promise<void>((resolve) =>
+          signal!.addEventListener('abort', () => resolve(), { once: true }),
+        );
+        await actual(runtime, id, signal);
+      });
     const first = enqueue();
     const second = enqueue();
     const active = start();
+    await vi.waitFor(() => expect(processor).toHaveBeenCalledOnce());
     expect(job(first.jobId).status).toBe('running');
     await active.stop();
     expect(job(first.jobId).status).toBe('running');
@@ -273,6 +284,7 @@ describe('persistent media queue', () => {
       "CREATE TRIGGER interrupt BEFORE UPDATE ON media_jobs BEGIN SELECT RAISE(ABORT, 'queue database failed'); END",
     );
     start();
+    await vi.waitFor(() => expect(logger.error).toHaveBeenCalledOnce());
     await expect(queue!.stop()).rejects.toThrow('queue database failed');
     queue = undefined;
     expect(logger.error).toHaveBeenCalledOnce();

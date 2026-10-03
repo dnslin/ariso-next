@@ -1,0 +1,10 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+tests/unit/media/preview-route.test.ts(275,9): error TS2345: Argument of type '(buffer: Buffer, offset: number, length: number) => Promise<{ bytesWritten: number; buffer: Buffer<ArrayBufferLike>; }>' is not assignable to parameter of type '(data: string, position?: number | null | undefined, encoding?: BufferEncoding | null | undefined) => Promise<{ bytesWritten: number; buffer: string; }>'.
+  Types of parameters 'buffer' and 'data' are incompatible.
+    Type 'string' is not assignable to type 'Buffer<ArrayBufferLike>'.
+tests/unit/media/preview-route.test.ts(305,9): error TS2322: Type 'Buffer<ArrayBuffer>' is not assignable to type 'string'.
+[ELIFECYCLE] Command failed with exit code 2.

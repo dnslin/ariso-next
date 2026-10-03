@@ -37,15 +37,16 @@ Docker 镜像安装 ImageMagick 7、ExifTool、HEIF/AVIF 相关插件与中英�
 
 ### 3.1 图片、版本和对象
 
-| 表                       | 主要字段与约束                                                                                                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `media_images`           | 随机 `id`、固定 `storage_id`、只读 `original_name`、可改 `display_name`、`visibility`；识别格式/MIME、宽高、原图字节数、动画/页数/分类；`processing_status`、`trashed_at`、`deletion_status`；UTC 创建/更新时间                            |
-| `media_objects`          | 所属图片/任务、storage 外键、唯一 Key、用途、`planned/writing/stored/cleanup_pending/cleanup_failed/deleted`、已知实际字节数、实际编码、错误与清理结果；对象写入前就登记                                                                   |
-| `media_versions`         | 每图每种 `original/compressed/thumbnail/watermark` 最多一行，指向当前已存对象，记录实际尺寸/类型/字节数；不以文件扩展名推断类型                                                                                                            |
-| `media_jobs`             | 图片可空（预览）、种类 `process/metadata/preview/delete/cleanup`、处理范围、不可变设置快照与素材引用、应生成版本集、步骤与已保存结果、`queued/running/succeeded/failed/cancelled`、自动重试次数/下次时间、错误、UTC 时间；预览另有到期时间 |
-| `media_metadata`         | 每图一行，读取状态、完整分组 JSON、读取时间、可读错误；重新读取失败保留上次成功内容并标明旧结果                                                                                                                                            |
-| `media_settings`         | 固定 `id=1`；处理参数、默认可见性、默认链接版本、并发数、水印模式与当前素材引用、更新时间                                                                                                                                                  |
-| `media_watermark_assets` | 不可变素材 ID、站点 assets 下的受控相对路径、实际类型/尺寸/字节数、临时素材到期时间、清理状态；设置和任务引用素材 ID                                                                                                                       |
+| 表                       | 主要字段与约束                                                                                                                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `media_images`           | 随机 `id`、固定 `storage_id`、只读 `original_name`、可改 `display_name`、`visibility`；识别格式/MIME、宽高、原图字节数、动画/页数/分类；`processing_status`、`trashed_at`、`deletion_status`；UTC 创建/更新时间 |
+| `media_objects`          | 所属图片/任务、storage 外键、唯一 Key、用途、`planned/writing/stored/cleanup_pending/cleanup_failed/deleted`、已知实际字节数、实际编码、错误与清理结果；对象写入前就登记                                        |
+| `media_versions`         | 每图每种 `original/compressed/thumbnail/watermark` 最多一行，指向当前已存对象，记录实际尺寸/类型/字节数；不以文件扩展名推断类型                                                                                 |
+| `media_jobs`             | 图片引用、种类 `process/metadata/delete/cleanup`、处理范围、不可变设置快照与素材引用、应生成版本集、步骤与已保存结果、`queued/running/succeeded/failed/cancelled`、自动重试次数/下次时间、错误、UTC 时间        |
+| `media_previews`         | 无图片/存储引用的临时任务；目标版本、未保存渲染快照、接收/排队/运行/成功/失败/取消/到期状态、结果实际属性、到期时间与清理状态/诊断；文件仅在站点 tmp                                                            |
+| `media_metadata`         | 每图一行，读取状态、完整分组 JSON、读取时间、可读错误；重新读取失败保留上次成功内容并标明旧结果                                                                                                                 |
+| `media_settings`         | 固定 `id=1`；处理参数、默认可见性、默认链接版本、并发数、水印模式与当前素材引用、更新时间                                                                                                                       |
+| `media_watermark_assets` | 不可变素材 ID、站点 assets 下的受控相对路径、实际类型/尺寸/字节数、临时素材到期时间、清理状态；设置和任务引用素材 ID                                                                                            |
 
 这些对象记录只服务 media 的版本发布和清理，不复制 storage 的 probe 或 upload 的临时对象记录。`media_versions` 最多四种；候选、待清旧对象不构成可选择的历史版本。
 
@@ -283,6 +284,15 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 - `createProcessingSnapshot` 包含全部渲染参数与当前模式素材属性。`prepareWatermark` 接受当前处理画布、快照、素材目录、任务工作目录、磁盘预算和取消信号，输出供最终编码使用的合成参数；调用方持有工作目录直到子进程结算。正式处理复用该函数，临时预览调用归 T-MED-09。
 - 本任务只接入现有初次处理流水线与设置 HTTP。设置界面、临时预览和四范围重处理分别归 T-MED-12、T-MED-09、T-MED-10。实际结果见 [T-MED-08 验证记录](../verification/media-152/README.md)。
 
+### 临时预览接口（T-MED-09）
+
+- `POST /api/media/previews` 接收 `multipart/form-data`，正好一个 `file` 和一个 JSON 字符串 `options`。`options` 为 `{ target, settings }`；`target` 只允许 `original/compressed/thumbnail/watermark`。`settings` 包含完整未保存渲染参数（与设置 API 的渲染字段相同，包括可空 `watermarkAssetId`），不接受默认可见性、默认链接版本或并发数。不合并已保存渲染参数、不保存配置；字段错误返回 422，JSON/表单错误返回 400。文件按当次当前上传字节限制流式接收，表单信封最多 64 KiB；实际字节计数，磁盘需求按正在写入的分块登记。
+- 创建前登记独立 `media_previews` 记录，返回 202 与 ID/状态。记录没有图片、存储、图库、相册或统计资产。队列与正式处理/元数据共用当前并发名额，按创建时间领取。图片素材引用在预览排队事务中建立，工作结束后释放；不采用素材、不延长其正式设置到期规则。
+- `GET /api/media/previews/{id}` 返回状态、目标、实际 `format/mime/width/height/byteSize`、`resultUrl`、`unavailableReason`、处理错误与清理诊断。渲染快照仅内部持久化。动画/仅预览格式、已关闭的压缩或水印目标明确返回不适用说明，结果为空；不以缩略图替代目标。
+- `GET /api/media/previews/{id}/result` 返回所有者私有、禁止缓存的实际结果字节。成功后 30 分钟到期，到期读取结果为 410；未完成、已取消或不适用为 409。原图字节不变，SVG 原文件沿用 delivery 的附件响应策略。
+- `DELETE /api/media/previews/{id}` 取消并等待接收/编码工具及写入结算，再清理登记目录；重复取消可读取同一终态。失败接收的响应带 `previewId`，可继续 GET 查询清理错误。清理失败定期/下次启动重试；成功后的 `cleanupStatus=deleted` 同时保留上次 `cleanupError` 作为历史诊断，不表示当前仍未清除。
+- 启动时终止上次未完成预览、使旧成功结果到期并清理其确切登记目录，不续跑测试图。处理函数与正式流水线共用，输出一致性和取消/到期/恢复证据见 [T-MED-09 验证记录](../verification/media-188/README.md)。处理设置页及预览交互继续由 T-MED-12 接入，本次没有界面交付。
+
 ### 12.2 所有者 HTTP 入口
 
 | 入口                                                           | 行为                                                             |
@@ -291,6 +301,7 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 | `GET/PATCH /api/settings/media`                                | 读取/原子保存；请求体仅允许对应设置字段                          |
 | `POST /api/media/watermark-assets`                             | 校验并保存临时水印素材，返回 ID/属性/到期时间                    |
 | `POST /api/media/previews`                                     | 上传测试图和参数，创建预览任务                                   |
+| `GET /api/media/previews/{id}/result`                          | 读取私有真实结果；到期为 410，SVG 原文件为附件                   |
 | `GET/DELETE /api/media/previews/{id}`                          | 获取预览状态/结果或取消清理；仅当前所有者                        |
 | `POST /api/images/{id}/reprocess`                              | 范围与最新快照；返回 202 和任务 ID                               |
 | `POST /api/images/{id}/metadata/read`                          | 单独重读；返回 202                                               |

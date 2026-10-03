@@ -299,3 +299,46 @@ export const mediaMetadata = sqliteTable('media_metadata', {
   attemptedAt: integer('attempted_at', { mode: 'timestamp_ms' }),
   error: text('error'),
 });
+
+export type PreviewResult = {
+  format: string;
+  mime: string;
+  width: number | null;
+  height: number | null;
+  byteSize: number;
+};
+
+// Temporary tasks deliberately have no image/storage/collection identity.
+export const mediaPreviews = sqliteTable(
+  'media_previews',
+  {
+    id: text('id').primaryKey().notNull(),
+    target: text('target', {
+      enum: ['original', 'compressed', 'thumbnail', 'watermark'],
+    }),
+    snapshot: text('snapshot', { mode: 'json' }).$type<ProcessingSnapshot>(),
+    status: text('status', {
+      enum: [
+        'receiving',
+        'queued',
+        'running',
+        'succeeded',
+        'failed',
+        'cancelled',
+        'expired',
+      ],
+    }).notNull(),
+    result: text('result', { mode: 'json' }).$type<PreviewResult>(),
+    unavailableReason: text('unavailable_reason'),
+    error: text('error'),
+    cleanupStatus: text('cleanup_status', {
+      enum: ['retained', 'pending', 'failed', 'deleted'],
+    }).notNull(),
+    cleanupError: text('cleanup_error'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    finishedAt: integer('finished_at', { mode: 'timestamp_ms' }),
+    expiresAt: integer('expires_at', { mode: 'timestamp_ms' }),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (t) => [index('media_previews_status_created').on(t.status, t.createdAt)],
+);
