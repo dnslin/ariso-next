@@ -12,12 +12,8 @@ import type { LibraryDetail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
 import { subscribeLibraryChanges } from './library-changes';
-import { DetailReadError, readDetail } from './read-detail';
-import {
-  detailStatusChanged,
-  hasActiveDetailTask,
-  readDetailStatus,
-} from './read-detail-status';
+import { DetailReadError, detailQueryOptions } from './read-detail';
+import { useDetailStatus } from './use-detail-status';
 import { readViewerNeighbors } from './read-viewer-neighbors';
 import {
   initialViewerVersion,
@@ -31,8 +27,6 @@ import {
 export interface ViewerNeighbor {
   id: string;
   detail: LibraryDetail | null;
-  error: Error | null;
-  isLoading: boolean;
 }
 
 export function useImageViewer({
@@ -58,10 +52,10 @@ export function useImageViewer({
   );
   const [seed, setSeed] = useState<{
     detail: LibraryDetail;
+    kind: VersionKind;
     neighbors?: ViewerNeighbors;
-  }>({ detail: initial });
-  const [selection, setSelection] = useState(() => ({
-    imageId: initial.id,
+  }>(() => ({
+    detail: initial,
     kind: initialVersion ?? initialViewerVersion(initial),
   }));
   const [pendingDirection, setPendingDirection] =
@@ -75,16 +69,8 @@ export function useImageViewer({
     controller: AbortController;
   } | null>(null);
   const imageId = seed.detail.id;
-  const detailOptions = (id: string | null) => ({
-    queryKey: ['viewer-detail', id, albumId],
-    queryFn: ({ signal }: { signal: AbortSignal }) =>
-      readDetail(id!, signal, albumId),
-    enabled: id !== null,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  });
   const detailQuery = useQuery(
-    { ...detailOptions(imageId), initialData: seed.detail },
+    { ...detailQueryOptions(imageId, albumId), initialData: seed.detail },
     client,
   );
   const current = detailQuery.data;
@@ -101,20 +87,18 @@ export function useImageViewer({
   );
   const previousId = filters ? (neighbors.data?.previous ?? null) : null;
   const nextId = filters ? (neighbors.data?.next ?? null) : null;
-  const previousQuery = useQuery(detailOptions(previousId), client);
-  const nextQuery = useQuery(detailOptions(nextId), client);
-  const status = useQuery(
-    {
-      queryKey: ['viewer-status', imageId],
-      queryFn: ({ signal }) => readDetailStatus(imageId, signal),
-      refetchOnWindowFocus: false,
-      refetchInterval: (query) =>
-        query.state.error || !query.state.data?.items.some(hasActiveDetailTask)
-          ? false
-          : 2000,
-    },
+  const previousQuery = useQuery(
+    detailQueryOptions(previousId, albumId),
     client,
   );
+  const nextQuery = useQuery(detailQueryOptions(nextId, albumId), client);
+  const status = useDetailStatus({
+    client,
+    imageId,
+    detail: current,
+    refetch: detailQuery.refetch,
+    enabled: true,
+  });
   const currentStatus = status.data?.items.find((item) => item.id === imageId);
   const unavailableDetail = currentStatus
     ? {
@@ -124,10 +108,7 @@ export function useImageViewer({
         deletionStatus: currentStatus.deletionStatus,
       }
     : current;
-  const selectedVersion =
-    selection.imageId === imageId
-      ? selection.kind
-      : initialViewerVersion(current);
+  const selectedVersion = seed.kind;
   const selected = current.versions.find(
     (version) => version.kind === selectedVersion,
   );
@@ -152,16 +133,6 @@ export function useImageViewer({
     expireSession();
   }, [client, expired]);
   const refreshDetail = detailQuery.refetch;
-  useEffect(() => {
-    if (
-      status.data &&
-      detailStatusChanged(
-        current,
-        status.data.items.find((item) => item.id === imageId),
-      )
-    )
-      void refreshDetail();
-  }, [current, imageId, refreshDetail, status.data]);
   const refreshNeighbors = neighbors.refetch;
   const refreshStatus = status.refetch;
   const refresh = useCallback(() => {
@@ -192,7 +163,7 @@ export function useImageViewer({
     previousRequest?.controller.abort();
     if (previousRequest)
       void client.cancelQueries({
-        queryKey: ['viewer-detail', previousRequest.id, albumId],
+        queryKey: ['library-detail', previousRequest.id, albumId],
       });
     const request = { id: targetId, controller: new AbortController() };
     navigation.current = request;
@@ -200,15 +171,15 @@ export function useImageViewer({
     setNavigationError(null);
     try {
       const target = await client.fetchQuery({
-        ...detailOptions(targetId),
+        ...detailQueryOptions(targetId, albumId),
         staleTime: 0,
       });
       await readViewerPreview(target, request.controller.signal);
       if (navigation.current !== request || request.controller.signal.aborted)
         return;
-      setSelection({ imageId: target.id, kind: initialViewerVersion(target) });
       setSeed({
         detail: target,
+        kind: initialViewerVersion(target),
         neighbors: {
           previous: direction === 'next' ? imageId : null,
           next: direction === 'previous' ? imageId : null,
@@ -246,8 +217,6 @@ export function useImageViewer({
       ? {
           id,
           detail: query.data ?? null,
-          error: query.error,
-          isLoading: query.isFetching,
         }
       : null;
   return {
@@ -255,18 +224,14 @@ export function useImageViewer({
     previous: neighbor(previousId, previousQuery),
     next: neighbor(nextId, nextQuery),
     selectedVersion,
-    selected: unavailableReason ? null : (selected ?? null),
     isPreview: isViewerPreview(current, selectedVersion),
     unavailableReason,
     pendingDirection,
     navigationError,
     neighborsError: neighbors.error,
-    neighborsLoading: neighbors.isFetching,
     statusError: detailQuery.error ?? status.error,
     navigate,
     dismissNavigationError: () => setNavigationError(null),
-    retryNeighbors: refreshNeighbors,
-    retryStatus: refreshStatus,
     refresh,
   };
 }

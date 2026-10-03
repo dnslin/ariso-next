@@ -208,6 +208,8 @@ Markdown/HTML 的 alt 使用 displayName，按目标语法转义中括号、引�
 
 T-LIB-06 的字段 PATCH 至少包含 displayName 或 visibility；空对象、未知字段及无效名称返回 400。关系 PATCH 至少包含 albumIds 或 tagIds，提供的维度按最终集合保存，省略维度保留，空数组清除；关系写入在同一短事务中提交，保留幸存关系的 joinedAt。元数据 GET 对不存在图片返回 404，存在但未读取返回 200/null；已读取时保留完整分组 JSON、读取/尝试时间、错误及 historical 标记。详情和状态批读分别返回最新 processingJob、metadataJob，保留真实终态，不从缺少活动任务推断成功。[实际实施与未完成界面](../verification/library-171/README.md)以本次记录为准。
 
+详情中每个已保存版本的 `contentId` 表示当前已发布内容的身份，未保存时为 `null`。成功重处理切换已发布对象后，该身份随之变化；生成中的候选和失败任务保留原已发布身份。大图据此重新读取图片并清除旧内容的失败与解码尺寸状态，同尺寸、同字节数的替换也必须展示新内容。图片继续沿既有 delivery 路径读取，详情不返回对象存储路径或密钥。
+
 错误区分 400 参数、401 会话、404 记录不存在、409 状态/关系冲突和内部故障。正常图片字节通过 `/i/{id}`；回收图片管理预览按 delivery 的专用入口验证当前所有者、资产、版本和存储，不接受任意对象文件路径。日志记录操作、ID、数量和错误上下文，不记录 Cookie、Token 或完整分组元数据。
 
 预计新增 `src/server/library/` 的 query/schema、详情组合、batch/copy 编排；页面组件按列表、工具栏、筛选、详情、查看器和操作反馈划分。提供方新增字段修改能力放 media；相册关系与封面修改调用 collections。沿用严格 TypeScript、Zod、camelCase、现有 Prettier/ESLint，不建通用查询语言或 Repository 框架。

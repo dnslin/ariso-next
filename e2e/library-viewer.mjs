@@ -22,6 +22,7 @@ import { verifyViewerVersions } from './library-viewer-versions.mjs';
 import { verifyViewerNavigation } from './library-viewer-navigation.mjs';
 import { verifyViewerInteractions } from './library-viewer-interactions.mjs';
 import { verifyViewerRecovery } from './library-viewer-recovery.mjs';
+import { verifyViewerRefresh } from './library-viewer-refresh.mjs';
 import {
   verifyViewerDecodeFailures,
   verifyViewerDeletedSource,
@@ -52,7 +53,10 @@ export async function verifyLibraryViewer(context) {
     report.stage = 'fixture-seed';
     fixtures = await seedViewerFixtures(config, sql);
     const viewerContext = { ...context, fixtures, report };
-    if (config.viewerCheck === 'recovery') {
+    if (config.viewerCheck === 'refresh') {
+      report.stage = 'refresh';
+      await verifyViewerRefresh(viewerContext);
+    } else if (config.viewerCheck === 'recovery') {
       report.stage = 'recovery';
       await verifyViewerRecovery(viewerContext);
     } else if (config.viewerCheck === 'deleted-source') {
@@ -142,6 +146,8 @@ export async function verifyLibraryViewer(context) {
         await verifyViewerConsumers(viewerContext);
         report.stage = 'long-name';
         await verifyViewerLongName(viewerContext);
+        report.stage = 'refresh';
+        await verifyViewerRefresh(viewerContext);
       }
     }
     report.status = 'passed';

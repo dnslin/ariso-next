@@ -182,6 +182,8 @@ export async function seedViewerFixtures(config, sql) {
       await sql(
         `DELETE FROM media_objects WHERE storage_id='${viewerStorage}'`,
       );
+      await sql("DELETE FROM media_jobs WHERE image_id LIKE 'issue185-%'");
+      await sql("DELETE FROM media_metadata WHERE image_id LIKE 'issue185-%'");
       await sql(`DELETE FROM media_images WHERE storage_id='${viewerStorage}'`);
       await sql(`DELETE FROM storage_configs WHERE id='${viewerStorage}'`);
       await rm(directory, { recursive: true, force: true });

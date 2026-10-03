@@ -2,7 +2,13 @@
 
 日期：2026-10-02 至 2026-10-03（Asia/Shanghai）。审计者：独立 `code_audit` agent。审计范围为本 Issue 的工作区差异，包含新增、未跟踪的生产代码与测试。本记录只说明代码与功能证据；设计还原由独立设计评审记录说明，最终界面仍需用户人工验收。
 
-## 当前结论（YARL 标准门户与连续浏览）
+## 当前结论（双角度评审修复）
+
+本轮两位独立评审分别使用 code-review-and-quality 与 thermo-nuclear-code-quality-review，均通过：Critical 0、未解决 Required 0、新 Optional 0。原1项Required和2项Optional已闭合。实际回读默认缓存下的RED/最终GREEN像素、单观察者与真实401证据，未把完整浏览器首轮失败改成通过。最终结论与各自实际执行范围见文末两份复审报告。
+
+报告首读时的 `review-fix-content-id-green.txt` 后按其真实EPERM结果归档为 `checks/review-fix-detail-http-environment-initial.txt`；后续相关集成126项及聚焦详情8项通过，失败文件没有删除或改写。最终人工验收仍待用户，PR保留草稿。
+
+## 前轮结论（YARL 标准门户与连续浏览，历史）
 
 **当前独立代码审计通过：Critical 0，未解决 Required 0。** 连续 Tab 后焦点落到 BODY、Esc 无法关闭的实际缺陷已使用现有 React Aria FocusScope 修复；[失败记录](./browser/yarl-native-preview-final/focus-before-fix.json)保留。源码、依赖差异及严格回归已独立复核，最后完整专项实际退出0、16项检查／53张截图／27条布局；直达与连续图库共12次 Tab／Shift+Tab均保持真实焦点，错误层先 Esc 后查看器 Esc 的分层关闭及回焦通过。最后独立预览也实际退出0，六次真实焦点与两层 Esc 已读回确认。首轮完整专项失败和较早的分阶段结果均保留，未改写为通过。详见[标准门户续记](#yarl-标准门户与连续浏览审计续记2026-10-02)。
 
@@ -160,3 +166,158 @@ R1 回归分别在直达 original 与连续图库切至尾图后执行三次 Tab
 FocusScope 接入后的冻结安装、lint、类型和构建均由主 agent 实际执行退出0，已实际读取[安装](./checks/yarl-native-focus-install.txt)、[最后lint](./checks/yarl-native-focus-final-lint.txt)、[类型](./checks/yarl-native-focus-typecheck.txt)及[构建](./checks/yarl-native-focus-build.txt)。构建完成编译与15页生成；跨平台可选原生包追踪诊断仍保留，未记为容器通过。[直接依赖声明命令](./checks/yarl-native-focus-dependency.txt)为 `pnpm add --offline --save-exact react-aria@3.52.1`，实际 downloaded=0、added=0，现有 peer 版本不变，没有升级传递依赖。本审计只复核上述证据与源码，未重复安装、测试或浏览器；写入后执行 `git diff --check`，最终文档格式由主 agent 统一处理。
 
 本轮独立代码审计结论为 Critical 0、未解决 Required 0，R1 修复已具有真实失败和严格成功回归。首轮 full 的 failed 保留，最新 full 的 passed 为另一实际运行，不相互覆盖。代码结论不代替新的独立设计复核或用户人工验收。原水印日志 requestId 与统一浏览器旧 Chip 断言两项范围外失败保持记录，148项适用集成不覆盖该水印断言，也不推翻此前整套失败。打开查看器后真实会话过期、物理设备、Safari、软键盘、非零安全区及 Release 镜像／容器仍未执行，匿名查看器继续由#193承接，PR保持草稿。
+
+## 双角度修复复审：五维代码质量（2026-10-03）
+
+当前结论：源码复审未发现未解决Critical或Required；原Required的修复链路成立。最终验证结论等待本轮Green浏览器与适用检查证据，本文后续追加，不以修前测试成功替代修后验证。
+
+审查范围：`/Volumes/data/project/ariso/test-results/worktrees/issue-185`，相对`9207cc72b3b5d99aef94900b38ef8b239a5e5f91`的未提交增量，包括未跟踪的新`use-detail-status.ts`和`library-viewer-refresh.mjs`。仅写本报告；未修改源码、测试、证据或用户预览，未读取另一位本轮结构评审者报告。
+
+### 原Required复核
+
+已发布版本新增`contentId: saved?.object.id ?? null`，来源为media_versions实际指向的stored对象；不是新任务ID、临时路径或候选文件。`getImageAccessState`读取media_versions与media_objects的关联，候选结果不成为已保存版本。对象身份已经作为delivery ETag使用；新增owner detail字段不暴露对象key、存储路径或密钥。缺版本使用null符合实际数据边界。
+
+`image-viewer.tsx`的ViewerImage key改为contentId/revision，内容替换会重挂载真正的ImageSlide/img，即使YARL外层仍按稳定src复用组件。失败标识加入contentId，使旧文件的读取/解码失败不屏蔽新发布内容；缺尺寸缓存也按contentId读取/裁剪，旧天然尺寸不再套到新内容。异步旧decode回调有mounted清理保护；即使迟到失败回调已经排队，其旧failureKey也不匹配新contentId，不会把新版本误标失败。
+
+同尺寸、同byteSize替换不再依赖格式/字节大小变化。显式kind保持不变，不因发布新compressed而从用户所选watermark跳版。原有回收/删除/存储停用优先级仍通过viewerVersionReason控制；contentId存在不绕过可读性判断。
+
+### 状态观察与结构增量
+
+`detailQueryOptions`共享查询身份、读取函数、取消信号及错误/网络策略。详情仍显式使用staleTime=0及焦点刷新；viewer与邻居仍为已有的独立QueryClient和按需刷新。改用canonical key不会跨两个client意外共享状态。
+
+`useDetailStatus`复用既有状态读取、任务变化判断、活动任务2秒轮询及终态/错误停止。effect event读取最新detail，只有status结果、图片ID或enabled变更触发同步，避免把detail变化本身作为反复刷新触发器。查询的signal仍传入实际fetch，401仍保留DetailReadError身份。
+
+`LibraryDetail`在viewer显示时暂停来源详情的自动查询/轮询和任务广播。导航到其他图片不恢复来源观察；关闭、隐藏或卸载清理会解除暂停。onClose显式refetch仍有效，因此关闭后恢复真实来源详情，而不是将viewer当前图片写回来源。来源组件保留401处理：viewer回调setUnavailable(401)仍触发上传资源清理、client.clear和带returnTo的登录跳转，未被observationPaused挡住。
+
+seed合并kind保持一次导航提交的detail/kind/neighbors一致，删除的六个返回项无现有消费者使用。没有添加全局缓存、兼容分支、抽象工厂或授权层。原取消/迟到导航判断仍在读取真实图片后的提交之前。
+
+### 新测试有效性
+
+先阅读`e2e/library-viewer-refresh.mjs`，随后对照生产实现：
+
+- 使用真实reprocess POST、真实worker终态及published对象指针，区分修改尺寸和同尺寸同大小输出。
+- 同大小案例在独立DATA_DIR改造源素材，先红后蓝分别真实重处理；这是测试夹具操作，不是产品新增原图替换能力。
+- 以当前img绘制canvas的真实像素比较独立fresh delivery blob解码结果，断言不只检查React key、outer dataset或metadata。
+- 失败恢复案例从真实缺失压缩文件开始，真实成功重处理后无需重试/切图关闭即显示新内容。
+- 轮询案例明确标为未来排队的可控观察夹具，不冒充实际worker执行；检查当前viewer单观察者、导航后来源停止、关闭恢复详情。
+- 会话失效直接更新隔离SQLite session，记录实际401、登录reason/returnTo和viewer消失，之后真实登录恢复。
+- 两种真实发布与失败恢复没有硬编码成功任务或替换业务响应；清理新增media_jobs/media_metadata，原settings在finally恢复。
+
+新增测试最初对refresh全程禁用浏览器缓存。已向主代理建议最终Green至少补一遍默认浏览器缓存下的同URL/同尺寸/同byteSize替换，以验证真实缓存环境不会掩盖问题。当前仅将此列为证据待补，不凭浏览器缓存猜测登记生产缺陷。
+
+### 已核对的修前证据与执行
+
+独立解析`browser/review-fix-red/library-viewer.json`：changed-dimensions的16180→15714 bytes与same-dimensions-and-byte-size的360→360 bytes，均已有新published object ID，但显示像素仍不等于fresh delivery；这正式实测支持上轮源码发现。该轮viewer两个2秒周期发生4次POST，返回详情为2次，支持重复观察问题。
+
+`review-fix-content-id-red.txt`确实因缺少contentId断言失败。当前名为`review-fix-content-id-green.txt`的首轮记录为7通过/1失败，失败原因是HTTP监听EPERM，不能标成全通过。`review-fix-unit.txt`首轮868通过/1失败也是监听EPERM；等待有正确本地权限的最终记录，不将环境拒绝定性成源码回归，也不隐藏失败。
+
+本复审实际执行：`git diff --stat 9207cc7`、生产与测试定向diff、读取完整新增测试/共享hook/调用者、Node24内存解析red报告、`/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node --check e2e/library-viewer-refresh.mjs`（通过）。未重复fullcheck、浏览器或构建；未来引用主代理的Green结果会明确标为独立回读证据。
+
+### Green专项回读更新
+
+源码复审结论更新为：**Approve（修复源码）**，Critical 0、Required 0、新Optional 0、新Nit 0；完整viewer回归尚待后续记录，不把源码通过等同整个PR立即可合并。
+
+已独立回读`browser/review-fix-refresh-green/runner.json`与业务JSON。当前脚本明确`Network.setCacheDisabled({cacheDisabled:false})`，默认缓存条件下专项passed：
+
+- 16180→15714 bytes的输出替换：contentId改变、当前实际像素与fresh delivery相等，新img delivery为200且transferSize=16014。
+- 360→360 bytes、相同尺寸的输出替换：contentId改变、像素与fresh delivery相等，新img delivery为200且transferSize=660。
+- 原真实文件缺失的失败状态，经真实成功重处理后无需关闭/切图/重试恢复当前compressed。
+- 两个轮询周期viewer请求2次，切换邻图后来源请求0次，关闭回详情请求2次。
+- 真实session失效后收到`/api/images/issue185-007`的401，移除viewer并跳到reason=expired、returnTo=/library?image=issue185-007；登录恢复通过。
+
+因此前述默认缓存证据建议已经解决，不留下Optional。原Required由修前失败和修后真实像素通过构成明确证据，不再仅为源码推导。
+
+另已读取`src/server/media/steps.ts`：ready图片的saveMediaCandidate只保存候选，不修改media_versions；completeMediaJob在同一短事务中调用replaceMediaVersion并完成任务。新contentId严格跟随已发布指针，因此pending/failed候选不会使查看器提前换图。这不需要新API、任务ID猜测或兼容回退。
+
+最终适用检查证据回读：`checks/review-fix-unit-final.txt`为71文件869项通过；`checks/review-fix-integration.txt`为22文件126项通过；`review-fix-typecheck-final.txt`与`review-fix-lint.txt`均无检查错误。主代理报告构建退出0，构建日志保留其他平台可选原生依赖追踪警告；本复审未自行重跑构建。初始EPERM失败继续作为环境失败保留。新增执行`git diff --check 9207cc7`通过。
+
+### 最终证据回读与结论
+
+最终独立复审结论：**Approve（本轮修复）**。Critical 0、未解决Required 0、新Optional 0、新Nit 0。此前源码复审仍有效；本轮没有再执行构建、测试或浏览器，只读取最终脚本和已生成JSON，并将其追加到本报告。最终人工验收与PR草稿状态仍由用户决定。
+
+完整`browser/review-fix-viewer-final/runner.json`仍是**failed / exit 1**，不能写成full pass。业务JSON记录18条已完成检查、27项布局、57张截图；此前原16条导航、布局、消费者与异常检查已经完成，新失败恢复与单观察者检查也已完成。两种真实版本替换在该轮都已显示新像素并有真实200 img delivery。实际失败点位于最后`refresh:expired-session`：旧断言只接受当前detail GET返回401，忽略并发status POST先返回401后清理/导航会取消另一个请求的合法顺序。原报告保留这个失败，不把后续专项通过覆盖它。
+
+已核对当前`verifyExpiredViewer`的修正没有把断言降为“只要页面跳登录”或“任意请求401”：
+
+- 从CDP `Network.requestWillBeSent`记录筛选当前图片的GET `/api/images/{currentId}`，或POST `/api/images/status`且postData.ids恰好只有当前图片一个ID。
+- 用同一CDP requestId关联`Network.responseReceived`，必须实际HTTP 401。
+- 继续断言reason=expired、原detail returnTo、viewer已移除，再通过真实登录恢复会话。
+
+这与生产逻辑对detail/status任一401均关闭会话的实际语义一致，消除了对并发请求完成顺序的错误要求，没有取消鉴权或弱化图片身份检查。
+
+受影响范围的最终`browser/review-fix-refresh-final/runner.json`为**passed / exit 0**，4条检查、5张截图。独立回读该轮结果：
+
+- 两种替换actual像素都等于fresh delivery；同尺寸案例仍为360→360 bytes，实际img delivery为200、transferSize=660。
+- 缺失旧文件的失败恢复通过。
+- viewer两周期2次状态请求、切到邻图后来源0次、回详情2次。
+- 最终401证据同时含当前图片GET和`ids=['issue185-007']`的status POST，均实际401；returnTo=/library?image=issue185-007，登录恢复完成。
+
+准确的交付表述应为“完整viewer运行在末尾会话失效测试的旧竞速断言处失败；修正该测试后受影响refresh专项通过，其余完整viewer场景已有本轮完成证据”。不是“完整viewer最终一次全绿”。这项测试修正未改变生产源码，不影响本报告的源码Approve结论。
+
+## 双角度修复复审：结构与维护成本（2026-10-03）
+
+结论：当前修复增量通过结构复审。没有新增 Critical、Required 或 Optional findings。前次两项 Optional 已实际处理；内容替换修复也使用了现有发布对象身份，没有引入额外版本管理或通用框架。
+
+范围为 `/Volumes/data/project/ariso/test-results/worktrees/issue-185` 当前工作树相对 `9207cc72b3b5d99aef94900b38ef8b239a5e5f91` 的增量。独立读取了全部生产源码增量、新增 `use-detail-status.ts`、新增 `library-viewer-refresh.mjs`、集成及夹具调整、真实媒体发布调用路径。没有读取另一位agent的新报告，没有改源码、证据或预览数据。
+
+### 修复闭合情况
+
+#### 已发布内容身份
+
+`src/server/library/detail.ts:222`直接把现有已发布对象的ID投影为`contentId`，类型在`detail-types.ts:31`。它没有暴露对象Key或存储路径，没有新建哈希、seal或冗余记录。`media/objects.ts:27`为每次派生对象规划创建新的UUID；`media/steps.ts:108–139`在发布时切换version的objectId并交接旧对象清理，因此重处理即使保持URL、尺寸和字节数，也有正确且稳定的新身份。
+
+`image-viewer.tsx:56–59`把失败身份绑定当前imageId、kind和contentId；`76–78`的缺失尺寸缓存、`268`的ViewerImage key也绑定相同contentId。这删除了“地址相同就视为相同内容”的错误假设，并没有增加另一套刷新计数器或通过尺寸/字节数猜测身份。原有revision只承担手动重试，不再承担识别服务端发布变化。null对应没有已保存版本；可读版本由服务器保证存在对象身份，不需要新增第二轮前端验证。
+
+#### 共用观察规则与来源暂停
+
+`read-detail.ts:46–55`统一当前/相邻详情的查询定义；viewer的独立client及`gcTime:0`仍保留。`use-detail-status.ts:25–41`统一status读取、轮询和错误停止条件，`43–55`统一状态变化后刷新详情。旧viewer-detail、viewer-status两套名称也退出实现。
+
+`useEffectEvent`只读取本次提交的最新detail/refetch。真正触发比较的仍是status数据、图片身份和enabled变化；没有把每次detail refetch产生的新对象再次当作status事件，因此不会无理由构成“detail刷新→比较旧status→detail再刷新”的循环。共享hook在enabled为false时不执行比较，暂停来源和mutation门控都有效。该用法符合React现有effect-event边界：函数只在effect中调用，没有塞进依赖列表或从事件处理器调用。
+
+`use-detail-query.ts:18–25`用来源imageId绑定暂停状态，避免暂停值误落到下一张来源图。暂停同时进入详情查询、status查询及任务变化广播的门控；`detail.tsx:367–370`负责viewer打开/隐藏/卸载的恢复。这里新增的一个暂停状态表达实际观察所有权，没有演化成任意模式配置。
+
+原有mutation取消仍位于`use-detail-query.ts:99–111`，继续取消相同规范query key。401处理仍位于原详情层，继续resetUpload、清cache及保留returnTo的登录回跳；viewer自己的401会abort导航并清独立cache，然后交给来源层。来源身份变化/关闭时的removeQueries保留；viewer关闭/卸载时的内容预检abort和private client.clear也保留。关闭大图仍refetch来源详情并恢复焦点/滚动。没有为了共享查询而把mutation、upload或登录流程塞进共享hook。
+
+enabled=false不会强制撤回已经发出的来源请求，本修复避免的是持续双轮询。原有未完成请求仍可按TanStack生命周期完成，不需要为此另建锁或复杂事务。
+
+#### 单次导航提交与缩小契约
+
+`use-image-viewer.ts:53–60`用`{detail,kind,neighbors?}`表达导航已提交记录，成功只setSeed一次。初次kind仍继承明确选版；跨图kind仍按默认查看规则选择；详情状态刷新不重置kind。重复selection.imageId、两份身份的一致性补偿分支和第二次提交已删除。
+
+ViewerNeighbor的error/isLoading，以及selected、neighborsLoading、retryNeighbors、retryStatus共6个未消费输出字段已删除。邻居query.error仍参与401判断；不能把“删输出字段”误当作取消错误处理。导航预检、请求身份核对及解码失败处理均保留。
+
+### 规模与职责
+
+useImageViewer从272→237行，useDetailQuery从145→121行。共享status模块56行，既有read-detail增加13行查询定义；这部分总行数从459→469，增量主要是明确来源暂停所有权。结构改善来自同一查询/状态规则只维护一份，而不是仅把行数搬走。viewer的useState从5→4，来源新增一个暂停状态，二者合计状态数量仍为7；没有把状态计数下降冒充整体结果。最大生产文件为detail的563行，没有1000行增长问题。
+
+新增refresh e2e保持独立模块，真实媒体执行、像素读取、观察所有权和会话失效分别有具体函数。为轮询验证临时把已存在真实任务设置为未来queued，明确说明该步骤不是worker执行证据；像素替换则使用真实POST、worker和ImageMagick完成，职责没有混淆。
+
+### 验证证据
+
+本评审实际执行了只读git差异/状态/源码读取、Node24.18.1统计脚本、TypeScript语法树统计和`git diff --check`。后者通过。没有重新执行完整单元、集成、构建或浏览器套件。
+
+独立读取RED及GREEN报告，而非只接受实现者描述：
+
+- `browser/review-fix-red/library-viewer.json`记录两类实际像素替换失败，以及同图两周期4次status POST。它验证旧实现确实存在待修复现象。
+- `browser/review-fix-refresh-green/runner.json`为passed，Node24.18.1、arm64，结束于2026-10-03T10:20:03.614Z。
+- 同目录library-viewer.json为refresh/completed。尺寸变化及相同尺寸/相同字节数两次替换中，contentId均变化，actual解码像素都与独立fresh blob读取一致；不需要关闭、切版或手动重试。
+- 原缺失压缩文件经真实重处理发布后自然恢复，原失败占位退出。
+- viewer当前来源图在两周期只有2次status POST；切到邻图后原来源图0次；关闭后详情恢复2次。此证据验证实际观察所有权，不只检查React开关值。
+- 实际过期SQLite session导致current-detail HTTP401，viewer退出并回到login，原详情returnTo保留。
+- 已读`review-fix-unit-final.txt`记录869测试通过；`review-fix-integration.txt`记录126测试通过；lint与最终typecheck日志无错误。初次unit及聚焦integration日志曾因sandbox listen EPERM失败，最终文件记录了后续通过；不能把初次失败日志改称通过。
+
+这些是已有执行证据，不是本评审新运行的测试。当前已取得refresh聚焦GREEN。完整viewer回归、真实工具集成和最终build/format结果需由主agent继续核对；本次没有以构建日志末尾的跨平台optional依赖提示推断最终退出码。结构通过也不替代完整旧行为回归或用户人工验收。
+
+### 最终浏览器证据补充
+
+本次只回读最终报告和401测试断言，没有重跑检查或修改生产源码。结构通过结论保持有效。
+
+`browser/review-fix-viewer-final/runner.json`仍是failed，运行器错误记录子进程exit1；结束于2026-10-03T10:23:16.009Z。对应library-viewer.json仍为full/failed，停止在`refresh:expired-session`，已累计18条checks、27条layouts、57张screenshots。18条checks包含原16项回归，以及新发布失败恢复、观察所有权两项。两种替换的actual像素也都与fresh读取一致。原有限邻居、选版、取消/迟到响应、解码、缺失尺寸、输入手势、状态变化、相册/上传消费及焦点返回已执行到完成断言。
+
+最后失败是新增401证据断言只接受current-detail GET401。失败页面已实际跳转到`/login?reason=expired&returnTo=%2Flibrary%3Fimage%3Dissue185-007`。实现同时刷新详情和status，任一实际401都会清cache并跳转；如果status401先完成，详情请求可以随清cache取消。因此测试不应要求GET必须先返回。本报告没有直接记录该次status响应的CDP明细，不把请求先后说明冒充那次失败报告中的独立抓包证据。
+
+已回读当前测试的修正：通过`Network.requestWillBeSent`的requestId建立匹配，仅接受当前图片的GET详情，或POST `/api/images/status`且postData的ids精确为`[currentId]`；随后以同一requestId匹配`Network.responseReceived`的实际401。它仍要求viewer退出、reason=expired、正确returnTo及真实重新登录，没有接受无关401或删掉会话失效验证。
+
+`browser/review-fix-refresh-final/runner.json`为passed，定向refresh运行成功结束于2026-10-03T10:25:45.268Z；library-viewer.json为refresh/completed，4条checks、5张screenshots。其expiredViewer同时记录当前图片GET401与ids=`['issue185-007']`的status POST401，reason和returnTo正确。两种实际像素替换再次一致，失败版本自然恢复；viewer当前图两次status POST、切邻图后来源0次、关闭恢复详情两次。
+
+最终证据状态是“完整viewer首次失败，旧16项及新增恢复/观察断言已完成，401断言修正后定向refresh通过”。没有把完整viewer报告改写为passed，也没有声称再次完整重跑通过。该差异属于测试证据匹配范围的修正，没有引出新增生产结构缺陷。

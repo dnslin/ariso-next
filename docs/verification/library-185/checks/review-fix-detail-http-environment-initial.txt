@@ -1,0 +1,21 @@
+Already up to date
+Done in 891ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+ ❯ |integration| tests/integration/library/detail.test.ts (8 tests | 1 failed) 199ms
+   ❯ owner-only detail HTTP (1)
+     × rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > owner-only detail HTTP > rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries
+Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  18:17:15
+   Duration  943ms (import 51%, transform 25%, tests 24%, worker 1%)
+

@@ -40,3 +40,16 @@ export async function readDetail(
     );
   return detail;
 }
+
+export function detailQueryOptions(imageId: string | null, albumId?: string) {
+  return {
+    queryKey: ['library-detail', imageId, albumId],
+    queryFn: ({ signal }: { signal: AbortSignal }) =>
+      readDetail(imageId!, signal, albumId),
+    enabled: imageId !== null,
+    retry: false,
+    networkMode: 'always' as const,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  };
+}

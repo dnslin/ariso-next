@@ -350,6 +350,7 @@ export function LibraryDetail({
     mutationPending,
     onMutationPending,
     expired,
+    setObservationPaused,
   } = query;
   const [copyOpen, setCopyOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(
@@ -363,6 +364,10 @@ export function LibraryDetail({
   } | null>(null);
   const returnFromViewer = useRef(false);
   const detailScroll = useRef(0);
+  useEffect(() => {
+    setObservationPaused(!!viewer && !hidden);
+    return () => setObservationPaused(false);
+  }, [hidden, setObservationPaused, viewer]);
   const expireViewerSession = useCallback(
     () => setUnavailable(401),
     [setUnavailable],

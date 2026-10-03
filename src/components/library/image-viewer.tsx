@@ -22,7 +22,11 @@ import { initialViewerVersion, viewerVersionReason } from './viewer-model';
 import { ViewerImage } from './viewer-image';
 import 'yet-another-react-lightbox/styles.css';
 
-type ViewerSlide = SlideImage & { imageId: string; reason: string | null };
+type ViewerSlide = SlideImage & {
+  imageId: string;
+  contentId: string | null;
+  reason: string | null;
+};
 function ViewerFocusScope({ children }: ComponentProps) {
   return <FocusScope contain>{children}</FocusScope>;
 }
@@ -49,7 +53,10 @@ export default function ImageViewer(props: {
   const controller =
     useRef<import('yet-another-react-lightbox').ControllerRef>(null);
   const { current, selectedVersion, previous, next, pendingDirection } = viewer;
-  const failureKey = `${current.id}:${selectedVersion}`;
+  const contentId = current.versions.find(
+    (version) => version.kind === selectedVersion,
+  )?.contentId;
+  const failureKey = `${current.id}:${selectedVersion}:${contentId}`;
   const readFailed = failed === failureKey;
   const previousId = previous?.id;
   const previousDetail = previous?.detail;
@@ -68,7 +75,7 @@ export default function ImageViewer(props: {
       const dimensions =
         version?.width && version.height
           ? { width: version.width, height: version.height }
-          : decodedDimensions[version?.previewPath ?? ''];
+          : decodedDimensions[version?.contentId ?? ''];
       const width = dimensions?.width;
       const height = dimensions?.height;
       // YARL caps images at the supplied size. Scale its display dimensions to
@@ -85,6 +92,7 @@ export default function ImageViewer(props: {
           : 1;
       return {
         imageId: id,
+        contentId: version?.contentId ?? null,
         src: reason ? '' : (version?.previewPath ?? ''),
         alt: detail?.displayName ?? '',
         width: width ? width * scale : undefined,
@@ -257,17 +265,18 @@ export default function ImageViewer(props: {
               );
             return (
               <ViewerImage
-                key={`${slide.src}:${revision}`}
+                key={`${slide.contentId}:${revision}`}
                 {...slideProps}
                 onDimensions={(width, height) => {
-                  if (slide.width && slide.height) return;
+                  const decodedId = slide.contentId;
+                  if ((slide.width && slide.height) || !decodedId) return;
                   setDecodedDimensions((known) => ({
                     ...Object.fromEntries(
-                      Object.entries(known).filter(([src]) =>
-                        slides.some((item) => item.src === src),
+                      Object.entries(known).filter(([id]) =>
+                        slides.some((item) => item.contentId === id),
                       ),
                     ),
-                    [slide.src]: { width, height },
+                    [decodedId]: { width, height },
                   }));
                 }}
                 onError={() => {

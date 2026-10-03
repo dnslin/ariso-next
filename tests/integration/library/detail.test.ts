@@ -182,6 +182,7 @@ it('returns actual saved versions, relationships and separate task summaries wit
   });
   expect(detail.versions.find((v) => v.kind === 'compressed')).toMatchObject({
     saved: true,
+    contentId: 'compressed',
     width: 500,
     height: 400,
     byteSize: 31,
@@ -193,6 +194,28 @@ it('returns actual saved versions, relationships and separate task summaries wit
   expect(JSON.stringify(detail)).not.toMatch(
     /private-key|secret|localPath|snapshot|objectId/,
   );
+  const before = detail.versions.find((v) => v.kind === 'compressed')!;
+  connection.db
+    .insert(mediaObjects)
+    .values({
+      ...original,
+      id: 'replacement',
+      key: 'secret/replacement',
+      purpose: 'compressed',
+    })
+    .run();
+  connection.db
+    .update(mediaVersions)
+    .set({ objectId: 'replacement' })
+    .where(eq(mediaVersions.kind, 'compressed'))
+    .run();
+  const after = readLibraryDetail(connection.db, 'detail').versions.find(
+    (v) => v.kind === 'compressed',
+  )!;
+  expect(after).toEqual({ ...before, contentId: 'replacement' });
+  expect(
+    detail.versions.find((v) => v.kind === 'thumbnail')!.contentId,
+  ).toBeNull();
 });
 
 it('keeps default links dynamic, fixed links explicit, and reports missing default versions', () => {
