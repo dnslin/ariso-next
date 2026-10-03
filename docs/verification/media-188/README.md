@@ -1,6 +1,6 @@
 # T-MED-09 / Issue #188 真实临时预览
 
-日期：2026-10-03 至 2026-10-04。关联 [Issue #188](https://github.com/dnslin/ariso-next/issues/188)。分支 `codex/issue-188-media-previews`，基于 `origin/main` 的 `c601be4`；验证期间 main 仅合入 DG-TRASH 文档提交，分支已对齐最新 `4a3e964`；独立 worktree `/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso`，原工作区未修改。PR 待填写。
+日期：2026-10-03 至 2026-10-04。关联 [Issue #188](https://github.com/dnslin/ariso-next/issues/188)。分支 `codex/issue-188-media-previews`，基于 `origin/main` 的 `c601be4`；验证期间 main 仅合入 DG-TRASH 文档提交，分支已对齐最新 `4a3e964`；独立 worktree `/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso`，原工作区未修改。[草稿 PR #234](https://github.com/dnslin/ariso-next/pull/234)。
 
 ## 范围与前置
 
@@ -11,7 +11,7 @@
 - 独立 `media_previews` 临时任务无图片/存储引用，不写图库、相册、标签、统计或配置。文件只在 tmp 的 `preview-<id>` 所属目录。迁移 0020 只增加预览表与索引，没有修改旧资产表或引入新依赖。
 - 调度与正式处理/元数据共用并发名额。完成后 30 分钟到期；格式不适用与开关关闭明确返回原因。接收、工具和写入均先结算，随后清理/释放素材引用。失败/到期/重启清自己的登记目录，清理失败可查并重试；已解决时 `cleanupStatus=deleted`，`cleanupError` 保留上次失败诊断。
 
-本任务无 UI：未新增处理设置页、预览界面或公共组件，不制作模拟页面。设计还原与 UI 人工验收不适用，T-MED-12 / #189 接入真实界面后仍须实际读取 Figma、浏览器验证、独立设计评审和用户人工验收。现有浏览器回归只证明消费正式处理的已实现页面未回归，不能替代后续设计验收。
+本任务无 UI：未新增处理设置页、预览界面或公共组件，不制作模拟页面。设计还原与 UI 人工验收不适用，T-MED-12 / #189 接入真实界面后仍须实际读取 Figma、浏览器验证、独立设计评审和用户人工验收。现有浏览器回归用于检查已实现页面；本轮存在失败且未跑完，不能声称没有回归，也不能替代后续设计验收。
 
 ## 环境
 
@@ -24,7 +24,7 @@
 | `pnpm install --frozen-lockfile`                                                                             | 通过，锁文件未修改；[安装](./install.txt)                                                                                                                            |
 | `pnpm run db:generate`                                                                                       | 生成 0020，SQL 审查仅新表与索引；[生成](./migration.txt)                                                                                                             |
 | `pnpm run test:unit`                                                                                         | 80 文件 / 1049 项通过；[单元](./unit.txt)                                                                                                                            |
-| `pnpm run lint`                                                                                              | 通过；[静态检查](./lint.txt)；新增的最后两项集成测试另行定点检查                                                                                                     |
+| `pnpm run lint`                                                                                              | 通过；[静态检查](./lint.txt)；最终应用与测试增量均已纳入全量 lint                                                                                                    |
 | `pnpm run typecheck`                                                                                         | 通过；[类型](./typecheck.txt)                                                                                                                                        |
 | `pnpm run build`                                                                                             | 通过，包含三个真实预览路由；[构建](./build.txt)。保留既有 resvg 跨平台可选包及 @opentelemetry/api 追踪警告，未把警告隐藏或改依赖                                     |
 | `pnpm run test:integration --maxWorkers=2`                                                                   | 首次全量 121 文件 / 1195 项通过，7 文件 / 25 项失败；本次引起的问题均已修复并定点复跑，见下表；[原始集成](./integration.txt)                                         |
@@ -73,4 +73,4 @@
 
 ## PR 状态
 
-待创建并核对实际远端检查；仅在本地适用检查满足后转为正式评审。没有远端检查不记为 CI 通过。本次无 UI 交付；用户人工 UI 验收仍属于 #189，现有冷进入焦点问题需另获范围授权后处理。
+已提交并推送分支，创建 [草稿 PR #234](https://github.com/dnslin/ariso-next/pull/234)，并关联 #188。`gh pr view 234 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus` 实际返回 OPEN / isDraft=true / CLEAN / statusCheckRollup=[]；`gh pr checks 234 --repo dnslin/ariso-next` 返回没有检查。当前未触发远端检查，不记为 CI 通过，也不等待不存在的工作流。完整浏览器失败尚未解决，保留草稿；没有合并或主动关闭 Issue。本次无 UI 交付；用户人工 UI 验收仍属于 #189，现有冷进入焦点问题需另获范围授权后处理。
