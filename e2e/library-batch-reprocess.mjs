@@ -84,6 +84,8 @@ try {
 
   await h.visit([reprocessIds[0], reprocessIds[1]]);
   await h.layouts('scope', [360, 390, 430, 768, 1440]);
+  await h.explanation('scope');
+  await h.explanation('scope', [390], 500);
   await h.resize(390, 500);
   await page.focus('[data-testid="batch-reprocess-scope-watermark"] input');
   await page.keyboard.press('Space');
@@ -132,6 +134,34 @@ try {
     `UPDATE media_images SET processing_status='failed' WHERE id=${quote(reprocessIds[0])}`,
   );
   await h.visit([reprocessIds[0]]);
+  assert.equal(
+    await page.evaluate(
+      () =>
+        [
+          ...document
+            .querySelector('[data-testid="library-batch"]')
+            .querySelectorAll('p'),
+        ].filter((node) => /首次处理失败/.test(node.textContent)).length,
+    ),
+    1,
+    'Failed-only restriction is displayed once outside the on-demand explanation',
+  );
+  assert.ok(
+    await page.evaluate(() => {
+      const group = document.querySelector(
+        '[role="radiogroup"][aria-label="批量处理范围"]',
+      );
+      const description = document.getElementById(
+        group?.getAttribute('aria-describedby'),
+      );
+      return (
+        description?.dataset.testid === 'batch-scope-restriction' &&
+        !!description.getClientRects().length &&
+        /首次处理失败，仅支持全部派生/.test(description.textContent)
+      );
+    }),
+    'Scope radio group exposes its single visible disabled reason to assistive technology',
+  );
   for (const scope of ['compressed', 'thumbnail', 'watermark'])
     assert.ok(
       await page.evaluate(
@@ -184,9 +214,13 @@ try {
     'Terminal job stops polling',
   );
   await h.layouts('real-success');
+  await h.explanation('real-success');
   await h.close();
   report.checks.push(
     'A failed original allows only all; a real batch acceptance invokes ImageMagick and succeeds, publishes all three derived versions, preserves the original object and stops progress polling after terminal state.',
+  );
+  report.checks.push(
+    'UI revision: modal and result rules open by pointer click and native Enter/Space keys; Escape restores the trigger without closing the batch workspace. The short mobile explanation remains reachable, failure restriction appears once with the radiogroup description association, zero-state chips are omitted and real per-image stages use semantic icon/color labels in both themes. Physical touchscreen input is not tested.',
   );
 
   // Every request snapshots the settings actually saved at its own acceptance.

@@ -92,3 +92,24 @@ macOS 26.6.2 / arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，Exif
 实现提交 `aa79928` 已推送至 `origin/codex/issue-186-batch-reprocess`。`gh pr view 236 --json number,url,state,isDraft,headRefName,baseRefName,mergeable,statusCheckRollup` 实际返回 OPEN、draft、MERGEABLE，检查列表为空；[状态快照](./github-pr.json)。`gh pr checks 236` 返回“no checks reported”并退出1；[原始结果](./checks/github-pr-checks.txt)。当前没有远端检查，不标记CI通过或等待不存在的工作流。
 
 没有合并PR、主动关闭Issue、创建Release、发布镜像、部署或删除分支/worktree。原工作区保留。Ego TaskSpace16已完成本次自动检查并保留p1人工预览页，隔离预览服务仍运行。
+
+## 人工反馈后的提示与状态返修（2026-10-04）
+
+用户指出[范围弹窗](./ui-revision/feedback/modal-before.png)和[结果页说明条](./ui-revision/feedback/result-notice-before.png)臃肿、重复提示过多，明确要求改善布局、按需说明及状态标签。本次局部授权与Figma来源的关系已记录到[设计交接](../../design/handoff.md#批量重处理提示与状态返修2026-10-04人工反馈)，不重写冻结需求，也不修改Figma。此前代码/设计通过结论属于上一版，不能代替本轮新图与人工验收。
+
+- 复用现有 `DetailTip` 点击查看处理规则，取消常驻长说明条。首次失败限制只保留一次，并关联到范围选择控件；真实冲突、错误、未知和未提交仍可见。
+- 范围标题、名称及短描述左对齐，64px选择行，选中用控件与边框表达；取消96px、提交占剩余宽度，并排48px。保留480/358弹窗宽与24px内距，短视口正文滚动。
+- 摘要省略零计数，逐图复用 HeroUI Chip，保留文本与Lucide图标。排队中性、执行品牌强调、完成绿色，未受理/未知/未提交警示色，执行失败红色。
+- 本次没有修改API、数据库、worker、任务ID、设置快照、范围选择或失败重试契约；公共OwnerShell和DetailTip本身没有改动。
+
+本轮 Node24.18.1 / pnpm11.19.0，`pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build` 均通过；`pnpm run test:unit` 为79文件1037项通过。原始记录在 [ui-revision/checks](./ui-revision/checks/)。新增组件测试保留实际禁用input与任务身份断言，补充单次限制、按需说明、文本与语义标签、零项摘要及未知/未提交区别。初轮旧文案断言及新增测试属性顺序匹配问题保留失败记录，按新界面文案和真实属性修正，未删行为断言。
+
+浏览器复用本轮最终构建，只运行新增及受影响的 `node scripts/verify-browser.mjs --suite library-reprocess`。Ego TaskSpace18/p1，独立临时数据；不操作用户3186预览库。保留原四范围、真实worker、未知核对、重试等功能验证，补充按需说明展开、鼠标及原生键盘打开、Esc回焦且不关闭范围弹窗、短视口说明完整可达、一次可访问禁用原因、Chip真实状态和并排按钮。最终通过：9组行为、52组布局、64张截图，浏览器错误为空；[报告](./ui-revision/browser/library-reprocess.json)与[运行范围](./ui-revision/browser/runner.json)。真实Popover全文约216px，在390×500内无需滚动；未声称已实测Popover溢出滚动或物理触屏。补充键盘/原因关联断言后仅复验该定向套件，没有重跑构建/旧全量流程。Ego18完成唯一一次finish，不操作用户空间16。
+
+本轮不重复未改动服务端的全量集成和完整旧浏览器链路。前述SVG超时、存储CORS焦点问题保持原失败事实；按用户后续明确指示，独立记录，不阻断本次正常流程验证和人工UI验收。没有声称已修复或检查全部通过。
+
+隔离预览保持 [原地址](http://ariso-issue186.localhost:3186/library)、原测试账号与用户正在验收的数据，仅换用本轮最终构建。人工UI仍待用户再次确认，PR236保持草稿。
+
+本轮[独立代码审计](./code-audit.md)及[独立设计复核](./design-audit.md)均通过，当前范围无Required发现。设计评审实际重读8个Figma来源并目视最新桌面/手机浅深色、短视口及说明展开图；授权变化只覆盖本次提示、范围排版和状态区域，不把旧图或测试通过作为新设计通过依据。用户最终人工验收仍待执行。
+
+本轮最终 `pnpm run format:check` 通过，[日志](./ui-revision/checks/format.txt)；任务文档检查与提交差异检查通过。预览健康接口返回200，地址和数据库保留，服务更新到本轮构建；刷新后若回到登录，继续使用原测试账号密码。

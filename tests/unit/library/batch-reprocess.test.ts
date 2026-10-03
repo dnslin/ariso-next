@@ -117,7 +117,10 @@ it('shows all four scopes while disabling partial work for failed-only selection
     expect(control).toBeDefined();
     expect(control?.match(/<input[^>]*>/)?.[0]).toMatch(/\sdisabled(?:=|\s|>)/);
   }
-  expect(html).toContain('开始全部派生重处理');
+  expect(html).toContain('开始处理 · 1张');
+  expect(html.match(/首次处理失败，仅支持全部派生。/g)).toHaveLength(1);
+  expect(html).toContain('aria-label="查看处理说明"');
+  expect(html).not.toContain('每张图片受理时使用最新设置');
 });
 
 it('allows partial ranges in mixed ready and failed selection without silently changing failed scope', () => {
@@ -136,7 +139,9 @@ it('allows partial ranges in mixed ready and failed selection without silently c
   expect(control?.match(/<input[^>]*>/)?.[0]).not.toMatch(
     /\sdisabled(?:=|\s|>)/,
   );
-  expect(html).toContain('不会自动扩大范围');
+  expect(html).toContain(
+    '1 张首次处理失败的图片仅支持全部派生；选择局部范围会显示冲突。',
+  );
 });
 
 it.each(['queued', 'running'] as const)(
@@ -269,4 +274,61 @@ it('preserves each execution failure scope after an explicit all-derived retry o
   expect(blocked).not.toMatch(
     /<button[^>]*data-retry-scope="all"[^>]*disabled/,
   );
+});
+
+it.each([
+  ['queued', 'default'],
+  ['running', 'accent'],
+  ['succeeded', 'success'],
+  ['failed', 'danger'],
+  ['cancelled', 'danger'],
+] as const)(
+  'uses text and a semantic chip for the real task state %s',
+  (status, color) => {
+    const batch = state();
+    result(batch, status);
+    const html = render(batch);
+    const chip = html.match(
+      /<span[^>]*data-testid="batch-task-status"[^>]*>/,
+    )?.[0];
+    expect(chip).toContain(`data-state="${status}"`);
+    expect(chip).toContain(`chip--${color}`);
+    expect(html).toContain(batchTaskStatus(batch.workspace!.results[0]));
+    expect(html).not.toMatch(/(?:处理中|完成|未受理|处理失败) 0 张/);
+    expect(html).toContain('共 1 张');
+    expect(html).toContain('aria-label="查看处理说明"');
+    expect(html).not.toContain('任务受理不等于处理完成');
+  },
+);
+
+it('distinguishes unaccepted, unknown and unsent status chips while retaining their reasons', () => {
+  const batch = state();
+  batch.workspace!.phase = 'result';
+  batch.workspace!.results = [
+    {
+      id: 'first',
+      status: 'failed',
+      inQuery: true,
+      message: '首次失败仅允许全部派生',
+    },
+  ];
+  let html = render(batch);
+  const chip = html.match(
+    /<span[^>]*data-testid="batch-task-status"[^>]*>/,
+  )?.[0];
+  expect(chip).toContain('chip--warning');
+  expect(chip).toContain('data-state="rejected"');
+  expect(html).not.toContain('任务已受理 0 张');
+  expect(html).toContain('未受理');
+  expect(html).toContain('首次失败仅允许全部派生');
+  batch.workspace!.unknownIds = ['first'];
+  html = render(batch);
+  expect(html).toContain('data-state="unknown"');
+  expect(html).toContain('结果待核对');
+  batch.workspace!.unknownIds = [];
+  batch.workspace!.results = [];
+  batch.workspace!.unsentIds = ['first'];
+  html = render(batch);
+  expect(html).toContain('data-state="unsent"');
+  expect(html).toContain('尚未提交');
 });
