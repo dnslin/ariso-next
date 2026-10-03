@@ -250,5 +250,75 @@
         "evidence": "reports/issue-177-tag-toast-preview-build-final.txt"
       }
     ]
+  },
+  "reviewFixes": {
+    "date": "2026-10-03",
+    "baselineHead": "94f940db534b58fe75e01246318583bdd18f4611",
+    "scope": [
+      "batch query cache synchronization",
+      "browser scenario decomposition",
+      "truthful Toast unit tests"
+    ],
+    "unit": {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-targets.test.ts tests/unit/library/selection.test.ts",
+      "exitCode": 0,
+      "testFilesPassed": 7,
+      "testsPassed": 105,
+      "evidence": "reports/review-fix-unit.txt",
+      "note": "105 passed before final confirmed-chunk correction"
+    },
+    "lint": {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    "build": {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "evidence": "reports/review-fix-build-final.txt"
+    },
+    "browser": {
+      "exitCode": null,
+      "result": "NOT RUN: existing Ego TaskSpace 10 user control hard stop; user continuation requested; no new space"
+    },
+    "correctnessAudit": "cache source fix independently passed",
+    "structureAudit": "independently passed; initial virtual list ordering problem repaired and reread",
+    "humanAcceptance": "pending",
+    "remoteChecks": [],
+    "finalUnit": {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts",
+      "exitCode": 0,
+      "testFilesPassed": 3,
+      "testsPassed": 62,
+      "evidence": "reports/review-fix-unit-final.txt"
+    },
+    "remaining": [
+      "New browser scenarios not run: user control of existing Ego TaskSpace 10; continuation requested",
+      "Final human UI acceptance"
+    ],
+    "format": {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "evidence": "reports/review-fix-format.txt"
+    },
+    "taskDocs": {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    "assertionPreservation": {
+      "original": 201,
+      "current": 234,
+      "missing": [],
+      "evidence": "reports/review-fix-assert-preservation.json"
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
   }
 }

@@ -127,3 +127,34 @@
 用户提供添加标签6项全成功截图，明确要求也直接用Toast、不要成功明细页，并要求不重复测试验证。已将添加/移除标签全成功及全部无需修改接入现有成功Toast：完成列表刷新后关闭操作页，返回原图库/相册URL，显示实际已修改/无需修改数量；失败/未知/未提交仍沿原处理入口。提交中保留选择页，禁用目标编辑和重复提交，不先进入成功结果页。新增2个定向回归用例，浏览器脚本的完成等待同步支持标签Toast。本轮按用户要求未重复执行单元、浏览器、全量静态或独立评审，旧47/41图不作为本次标签Toast验收证据。仅为更新人工预览重新构建，用户继续人工验收，PR保持草稿。
 
 本次预览构建首次因Input使用isDisabled而类型失败，读现有类型后修正为disabled；最终 `pnpm run build` exit0，原始失败与最终输出分别保存在 [首次构建](./reports/issue-177-tag-toast-preview-build.txt)、[最终构建](./reports/issue-177-tag-toast-preview-build-final.txt)。同一3177预览已用最终产物重启，保留原独立测试数据。[用户反馈截图](./before/user-tag-success-page.png)。
+
+## 两项代码评审及 Toast 测试修复（2026-10-03）
+
+用户在 `94f940d` 上要求两个独立 agent 分别使用 code-review-and-quality 与 thermo-nuclear-code-quality-review。正确性评审要求修复批量完成后的查询缓存；结构评审要求拆分2598行浏览器脚本；双方还指出静态服务端渲染不能验证异步Hook状态。用户随后明确授权修复三项。
+
+- 批量完成使用独立结果同步入口：根据真实逐项结果更新同查询已加载卡片，剔除离开查询的项，更新已确认的可见性；有效失败保持原值。分页作废旧缓存并重取当前页；加载更多保留所有已加载页及原 `pageParams/nextCursor`。重复核对不重复扣减已移除项。
+- 首批已确认、后续响应未知时也同步已确认结果，不猜测未知项、不自动重放。列表读取失败单独显示，保留未知与未提交的分类。真实结果、失败重试与只读核对继续沿原契约。
+- 浏览器入口集中声明阶段清单；目标、相册、标签、可见性、刷新反馈、生命周期、缓存分别作为场景模块。每个场景从独立夹具开始并清理，去掉后续场景兼容前序关系的依赖；保留真实HTTP/SQL与断言。新增缓存场景按真实滚动收集虚拟列表卡片，不能将当前DOM误当全部已加载记录。
+- Toast单元测试删除静态渲染后调用异步Hook的模拟，改为46项纯输入输出测试，覆盖公开/私有/添加标签/移除标签、实际计数、重试与未提交尾项、失败/未知/缺结果守卫。挂载状态、请求及刷新等待、关闭与焦点、一次Toast、失败及未知入口迁移到真实浏览器场景，不用纯函数单测冒称界面已验证。
+
+### 本轮实际验证
+
+环境沿用Node `24.18.1`、pnpm `11.19.0`、macOS ARM64和已有Ego Lite，无新依赖或锁文件变化。
+
+| 命令                                                                                                                                                                                                                                                                                                                         | 结果                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts -t 'batch completion'`                                                                                                                                                                                                                            | 修复前2项失败：旧页未失效；加载更多缓存被清空。[失败证据](./reports/review-fix-cache-red.txt)。最终回归改接独立结果同步入口，断言不削弱            |
+| `pnpm exec vitest run --project unit tests/unit/library/batch-feedback.test.ts -t 'returns to the current list'`                                                                                                                                                                                                             | 旧SSR测试补实际关闭断言后，公开/私有两例均失败；Toast调用后捕获对象仍为初始confirm/results=[]。随后移除该无效生命周期模拟                          |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                                                                                                             | 通过，现有依赖复用，锁文件未改                                                                                                                     |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-targets.test.ts tests/unit/library/selection.test.ts` | 7文件105项通过，[报告](./reports/review-fix-unit.txt)；后续仅补已确认分批同步与刷新失败分类，最终补改后另对缓存与Toast三文件运行62项，通过，见下行 |
+| `pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts`                                                                                                                                                                 | 最终补改后三文件62项通过，[报告](./reports/review-fix-unit-final.txt)                                                                              |
+| `pnpm run lint`                                                                                                                                                                                                                                                                                                              | 通过，[报告](./reports/review-fix-lint.txt)                                                                                                        |
+| `pnpm run typecheck`                                                                                                                                                                                                                                                                                                         | 最终代码通过，[报告](./reports/review-fix-typecheck-final.txt)                                                                                     |
+| `pnpm run build`                                                                                                                                                                                                                                                                                                             | 首次通过后因已确认分批补改，再运行最终构建，退出0；保留已有可选跨平台二进制trace警告，[最终报告](./reports/review-fix-build-final.txt)             |
+| `ego-browser nodejs`，恢复现有TaskSpace 10                                                                                                                                                                                                                                                                                   | 未执行浏览器场景：工具返回用户已接管的hard stop，已请求用户“继续浏览器检查”，未另建空间或越过控制权                                                |
+
+本轮不改变布局或Figma交接，无新增设计偏离；标签Toast的真实浏览器与最终人工验收仍未完成，旧截图不替代本轮。服务已在同一独立预览地址重启，原测试数据保留。未重复整个单元/集成/浏览器矩阵，未进行Release容器、镜像发布或部署。
+
+缓存核心经未参与实现的正确性agent复审通过；结构修复也由未参与拆分的agent独立复审通过，虚拟列表收集顺序问题在本轮修复后重读确认。PR继续保持草稿，GitHub没有远端检查，空列表不记为CI通过。
+
+独立代码复审分别检查缓存行为与严格结构，结论均无剩余本次Required/Critical发现；纯单元和静态检查不能替代新场景运行。本轮原浏览器201条 `assert.*` 经语法树对照均保留，场景模块内234条（不含root新增缓存与夹具），未减少原有断言。入口253行，最大辅助模块764行；业务数据准备归各场景，不新增通用测试框架。复审详情追加在[代码审计](./code-audit.md#2026-10-03-两角度评审修复复审)。

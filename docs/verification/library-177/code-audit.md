@@ -217,3 +217,13 @@ pnpm exec vitest run --project unit tests/unit/library/batch.test.ts tests/unit/
 实际读取 [最终受影响单元记录](./reports/feedback-final-affected.txt)：5 文件、60 项通过。审计者此前实际执行 Node24 的 `node --check e2e/library-batch.mjs`、`node --check scripts/verify-browser.mjs` 与 `git diff --check` 均 exit0；本轮只回读最终源码和已完成报告，没有重跑浏览器、构建或全量检查，没有操作交给用户的 Ego 页面。
 
 最终独立代码/测试审计结论：标签新稿与新增状态 e2e 通过，本次范围没有未解决 Required/Critical 发现。设计还原与用户人工 UI 验收继续由各自记录判断；本段不将代码、单元或浏览器行为通过替代设计验收。
+
+## 2026-10-03 两角度评审修复复审
+
+基于 `94f940d` 的两项独立评审提出：批量操作复用手动refresh导致旧分页缓存、加载更多清空；2598行e2e共享前序夹具/阶段分支；SSR异步Toast测试无法观测状态。用户授权修复后，正确性评审agent只读复审非本人实现的缓存修复，Toast测试agent使用thermo-nuclear-code-quality-review只读复审非本人实现的浏览器拆分。
+
+- 正确性复审通过：同查询缓存同步、旧分页失效、加载更多保留游标、已确认权限更新/有效失败不改、重复核对不扣重、已确认分批与后续未知并存时同步、刷新失败不重分类未知项。4项缓存单测检查真实QueryClient数据，未用SSR对象断言异步React状态。
+- 结构复审通过：单一阶段表、独立场景seed/finally清理、显式准备相册与生命周期关系，原断言未删除或弱化；本次发现的新缓存场景虚拟DOM顺序问题已用真实aria-posinset修复。Toast单元改为46项纯函数输入/输出，挂载生命周期检查迁到实际浏览器场景。
+- 本轮无剩余Required/Critical源代码发现。新场景运行尚未完成，不作运行通过结论；现有Ego TaskSpace 10因用户控制hard stop已暂停，用户交还请求待回复。
+
+实际命令、环境、结果与阻塞见唯一[交付记录](./README.md#两项代码评审及-toast-测试修复2026-10-03)。未运行的场景不能以原截图或原通过报告替代。
