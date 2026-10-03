@@ -1,0 +1,32 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+ ❯ |integration| tests/integration/media/queue.test.ts (15 tests | 1 failed) 4043ms
+   ❯ persistent media queue (10)
+     × stop waits for the current task to persist its outcome without claiming the next task 1028ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > persistent media queue > stop waits for the current task to persist its outcome without claiming the next task
+AssertionError: expected 'failed' to be 'running' // Object.is equality
+
+Expected: "running"
+Received: "failed"
+
+ ❯ tests/integration/media/queue.test.ts:253:60
+    251|     const second = enqueue();
+    252|     const active = start();
+    253|     await vi.waitFor(() => expect(job(first.jobId).status).toBe('runni…
+       |                                                            ^
+    254|     await active.stop();
+    255|     expect(job(first.jobId).status).toBe('running');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  23:39:56
+   Duration  5.29s (tests 77%, import 13%, transform 10%)

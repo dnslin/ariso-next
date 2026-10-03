@@ -17,24 +17,14 @@ import {
 import { mediaError } from './errors.ts';
 import { discardMediaInput } from './input.ts';
 import { cleanupPermanentDeletes } from './cleanup.ts';
+import { claimNextPreview, startPreviewRuntime } from './previews.ts';
+import { mediaPreviews } from './schema.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
 export function claimNextMediaJob(db: BetterSQLite3Database) {
   return db.transaction(
     (tx) => {
-      const job = tx
-        .select()
-        .from(mediaJobs)
-        .where(
-          and(
-            eq(mediaJobs.status, 'queued'),
-            sql`exists (select 1 from media_images where id = ${mediaJobs.imageId} and deletion_status is null)`,
-            sql`(${mediaJobs.nextAttemptAt} is null or ${mediaJobs.nextAttemptAt} <= ${Date.now()})`,
-            sql`not exists (select 1 from media_jobs active where active.image_id = ${mediaJobs.imageId} and (active.status = 'running' or (active.status = 'queued' and active.rowid < ${mediaJobs}.rowid)))`,
-          ),
-        )
-        .orderBy(asc(mediaJobs.createdAt), asc(sql`${mediaJobs}.rowid`))
-        .get();
+      const job = nextMediaJob(tx);
       if (!job) return null;
       const now = new Date();
       const claimed = tx
@@ -65,18 +55,63 @@ export function claimNextMediaJob(db: BetterSQLite3Database) {
   );
 }
 
+function nextMediaJob(db: BetterSQLite3Database) {
+  return db
+    .select()
+    .from(mediaJobs)
+    .where(
+      and(
+        eq(mediaJobs.status, 'queued'),
+        sql`exists (select 1 from media_images where id = ${mediaJobs.imageId} and deletion_status is null)`,
+        sql`(${mediaJobs.nextAttemptAt} is null or ${mediaJobs.nextAttemptAt} <= ${Date.now()})`,
+        sql`not exists (select 1 from media_jobs active where active.image_id = ${mediaJobs.imageId} and (active.status = 'running' or (active.status = 'queued' and active.rowid < ${mediaJobs}.rowid)))`,
+      ),
+    )
+    .orderBy(asc(mediaJobs.createdAt), asc(sql`${mediaJobs}.rowid`))
+    .get();
+}
+
+function claimNextMediaWork(runtime: MediaRuntime) {
+  return runtime.db.transaction(
+    (tx) => {
+      const preview = tx
+        .select()
+        .from(mediaPreviews)
+        .where(eq(mediaPreviews.status, 'queued'))
+        .orderBy(asc(mediaPreviews.createdAt), asc(sql`${mediaPreviews}.rowid`))
+        .get();
+      const media = nextMediaJob(tx);
+      if (preview && (!media || preview.createdAt < media.createdAt)) {
+        const claimed = claimNextPreview({ ...runtime, db: tx });
+        return claimed
+          ? { ...claimed, kind: 'preview' as const, imageId: null }
+          : null;
+      }
+      return claimNextMediaJob(tx);
+    },
+    { behavior: 'immediate' },
+  );
+}
+
 /** One scheduler per Web runtime; a reduced limit only affects new claims. */
 export function startMediaQueue(runtime: MediaRuntime) {
   const controller = new AbortController();
   const { signal } = controller;
+  const previews = startPreviewRuntime(runtime);
   const active = new Map<
     string,
-    { imageId: string; controller: AbortController; execution: Promise<void> }
+    {
+      imageId: string | null;
+      controller: AbortController;
+      execution: Promise<void>;
+    }
   >();
   let failure: unknown;
   let maintenance: Promise<void> | undefined;
   async function consume() {
     try {
+      await previews.ready;
+      if (!runtime.db.$client.open) return;
       recoverMediaJobs(runtime.db);
       recoverMediaCandidateCleanup(runtime.db);
       // A previous recovery may have persisted failure just before the process
@@ -115,6 +150,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
       let nextCleanupAt = 0;
       while (!signal.aborted && runtime.db.$client.open) {
         for (const { imageId, controller } of active.values()) {
+          if (!imageId) continue;
           const image = runtime.db
             .select({ deletionStatus: mediaImages.deletionStatus })
             .from(mediaImages)
@@ -130,15 +166,17 @@ export function startMediaQueue(runtime: MediaRuntime) {
         }
         const limit = readMediaSettings(runtime.db)?.concurrency ?? 1;
         while (!signal.aborted && active.size < limit) {
-          const job = claimNextMediaJob(runtime.db);
+          const job = claimNextMediaWork(runtime);
           if (!job) break;
-          const run =
-            job.kind === 'metadata' ? processMetadataJob : processMediaJob;
+
           const jobController = new AbortController();
-          const execution = run(
-            runtime,
-            job.id,
-            AbortSignal.any([signal, jobController.signal]),
+          const jobSignal = AbortSignal.any([signal, jobController.signal]);
+          const execution = (
+            job.kind === 'preview'
+              ? previews.run(job.id, jobSignal)
+              : (job.kind === 'metadata'
+                  ? processMetadataJob
+                  : processMediaJob)(runtime, job.id, jobSignal)
           )
             .catch((err: unknown) => {
               failure ??= err;
@@ -160,9 +198,14 @@ export function startMediaQueue(runtime: MediaRuntime) {
         if (!maintenance && Date.now() >= nextCleanupAt) {
           // One maintenance batch at a time; remote I/O never blocks claims or cancellation.
           maintenance = (async () => {
+            await previews.maintenance();
             await cleanupPermanentDeletes(
               runtime,
-              new Set([...active.values()].map(({ imageId }) => imageId)),
+              new Set(
+                [...active.values()].flatMap(({ imageId }) =>
+                  imageId ? [imageId] : [],
+                ),
+              ),
               signal,
             );
             if (runtime.db.$client.open && !signal.aborted)
@@ -215,10 +258,12 @@ export function startMediaQueue(runtime: MediaRuntime) {
   }
   const completion = consume();
   return {
+    previews,
     async stop() {
       controller.abort(
         mediaError('MEDIA_INTERRUPTED', 'Web runtime is stopping'),
       );
+      await previews.stop();
       await completion;
       if (failure) throw failure;
     },

@@ -1,0 +1,18 @@
+来源：以下文本转录自已执行命令的工具返回输出，未预先重定向到磁盘，未为补证据重跑。
+环境：Node 24.18.1；PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH。
+工作目录：/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso。
+命令：pnpm exec vitest run --project integration tests/integration/storage/late-put-multipart.test.ts -t '场景=normal'
+结果：退出码 0。只运行正常场景 1 项；其余 4 项由筛选排除，未计为通过。
+该文件与对应 storage/实验实现未修改。首次全量失败只记录最终状态，没有具体失败事件，本次单独运行不能确认首次全量失败根因，也不标记已修复。
+配置中 requestTimeoutMs=100 可能受并发负载影响，但未取得该原因的直接证据。
+
+Already up to date
+Done in 50ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 4 skipped (5)
+   Start at  00:01:35
+   Duration  412ms (tests 53%, import 31%, transform 15%, worker 1%)

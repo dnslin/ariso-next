@@ -617,6 +617,17 @@ describe('T-MED-04 actual processing recovery', () => {
       BEGIN INSERT INTO claim_observations SELECT (SELECT count(*) FROM media_jobs WHERE status = 'running'), (SELECT concurrency FROM media_settings); END;
     `);
       queue = startMediaQueue(runtime);
+      await expect
+        .poll(
+          () =>
+            connection.db
+              .select()
+              .from(mediaJobs)
+              .where(eq(mediaJobs.status, 'running'))
+              .all().length,
+          { timeout: 3000, interval: 10 },
+        )
+        .toBe(concurrency);
       expect(
         connection.db
           .select()

@@ -1,0 +1,41 @@
+来源：以下文本转录自已执行命令的工具返回输出，未预先重定向到磁盘，未为补证据重跑。
+环境：Node 24.18.1；PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH。
+工作目录：/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso。
+命令：pnpm exec vitest run --project media-tools tests/integration/media/recovery-tools.test.ts -t 'runs actual tools with concurrency 1,'
+结果：退出码 1。修复前只运行该 1 项；其余 13 项由筛选排除，未计为通过。
+
+Already up to date
+Done in 51ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+ ❯ |media-tools| tests/integration/media/recovery-tools.test.ts (14 tests | 1 failed | 13 skipped) 149ms
+   ❯ T-MED-04 actual processing recovery (14)
+     × runs actual tools with concurrency 1, and lowering to one preserves active work 148ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/recovery-tools.test.ts > T-MED-04 actual processing recovery > runs actual tools with concurrency 1, and lowering to one preserves active work
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/integration/media/recovery-tools.test.ts:626:9
+    624|           .where(eq(mediaJobs.status, 'running'))
+    625|           .all(),
+    626|       ).toHaveLength(concurrency);
+       |         ^
+    627|       connection.db.transaction((tx) =>
+    628|         updateMediaSettings(tx, { ...initialMediaSettings, concurrency…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  00:01:35
+   Duration  1.14s (import 53%, transform 32%, tests 14%)

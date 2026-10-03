@@ -1,0 +1,20 @@
+来源：以下文本转录自已执行命令的工具返回输出，未预先重定向到磁盘，未为补证据重跑。
+环境：Node 24.18.1；PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH。
+工作目录：/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso。
+命令：pnpm exec vitest run --project media-tools tests/integration/media/recovery-tools.test.ts -t 'runs actual tools with concurrency'
+结果：退出码 0。修复后并发 1–4 共 4 项通过；其余 10 项由筛选排除，未计为通过。
+修复：等待数据库实际 running 数量达到配置并发后继续，保留原数量、调小并发、领取上限、产物和资源检查。
+
+Already up to date
+Done in 62ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed | 10 skipped (14)
+   Start at  00:02:28
+   Duration  17.46s (tests 88%, import 6%, transform 5%)
+
+定点格式检查另行已执行：pnpm exec prettier tests/integration/media/recovery-tools.test.ts --check（退出码 0）。
+定点静态检查另行已执行：pnpm exec eslint tests/integration/media/recovery-tools.test.ts --max-warnings=0（退出码 0）。
