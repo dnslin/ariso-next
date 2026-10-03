@@ -171,7 +171,12 @@ async function done() {
         !!document.querySelector('[data-testid="library-list"]') &&
         [...document.querySelectorAll('[data-slot="toast-title"]')].some(
           (node) =>
-            ['批量设为公开完成', '批量设为私有完成'].includes(node.textContent),
+            [
+              '批量设为公开完成',
+              '批量设为私有完成',
+              '添加标签完成',
+              '移除标签完成',
+            ].includes(node.textContent),
         )
       );
     return (
@@ -185,6 +190,14 @@ async function done() {
   await settle();
 }
 async function returnToLibrary() {
+  if (
+    !(await page.evaluate(
+      () => !!document.querySelector('[data-testid="library-batch"]'),
+    ))
+  ) {
+    await selected(0);
+    return;
+  }
   const returning = await page.evaluate(
     () => !!document.querySelector('[data-testid="batch-return"]'),
   );

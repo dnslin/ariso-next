@@ -229,5 +229,26 @@
       "exitCode": 0,
       "result": "After terminal whitespace repair"
     }
-  ]
+  ],
+  "tagSuccessToastUpdate": {
+    "date": "2026-10-03",
+    "scope": ["add-tags", "remove-tags"],
+    "completion": "Confirmed all changed/unchanged: close chooser, return original list, Toast actual counts; failed/unknown/unsent remain actionable",
+    "tests": "Not rerun per explicit user instruction; two focused cases added but not executed",
+    "browser": "Not rerun; user manual acceptance pending",
+    "audit": "Prior reports retained; not repeated for this update per user request",
+    "previewBuilds": [
+      {
+        "command": "pnpm run build",
+        "exitCode": 1,
+        "evidence": "reports/issue-177-tag-toast-preview-build.txt",
+        "result": "Input uses disabled rather than isDisabled; corrected after reading installed types"
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "evidence": "reports/issue-177-tag-toast-preview-build-final.txt"
+      }
+    ]
+  }
 }

@@ -42,14 +42,17 @@ export const batchLabels: Record<BatchAction, string> = {
   restore: '恢复所选',
 };
 
-export function visibilityFeedback(
+export function batchSuccessFeedback(
   workspace: Pick<
     BatchWorkspace,
     'command' | 'items' | 'results' | 'unknownIds' | 'unsentIds'
   >,
 ) {
   if (
-    workspace.command?.type !== 'visibility' ||
+    !workspace.command ||
+    (workspace.command.type !== 'visibility' &&
+      workspace.command.type !== 'add-tags' &&
+      workspace.command.type !== 'remove-tags') ||
     !workspace.items.length ||
     workspace.unknownIds.length ||
     workspace.unsentIds.length
@@ -65,7 +68,10 @@ export function visibilityFeedback(
     else return null;
   }
   return {
-    title: `批量设为${workspace.command.visibility === 'public' ? '公开' : '私有'}完成`,
+    title:
+      workspace.command.type === 'visibility'
+        ? `批量设为${workspace.command.visibility === 'public' ? '公开' : '私有'}完成`
+        : `${batchLabels[workspace.command.type]}完成`,
     description: `${changed}张已修改 · ${unchanged}张无需修改`,
   };
 }
@@ -164,10 +170,11 @@ export function useLibraryBatch({
     setPending(true);
     setShowFailures(false);
     const retrying = mode === 'apply' && workspace.phase === 'result';
-    const keepVisibilityConfirmation =
-      command.type === 'visibility' &&
+    const keepSourcePhase =
       mode === 'apply' &&
-      workspace.phase === 'confirm';
+      ((command.type === 'visibility' && workspace.phase === 'confirm') ||
+        ((command.type === 'add-tags' || command.type === 'remove-tags') &&
+          workspace.phase === 'choose'));
     const items = retrying
       ? workspace.items.filter(
           (item) =>
@@ -194,7 +201,7 @@ export function useLibraryBatch({
           retrying: previous.retrying || retrying,
           results: previousResults,
           command,
-          phase: keepVisibilityConfirmation ? 'confirm' : 'result',
+          phase: keepSourcePhase ? workspace.phase : 'result',
           checkFailed: false,
           message: '',
         },
@@ -238,7 +245,7 @@ export function useLibraryBatch({
                 ...outcome.unsentIds,
               ]),
             ];
-      const feedback = visibilityFeedback({
+      const feedback = batchSuccessFeedback({
         command,
         items,
         results: [...resultsById.values()],
@@ -250,8 +257,7 @@ export function useLibraryBatch({
           previous && {
             ...previous,
             ...outcome,
-            phase:
-              keepVisibilityConfirmation && feedback ? 'confirm' : 'result',
+            phase: keepSourcePhase && feedback ? workspace.phase : 'result',
             checkFailed: mode === 'check' && outcome.unknownIds.length > 0,
             unsentIds,
           },

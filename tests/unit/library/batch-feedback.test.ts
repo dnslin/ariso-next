@@ -4,7 +4,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { useLibrarySelection } from '../../../src/app/library/use-library-selection';
 import {
   useLibraryBatch,
-  visibilityFeedback,
+  batchSuccessFeedback,
   type BatchSnapshotItem,
   type LibraryBatch,
 } from '../../../src/components/library/use-library-batch';
@@ -235,7 +235,7 @@ it('counts only the valid failed IDs submitted again after an earlier mixed resu
   const retry = complete();
   retry.items = [snapshotItem('image-1')];
   retry.results = [results(['unchanged', 'changed'])[1]];
-  expect(visibilityFeedback(retry)).toEqual({
+  expect(batchSuccessFeedback(retry)).toEqual({
     title: '批量设为公开完成',
     description: '1张已修改 · 0张无需修改',
   });
@@ -247,7 +247,7 @@ it('counts only the final previously unsent item when the other 200 were confirm
   continued.results = [
     { id: 'image-200', status: 'changed', message: '已公开', inQuery: true },
   ];
-  expect(visibilityFeedback(continued)?.description).toBe(
+  expect(batchSuccessFeedback(continued)?.description).toBe(
     '1张已修改 · 0张无需修改',
   );
 });
@@ -272,16 +272,16 @@ it.each([
         inQuery: condition === 'valid-failure',
       };
     if (condition === 'missing-result') workspace.results[1].id = 'other';
-    expect(visibilityFeedback(workspace)).toBeNull();
+    expect(batchSuccessFeedback(workspace)).toBeNull();
   },
 );
 
-it('does not apply the visibility feedback to other batch commands or an empty selection', () => {
+it('does not apply success Toast feedback to restore or an empty selection', () => {
   expect(
-    visibilityFeedback({ ...complete(), command: { type: 'restore' } }),
+    batchSuccessFeedback({ ...complete(), command: { type: 'restore' } }),
   ).toBeNull();
   expect(
-    visibilityFeedback({ ...complete(), items: [], results: [] }),
+    batchSuccessFeedback({ ...complete(), items: [], results: [] }),
   ).toBeNull();
 });
 
@@ -318,5 +318,18 @@ it.each(['public', 'private'] as const)(
     finishRefresh();
     await vi.waitFor(() => expect(calls.toast).toHaveBeenCalledOnce());
     expect(phaseDuringRequest).toBe('confirm');
+  },
+);
+
+it.each(['add-tags', 'remove-tags'] as const)(
+  'reports confirmed %s completion with Toast counts and preserves failures',
+  (type) => {
+    const state = { ...complete(), command: { type, tagIds: ['tag-one'] } };
+    expect(batchSuccessFeedback(state)).toEqual({
+      title: type === 'add-tags' ? '添加标签完成' : '移除标签完成',
+      description: '1张已修改 · 1张无需修改',
+    });
+    state.results[1] = { ...state.results[1], status: 'failed' };
+    expect(batchSuccessFeedback(state)).toBeNull();
   },
 );

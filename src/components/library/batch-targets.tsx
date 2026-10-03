@@ -211,6 +211,7 @@ export function BatchTargets({
           ) : null}
           <Input
             aria-label={`搜索目标${noun}`}
+            disabled={batch.pending}
             value={q}
             onChange={(event) => {
               setQ(event.target.value);
@@ -224,6 +225,7 @@ export function BatchTargets({
           <Button
             variant="outline"
             className="h-11 shrink-0 rounded-lg font-normal"
+            isDisabled={batch.pending}
             onPress={() => setCreating(true)}
           >
             <Plus size={16} aria-hidden />
@@ -276,6 +278,7 @@ export function BatchTargets({
             data-target-id={target.id}
             aria-label={`选择${noun}：${'name' in target ? target.name : target.displayName} · ${target.id}`}
             isSelected={ids.includes(target.id)}
+            isDisabled={batch.pending}
             onChange={(selected) =>
               choose(
                 selected
@@ -342,7 +345,7 @@ export function BatchTargets({
           <Button
             variant="outline"
             className="h-11 rounded-lg"
-            isDisabled={page === 1 || list.isFetching}
+            isDisabled={batch.pending || page === 1 || list.isFetching}
             onPress={() => setPage(page - 1)}
           >
             上一页目标
@@ -353,7 +356,9 @@ export function BatchTargets({
           <Button
             variant="outline"
             className="h-11 rounded-lg"
-            isDisabled={page * 20 >= list.data.total || list.isFetching}
+            isDisabled={
+              batch.pending || page * 20 >= list.data.total || list.isFetching
+            }
             onPress={() => setPage(page + 1)}
           >
             下一页目标

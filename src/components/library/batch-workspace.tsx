@@ -343,6 +343,7 @@ export function BatchWorkspaceFooter({ batch }: { batch: LibraryBatch }) {
         <div className="flex w-full gap-3 sm:w-auto">
           <Button
             data-testid="batch-cancel"
+            isDisabled={batch.pending}
             variant="outline"
             className="h-12 min-h-12 w-28 shrink-0 rounded-lg font-normal"
             onPress={batch.close}
@@ -357,9 +358,11 @@ export function BatchWorkspaceFooter({ batch }: { batch: LibraryBatch }) {
             }
             onPress={batch.submit}
           >
-            {workspace.command
-              ? `${batchLabels[workspace.action]} · ${workspace.items.length}张`
-              : '请选择标签'}
+            {batch.pending
+              ? '正在保存…'
+              : workspace.command
+                ? `${batchLabels[workspace.action]} · ${workspace.items.length}张`
+                : '请选择标签'}
           </Button>
         </div>
       </div>
