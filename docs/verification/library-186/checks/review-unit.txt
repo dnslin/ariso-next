@@ -1,0 +1,34 @@
+Already up to date
+Done in 48ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |unit| tests/unit/library/batch-reprocess.test.ts (12 tests | 1 failed) 155ms
+   × offers explicit execution failure retry without requiring or claiming a retained selection 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-reprocess.test.ts > offers explicit execution failure retry without requiring or claiming a retained selection
+AssertionError: expected '<div class="flex w-full flex-wrap jus…' to match /<button[^>]*data-testid="batch-retry-…/
+
+- Expected:
+/<button[^>]*data-testid="batch-retry-all"[^>]*disabled/
+
++ Received:
+"<div class=\"flex w-full flex-wrap justify-end gap-3\"><button data-slot=\"button\" data-testid=\"batch-done\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal xl:w-50 xl:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_1_\">返回图库</button><button data-slot=\"button\" data-testid=\"batch-retry\" class=\"button button--md button--primary h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal xl:w-50 xl:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_6_\">继续处理剩余项 · 1张</button><p class=\"w-full text-[13px] text-muted\">请先按原范围继续处理剩余项，再选择其他范围重试失败项。</p><button data-slot=\"button\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal xl:w-50 xl:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_1e_\">返回全部结果</button></div>"
+
+ ❯ tests/unit/library/batch-reprocess.test.ts:189:19
+    187|   batch.workspace!.unsentIds = ['not-sent'];
+    188|   const blocked = footer(batch);
+    189|   expect(blocked).toMatch(
+       |                   ^
+    190|     /<button[^>]*data-testid="batch-retry-all"[^>]*disabled/,
+    191|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 25 passed (26)
+   Start at  23:47:19
+   Duration  1.05s (import 56%, transform 25%, tests 19%, worker 1%)

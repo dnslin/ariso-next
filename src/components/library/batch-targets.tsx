@@ -21,14 +21,16 @@ import type { LibraryBatch } from './use-library-batch';
 export function BatchThumbnail({
   url,
   size = 64,
+  className,
 }: {
   url: string | null;
   size?: 48 | 64;
+  className?: string;
 }) {
   const [failed, setFailed] = useState(false);
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-default ${size === 48 ? 'size-12' : 'size-16'}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden bg-default ${className ?? `rounded-xl ${size === 48 ? 'size-12' : 'size-16'}`}`}
     >
       {url && !failed ? (
         <img // eslint-disable-line @next/next/no-img-element

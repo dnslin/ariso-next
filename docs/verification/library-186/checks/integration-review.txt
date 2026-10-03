@@ -1,0 +1,29 @@
+Already up to date
+Done in 41ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |media-tools| tests/integration/media/svg.test.ts (8 tests | 1 failed) 22203ms
+   ❯ isolated static SVG preview (8)
+     × scales a large canvas before raster allocation and retains original dimensions 5375ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/svg.test.ts:205:3
+    203|   );
+    204|
+    205|   it('scales a large canvas before raster allocation and retains origi…
+       |   ^
+    206|     const f = await fixture(
+    207|       '<rect width="1000000" height="500000" fill="blue"/>',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 40 passed (41)
+   Start at  23:53:06
+   Duration  41.61s (tests 92%, import 6%, transform 2%)

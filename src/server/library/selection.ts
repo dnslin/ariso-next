@@ -35,6 +35,7 @@ export function readLibrarySelection(
         id: mediaImages.id,
         displayName: mediaImages.displayName,
         byteSize: mediaImages.byteSize,
+        processingStatus: mediaImages.processingStatus,
         deletionStatus: mediaImages.deletionStatus,
         storage: {
           id: storageConfigs.id,
@@ -71,6 +72,7 @@ export function readLibrarySelection(
           id: row.id,
           displayName: row.displayName,
           byteSize: row.byteSize,
+          processingStatus: row.processingStatus,
           storage: row.storage,
           thumbnailUrl:
             row.storage.enabled &&

@@ -22,6 +22,7 @@ export interface LibraryContextMenu {
   target: HTMLElement;
 }
 
+type SelectionBatchAction = BatchAction | 'reprocess';
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
@@ -60,7 +61,7 @@ export function LibrarySelectionMenu({
   onOpen: (id: string, element: HTMLElement) => void;
   contextMenu?: LibraryContextMenu | null;
   onContextMenuClose?: () => void;
-  onBatch?: (action: BatchAction, element: HTMLElement) => void;
+  onBatch?: (action: SelectionBatchAction, element: HTMLElement) => void;
   scope?: 'normal' | 'trash';
 }) {
   const [open, setOpen] = useState(false);
@@ -76,7 +77,7 @@ export function LibrarySelectionMenu({
   const heading = useRef<HTMLHeadingElement>(null);
   const panelId = useId();
   const total = selection.selected.size;
-  const actions: BatchAction[] =
+  const actions: SelectionBatchAction[] =
     scope === 'trash'
       ? ['restore']
       : [
@@ -86,6 +87,7 @@ export function LibrarySelectionMenu({
           'remove-tags',
           'public',
           'private',
+          'reprocess',
           'trash',
         ];
   const pages = Math.max(1, Math.ceil(total / 20));
@@ -199,9 +201,9 @@ export function LibrarySelectionMenu({
                 : []
             }
             onAction={(key) => {
-              if (actions.includes(key as BatchAction)) {
+              if (actions.includes(key as SelectionBatchAction)) {
                 const target = contextMenu?.target ?? trigger.current;
-                if (target) onBatch?.(key as BatchAction, target);
+                if (target) onBatch?.(key as SelectionBatchAction, target);
               } else if (key === 'view') openPanel();
               else if (key === 'open') {
                 const id = selection.selected.keys().next().value;
@@ -222,11 +224,13 @@ export function LibrarySelectionMenu({
                   <Dropdown.Item
                     key={action}
                     id={action}
-                    textValue={batchLabels[action]}
+                    textValue={
+                      action === 'reprocess' ? '重新处理' : batchLabels[action]
+                    }
                     isDisabled={disabled}
                     className="min-h-11 xl:min-h-9"
                   >
-                    {batchLabels[action]}
+                    {action === 'reprocess' ? '重新处理' : batchLabels[action]}
                   </Dropdown.Item>
                 ))
               : null}

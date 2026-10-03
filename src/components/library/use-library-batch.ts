@@ -12,7 +12,9 @@ import { notifyLibraryChanged } from './library-changes';
 import { BatchRequestError, requestBatch } from './batch-request';
 
 export type BatchAction =
-  Exclude<BatchCommand['type'], 'visibility'> | 'public' | 'private';
+  | Exclude<BatchCommand['type'], 'visibility' | 'reprocess'>
+  | 'public'
+  | 'private';
 export type BatchSnapshotItem = SelectedLibraryItem & {
   source: string;
   inCurrentPage: boolean;
@@ -22,7 +24,7 @@ export interface BatchWorkspace {
   items: BatchSnapshotItem[];
   currentCount: number;
   query: string;
-  command: BatchCommand | null;
+  command: Exclude<BatchCommand, { type: 'reprocess' }> | null;
   results: BatchItemResult[];
   unknownIds: string[];
   unsentIds: string[];
@@ -45,8 +47,8 @@ export const batchLabels: Record<BatchAction, string> = {
 export function batchSuccessFeedback(
   workspace: Pick<
     BatchWorkspace,
-    'command' | 'items' | 'results' | 'unknownIds' | 'unsentIds'
-  >,
+    'items' | 'results' | 'unknownIds' | 'unsentIds'
+  > & { command: BatchCommand | null },
 ) {
   if (
     !workspace.command ||
@@ -89,7 +91,7 @@ export function useLibraryBatch({
   onExpire: () => void;
   onRefresh: (
     results: BatchItemResult[],
-    command: BatchCommand,
+    command: Exclude<BatchCommand, { type: 'reprocess' }>,
   ) => Promise<unknown>;
 }) {
   const [workspace, setWorkspace] = useState<BatchWorkspace | null>(null);
@@ -120,7 +122,7 @@ export function useLibraryBatch({
           ? '当前页'
           : '其他页',
     }));
-    const command: BatchCommand | null =
+    const command: BatchWorkspace['command'] =
       action === 'public' || action === 'private'
         ? { type: 'visibility', visibility: action }
         : action === 'trash' || action === 'restore'
@@ -163,7 +165,7 @@ export function useLibraryBatch({
     focusSource();
   }
   async function run(
-    command: BatchCommand,
+    command: Exclude<BatchCommand, { type: 'reprocess' }>,
     mode: 'apply' | 'check',
     ids: string[],
   ) {
@@ -221,6 +223,10 @@ export function useLibraryBatch({
           for (const result of results) {
             resultsById.set(result.id, result);
             remainingUnsent.delete(result.id);
+            if (result.status === 'unknown') {
+              if (!result.inQuery) selection.remove(result.id);
+              continue;
+            }
             if (result.status !== 'failed' || !result.inQuery)
               selection.remove(result.id);
             else selection.recordFailure(result.id, result.message);
@@ -228,7 +234,11 @@ export function useLibraryBatch({
           const currentResults = [...resultsById.values()];
           setWorkspace((previous) => {
             if (!previous) return previous;
-            const done = new Set(results.map((result) => result.id));
+            const done = new Set(
+              results
+                .filter((result) => result.status !== 'unknown')
+                .map((result) => result.id),
+            );
             return {
               ...previous,
               results: currentResults,
@@ -260,6 +270,7 @@ export function useLibraryBatch({
           previous && {
             ...previous,
             ...outcome,
+            results: [...resultsById.values()],
             phase: keepSourcePhase && feedback ? workspace.phase : 'result',
             checkFailed: mode === 'check' && outcome.unknownIds.length > 0,
             unsentIds,
@@ -356,7 +367,7 @@ export function useLibraryBatch({
     unresolved: !!workspace?.unknownIds.length,
     reopen: () => setVisible(true),
     onExpire,
-    choose: (command: BatchCommand | null) =>
+    choose: (command: BatchWorkspace['command']) =>
       setWorkspace((previous) => previous && { ...previous, command }),
     submit: () =>
       workspace?.command &&

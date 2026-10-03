@@ -13,6 +13,7 @@ function selectedItem(
   return {
     id: item.id,
     displayName: item.displayName,
+    processingStatus: item.processingStatus ?? retained?.processingStatus,
     thumbnailUrl: item.thumbnailUrl,
     storage: { ...item.storage },
     ...((item.byteSize ?? retained?.byteSize) === undefined
