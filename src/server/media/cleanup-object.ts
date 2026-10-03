@@ -23,6 +23,8 @@ export async function cleanupMediaObject(
     confirmedAt = new Date();
     await deleteMediaObject(runtime, storage, object.key, signal);
   } catch (error) {
+    // Runtime shutdown leaves the persisted attempt for recovery, not a business failure.
+    signal?.throwIfAborted();
     failure = { error };
   }
   const adopted =

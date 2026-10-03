@@ -436,8 +436,8 @@ describe('remote maintenance scheduling', () => {
           .where(eq(mediaObjects.id, cleanup.objectId))
           .get(),
       ).toMatchObject({
-        status: 'cleanup_failed',
-        error: expect.any(String),
+        status: 'cleanup_pending',
+        error: null,
       });
       const next = enqueue();
       await setTimeout(100);

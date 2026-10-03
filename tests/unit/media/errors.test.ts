@@ -23,6 +23,34 @@ it.each([
     false,
   ],
   [failure('EACCES'), 'MEDIA_PROCESS_FAILED', false],
+  [
+    Object.assign(failure('STORAGE_OPERATION_FAILED'), { httpStatusCode: 503 }),
+    'STORAGE_OPERATION_FAILED',
+    true,
+    'STORAGE_OPERATION_FAILED: operation failed (HTTP 503)',
+  ],
+  [
+    Object.assign(failure('STORAGE_OPERATION_FAILED'), { httpStatusCode: 429 }),
+    'STORAGE_OPERATION_FAILED',
+    true,
+    'STORAGE_OPERATION_FAILED: operation failed (HTTP 429)',
+  ],
+  [
+    Object.assign(failure('STORAGE_OPERATION_FAILED', failure('ECONNRESET')), {
+      httpStatusCode: 403,
+    }),
+    'STORAGE_OPERATION_FAILED',
+    false,
+    'STORAGE_OPERATION_FAILED: operation failed (HTTP 403)',
+  ],
+  [
+    failure(
+      'STORAGE_TIMEOUT',
+      new DOMException('request timed out', 'AbortError'),
+    ),
+    'STORAGE_TIMEOUT',
+    true,
+  ],
   [failure('MEDIA_OUTPUT_INVALID'), 'MEDIA_OUTPUT_INVALID', false],
   [
     Object.assign(new Error('tool timed out', { cause: failure('EPIPE') }), {
@@ -41,10 +69,11 @@ it.each([
   ['unexpected rejection', 'MEDIA_PROCESS_FAILED', false],
 ] as const)(
   'keeps diagnostics and retry policy for %s',
-  (error, code, retryable) => {
+  (error, code, retryable, diagnostic?: string) => {
     const analysis = analyzeMediaError(error);
     expect(analysis.diagnostic).toBe(
-      `${code}: ${error instanceof Error ? error.message : error}`,
+      diagnostic ??
+        `${code}: ${error instanceof Error ? error.message : error}`,
     );
     expect(analysis.code).toBe(code);
     expect(analysis.retryable).toBe(retryable);

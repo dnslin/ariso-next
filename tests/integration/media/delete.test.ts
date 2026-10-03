@@ -559,19 +559,22 @@ it.each([
   },
 );
 
-it('rejects S3 deletion without changing the asset, objects or accepting a fake task', async () => {
+it('accepts S3 deletion as a persistent task before asynchronous object cleanup', async () => {
   const image = await asset();
   trashImage(connection.db, image.imageId);
   connection.db.update(storageConfigs).set({ type: 's3' }).run();
-  const before = connection.db.select().from(mediaObjects).all();
-  expect(() => requestPermanentDelete(connection.db, image.imageId)).toThrow(
-    '仅支持本地存储',
+  const accepted = requestPermanentDelete(connection.db, image.imageId);
+  expect(accepted.status).toBe('queued');
+  expect(accepted.remaining).toMatchObject([
+    { key: image.key, status: 'cleanup_pending', attempts: 0 },
+  ]);
+  expect(connection.db.select().from(mediaImages).get()!.deletionStatus).toBe(
+    'deleting',
   );
-  expect(
-    connection.db.select().from(mediaImages).get()!.deletionStatus,
-  ).toBeNull();
-  expect(connection.db.select().from(mediaCleanupJobs).all()).toEqual([]);
-  expect(connection.db.select().from(mediaObjects).all()).toEqual(before);
+  expect(connection.db.select().from(mediaCleanupJobs).all()).toHaveLength(1);
+  expect(requestPermanentDelete(connection.db, image.imageId)).toEqual(
+    accepted,
+  );
   expect(
     await local.inspectObject(runtime().storageRoot, image.storage, image.key),
   ).toEqual({ size: 14 });
