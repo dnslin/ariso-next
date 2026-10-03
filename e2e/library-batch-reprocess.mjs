@@ -441,6 +441,62 @@ try {
       !!document.querySelector('[data-testid="batch-check"]'),
   );
   await h.layouts('unknown-read-error');
+  const beforeReopen = (await h.batchTraffic()).length;
+  await h.close();
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelectorAll('[data-testid="library-batch"]').length,
+    ),
+    0,
+    'Closing an unknown result hides its dedicated workspace completely',
+  );
+  assert.ok(
+    await page.evaluate(
+      () =>
+        !!document
+          .querySelector('[data-testid="library-gallery"]')
+          ?.getClientRects().length,
+    ),
+    'Closing restores the original library instead of leaking the old generic workspace',
+  );
+  await page.screenshot({
+    path: join(config.output, 'library-reprocess-unknown-hidden-dark-390.png'),
+  });
+  report.screenshots.push('library-reprocess-unknown-hidden-dark-390.png');
+  await page.click('loc=role:button[name="查看待核对结果"]');
+  await page.waitForSelector('[data-testid="batch-check"]');
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelectorAll('[data-testid="library-batch"]').length,
+    ),
+    1,
+    'Reopening shows exactly one dedicated result workspace',
+  );
+  assert.equal(
+    await page.evaluate(
+      (id) =>
+        document.querySelector(`[data-batch-result-id="${id}"]`).dataset
+          .resultStatus,
+      reprocessIds[2],
+    ),
+    'unknown',
+    'Reopening preserves the unresolved outcome before any new check',
+  );
+  assert.match(
+    await page.evaluate(
+      (id) =>
+        document.querySelector(`[data-batch-result-id="${id}"]`).textContent,
+      reprocessIds[2],
+    ),
+    /仅缩略图/,
+    'Reopening preserves the original processing scope',
+  );
+  assert.equal(
+    (await h.batchTraffic()).length,
+    beforeReopen,
+    'Closing and reopening do not submit or check a different task',
+  );
+  await h.layouts('unknown-reopened');
   assert.equal(
     await page.evaluate(
       () => !!document.querySelector('[data-testid="batch-retry"]'),
@@ -467,7 +523,7 @@ try {
   );
   await h.close();
   report.checks.push(
-    'Successful real apply response loss remains unknown; losing the first real read-only check still exposes only check. Recovery queries the same UUID, never reapplies, and finds exactly one persisted worker job.',
+    'Successful real apply response loss remains unknown; losing the first real read-only check still exposes only check. Closing removes every batch workspace and restores the library; reopening shows exactly one dedicated workspace with the original UUID and sends no request. Recovery queries the same UUID, never reapplies, and finds exactly one persisted worker job.',
   );
   await h.visit([reprocessIds[2]]);
   await h.monitor('never-sent');
@@ -690,6 +746,128 @@ try {
   report.checks.push(
     'A deliberately corrupt isolated original causes a real ImageMagick execution failure. Published object references stay fixed; restoring bytes and explicitly retrying creates a new task UUID that succeeds.',
   );
+
+  // A real terminal progress result must survive a later list refresh failure.
+  await sql(
+    `CREATE TRIGGER issue186_hold AFTER INSERT ON media_jobs WHEN NEW.image_id=${quote(reprocessIds[0])} BEGIN UPDATE media_jobs SET next_attempt_at=${Date.now() + 3600000} WHERE id=NEW.id; END`,
+  );
+  await h.visit([reprocessIds[0]]);
+  await h.monitor('terminal-refresh');
+  await h.submit();
+  await page.waitForSelector('[data-job-status="queued"]');
+  const terminalApply = (await h.batchTraffic()).find(
+    (entry) => entry.request.mode === 'apply',
+  ).request;
+  const terminalId = terminalApply.command.taskIds[reprocessIds[0]];
+  await sql('DROP TRIGGER issue186_hold');
+  await sql(
+    `UPDATE media_jobs SET next_attempt_at=NULL WHERE id=${quote(terminalId)}`,
+  );
+  await page.waitForFunction(
+    () => !!window.__reprocessRefreshRelease,
+    undefined,
+    { timeout: 30000 },
+  );
+  await h.terminal([reprocessIds[0]]);
+  const terminalBeforeRefreshError = await readJobs(sql);
+  report.terminalListRefresh = {
+    taskId: terminalId,
+    terminalStatus: terminalBeforeRefreshError.find(
+      (job) => job.id === terminalId,
+    ).status,
+    delayedReads: await page.evaluate(() => window.__reprocessListTraffic),
+  };
+  assert.equal(
+    terminalBeforeRefreshError.find((job) => job.id === terminalId).status,
+    'succeeded',
+    'Terminal result comes from the real worker, not a fabricated job response',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[data-testid="batch-progress-check"]'),
+    ),
+    false,
+    'Delayed list refresh begins after successful progress confirmation',
+  );
+  await page.evaluate(() => window.__reprocessRefreshRelease());
+  await page.waitForFunction(() =>
+    [
+      ...document.querySelectorAll(
+        '[data-testid="library-batch"] [role="alert"]',
+      ),
+    ].some((node) => /列表|图片列表/.test(node.textContent)),
+  );
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[data-testid="batch-refresh-retry"]'),
+    ),
+    true,
+    'Real list refresh failure exposes a dedicated retry after React has already rendered the terminal job',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[data-testid="batch-progress-check"]'),
+    ),
+    false,
+    'List refresh failure is not reported as task progress failure',
+  );
+  await h.layouts('terminal-list-refresh-error');
+  const readsBeforeRetry = await page.evaluate(
+    () => window.__reprocessListTraffic.length,
+  );
+  const checksBeforeRetry = (await h.batchTraffic()).filter(
+    (entry) => entry.request.mode === 'check',
+  ).length;
+  await page.focus('[data-testid="batch-refresh-retry"]');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-testid="batch-refresh-retry"]', {
+    state: 'hidden',
+  });
+  const refreshReads = await page.evaluate(() => window.__reprocessListTraffic);
+  assert.ok(
+    refreshReads.length > readsBeforeRetry,
+    'Explicit retry performs an actual library GET',
+  );
+  assert.ok(
+    refreshReads
+      .slice(readsBeforeRetry)
+      .every(
+        (entry) =>
+          entry.method === 'GET' &&
+          entry.status === 200 &&
+          !entry.delayedFailure,
+      ),
+    'Retried list request reaches the actual server successfully',
+  );
+  await h.terminal([reprocessIds[0]]);
+  assert.equal(
+    (await h.batchTraffic()).filter((entry) => entry.request.mode === 'apply')
+      .length,
+    1,
+    'Retrying list refresh never resubmits processing',
+  );
+  assert.equal(
+    (await h.batchTraffic()).filter((entry) => entry.request.mode === 'check')
+      .length,
+    checksBeforeRetry,
+    'Terminal jobs do not resume progress polling when the list is retried',
+  );
+  assert.deepEqual(
+    await readJobs(sql),
+    terminalBeforeRefreshError,
+    'List retry does not create a task or modify the terminal task',
+  );
+  report.terminalListRefresh = {
+    taskId: terminalId,
+    terminalStatus: 'succeeded',
+    reads: refreshReads,
+    applies: 1,
+  };
+  await h.layouts('terminal-list-refresh-recovered');
+  await h.close();
+  report.checks.push(
+    'A real worker reaches succeeded and the exact-UUID progress response renders its terminal state before an actual list GET is delayed and lost. A distinct list-refresh error offers keyboard retry; retry performs a successful real GET, clears only its own error, preserves the terminal state and task count, and never adds apply requests or resumes terminal polling.',
+  );
   report.errors = await assertNoBrowserErrors(page);
   report.persistedJobs = (await readJobs(sql)).map((job) => ({
     id: job.id,
@@ -703,6 +881,9 @@ try {
 } catch (error) {
   report.error = error.stack ?? String(error);
   report.traffic = await h.traffic();
+  report.listTraffic = await page.evaluate(
+    () => window.__reprocessListTraffic ?? [],
+  );
   report.failureJobs = await sql(
     "SELECT id,image_id,scope,status,next_attempt_at,started_at,error FROM media_jobs WHERE image_id LIKE 'issue186-%'",
   );
@@ -735,6 +916,7 @@ try {
 } finally {
   await page.evaluate(() => {
     window.__reprocessRelease?.();
+    window.__reprocessRefreshRelease?.();
     if (window.__reprocessOriginalFetch)
       window.fetch = window.__reprocessOriginalFetch;
   });

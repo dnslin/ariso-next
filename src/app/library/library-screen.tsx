@@ -40,6 +40,11 @@ import {
 } from './library-selection-menu';
 import { useLibrarySelection } from './use-library-selection';
 import { useSelectionReconciliation } from './use-selection-reconciliation';
+import { useBatchReprocess } from '../../components/library/use-batch-reprocess';
+import {
+  BatchReprocessContent,
+  BatchReprocessFooter,
+} from '../../components/library/batch-reprocess';
 import { useLibraryBatch } from '../../components/library/use-library-batch';
 import {
   BatchWorkspaceContent,
@@ -131,20 +136,30 @@ export function LibraryScreen(props: {
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
   }, [resetUpload, client, returnTo]);
-  const batch = useLibraryBatch({
+  const batchOptions = {
     selection,
     query: query.filters
       ? libraryRequestParams(query.filters, {}).toString()
       : '',
     currentAlbumId: props.albumId,
     onExpire: expireSession,
-    onRefresh: async (results, command) => {
+    onRefresh: async (
+      results: import('../../server/library/batch-types').BatchItemResult[],
+      command: import('../../server/library/batch-types').BatchCommand,
+    ) => {
       await query.onBatchCompleted(results, command);
       props.onRefresh?.();
     },
-  });
+  };
+  const batch = useLibraryBatch(batchOptions);
+  const batchReprocess = useBatchReprocess(batchOptions);
+  const batchPending = batch.pending || batchReprocess.pending;
+  const batchUnresolved = batch.unresolved || batchReprocess.unresolved;
+  const batchContentVisible =
+    (batch.visible && batch.workspace?.phase !== 'confirm') ||
+    (batchReprocess.visible && batchReprocess.workspace?.phase === 'result');
   const reconciliation = useSelectionReconciliation({
-    enabled: !batch.pending && !batch.unresolved,
+    enabled: !batchPending && !batchUnresolved,
     selection,
     identity: selectionIdentity,
     filters: query.filters,
@@ -193,12 +208,10 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        batch.visible &&
-        batch.workspace?.phase !== 'confirm' &&
-        !(
-          batch.workspace?.action === 'reprocess' &&
-          batch.workspace.phase === 'choose'
-        ) ? (
+        batchReprocess.visible &&
+        batchReprocess.workspace?.phase === 'result' ? (
+          <BatchReprocessFooter batch={batchReprocess} />
+        ) : batch.visible && batch.workspace?.phase !== 'confirm' ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : detail.view === 'reprocess' ? (
           <DetailReprocessFooter actions={reprocess.footerActions} />
@@ -217,14 +230,7 @@ export function LibraryScreen(props: {
     >
       <div
         className={
-          props.workspace ||
-          detail.view ||
-          (batch.visible &&
-            batch.workspace?.phase !== 'confirm' &&
-            !(
-              batch.workspace?.action === 'reprocess' &&
-              batch.workspace.phase === 'choose'
-            ))
+          props.workspace || detail.view || batchContentVisible
             ? 'hidden'
             : 'contents'
         }
@@ -271,20 +277,27 @@ export function LibraryScreen(props: {
                     disabled={
                       !query.canOperate ||
                       reconciliation.pending ||
-                      batch.unresolved ||
-                      batch.pending
+                      batchUnresolved ||
+                      batchPending
                     }
                     onOpen={detail.open}
-                    onBatch={batch.open}
+                    onBatch={(action, element) => {
+                      if (action === 'reprocess') batchReprocess.open(element);
+                      else batch.open(action, element);
+                    }}
                   />
                 ) : undefined
               }
             />
-            {batch.unresolved ? (
+            {batchUnresolved ? (
               <Button
                 variant="outline"
                 className="h-11 w-fit rounded-lg"
-                onPress={batch.reopen}
+                onPress={
+                  batchReprocess.unresolved
+                    ? batchReprocess.reopen
+                    : batch.reopen
+                }
               >
                 查看待核对结果
               </Button>
@@ -533,6 +546,7 @@ export function LibraryScreen(props: {
           dialogRef={detail.dialogRef}
         />
       ) : null}
+      <BatchReprocessContent batch={batchReprocess} />
       <BatchWorkspaceContent
         batch={batch}
         client={client}

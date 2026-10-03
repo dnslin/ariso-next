@@ -113,3 +113,40 @@ macOS 26.6.2 / arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，Exif
 本轮[独立代码审计](./code-audit.md)及[独立设计复核](./design-audit.md)均通过，当前范围无Required发现。设计评审实际重读8个Figma来源并目视最新桌面/手机浅深色、短视口及说明展开图；授权变化只覆盖本次提示、范围排版和状态区域，不把旧图或测试通过作为新设计通过依据。用户最终人工验收仍待执行。
 
 本轮最终 `pnpm run format:check` 通过，[日志](./ui-revision/checks/format.txt)；任务文档检查与提交差异检查通过。预览健康接口返回200，地址和数据库保留，服务更新到本轮构建；刷新后若回到登录，继续使用原测试账号密码。
+
+## 两角度评审后的修复（2026-10-04）
+
+用户要求两个独立 agent 评审完整 PR，随后明确要求修复三个发现。对 `dfb2798` 的功能评审为 Approve（1项 Optional），结构评审为 Request changes（1项 Required、1项 Optional）；此前审计通过记录属于历史版本。本轮修复不改服务端协议、需求编号、worker、数据库或既定界面布局。
+
+- 通用 `useLibraryBatch` 移除重新处理的 UUID、范围保护、结果保留、轮询及专属方法。图库入口直接分流到 `useBatchReprocess`；后者用逐图 `attempt { taskId, scope }` 和单一 `outcome` 保存状态。未知与未提交清单从行状态派生，核对及重试使用各图原尝试范围，继续复用200项请求协议及现有选择/列表更新。
+- 任务进度与列表刷新错误分开。列表更新独立于终态轮询的清理，失败直接显示“列表刷新失败”；“重新刷新列表”只重试原列表更新，不写入或重复提交任务。
+- 状态文本、图标、语义色、摘要和失败展示共用状态定义，删除“无需修改”和 accepted 缺少 task 时假定 queued 的不可达回退。每行范围直接取自身 attempt。
+
+先取得实际失败证据：旧构建在真实 worker 任务 queued → succeeded 后返回终态；随后真实 `/api/images` GET 已返回200，在浏览器中延迟释放该列表响应并注入传输拒绝。旧页面因轮询清理忽略拒绝，未显示列表刷新错误/重试。见[浏览器失败报告](./review-fixes/browser-red/library-reprocess.json)、[真实页面失败图](./review-fixes/browser-red/library-reprocess-failure.png)及[控制器失败日志](./review-fixes/checks/controller-refresh-red.txt)。故障只注入列表读取，不伪造任务状态或任务响应。
+
+本轮为 macOS 26.6.2 / arm64、Node24.18.1 / pnpm11.19.0，浏览器使用既有Ego Lite、唯一TaskSpace19/p1及独立临时库。用户3186预览数据没有被测试修改，最终构建更新已返回健康200，原账号密码和数据保留。
+
+| 实际执行                                                                                                                     | 结果与证据                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                             | 通过，[安装](./review-fixes/checks/install.txt)，依赖与锁文件未改                                                                                                    |
+| `pnpm run test:unit`                                                                                                         | 最终80文件1047项通过，[日志](./review-fixes/checks/unit-final.txt)                                                                                                   |
+| `pnpm exec vitest run --project unit tests/unit/library/batch-controller.test.ts tests/unit/library/batch-reprocess.test.ts` | 审计清理后27项通过；之后颜色/Alert语义定向组件22项通过，[清理复验](./review-fixes/checks/audit-fix-unit.txt)、[错误通知](./review-fixes/checks/error-alert-unit.txt) |
+| `pnpm run lint`                                                                                                              | 通过，[最终日志](./review-fixes/checks/lint-final.txt)                                                                                                               |
+| `pnpm run typecheck`                                                                                                         | 通过，[最终日志](./review-fixes/checks/typecheck-final.txt)                                                                                                          |
+| `pnpm run build`                                                                                                             | 最终退出0，[交付构建](./review-fixes/checks/build-delivery.txt)；保留非本机CPU/平台可选resvg依赖追踪警告，不冒充其他架构验证                                         |
+| `node scripts/verify-browser.mjs --suite library-reprocess`                                                                  | 最终10组行为、64组布局、77截图，errors为空，[业务报告](./review-fixes/browser/library-reprocess.json)、[运行范围](./review-fixes/browser/runner.json)                |
+| `node docs/tasks/check.mjs`                                                                                                  | 120任务、298需求，无缺ID/循环，[日志](./review-fixes/checks/docs.txt)                                                                                                |
+
+实际Node控制器测试覆盖不同图的局部/全部重试、201项首块响应丢失后原任务核对与手动继续、进度失败保留状态、关闭/卸载中止前端读取；使用轻量hook调度器，不能替代真实React。浏览器新场景使用实际worker终态与实际列表GET，先确认任务完成，再延迟列表返回并制造传输失败；显示独立Alert后，Enter重试真实GET200，apply始终1次、没有恢复终态poll、没有新任务或修改终态。未知关闭恢复列表、重新打开仅1工作区，随后check每图沿用原UUID/范围。原四范围、失败冲突、版本保留、恢复和资源生命周期仍在原定向套件内。
+
+返修中保留失败证据：新显式waiting状态使旧测试助手枚举失效，已新增精准状态断言，未把waiting混同未提交；见[首次助手失败](./review-fixes/browser-first-green/library-reprocess.json)。真实刷新错误虽可见但缺少默认通知语义，安装版HeroUI Alert不自动提供role；补充role=alert且保留断言，见[通知语义失败](./review-fixes/browser-notification-failure/library-reprocess.json)。未知行不展示data-task-id，关闭重开测试初次误取该属性，改为严格比较实际check请求的原UUID、范围与无新请求，见[测试字段误用](./review-fixes/browser-reopen-assertion-failure/library-reprocess.json)。这些失败不计为通过；重复旧布局图不随PR重复保存，失败PNG/报告/日志保留。
+
+独立设计复核发现状态投影意外将“等待受理”改为中性，已恢复原warning，queued仍中性。没有借代码拆分批准样式差异；最终旧样式与新单一状态表达同时验证。两个代码评审复核均Approve，无未解决Required/Optional，[审计记录](./code-audit.md#两角度评审与修复复核2026-10-04)。功能和设计结论分别记录，人工 UI 验收继续待用户确认，PR保持草稿。
+
+本轮只改前端生命周期/状态展示与验证脚本，没有重跑未改动后端全量集成和旧完整浏览器链路；此前33项相关服务端集成通过、SVG超时及CORS焦点失败保持原事实，按用户指示独立记录，不阻断正常逻辑测试。物理设备、镜像/容器验证未执行，按既有执行约定不作为本轮日常PR门槛，不记为通过。
+
+通用入口另执行 `node scripts/verify-browser.mjs --suite library-batch --only representative`：8组布局、8张实际图、errors为空，[报告](./review-fixes/generic-browser/library-batch.json)。只检查相册目标1/2项选择与未选禁用，没有提交关系，不称通用批量全功能重验。最终独立设计实际重读全部8节点并目视最终两端浅深色、等待受理、错误/恢复、未知关闭/重开图，对照通过，Required0；[逐项设计结论](./design-audit.md#两角度评审修复后的独立设计复核2026-10-04)。
+
+最终 `pnpm run format:check` 通过，[日志](./review-fixes/checks/format.txt)；`git diff --check` 通过。TaskSpace19已唯一一次finish并关闭测试页，[收据](./review-fixes/browser/finish.json)。人工预览仍为 [3186图库](http://ariso-issue186.localhost:3186/library)，账号 `owner@example.test` / 密码 `production-auth-test-password`，不重置用户已操作的数据。人工可重点复验范围弹窗/按需说明、状态标签及手机布局；真实刷新失败与重试由隔离浏览器场景证明。
+
+首次提交暂存差异检查发现7份文本日志末尾多余空行，已仅规范化证据空行并重新核对暂存差异；诊断内容及测试结果未改，[记录](./review-fixes/checks/staged-diff-before-fix.txt)。该空白问题不计作检查通过。

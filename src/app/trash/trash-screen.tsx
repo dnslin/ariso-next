@@ -363,7 +363,7 @@ export function TrashScreen({
               loadingMode="pages"
               disabled={selectionDisabled}
               onOpen={(id) => openRecord(id)}
-              onBatch={(action, element) => batch.open(action, element)}
+              onBatch={(_action, element) => batch.open('restore', element)}
             />
           </div>
           {batch.unresolved ? (

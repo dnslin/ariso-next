@@ -1,0 +1,37 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |unit| tests/unit/library/batch-controller.test.ts (1 test | 1 failed) 18ms
+   × retains a terminal list-refresh failure after polling cleanup and retries the list itself 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-controller.test.ts > retains a terminal list-refresh failure after polling cleanup and retries the list itself
+AssertionError: expected { workspace: { …(12) }, …(22) } to match object { progressError: '', …(1) }
+(34 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "progressError": "",
+-   "refreshError": "列表暂时离线",
+  }
+
+ ❯ tests/unit/library/batch-controller.test.ts:117:17
+    115|   rejectRefresh(new Error('列表暂时离线'));
+    116|   await vi.advanceTimersByTimeAsync(0);
+    117|   expect(batch).toMatchObject({ progressError: '', refreshError: '列表暂时…
+       |                 ^
+    118|   (batch as unknown as { retryRefresh: () => void }).retryRefresh();
+    119|   await vi.advanceTimersByTimeAsync(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  03:29:45
+   Duration  127ms (transform 50%, tests 29%, import 17%, worker 4%)

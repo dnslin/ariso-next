@@ -86,10 +86,6 @@ function batch(
     retry: vi.fn(),
     retryFailures: vi.fn(),
     failedIds: [],
-    progressError: '',
-    checkProgress: vi.fn(),
-    retryTasks: vi.fn(),
-    retryFailuresAll: vi.fn(),
   };
 }
 function client() {

@@ -4,25 +4,18 @@ import { useEffect, useRef } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Chip } from '@heroui/react/chip';
 import { Label } from '@heroui/react/label';
-import {
-  Circle,
-  CircleCheck,
-  CircleHelp,
-  CircleAlert,
-  Clock3,
-  LoaderCircle,
-} from 'lucide-react';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import { Radio } from '@heroui/react/radio';
 import { RadioGroup } from '@heroui/react/radio-group';
 import { Table } from '@heroui/react/table';
-import type { BatchItemResult } from '../../server/library/batch-types';
 import { DetailReturn, DetailTip } from './detail-controls';
 import { scopeLabels } from './detail-reprocess-result';
 import { bytesLabel, stepLabels, versionLabels } from './detail-labels';
 import { BatchThumbnail } from './batch-targets';
-import { batchFailedTaskIds, type LibraryBatch } from './use-library-batch';
+import type { BatchReprocess } from './use-batch-reprocess';
+import { rowState, type ReprocessRow } from './batch-reprocess-state';
+import { reprocessStatuses, reprocessSummary } from './batch-reprocess-status';
 
 const scopes = ['all', 'compressed', 'thumbnail', 'watermark'] as const;
 const scopeNames = {
@@ -39,19 +32,6 @@ const scopeDescriptions = {
 };
 const buttonClass =
   'h-12 min-h-12 min-w-0 w-full rounded-lg px-2 py-1 font-normal leading-5 whitespace-normal [overflow-wrap:anywhere] only:col-span-2 xl:w-50 xl:flex-none';
-export function batchTaskStatus(result?: BatchItemResult) {
-  if (!result) return '等待受理';
-  if (result.status === 'unknown') return '结果待核对';
-  if (result.status !== 'accepted')
-    return result.status === 'failed' ? '未受理' : '无需修改';
-  return {
-    queued: '排队中',
-    running: '正在处理',
-    succeeded: '处理完成',
-    failed: '处理失败',
-    cancelled: '任务已取消',
-  }[result.task?.status ?? 'queued'];
-}
 function ReprocessTip() {
   return (
     <DetailTip label="处理说明">
@@ -66,46 +46,9 @@ function ReprocessTip() {
     </DetailTip>
   );
 }
-function TaskStatus({
-  result,
-  unknown,
-  unsent,
-}: {
-  result?: BatchItemResult;
-  unknown: boolean;
-  unsent: boolean;
-}) {
-  const status = unknown
-    ? 'unknown'
-    : unsent || !result
-      ? 'unsent'
-      : result.status === 'accepted'
-        ? result.task.status
-        : result.status === 'failed'
-          ? 'rejected'
-          : result.status;
-  const color =
-    status === 'succeeded'
-      ? 'success'
-      : status === 'failed' || status === 'cancelled'
-        ? 'danger'
-        : status === 'unknown' || status === 'unsent' || status === 'rejected'
-          ? 'warning'
-          : status === 'running'
-            ? 'accent'
-            : 'default';
-  const Icon =
-    status === 'succeeded'
-      ? CircleCheck
-      : status === 'failed' || status === 'cancelled' || status === 'rejected'
-        ? CircleAlert
-        : status === 'unknown'
-          ? CircleHelp
-          : status === 'queued'
-            ? Clock3
-            : status === 'running'
-              ? LoaderCircle
-              : Circle;
+function TaskStatus({ row }: { row: ReprocessRow }) {
+  const state = rowState(row);
+  const { color, Icon, label } = reprocessStatuses[state];
   return (
     <Chip
       color={color}
@@ -113,24 +56,21 @@ function TaskStatus({
       size="sm"
       className="max-w-full gap-1.5"
       data-testid="batch-task-status"
-      data-state={status}
+      data-state={state}
     >
       <Icon size={13} aria-hidden />
-      <Chip.Label>
-        {unknown ? '结果待核对' : unsent ? '尚未提交' : batchTaskStatus(result)}
-      </Chip.Label>
+      <Chip.Label>{label}</Chip.Label>
     </Chip>
   );
 }
-export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
+export function BatchReprocessContent({ batch }: { batch: BatchReprocess }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const workspace = batch.workspace;
   useEffect(() => {
-    if (workspace?.phase === 'result')
+    if (batch.visible && workspace?.phase === 'result')
       heading.current?.focus({ preventScroll: true });
-  }, [workspace?.phase, batch.showFailures]);
-  if (!workspace || workspace.command?.type !== 'reprocess') return null;
-  const command = workspace.command;
+  }, [workspace?.phase, batch.showFailures, batch.visible]);
+  if (!workspace || !batch.visible) return null;
   const initialFailures = workspace.items.filter(
     (item) => item.processingStatus === 'failed',
   ).length;
@@ -172,16 +112,13 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
                 </div>
                 <RadioGroup
                   aria-label="批量处理范围"
-                  value={command.scope}
+                  value={workspace.scope}
                   aria-describedby={
                     initialFailures ? 'batch-scope-restriction' : undefined
                   }
                   isDisabled={batch.pending}
                   onChange={(scope) =>
-                    batch.choose({
-                      ...command,
-                      scope: scope as typeof command.scope,
-                    })
+                    batch.choose(scope as typeof workspace.scope)
                   }
                   className="grid gap-2"
                 >
@@ -194,7 +131,7 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
                       className="group mt-0 min-w-0 data-[disabled=true]:opacity-100"
                     >
                       <Radio.Content
-                        className={`min-h-16 w-full justify-start gap-3 rounded-xl border px-4 py-2.5 text-sm font-normal group-data-[disabled=true]:opacity-45 data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus ${command.scope === scope ? 'border-accent/60 bg-accent/5' : 'border-border bg-surface data-[hovered=true]:bg-default/40'}`}
+                        className={`min-h-16 w-full justify-start gap-3 rounded-xl border px-4 py-2.5 text-sm font-normal group-data-[disabled=true]:opacity-45 data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus ${workspace.scope === scope ? 'border-accent/60 bg-accent/5' : 'border-border bg-surface data-[hovered=true]:bg-default/40'}`}
                       >
                         <Radio.Control>
                           <Radio.Indicator />
@@ -250,41 +187,34 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
       </Modal>
     );
   }
-  const results = new Map(
-    workspace.results.map((result) => [result.id, result]),
+  const rows = new Map(workspace.rows.map((row) => [row.id, row]));
+  const accepted = workspace.rows.filter(
+    (row) => row.outcome.state === 'accepted',
   );
-  const accepted = workspace.results.filter(
-    (result) => result.status === 'accepted',
+  const rejected = workspace.rows.filter(
+    (row) => row.outcome.state === 'rejected',
   );
-  const rejected = workspace.results.filter(
-    (result) => result.status === 'failed',
-  );
-  const succeeded = accepted.filter(
-    (result) => result.task?.status === 'succeeded',
+  const succeeded = workspace.rows.filter(
+    (row) => rowState(row) === 'succeeded',
   ).length;
-  const executingFailed = accepted.filter(
-    (result) =>
-      result.task?.status === 'failed' || result.task?.status === 'cancelled',
-  ).length;
+  const executingFailed = workspace.rows.filter((row) => {
+    const state = rowState(row);
+    return state === 'failed' || state === 'cancelled';
+  }).length;
   const active = accepted.length - succeeded - executingFailed;
   const mixedScopes = accepted.some(
-    (result) => result.task.scope !== command.scope,
+    (row) => row.attempt.scope !== workspace.scope,
   );
   const displayed = batch.showFailures
-    ? workspace.items.filter((item) => {
-        const result = results.get(item.id);
-        return (
-          result?.status === 'failed' ||
-          result?.task?.status === 'failed' ||
-          result?.task?.status === 'cancelled'
-        );
-      })
+    ? workspace.items.filter(
+        (item) => reprocessStatuses[rowState(rows.get(item.id)!)].failure,
+      )
     : workspace.items;
   const first =
     displayed.find((item) => item.thumbnailUrl && item.storage.enabled) ??
     displayed[0];
   const title =
-    workspace.unsentIds.length && !batch.unresolved
+    batch.unsentIds.length && !batch.unresolved
       ? '本次重处理尚未全部提交'
       : batch.unresolved
         ? '重处理结果待核对'
@@ -293,7 +223,7 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
           : batch.pending
             ? '正在逐图受理重处理任务'
             : active
-              ? `${mixedScopes ? '重处理' : scopeNames[command.scope]}任务已受理${rejected.length ? `，${rejected.length} 张冲突` : ''}`
+              ? `${mixedScopes ? '重处理' : scopeNames[workspace.scope]}任务已受理${rejected.length ? `，${rejected.length} 张冲突` : ''}`
               : executingFailed || rejected.length
                 ? '重处理结果 · 存在失败项'
                 : '重新处理完成';
@@ -322,45 +252,13 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
           共 {workspace.items.length} 张
           {accepted.length ? ` · 任务已受理 ${accepted.length} 张` : ''}
         </span>
-        {(
-          [
-            {
-              label: '尚未提交',
-              count: workspace.unsentIds.length,
-              color: 'warning',
-            },
-            {
-              label: '待核对',
-              count: workspace.unknownIds.length,
-              color: 'warning',
-            },
-            {
-              label: '排队中',
-              count: accepted.filter(
-                (result) => result.task.status === 'queued',
-              ).length,
-              color: 'default',
-            },
-            {
-              label: '处理中',
-              count: accepted.filter(
-                (result) => result.task.status === 'running',
-              ).length,
-              color: 'accent',
-            },
-            { label: '完成', count: succeeded, color: 'success' },
-            { label: '未受理', count: rejected.length, color: 'warning' },
-            { label: '处理失败', count: executingFailed, color: 'danger' },
-          ] as const
-        )
-          .filter((item) => item.count > 0)
-          .map((item) => (
-            <Chip key={item.label} color={item.color} variant="soft" size="sm">
-              <Chip.Label>
-                {item.label} {item.count} 张
-              </Chip.Label>
-            </Chip>
-          ))}
+        {reprocessSummary(workspace.rows).map((item) => (
+          <Chip key={item.label} color={item.color} variant="soft" size="sm">
+            <Chip.Label>
+              {item.label} {item.count} 张
+            </Chip.Label>
+          </Chip>
+        ))}
       </div>
       {first ? (
         <div className="flex min-w-0 items-center gap-3 text-[13px] xl:gap-6">
@@ -403,6 +301,25 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
           </Alert.Content>
         </Alert>
       ) : null}
+      {batch.refreshError ? (
+        <Alert status="danger" role="alert">
+          <Alert.Content>
+            <Alert.Title>列表刷新失败</Alert.Title>
+            <Alert.Description>
+              {batch.refreshError} 已确认的任务结果保留。
+            </Alert.Description>
+            <Button
+              data-testid="batch-refresh-retry"
+              variant="outline"
+              className="mt-3 min-h-11 rounded-lg"
+              onPress={batch.retryRefresh}
+              isDisabled={batch.pending || batch.refreshPending}
+            >
+              {batch.refreshPending ? '正在刷新列表…' : '重新刷新列表'}
+            </Button>
+          </Alert.Content>
+        </Alert>
+      ) : null}
       <Table
         variant="secondary"
         className="rounded-2xl border border-border bg-surface px-3 py-2 shadow-none xl:px-5"
@@ -416,24 +333,25 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
             <Table.Column>任务状态</Table.Column>
             <Table.Column>处理范围与结果</Table.Column>
           </Table.Header>
-          <Table.Body
-            items={displayed}
-            dependencies={[
-              workspace.results,
-              workspace.unknownIds,
-              workspace.unsentIds,
-              command.scope,
-            ]}
-          >
+          <Table.Body items={displayed} dependencies={[workspace.rows]}>
             {(item) => {
-              const result = results.get(item.id);
-              const unknown = workspace.unknownIds.includes(item.id);
-              const task = result?.task;
+              const row = rows.get(item.id)!;
+              const result =
+                row.outcome.state === 'accepted' ||
+                row.outcome.state === 'rejected'
+                  ? row.outcome.result
+                  : undefined;
+              const task =
+                row.outcome.state === 'accepted'
+                  ? row.outcome.result.task
+                  : undefined;
               return (
                 <Table.Row
                   id={item.id}
                   data-batch-result-id={item.id}
-                  data-result-status={unknown ? 'unknown' : result?.status}
+                  data-result-status={
+                    row.outcome.state === 'unknown' ? 'unknown' : result?.status
+                  }
                   data-job-status={task?.status}
                   data-task-id={result?.taskId}
                   className="block min-h-18 py-3 xl:table-row xl:h-18"
@@ -445,11 +363,7 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
                     </p>
                   </Table.Cell>
                   <Table.Cell className="block border-0 p-0 pt-2 align-top text-sm [overflow-wrap:anywhere] xl:table-cell xl:w-1/3 xl:py-3">
-                    <TaskStatus
-                      result={result}
-                      unknown={unknown}
-                      unsent={workspace.unsentIds.includes(item.id)}
-                    />
+                    <TaskStatus row={row} />
                     {result?.taskId ? (
                       <p className="mt-1.5 text-xs text-muted">
                         任务 {result.taskId}
@@ -464,7 +378,7 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
                     ) : null}
                   </Table.Cell>
                   <Table.Cell className="block border-0 p-0 align-top text-sm [overflow-wrap:anywhere] xl:table-cell xl:w-1/3 xl:py-3">
-                    <p>{scopeLabels[task?.scope ?? command.scope]}</p>
+                    <p>{scopeLabels[row.attempt.scope]}</p>
                     <p className="text-xs text-muted">
                       {task?.error ?? result?.message ?? '等待逐项结果'}
                     </p>
@@ -476,8 +390,8 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
                           .join('、')}
                       </p>
                     ) : null}
-                    {task?.status === 'failed' ||
-                    task?.status === 'cancelled' ? (
+                    {row.outcome.state === 'accepted' &&
+                    reprocessStatuses[rowState(row)].failure ? (
                       <p className="text-xs text-muted">
                         原图和已有版本保留；已受理时移出选择。
                       </p>
@@ -500,17 +414,20 @@ export function BatchReprocessContent({ batch }: { batch: LibraryBatch }) {
   );
 }
 
-export function BatchReprocessFooter({ batch }: { batch: LibraryBatch }) {
+export function BatchReprocessFooter({ batch }: { batch: BatchReprocess }) {
   const workspace = batch.workspace;
   if (!workspace || workspace.phase === 'choose') return null;
-  const failedScopes = scopes.filter(
-    (scope) => batchFailedTaskIds(workspace.results, scope).length > 0,
+  const failedTasks = workspace.rows.filter(
+    (row) =>
+      row.outcome.state === 'accepted' &&
+      reprocessStatuses[rowState(row)].failure &&
+      row.outcome.result.inQuery,
   );
-  const failures = workspace.results.some(
-    (result) =>
-      result.status === 'failed' ||
-      result.task?.status === 'failed' ||
-      result.task?.status === 'cancelled',
+  const failedScopes = scopes.filter((scope) =>
+    failedTasks.some((row) => row.attempt.scope === scope),
+  );
+  const failures = workspace.rows.some(
+    (row) => reprocessStatuses[rowState(row)].failure,
   );
   return (
     <div className="grid w-full grid-cols-2 gap-3 xl:flex xl:flex-wrap xl:justify-end">
@@ -532,18 +449,18 @@ export function BatchReprocessFooter({ batch }: { batch: LibraryBatch }) {
         >
           {batch.pending
             ? '正在核对…'
-            : `核对这${workspace.unknownIds.length}张的实际状态`}
+            : `核对这${batch.unknownIds.length}张的实际状态`}
         </Button>
       ) : (
         <>
-          {workspace.unsentIds.length ? (
+          {batch.unsentIds.length ? (
             <Button
               data-testid="batch-retry"
               className={buttonClass}
               isDisabled={batch.pending}
               onPress={batch.retry}
             >
-              继续处理剩余项 · {workspace.unsentIds.length}张
+              继续处理剩余项 · {batch.unsentIds.length}张
             </Button>
           ) : null}
           {failures && !batch.showFailures ? (
@@ -558,7 +475,7 @@ export function BatchReprocessFooter({ batch }: { batch: LibraryBatch }) {
           ) : null}
           {batch.showFailures ? (
             <>
-              {workspace.unsentIds.length ? (
+              {batch.unsentIds.length ? (
                 <p className="col-span-2 w-full text-[13px] text-muted">
                   请先按原范围继续处理剩余项，再选择其他范围重试失败项。
                 </p>
@@ -581,13 +498,15 @@ export function BatchReprocessFooter({ batch }: { batch: LibraryBatch }) {
                   重试未受理项 · {batch.failedIds.length}张
                 </Button>
               ) : null}
-              {batch.failedIds.length &&
-              workspace.command?.type === 'reprocess' &&
-              workspace.command.scope !== 'all' ? (
+              {workspace.rows.some(
+                (row) =>
+                  batch.failedIds.includes(row.id) &&
+                  row.attempt.scope !== 'all',
+              ) ? (
                 <Button
                   data-testid="batch-retry-all"
                   className={buttonClass}
-                  isDisabled={batch.pending || !!workspace.unsentIds.length}
+                  isDisabled={batch.pending || !!batch.unsentIds.length}
                   onPress={batch.retryFailuresAll}
                 >
                   全部派生重试未受理项
@@ -601,14 +520,20 @@ export function BatchReprocessFooter({ batch }: { batch: LibraryBatch }) {
                   className={buttonClass}
                   isDisabled={
                     batch.pending ||
-                    (!!workspace.unsentIds.length &&
-                      workspace.command?.type === 'reprocess' &&
-                      workspace.command.scope !== scope)
+                    workspace.rows.some(
+                      (row) =>
+                        row.outcome.state === 'unsent' &&
+                        row.attempt.scope !== scope,
+                    )
                   }
                   onPress={() => batch.retryTasks(scope)}
                 >
                   重试{scopeNames[scope]}失败 ·{' '}
-                  {batchFailedTaskIds(workspace.results, scope).length}张
+                  {
+                    failedTasks.filter((row) => row.attempt.scope === scope)
+                      .length
+                  }
+                  张
                 </Button>
               ))}
             </>

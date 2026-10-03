@@ -51,9 +51,27 @@ export function reprocessHelpers({ page, config, report }) {
       const original = window.__reprocessOriginalFetch ?? window.fetch;
       window.__reprocessOriginalFetch = original;
       window.__reprocessTraffic = [];
+      window.__reprocessListTraffic = [];
       window.__reprocessFault = fault;
       window.fetch = async (...args) => {
         const path = new URL(String(args[0]), location.href).pathname;
+        if (path === '/api/images') {
+          const entry = { path, method: args[1]?.method ?? 'GET' };
+          window.__reprocessListTraffic.push(entry);
+          const response = await original(...args);
+          entry.status = response.status;
+          if (window.__reprocessFailRefresh) {
+            window.__reprocessFailRefresh = false;
+            entry.delayedFailure = true;
+            await new Promise((resolve) => {
+              window.__reprocessRefreshRelease = resolve;
+            });
+            throw new TypeError(
+              'Verification: terminal list refresh response lost',
+            );
+          }
+          return response;
+        }
         if (path !== '/api/images/batch') return original(...args);
         const request = JSON.parse(args[1].body);
         const entry = { path, request };
@@ -70,6 +88,18 @@ export function reprocessHelpers({ page, config, report }) {
         const response = await original(...args);
         entry.status = response.status;
         entry.response = await response.clone().json();
+        if (
+          request.mode === 'check' &&
+          window.__reprocessFault === 'terminal-refresh' &&
+          entry.response.results.some(
+            (result) =>
+              result.status === 'accepted' &&
+              ['succeeded', 'failed', 'cancelled'].includes(result.task.status),
+          )
+        ) {
+          window.__reprocessFault = null;
+          window.__reprocessFailRefresh = true;
+        }
         if (path === '/api/images/batch' && request.mode === 'apply') {
           if (window.__reprocessFault === 'hold') {
             window.__reprocessFault = null;
@@ -418,22 +448,17 @@ export function reprocessHelpers({ page, config, report }) {
           cancelled: ['任务已取消', 'danger'],
           unknown: ['结果待核对', 'warning'],
           unsent: ['尚未提交', 'warning'],
+          waiting: ['等待受理', 'warning'],
           queued: ['排队中', 'default'],
           running: ['正在处理', 'accent'],
         };
         for (const status of layout.statuses) {
           const [text, color] = statusPresentation[status.state];
-          if (status.state === 'unsent')
-            assert.ok(
-              ['等待受理', '尚未提交'].includes(status.text),
-              'Pending acceptance and genuinely unsent images remain distinct',
-            );
-          else
-            assert.equal(
-              status.text,
-              text,
-              'Status label reflects the real task stage',
-            );
+          assert.equal(
+            status.text,
+            text,
+            'Status label reflects the real task stage',
+          );
           assert.ok(
             status.icon,
             'Status includes a readable icon in addition to semantic color',
