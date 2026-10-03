@@ -27,7 +27,11 @@ export function startUploadRuntime(
   context.resources ??= createMediaResources();
   const active = new Map<
     string,
-    { controller: AbortController; promise: ReturnType<typeof receiveSession> }
+    {
+      storageId: string;
+      controller: AbortController;
+      promise: ReturnType<typeof receiveSession>;
+    }
   >();
   const cleaning = new Map<string, Promise<void>>();
   const stopping = new AbortController();
@@ -77,6 +81,7 @@ export function startUploadRuntime(
     if (stopping.signal.aborted)
       throw new UploadError('UPLOAD_STOPPING', '服务正在停止', 503);
     const controller = new AbortController();
+    const storageId = getSession(context.db, id).storageId;
     const promise = operation(controller.signal)
       .then(async (result) => {
         if (result.state === 'accepted' && result.cleanupStatus !== 'none') {
@@ -101,10 +106,15 @@ export function startUploadRuntime(
         return getSession(context.db, id);
       })
       .finally(() => active.delete(id));
-    active.set(id, { controller, promise });
+    active.set(id, { storageId, controller, promise });
     return promise;
   }
   return {
+    activeWrites(storageId: string) {
+      return [...active.values()].filter(
+        (operation) => operation.storageId === storageId,
+      ).length;
+    },
     async resubmit(id: string, requestId: string) {
       if (stopping.signal.aborted)
         throw new UploadError('UPLOAD_STOPPING', '服务正在停止', 503);

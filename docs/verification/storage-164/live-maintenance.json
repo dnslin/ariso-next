@@ -1,0 +1,944 @@
+{
+  "startedAt": "2026-10-03T19:41:30.262Z",
+  "finishedAt": "2026-10-03T19:41:51.274Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "scope": "Real scanStorage, maintenance startup recovery and configuration deletion against R2/SeaweedFS; private isolated SQLite reference fixtures",
+  "limitations": [
+    "Application restart is simulated by stopping maintenance, reopening SQLite and starting maintenance again; no separate Web process was launched.",
+    "The delete failure is injected once at the adapter boundary; it is not evidence of a real provider permission failure.",
+    "Media/upload/probe rows are independent fixtures read by the production providers; this does not verify complete upload or image-processing workflows.",
+    "AWS and release container architectures were not tested."
+  ],
+  "services": [
+    {
+      "service": "seaweedfs",
+      "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+      "neighborStorageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c-neighbor",
+      "pathPrefix": "verification-164-maintenance + %",
+      "target": {
+        "endpoint": "https://fs.447654.xyz",
+        "region": "us-east-1",
+        "bucket": "images",
+        "forcePathStyle": true
+      },
+      "plannedKeys": [
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "images/original 中文 + %2F?.bin",
+          "size": 18,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/images/original 中文 + %2F?.bin"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "images/candidate.bin",
+          "size": 19,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/images/candidate.bin"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "uploads/session/source.bin",
+          "size": 16,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/uploads/session/source.bin"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "probes/registered",
+          "size": 15,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/probes/registered"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "unregistered/orphan.bin",
+          "size": 20,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/unregistered/orphan.bin"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+          "key": "unregistered/late.bin",
+          "size": 15,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/unregistered/late.bin"
+        },
+        {
+          "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c-neighbor",
+          "key": "images/neighbor.bin",
+          "size": 17,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c-neighbor/images/neighbor.bin"
+        }
+      ],
+      "checks": [
+        {
+          "name": "isolated-sqlite-reference-fixtures",
+          "status": "passed",
+          "evidence": {
+            "counts": {
+              "images": 1,
+              "versions": 1,
+              "objects": 2,
+              "jobs": 1,
+              "cleanupJobs": 0,
+              "uploads": 1,
+              "probes": 1,
+              "orphans": 0
+            },
+            "protectedKeys": [
+              "images/candidate.bin",
+              "images/original 中文 + %2F?.bin",
+              "uploads/session/source.bin",
+              "probes/registered"
+            ],
+            "configurationDisabled": true
+          }
+        },
+        {
+          "name": "write-only-planned-keys",
+          "status": "passed",
+          "evidence": {
+            "writes": [
+              {
+                "key": "images/original 中文 + %2F?.bin",
+                "result": {
+                  "etag": "\"f94b816f7aef9fd5092bc1aada64ad2b\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C639D01EAFA124FDF14",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "images/candidate.bin",
+                "result": {
+                  "etag": "\"ebbc7f22e5313cf787b3d89713bdff68\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C63A2DDF047F87EE39F",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "uploads/session/source.bin",
+                "result": {
+                  "etag": "\"ff51637af6878ce394598acaac212618\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C63A8ABCF5561A28373",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "probes/registered",
+                "result": {
+                  "etag": "\"1c0da044d479771779454d574678ad85\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C63AE772C382B424888",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "unregistered/orphan.bin",
+                "result": {
+                  "etag": "\"b75b65f9744f957e593814cbc873b2e9\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C63B48ADEDEA22DF25B",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c-neighbor",
+                "key": "images/neighbor.bin",
+                "result": {
+                  "etag": "\"1e8b9204c914377d08b1f184b2ecb5c6\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB1C63CB3ACFCEB8B46E95",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              }
+            ],
+            "batches": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "unregistered/orphan.bin",
+                  "size": 20
+                }
+              ],
+              [
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "name": "real-list-injected-delete-failure-retains-known-usage",
+          "status": "passed",
+          "evidence": {
+            "injectedFailure": true,
+            "scan": {
+              "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://fs.447654.xyz",
+                "bucket": "images",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/"
+              },
+              "startedAt": "2026-10-03T19:41:31.970Z",
+              "finishedAt": "2026-10-03T19:41:32.547Z",
+              "status": "failed",
+              "discoveredCount": 1,
+              "deletedCount": 0,
+              "failedCount": 1,
+              "protectedCount": 4,
+              "error": {
+                "message": "Intentional one-shot delete failure",
+                "code": "INJECTED_DELETE_FAILURE",
+                "key": "unregistered/orphan.bin",
+                "operation": "delete"
+              }
+            },
+            "usage": {
+              "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+              "knownBytes": 20,
+              "objects": [
+                {
+                  "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+                  "key": "unregistered/orphan.bin",
+                  "size": 20,
+                  "confirmedAt": "2026-10-03T19:41:32.455Z",
+                  "error": {
+                    "message": "Intentional one-shot delete failure",
+                    "code": "INJECTED_DELETE_FAILURE",
+                    "key": "unregistered/orphan.bin",
+                    "operation": "delete"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "next-real-scan-retries-and-protects-trash-candidate-upload-probe",
+          "status": "passed",
+          "evidence": {
+            "scan": {
+              "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://fs.447654.xyz",
+                "bucket": "images",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/"
+              },
+              "startedAt": "2026-10-03T19:41:32.851Z",
+              "finishedAt": "2026-10-03T19:41:33.316Z",
+              "status": "passed",
+              "discoveredCount": 0,
+              "deletedCount": 1,
+              "failedCount": 0,
+              "protectedCount": 4,
+              "error": null
+            },
+            "remainingObjects": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ],
+            "neighborPreserved": true,
+            "trashedOriginalPreserved": true
+          }
+        },
+        {
+          "name": "maintenance-stop-reopen-start-cleans-unknown-late-object",
+          "status": "passed",
+          "evidence": {
+            "scan": {
+              "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://fs.447654.xyz",
+                "bucket": "images",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/"
+              },
+              "startedAt": "2026-10-03T19:41:34.628Z",
+              "finishedAt": "2026-10-03T19:41:35.113Z",
+              "status": "passed",
+              "discoveredCount": 1,
+              "deletedCount": 1,
+              "failedCount": 0,
+              "protectedCount": 4,
+              "error": null
+            },
+            "remainingObjects": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ],
+            "reopenedDatabase": true,
+            "separateWebProcessRestart": false,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "real-reference-deletion-boundary-and-empty-configuration-removal",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "deleted": true,
+              "storageId": "maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c"
+            },
+            "rejectedWhileReferenced": true,
+            "namespaceEmpty": true,
+            "deletedConfigurationNotScanned": true,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/images/original 中文 + %2F?.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C64F4527F1BAC9DB404",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/images/candidate.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C64FFD3BC4423AD9C88",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/uploads/session/source.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C650B52324C95381796",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/probes/registered",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C6516CB98E6E8C13009",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/unregistered/orphan.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C652269A1DB4AC115C2",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c/unregistered/late.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C652E0F8D8B5C8EB9A4",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-cfa711f9-df68-49ac-a7c3-3eca85037c1c-neighbor/images/neighbor.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB1C6539A3F523E395084A",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "final-both-planned-namespaces-empty",
+          "status": "passed",
+          "evidence": {
+            "namespaceEmpty": true,
+            "neighborNamespaceEmpty": true
+          }
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "service": "r2",
+      "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+      "neighborStorageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5-neighbor",
+      "pathPrefix": "verification-164-maintenance + %",
+      "target": {
+        "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+        "region": "auto",
+        "bucket": "image",
+        "forcePathStyle": true
+      },
+      "plannedKeys": [
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "images/original 中文 + %2F?.bin",
+          "size": 18,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/images/original 中文 + %2F?.bin"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "images/candidate.bin",
+          "size": 19,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/images/candidate.bin"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "uploads/session/source.bin",
+          "size": 16,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/uploads/session/source.bin"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "probes/registered",
+          "size": 15,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/probes/registered"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "unregistered/orphan.bin",
+          "size": 20,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/unregistered/orphan.bin"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+          "key": "unregistered/late.bin",
+          "size": 15,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/unregistered/late.bin"
+        },
+        {
+          "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5-neighbor",
+          "key": "images/neighbor.bin",
+          "size": 17,
+          "remote": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5-neighbor/images/neighbor.bin"
+        }
+      ],
+      "checks": [
+        {
+          "name": "isolated-sqlite-reference-fixtures",
+          "status": "passed",
+          "evidence": {
+            "counts": {
+              "images": 1,
+              "versions": 1,
+              "objects": 2,
+              "jobs": 1,
+              "cleanupJobs": 0,
+              "uploads": 1,
+              "probes": 1,
+              "orphans": 0
+            },
+            "protectedKeys": [
+              "images/candidate.bin",
+              "images/original 中文 + %2F?.bin",
+              "uploads/session/source.bin",
+              "probes/registered"
+            ],
+            "configurationDisabled": true
+          }
+        },
+        {
+          "name": "write-only-planned-keys",
+          "status": "passed",
+          "evidence": {
+            "writes": [
+              {
+                "key": "images/original 中文 + %2F?.bin",
+                "result": {
+                  "etag": "\"f94b816f7aef9fd5092bc1aada64ad2b\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "images/candidate.bin",
+                "result": {
+                  "etag": "\"ebbc7f22e5313cf787b3d89713bdff68\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "uploads/session/source.bin",
+                "result": {
+                  "etag": "\"ff51637af6878ce394598acaac212618\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "probes/registered",
+                "result": {
+                  "etag": "\"1c0da044d479771779454d574678ad85\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "unregistered/orphan.bin",
+                "result": {
+                  "etag": "\"b75b65f9744f957e593814cbc873b2e9\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5-neighbor",
+                "key": "images/neighbor.bin",
+                "result": {
+                  "etag": "\"1e8b9204c914377d08b1f184b2ecb5c6\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              }
+            ],
+            "batches": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "unregistered/orphan.bin",
+                  "size": 20
+                }
+              ],
+              [
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "name": "real-list-injected-delete-failure-retains-known-usage",
+          "status": "passed",
+          "evidence": {
+            "injectedFailure": true,
+            "scan": {
+              "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+                "bucket": "image",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/"
+              },
+              "startedAt": "2026-10-03T19:41:40.498Z",
+              "finishedAt": "2026-10-03T19:41:41.364Z",
+              "status": "failed",
+              "discoveredCount": 1,
+              "deletedCount": 0,
+              "failedCount": 1,
+              "protectedCount": 4,
+              "error": {
+                "message": "Intentional one-shot delete failure",
+                "code": "INJECTED_DELETE_FAILURE",
+                "key": "unregistered/orphan.bin",
+                "operation": "delete"
+              }
+            },
+            "usage": {
+              "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+              "knownBytes": 20,
+              "objects": [
+                {
+                  "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+                  "key": "unregistered/orphan.bin",
+                  "size": 20,
+                  "confirmedAt": "2026-10-03T19:41:41.238Z",
+                  "error": {
+                    "message": "Intentional one-shot delete failure",
+                    "code": "INJECTED_DELETE_FAILURE",
+                    "key": "unregistered/orphan.bin",
+                    "operation": "delete"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "next-real-scan-retries-and-protects-trash-candidate-upload-probe",
+          "status": "passed",
+          "evidence": {
+            "scan": {
+              "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+                "bucket": "image",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/"
+              },
+              "startedAt": "2026-10-03T19:41:41.760Z",
+              "finishedAt": "2026-10-03T19:41:42.346Z",
+              "status": "passed",
+              "discoveredCount": 0,
+              "deletedCount": 1,
+              "failedCount": 0,
+              "protectedCount": 4,
+              "error": null
+            },
+            "remainingObjects": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ],
+            "neighborPreserved": true,
+            "trashedOriginalPreserved": true
+          }
+        },
+        {
+          "name": "maintenance-stop-reopen-start-cleans-unknown-late-object",
+          "status": "passed",
+          "evidence": {
+            "scan": {
+              "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5",
+              "configRevision": 1,
+              "scope": {
+                "type": "s3",
+                "localPath": null,
+                "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+                "bucket": "image",
+                "pathPrefix": "verification-164-maintenance + %",
+                "namespace": "verification-164-maintenance + %/ariso/maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/"
+              },
+              "startedAt": "2026-10-03T19:41:44.036Z",
+              "finishedAt": "2026-10-03T19:41:44.626Z",
+              "status": "passed",
+              "discoveredCount": 1,
+              "deletedCount": 1,
+              "failedCount": 0,
+              "protectedCount": 4,
+              "error": null
+            },
+            "remainingObjects": [
+              [
+                {
+                  "key": "images/candidate.bin",
+                  "size": 19
+                },
+                {
+                  "key": "images/original 中文 + %2F?.bin",
+                  "size": 18
+                }
+              ],
+              [
+                {
+                  "key": "probes/registered",
+                  "size": 15
+                },
+                {
+                  "key": "uploads/session/source.bin",
+                  "size": 16
+                }
+              ]
+            ],
+            "reopenedDatabase": true,
+            "separateWebProcessRestart": false,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "real-reference-deletion-boundary-and-empty-configuration-removal",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "deleted": true,
+              "storageId": "maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5"
+            },
+            "rejectedWhileReferenced": true,
+            "namespaceEmpty": true,
+            "deletedConfigurationNotScanned": true,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/images/original 中文 + %2F?.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/images/candidate.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/uploads/session/source.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/probes/registered",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/unregistered/orphan.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5/unregistered/late.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:maintenance-164-0bf24413-4198-44ff-a02c-db2f58a4f4b5-neighbor/images/neighbor.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "final-both-planned-namespaces-empty",
+          "status": "passed",
+          "evidence": {
+            "namespaceEmpty": true,
+            "neighborNamespaceEmpty": true
+          }
+        }
+      ],
+      "status": "passed"
+    }
+  ]
+}

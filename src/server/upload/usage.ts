@@ -1,6 +1,75 @@
-import { inArray, isNotNull, ne, or } from 'drizzle-orm';
+import {
+  and,
+  eq,
+  inArray,
+  isNotNull,
+  isNull,
+  ne,
+  notInArray,
+  or,
+} from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { uploadSessions } from './schema.ts';
+import { uploadSessions, uploadSubmissions } from './schema.ts';
+
+export function readUploadObjectReferences(
+  db: BetterSQLite3Database,
+  storageId: string,
+  key: string,
+) {
+  return db
+    .select({ id: uploadSessions.id })
+    .from(uploadSessions)
+    .where(
+      or(
+        and(
+          eq(uploadSessions.storageId, storageId),
+          eq(uploadSessions.temporaryKey, key),
+        ),
+        and(
+          eq(uploadSessions.storageId, storageId),
+          eq(uploadSessions.finalKey, key),
+        ),
+      ),
+    )
+    .all();
+}
+
+/** Explicit empty-storage deletion releases short-lived results, never object cleanup responsibilities. */
+export function releaseStorageHistory(
+  db: BetterSQLite3Database,
+  storageId: string,
+) {
+  db.transaction((tx) => {
+    tx.delete(uploadSessions)
+      .where(
+        and(
+          eq(uploadSessions.storageId, storageId),
+          inArray(uploadSessions.state, [
+            'accepted',
+            'failed',
+            'cancelled',
+            'expired',
+          ]),
+          eq(uploadSessions.cleanupStatus, 'none'),
+          isNull(uploadSessions.temporaryKey),
+          isNull(uploadSessions.finalKey),
+          isNull(uploadSessions.temporaryPath),
+        ),
+      )
+      .run();
+    const retained = tx
+      .select({ id: uploadSessions.submissionId })
+      .from(uploadSessions);
+    tx.delete(uploadSubmissions)
+      .where(
+        and(
+          eq(uploadSubmissions.storageId, storageId),
+          notInArray(uploadSubmissions.id, retained),
+        ),
+      )
+      .run();
+  });
+}
 
 /** Session and exact-object responsibilities consumed by storage composition. */
 export function readUploadReferences(db: BetterSQLite3Database) {

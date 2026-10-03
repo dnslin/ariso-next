@@ -1,3 +1,4 @@
+import { readStorageReferences } from '../../../src/server/startup/storage-references.ts';
 import { startStorageProbeRuntime } from '../../../src/server/storage/probe-runtime.ts';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -275,6 +276,7 @@ it('配置 revision 变化拒绝旧结果，改名不失效', async () => {
     storageId,
     { name: 'renamed' },
     { storageRoot: directory, secretCrypto },
+    readStorageReferences,
   );
   expect(readStorage(connection.db, storageId).configRevision).toBe(1);
   updateStorage(
@@ -282,6 +284,7 @@ it('配置 revision 变化拒绝旧结果，改名不失效', async () => {
     storageId,
     { secretKey: 'changed' },
     { storageRoot: directory, secretCrypto },
+    readStorageReferences,
   );
   const report = await finishCorsTest(
     context(),
@@ -367,6 +370,7 @@ it('检测期间清空凭据仍终结探测并保留明确的清理失败，恢�
     storageId,
     { secretKey: null },
     { storageRoot: directory, secretCrypto },
+    readStorageReferences,
   );
   const report = await finishCorsTest(
     context(),
@@ -388,6 +392,7 @@ it('检测期间清空凭据仍终结探测并保留明确的清理失败，恢�
     storageId,
     { secretKey: 'test-secret' },
     { storageRoot: directory, secretCrypto },
+    readStorageReferences,
   );
   await cleanupProbe(
     context(),

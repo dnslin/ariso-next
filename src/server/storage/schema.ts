@@ -7,6 +7,7 @@ import {
   sqliteTable,
   text,
   index,
+  primaryKey,
 } from 'drizzle-orm/sqlite-core';
 
 export const storageConfigs = sqliteTable('storage_configs', {
@@ -93,3 +94,54 @@ export const storageProbes = sqliteTable(
   (table) => [index('storage_probes_storage').on(table.storageId)],
 );
 export type StorageProbe = typeof storageProbes.$inferSelect;
+
+export type StorageScanError = {
+  message: string;
+  code?: string;
+  key?: string;
+  operation?: string;
+  serviceCode?: string;
+  httpStatusCode?: number;
+  requestId?: string;
+};
+export const storageOrphans = sqliteTable(
+  'storage_orphans',
+  {
+    storageId: text('storage_id')
+      .notNull()
+      .references(() => storageConfigs.id),
+    key: text('key').notNull(),
+    size: integer('size').notNull(),
+    confirmedAt: integer('confirmed_at', { mode: 'timestamp_ms' }).notNull(),
+    error: text('error', { mode: 'json' }).$type<StorageScanError>(),
+  },
+  (table) => [primaryKey({ columns: [table.storageId, table.key] })],
+);
+export const storageScans = sqliteTable('storage_scans', {
+  storageId: text('storage_id')
+    .primaryKey()
+    .notNull()
+    .references(() => storageConfigs.id, { onDelete: 'cascade' }),
+  configRevision: integer('config_revision').notNull(),
+  scope: text('scope', { mode: 'json' })
+    .$type<{
+      type: 'local' | 's3';
+      localPath: string | null;
+      endpoint: string | null;
+      bucket: string | null;
+      pathPrefix: string | null;
+      namespace: string;
+    }>()
+    .notNull(),
+  startedAt: integer('started_at', { mode: 'timestamp_ms' }).notNull(),
+  finishedAt: integer('finished_at', { mode: 'timestamp_ms' }),
+  status: text('status', {
+    enum: ['running', 'passed', 'failed', 'interrupted'],
+  }).notNull(),
+  discoveredCount: integer('discovered_count').notNull().default(0),
+  deletedCount: integer('deleted_count').notNull().default(0),
+  failedCount: integer('failed_count').notNull().default(0),
+  protectedCount: integer('protected_count').notNull().default(0),
+  error: text('error', { mode: 'json' }).$type<StorageScanError>(),
+});
+export type StorageScan = typeof storageScans.$inferSelect;

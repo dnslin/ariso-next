@@ -13,6 +13,10 @@ import { startUploadRuntime } from '../upload/runtime.ts';
 import { startMediaQueue } from '../media/queue.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { startAnalyticsRuntime } from '../analytics/runtime.ts';
+import { startStorageMaintenance } from '../storage/maintenance.ts';
+import { readStorageReferences } from './storage-references.ts';
+import type { ReadStorageReferences } from '../storage/references.ts';
+import { releaseStorageHistory } from '../upload/usage.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -73,6 +77,23 @@ function initializeServerRuntime() {
       secretCrypto: createSecretCrypto(config.encryptionKey),
       logger: createRuntimeLogger('storage.probes', config.logLevel),
     });
+    const storageReferences: ReadStorageReferences = (db, id, key) =>
+      readStorageReferences(
+        db,
+        id,
+        key,
+        uploads.activeWrites(id) +
+          mediaQueue.activeWrites(id) +
+          storageProbes.activeWrites(id),
+      );
+    const storageMaintenance = startStorageMaintenance({
+      db: connection.db,
+      storageRoot: resolve(config.dataDir, 'storage'),
+      secretCrypto,
+      readReferences: storageReferences,
+      clearReleasedReferences: releaseStorageHistory,
+      logger: createRuntimeLogger('storage.maintenance', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -81,14 +102,17 @@ function initializeServerRuntime() {
       mediaQueue,
       uploads,
       storageProbes,
+      storageReferences,
+      storageMaintenance,
       watermarks,
       analytics,
       get stopping() {
         return stopping !== undefined;
       },
       stop() {
-        return (stopping ??= uploads
+        return (stopping ??= storageMaintenance
           .stop()
+          .finally(() => uploads.stop())
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())
           .finally(() => storageProbes.stop())

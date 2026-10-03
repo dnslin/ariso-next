@@ -1,3 +1,4 @@
+import { readStorageReferences } from '../../../src/server/startup/storage-references.ts';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -136,7 +137,13 @@ afterEach(async () => {
 });
 it('真实四阶段通过后才允许启用，清理成功释放引用与占用', async () => {
   expect(() =>
-    updateStorage(connection.db, storageId, { enabled: true }, context()),
+    updateStorage(
+      connection.db,
+      storageId,
+      { enabled: true },
+      context(),
+      readStorageReferences,
+    ),
   ).toThrow();
   const report = await runtime.test(storageId, {
     revision: 1,
@@ -153,8 +160,13 @@ it('真实四阶段通过后才允许启用，清理成功释放引用与占用'
     enabled: false,
   });
   expect(
-    updateStorage(connection.db, storageId, { enabled: true }, context())
-      .enabled,
+    updateStorage(
+      connection.db,
+      storageId,
+      { enabled: true },
+      context(),
+      readStorageReferences,
+    ).enabled,
   ).toBe(true);
 });
 it.each(['Enabled', 'Suspended'] as const)(
@@ -334,6 +346,7 @@ it('同配置并发测试冲突，写入未确认显示未知，改凭据后的�
     storageId,
     { secretKey: 'new-secret' },
     context(),
+    readStorageReferences,
   );
   releaseWrite!();
   expect(await testing).toMatchObject({
@@ -357,8 +370,10 @@ it('取消在途 PUT 后先结束本地请求，再删除确切 Key，释放探�
   const controller = new AbortController();
   const testing = runtime.test(storageId, { revision: 1 }, controller.signal);
   await vi.waitFor(() => expect(releaseWrite).toBeTypeOf('function'));
+  expect(runtime.activeWrites(storageId)).toBe(1);
   controller.abort(new Error('caller disconnected'));
   const report = await testing;
+  expect(runtime.activeWrites(storageId)).toBe(0);
   releaseWrite!();
   expect(report).toMatchObject({ passed: false, cleanupPending: false });
   expect(report.stages.find((stage) => stage.stage === 'write')?.status).toBe(
@@ -369,7 +384,13 @@ it('取消在途 PUT 后先结束本地请求，再删除确切 Key，释放探�
 });
 it('已通过且启用的配置再次测试失败会停用，并保留默认以外配置身份', async () => {
   await runtime.test(storageId, { revision: 1 });
-  updateStorage(connection.db, storageId, { enabled: true }, context());
+  updateStorage(
+    connection.db,
+    storageId,
+    { enabled: true },
+    context(),
+    readStorageReferences,
+  );
   publicRead = true;
   await runtime.test(storageId, { revision: 1 });
   expect(readStorage(connection.db, storageId)).toMatchObject({
