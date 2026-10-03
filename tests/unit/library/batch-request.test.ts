@@ -138,3 +138,110 @@ describe('bounded batch client', () => {
     expect(results).toHaveLength(200);
   });
 });
+
+it('trims exact task identities to each 200-item request and keeps them unchanged for checks', async () => {
+  const command = {
+    type: 'reprocess' as const,
+    scope: 'watermark' as const,
+    taskIds: Object.fromEntries(ids.map((id, index) => [id, `task-${index}`])),
+  };
+  const calls: { ids: string[]; command: typeof command; mode: string }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const body = JSON.parse(init.body);
+      calls.push(body);
+      return response(body.ids);
+    }),
+  );
+  for (const mode of ['apply', 'check'] as const)
+    await requestBatch(
+      ids,
+      'scope=normal',
+      command,
+      mode,
+      new AbortController().signal,
+      () => {},
+    );
+  expect(calls.map((call) => call.ids.length)).toEqual([
+    200, 200, 1, 200, 200, 1,
+  ]);
+  for (const call of calls) {
+    expect(Object.keys(call.command.taskIds)).toEqual(call.ids);
+    expect(call.command.taskIds).toEqual(
+      Object.fromEntries(call.ids.map((id) => [id, command.taskIds[id]])),
+    );
+  }
+});
+
+it('does not submit the next chunk when the server cannot confirm an exact reprocess task', async () => {
+  const fetch = vi.fn().mockResolvedValue(
+    Response.json({
+      results: [
+        {
+          id: ids[0],
+          status: 'unknown',
+          code: 'LIBRARY_BATCH_TASK_UNCONFIRMED',
+          message: '原任务尚未找到',
+          inQuery: true,
+        },
+        ...ids.slice(1, 200).map((id) => ({
+          id,
+          status: 'accepted',
+          inQuery: true,
+          message: '已受理',
+        })),
+      ],
+    }),
+  );
+  vi.stubGlobal('fetch', fetch);
+  const received: BatchItemResult[] = [];
+  const outcome = await requestBatch(
+    ids,
+    'scope=normal',
+    {
+      type: 'reprocess',
+      scope: 'all',
+      taskIds: Object.fromEntries(ids.map((id) => [id, `task-${id}`])),
+    },
+    'apply',
+    new AbortController().signal,
+    (results) => received.push(...results),
+  );
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(received).toHaveLength(200);
+  expect(outcome.unknownIds).toEqual([ids[0]]);
+  expect(outcome.unsentIds).toEqual(ids.slice(200));
+});
+
+it('checks every read-only chunk and retains only identities still unconfirmed', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const { ids } = JSON.parse(init.body);
+      return Response.json({
+        results: ids.map((id: string) => ({
+          id,
+          status:
+            id === 'image-0' || id === 'image-400' ? 'unknown' : 'accepted',
+          inQuery: true,
+          message: '核对',
+        })),
+      });
+    }),
+  );
+  const outcome = await requestBatch(
+    ids,
+    'scope=normal',
+    {
+      type: 'reprocess',
+      scope: 'all',
+      taskIds: Object.fromEntries(ids.map((id) => [id, `task-${id}`])),
+    },
+    'check',
+    new AbortController().signal,
+    () => {},
+  );
+  expect(outcome.unknownIds).toEqual(['image-0', 'image-400']);
+  expect(outcome.unsentIds).toEqual([]);
+});

@@ -193,7 +193,12 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        batch.visible && batch.workspace?.phase !== 'confirm' ? (
+        batch.visible &&
+        batch.workspace?.phase !== 'confirm' &&
+        !(
+          batch.workspace?.action === 'reprocess' &&
+          batch.workspace.phase === 'choose'
+        ) ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : detail.view === 'reprocess' ? (
           <DetailReprocessFooter actions={reprocess.footerActions} />
@@ -214,7 +219,12 @@ export function LibraryScreen(props: {
         className={
           props.workspace ||
           detail.view ||
-          (batch.visible && batch.workspace?.phase !== 'confirm')
+          (batch.visible &&
+            batch.workspace?.phase !== 'confirm' &&
+            !(
+              batch.workspace?.action === 'reprocess' &&
+              batch.workspace.phase === 'choose'
+            ))
             ? 'hidden'
             : 'contents'
         }

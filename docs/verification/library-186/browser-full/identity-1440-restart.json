@@ -1,0 +1,222 @@
+{
+  "status": "passed",
+  "width": 1440,
+  "phase": "restart",
+  "checks": [
+    "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login",
+    "Real credential login; protected route return; real logout; anonymous protected page redirects"
+  ],
+  "layouts": [],
+  "health": [
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "settings": {
+    "site_settings": [
+      {
+        "id": 1,
+        "public_url": "http://ariso-53542.localhost:53542",
+        "time_zone": "UTC",
+        "name": "Ariso",
+        "description": "",
+        "logo_key": null,
+        "logo_mime": null,
+        "favicon_key": null,
+        "favicon_mime": null,
+        "updated_at": 1791042728765
+      }
+    ],
+    "media_settings": [
+      {
+        "id": 1,
+        "compression_enabled": 1,
+        "output_format": "webp",
+        "quality": 82,
+        "max_edge": null,
+        "jpeg_background": "#FFFFFF",
+        "watermark_mode": "off",
+        "default_link_version": "compressed",
+        "default_visibility": "public",
+        "concurrency": 1,
+        "updated_at": 1791042728765,
+        "watermark_asset_id": null,
+        "watermark_text": "",
+        "watermark_font": "chinese",
+        "watermark_font_size": 3,
+        "watermark_color": "#FFFFFF",
+        "watermark_stroke_color": "#000000",
+        "watermark_stroke_width": 0,
+        "watermark_opacity": 50,
+        "watermark_position": "bottom-right",
+        "watermark_margin": 2,
+        "watermark_width": 20
+      }
+    ],
+    "storage_settings": [
+      {
+        "id": 1,
+        "default_storage_id": "6a231b63-f946-425d-9ae0-1a811bdf2691"
+      }
+    ],
+    "storage_configs": [
+      {
+        "id": "6a231b63-f946-425d-9ae0-1a811bdf2691",
+        "name": "默认本地存储",
+        "type": "local",
+        "enabled": 1,
+        "created_at": 1791042717513,
+        "updated_at": 1791042717513,
+        "local_path": "default",
+        "endpoint": null,
+        "region": null,
+        "bucket": null,
+        "path_prefix": null,
+        "force_path_style": null,
+        "access_key_encrypted": null,
+        "secret_key_encrypted": null,
+        "config_revision": 1,
+        "connection_status": "untested",
+        "connection_revision": null,
+        "connection_tested_at": null,
+        "cors_status": "untested",
+        "cors_revision": null,
+        "cors_origin": null,
+        "cors_tested_at": null,
+        "connection_report": null,
+        "cors_report": null
+      }
+    ]
+  },
+  "activeCheck": "login-failures",
+  "sessionChecks": [
+    {
+      "check": "Real HTTP 429 feedback disables login until the retry header window expires",
+      "retrySeconds": 10
+    },
+    {
+      "check": "A real valid owner session enters the backend from Home Login, honors existing local returnTo and rejects an external destination without showing the login form"
+    },
+    {
+      "check": "Aged real session renews on window focus and browser cookie expiry advances",
+      "beforeExpiry": 1791647550.999927,
+      "afterExpiry": 1791647552.510902
+    },
+    {
+      "check": "Expired real session redirects from the visible upload page to the expiry notice"
+    },
+    {
+      "check": "Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry"
+    }
+  ],
+  "loginFailureChecks": [
+    {
+      "scenario": "HTML gateway error",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 502）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "malformed error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 500）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "null error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "array error JSON",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "non-string error code",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 400）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "stable server error code",
+      "injection": "browser fetch boundary",
+      "message": "登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "credential error code",
+      "injection": "browser fetch boundary",
+      "message": "邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "login request rejected",
+      "injection": "browser fetch boundary",
+      "message": "连接中断，无法确认登录结果，请检查网络后重试。",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "empty rate-limit response",
+      "injection": "browser fetch boundary",
+      "message": "登录请求过于频繁，请等待服务允许后重试。（HTTP 429）",
+      "loginStatuses": []
+    },
+    {
+      "scenario": "session HTTP failure",
+      "injection": "browser fetch boundary",
+      "message": "无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "invalid session response",
+      "injection": "browser fetch boundary",
+      "message": "登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）",
+      "loginStatuses": [429, 200]
+    },
+    {
+      "scenario": "unconfirmed session",
+      "injection": "browser fetch boundary",
+      "message": "尚未确认登录会话，请重试。",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "session request rejected",
+      "injection": "browser fetch boundary",
+      "message": "连接中断，无法确认登录结果，请检查网络后重试。",
+      "loginStatuses": [200]
+    },
+    {
+      "scenario": "Deferred React commit and repeated identical login feedback",
+      "injection": "browser fetch boundary and controlled MessagePort scheduling",
+      "attempts": [
+        {
+          "attempt": 1,
+          "queuedCommits": 1,
+          "alertPresent": false,
+          "focusedAfterCommit": true
+        },
+        {
+          "attempt": 2,
+          "queuedCommits": 1,
+          "alertPresent": false,
+          "focusedAfterCommit": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

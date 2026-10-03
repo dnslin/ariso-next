@@ -2,6 +2,8 @@ import { expect, it } from 'vitest';
 import { parseLibraryBatch } from '../../../src/server/library/batch.ts';
 import type { BatchCommand } from '../../../src/server/library/batch-types.ts';
 
+const taskId = '9b621900-d4c6-4306-9185-7768fba66eb4';
+
 const request = {
   ids: ['image'],
   query: '',
@@ -44,6 +46,32 @@ it.each([
   { ...request, command: { type: 'visibility', visibility: 'hidden' } },
   { ...request, command: { type: 'trash', permanent: true } },
   { ...request, command: { type: 'reprocess' } },
+  { ...request, command: { type: 'reprocess', scope: 'all', taskIds: {} } },
+  {
+    ...request,
+    command: { type: 'reprocess', scope: 'all', taskIds: { other: taskId } },
+  },
+  {
+    ...request,
+    command: {
+      type: 'reprocess',
+      scope: 'all',
+      taskIds: { image: taskId, other: taskId },
+    },
+  },
+  {
+    ...request,
+    command: { type: 'reprocess', scope: 'all', taskIds: { image: 'invalid' } },
+  },
+  {
+    ...request,
+    ids: ['image', 'other'],
+    command: {
+      type: 'reprocess',
+      scope: 'all',
+      taskIds: { image: taskId, other: taskId },
+    },
+  },
   { ...request, allMatching: true },
   { ...request, mode: undefined },
   { ...request, mode: 'retry' },
@@ -88,3 +116,15 @@ it('accepts both explicit modes and the existing trash scope for restore, withou
       ).toEqual(command);
   }
 });
+
+it.each(['all', 'compressed', 'thumbnail', 'watermark'] as const)(
+  'accepts explicit %s task identities in apply and check without selecting extra images',
+  (scope) => {
+    for (const mode of ['apply', 'check']) {
+      const command = { type: 'reprocess', scope, taskIds: { image: taskId } };
+      expect(parseLibraryBatch({ ...request, command, mode }).command).toEqual(
+        command,
+      );
+    }
+  },
+);

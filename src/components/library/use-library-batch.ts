@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { toast } from '@heroui/react/toast';
 import type {
   BatchCommand,
@@ -40,6 +40,7 @@ export const batchLabels: Record<BatchAction, string> = {
   private: '设为私有',
   trash: '移入回收站',
   restore: '恢复所选',
+  reprocess: '重新处理',
 };
 
 export function batchSuccessFeedback(
@@ -76,6 +77,22 @@ export function batchSuccessFeedback(
   };
 }
 
+/** Accepted failures retry only the immutable scope of their own task. */
+export function batchFailedTaskIds(
+  results: BatchItemResult[],
+  scope: 'all' | 'compressed' | 'thumbnail' | 'watermark',
+) {
+  return results
+    .filter(
+      (result) =>
+        result.status === 'accepted' &&
+        result.inQuery &&
+        result.task?.scope === scope &&
+        (result.task.status === 'failed' || result.task.status === 'cancelled'),
+    )
+    .map((result) => result.id);
+}
+
 export function useLibraryBatch({
   selection,
   query,
@@ -97,6 +114,8 @@ export function useLibraryBatch({
   const [targetReady, setTargetReady] = useState(false);
   const [showFailures, setShowFailures] = useState(false);
   const [pending, setPending] = useState(false);
+  const [progressError, setProgressError] = useState('');
+  const [progressAttempt, setProgressAttempt] = useState(0);
   const inFlight = useRef(false);
   const controller = useRef<AbortController | null>(null);
   const source = useRef<HTMLElement | null>(null);
@@ -106,6 +125,7 @@ export function useLibraryBatch({
     source.current = element;
     setTargetReady(false);
     setShowFailures(false);
+    setProgressError('');
     if (workspace?.unknownIds.length) {
       setVisible(true);
       return;
@@ -123,11 +143,13 @@ export function useLibraryBatch({
     const command: BatchCommand | null =
       action === 'public' || action === 'private'
         ? { type: 'visibility', visibility: action }
-        : action === 'trash' || action === 'restore'
-          ? { type: action }
-          : action === 'remove-albums' && currentAlbumId
-            ? { type: action, albumIds: [currentAlbumId] }
-            : null;
+        : action === 'reprocess'
+          ? { type: 'reprocess', scope: 'all', taskIds: {} }
+          : action === 'trash' || action === 'restore'
+            ? { type: action }
+            : action === 'remove-albums' && currentAlbumId
+              ? { type: action, albumIds: [currentAlbumId] }
+              : null;
     setWorkspace({
       action,
       items,
@@ -140,7 +162,12 @@ export function useLibraryBatch({
       message: '',
       checkFailed: false,
       retrying: false,
-      phase: command && action !== 'remove-albums' ? 'confirm' : 'choose',
+      phase:
+        action === 'reprocess'
+          ? 'choose'
+          : command && action !== 'remove-albums'
+            ? 'confirm'
+            : 'choose',
     });
     setVisible(true);
   }
@@ -169,24 +196,44 @@ export function useLibraryBatch({
   ) {
     if (inFlight.current || !workspace || !ids.length) return;
     if (mode === 'apply' && workspace.unknownIds.length) return;
+    if (
+      mode === 'apply' &&
+      workspace.unsentIds.length &&
+      command.type === 'reprocess' &&
+      workspace.command?.type === 'reprocess' &&
+      command.scope !== workspace.command.scope
+    )
+      return;
     inFlight.current = true;
     setPending(true);
+    setProgressError('');
     setShowFailures(false);
+    if (mode === 'apply' && command.type === 'reprocess') {
+      command = {
+        ...command,
+        taskIds: {
+          ...command.taskIds,
+          ...Object.fromEntries(ids.map((id) => [id, crypto.randomUUID()])),
+        },
+      };
+    }
     const retrying = mode === 'apply' && workspace.phase === 'result';
     const keepSourcePhase =
       mode === 'apply' &&
       ((command.type === 'visibility' && workspace.phase === 'confirm') ||
         ((command.type === 'add-tags' || command.type === 'remove-tags') &&
           workspace.phase === 'choose'));
-    const items = retrying
-      ? workspace.items.filter(
-          (item) =>
-            ids.includes(item.id) || workspace.unsentIds.includes(item.id),
-        )
-      : workspace.items;
-    const previousResults = retrying
-      ? []
-      : workspace.results.filter((result) => !ids.includes(result.id));
+    const items =
+      retrying && command.type !== 'reprocess'
+        ? workspace.items.filter(
+            (item) =>
+              ids.includes(item.id) || workspace.unsentIds.includes(item.id),
+          )
+        : workspace.items;
+    const previousResults =
+      retrying && command.type !== 'reprocess'
+        ? []
+        : workspace.results.filter((result) => !ids.includes(result.id));
     const resultsById = new Map(
       previousResults.map((result) => [result.id, result]),
     );
@@ -221,6 +268,10 @@ export function useLibraryBatch({
           for (const result of results) {
             resultsById.set(result.id, result);
             remainingUnsent.delete(result.id);
+            if (result.status === 'unknown') {
+              if (!result.inQuery) selection.remove(result.id);
+              continue;
+            }
             if (result.status !== 'failed' || !result.inQuery)
               selection.remove(result.id);
             else selection.recordFailure(result.id, result.message);
@@ -228,7 +279,11 @@ export function useLibraryBatch({
           const currentResults = [...resultsById.values()];
           setWorkspace((previous) => {
             if (!previous) return previous;
-            const done = new Set(results.map((result) => result.id));
+            const done = new Set(
+              results
+                .filter((result) => result.status !== 'unknown')
+                .map((result) => result.id),
+            );
             return {
               ...previous,
               results: currentResults,
@@ -260,6 +315,7 @@ export function useLibraryBatch({
           previous && {
             ...previous,
             ...outcome,
+            results: [...resultsById.values()],
             phase: keepSourcePhase && feedback ? workspace.phase : 'result',
             checkFailed: mode === 'check' && outcome.unknownIds.length > 0,
             unsentIds,
@@ -333,6 +389,118 @@ export function useLibraryBatch({
       if (!active.signal.aborted) setPending(false);
     }
   }
+  const readProgress = useEffectEvent(
+    async (snapshot: BatchWorkspace, signal: AbortSignal) => {
+      if (snapshot.command?.type !== 'reprocess') return;
+      const command = snapshot.command;
+      const ids = snapshot.results
+        .filter(
+          (result) =>
+            result.status === 'accepted' &&
+            (result.task?.status === 'queued' ||
+              result.task?.status === 'running'),
+        )
+        .map((result) => result.id);
+      if (!ids.length) return;
+      const updates: BatchItemResult[] = [];
+      try {
+        const active = snapshot.results.filter((result) =>
+          ids.includes(result.id),
+        );
+        const outcomes = await Promise.all(
+          ['all', 'compressed', 'thumbnail', 'watermark'].map(async (scope) => {
+            const scopedIds = active
+              .filter((result) => result.task?.scope === scope)
+              .map((result) => result.id);
+            return requestBatch(
+              scopedIds,
+              snapshot.query,
+              { ...command, scope: scope as typeof command.scope },
+              'check',
+              signal,
+              (results) => updates.push(...results),
+            );
+          }),
+        );
+        const outcome = {
+          unknownIds: outcomes.flatMap((result) => result.unknownIds),
+          message: outcomes
+            .map((result) => result.message)
+            .filter(Boolean)
+            .join(' '),
+        };
+        if (signal.aborted) return;
+        const unknown = updates.filter((result) => result.status === 'unknown');
+        if (outcome.unknownIds.length || unknown.length)
+          setProgressError(
+            outcome.message || '暂时无法读取本任务进度，请再次读取。',
+          );
+        const confirmed = updates.filter(
+          (result) => result.status !== 'unknown',
+        );
+        const byId = new Map(confirmed.map((result) => [result.id, result]));
+        setWorkspace((previous) =>
+          previous?.command === command
+            ? {
+                ...previous,
+                results: previous.results.map(
+                  (result) => byId.get(result.id) ?? result,
+                ),
+              }
+            : previous,
+        );
+        for (const result of confirmed) {
+          if (!result.inQuery) selection.remove(result.id);
+        }
+        const terminal = confirmed.filter(
+          (result) =>
+            result.task &&
+            result.task.status !== 'queued' &&
+            result.task.status !== 'running',
+        );
+        if (terminal.length) {
+          notifyLibraryChanged();
+          await onRefresh(terminal, command);
+        }
+      } catch (error) {
+        if (signal.aborted) return;
+        if (error instanceof BatchRequestError && error.status === 401) {
+          selection.clear();
+          setWorkspace(null);
+          setVisible(false);
+          onExpire();
+          return;
+        }
+        setProgressError(
+          error instanceof Error ? error.message : String(error),
+        );
+      }
+    },
+  );
+  const processing = !!workspace?.results.some(
+    (result) =>
+      result.status === 'accepted' &&
+      (result.task?.status === 'queued' || result.task?.status === 'running'),
+  );
+  useEffect(() => {
+    if (
+      !visible ||
+      !workspace ||
+      workspace.command?.type !== 'reprocess' ||
+      pending ||
+      progressError ||
+      !processing
+    )
+      return;
+    const active = new AbortController();
+    const timer = setTimeout(() => {
+      void readProgress(workspace, active.signal);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+      active.abort();
+    };
+  }, [visible, workspace, pending, progressError, processing, progressAttempt]);
   const failedIds =
     workspace?.results
       .filter(
@@ -376,6 +544,21 @@ export function useLibraryBatch({
     retryFailures: () =>
       workspace?.command && void run(workspace.command, 'apply', failedIds),
     failedIds,
+    progressError,
+    retryFailuresAll: () =>
+      workspace?.command?.type === 'reprocess' &&
+      void run({ ...workspace.command, scope: 'all' }, 'apply', failedIds),
+    checkProgress: () => {
+      setProgressError('');
+      setProgressAttempt((value) => value + 1);
+    },
+    retryTasks: (scope: 'all' | 'compressed' | 'thumbnail' | 'watermark') =>
+      workspace?.command?.type === 'reprocess' &&
+      void run(
+        { ...workspace.command, scope },
+        'apply',
+        batchFailedTaskIds(workspace.results, scope),
+      ),
   };
 }
 export type LibraryBatch = ReturnType<typeof useLibraryBatch>;

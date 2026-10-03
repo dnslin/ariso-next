@@ -267,6 +267,7 @@ describe('explicit library selection', () => {
           expect(Object.keys(selection.selected.get('240')!)).toEqual([
             'id',
             'displayName',
+            'processingStatus',
             'thumbnailUrl',
             'storage',
             'byteSize',
@@ -342,6 +343,7 @@ describe('explicit library selection', () => {
           expect(selection.selected.get('a')).toEqual({
             id: 'a',
             displayName: '新名称',
+            processingStatus: 'ready',
             byteSize: 1024,
             thumbnailUrl: '/i/a?type=thumbnail',
             storage: updated.storage,

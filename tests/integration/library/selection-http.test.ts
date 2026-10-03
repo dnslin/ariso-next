@@ -107,6 +107,7 @@ it('rechecks real selected records through owner-cookie HTTP with explicit valid
           id: 'real',
           displayName: 'real',
           byteSize: 100,
+          processingStatus: 'ready',
           storage: { id: 'local', name: 'Local', enabled: true },
           thumbnailUrl: null,
         },

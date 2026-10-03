@@ -1,0 +1,175 @@
+Already up to date
+Done in 73ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |integration| tests/integration/library/batch-reprocess.test.ts (16 tests | 1 failed) 1275ms
+   × rechecks current query, storage, active task, disabled ranges and format for every item 64ms
+ ❯ |integration| tests/integration/library/selection.test.ts (11 tests | 2 failed) 211ms
+   × drops recycled, deleting, removed and changed records while disabled storage remains valid 29ms
+   × returns a thumbnail URL only for a saved thumbnail on enabled storage, without leaking object keys 15ms
+{"time":"2026-10-03T15:47:59.912Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted ephemeral setup code]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-03T15:47:59.991Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-03T15:48:00.477Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted ephemeral setup code]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-03T15:48:00.482Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-QhrNVV/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-03T15:48:00.488Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-03T15:48:00.903Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted ephemeral setup code]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-03T15:48:00.966Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/library/selection-http.test.ts (1 test | 1 failed) 1170ms
+   × rechecks real selected records through owner-cookie HTTP with explicit validation and no caching 1170ms
+ ❯ |media-tools| tests/integration/media/svg.test.ts (8 tests | 1 failed) 18534ms
+   ❯ isolated static SVG preview (8)
+     × scales a large canvas before raster allocation and retains original dimensions 5040ms
+ ❯ |media-tools| tests/integration/delivery/reprocess.test.ts (5 tests | 1 failed) 16183ms
+   ❯ T-DEL-02 local media reprocessing and stable delivery links (5)
+     × keeps published bytes throughout real candidate generation (publish-failure) 5090ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/batch-reprocess.test.ts > rechecks current query, storage, active task, disabled ranges and format for every item
+AssertionError: expected [ { id: 'disabled', …(4) }, …(5) ] to match object [ { id: 'disabled', …(2) }, …(5) ]
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -19,11 +19,11 @@
+      "id": "outside",
+      "inQuery": false,
+      "status": "failed",
+    },
+    {
+-     "code": "MEDIA_IMAGE_UNAVAILABLE",
++     "code": "LIBRARY_IMAGE_OUTSIDE_QUERY",
+      "id": "deleting",
+      "status": "failed",
+    },
+    {
+      "code": "MEDIA_IMAGE_NOT_FOUND",
+
+ ❯ tests/integration/library/batch-reprocess.test.ts:346:64
+    344|     defaultLinkVersion: 'original',
+    345|   });
+    346|   expect((await run(ids, command(ids, 'compressed'))).results).toMatch…
+       |                                                                ^
+    347|     { id: 'disabled', status: 'failed', code: 'MEDIA_REPROCESS_DISABLE…
+    348|     { id: 'active', status: 'failed', code: 'MEDIA_JOB_CONFLICT' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |integration| tests/integration/library/selection-http.test.ts > rechecks real selected records through owner-cookie HTTP with explicit validation and no caching
+AssertionError: expected { items: [ { id: 'real', …(5) } ] } to deeply equal { items: [ { id: 'real', …(4) } ] }
+
+- Expected
++ Received
+
+@@ -2,10 +2,11 @@
+    "items": [
+      {
+        "byteSize": 100,
+        "displayName": "real",
+        "id": "real",
++       "processingStatus": "ready",
+        "storage": {
+          "enabled": true,
+          "id": "local",
+          "name": "Local",
+        },
+
+ ❯ tests/integration/library/selection-http.test.ts:104:35
+    102|     expect(response.status).toBe(200);
+    103|     expect(response.headers.get('cache-control')).toBe('no-store');
+    104|     expect(await response.json()).toEqual({
+       |                                   ^
+    105|       items: [
+    106|         {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |integration| tests/integration/library/selection.test.ts > drops recycled, deleting, removed and changed records while disabled storage remains valid
+AssertionError: expected { id: 'disabled', …(5) } to deeply equal { id: 'disabled', …(4) }
+
+- Expected
++ Received
+
+@@ -1,9 +1,10 @@
+  {
+    "byteSize": 100,
+    "displayName": "disabled",
+    "id": "disabled",
++   "processingStatus": "ready",
+    "storage": {
+      "enabled": false,
+      "id": "storage-3",
+      "name": "Storage 3",
+    },
+
+ ❯ tests/integration/library/selection.test.ts:190:27
+    188|   );
+    189|   expect(result.items.map((item) => item.id)).toEqual(['disabled', 'no…
+    190|   expect(result.items[0]).toEqual({
+       |                           ^
+    191|     id: 'disabled',
+    192|     displayName: 'disabled',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |integration| tests/integration/library/selection.test.ts > returns a thumbnail URL only for a saved thumbnail on enabled storage, without leaking object keys
+AssertionError: expected [ 'byteSize', 'displayName', …(4) ] to deeply equal [ 'byteSize', 'displayName', …(3) ]
+
+- Expected
++ Received
+
+  [
+    "byteSize",
+    "displayName",
+    "id",
++   "processingStatus",
+    "storage",
+    "thumbnailUrl",
+  ]
+
+ ❯ tests/integration/library/selection.test.ts:233:60
+    232|     read(['thumbnail', 'no-thumbnail']).items.map((item) => item.thumb…
+    233|   ).toEqual(['/i/thumbnail?type=thumbnail', null]);
+    234|   expect(Object.keys(read(['thumbnail']).items[0]).sort()).toEqual([
+       |        ^
+    235|     'byteSize',
+    236|     'displayName',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |media-tools| tests/integration/delivery/reprocess.test.ts > T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (publish-failure)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/delivery/reprocess.test.ts:48:68
+     46|
+     47| describe('T-DEL-02 local media reprocessing and stable delivery links'…
+     48|   it.each(['success', 'write-failure', 'publish-failure'] as const)(
+       |                                                                    ^
+     49|     'keeps published bytes throughout real candidate generation (%s)',
+     50|     async (outcome) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/svg.test.ts:205:3
+    203|   );
+    204|
+    205|   it('scales a large canvas before raster allocation and retains origi…
+       |   ^
+    206|     const f = await fixture(
+    207|       '<rect width="1000000" height="500000" fill="blue"/>',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  5 failed | 122 passed (127)
+      Tests  6 failed | 1201 passed (1207)
+   Start at  23:46:34
+   Duration  304.13s (tests 96%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.

@@ -32,6 +32,7 @@ assert.ok(
     'upload-s3',
     'copy-dropdown',
     'library-batch',
+    'library-reprocess',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -85,6 +86,8 @@ for (const name of [
   'library-selection-reconciliation.json',
   'library-batch.json',
   'library-batch-failure.png',
+  'library-reprocess.json',
+  'library-reprocess-failure.png',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -462,15 +465,17 @@ try {
             ? [['library-viewer-run', 'libraryViewer']]
             : suite === 'library-batch'
               ? [['library-batch', 'libraryBatch']]
-              : suite === 'upload'
-                ? [
-                    ['upload-submissions', 'uploadSubmissions'],
-                    ['upload-relations', 'uploadRelations'],
-                  ]
-                : [
-                    ['upload', 'upload'],
-                    ['upload-polling', 'uploadPolling'],
-                  ];
+              : suite === 'library-reprocess'
+                ? [['library-batch-reprocess', 'libraryReprocess']]
+                : suite === 'upload'
+                  ? [
+                      ['upload-submissions', 'uploadSubmissions'],
+                      ['upload-relations', 'uploadRelations'],
+                    ]
+                  : [
+                      ['upload', 'upload'],
+                      ['upload-polling', 'uploadPolling'],
+                    ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -574,6 +579,12 @@ try {
           'library-batch.log',
         );
         report.libraryBatch = 'passed';
+        await runBrowser(
+          '../e2e/library-batch-reprocess.mjs',
+          identityConfig,
+          'library-batch-reprocess.log',
+        );
+        report.libraryReprocess = 'passed';
         await runBrowser(
           '../e2e/shell-navigation.mjs',
           identityConfig,

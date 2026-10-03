@@ -1,0 +1,31 @@
+Already up to date
+Done in 48ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |unit| tests/unit/library/batch-reprocess.test.ts (12 tests | 1 failed) 77ms
+   × allows partial ranges in mixed ready and failed selection without silently changing failed scope 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-reprocess.test.ts > allows partial ranges in mixed ready and failed selection without silently changing failed scope
+AssertionError: expected '<div data-slot="radio" data-testid="b…' not to contain 'disabled'
+
+Expected: "disabled"
+Received: "<div data-slot="radio" data-testid="batch-reprocess-scope-watermark" class="radio group mt-0 min-w-0 data-[disabled=true]:opacity-100" data-rac=""><label data-slot="radio-content" data-react-aria-pressable="true" class="radio__content h-11 w-full justify-center gap-1 rounded-lg border border-border bg-background text-sm font-normal group-data-[disabled=true]:opacity-[.42] data-[focus-visible=true]:ring-2 data-[focus-visible=true]:ring-focus" data-rac=""><span style="border:0;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap"><input data-react-aria-pressable="true" tabindex="-1" type="radio" aria-describedby="react-aria-_R_4u_ react-aria-_R_eH3_" name="react-aria-_R_eH5_" value="watermark"/>"
+
+ ❯ tests/unit/library/batch-reprocess.test.ts:136:23
+    134|   )?.[0];
+    135|   expect(control).toBeDefined();
+    136|   expect(control).not.toContain('disabled');
+       |                       ^
+    137|   expect(html).toContain('不会自动扩大范围');
+    138| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  00:02:16
+   Duration  708ms (import 71%, transform 17%, tests 12%, worker 1%)

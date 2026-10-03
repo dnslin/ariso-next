@@ -80,6 +80,10 @@ function state(overrides: Partial<LibraryBatch> = {}): LibraryBatch {
     retry: vi.fn(),
     retryFailures: vi.fn(),
     failedIds: [],
+    progressError: '',
+    checkProgress: vi.fn(),
+    retryTasks: vi.fn(),
+    retryFailuresAll: vi.fn(),
     ...overrides,
   };
 }

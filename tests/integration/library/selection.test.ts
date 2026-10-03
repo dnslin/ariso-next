@@ -131,6 +131,26 @@ it('returns only requested IDs still matching all filters and current album/tag 
   expect(read(requested, query.toString())).toEqual({ items: [] });
 });
 
+it('refreshes the processing status of explicit cross-page selections', () => {
+  seed('failed', { processingStatus: 'failed' });
+  seed('ready');
+  expect(
+    read(['failed', 'ready']).items.map(({ id, processingStatus }) => ({
+      id,
+      processingStatus,
+    })),
+  ).toEqual([
+    { id: 'failed', processingStatus: 'failed' },
+    { id: 'ready', processingStatus: 'ready' },
+  ]);
+  connection.db
+    .update(mediaImages)
+    .set({ processingStatus: 'ready' })
+    .where(eq(mediaImages.id, 'failed'))
+    .run();
+  expect(read(['failed']).items[0].processingStatus).toBe('ready');
+});
+
 it('drops recycled, deleting, removed and changed records while disabled storage remains valid', () => {
   for (const id of [
     'normal',
@@ -172,6 +192,7 @@ it('drops recycled, deleting, removed and changed records while disabled storage
     displayName: 'disabled',
     byteSize: 100,
     storage: { id: 'storage-3', name: 'Storage 3', enabled: false },
+    processingStatus: 'ready',
     thumbnailUrl: null,
   });
 });
@@ -214,6 +235,7 @@ it('returns a thumbnail URL only for a saved thumbnail on enabled storage, witho
     'byteSize',
     'displayName',
     'id',
+    'processingStatus',
     'storage',
     'thumbnailUrl',
   ]);

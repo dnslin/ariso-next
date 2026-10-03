@@ -86,6 +86,7 @@ export function LibrarySelectionMenu({
           'remove-tags',
           'public',
           'private',
+          'reprocess',
           'trash',
         ];
   const pages = Math.max(1, Math.ceil(total / 20));

@@ -5,6 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import { ArrowLeft, Check } from 'lucide-react';
+import { BatchReprocessContent, BatchReprocessFooter } from './batch-reprocess';
 import { BatchSummary, BatchSummaryFooter } from './batch-summary';
 import { BatchTargets, BatchThumbnail } from './batch-targets';
 import { batchLabels, type LibraryBatch } from './use-library-batch';
@@ -36,6 +37,8 @@ export function BatchWorkspaceContent({
     if (batch.visible) heading.current?.focus({ preventScroll: true });
   }, [batch.visible, workspace?.phase, batch.showFailures]);
   if (!workspace || !batch.visible) return null;
+  if (workspace.action === 'reprocess')
+    return <BatchReprocessContent batch={batch} />;
   const label = batchLabels[workspace.action];
   const choosingTags =
     workspace.phase === 'choose' && workspace.action.endsWith('tags');
@@ -243,6 +246,8 @@ export function BatchWorkspaceContent({
                   ? {
                       changed: '已修改',
                       unchanged: '无需修改',
+                      accepted: '任务已受理',
+                      unknown: '结果待核对',
                       failed: workspace.retrying ? '再次失败' : '失败',
                     }[result.status]
                   : workspace.unsentIds.includes(item.id)
@@ -320,6 +325,8 @@ export function BatchWorkspaceFooter({ batch }: { batch: LibraryBatch }) {
   const workspace = batch.workspace;
   if (!workspace || !batch.visible || workspace.phase === 'confirm')
     return null;
+  if (workspace.action === 'reprocess')
+    return <BatchReprocessFooter batch={batch} />;
   if (
     workspace.phase === 'result' &&
     !workspace.action.endsWith('albums') &&
