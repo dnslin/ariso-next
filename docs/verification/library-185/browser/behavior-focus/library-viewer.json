@@ -1,0 +1,56 @@
+{
+  "status": "failed",
+  "phase": "behavior",
+  "checks": [
+    "A real filtered private query crosses page 1 index 19→20 and reaches index 24 without looping; first/last disable correctly. Only three slides/current±1 delivery requests are allowed. Closing first restores original detail entry, then exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+    "Desktop real YARL Zoom enlarges, resets, handles +/− keyboard and wheel. Mouse/arrow pan while zoomed retains image identity; supported system fullscreen is entered/exited through its real API."
+  ],
+  "layouts": [],
+  "screenshots": [
+    "library-viewer-system-fullscreen.png",
+    "library-viewer-touch-pinch-pan.png"
+  ],
+  "limitations": [
+    "Ego Chromium; touch and missing Fullscreen capability are browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+    "Screenshots and geometric assertions require independent Figma comparison and user manual acceptance; they do not grant design approval."
+  ],
+  "navigationLayoutControl": {
+    "scrollTop": 104,
+    "reachable": true,
+    "x": 195.578125,
+    "y": 154
+  },
+  "preload": {
+    "requests": [
+      {
+        "path": "/api/images/issue185-019/neighbors",
+        "query": "?scope=normal&pageSize=20&q=issue185-query-&visibility=private&sort=uploaded_asc"
+      },
+      {
+        "path": "/api/images/status",
+        "query": ""
+      },
+      {
+        "path": "/api/images/issue185-018",
+        "query": ""
+      },
+      {
+        "path": "/api/images/issue185-020",
+        "query": ""
+      }
+    ],
+    "imageIds": ["issue185-018", "issue185-020"],
+    "slides": 3,
+    "optimized": false
+  },
+  "detailBodyScroll": {
+    "before": 459,
+    "current": 459,
+    "maximum": 459
+  },
+  "fullscreen": {
+    "supported": true,
+    "enteredAndExited": true
+  },
+  "error": "Error: Object reference chain is too long\n    at handleMessage (file:////[eval1]:8940:27)\n    at file:////[eval1]:8099:47\n    at guardNativeCallback (file:////[eval1]:8087:9)\n    at dispatchCdpMessage (file:////[eval1]:8099:5)"
+}

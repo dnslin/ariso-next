@@ -1,0 +1,38 @@
+{
+  "status": "failed",
+  "width": 1920,
+  "height": 1080,
+  "checks": [
+    "Idle upload cloud animates continuously without hover; reduced motion disables its animation.",
+    "Native multi-selection plus Continue adding retains three real files; all three finish with distinct images, identical processing snapshots and unchanged original bytes."
+  ],
+  "images": [
+    {
+      "id": "c762b202-1de6-4a8c-a251-e210ef34f7f5",
+      "originalName": "sample.jpg"
+    },
+    {
+      "id": "a0778592-bfd9-4607-aeb2-aae0566a6c11",
+      "originalName": "sample.png"
+    },
+    {
+      "id": "498cb278-fd3a-4671-9685-4ffedb77f10b",
+      "originalName": "interaction-1920-added.png"
+    }
+  ],
+  "composition": {
+    "x": 264,
+    "y": 123,
+    "width": 1280,
+    "height": 478
+  },
+  "queue": {
+    "x": 264,
+    "y": 123,
+    "width": 896,
+    "height": 430
+  },
+  "submissionId": "57b2c7b3-b409-4271-98f4-1fd01b8aa0a6",
+  "error": "AssertionError [ERR_ASSERTION]: Visibility trigger uses the real Chip\n    at disclosure (file:////[eval2]:89:10)\n    at async file:////[eval2]:334:3",
+  "page": "[p1 \"Ariso\" | space \"ariso Issue 185 viewer\"(11): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container \"后台侧栏\"\n    anchor \"Ariso 首页\" [ref=105, url=http://ariso-55831.localhost:55831/]\n      text \"Ariso\"\n    button \"收起侧栏\" [ref=106, loc=css:button[aria-label=\"收起侧栏\"]]\n      svg_root\n    container \"后台导航\"\n      svg_root\n      text \"总览\"\n      text \"尚未开放\"\n      anchor \"上传\" [ref=107, loc=css:a[aria-label=\"上传\"], url=http://ariso-55831.localhost:55831/upload]\n        svg_root\n        text \"上传\"\n      anchor \"图库\" [ref=108, loc=css:a[aria-label=\"图库\"], url=http://ariso-55831.localhost:55831/library]\n        svg_root\n        text \"图库\"\n      anchor \"相册\" [ref=109, loc=css:a[aria-label=\"相册\"], url=http://ariso-55831.localhost:55831/albums]\n        svg_root\n        text \"相册\"\n      anchor \"标签\" [ref=110, loc=css:a[aria-label=\"标签\"], url=http://ariso-55831.localhost:55831/tags]\n        svg_root\n        text \"标签\"\n      svg_root\n      text \"分享管理\"\n      text \"尚未开放\"\n      anchor \"回收站\" [ref=111, loc=css:a[aria-label=\"回收站\"], url=http://ariso-55831.localhost:55831/trash]\n        svg_root\n        text \"回收站\"\n      paragraph\n        text \"管理\"\n      svg_root\n      text \"访问统计\"\n      text \"尚未开放\"\n      svg_root\n      text \"存储管理\"\n      text \"尚未开放\"\n      svg_root\n      text \"站点设置\"\n      text \"尚未开放\"\n    button \"账号菜单\" [ref=112, loc=css:button[aria-label=\"账号菜单\"]]\n      text \"O\"\n      text \"Owner\"\n      text \"站点所有者\"\n  container \"图库\"\n    heading\n      text \"图库\"\n    paragraph\n      text \"保存每一刻，也让每一次查找更轻松。\"\n    searchbox \"搜索图片名称\" [ref=113, loc=css:input[placeholder=\"搜索图片名称…\"]]\n      text \"搜索图片名称…\"\n    button \"图片排序 上传时间 ↓ 上传时间 ↓\" [ref=114]\n      text \"上传时间 ↓\"\n    radiobutton \"网格\" [ref=115, loc=css:button[aria-label=\"网格\"]]\n      svg_root\n    radiobutton \"瀑布流\" [ref=116, loc=css:button[aria-label=\"瀑布流\"]]\n      svg_root\n    button \"刷新图库\" [ref=117, loc=css:button[aria-label=\"刷新图库\"]]\n      svg_root\n    button [ref=118]\n      svg_root\n      text \"添加条件\"\n    svg_root\n    button \"查看图片：interaction-1920-added\" [ref=119, loc=css:button[aria-label=\"查看图片：interaction-1920-added\"]]\n    image\n    paragraph\n      text \"interaction-1920-added\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=120]\n    image\n    paragraph\n      text \"sample\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=121]\n    image\n    paragraph\n      text \"sample\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=122]\n    image\n    paragraph\n      text \"sample\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=123]\n    image\n    paragraph\n      text \"sample\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"处理失败\"\n    paragraph\n      text \"PNG\"\n      text \"·\"\n      text \"默认本地存储\"\n    paragraph\n      text \"最近任务失败 ·\"\n      text \"处理完成\"\n    svg_root\n    button \"查看图片：sample\" [ref=124]\n    image\n    paragraph\n      text \"sample\"\n    text \"私有\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=125]\n    image\n    paragraph\n      text \"sample\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=126]\n    image\n    paragraph\n      text \"sample\"\n    text \"私有\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：sample\" [ref=127]\n    image\n  container\n    status\n      text \"9 张图片 · 已加载 9 张\"\n    button \"图片加载方式 加载更多 加载更多\" [ref=128]\n      text \"加载更多\"\n      svg_root\n    button \"每批图片数 40 张 / 批 40 张 / 批\" [ref=129]\n      text \"40 张 / 批\"\n      svg_root\n  dialog \"图片详情\" [ref=130, loc=role:dialog[name=\"图片详情\"]]\n    container\n      heading\n        text \"图片详情\"\n      button \"关闭图片详情\" [ref=131, loc=css:button[aria-label=\"关闭图片详情\"]]\n        svg_root\n    container\n      container\n        container\n          tablist \"查看版本\"\n            tab [ref=132]\n              text \"原图\"\n            tab [ref=133]\n              text \"压缩图\"\n            tab [ref=134]\n              text \"缩略图\"\n            text \"水印图\"\n          tabpanel \"压缩图\" [ref=135, loc=role:tabpanel[name=\"压缩图\"]]\n            image\n            paragraph\n              text \"当前查看：\"\n              text \"压缩图\"\n              text \"· WEBP · 0.4 KiB · 64 × 48 px\"\n        paragraph\n          text \"水印图\"\n          text \"：\"\n          text \"对应处理开关已关闭\"\n      container\n        container\n          heading\n            text \"sample\"\n          button \"版本信息\" [ref=136, loc=css:button[aria-label=\"版本信息\"]]\n            svg_root\n        button \"公开：查看访问说明\" [ref=137, loc=css:button[aria-label=\"公开：查看访问说明\"]]\n          text \"公开\"\n        paragraph\n          text \"已就绪\"\n        container\n          paragraph\n            text \"64\"\n            text \"×\"\n            text \"48\"\n            text \"px · 原图\"\n            text \"JPEG\"\n            text \"·\"\n            text \"0.6 KiB\"\n          paragraph\n            text \"默认本地存储\"\n            text \"·\"\n            text \"2026/10/2 21:19:15\"\n        container\n          paragraph\n            text \"相册：\"\n            text \"无\"\n          paragraph\n            text \"标签：\"\n            text \"无\"\n        button [ref=138]\n          text \"查看大图\"\n        container\n          paragraph\n            text \"原始名称：\"\n            text \"sample.jpg\"\n          paragraph\n            text \"图片 ID：\"\n            text \"c762b202-1de6-4a8c-a251-e210ef34f7f5\"\n    toolbar \"图片操作\"\n      button [ref=139]\n        text \"复制链接\"\n      button [ref=140]\n        text \"下载压缩图\"\n      button [ref=141]\n        text \"删除图片\"\n"
+}

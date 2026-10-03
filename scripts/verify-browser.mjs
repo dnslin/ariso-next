@@ -22,12 +22,24 @@ const { values } = parseArgs({
 const suite = values.suite;
 const only = values.only;
 assert.ok(
-  ['full', 'upload', 'upload-regression', 'library-batch'].includes(suite),
+  ['full', 'viewer', 'upload', 'upload-regression', 'library-batch'].includes(
+    suite,
+  ),
   'Unknown browser suite',
 );
 assert.ok(
   only === undefined ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
+    (suite === 'viewer' &&
+      [
+        'representative',
+        'behavior',
+        'recovery',
+        'refresh',
+        'consumers',
+        'deleted-source',
+        'pending-navigation',
+      ].includes(only)) ||
     (suite === 'library-batch' &&
       [
         'representative',
@@ -43,7 +55,7 @@ const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
 assert.ok(
   suite !== 'full' || pageLabel === 'p1',
-  'Full suite requires p1; upload suites support an isolated EGO_PAGE_LABEL',
+  'Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL',
 );
 
 const output = resolve(
@@ -57,6 +69,7 @@ for (const name of [
   'shell-navigation.json',
   'error-recovery.json',
   'library.json',
+  'library-viewer.json',
   'library-query.json',
   'library-feedback.json',
   'library-selection.json',
@@ -287,6 +300,7 @@ try {
     libraryDetailScript: pathToFileURL(resolve('e2e/library-detail.mjs')).href,
     libraryDetail171Script: pathToFileURL(resolve('e2e/library-detail-171.mjs'))
       .href,
+    libraryViewerScript: pathToFileURL(resolve('e2e/library-viewer.mjs')).href,
     storageCorsUiScript: pathToFileURL(resolve('e2e/storage-cors-ui.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
@@ -363,23 +377,27 @@ try {
       signal: controller.signal,
     });
     assert.equal(setup.status, 200, await setup.text());
-    const uploadConfig = {
+    const focusedConfig = {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
+      viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
+      viewerCheck: suite === 'viewer' ? only : undefined,
     };
     const stages =
-      suite === 'library-batch'
-        ? [['library-batch', 'libraryBatch']]
-        : suite === 'upload'
-          ? [
-              ['upload-submissions', 'uploadSubmissions'],
-              ['upload-relations', 'uploadRelations'],
-            ]
-          : [
-              ['upload', 'upload'],
-              ['upload-polling', 'uploadPolling'],
-            ];
+      suite === 'viewer'
+        ? [['library-viewer-run', 'libraryViewer']]
+        : suite === 'library-batch'
+          ? [['library-batch', 'libraryBatch']]
+          : suite === 'upload'
+            ? [
+                ['upload-submissions', 'uploadSubmissions'],
+                ['upload-relations', 'uploadRelations'],
+              ]
+            : [
+                ['upload', 'upload'],
+                ['upload-polling', 'uploadPolling'],
+              ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -391,7 +409,7 @@ try {
       await runBrowser(
         `../e2e/${script}.mjs`,
         {
-          ...uploadConfig,
+          ...focusedConfig,
           libraryBatchPhase: suite === 'library-batch' ? only : undefined,
         },
         `${script}.log`,

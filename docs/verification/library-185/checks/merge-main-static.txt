@@ -1,0 +1,15 @@
+$ node --check scripts/verify-browser.mjs
+exit 0
+$ pnpm exec eslint scripts/verify-browser.mjs src/app/library/library-screen.tsx --max-warnings=0
+Already up to date
+Done in 263ms using pnpm v11.19.0
+exit 0
+$ pnpm exec prettier --check docs/design/handoff.md scripts/verify-browser.mjs src/app/library/library-screen.tsx
+Already up to date
+Done in 231ms using pnpm v11.19.0
+Checking formatting...
+All matched files use Prettier code style!
+exit 0
+$ node docs/tasks/check.mjs
+PASS: 120 tasks, 298 requirements, no missing IDs or cycles.
+exit 0

@@ -10,6 +10,7 @@ const { verifyLibraryTrash } = await import(
   new URL('./library-trash.mjs', config.libraryDetailScript).href
 );
 const { verifyLibraryDetail171 } = await import(config.libraryDetail171Script);
+const { verifyLibraryViewer } = await import(config.libraryViewerScript);
 const task = await taskSpace(config.spaceId);
 const page = task.page('p1');
 const report = {
@@ -505,6 +506,7 @@ try {
   await count(40);
   await verifyLibraryDetail({ page, task, config, sql, report });
   await verifyLibraryDetail171({ page, config, sql, report });
+  await verifyLibraryViewer({ page, config, sql, report });
   await verifyLibraryTrash({ page, config, sql, report });
   await sql(`UPDATE session SET expires_at = ${Date.now() - 1}`);
   try {

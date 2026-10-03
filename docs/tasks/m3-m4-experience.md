@@ -239,12 +239,14 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 需求：`R-15.5-01`
 - 范围：[library 规格](../specs/SPEC-library.md) §6；共用 YARL 查看组件和管理版入口，接相邻图片 API。
 - 直接前置：`T-LIB-04`、`T-LIB-06`、`EV-LIBRARY-01`、`DG-LIBRARY`
-- 验收条件：默认预览独立外链；动画原图、SVG既有预览，明确选版不回退。按当前查询跨页、首尾不循环，只预载相邻各一张，不改列表页码/选择；直达详情无列表上下文仅看当前。缩放平移全屏/能力降级有效；下载留详情，无分享/幻灯片；关闭恢复焦点滚动。
-- 验证方法：真实格式/解码与多页查询、同图四版本、移动双指/平移手势、键盘与全屏支持；删除当前图/邻居失败/迟到响应，断言不通过图片优化代理绕 delivery。
-- 界面：所有者图库/相册详情的大图入口；T-LIB-03 neighbors 与 delivery 内容地址。桌面[390:6943](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6943)、手机[390:6996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6996)、桌面状态[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、手机状态[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Select](https://heroui.com/en/docs/react/components/select)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。HeroUI 无专用图片缩放平移查看器，复用已选 YARL 及 Zoom/Fullscreen；DG-LIBRARY 对应 RG-02/06，手机紧凑版本选择器；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 验收条件：默认预览独立外链；动画原图、SVG既有预览，明确选版不回退。按当前查询跨页、首尾不循环，只预载相邻各一张，不改列表页码/选择；直达详情无列表上下文仅看当前。缩放平移及满视口有效；下载留详情，无分享/幻灯片；关闭恢复焦点滚动。
+- 验证方法：真实格式/解码与多页查询、同图四版本、移动双指/平移手势、键盘与满视口显示；删除当前图/邻居失败/迟到响应，断言不通过图片优化代理绕 delivery。
+- 界面：所有者图库/相册详情的大图入口；T-LIB-03 neighbors 与 delivery 内容地址。桌面[390:6943](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6943)、手机[390:6996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6996)、桌面状态[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、手机状态[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Select](https://heroui.com/en/docs/react/components/select)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。HeroUI 无专用图片缩放平移查看器，复用已选 YARL 及 Zoom；2026-10-02人工反馈按[设计交接](../design/handoff.md#管理大图人工反馈调整2026-10-02)改为图标入口、整视口图片和单一关闭入口，选版沿既有详情，DG-LIBRARY 对应 RG-02/06；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 同图选版与缩放全屏：真实格式，明确选版不回退。
+  - [ ] 1. 详情选版继承与满视口缩放：真实格式，明确选版不回退。
   - [ ] 2. 当前查询跨页邻居：仅预载两张、删除恢复和关闭归焦。
+
+- 实施证据：[Issue #185 记录](../verification/library-185/README.md)。管理查看器已接入共用详情；2026-10-02按所有者反馈采用 YARL 标准 Lightbox，图库和相册可在大图中连续浏览。自动验证和独立审计在本记录维护，最终整体界面仍待用户人工验收。匿名查看器由 T-SHR-04 承接，不把本次管理范围描述为分享能力完成。
 
 #### DG-LIBRARY T-LIB-07 核对结论
 

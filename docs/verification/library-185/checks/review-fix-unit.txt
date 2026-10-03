@@ -1,0 +1,55 @@
+Already up to date
+Done in 682ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+{"level":"error","time":"2026-10-03T10:16:51.703Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso/test-results/worktrees/issue-185/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-03T10:16:51.715Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso/test-results/worktrees/issue-185/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+ ❯ |unit| tests/unit/scripts/container.test.ts (9 tests | 1 failed) 5022ms
+   ❯ container verification assertions (9)
+     × 即使没有HTTP响应也拒绝已监听TCP端口，关闭后通过 5004ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/scripts/container.test.ts > container verification assertions > 即使没有HTTP响应也拒绝已监听TCP端口，关闭后通过
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/scripts/container.test.ts:44:3
+     42|     expect(parent.BETTER_AUTH_SECRET).toBe('real');
+     43|   });
+     44|   it('即使没有HTTP响应也拒绝已监听TCP端口，关闭后通过', async () => {
+       |   ^
+     45|     const server = createServer((socket) => socket.on('error', () => {…
+     46|     await new Promise<void>((accept) => server.listen(0, '127.0.0.1', …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: listen EPERM: operation not permitted 127.0.0.1
+ ❯ Server.setupListenHandle [as _listen2] node:net:1987:21
+ ❯ listenInCluster node:net:2066:12
+ ❯ node:net:2275:7
+ ❯ processTicksAndRejections node:internal/process/task_queues:90:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+This error originated in "tests/unit/scripts/container.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "即使没有HTTP响应也拒绝已监听TCP端口，关闭后通过". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed | 70 passed (71)
+      Tests  1 failed | 868 passed (869)
+     Errors  1 error
+   Start at  18:16:48
+   Duration  8.30s (import 43%, tests 40%, transform 16%, worker 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

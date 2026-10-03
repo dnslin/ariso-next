@@ -1,0 +1,119 @@
+{
+  "status": "failed",
+  "phase": "consumers",
+  "checks": [
+    "Album content consumes the shared viewer with actual album-only neighbor query and keeps its route on close. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row."
+  ],
+  "layouts": [],
+  "screenshots": [
+    "library-viewer-album-consumer-1440.png",
+    "library-viewer-upload-consumer-390.png",
+    "library-viewer-long-name-360-short.png"
+  ],
+  "limitations": [
+    "Ego Chromium; touch and missing Fullscreen capability are browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+    "Screenshots and geometric assertions require independent Figma comparison and user manual acceptance; they do not grant design approval."
+  ],
+  "albumSequence": ["issue185-008", "issue185-007"],
+  "longName": {
+    "width": 360,
+    "height": 400,
+    "heading": {
+      "text": "图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图图",
+      "height": 599.240478515625
+    },
+    "targets": [
+      {
+        "name": "全屏",
+        "disabled": false,
+        "width": 45.77531433105469,
+        "height": 45.77531433105469,
+        "top": 8.575958251953125,
+        "bottom": 54.35127258300781,
+        "inViewport": true,
+        "reachable": true
+      },
+      {
+        "name": "关闭大图",
+        "disabled": false,
+        "width": 74.905029296875,
+        "height": 45.77531433105469,
+        "top": 8.575958251953125,
+        "bottom": 54.35127258300781,
+        "inViewport": true,
+        "reachable": true
+      },
+      {
+        "name": "原图",
+        "disabled": false,
+        "width": 80.6269760131836,
+        "height": 45.77532958984375,
+        "top": 632.7847900390625,
+        "bottom": 678.5601196289062,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "压缩图",
+        "disabled": false,
+        "width": 80.62696838378906,
+        "height": 45.77532958984375,
+        "top": 632.7847900390625,
+        "bottom": 678.5601196289062,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "缩略图",
+        "disabled": false,
+        "width": 80.62696838378906,
+        "height": 45.77532958984375,
+        "top": 632.7847900390625,
+        "bottom": 678.5601196289062,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "水印图",
+        "disabled": false,
+        "width": 80.626953125,
+        "height": 45.77532958984375,
+        "top": 632.7847900390625,
+        "bottom": 678.5601196289062,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "上一张",
+        "disabled": true,
+        "width": 105.41651916503906,
+        "height": 49.93670654296875,
+        "top": 720.1740112304688,
+        "bottom": 770.1107177734375,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "放大",
+        "disabled": false,
+        "width": 105.41651916503906,
+        "height": 49.93670654296875,
+        "top": 720.1740112304688,
+        "bottom": 770.1107177734375,
+        "inViewport": false,
+        "reachable": false
+      },
+      {
+        "name": "下一张",
+        "disabled": true,
+        "width": 105.43275451660156,
+        "height": 49.93670654296875,
+        "top": 720.1740112304688,
+        "bottom": 770.1107177734375,
+        "inViewport": false,
+        "reachable": false
+      }
+    ]
+  },
+  "error": "AssertionError [ERR_ASSERTION]: 原图: 255-character name leaves control in the short viewport\n\nfalse !== true\n\n    at verifyViewerLongName (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer-layouts.mjs:252:14)\n    at async verifyLibraryViewer (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer.mjs:55:7)\n    at async file:////[eval2]:20:3"
+}

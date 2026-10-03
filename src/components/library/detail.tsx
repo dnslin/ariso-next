@@ -2,11 +2,13 @@
 
 import {
   useEffect,
+  useCallback,
   useRef,
   useState,
   type RefCallback,
   type ComponentProps,
 } from 'react';
+import dynamic from 'next/dynamic';
 import { QueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -16,12 +18,15 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { Layers } from 'lucide-react';
+import { Expand, Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
+import type { LibraryFilters } from '../../server/library/query-schema';
+import type { VersionKind } from '../../server/media/schema';
 import type { useDetailQuery } from './use-detail-query';
 import { TrashAction } from './trash-actions';
 import { DetailCopy } from './detail-copy';
 import { DetailPreview, initialPreview } from './detail-preview';
+import { initialViewerVersion } from './viewer-model';
 import { AccessDisclosure } from './access-disclosure';
 import {
   bytesLabel,
@@ -29,6 +34,11 @@ import {
   stepLabels,
   versionLabels,
 } from './detail-labels';
+
+const ImageViewer = dynamic(() => import('./image-viewer'), {
+  ssr: false,
+  loading: () => <p role="status">正在打开大图…</p>,
+});
 
 function DetailContent({
   detail,
@@ -41,6 +51,7 @@ function DetailContent({
   onRefresh,
   mutationPending,
   onVersions,
+  onView,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -52,7 +63,15 @@ function DetailContent({
   onRefresh: () => void;
   mutationPending: boolean;
   onVersions: () => void;
+  onView: () => void;
 }) {
+  const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
+  useEffect(() => {
+    if (!viewerTooltipOpen) return;
+    const close = () => setViewerTooltipOpen(false);
+    window.addEventListener('resize', close);
+    return () => window.removeEventListener('resize', close);
+  }, [viewerTooltipOpen]);
   const [downloadMessage, setDownloadMessage] = useState('');
   const [downloading, setDownloading] = useState(false);
   const downloadRequest = useRef<AbortController | null>(null);
@@ -138,6 +157,22 @@ function DetailContent({
                     <Layers aria-hidden size={20} />
                   </Button>
                   <Tooltip.Content>版本信息</Tooltip.Content>
+                </Tooltip>
+                <Tooltip
+                  isOpen={viewerTooltipOpen}
+                  onOpenChange={setViewerTooltipOpen}
+                >
+                  <Button
+                    data-testid="detail-viewer-entry"
+                    aria-label="查看大图"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 shrink-0 rounded-lg text-muted hover:text-foreground"
+                    onPress={onView}
+                  >
+                    <Expand aria-hidden size={20} />
+                  </Button>
+                  <Tooltip.Content>查看大图</Tooltip.Content>
                 </Tooltip>
               </div>
               <AccessDisclosure
@@ -295,8 +330,10 @@ export function LibraryDetail({
   hidden = false,
   onVersions,
   initialSelected,
+  viewerFilters,
 }: {
   initialSelected?: string;
+  viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
   onVersions: (selected: string) => void;
@@ -313,17 +350,60 @@ export function LibraryDetail({
     mutationPending,
     onMutationPending,
     expired,
+    setObservationPaused,
   } = query;
   const [copyOpen, setCopyOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(
     initialSelected ?? null,
   );
   const [previewRevision, setPreviewRevision] = useState(0);
+  const [viewer, setViewer] = useState<{
+    initial: Detail;
+    initialVersion: VersionKind;
+    filters?: LibraryFilters;
+  } | null>(null);
+  const returnFromViewer = useRef(false);
+  const detailScroll = useRef(0);
+  useEffect(() => {
+    setObservationPaused(!!viewer && !hidden);
+    return () => setObservationPaused(false);
+  }, [hidden, setObservationPaused, viewer]);
+  const expireViewerSession = useCallback(
+    () => setUnavailable(401),
+    [setUnavailable],
+  );
+  useEffect(() => {
+    if (!returnFromViewer.current || viewer) return;
+    returnFromViewer.current = false;
+    const frame = requestAnimationFrame(() => {
+      const body = document.querySelector<HTMLElement>(
+        '[data-testid="detail-body"]',
+      );
+      if (body) body.scrollTop = detailScroll.current;
+      document
+        .querySelector<HTMLElement>('[data-testid="detail-viewer-entry"]')
+        ?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [viewer]);
   async function refreshDetail() {
     const result = await query.refetch();
     if (result.isSuccess) setPreviewRevision((value) => value + 1);
   }
   if (hidden) return null;
+  if (viewer && !expired)
+    return (
+      <ImageViewer
+        {...viewer}
+        albumId={albumId}
+        onSessionExpired={expireViewerSession}
+        onClose={() => {
+          returnFromViewer.current = true;
+          setViewer(null);
+          void query.refetch();
+        }}
+      />
+    );
   return (
     <Modal.Backdrop
       isOpen
@@ -424,6 +504,19 @@ export function LibraryDetail({
               onVersions={() =>
                 onVersions(selected ?? initialPreview(query.data))
               }
+              onView={() => {
+                detailScroll.current =
+                  document.querySelector<HTMLElement>(
+                    '[data-testid="detail-body"]',
+                  )?.scrollTop ?? 0;
+                setViewer({
+                  initial: query.data!,
+                  initialVersion: selected
+                    ? (selected as VersionKind)
+                    : initialViewerVersion(query.data!),
+                  filters: viewerFilters,
+                });
+              }}
               revision={previewRevision}
               refreshing={query.isFetching || mutationPending}
               mutationPending={mutationPending}

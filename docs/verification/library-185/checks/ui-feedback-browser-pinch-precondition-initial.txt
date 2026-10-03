@@ -1,0 +1,14 @@
+AssertionError [ERR_ASSERTION]: Both painted axes exceed the viewport before testing two-axis pan
+    at verifyViewerInteractions (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer-interactions.mjs:319:12)
+    at async verifyLibraryViewer (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer.mjs:129:9)
+    at async file:////[eval2]:20:3
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-viewer-run.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:329:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:392:7
+Browser report: /Volumes/data/project/ariso/test-results/worktrees/issue-185/docs/verification/library-185/browser/ui-feedback-final
