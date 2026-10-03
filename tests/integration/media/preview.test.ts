@@ -60,6 +60,7 @@ import {
   initialMediaSettings,
 } from '../../../src/server/media/validation.ts';
 import * as tools from '../../../src/server/media/tools.ts';
+import { createMediaResources } from '../../../src/server/media/resources.ts';
 
 vi.mock('node:fs', async (original) => {
   const actual = await original<typeof import('node:fs')>();
@@ -160,7 +161,11 @@ async function preview(
   await processMediaPreview(runtime, id);
   return requirePreview(runtime, id);
 }
-async function accepted(changes: Partial<PreviewInput['settings']> = {}) {
+async function accepted(
+  changes: Partial<PreviewInput['settings']> = {},
+  bytes = source,
+  format: 'PNG' | 'SVG' = 'PNG',
+) {
   const form = settings(changes);
   const { watermarkAssetId, ...rendering } = form;
   const snapshot: ProcessingSnapshot = {
@@ -173,17 +178,17 @@ async function accepted(changes: Partial<PreviewInput['settings']> = {}) {
   };
   const storage = resolveLocalUploadStorage(runtime.db);
   const plan = planLocalWrite('uploads');
-  await writeObject(runtime.storageRoot, storage, plan, Readable.from(source));
+  await writeObject(runtime.storageRoot, storage, plan, Readable.from(bytes));
   return runtime.db.transaction((tx) =>
     acceptOriginal(tx, {
       imageId: randomUUID(),
       storageId: storage.id,
       key: plan.key,
-      originalName: 'source.png',
+      originalName: format === 'SVG' ? 'source.svg' : 'source.png',
       visibility: 'private',
-      format: 'PNG',
-      mime: 'image/png',
-      byteSize: source.length,
+      format,
+      mime: format === 'SVG' ? 'image/svg+xml' : 'image/png',
+      byteSize: bytes.length,
       snapshot,
       expectedVersions: [
         ...(snapshot.compressionEnabled ? ['compressed' as const] : []),
@@ -240,17 +245,21 @@ async function imageAsset() {
     new AbortController().signal,
   );
 }
-function holdEncodingSettlement() {
+function holdEncodingSettlement(command: 'magick' | 'node' = 'magick') {
   const actual = tools.startMediaTool;
   const entered = Promise.withResolvers<void>();
   const gate = Promise.withResolvers<void>();
   releases.push(() => gate.resolve());
-  const injected: typeof tools.startMediaTool = (command, args, options) => {
-    const tool = actual(command, args, options);
+  const injected: typeof tools.startMediaTool = (
+    toolCommand,
+    args,
+    options,
+  ) => {
+    const tool = actual(toolCommand, args, options);
     if (
-      command !== 'magick' ||
-      typeof options.buffer !== 'object' ||
-      options.buffer.stdout !== false
+      toolCommand !== command ||
+      (command === 'magick' &&
+        (typeof options.buffer !== 'object' || options.buffer.stdout !== false))
     )
       return tool;
     return {
@@ -267,6 +276,61 @@ function holdEncodingSettlement() {
 }
 
 describe('temporary previews use the real formal encoding pipeline', () => {
+  it.each([
+    {
+      size: 'viewBox-only',
+      attributes: 'viewBox="0 0 80 40"',
+      width: 80,
+      height: 40,
+    },
+    {
+      size: 'physical units',
+      attributes: 'width="2in" height="1in"',
+      width: 192,
+      height: 96,
+    },
+  ])(
+    'original SVG with $size matches actual formal properties and preserves source bytes',
+    async ({ attributes, width, height }) => {
+      const bytes = Buffer.from(
+        `<svg xmlns="http://www.w3.org/2000/svg" ${attributes}><rect width="100%" height="100%" fill="red"/></svg>`,
+      );
+      const original = await accepted({}, bytes, 'SVG');
+      await processMediaJob(runtime, claimNextMediaJob(runtime.db)!.id);
+      expect(
+        getImageAccessState(runtime.db, original.imageId)!.latestJob,
+      ).toMatchObject({ status: 'succeeded', error: null });
+      const expected = await formalVersion(original.imageId, 'original');
+      expect(expected.version).toMatchObject({
+        format: 'SVG',
+        mime: 'image/svg+xml',
+        width,
+        height,
+        byteSize: bytes.length,
+      });
+      expect(expected.bytes).toEqual(bytes);
+      const before = businessState();
+      const row = await preview('original', {}, bytes);
+      expect(row).toMatchObject({
+        status: 'succeeded',
+        error: null,
+        unavailableReason: null,
+      });
+      expect(row.result).toEqual({
+        format: expected.version.format,
+        mime: expected.version.mime,
+        width: expected.version.width,
+        height: expected.version.height,
+        byteSize: expected.bytes.length,
+      });
+      expect(
+        await files.readFile(
+          join(runtime.temporaryRoot, `preview-${row.id}`, 'result'),
+        ),
+      ).toEqual(expected.bytes);
+      expect(businessState()).toEqual(before);
+    },
+  );
   it.each([
     { target: 'original', changes: {} },
     {
@@ -402,6 +466,64 @@ describe('temporary previews use the real formal encoding pipeline', () => {
 });
 
 describe('preview lifetime and owned resources', () => {
+  it('awaits original SVG preparation settlement on cancellation before deleting files or releasing its disk budget', async () => {
+    const previews = startPreviewRuntime(runtime);
+    stops.push(() => previews.stop());
+    await previews.ready;
+    runtime.resources = createMediaResources();
+    const beginStep = vi.spyOn(runtime.resources, 'beginStep');
+    const bytes = Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 40"><rect width="80" height="40" fill="red"/></svg>',
+    );
+    const id = await enqueue('original', {}, bytes);
+    expect(claimNextPreview(runtime)?.id).toBe(id);
+    const held = holdEncodingSettlement('node');
+    const running = previews.run(id, new AbortController().signal);
+    await held.entered;
+    const budget = beginStep.mock.results[0].value as ReturnType<
+      typeof runtime.resources.beginStep
+    >;
+    const close = vi.spyOn(budget, 'close');
+    let cancelled = false;
+    const cancellation = previews.cancel(id).then(() => {
+      cancelled = true;
+    });
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    expect(cancelled).toBe(false);
+    expect(requirePreview(runtime, id)).toMatchObject({
+      status: 'running',
+      result: null,
+    });
+    expect(close).not.toHaveBeenCalled();
+    expect(
+      await files.readFile(
+        join(runtime.temporaryRoot, `preview-${id}`, 'source'),
+      ),
+    ).toEqual(bytes);
+    expect(
+      (
+        await files.stat(
+          join(runtime.temporaryRoot, `preview-${id}`, 'work', 'preview.png'),
+        )
+      ).isFile(),
+    ).toBe(true);
+    await expect(
+      files.stat(join(runtime.temporaryRoot, `preview-${id}`, 'result')),
+    ).rejects.toMatchObject({ code: 'ENOENT' });
+    held.release();
+    await Promise.all([running, cancellation]);
+    expect(close).toHaveBeenCalledOnce();
+    expect(requirePreview(runtime, id)).toMatchObject({
+      status: 'cancelled',
+      result: null,
+      cleanupStatus: 'deleted',
+      error: expect.stringContaining('MEDIA_CANCELLED'),
+    });
+    await expect(
+      files.stat(join(runtime.temporaryRoot, `preview-${id}`)),
+    ).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
   it('retains a private result until exactly 30 minutes and removes it at expiry', async () => {
     const previews = startPreviewRuntime(runtime);
     stops.push(() => previews.stop());

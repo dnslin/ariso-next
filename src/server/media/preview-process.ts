@@ -78,6 +78,18 @@ export async function processMediaPreview(
       unavailableReason = '该格式为动画或仅支持预览，不适用压缩和水印';
     if (!unavailableReason) {
       if (row.target === 'original') {
+        if (facts.format === 'SVG') {
+          const prepared = await prepareProcessingInput({
+            sourcePath: source,
+            facts,
+            workspace,
+            signal: stepSignal,
+            diskLimitBytes: budget.diskLimitBytes,
+          });
+          facts.width = prepared.width;
+          facts.height = prepared.height;
+          stepSignal.throwIfAborted();
+        }
         await rename(source, resultPath);
         const handle = await open(resultPath, 'r');
         try {

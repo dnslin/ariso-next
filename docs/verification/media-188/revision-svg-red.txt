@@ -1,0 +1,70 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+ ❯ |media-tools| tests/integration/media/preview.test.ts (26 tests | 2 failed | 24 skipped) 3490ms
+   ❯ temporary previews use the real formal encoding pipeline (15)
+     × original SVG with viewBox-only matches actual formal properties and preserves source bytes 2230ms
+     × original SVG with physical units matches actual formal properties and preserves source bytes 1260ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+AssertionError: expected { format: 'SVG', …(4) } to deeply equal { format: 'SVG', …(4) }
+
+- Expected
++ Received
+
+  {
+    "byteSize": 111,
+    "format": "SVG",
+-   "height": 40,
++   "height": null,
+    "mime": "image/svg+xml",
+-   "width": 80,
++   "width": null,
+  }
+
+ ❯ tests/integration/media/preview.test.ts:314:26
+    312|         unavailableReason: null,
+    313|       });
+    314|       expect(row.result).toEqual({
+       |                          ^
+    315|         format: expected.version.format,
+    316|         mime: expected.version.mime,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+AssertionError: expected { format: 'SVG', …(4) } to deeply equal { format: 'SVG', …(4) }
+
+- Expected
++ Received
+
+  {
+    "byteSize": 116,
+    "format": "SVG",
+-   "height": 96,
++   "height": null,
+    "mime": "image/svg+xml",
+-   "width": 192,
++   "width": null,
+  }
+
+ ❯ tests/integration/media/preview.test.ts:314:26
+    312|         unavailableReason: null,
+    313|       });
+    314|       expect(row.result).toEqual({
+       |                          ^
+    315|         format: expected.version.format,
+    316|         mime: expected.version.mime,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 24 skipped (26)
+   Start at  02:31:28
+   Duration  4.26s (tests 83%, import 12%, transform 5%)
+
