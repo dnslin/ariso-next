@@ -219,6 +219,7 @@ export function readLibraryDetail(
                   : '该版本尚未保存');
         return {
           kind,
+          contentId: saved?.object.id ?? null,
           applicable,
           saved: saved !== null,
           status,

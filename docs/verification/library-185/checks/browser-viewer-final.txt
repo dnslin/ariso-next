@@ -1,0 +1,13 @@
+ElementResolutionError: page.click timed out after 3000ms: page.click failed: <header> intercepts pointer events
+    at #retryElementAction (file:////[eval1]:18884:27)
+    at async file:////[eval1]:18968:29
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-viewer-run.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:325:14)
+    at async file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:388:7
+Browser report: /Volumes/data/project/ariso/test-results/worktrees/issue-185/docs/verification/library-185/browser/final

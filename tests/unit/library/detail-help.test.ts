@@ -39,6 +39,7 @@ const detail: LibraryDetail = {
   versions: [
     {
       kind: 'original',
+      contentId: 'original-content',
       applicable: true,
       saved: true,
       status: 'saved',

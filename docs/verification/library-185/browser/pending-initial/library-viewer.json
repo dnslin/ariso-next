@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "phase": "pending-navigation",
+  "checks": [],
+  "layouts": [],
+  "screenshots": ["library-viewer-pending-navigation-repeated-arrow.png"],
+  "limitations": [
+    "Ego Chromium; touch and missing Fullscreen capability are browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+    "Screenshots and geometric assertions require independent Figma comparison and user manual acceptance; they do not grant design approval."
+  ],
+  "pendingNavigation": {
+    "id": "issue185-007",
+    "kind": "compressed",
+    "decoded": false,
+    "info": "压缩图 · WEBP · 15.8 KiB",
+    "placeholder": "正在读取相邻图片…",
+    "url": "http://ariso-53982.localhost:53982/library?q=issue185-query-&visibility=private&sort=uploaded_asc&pageSize=20&page=1&image=issue185-007"
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Repeated arrow input while actual target read is held must preserve the visible current image, not merely its outer dataset\n+ actual - expected\n\n+ undefined\n- '/i/issue185-007?type=compressed'\n\n    at verifyViewerPendingNavigation (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer-boundaries.mjs:67:12)\n    at async verifyLibraryViewer (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer.mjs:51:7)\n    at async file:////[eval2]:20:3"
+}

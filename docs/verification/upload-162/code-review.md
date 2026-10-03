@@ -203,3 +203,5 @@ runner 为本轮复制的独立 production 包、临时 SQLite、随机端口和
 ## 主分支冲突解决复审
 
 2026-10-03，独立评审 agent `pr230_behavior_review` 实际读取解决后的 `scripts/verify-browser.mjs`，分别与 `e98e367` 及 `origin/main` `40720ac` 比较，并核对三个 e2e 脚本的消费字段。结论通过，无新增缺陷。S3 fixture / cleanup only、复制菜单 green、图库六个阶段及 `libraryBatchPhase`、full 的图库批量步骤、setup 断言、报告清理和 fixture 关闭均保留。评审者实际执行 Node 24 `--check`，退出 0；未运行浏览器。本轮未修改 UI，沿用此前人工验收结论，不将此复审记为新增设计或浏览器验收。
+
+同轮再次同步 `origin/main` `ec8e073`（PR #229），同一独立评审者实际比较两个父版本及查看器 e2e 消费字段。结论通过，无新增缺陷。viewer 七个阶段、脚本入口、报告、`viewerRepresentativeOnly` / `viewerCheck` 均保留；S3 赋值和所有套件传递统一为 `focusedConfig`，没有残留旧名称。原上传、复制、批量和 full 批量入口、收尾完整。评审实际 Node 24 语法检查及 `git diff --check` 退出 0。

@@ -56,6 +56,7 @@ function detail(
       ['original', 'compressed', 'thumbnail', 'watermark'] as const
     ).map((kind): LibraryDetailVersion => ({
       kind,
+      contentId: available.includes(kind) ? `content-${kind}` : null,
       applicable: true,
       saved: available.includes(kind),
       status: available.includes(kind) ? 'saved' : 'not_generated',

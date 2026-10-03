@@ -1,0 +1,15 @@
+AssertionError [ERR_ASSERTION]: The viewer focus refresh receives an actual current-detail HTTP 401
+    at verifyExpiredViewer (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer-refresh.mjs:218:10)
+    at async verifyViewerRefresh (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer-refresh.mjs:467:5)
+    at async verifyLibraryViewer (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/e2e/library-viewer.mjs:150:9)
+    at async file:////[eval2]:20:3
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-viewer-run.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:331:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:394:7
+Browser report: /Volumes/data/project/ariso/test-results/worktrees/issue-185/docs/verification/library-185/browser/review-fix-viewer-final

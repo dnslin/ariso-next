@@ -28,6 +28,8 @@ export interface LibraryDetailLinks {
 }
 export interface LibraryDetailVersion {
   kind: VersionKind;
+  /** Identity of the published bytes; stable delivery paths can be replaced. */
+  contentId: string | null;
   applicable: boolean | null;
   saved: boolean;
   status: 'saved' | 'not_applicable' | 'disabled' | 'failed' | 'not_generated';

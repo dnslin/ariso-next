@@ -1,0 +1,41 @@
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+ ❯ |integration| tests/integration/library/detail.test.ts (8 tests | 1 failed | 7 skipped) 38ms
+   × returns actual saved versions, relationships and separate task summaries without internal storage data 38ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/detail.test.ts > returns actual saved versions, relationships and separate task summaries without internal storage data
+AssertionError: expected { kind: 'compressed', …(12) } to match object { saved: true, …(8) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -1,8 +1,7 @@
+  {
+    "byteSize": 31,
+-   "contentId": "compressed",
+    "downloadPath": "/i/detail?type=compressed&download=1",
+    "format": "WEBP",
+    "height": 400,
+    "links": {
+      "url": "https://images.example.test/i/detail?type=compressed",
+
+ ❯ tests/integration/library/detail.test.ts:183:64
+    181|     processingStatus: 'ready',
+    182|   });
+    183|   expect(detail.versions.find((v) => v.kind === 'compressed')).toMatch…
+       |                                                                ^
+    184|     saved: true,
+    185|     contentId: 'compressed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  18:08:44
+   Duration  615ms (import 66%, transform 26%, tests 7%)
+

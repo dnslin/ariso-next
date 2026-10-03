@@ -1,0 +1,1481 @@
+{
+  "status": "failed",
+  "phase": "behavior",
+  "checks": [
+    "A real filtered private query crosses page 1 index 19→20 and reaches index 24 without looping; first/last disable correctly. Only three slides/current±1 delivery requests are allowed. Closing first restores original detail entry, then exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+    "Desktop real YARL Zoom enlarges, resets, handles +/− keyboard and wheel. Mouse/arrow pan while zoomed retains image identity; supported system fullscreen is entered/exited through its real API.",
+    "Chromium touch emulation performs real two-finger pinch and single-finger zoomed pan. Explicit missing Fullscreen capability hides the system button while viewport viewer and zoom remain. This is browser emulation, not physical-device evidence.",
+    "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs; error-dialog arrow input does not reach background navigation.",
+    "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+    "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+    "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+    "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+    "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward."
+  ],
+  "layouts": [
+    {
+      "state": "viewer-delivery-error",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 1440,
+        "bottom": 1080
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 100,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 450.671875,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "压缩图",
+          "selected": "true",
+          "disabled": null
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-delivery-error",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 390,
+        "bottom": 844
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 72,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 111.34375,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "压缩图",
+          "selected": "true",
+          "disabled": null
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-delivery-error",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 1440,
+        "bottom": 1080
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 100,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 450.671875,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "压缩图",
+          "selected": "true",
+          "disabled": null
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-delivery-error",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 390,
+        "bottom": 844
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 72,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 111.34375,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "压缩图",
+          "selected": "true",
+          "disabled": null
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": null
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-no-readable-version",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 1440,
+        "bottom": 1080
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 100,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 450.671875,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "true",
+          "disabled": "true"
+        },
+        {
+          "text": "压缩图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-no-readable-version",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 390,
+        "bottom": 844
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 72,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 111.34375,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "true",
+          "disabled": "true"
+        },
+        {
+          "text": "压缩图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-no-readable-version",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 1440,
+        "bottom": 1080
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 100,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 155.5,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 450.671875,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 450.65625,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "true",
+          "disabled": "true"
+        },
+        {
+          "text": "压缩图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    },
+    {
+      "state": "viewer-no-readable-version",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "documentOverflow": false,
+      "overflow": false,
+      "fonts": {
+        "heading": {
+          "fontSize": "18px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        "currentVersion": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "hint": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        "tabs": [
+          {
+            "name": "原图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "压缩图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "缩略图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "水印图",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "close": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "21px"
+        },
+        "footerButtons": [
+          {
+            "name": "上一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "放大",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          },
+          {
+            "name": "下一张",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "lineHeight": "21px"
+          }
+        ],
+        "placeholder": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      },
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "right": 390,
+        "bottom": 844
+      },
+      "targets": [
+        {
+          "name": "全屏",
+          "width": 44,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "关闭大图",
+          "width": 72,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "原图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "压缩图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "缩略图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "水印图",
+          "width": 85,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "重试读取",
+          "width": 90,
+          "height": 44,
+          "inViewport": true
+        },
+        {
+          "name": "上一张",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "放大",
+          "width": 111.328125,
+          "height": 48,
+          "inViewport": true
+        },
+        {
+          "name": "下一张",
+          "width": 111.34375,
+          "height": 48,
+          "inViewport": true
+        }
+      ],
+      "versions": [
+        {
+          "text": "原图",
+          "selected": "true",
+          "disabled": "true"
+        },
+        {
+          "text": "压缩图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "缩略图",
+          "selected": "false",
+          "disabled": "true"
+        },
+        {
+          "text": "水印图",
+          "selected": "false",
+          "disabled": "true"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "library-viewer-system-fullscreen.png",
+    "library-viewer-touch-pinch-pan.png",
+    "library-viewer-fullscreen-unavailable.png",
+    "library-viewer-delivery-error-light-1440.png",
+    "library-viewer-delivery-error-light-390.png",
+    "library-viewer-delivery-error-dark-1440.png",
+    "library-viewer-delivery-error-dark-390.png",
+    "library-viewer-no-readable-version-light-1440.png",
+    "library-viewer-no-readable-version-light-390.png",
+    "library-viewer-no-readable-version-dark-1440.png",
+    "library-viewer-no-readable-version-dark-390.png",
+    "library-viewer-real-delivery-loading-390.png",
+    "library-viewer-neighbors-transport-error-390.png",
+    "library-viewer-adjacent-error-light-390.png",
+    "library-viewer-adjacent-error-light-1440.png",
+    "library-viewer-adjacent-error-dark-390.png",
+    "library-viewer-adjacent-error-dark-1440.png",
+    "library-viewer-fullscreen-adjacent-error.png",
+    "library-viewer-current-storage-disabled.png",
+    "library-viewer-current-trashed.png",
+    "library-viewer-current-deleting.png",
+    "library-viewer-pending-navigation-repeated-arrow.png",
+    "library-viewer-decode-error-compressed.png",
+    "library-viewer-decode-error-watermark.png",
+    "library-viewer-current-deleted.png",
+    "library-viewer-deleted-source-toolbar-focus.png"
+  ],
+  "limitations": [
+    "Ego Chromium; touch and missing Fullscreen capability are browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+    "Screenshots and geometric assertions require independent Figma comparison and user manual acceptance; they do not grant design approval."
+  ],
+  "navigationLayoutControl": {
+    "scrollTop": 104,
+    "reachable": true,
+    "x": 195.578125,
+    "y": 154
+  },
+  "preload": {
+    "requests": [
+      {
+        "path": "/api/images/issue185-019/neighbors",
+        "query": "?scope=normal&pageSize=20&q=issue185-query-&visibility=private&sort=uploaded_asc"
+      },
+      {
+        "path": "/api/images/status",
+        "query": ""
+      },
+      {
+        "path": "/api/images/issue185-018",
+        "query": ""
+      },
+      {
+        "path": "/api/images/issue185-020",
+        "query": ""
+      }
+    ],
+    "imageIds": ["issue185-019", "issue185-018", "issue185-020"],
+    "slides": 3,
+    "optimized": false
+  },
+  "detailBodyScroll": {
+    "before": 459,
+    "current": 459,
+    "maximum": 459
+  },
+  "stageBoundary": {
+    "desktop": {
+      "initial": "12px",
+      "zoomed": "0px",
+      "restored": "12px"
+    },
+    "touch": {
+      "initial": "12px",
+      "zoomed": "0px",
+      "restored": "12px"
+    }
+  },
+  "fullscreen": {
+    "supported": true,
+    "enteredAndExited": true
+  },
+  "pendingNavigationFocus": {
+    "whileReading": true,
+    "afterSuccess": true
+  },
+  "pendingNavigation": {
+    "id": "issue185-007",
+    "kind": "compressed",
+    "src": "/i/issue185-007?type=compressed",
+    "decoded": true,
+    "info": "压缩图 · WEBP · 15.8 KiB",
+    "placeholder": "正在读取相邻图片…",
+    "url": "http://ariso-52925.localhost:52925/library?q=issue185-query-&visibility=private&sort=uploaded_asc&pageSize=20&page=1&image=issue185-007"
+  },
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"library-card\"][data-image-id=\"issue185-007\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28"
+}

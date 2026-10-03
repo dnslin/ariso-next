@@ -1,0 +1,63 @@
+{
+  "status": "failed",
+  "origin": "http://ariso-185-62014.localhost:62014",
+  "layouts": [
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "documentOverflow": false,
+      "overflow": false,
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1080
+      },
+      "picture": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1080,
+        "naturalWidth": 1200,
+        "naturalHeight": 900,
+        "objectFit": "contain",
+        "objectPosition": "50% 50%"
+      },
+      "oldChrome": false,
+      "targets": [
+        {
+          "name": "关闭大图",
+          "text": "",
+          "svg": true,
+          "width": 44,
+          "height": 44,
+          "inViewport": true,
+          "reachable": true
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "theme": "light",
+      "viewportWidth": 1440,
+      "name": "查看大图",
+      "text": "",
+      "width": 44,
+      "height": 44,
+      "iconWidth": 16,
+      "iconHeight": 16,
+      "hit": true
+    }
+  ],
+  "screenshots": ["entry-light-1440.png", "ready-light-1440.png"],
+  "checks": [],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n20 !== 16\n\n    at file:////[eval2]:36:14"
+}

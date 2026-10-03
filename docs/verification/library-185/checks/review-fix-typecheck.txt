@@ -1,0 +1,7 @@
+Already up to date
+Done in 211ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+tests/unit/library/detail-help.test.ts(40,5): error TS2741: Property 'contentId' is missing in type '{ kind: "original"; applicable: true; saved: true; status: "saved"; format: string; mime: string; width: number; height: number; byteSize: number; previewPath: null; downloadPath: null; links: null; unavailableReason: null; }' but required in type 'LibraryDetailVersion'.
+[ELIFECYCLE] Command failed with exit code 2.

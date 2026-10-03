@@ -192,3 +192,5 @@ PR #230 创建后实际发现 main 已合入 #154（PR #228），GitHub 报告 C
 Node 24.18.1 / pnpm 11.19.0 / macOS ARM64。实际执行 `pnpm install --frozen-lockfile`、`node --check scripts/verify-browser.mjs`、`pnpm exec prettier --check scripts/verify-browser.mjs e2e/interaction-polish.mjs`、`pnpm exec eslint scripts/verify-browser.mjs e2e/interaction-polish.mjs --max-warnings=0` 均退出 0；`pnpm exec vitest run --project unit tests/unit/library tests/unit/upload` 为 33 文件 / 398 项通过。[原始检查记录](./reports/merge-231-checks.txt)。独立复审相对两个父版本核对入口及实际消费字段，通过，见[代码评审](./code-review.md#主分支冲突解决复审)。
 
 本轮只解决检查入口冲突，没有修改业务或构建输入，不机械重复两分支已有构建、真实服务和浏览器证据；此前未执行或未通过项仍按本记录保留。PR 没有远端检查，空列表不记为 CI 通过。预览服务健康检查 HTTP 200，独立应用和数据目录不引用待清理 worktree。
+
+随后主分支合并图片查看器 PR #229（`ec8e073`）。同一 runner 再次冲突，最终额外保留 viewer 入口、七个 only 阶段、实际脚本地址及查看器参数；沿主分支统一使用 `focusedConfig`，S3 夹具同时赋值给该配置。没有改动两边业务实现。独立评审再次通过。实际重跑 Node 语法、runner 格式/静态检查、冻结安装与 `pnpm run typecheck` 均退出 0；相关单元为 35 文件 / 423 项通过，见[第二次同步检查](./reports/merge-229-checks.txt)。未重跑未受冲突解决影响的完整浏览器与构建。

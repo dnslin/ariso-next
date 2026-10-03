@@ -1,0 +1,149 @@
+{
+  "taskSpaceId": 11,
+  "status": "passed",
+  "layouts": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "headingVisible": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "headingVisible": true
+    }
+  ],
+  "errorCollectorSelfTest": {
+    "status": "passed",
+    "expectedError": {
+      "url": "http://ariso-55831.localhost:55831/",
+      "kind": "console.error",
+      "message": "Ariso error collector self-test 1790947018351"
+    }
+  },
+  "page": {
+    "title": "Ariso",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "lang": "zh-CN",
+    "text": "Ariso\n\n轻装简从\n\n首次使用，请完成站点初始化。\n\n开始初始化\n\n开源 · 极简 · 图片托管",
+    "images": []
+  },
+  "homeStatus": 200,
+  "privateFixtures": [
+    {
+      "path": "/verification/fixtures/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/verification/fixtures/sample.png",
+      "status": 404
+    },
+    {
+      "path": "/sample.jpg",
+      "status": 404
+    },
+    {
+      "path": "/sample.png",
+      "status": 404
+    }
+  ],
+  "health": {
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": "{\"status\":\"ok\"}"
+  },
+  "resources": [
+    {
+      "url": "/runtime.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/0eenflfgtcgg4.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/0dx0dtfnwkh_u.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/0p2bh8hmk8lh_.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/27jyn4b4oy6_l.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/turbopack-2tuo02qbgzi_5.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/01r_th_bzcx50.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/24m82_cl8y4mr.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/14cnop6lnd6o_.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/44_tng9imu9xd.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/3so40x1-_f_f4.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/3n__pu8gd3c3p.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/3eb67_wvhztof.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/0uia683lsc7vl.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://ariso-55831.localhost:55831/_next/static/chunks/04dah465w277t.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    }
+  ],
+  "errors": [],
+  "recovery": {
+    "status": "passed",
+    "expectedErrors": [
+      {
+        "url": "http://ariso-55831.localhost:55831/",
+        "kind": "console.error",
+        "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      }
+    ],
+    "check": "Database read failure → restore database → click retry → home recovered without reload"
+  }
+}

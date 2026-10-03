@@ -3,13 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { useResetUpload } from '../upload/provider';
-import { DetailReadError, readDetail } from './read-detail';
+import { DetailReadError, detailQueryOptions } from './read-detail';
 import { notifyLibraryChanged } from './library-changes';
-import {
-  detailStatusChanged,
-  hasActiveDetailTask,
-  readDetailStatus,
-} from './read-detail-status';
+import { hasActiveDetailTask } from './read-detail-status';
+import { useDetailStatus } from './use-detail-status';
 
 export function useDetailQuery(
   client: QueryClient,
@@ -20,6 +17,12 @@ export function useDetailQuery(
   const resetUpload = useResetUpload();
   const [pendingImageId, setPendingImageId] = useState<string | null>(null);
   const mutationPending = imageId !== null && pendingImageId === imageId;
+  const [pausedImageId, setPausedImageId] = useState<string | null>(null);
+  const observationPaused = imageId !== null && pausedImageId === imageId;
+  const setObservationPaused = useCallback(
+    (paused: boolean) => setPausedImageId(paused ? imageId : null),
+    [imageId],
+  );
   const [availability, setAvailability] = useState<{
     imageId: string | null;
     status: 401 | 404;
@@ -32,11 +35,9 @@ export function useDetailQuery(
   );
   const query = useQuery(
     {
-      queryKey: ['library-detail', imageId, albumId],
-      queryFn: ({ signal }) => readDetail(imageId!, signal, albumId),
-      enabled: !!imageId && !mutationPending && !unavailable,
-      retry: false,
-      networkMode: 'always',
+      ...detailQueryOptions(imageId, albumId),
+      enabled:
+        !!imageId && !mutationPending && !unavailable && !observationPaused,
       staleTime: 0,
       refetchOnWindowFocus: true,
     },
@@ -51,34 +52,26 @@ export function useDetailQuery(
       ])
     : null;
   useEffect(() => {
-    if (!imageId || taskState === null) return;
+    if (!imageId || observationPaused || taskState === null) return;
     const previous = observedTask.current;
     observedTask.current = { imageId, state: taskState };
     if (previous?.imageId === imageId && previous.state !== taskState)
       notifyLibraryChanged();
-  }, [imageId, taskState]);
-  const status = useQuery(
-    {
-      queryKey: ['library-detail-status', imageId],
-      queryFn: ({ signal }) => readDetailStatus(imageId!, signal),
-      enabled:
-        !!imageId &&
-        !!query.data &&
-        hasActiveDetailTask(query.data) &&
-        !mutationPending &&
-        !unavailable &&
-        !query.isError,
-      retry: false,
-      networkMode: 'always',
-      refetchOnWindowFocus: false,
-      refetchInterval: (state) =>
-        state.state.error ||
-        (state.state.data && !state.state.data.items.some(hasActiveDetailTask))
-          ? false
-          : 2000,
-    },
+  }, [imageId, observationPaused, taskState]);
+  const status = useDetailStatus({
     client,
-  );
+    imageId,
+    detail: query.data,
+    refetch: query.refetch,
+    enabled:
+      !!imageId &&
+      !!query.data &&
+      hasActiveDetailTask(query.data) &&
+      !mutationPending &&
+      !unavailable &&
+      !query.isError &&
+      !observationPaused,
+  });
   const expired =
     unavailable === 401 ||
     [query.error, status.error].some(
@@ -92,24 +85,6 @@ export function useDetailQuery(
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
   }, [client, expired, resetUpload, returnTo]);
-  const statusData = status.data;
-  const refetch = query.refetch;
-  useEffect(() => {
-    const record = client.getQueryData<Awaited<ReturnType<typeof readDetail>>>([
-      'library-detail',
-      imageId,
-      albumId,
-    ]);
-    if (
-      record &&
-      statusData &&
-      detailStatusChanged(
-        record,
-        statusData.items.find((item) => item.id === imageId),
-      )
-    )
-      void refetch();
-  }, [client, statusData, imageId, albumId, refetch]);
   useEffect(
     () => () => {
       if (!imageId) return;
@@ -139,6 +114,7 @@ export function useDetailQuery(
     setUnavailable,
     mutationPending,
     onMutationPending,
+    setObservationPaused,
     statusError: status.error,
     retryStatus: status.refetch,
   };

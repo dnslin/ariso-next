@@ -1,0 +1,472 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs
+$ next build tests/experiments/shell --webpack
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.mjs took 5ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.4s
+  Running TypeScript ...
+  Finished TypeScript in 3.9s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/2) ...
+✓ Generating static pages using 4 workers (2/2) in 229ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /[[...path]]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+$ next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.mjs took 5ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.4s
+  Running TypeScript ...
+  Finished TypeScript in 1197ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/6) ...
+  Generating static pages using 7 workers (1/6)
+  Generating static pages using 7 workers (2/6)
+  Generating static pages using 7 workers (4/6)
+✓ Generating static pages using 7 workers (6/6) in 236ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /library
+├ ƒ /library/data
+└ ƒ /probe
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+{ taskSpaceId: 11 }
+[p1 "Ariso" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    anchor [ref=7, loc=href:/, url=http://ariso-55831.localhost:55831/]
+      svg_root
+      text "返回首页"
+    container
+      heading
+        text "页面不存在"
+      paragraph
+        text "此地址尚未开放，或页面已移除。"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=8, url=http://127.0.0.1:55843/]
+          text "Ariso"
+        button "收起侧栏" [ref=9, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      paragraph
+        text "布局验证"
+      container "后台导航"
+        anchor "仪表盘" [ref=10, loc=css:a[aria-label="仪表盘"], url=http://127.0.0.1:55843/dashboard]
+          text "仪表盘"
+        anchor "图片" [ref=11, loc=css:a[aria-label="图片"], url=http://127.0.0.1:55843/images]
+          text "图片"
+        anchor "设置" [ref=12, loc=css:a[aria-label="设置"], url=http://127.0.0.1:55843/settings]
+          text "设置"
+      text "验证用户"
+    container
+      container [ref=13]
+        container "验证内容"
+          heading
+            text "dashboard"
+          container
+            button [ref=14]
+              text "浅色"
+            button [ref=15]
+              text "深色"
+          container
+            container
+              text "验证字段"
+              text "1"
+            textbox "验证字段 1" [ref=16]
+          container
+            container
+              text "验证字段"
+              text "2"
+            textbox "验证字段 2" [ref=17]
+          container
+            container
+              text "验证字段"
+              text "3"
+            textbox "验证字段 3" [ref=18]
+          container
+            container
+              text "验证字段"
+              text "4"
+            textbox "验证字段 4" [ref=19]
+          container
+            container
+              text "验证字段"
+              text "5"
+            textbox "验证字段 5" [ref=20]
+          container
+            container
+              text "验证字段"
+              text "6"
+            textbox "验证字段 6" [ref=21]
+          container
+            container
+              text "验证字段"
+              text "7"
+            textbox "验证字段 7" [ref=22]
+          container
+            container
+              text "验证字段"
+              text "8"
+            textbox "验证字段 8" [ref=23]
+          container
+            container
+              text "验证字段"
+              text "9"
+            textbox "验证字段 9" [ref=24]
+      button [ref=25]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=26, url=http://127.0.0.1:55843/]
+          text "Ariso"
+        button "收起侧栏" [ref=27, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      paragraph
+        text "布局验证"
+      container "后台导航"
+        anchor "仪表盘" [ref=28, loc=css:a[aria-label="仪表盘"], url=http://127.0.0.1:55843/dashboard]
+          text "仪表盘"
+        anchor "图片" [ref=29, loc=css:a[aria-label="图片"], url=http://127.0.0.1:55843/images]
+          text "图片"
+        anchor "设置" [ref=30, loc=css:a[aria-label="设置"], url=http://127.0.0.1:55843/settings]
+          text "设置"
+      text "验证用户"
+    container
+      container [ref=31]
+        tablist "设置分类"
+          tab [ref=32]
+            text "基本设置"
+          tab [ref=33]
+            text "存储设置"
+        tabpanel "基本设置"
+          container "验证内容"
+            heading
+              text "settings/basic"
+            container
+              button [ref=34]
+                text "浅色"
+              button [ref=35]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=36]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=37]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=38]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=39]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=40]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=41]
+            container
+              container
+                text "验证字段"
+                text "7"
+              textbox "验证字段 7" [ref=42]
+            container
+              text "验证字段"
+              text "8"
+      button [ref=43]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container
+      anchor "Ariso 首页" [ref=44, url=http://127.0.0.1:55843/]
+        text "Ariso"
+      button "菜单" [ref=45, loc=css:button[aria-label="菜单"]]
+        svg_root
+    container
+      container [ref=46]
+        container
+          text "设置分类"
+          button "存储设置 设置分类" [ref=47]
+            text "存储设置"
+            svg_root
+        tabpanel "存储设置"
+          container "验证内容"
+            heading
+              text "settings/storage"
+            container
+              button [ref=48]
+                text "浅色"
+              button [ref=49]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=50]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=51]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=52]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=53]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=54]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=55]
+      button [ref=56]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    anchor "Ariso 首页" [ref=44, url=http://127.0.0.1:55843/]
+      text "Ariso"
+    button "菜单" [ref=45, loc=css:button[aria-label="菜单"]]
+      svg_root
+  container
+    text "设置分类"
+    button "存储设置 设置分类" [ref=47]
+      text "存储设置"
+      svg_root
+    container "验证内容"
+      heading
+        text "settings/storage"
+      button [ref=48]
+        text "浅色"
+      button [ref=49]
+        text "深色"
+      container
+        text "验证字段"
+        text "1"
+      textbox "验证字段 1" [ref=50]
+      container
+        text "验证字段"
+        text "2"
+      textbox "验证字段 2" [ref=51]
+      container
+        text "验证字段"
+        text "3"
+      textbox "验证字段 3" [ref=52]
+      container
+        text "验证字段"
+        text "4"
+      textbox "验证字段 4" [ref=53]
+      container
+        text "验证字段"
+        text "5"
+      textbox "验证字段 5" [ref=54]
+      container
+        text "验证字段"
+        text "6"
+      textbox "验证字段 6" [ref=55]
+  button [ref=56]
+    text "保存验证设置"
+  dialog "导航菜单" [ref=57, loc=role:dialog[name="导航菜单"]]
+    container
+      heading
+        text "Ariso"
+      button "关闭" [ref=58, loc=css:button[aria-label="关闭"]]
+        svg_root
+    paragraph
+      text "布局验证"
+    container "后台导航"
+      anchor "仪表盘" [ref=59, url=http://127.0.0.1:55843/dashboard]
+        text "仪表盘"
+      anchor "图片" [ref=60, url=http://127.0.0.1:55843/images]
+        text "图片"
+      anchor "设置" [ref=61, url=http://127.0.0.1:55843/settings]
+        text "设置"
+    text "验证用户"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    container
+      anchor "Ariso 首页" [ref=62, url=http://127.0.0.1:55843/]
+        text "Ariso"
+      button "菜单" [ref=63, loc=css:button[aria-label="菜单"]]
+        svg_root
+    container
+      container [ref=64]
+        container
+          text "设置分类"
+          button "存储设置 设置分类" [ref=65]
+            text "存储设置"
+            svg_root
+        tabpanel "存储设置"
+          container "验证内容"
+            heading
+              text "settings/storage"
+            container
+              button [ref=66]
+                text "浅色"
+              button [ref=67]
+                text "深色"
+            container
+              container
+                text "验证字段"
+                text "1"
+              textbox "验证字段 1" [ref=68]
+            container
+              container
+                text "验证字段"
+                text "2"
+              textbox "验证字段 2" [ref=69]
+            container
+              container
+                text "验证字段"
+                text "3"
+              textbox "验证字段 3" [ref=70]
+            container
+              container
+                text "验证字段"
+                text "4"
+              textbox "验证字段 4" [ref=71]
+            container
+              container
+                text "验证字段"
+                text "5"
+              textbox "验证字段 5" [ref=72]
+            container
+              container
+                text "验证字段"
+                text "6"
+              textbox "验证字段 6" [ref=73]
+      button [ref=74]
+        text "保存验证设置"
+
+[p1 "Ariso · Shell verification" | space "ariso Issue 185 viewer"(11): 1 managed, 0 untracked — p1* "Ariso · Shell verification"]
+root
+  container
+    anchor "Ariso 首页" [ref=62, url=http://127.0.0.1:55843/]
+      text "Ariso"
+    button "菜单" [ref=63, loc=css:button[aria-label="菜单"]]
+      svg_root
+  container
+    text "设置分类"
+    button "存储设置 设置分类" [ref=65]
+      text "存储设置"
+      svg_root
+    container "验证内容"
+      heading
+        text "settings/storage"
+      button [ref=66]
+        text "浅色"
+      button [ref=67]
+        text "深色"
+      container
+        text "验证字段"
+        text "1"
+      textbox "验证字段 1" [ref=68]
+      container
+        text "验证字段"
+        text "2"
+      textbox "验证字段 2" [ref=69]
+      container
+        text "验证字段"
+        text "3"
+      textbox "验证字段 3" [ref=70]
+      container
+        text "验证字段"
+        text "4"
+      textbox "验证字段 4" [ref=71]
+      container
+        text "验证字段"
+        text "5"
+      textbox "验证字段 5" [ref=72]
+      container
+        text "验证字段"
+        text "6"
+      textbox "验证字段 6" [ref=73]
+  button [ref=74]
+    text "保存验证设置"
+  dialog "设置分类" [ref=75]
+    listbox "设置分类" [ref=76]
+      listboxoption [ref=77]
+        text "基本设置"
+        svg_root
+      listboxoption [ref=78]
+        text "存储设置"
+        svg_root
+
+{ taskSpaceId: 11, status: 'passed', layouts: [ { width: 390, scrollWidth: 390, headingVisible: true }, { width: 1440, scrollWidth: 1440, headingVisible: true } ], errorCollectorSelfTest: { status: 'passed', expectedError: { url: 'http://ariso-55831.localhost:55831/', kind: 'console.error', message: 'Ariso error collector self-test 1790947018351' } }, page: { title: 'Ariso', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', lang: 'zh-CN', text: 'Ariso\n\n轻装简从\n\n首次使用，请完成站点初始化。\n\n开始初始化\n\n开源 · 极简 · 图片托管', images: [] }, homeStatus: 200, privateFixtures: [ { path: '/verification/fixtures/sample.jpg', status: 404 }, { path: '/verification/fixtures/sample.png', status: 404 }, { path: '/sample.jpg', status: 404 }, { path: '/sample.png', status: 404 } ], health: { status: 200, cacheControl: 'no-store', body: '{"status":"ok"}' }, resources: [ { url: '/runtime.svg', status: 200, contentType: 'image/svg+xml' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/0eenflfgtcgg4.css', status: 200, contentType: 'text/css; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/0dx0dtfnwkh_u.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/0p2bh8hmk8lh_.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/27jyn4b4oy6_l.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/turbopack-2tuo02qbgzi_5.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/01r_th_bzcx50.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/24m82_cl8y4mr.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/14cnop6lnd6o_.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/44_tng9imu9xd.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/3so40x1-_f_f4.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/3n__pu8gd3c3p.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/3eb67_wvhztof.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/0uia683lsc7vl.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/0cz1d0mv5g_q7.js', status: 200, contentType: 'application/javascript; charset=UTF-8' }, { url: 'http://ariso-55831.localhost:55831/_next/static/chunks/04dah465w277t.js', status: 200, contentType: 'application/javascript; charset=UTF-8' } ], errors: [], recovery: { status: 'passed', expectedErrors: [ { url: 'http://ariso-55831.localhost:55831/', kind: 'console.error', message: 'Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.' } ], check: 'Database read failure → restore database → click retry → home recovered without reload' } }
+
+{ status: 'passed', width: 1440, phase: 'setup', checks: [ 'Reload before final submission leaves setup open and clears in-memory secrets', 'A deliberately lost real setup response requires status verification before any retry', 'Two browser pages with separate hostname cookie jars: the stale second-owner form returns to login and HTTP refuses another owner', 'Required login fields focus the error; real SQLite login failure returns empty HTTP 500, shows the actual HTTP failure without a JSON error, retains fields and creates no session; later login recovers', 'Empty DATA_DIR; uninitialized login; two-step setup; real invalid-code feedback preserves fields; no partial owner; explicit timezone; no secret persistence; setup creates no session; wrong-password feedback', 'Owner session does not authenticate the second hostname browser page', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [ { name: 'setup', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'setup', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 162.5, width: 520, radius: '24px' }, group: { top: 70.5, height: 703 }, brand: { top: 70.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'site', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'publicUrl', width: 460, height: 46 }, { name: 'timeZone', width: 462, height: 48 }, { name: '选择时区', width: 24, height: 48 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_d_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 199.5, width: 520, radius: '24px' }, group: { top: 107.5, height: 629 }, brand: { top: 107.5, height: 72 }, fields: [ { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'code-error', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'code', width: 460, height: 46 }, { name: 'email', width: 460, height: 46 }, { name: 'password', width: 412, height: 46 }, { name: '显示密码', width: 44, height: 44 }, { name: 'confirmPassword', width: 412, height: 46 }, { name: '显示确认密码', width: 44, height: 44 }, { name: 'react-aria-_R_1eqnpfdb_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 163.5, width: 520, radius: '24px' }, group: { top: 71.5, height: 701 }, brand: { top: 71.5, height: 72 }, fields: [ { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' }, { height: 48, radius: '8px' } ] } }, { name: 'unknown', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_2a_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_2a_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_2a_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 124, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'unknown', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: '核对初始化结果', width: 462, height: 48 }, { name: 'react-aria8289224571-_r_2a_', width: 462, height: 48 } ], geometry: { path: '/setup', card: { left: 460, top: 294, width: 520, radius: '24px' }, group: { top: 202, height: 440 }, brand: { top: 202, height: 72 }, fields: [] } }, { name: 'login', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'login', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'light', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 768, scrollWidth: 768, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 376, height: 42 }, { name: 'password', width: 328, height: 42 }, { name: '显示密码', width: 44, height: 44 }, { name: 'react-aria-_R_fqnpfdb_', width: 414, height: 44 } ], geometry: { path: '/login', card: { left: 160, top: 210, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 44, radius: '8px' }, { height: 44, radius: '8px' } ] } }, { name: 'password-error', theme: 'dark', width: 1440, scrollWidth: 1440, targets: [ { name: '返回首页', width: 100, height: 44 }, { name: 'email', width: 360, height: 34 }, { name: 'password', width: 324, height: 34 }, { name: '显示密码', width: 32, height: 32 }, { name: 'react-aria-_R_fqnpfdb_', width: 398, height: 36 } ], geometry: { path: '/login', card: { left: 496, top: 230, width: 448, radius: '24px' }, group: { top: 0, height: 844 }, brand: null, fields: [ { height: 36, radius: '8px' }, { height: 36, radius: '8px' } ] } } ], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], focusStyles: { innerBorder: '0px', innerOutline: 'none', groupOutline: 'none', groupShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px', buttonRadius: '8px' }, settings: { site_settings: [ { id: 1, public_url: 'http://ariso-55831.localhost:55831', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790947052905 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790947052905, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a' } ], storage_configs: [ { id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790947040276, updated_at: 1790947040276, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, loginFailure: { status: 500, body: '' }, activeCheck: 'credential-logout', errors: [] }
+
+{ status: 'passed', width: 1440, phase: 'restart', checks: [ 'Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login', 'Real credential login; protected route return; real logout; anonymous protected page redirects' ], layouts: [], health: [ { status: 200, cacheControl: 'no-store', body: { status: 'ok' } }, { status: 200, cacheControl: 'no-store', body: { status: 'ok' } } ], settings: { site_settings: [ { id: 1, public_url: 'http://ariso-55831.localhost:55831', time_zone: 'UTC', name: 'Ariso', description: '', logo_key: null, logo_mime: null, favicon_key: null, favicon_mime: null, updated_at: 1790947052905 } ], media_settings: [ { id: 1, compression_enabled: 1, output_format: 'webp', quality: 82, max_edge: null, jpeg_background: '#FFFFFF', watermark_mode: 'off', default_link_version: 'compressed', default_visibility: 'public', concurrency: 1, updated_at: 1790947052905, watermark_asset_id: null, watermark_text: '', watermark_font: 'chinese', watermark_font_size: 3, watermark_color: '#FFFFFF', watermark_stroke_color: '#000000', watermark_stroke_width: 0, watermark_opacity: 50, watermark_position: 'bottom-right', watermark_margin: 2, watermark_width: 20 } ], storage_settings: [ { id: 1, default_storage_id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a' } ], storage_configs: [ { id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a', name: '默认本地存储', type: 'local', enabled: 1, created_at: 1790947040276, updated_at: 1790947040276, local_path: 'default', endpoint: null, region: null, bucket: null, path_prefix: null, force_path_style: null, access_key_encrypted: null, secret_key_encrypted: null, config_revision: 1, connection_status: 'untested', connection_revision: null, connection_tested_at: null, cors_status: 'untested', cors_revision: null, cors_origin: null, cors_tested_at: null, connection_report: null, cors_report: null } ] }, activeCheck: 'login-failures', sessionChecks: [ { check: 'Real HTTP 429 feedback disables login until the retry header window expires', retrySeconds: 10 }, { check: 'A real valid owner session enters the backend from Home Login, honors existing local returnTo and rejects an external destination without showing the login form' }, { check: 'Aged real session renews on window focus and browser cookie expiry advances', beforeExpiry: 1791551874.967363, afterExpiry: 1791551876.503692 }, { check: 'Expired real session redirects from the visible upload page to the expiry notice' }, { check: 'Real SQLite logout deletion failure keeps owner signed in; window focus preserves the error; background expiry cannot override the successful retry' } ], loginFailureChecks: [ { scenario: 'HTML gateway error', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 502）', loginStatuses: [] }, { scenario: 'malformed error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 500）', loginStatuses: [] }, { scenario: 'null error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'array error JSON', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'non-string error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 400）', loginStatuses: [] }, { scenario: 'stable server error code', injection: 'browser fetch boundary', message: '登录失败，请稍后重试或检查服务日志。（HTTP 503 / SERVICE_UNAVAILABLE）', loginStatuses: [] }, { scenario: 'credential error code', injection: 'browser fetch boundary', message: '邮箱或密码不正确，请检查后重试。（INVALID_PASSWORD）', loginStatuses: [] }, { scenario: 'login request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [] }, { scenario: 'empty rate-limit response', injection: 'browser fetch boundary', message: '登录请求过于频繁，请等待服务允许后重试。（HTTP 429）', loginStatuses: [] }, { scenario: 'session HTTP failure', injection: 'browser fetch boundary', message: '无法确认登录结果，请稍后重试或检查服务日志。（会话核对 HTTP 500）', loginStatuses: [ 200 ] }, { scenario: 'invalid session response', injection: 'browser fetch boundary', message: '登录状态响应格式异常，无法确认登录结果，请稍后重试。（HTTP 200）', loginStatuses: [ 429, 200 ] }, { scenario: 'unconfirmed session', injection: 'browser fetch boundary', message: '尚未确认登录会话，请重试。', loginStatuses: [ 200 ] }, { scenario: 'session request rejected', injection: 'browser fetch boundary', message: '连接中断，无法确认登录结果，请检查网络后重试。', loginStatuses: [ 200 ] }, { scenario: 'Deferred React commit and repeated identical login feedback', injection: 'browser fetch boundary and controlled MessagePort scheduling', attempts: [ { attempt: 1, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true }, { attempt: 2, queuedCommits: 1, alertPresent: false, focusedAfterCommit: true } ] } ], errors: [] }
+
+{ status: 'running', width: 1440, height: 1080, theme: 'light', checks: [ 'M2 login honors the real preceding identity rate-limit countdown before retrying.', '1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', 'A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.', 'Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.', 'Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.' ], core: { analyticsBefore: [], images: [ { id: '0bdab4c6-f867-4f1c-a2eb-47823deca5d5', format: 'jpg', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-55831.localhost:55831/i/0bdab4c6-f867-4f1c-a2eb-47823deca5d5?type=original' }, { id: 'fed5f1c1-44ae-48f0-a18b-30ac029faa84', format: 'jpg', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-55831.localhost:55831/i/fed5f1c1-44ae-48f0-a18b-30ac029faa84?type=original' }, { id: 'a6d1674b-cb98-4a45-9687-398ed3987c6b', format: 'png', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-55831.localhost:55831/i/a6d1674b-cb98-4a45-9687-398ed3987c6b?type=original' }, { id: '0cb58f33-f8a6-43e3-bae4-b180ca6f8be6', format: 'png', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-55831.localhost:55831/i/0cb58f33-f8a6-43e3-bae4-b180ca6f8be6?type=original' }, { id: 'e7ddd778-dd16-4426-aed2-833406375cde', format: 'png', visibility: 'public', expectedOriginalCount: 0 } ] }, recovery: { imageId: 'ec8647dd-bc9b-4427-9706-6d89b3671274', job: { id: '1fa59891-dc42-43ca-b161-5b8eee0a1bd9', status: 'running', snapshot: '{"compressionEnabled":true,"outputFormat":"webp","quality":82,"maxEdge":null,"jpegBackground":"#FFFFFF","watermarkMode":"off","watermarkText":"","watermarkFont":"chinese","watermarkFontSize":3,"watermarkColor":"#FFFFFF","watermarkStrokeColor":"#000000","watermarkStrokeWidth":0,"watermarkOpacity":50,"watermarkPosition":"bottom-right","watermarkMargin":2,"watermarkWidth":20,"watermarkAsset":null,"defaultVisibility":"public"}', expected_versions: '["compressed","thumbnail"]' }, original: { id: '72687c84-af9c-4da3-a725-dc786b3a0246', key: 'original/ec8647dd-bc9b-4427-9706-6d89b3671274.png', storage_id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a', local_path: 'default' } } }
+
+{ status: 'passed', width: 1440, height: 1080, theme: 'light', checks: [ 'M2 login honors the real preceding identity rate-limit countdown before retrying.', '1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', '1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.', 'A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.', 'Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.', 'Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.', 'After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.', 'Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty.' ], core: { analyticsBefore: [], images: [ { id: '0bdab4c6-f867-4f1c-a2eb-47823deca5d5', format: 'jpg', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-55831.localhost:55831/i/0bdab4c6-f867-4f1c-a2eb-47823deca5d5?type=original' }, { id: 'fed5f1c1-44ae-48f0-a18b-30ac029faa84', format: 'jpg', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-55831.localhost:55831/i/fed5f1c1-44ae-48f0-a18b-30ac029faa84?type=original' }, { id: 'a6d1674b-cb98-4a45-9687-398ed3987c6b', format: 'png', visibility: 'public', expectedOriginalCount: 2, url: 'http://ariso-55831.localhost:55831/i/a6d1674b-cb98-4a45-9687-398ed3987c6b?type=original' }, { id: '0cb58f33-f8a6-43e3-bae4-b180ca6f8be6', format: 'png', visibility: 'private', expectedOriginalCount: 0, url: 'http://ariso-55831.localhost:55831/i/0cb58f33-f8a6-43e3-bae4-b180ca6f8be6?type=original' }, { id: 'e7ddd778-dd16-4426-aed2-833406375cde', format: 'png', visibility: 'public', expectedOriginalCount: 0 } ] }, recovery: { imageId: 'ec8647dd-bc9b-4427-9706-6d89b3671274', job: { id: '1fa59891-dc42-43ca-b161-5b8eee0a1bd9', status: 'running', snapshot: '{"compressionEnabled":true,"outputFormat":"webp","quality":82,"maxEdge":null,"jpegBackground":"#FFFFFF","watermarkMode":"off","watermarkText":"","watermarkFont":"chinese","watermarkFontSize":3,"watermarkColor":"#FFFFFF","watermarkStrokeColor":"#000000","watermarkStrokeWidth":0,"watermarkOpacity":50,"watermarkPosition":"bottom-right","watermarkMargin":2,"watermarkWidth":20,"watermarkAsset":null,"defaultVisibility":"public"}', expected_versions: '["compressed","thumbnail"]' }, original: { id: '72687c84-af9c-4da3-a725-dc786b3a0246', key: 'original/ec8647dd-bc9b-4427-9706-6d89b3671274.png', storage_id: 'f6110eef-2f8c-46fc-b328-ba54aa42ab1a', local_path: 'default' }, versions: [ { kind: 'compressed', count: 1 }, { kind: 'original', count: 1 }, { kind: 'thumbnail', count: 1 } ] } }
+
+AssertionError [ERR_ASSERTION]: Visibility trigger uses the real Chip
+    at disclosure (file:////[eval2]:89:10)
+    at async file:////[eval2]:334:3
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (interaction-polish-1440.log)
+
+1 !== 0
+
+    at runBrowser (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:329:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/scripts/verify-browser.mjs:531:7
+Browser report: /Volumes/data/project/ariso/test-results/worktrees/issue-185/test-results/browser-final
+[ELIFECYCLE] Command failed with exit code 1.

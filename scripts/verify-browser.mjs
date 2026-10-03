@@ -26,6 +26,7 @@ const only = values.only;
 assert.ok(
   [
     'full',
+    'viewer',
     'upload',
     'upload-regression',
     'upload-s3',
@@ -38,6 +39,16 @@ assert.ok(
   only === undefined ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'upload-s3' && only === 'cleanup') ||
+    (suite === 'viewer' &&
+      [
+        'representative',
+        'behavior',
+        'recovery',
+        'refresh',
+        'consumers',
+        'deleted-source',
+        'pending-navigation',
+      ].includes(only)) ||
     (suite === 'library-batch' &&
       [
         'representative',
@@ -67,6 +78,7 @@ for (const name of [
   'shell-navigation.json',
   'error-recovery.json',
   'library.json',
+  'library-viewer.json',
   'library-query.json',
   'library-feedback.json',
   'library-selection.json',
@@ -300,6 +312,7 @@ try {
     libraryDetailScript: pathToFileURL(resolve('e2e/library-detail.mjs')).href,
     libraryDetail171Script: pathToFileURL(resolve('e2e/library-detail-171.mjs'))
       .href,
+    libraryViewerScript: pathToFileURL(resolve('e2e/library-viewer.mjs')).href,
     storageCorsUiScript: pathToFileURL(resolve('e2e/storage-cors-ui.mjs')).href,
     shellOrigin,
     shellScript: pathToFileURL(resolve('e2e/shell.mjs')).href,
@@ -376,12 +389,14 @@ try {
       signal: controller.signal,
     });
     assert.equal(setup.status, 200, await setup.text());
-    const uploadConfig = {
+    const focusedConfig = {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
       onlyCleanup: suite === 'upload-s3' && only === 'cleanup',
       phase: suite === 'copy-dropdown' ? 'green' : undefined,
+      viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
+      viewerCheck: suite === 'viewer' ? only : undefined,
     };
     if (suite === 'upload-s3') {
       const { openRuntimeDatabase } =
@@ -436,24 +451,26 @@ try {
       } finally {
         connection.close();
       }
-      uploadConfig.uploadS3 = targets;
+      focusedConfig.uploadS3 = targets;
     }
     const stages =
       suite === 'copy-dropdown'
         ? [['library-copy-dropdown', 'copyDropdown']]
         : suite === 'upload-s3'
           ? [['upload-s3', 'uploadS3']]
-          : suite === 'library-batch'
-            ? [['library-batch', 'libraryBatch']]
-            : suite === 'upload'
-              ? [
-                  ['upload-submissions', 'uploadSubmissions'],
-                  ['upload-relations', 'uploadRelations'],
-                ]
-              : [
-                  ['upload', 'upload'],
-                  ['upload-polling', 'uploadPolling'],
-                ];
+          : suite === 'viewer'
+            ? [['library-viewer-run', 'libraryViewer']]
+            : suite === 'library-batch'
+              ? [['library-batch', 'libraryBatch']]
+              : suite === 'upload'
+                ? [
+                    ['upload-submissions', 'uploadSubmissions'],
+                    ['upload-relations', 'uploadRelations'],
+                  ]
+                : [
+                    ['upload', 'upload'],
+                    ['upload-polling', 'uploadPolling'],
+                  ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -465,7 +482,7 @@ try {
       await runBrowser(
         `../e2e/${script}.mjs`,
         {
-          ...uploadConfig,
+          ...focusedConfig,
           libraryBatchPhase: suite === 'library-batch' ? only : undefined,
         },
         `${script}.log`,

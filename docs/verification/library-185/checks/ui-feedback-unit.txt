@@ -1,0 +1,13 @@
+Already up to date
+Done in 47ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+{"level":"error","time":"2026-10-02T14:17:51.222Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso/test-results/worktrees/issue-185/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-02T14:17:51.232Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Volumes/data/project/ariso/test-results/worktrees/issue-185/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+
+ Test Files  71 passed (71)
+      Tests  869 passed (869)
+   Start at  22:17:48
+   Duration  4.79s (import 50%, tests 31%, transform 18%, worker 1%)

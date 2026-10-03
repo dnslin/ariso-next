@@ -1,0 +1,126 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Volumes/data/project/ariso/test-results/worktrees/issue-185
+
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 3 failed) 36067ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 5062ms
+   × reads committed timezone after response preparation and keeps already archived dates unchanged 6308ms
+   × does not retry or duplicate a repeated delivery callback within one request 5093ms
+{"time":"2026-10-02T12:46:52.837Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-02T12:46:52.922Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-02T12:46:54.214Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-02T12:46:54.227Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Volumes/data/project/ariso/test-results/worktrees/issue-185/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Volumes/data/project/ariso/test-results/worktrees/issue-185/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-th1MQv/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-02T12:46:54.233Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-02T12:46:55.530Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-02T12:46:55.599Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |media-tools| tests/integration/media/metadata.test.ts (10 tests | 1 failed) 33813ms
+   ❯ T-MED-07 complete metadata with real ExifTool and ImageMagick (10)
+     × atomically retains the previous metadata if marking a reread job succeeded fails and later recovers 5067ms
+ ❯ |media-tools| tests/integration/media/svg.test.ts (8 tests | 1 failed) 23744ms
+   ❯ isolated static SVG preview (8)
+     × scales a large canvas before raster allocation and retains original dimensions 5097ms
+ ❯ |media-tools| tests/integration/media/watermark-http.test.ts (8 tests | 1 failed) 44694ms
+   × reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset 5948ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:183:1
+    181| });
+    182|
+    183| it('reads committed timezone after response preparation and keeps alre…
+       | ^
+    184|   const ready = Promise.withResolvers<void>();
+    185|   const release = Promise.withResolvers<void>();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:208:1
+    206| });
+    207|
+    208| it('does not retry or duplicate a repeated delivery callback within on…
+       | ^
+    209|   const prepare = delivery.prepareImageDelivery;
+    210|   vi.spyOn(delivery, 'prepareImageDelivery').mockImplementation(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/metadata.test.ts:551:3
+    549|   });
+    550|
+    551|   it('atomically retains the previous metadata if marking a reread job…
+       |   ^
+    552|     const { imageId } = await accept(await complexJpeg());
+    553|     await processNext();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/svg.test.ts:205:3
+    203|   );
+    204|
+    205|   it('scales a large canvas before raster allocation and retains origi…
+       |   ^
+    206|     const f = await fixture(
+    207|       '<rect width="1000000" height="500000" fill="blue"/>',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset
+AssertionError: expected '{"level":"info","time":"2026-10-02T12…' to contain '3643d337-93ae-4140-bb2e-e13cabb3d529'
+
+- Expected
++ Received
+
+- 3643d337-93ae-4140-bb2e-e13cabb3d529
++ {"level":"info","time":"2026-10-02T12:50:39.601Z","module":"runtime.prestart","phase":"prestart","msg":"prestart completed"}
++ {"level":"info","time":"2026-10-02T12:50:40.334Z","module":"runtime.console","msg":"▲ Next.js 16.3.5"}
++ {"level":"info","time":"2026-10-02T12:50:40.335Z","module":"runtime.console","msg":"- Local:         http://127.0.0.1:55176"}
++ {"level":"info","time":"2026-10-02T12:50:40.335Z","module":"runtime.console","msg":"- Network:       http://127.0.0.1:55176"}
++ {"level":"info","time":"2026-10-02T12:50:40.335Z","module":"runtime.console","msg":"✓ Ready in 0ms"}
++ {"level":"info","time":"2026-10-02T12:50:40.338Z","module":"runtime.console","msg":"✓ Running next.config took 2ms"}
++ {"time":"2026-10-02T12:50:40.963Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
++
+
+ ❯ tests/integration/media/watermark-http.test.ts:230:26
+    228|   });
+    229|   expect(assets[0].error).toBe(failure.message);
+    230|   expect(server!.logs()).toContain(failure.requestId);
+       |                          ^
+    231| });
+    232|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  4 failed | 112 passed (116)
+      Tests  6 failed | 1061 passed (1067)
+   Start at  20:44:48
+   Duration  403.42s (tests 96%, import 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.
