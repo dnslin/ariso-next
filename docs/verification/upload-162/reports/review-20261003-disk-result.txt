@@ -1,0 +1,22 @@
+{
+  "case": "original-inline-scenario",
+  "freeMiB": 400,
+  "mediaLowWaterMiB": 256,
+  "sharedOutstandingMiB": 100,
+  "relayDeclaredMiB": 64,
+  "combinedKnownWritesMiB": 164,
+  "canonicalError": "INSUFFICIENT_DISK_SPACE",
+  "receiverError": "UPLOAD_SIZE_MISMATCH",
+  "receiverWrittenBytes": 1
+}
+{
+  "case": "combined-writes-exceed-free-space",
+  "freeMiB": 1024,
+  "mediaLowWaterMiB": 256,
+  "sharedOutstandingMiB": 700,
+  "relayDeclaredMiB": 400,
+  "combinedKnownWritesMiB": 1100,
+  "canonicalError": "INSUFFICIENT_DISK_SPACE",
+  "receiverError": "UPLOAD_SIZE_MISMATCH",
+  "receiverWrittenBytes": 1
+}

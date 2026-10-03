@@ -2,7 +2,35 @@
 
 审计日期：2026-10-02。审计者为未参与实现的独立 agent，使用 `code-review-and-quality`；React/Next.js 部分同时核对 `vercel-react-best-practices`。本记录仅给代码与测试有效性结论，不代替设计还原、真实服务兼容性或用户人工验收。
 
-## 当前结论
+## 当前结论（2026-10-03 双 agent 复核）
+
+**Request Changes：两项 P2 必须修复，尚未修复。** 用户指定的两个独立 agent 分别使用 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review`，审查整个 PR #230；冻结代码 HEAD 为 `1a4ef75c21423fd2589a9b88db40d1fee53e9194`，base 为 `72c2dc8`。主 agent 回读调用路径、复现脚本与原始输出后确认以下结论。本轮只评审和归档，不修改生产代码；此前已修复项保持原历史记录，不代表本次新增发现已闭合。
+
+### 必须修复
+
+1. **P2：远端候选清理阻塞媒体调度。** `src/server/media/queue.ts:166` 同步等待 `candidate-cleanup.ts:48` 的串行 S3 HEAD/DELETE；远端操作在途时，主循环不能领取无关 Local 任务，也不能继续检查活动任务的删除中断。复现使用独立数据库和 127.0.0.1 HTTP 服务：保持 DELETE 未返回、再加入 Local 任务，等待300ms后该任务仍为 queued、startedAt 为 null、处理名额为零；释放 DELETE 后任务实际开始。现有候选清理与队列测试分别运行，没有覆盖这一组合。修复应让候选维护与领取/取消检查独立推进，由同一运行时持有并在停止时中断、等待；保留批次、确切 Key 和错误结算。证据：[原脚本](./reports/review-20261003-queue-repro.txt)、[原始结果](./reports/review-20261003-queue-result.txt)。
+2. **P2：S3 中转接收遗漏共用磁盘预留。** `src/server/upload/receive.ts:107` 调用 `multipart.ts` 自己的全局 `writes` 集合（第25、197行）；媒体处理及 S3 下载使用同一个 `mediaResources`，begin 的临时预留又立即释放（`s3.ts:64–65`）。接收期间两个账本互不可见，不符合 SPEC-upload 对已知剩余写入量的要求。进程内模拟空闲1024MiB、媒体已预留700MiB、中转声明400MiB：合计1100MiB超过空闲容量，共用管理器拒绝，multipart 却仍写入1字节后才报声明长度不足。没有耗尽真实磁盘。修复应让 multipart 复用现有资源管理器，登记声明字节、按实际写入扣减并释放，删除重复并发统计；补充交叉并发测试。证据：[原脚本](./reports/review-20261003-disk-repro.txt)、[原始结果](./reports/review-20261003-disk-result.txt)。
+
+### 可选建议与核对结果
+
+重提请求先由 transport 启动，再把正在运行的 Promise 交给 controller，导致请求、替换身份及取消生命周期分散（`transport.ts:55`、`controller.ts:412/558`、`types.ts:100`）。结构 agent 初判 Required，经主 agent 质询和重新核对，降为 **P3 可选**：没有发现它必然产生错误结果；begin/文件发送/complete/fail 保持在 transport 有合理依据。不要求将整个协议搬入 controller。可采用较小的 `onResubmit(previousSessionId, requestId): Promise<UploadSubmissionResult>`，由 controller 先登记、发起并应用重提；保留网络失败后的同 requestId 核对及取消语义。
+
+清理诊断依赖中文 `清理失败:` 分隔符的结构改进为 P3 可选，当前无确定截断证据。生产代码没有超过1000行的文件；测试超过该行数不是单独阻塞依据。`upload-s3` 和 `copy-dropdown` 有专项入口，默认 `full` 未执行这两个专项；不能用 full 结果替代专项结果，不因此增加无关完整重测。
+
+### 本轮实际验证与边界
+
+环境为 macOS arm64、Node24.18.1、pnpm11.19.0。两个 agent 分别实际执行：
+
+- `node node_modules/vitest/vitest.mjs run --project unit tests/unit/upload/controller.test.ts tests/unit/upload/transport.test.ts`：2文件、45项通过。
+- `node node_modules/vitest/vitest.mjs run --configLoader native --project unit tests/unit/upload/controller.test.ts tests/unit/upload/transport.test.ts`：2文件、45项通过。
+- `node /private/tmp/pr230-queue-review.mjs`：退出0，确认调度阻塞；这不是缺陷已修复的通过结论。
+- `node /private/tmp/ariso-pr230-structure-review/disk-ledger-repro.mjs`：退出0，两组诊断输出确认账本准入不一致；每场景只写1字节，临时文件已清理。
+
+最初 pnpm 测试启动无输出而中断，默认配置加载曾因 sandbox 禁止写 `.vite-temp` 失败；后续上述实际命令完成验证，未把前次尝试记为通过。未重跑类型、构建或全量集成；两个审计者未操作用户预览、用户数据库或真实 S3。主 agent 另跑的复制浏览器专项失败，结果见主记录，不纳入两位代码审计者的通过范围。GitHub PR 保持 OPEN/draft，实际远端检查为空，没有 CI 通过结论。
+
+用户于2026-10-03确认复制菜单人工复验没有问题。此确认不扩展为完整 T-UP-04：待清理表达与刷新/清空后的查询恢复 UI 仍按主记录保留未完成。
+
+## 2026-10-02 既有复审结论
 
 **已实现范围的代码复审通过；T-UP-04 整体验收仍受限。** 九项确定缺陷均已修复并实际回读。最后追加的直传空源目录已删除，独立聚焦回归验证 ENOENT 及媒体输入原图字节保留。当前已审增量没有尚未闭合的确定代码缺陷。追加合并最新 main `72c2dc8`（#228 / #154）的迁移与媒体源码复审亦通过；合并后的适用检查由主验证执行收尾。此前浏览器轮次保留实际时点，没有在合并后重新运行。清空/刷新后查询 UI、未批准的待清理状态、真实服务及用户人工验收仍须按主记录结论处理，不能用本代码结论替代完整任务完成。
 

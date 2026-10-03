@@ -1,0 +1,50 @@
+import fs from 'node:fs';
+import { syncBuiltinESMExports } from 'node:module';
+import { mkdtemp, rm, stat } from 'node:fs/promises';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+
+const repository = '/Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso';
+const realStatfs = fs.statfsSync;
+const MiB = 1024 * 1024;
+let simulatedFreeMiB = 400;
+// Process-local simulated free capacity. No real disk capacity is changed.
+fs.statfsSync = (path) => ({ ...realStatfs(path), bavail: simulatedFreeMiB * MiB, bsize: 1 });
+syncBuiltinESMExports();
+const { createMediaResources } = await import(`${repository}/src/server/media/resources.ts`);
+const { receiveMultipart } = await import(`${repository}/src/server/upload/multipart.ts`);
+try {
+for (const scenario of [
+  { case: 'original-inline-scenario', freeMiB: 400, outstandingMiB: 100, declaredMiB: 64 },
+  { case: 'combined-writes-exceed-free-space', freeMiB: 1024, outstandingMiB: 700, declaredMiB: 400 },
+]) {
+  simulatedFreeMiB = scenario.freeMiB;
+  const directory = await mkdtemp(join(tmpdir(), 'ariso-review-ledger-'));
+  try {
+  const resources = createMediaResources();
+  resources.reserveWrite('direct', directory, scenario.outstandingMiB * MiB);
+  let canonicalError;
+  try { resources.reserveWrite('relay', directory, scenario.declaredMiB * MiB); }
+  catch (error) { canonicalError = error.code; }
+  const form = new FormData();
+  // Only one byte is written. Declared size is used to check admission accounting.
+  form.append('file', new Blob(['x'], { type: 'image/png' }), 'review.png');
+  let receiverError;
+  try {
+    await receiveMultipart(new Request('http://review.test', { method: 'POST', body: form }), {
+      path: join(directory, 'source'), maxBytes: scenario.declaredMiB * MiB, declaredSize: scenario.declaredMiB * MiB,
+      signal: new AbortController().signal,
+    });
+  } catch (error) { receiverError = error.code; }
+  console.log(JSON.stringify({
+    case: scenario.case, freeMiB: scenario.freeMiB, mediaLowWaterMiB: 256,
+    sharedOutstandingMiB: scenario.outstandingMiB, relayDeclaredMiB: scenario.declaredMiB,
+    combinedKnownWritesMiB: scenario.outstandingMiB + scenario.declaredMiB, canonicalError, receiverError,
+    receiverWrittenBytes: (await stat(join(directory, 'source'))).size,
+  }, null, 2));
+  } finally { await rm(directory, { recursive: true, force: true }); }
+}
+} finally {
+  fs.statfsSync = realStatfs;
+  syncBuiltinESMExports();
+}
