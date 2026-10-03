@@ -1,0 +1,45 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 74ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.4s
+  Running TypeScript ...
+tests/experiments/media-delete/live.ts(326,29): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(421,33): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(570,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(606,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(644,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(687,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(695,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+tests/experiments/media-delete/live.ts(711,39): error TS2345: Argument of type '{ db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; storageRoot: string; temporaryRoot: string; secretCrypto: { ...; }; logger: { ...; }; }' is not assignable to parameter of type 'MediaRuntime'.
+  The types of 'logger.error' are incompatible between these types.
+    Type '(fields: unknown, message: string) => void' is not assignable to type 'LogFn'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

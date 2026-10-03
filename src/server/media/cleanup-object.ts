@@ -17,12 +17,19 @@ export async function cleanupMediaObject(
   let confirmedAt = object.byteSizeConfirmedAt;
   let failure: { error: unknown } | undefined;
   try {
-    size =
-      (await inspectMediaObject(runtime, storage, object.key, signal))?.size ??
-      0;
+    const facts = await inspectMediaObject(
+      runtime,
+      storage,
+      object.key,
+      signal,
+    );
+    size = facts?.size ?? 0;
     confirmedAt = new Date();
-    await deleteMediaObject(runtime, storage, object.key, signal);
+    if (facts !== null)
+      await deleteMediaObject(runtime, storage, object.key, signal);
   } catch (error) {
+    // Runtime shutdown leaves the persisted attempt for recovery, not a business failure.
+    signal?.throwIfAborted();
     failure = { error };
   }
   const adopted =

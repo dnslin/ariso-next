@@ -1,0 +1,26 @@
+Already up to date
+Done in 38ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 1228ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 10.4s
+  Running TypeScript ...
+tests/integration/media/s3-delete.test.ts(235,31): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is not assignable to parameter of type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>'.
+  Type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is missing the following properties from type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>': schema, nestedIndex, rollback
+tests/integration/media/s3-delete.test.ts(332,31): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is not assignable to parameter of type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>'.
+  Type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is missing the following properties from type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>': schema, nestedIndex, rollback
+tests/integration/media/s3-delete.test.ts(425,26): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is not assignable to parameter of type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>'.
+  Type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is missing the following properties from type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>': schema, nestedIndex, rollback
+tests/integration/media/s3-delete.test.ts(438,31): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is not assignable to parameter of type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>'.
+  Type 'BetterSQLite3Database<Record<string, never>> & { $client: Database; }' is missing the following properties from type 'SQLiteTransaction<"sync", RunResult, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>': schema, nestedIndex, rollback
+tests/unit/media/errors.test.ts(72,3): error TS2345: Argument of type '(error: Error | DOMException | (Error & { code: string; }) | (Error & { code: string; } & { httpStatusCode: number; }) | (Error & { code: string; } & { ...; }) | (Error & ... 1 more ... & { ...; }) | (Error & { ...; }) | "unexpected rejection", code: "MEDIA_PROCESS_FAILED" | ... 9 more ... | "STORAGE_WRITE_FAILED", ...' is not assignable to parameter of type '(...args: [Error & { code: string; }, "MEDIA_PROCESS_FAILED", true] | [Error & { code: string; }, "STORAGE_WRITE_FAILED", true] | [Error & { code: string; }, "STORAGE_OBJECT_MISSING", false] | ... 12 more ... | [...]) => Awaitable<...>'.
+  Types of parameters 'error' and 'args' are incompatible.
+    Type '[Error & { code: string; }, "MEDIA_PROCESS_FAILED", true] | [Error & { code: string; }, "STORAGE_WRITE_FAILED", true] | [Error & { code: string; }, "STORAGE_OBJECT_MISSING", false] | ... 12 more ... | [...]' is not assignable to type '[error: Error | DOMException | (Error & { code: string; }) | (Error & { code: string; } & { httpStatusCode: number; }) | (Error & { code: string; } & { ...; }) | (Error & ... 1 more ... & { ...; }) | (Error & { ...; }) | "unexpected rejection", code: "MEDIA_PROCESS_FAILED" | ... 9 more ... | "STORAGE_WRITE_FAILED", ...'.
+      Type '[Error & { code: string; }, "MEDIA_PROCESS_FAILED", true]' is not assignable to type '[error: Error | DOMException | (Error & { code: string; }) | (Error & { code: string; } & { httpStatusCode: number; }) | (Error & { code: string; } & { ...; }) | (Error & ... 1 more ... & { ...; }) | (Error & { ...; }) | "unexpected rejection", code: "MEDIA_PROCESS_FAILED" | ... 9 more ... | "STORAGE_WRITE_FAILED", ...'.
+        Source has 3 element(s) but target requires 4.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

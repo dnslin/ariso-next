@@ -1,0 +1,558 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+  "namespace": "ariso/delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a/",
+  "databasePath": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-collections-Xe3HN9/ariso.db",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "startedAt": "2026-10-03T16:12:35.348Z",
+  "finishedAt": "2026-10-03T16:12:44.697Z",
+  "status": "passed",
+  "keys": [
+    "original/f4f9fc5e-544c-428d-ae16-3ab2e705ae84.png",
+    "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/compressed/ad173678-c5d1-4319-a86f-2bca3f4f2b68",
+    "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/aa27dbec-dddc-4efa-aebf-5c4d016e1c6a",
+    "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+    "uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+    "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+    "original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png"
+  ],
+  "diagnostics": [
+    {
+      "message": "Media processing interrupted or failed",
+      "fields": {
+        "err": {
+          "message": "Storage write failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c: socket hang up",
+          "name": "Error",
+          "code": "STORAGE_OPERATION_FAILED"
+        },
+        "jobId": "dc89be14-d7ee-466f-b285-f8933d55537e",
+        "step": "thumbnail",
+        "diagnostic": "thumbnail: STORAGE_OPERATION_FAILED: Storage write failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c: socket hang up (TimeoutError)"
+      }
+    },
+    {
+      "message": "Media object cleanup failed",
+      "fields": {
+        "err": {
+          "message": "Storage delete failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152: injected delete gateway outage",
+          "name": "Error",
+          "code": "STORAGE_OPERATION_FAILED"
+        },
+        "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba",
+        "jobId": "17a2c8f5-1192-48e2-8dec-f32f521cbf28",
+        "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152"
+      }
+    },
+    {
+      "message": "Media object cleanup failed",
+      "fields": {
+        "err": {
+          "message": "Storage delete failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152: injected delete gateway outage",
+          "name": "Error",
+          "code": "STORAGE_OPERATION_FAILED"
+        },
+        "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba",
+        "jobId": "17a2c8f5-1192-48e2-8dec-f32f521cbf28",
+        "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152"
+      }
+    },
+    {
+      "message": "Media object cleanup failed",
+      "fields": {
+        "err": {
+          "message": "Storage inspect failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png: UnknownError",
+          "name": "Error",
+          "code": "STORAGE_OPERATION_FAILED"
+        },
+        "objectId": "567a6014-1d77-4e3e-9a37-c2df40679853",
+        "jobId": null,
+        "key": "original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png"
+      }
+    }
+  ],
+  "finalObjects": [],
+  "checks": [
+    {
+      "name": "real-media-processing-and-published-original",
+      "status": "passed",
+      "detail": {
+        "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+        "jobId": "5dcf4591-5950-48c0-b787-a4ee2bf607c9",
+        "objects": [
+          {
+            "id": "e1f6544a-4de2-4dd3-b736-77c1de26987f",
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "jobId": null,
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "key": "original/f4f9fc5e-544c-428d-ae16-3ab2e705ae84.png",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 6631,
+            "byteSizeConfirmedAt": "2026-10-03T16:12:35.774Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-03T16:12:35.774Z",
+            "updatedAt": "2026-10-03T16:12:36.282Z"
+          },
+          {
+            "id": "16885f9b-49da-46b6-94bc-4e384141a206",
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "jobId": "5dcf4591-5950-48c0-b787-a4ee2bf607c9",
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/compressed/ad173678-c5d1-4319-a86f-2bca3f4f2b68",
+            "purpose": "compressed",
+            "status": "stored",
+            "byteSize": 292,
+            "byteSizeConfirmedAt": "2026-10-03T16:12:36.841Z",
+            "width": 64,
+            "height": 48,
+            "format": "WEBP",
+            "mime": "image/webp",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-03T16:12:36.366Z",
+            "updatedAt": "2026-10-03T16:12:36.841Z"
+          },
+          {
+            "id": "9a59cecb-b704-41dc-b1c2-e6e4402d19bf",
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "jobId": "5dcf4591-5950-48c0-b787-a4ee2bf607c9",
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/aa27dbec-dddc-4efa-aebf-5c4d016e1c6a",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 290,
+            "byteSizeConfirmedAt": "2026-10-03T16:12:37.324Z",
+            "width": 64,
+            "height": 48,
+            "format": "WEBP",
+            "mime": "image/webp",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-03T16:12:36.842Z",
+            "updatedAt": "2026-10-03T16:12:37.324Z"
+          }
+        ],
+        "versions": [
+          {
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "kind": "original",
+            "objectId": "e1f6544a-4de2-4dd3-b736-77c1de26987f",
+            "width": 64,
+            "height": 48,
+            "byteSize": 6631,
+            "format": "PNG",
+            "mime": "image/png",
+            "createdAt": "2026-10-03T16:12:35.774Z"
+          },
+          {
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "kind": "compressed",
+            "objectId": "16885f9b-49da-46b6-94bc-4e384141a206",
+            "width": 64,
+            "height": 48,
+            "byteSize": 292,
+            "format": "WEBP",
+            "mime": "image/webp",
+            "createdAt": "2026-10-03T16:12:36.841Z"
+          },
+          {
+            "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+            "kind": "thumbnail",
+            "objectId": "9a59cecb-b704-41dc-b1c2-e6e4402d19bf",
+            "width": 64,
+            "height": 48,
+            "byteSize": 290,
+            "format": "WEBP",
+            "mime": "image/webp",
+            "createdAt": "2026-10-03T16:12:37.324Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "actual-processing-PUT-response-loss-retains-owned-key-and-old-publication",
+      "status": "passed",
+      "detail": {
+        "forwarded": [
+          {
+            "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+            "remoteHttpStatus": 200,
+            "size": 290
+          }
+        ],
+        "object": {
+          "id": "b3303d6c-de08-4b6b-b384-831fc56fa7e5",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "jobId": "dc89be14-d7ee-466f-b285-f8933d55537e",
+          "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+          "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+          "purpose": "thumbnail",
+          "status": "cleanup_pending",
+          "byteSize": null,
+          "byteSizeConfirmedAt": null,
+          "width": null,
+          "height": null,
+          "format": null,
+          "mime": null,
+          "error": "thumbnail: STORAGE_OPERATION_FAILED: Storage write failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c: socket hang up (TimeoutError)",
+          "cleanupAttempts": 0,
+          "nextCleanupAt": null,
+          "createdAt": "2026-10-03T16:12:37.633Z",
+          "updatedAt": "2026-10-03T16:12:37.743Z"
+        },
+        "job": {
+          "id": "dc89be14-d7ee-466f-b285-f8933d55537e",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "kind": "process",
+          "scope": "thumbnail",
+          "snapshot": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 82,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkText": "",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "watermarkAsset": null,
+            "defaultVisibility": "public"
+          },
+          "expectedVersions": ["thumbnail"],
+          "status": "queued",
+          "error": "thumbnail: STORAGE_OPERATION_FAILED: Storage write failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c: socket hang up (TimeoutError)",
+          "step": "thumbnail",
+          "retryCount": 1,
+          "recoveryCount": 0,
+          "nextAttemptAt": "2026-10-03T16:12:42.742Z",
+          "startedAt": "2026-10-03T16:12:37.333Z",
+          "finishedAt": null,
+          "createdAt": "2026-10-03T16:12:37.332Z",
+          "updatedAt": "2026-10-03T16:12:37.742Z"
+        },
+        "previousVersionsPreserved": true,
+        "injectedBoundary": "real service 200 dropped by local transport fault gateway"
+      }
+    },
+    {
+      "name": "real-PUT-unsettled-writer-and-delete-competition",
+      "status": "passed",
+      "detail": {
+        "checkpoint": {
+          "checkpoint": "put-written-unsettled",
+          "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+          "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba"
+        },
+        "trashLinkStatus": 404,
+        "deletingLinkStatus": 404,
+        "cleanup": {
+          "jobId": "de9817c3-244b-4907-98d4-97bf22310dae",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "status": "queued",
+          "cycle": 1,
+          "error": null,
+          "finishedAt": null,
+          "remaining": [
+            {
+              "objectId": "16885f9b-49da-46b6-94bc-4e384141a206",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/compressed/ad173678-c5d1-4319-a86f-2bca3f4f2b68",
+              "purpose": "compressed",
+              "status": "cleanup_pending",
+              "byteSize": 292,
+              "attempts": 0,
+              "nextAttemptAt": null,
+              "error": null
+            },
+            {
+              "objectId": "b3303d6c-de08-4b6b-b384-831fc56fa7e5",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+              "purpose": "thumbnail",
+              "status": "cleanup_pending",
+              "byteSize": null,
+              "attempts": 0,
+              "nextAttemptAt": null,
+              "error": null
+            },
+            {
+              "objectId": "9a59cecb-b704-41dc-b1c2-e6e4402d19bf",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/aa27dbec-dddc-4efa-aebf-5c4d016e1c6a",
+              "purpose": "thumbnail",
+              "status": "cleanup_pending",
+              "byteSize": 290,
+              "attempts": 0,
+              "nextAttemptAt": null,
+              "error": null
+            },
+            {
+              "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+              "purpose": "thumbnail",
+              "status": "cleanup_pending",
+              "byteSize": null,
+              "attempts": 0,
+              "nextAttemptAt": null,
+              "error": null
+            },
+            {
+              "objectId": "e1f6544a-4de2-4dd3-b736-77c1de26987f",
+              "key": "original/f4f9fc5e-544c-428d-ae16-3ab2e705ae84.png",
+              "purpose": "original",
+              "status": "cleanup_pending",
+              "byteSize": 6631,
+              "attempts": 0,
+              "nextAttemptAt": null,
+              "error": null
+            }
+          ]
+        },
+        "uploadReferences": [
+          {
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "sessionId": "2794ae23-9ad0-46e1-98a9-ad9b19acf1c6",
+            "state": "receiving",
+            "temporaryKey": "uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+            "finalKey": null,
+            "temporaryPath": null,
+            "cleanupStatus": "none"
+          }
+        ]
+      }
+    },
+    {
+      "name": "partial-real-DELETE-and-injected-503-uses-two-attempts-across-restart",
+      "status": "passed",
+      "detail": {
+        "first": {
+          "jobId": "de9817c3-244b-4907-98d4-97bf22310dae",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "status": "running",
+          "cycle": 1,
+          "error": null,
+          "finishedAt": null,
+          "remaining": [
+            {
+              "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+              "purpose": "thumbnail",
+              "status": "cleanup_pending",
+              "byteSize": 16,
+              "attempts": 1,
+              "nextAttemptAt": "2026-10-03T16:12:44.512Z",
+              "error": "STORAGE_OPERATION_FAILED: Storage delete failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152: injected delete gateway outage (HTTP 503, ServiceUnavailable)"
+            }
+          ]
+        },
+        "exhausted": {
+          "jobId": "de9817c3-244b-4907-98d4-97bf22310dae",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "status": "failed",
+          "cycle": 1,
+          "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+          "finishedAt": "2026-10-03T16:12:40.299Z",
+          "remaining": [
+            {
+              "objectId": "66f37972-c7c5-4a58-a52f-a3e876600eba",
+              "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+              "purpose": "thumbnail",
+              "status": "cleanup_failed",
+              "byteSize": 16,
+              "attempts": 2,
+              "nextAttemptAt": null,
+              "error": "STORAGE_OPERATION_FAILED: Storage delete failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152: injected delete gateway outage (HTTP 503, ServiceUnavailable)"
+            }
+          ]
+        },
+        "actualSuccessfulDeletes": [
+          "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/compressed/ad173678-c5d1-4319-a86f-2bca3f4f2b68",
+          "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+          "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/aa27dbec-dddc-4efa-aebf-5c4d016e1c6a",
+          "original/f4f9fc5e-544c-428d-ae16-3ab2e705ae84.png"
+        ],
+        "failedDeletes": 2,
+        "partialObjects": [
+          {
+            "key": "ariso/delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a/images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+            "size": 16
+          },
+          {
+            "key": "ariso/delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a/uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+            "size": 16
+          }
+        ],
+        "injection": "local gateway returns 503 for one exact candidate; other DELETE requests reach actual service"
+      }
+    },
+    {
+      "name": "disabled-storage-clears-known-objects-and-releases-only-media-references",
+      "status": "passed",
+      "detail": {
+        "result": {
+          "jobId": "de9817c3-244b-4907-98d4-97bf22310dae",
+          "imageId": "f4f9fc5e-544c-428d-ae16-3ab2e705ae84",
+          "status": "succeeded",
+          "cycle": 2,
+          "error": null,
+          "finishedAt": "2026-10-03T16:12:41.044Z",
+          "remaining": []
+        },
+        "references": {
+          "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+          "images": [],
+          "versions": [],
+          "objects": [],
+          "jobs": [],
+          "cleanupJobs": []
+        },
+        "uploadReferences": [
+          {
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "sessionId": "2794ae23-9ad0-46e1-98a9-ad9b19acf1c6",
+            "state": "receiving",
+            "temporaryKey": "uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+            "finalKey": null,
+            "temporaryPath": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "deletedLinkStatus": 404,
+        "actualObjects": [
+          {
+            "key": "ariso/delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a/uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+            "size": 16
+          }
+        ]
+      }
+    },
+    {
+      "name": "post-release-late-object-records-scanner-boundary",
+      "status": "passed",
+      "detail": {
+        "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+        "observed": {
+          "size": 11,
+          "contentType": "image/png",
+          "etag": "\"1f6facb906120086fb66bf47c091dc38\"",
+          "metadata": {
+            "httpStatusCode": 200,
+            "requestId": "18DB10FE86285A2E612933E5",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        },
+        "mediaReferences": [],
+        "scanner": "T-STO-06 not implemented; experiment finally deletes this exact key"
+      }
+    },
+    {
+      "name": "real-permission-failure-keeps-object-and-manual-cycle-recovers",
+      "status": "passed",
+      "detail": {
+        "failure": {
+          "jobId": "23f67be3-238d-4008-b5ae-d91f145a8343",
+          "imageId": "736ab28d-7ecf-4f8c-98a3-ec145866e1e0",
+          "status": "failed",
+          "cycle": 1,
+          "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+          "finishedAt": "2026-10-03T16:12:42.389Z",
+          "remaining": [
+            {
+              "objectId": "567a6014-1d77-4e3e-9a37-c2df40679853",
+              "key": "original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png",
+              "purpose": "original",
+              "status": "cleanup_failed",
+              "byteSize": 6631,
+              "attempts": 1,
+              "nextAttemptAt": null,
+              "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a, original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png: UnknownError (HTTP 403, Unknown)"
+            }
+          ]
+        },
+        "recovered": {
+          "jobId": "23f67be3-238d-4008-b5ae-d91f145a8343",
+          "imageId": "736ab28d-7ecf-4f8c-98a3-ec145866e1e0",
+          "status": "succeeded",
+          "cycle": 2,
+          "error": null,
+          "finishedAt": "2026-10-03T16:12:43.255Z",
+          "remaining": []
+        },
+        "mediaReferences": {
+          "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+          "images": [],
+          "versions": [],
+          "objects": [],
+          "jobs": [],
+          "cleanupJobs": []
+        },
+        "uploadReferences": [
+          {
+            "storageId": "delete-163-f52375a7-0934-4e3c-a6c2-0588ef7f7d9a",
+            "sessionId": "2794ae23-9ad0-46e1-98a9-ad9b19acf1c6",
+            "state": "receiving",
+            "temporaryKey": "uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+            "finalKey": null,
+            "temporaryPath": null,
+            "cleanupStatus": "none"
+          }
+        ]
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "key": "original/f4f9fc5e-544c-428d-ae16-3ab2e705ae84.png",
+      "status": "absent"
+    },
+    {
+      "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/compressed/ad173678-c5d1-4319-a86f-2bca3f4f2b68",
+      "status": "absent"
+    },
+    {
+      "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/aa27dbec-dddc-4efa-aebf-5c4d016e1c6a",
+      "status": "absent"
+    },
+    {
+      "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/4853782d-cc27-4e92-b50e-6a7d0efad46c",
+      "status": "absent"
+    },
+    {
+      "key": "uploads/2794ae23-9ad0-46e1-98a9-ad9b19acf1c6/active.png",
+      "status": "absent"
+    },
+    {
+      "key": "images/f4f9fc5e-544c-428d-ae16-3ab2e705ae84/thumbnail/b61aee0c-989c-4aac-a500-5895184b5152",
+      "status": "absent"
+    },
+    {
+      "key": "original/736ab28d-7ecf-4f8c-98a3-ec145866e1e0.png",
+      "status": "absent"
+    }
+  ],
+  "limits": [
+    "Only isolated media/delete data and exact registered keys; no bucket policy, CORS, deployment or release changes.",
+    "Response loss is injected by a local gateway only after a real service PUT 200. SIGKILL before local candidate settlement is a separate window.",
+    "Post-release late PUT is intentionally replayed; production namespace scanner belongs to T-STO-06 and is not implemented here.",
+    "AWS, containers and UI are not validated by this backend experiment."
+  ]
+}
