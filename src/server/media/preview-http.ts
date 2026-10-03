@@ -1,9 +1,8 @@
 import type { createMediaResources } from '../media/resources.ts';
-import { open } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import { Readable, Transform, Writable } from 'node:stream';
+import { Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import busboy from 'busboy';
+import { writeReceivedFile } from './file-write.ts';
 import { ZodError, type z } from 'zod';
 import { previewInputSchema } from './preview-validation.ts';
 import { requireOwner } from '../identity/owner.ts';
@@ -208,76 +207,34 @@ export async function receivePreviewMultipart(
       fail(error('MEDIA_PREVIEW_UNKNOWN_FIELD', 400, 'Expected file field'));
       return;
     }
-    const writer = (async () => {
-      const directory = dirname(options.path);
-      const writeId = options.path;
-      let handle: Awaited<ReturnType<typeof open>> | undefined;
-      let pendingWrite: Promise<void> | undefined;
-      try {
-        handle = await open(options.path, 'wx');
-        await pipeline(
-          file,
-          new Writable({
-            highWaterMark: bufferSize,
-            write(chunk: Buffer, _encoding, callback) {
-              pendingWrite = (async () => {
-                controller.signal.throwIfAborted();
-                if (byteSize + chunk.length > options.maxBytes)
-                  throw error(
-                    'MEDIA_PREVIEW_FILE_TOO_LARGE',
-                    413,
-                    'File exceeds preview limit',
-                  );
-                options.resources.reserveWrite(
-                  writeId,
-                  directory,
-                  chunk.length,
-                );
-                let offset = 0;
-                while (offset < chunk.length) {
-                  controller.signal.throwIfAborted();
-                  const result = await handle!.write(
-                    chunk,
-                    offset,
-                    chunk.length - offset,
-                  );
-                  if (!result.bytesWritten)
-                    throw new Error(`No write progress at ${options.path}`);
-                  offset += result.bytesWritten;
-                  options.resources.consumeWrite(writeId, result.bytesWritten);
-                }
-                byteSize += chunk.length;
-                idle.refresh();
-              })().catch((cause: Error) => {
-                throw diskFailure(cause);
-              });
-              void pendingWrite.then(
-                () => callback(),
-                (cause: Error) => callback(cause),
-              );
-            },
-          }),
-          { signal: controller.signal },
-        );
-        if ((await handle.stat()).size !== byteSize)
-          throw error(
-            'MEDIA_PREVIEW_SIZE_MISMATCH',
-            400,
-            'Actual file size differs from received bytes',
+    const writer = writeReceivedFile(file, {
+      path: options.path,
+      resources: options.resources,
+      maxBytes: options.maxBytes,
+      signal: controller.signal,
+      sizeError(reason) {
+        if (reason === 'limit')
+          return error(
+            'MEDIA_PREVIEW_FILE_TOO_LARGE',
+            413,
+            'File exceeds preview limit',
           );
-      } finally {
-        // Destroying a Writable does not await its asynchronous write callback.
-        // Settle that callback before closing the file or releasing responsibility.
-        await pendingWrite?.catch((cause: Error) => fail(cause));
-        try {
-          await handle?.close();
-        } finally {
-          if (handle) options.resources.releaseWrite(writeId);
-        }
-      }
-    })().catch((cause: Error) => {
-      fail(diskFailure(cause));
-    });
+        return error(
+          'MEDIA_PREVIEW_SIZE_MISMATCH',
+          400,
+          'Actual file size differs from received bytes',
+        );
+      },
+      mapError: diskFailure,
+      onFailure: fail,
+      onProgress(bytes) {
+        byteSize = bytes;
+        idle.refresh();
+      },
+    }).then(
+      () => undefined,
+      (cause: Error) => fail(diskFailure(cause)),
+    );
     writers.push(writer);
   });
   try {

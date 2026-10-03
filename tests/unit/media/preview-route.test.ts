@@ -263,6 +263,60 @@ async function reception(
 }
 
 describe('streaming preview multipart reception', () => {
+  it('writes exact preview bytes across partial native writes without reserving the chunk twice', async () => {
+    const original =
+      await vi.importActual<typeof import('node:fs/promises')>(
+        'node:fs/promises',
+      );
+    vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+      const handle = await original.open(...args);
+      const write = handle.write.bind(handle);
+      vi.spyOn(handle, 'write').mockImplementation(
+        // Vitest infers FileHandle.write's last (string) overload.
+        ((buffer: Buffer, offset: number, length: number) =>
+          write(buffer, offset, Math.min(length, 3))) as typeof handle.write,
+      );
+      return handle;
+    });
+    const bytes = Buffer.from('partial-preview-image');
+    const task = await reception(form(bytes));
+    const reserve = vi.spyOn(task.resources, 'reserveWrite');
+    const consume = vi.spyOn(task.resources, 'consumeWrite');
+    const release = vi.spyOn(task.resources, 'releaseWrite');
+    expect(await task.execute()).toEqual({ byteSize: bytes.length, input });
+    expect(await readFile(task.path)).toEqual(bytes);
+    expect(reserve.mock.calls.reduce((sum, call) => sum + call[2], 0)).toBe(
+      bytes.length,
+    );
+    expect(consume.mock.calls.length).toBeGreaterThan(1);
+    expect(consume.mock.calls.reduce((sum, call) => sum + call[1], 0)).toBe(
+      bytes.length,
+    );
+    expect(release).toHaveBeenCalledExactlyOnceWith(task.path);
+  });
+  it('reports a native write with no progress and releases its reservation', async () => {
+    const original =
+      await vi.importActual<typeof import('node:fs/promises')>(
+        'node:fs/promises',
+      );
+    vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+      const handle = await original.open(...args);
+      vi.spyOn(handle, 'write').mockResolvedValueOnce({
+        bytesWritten: 0,
+        buffer: '',
+      });
+      return handle;
+    });
+    const task = await reception(form());
+    const release = vi.spyOn(task.resources, 'releaseWrite');
+    await expect(task.execute()).rejects.toMatchObject({
+      code: 'MEDIA_PREVIEW_RECEIVE_FAILED',
+      status: 500,
+      cause: { message: `No write progress at ${task.path}` },
+    });
+    expect(await readFile(task.path)).toEqual(Buffer.alloc(0));
+    expect(release).toHaveBeenCalledExactlyOnceWith(task.path);
+  });
   it.each([true, false])(
     'accepts metadata first=%s and writes exact bytes with per-chunk disk reservations',
     async (metadataFirst) => {
