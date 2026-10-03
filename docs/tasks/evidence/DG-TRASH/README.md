@@ -77,4 +77,18 @@
 
 ## PR与远端边界
 
-现有 `.github/workflows/ci.yml` 仅workflow_call，`images.yml` 仅release.published；没有日常PR/push或手动发布检查入口。本次以本地适用检查为准，提交、推送并创建关联#140的PR后回读实际检查；空检查列表不记CI通过。保留Issue、PR、分支和worktree，不合并、主动关闭或发布。
+本次基线现有 `.github/workflows/ci.yml` 仅workflow_call，`images.yml` 仅release.published；没有日常PR/push或手动发布检查入口。本次以本地适用检查为准，空检查列表不记CI通过。保留Issue、PR、分支和worktree，不合并、主动关闭或发布。
+
+已推送实施提交 `9b4200afc5371ceda3c6fb745e8994c1678b415e`，创建并附加正式待评审 [PR #232](https://github.com/dnslin/ariso-next/pull/232)，使用Refs关联#140，不主动关闭Issue。实际回读：
+
+```sh
+gh workflow list --repo dnslin/ariso-next
+gh pr view 232 --repo dnslin/ariso-next --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup
+gh run list --repo dnslin/ariso-next --branch codex/issue-140-trash-design --json databaseId,status,conclusion,workflowName
+gh api repos/dnslin/ariso-next/commits/9b4200a/check-runs --jq '{total_count}'
+gh api repos/dnslin/ariso-next/commits/9b4200a/status --jq '{state,total_count}'
+```
+
+PR回读为非草稿、CLEAN，statusCheckRollup为空；本分支Actions运行为空，check-runs与提交状态数量均0。聚合pending没有对应运行，不代表检查进行中或通过。工作流注册表另列Analytics experiment，其路径不在本次基线的工作流文件中，本PR未触发它；未为本次验证派发工作流或发布Release。
+
+审计收齐后仅补充本记录与隐藏父框的准确性说明，实际执行 `pnpm exec prettier --check docs/tasks/gates.md docs/tasks/m3-m4-experience.md docs/tasks/evidence/DG-TRASH`、`git diff --check`：通过。PR回读记录提交推送后再核对最终head和检查状态，不重跑无关业务检查。
