@@ -1,0 +1,7 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+src/server/media/previews.ts(5,8): error TS1192: Module '"/Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso/node_modules/.pnpm/content-disposition@3.0.0/node_modules/content-disposition/dist/index"' has no default export.
+[ELIFECYCLE] Command failed with exit code 2.
+[ELIFECYCLE] Command failed with exit code 2.

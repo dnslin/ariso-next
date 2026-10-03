@@ -24,6 +24,7 @@ import {
   mediaObjects,
   mediaVersions,
   mediaMetadata,
+  mediaPreviews,
 } from '../../../src/server/media/schema.ts';
 import {
   createProcessingSnapshot,
@@ -39,6 +40,13 @@ import {
 } from '../../../src/server/media/recovery.ts';
 import * as processing from '../../../src/server/media/process.ts';
 import * as metadataProcessing from '../../../src/server/media/metadata-job.ts';
+import * as previewProcessing from '../../../src/server/media/preview-process.ts';
+import {
+  queuePreview,
+  requirePreview,
+} from '../../../src/server/media/previews.ts';
+import { initialMediaSettings } from '../../../src/server/media/validation.ts';
+import { previewSettingsSchema } from '../../../src/server/media/preview-validation.ts';
 import { requestPermanentDelete } from '../../../src/server/media/cleanup.ts';
 import { createSecretCrypto } from '../../../src/server/runtime/crypto.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
@@ -247,16 +255,100 @@ describe('persistent media queue', () => {
   });
 
   it('stop waits for the current task to persist its outcome without claiming the next task', async () => {
+    const storageId = resolveLocalUploadStorage(connection.db).id;
+    const actual = processing.processMediaJob;
+    const processor = vi
+      .spyOn(processing, 'processMediaJob')
+      .mockImplementation(async (runtime, id, signal) => {
+        // Hold the real processor at entry so shutdown, rather than a missing-source failure, ends this job.
+        await new Promise<void>((resolve) =>
+          signal!.addEventListener('abort', () => resolve(), { once: true }),
+        );
+        await actual(runtime, id, signal);
+        // Persisting the outcome does not release the storage until the task promise settles.
+        expect(queue!.activeWrites(storageId)).toBe(1);
+      });
     const first = enqueue();
     const second = enqueue();
     const active = start();
+    await vi.waitFor(() => expect(processor).toHaveBeenCalledOnce());
     expect(job(first.jobId).status).toBe('running');
+    expect(active.activeWrites(storageId)).toBe(1);
+    expect(active.activeWrites(randomUUID())).toBe(0);
     await active.stop();
+    expect(active.activeWrites(storageId)).toBe(0);
     expect(job(first.jobId).status).toBe('running');
     expect(job(first.jobId).finishedAt).toBeNull();
     expect(job(first.jobId).error).toContain('MEDIA_INTERRUPTED');
     expect(job(first.jobId).retryCount).toBe(0);
     expect(job(second.jobId).status).toBe('queued');
+  });
+
+  it('a running preview occupies the shared slot without counting as a storage write', async () => {
+    const actual = previewProcessing.processMediaPreview;
+    const previewProcessor = vi
+      .spyOn(previewProcessing, 'processMediaPreview')
+      .mockImplementation(async (runtime, id, signal) => {
+        // Run the real cancellation and cleanup after holding the scheduler's occupied slot.
+        await new Promise<void>((resolve) =>
+          signal!.addEventListener('abort', () => resolve(), { once: true }),
+        );
+        await actual(runtime, id, signal);
+      });
+    const mediaProcessor = vi.spyOn(processing, 'processMediaJob');
+    const active = start();
+    await active.previews.ready;
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    const previewId = randomUUID();
+    const now = new Date();
+    connection.db
+      .insert(mediaPreviews)
+      .values({
+        id: previewId,
+        status: 'receiving',
+        cleanupStatus: 'pending',
+        createdAt: now,
+        updatedAt: now,
+      })
+      .run();
+    const previewDirectory = join(directory, 'tmp', `preview-${previewId}`);
+    mkdirSync(previewDirectory);
+    writeFileSync(join(previewDirectory, 'source'), 'cancelled preview input');
+    const { defaultLinkVersion, defaultVisibility, concurrency, ...rendering } =
+      initialMediaSettings;
+    void defaultLinkVersion;
+    void defaultVisibility;
+    void concurrency;
+    queuePreview(
+      {
+        db: connection.db,
+        storageRoot: join(directory, 'storage'),
+        temporaryRoot: join(directory, 'tmp'),
+        logger,
+      },
+      previewId,
+      { target: 'original', settings: previewSettingsSchema.parse(rendering) },
+    );
+    await vi.waitFor(() => expect(previewProcessor).toHaveBeenCalledOnce());
+    const storageId = resolveLocalUploadStorage(connection.db).id;
+    const waiting = enqueue(storageId);
+    expect(active.previews.get(previewId).status).toBe('running');
+    expect(active.activeWrites(storageId)).toBe(0);
+    expect(active.activeWrites(randomUUID())).toBe(0);
+    // Observe another scheduler poll with the preview still running.
+    await setTimeout(100);
+    expect(job(waiting.jobId).status).toBe('queued');
+    expect(mediaProcessor).not.toHaveBeenCalled();
+    await active.stop();
+    expect(active.activeWrites(storageId)).toBe(0);
+    expect(requirePreview({ db: connection.db }, previewId)).toMatchObject({
+      status: 'cancelled',
+      cleanupStatus: 'deleted',
+      result: null,
+    });
+    expect(existsSync(previewDirectory)).toBe(false);
+    expect(job(waiting.jobId).status).toBe('queued');
+    expect(mediaProcessor).not.toHaveBeenCalled();
   });
 
   it('stops after the database closes without repeatedly accessing a closed connection', async () => {
@@ -273,6 +365,7 @@ describe('persistent media queue', () => {
       "CREATE TRIGGER interrupt BEFORE UPDATE ON media_jobs BEGIN SELECT RAISE(ABORT, 'queue database failed'); END",
     );
     start();
+    await vi.waitFor(() => expect(logger.error).toHaveBeenCalledOnce());
     await expect(queue!.stop()).rejects.toThrow('queue database failed');
     queue = undefined;
     expect(logger.error).toHaveBeenCalledOnce();

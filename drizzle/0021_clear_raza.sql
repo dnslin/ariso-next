@@ -22,3 +22,6 @@ CREATE TABLE `storage_scans` (
 	`error` text,
 	FOREIGN KEY (`storage_id`) REFERENCES `storage_configs`(`id`) ON UPDATE no action ON DELETE cascade
 );
+--> statement-breakpoint
+CREATE INDEX `upload_sessions_temporary_key` ON `upload_sessions` (`storage_id`,`temporary_key`);--> statement-breakpoint
+CREATE INDEX `upload_sessions_final_key` ON `upload_sessions` (`storage_id`,`final_key`);

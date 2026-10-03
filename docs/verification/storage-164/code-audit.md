@@ -85,3 +85,19 @@ EOF
 实际读取 `live-maintenance.json`：SeaweedFS 和 R2 均通过，两个独立命名空间最终清空，邻近配置在业务验证期间保留。报告明确将一次删除失败标为适配器注入，将重启标为停止维护并重新打开 SQLite；它没有声称实际供应商权限故障、独立 Web 进程重启或完整媒体处理链已验证。真实服务 runner 使用独立对象和数据库，清理预先记录的全部 Key 并检查不存在。
 
 完整 Issue 的正式交付以主记录中的最终适用检查和 PR 状态为准。主记录统一维护整体命令、环境、结果与限制，本文件只保留独立审计发现和实际审计证据。没有将计划、首次失败或尚未执行的检查记为通过；UI 和设计验收不适用。
+
+## 合入 main 的追加复审
+
+PR 推送后，main 合入 #188（`b3f2ba0`，预览实现）。在解决媒体队列和迁移编号冲突后，独立复审 main 新增 preview/schema/startup 与 #164 的组合。追加复审最终结论：**Approve**，无新增 Required 或 Optional。此处采用合并后的新检查证据，不把合并前测试当作合并后通过证据。
+
+当前源码无新增 Required 或 Optional。队列保留 main 的预览调度、并发和停止流程，只给真正的图片任务同步捕获 `storageId`；预览任务的 `imageId` 和 `storageId` 均为 null，不计入任何存储配置的活动写入。实际阅读 preview 接收、处理、清理和 schema：预览源文件与结果只属于 `temporaryRoot/preview-{id}`，水印只引用独立 `watermarksRoot` 素材，没有 storage 配置或对象引用，因此不应阻止存储扫描和配置删除。队列停止先中断处理信号，等待预览运行时停止及全部活动执行和维护完成，数据库仍在后续 runtime 停止链末尾关闭。
+
+迁移独立检查：实际读取并与 `origin/main` 字节比较，已发布 `0020_woozy_swordsman.sql` 和 `meta/0020_snapshot.json` 完全一致；journal 原有条目逐项一致。新生成的 `0021_clear_raza.sql` 只增加 storage 两表和上传两个 Key 索引；`0021_snapshot.prevId` 指向 main 的 `0020_snapshot.id`。没有修改已发布迁移的内容或校验值。首次检查脚本的 journal 读取参数笔误导致命令退出 1，修正参数后 journal、快照链和新表/索引检查完成；该脚本错误不是数据库迁移失败，迁移执行证据由主记录维护。
+
+实际回读新增队列行为测试：真正图片任务持久结算期间 `activeWrites` 保持 1，执行 promise 结束后为 0；预览占用共享并发槽但对任何配置的活动计数为 0，真实取消处理完成后临时目录删除，等待图片任务没有被继续领取。测试保持真实处理器的取消和清理流程，未将返回值硬编码为目标结果。
+
+读取 `/tmp/ariso-164-main-sync-migration.log` 中原执行的完整命令和输出回录：独立 SQLite 先应用 main 迁移，再升级新 0021，预览样本行逐字段保留，两张新表与两个索引实际存在，`foreign_key_check` 为空，原命令退出 0。回录文件明确是在原执行后保存，没有为生成日志重复执行或修改用户数据库。
+
+读取合并后 `/tmp/ariso-164-main-sync-build.log`：新 runtime/Next/standalone 构建完成；读取 `/tmp/ariso-164-main-sync-unit.log`：80 文件、1058 项通过。读取 `/tmp/ariso-164-main-sync-integration.log`：完整集成首次退出 1，134 文件、1307 项通过，唯一失败为新 main 预览 SVG 的 viewBox-only 用例耗时 5137 ms 超过原有 5000 ms，未出现行为断言失败。保留该失败，不把全量运行改写为退出 0。
+
+读取 `/tmp/ariso-164-main-sync-preview-affected.log`：使用原有超时与断言，对完整 preview 文件定向复跑，27 项通过，15.90 秒，退出 0；相应源码和用例与 main 没有修改。此失败已完成受影响检查，没有重复其余 134 个已通过文件。完整命令、类型、lint、格式与 PR 状态仍由主记录统一维护。

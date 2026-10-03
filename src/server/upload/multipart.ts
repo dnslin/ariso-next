@@ -1,9 +1,8 @@
 import type { createMediaResources } from '../media/resources.ts';
-import { open } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import { Readable, Transform, Writable } from 'node:stream';
+import { Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import busboy from 'busboy';
+import { writeReceivedFile } from '../media/file-write.ts';
 
 export class MultipartReceiveError extends Error {
   readonly code: string;
@@ -167,88 +166,42 @@ export async function receiveMultipart(
       fail(error('UPLOAD_UNKNOWN_FIELD', 400, 'Expected file field'));
       return;
     }
-    const writer = (async () => {
-      const directory = dirname(options.path);
-      const writeId = options.path;
-      let handle: Awaited<ReturnType<typeof open>> | undefined;
-      let pendingWrite: Promise<void> | undefined;
-      try {
-        handle = await open(options.path, 'wx');
-        options.resources.reserveWrite(
-          writeId,
-          directory,
-          options.declaredSize,
-        );
-        await pipeline(
-          file,
-          new Writable({
-            highWaterMark: bufferSize,
-            write(chunk: Buffer, _encoding, callback) {
-              pendingWrite = (async () => {
-                controller.signal.throwIfAborted();
-                if (byteSize + chunk.length > options.maxBytes)
-                  throw error(
-                    'UPLOAD_FILE_TOO_LARGE',
-                    413,
-                    'File exceeds upload limit',
-                  );
-                if (byteSize + chunk.length > options.declaredSize)
-                  throw error(
-                    'UPLOAD_SIZE_MISMATCH',
-                    400,
-                    'File exceeds declared size',
-                  );
-                let offset = 0;
-                while (offset < chunk.length) {
-                  controller.signal.throwIfAborted();
-                  options.resources.reserveWrite(
-                    writeId,
-                    directory,
-                    options.declaredSize - byteSize - offset,
-                  );
-                  const result = await handle!.write(
-                    chunk,
-                    offset,
-                    chunk.length - offset,
-                  );
-                  if (!result.bytesWritten)
-                    throw new Error(`No write progress at ${options.path}`);
-                  offset += result.bytesWritten;
-                  options.resources.consumeWrite(writeId, result.bytesWritten);
-                }
-                byteSize += chunk.length;
-                idle.refresh();
-                options.onProgress?.(byteSize);
-              })().catch((cause: Error) => {
-                throw diskFailure(cause);
-              });
-              void pendingWrite.then(
-                () => callback(),
-                (cause: Error) => callback(cause),
-              );
-            },
-          }),
-          { signal: controller.signal },
-        );
-        if ((await handle.stat()).size !== byteSize)
-          throw error(
+    const writer = writeReceivedFile(file, {
+      path: options.path,
+      resources: options.resources,
+      maxBytes: options.maxBytes,
+      declaredSize: options.declaredSize,
+      signal: controller.signal,
+      sizeError(reason) {
+        if (reason === 'limit')
+          return error(
+            'UPLOAD_FILE_TOO_LARGE',
+            413,
+            'File exceeds upload limit',
+          );
+        if (reason === 'declared')
+          return error(
             'UPLOAD_SIZE_MISMATCH',
             400,
-            'Actual file size differs from received bytes',
+            'File exceeds declared size',
           );
-      } finally {
-        // Destroying a Writable does not await its asynchronous write callback.
-        // Settle that callback before closing the file or releasing responsibility.
-        await pendingWrite?.catch((cause: Error) => fail(cause));
-        try {
-          await handle?.close();
-        } finally {
-          if (handle) options.resources.releaseWrite(writeId);
-        }
-      }
-    })().catch((cause: Error) => {
-      fail(diskFailure(cause));
-    });
+        return error(
+          'UPLOAD_SIZE_MISMATCH',
+          400,
+          'Actual file size differs from received bytes',
+        );
+      },
+      mapError: diskFailure,
+      onFailure: fail,
+      onProgress(bytes) {
+        byteSize = bytes;
+        idle.refresh();
+        options.onProgress?.(bytes);
+      },
+    }).then(
+      () => undefined,
+      (cause: Error) => fail(diskFailure(cause)),
+    );
     writers.push(writer);
   });
   try {

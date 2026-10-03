@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { mkdir, rm } from 'node:fs/promises';
 import { sep } from 'node:path';
 import { createMediaResources } from './resources.ts';
-import { startMediaTool, terminateMediaTools } from './tools.ts';
+import { terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import type { createSecretCrypto } from '../runtime/crypto.ts';
@@ -16,8 +16,7 @@ import { discardMediaInput, readMediaInput } from './input.ts';
 import { readAndStoreMetadata } from './metadata.ts';
 import { inspectImage } from './formats.ts';
 import { inspectImageFile } from './file-formats.ts';
-import { startSvgPreview } from './svg.ts';
-import { prepareWatermark } from './watermark.ts';
+import { prepareProcessingInput, startDerivedEncoding } from './processing.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { planDerivedObject, markUnpublishedMediaObjects } from './objects.ts';
 import {
@@ -175,56 +174,15 @@ export async function processMediaJob(
     await readAndStoreMetadata(runtime, jobId, sourcePath, workspace, signal);
     step = 'identify';
 
-    let previewInput = `${facts.coder}:${sourcePath}[0]`;
-    if (facts.format === 'SVG') {
-      const previewPath = `${workspace}${sep}preview.png`;
-      const tool = startSvgPreview(
-        sourcePath,
-        previewPath,
-        workspace,
-        stepSignal,
-      );
-      const error = await tool.settled;
-      if (error) throw error;
-      const dimensions = JSON.parse((await tool.child).stdout) as {
-        width: number;
-        height: number;
-      };
-      facts.width = dimensions.width;
-      facts.height = dimensions.height;
-      previewInput = `png:${previewPath}`;
-    } else if (facts.animated && ['PNG', 'AVIF'].includes(facts.format)) {
-      const previewPath = `${workspace}${sep}preview.png`;
-      const tool = startMediaTool(
-        'ffmpeg',
-        [
-          '-v',
-          'error',
-          '-nostdin',
-          '-y',
-          '-threads',
-          '1',
-          ...(facts.format === 'PNG' ? ['-f', 'apng'] : []),
-          '-i',
-          sourcePath,
-          '-map',
-          '0:v:0',
-          '-frames:v',
-          '1',
-          '-threads',
-          '1',
-          '-f',
-          'image2',
-          '-vcodec',
-          'png',
-          previewPath,
-        ],
-        { workspace, cancelSignal: stepSignal, timeout: 120_000 },
-      );
-      const error = await tool.settled;
-      if (error) throw error;
-      previewInput = `png:${previewPath}`;
-    }
+    const prepared = await prepareProcessingInput({
+      sourcePath,
+      facts,
+      workspace,
+      signal: stepSignal,
+      diskLimitBytes: budget.diskLimitBytes,
+    });
+    facts.width = prepared.width;
+    facts.height = prepared.height;
 
     if (facts.format === 'SVG')
       db.transaction((tx) => {
@@ -284,85 +242,36 @@ export async function processMediaJob(
       activeMediaJob(db, jobId);
       const controller = new AbortController();
       const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
-      const edge = kind === 'thumbnail' ? 640 : snapshot.maxEdge;
-      let sourceArgs = [
-        previewInput,
-        ...(facts.animated && facts.format === 'GIF' ? ['-coalesce'] : []),
-        '-auto-orient',
-        '-colorspace',
-        'sRGB',
-        ...(edge === null ? [] : ['-resize', `${edge}x${edge}>`]),
-        ...(kind !== 'thumbnail' && snapshot.outputFormat === 'jpeg'
-          ? [
-              '-background',
-              snapshot.jpegBackground,
-              '-alpha',
-              'remove',
-              '-alpha',
-              'off',
-            ]
-          : []),
-      ];
-      if (kind === 'watermark') {
-        if (snapshot.compressionEnabled) {
-          const compressed = savedMediaCandidate(db, jobId, 'compressed');
-          if (!compressed)
-            throw mediaError(
-              'MEDIA_VERSIONS_MISSING',
-              '本次任务压缩结果尚未生成',
-            );
-          const { storage } = activeMediaJob(db, jobId);
-          const compressedPath =
-            generatedPaths.get(compressed.key) ??
-            (await mediaSourcePath(
-              runtime,
-              storage,
-              compressed,
-              `${inputDirectory}${sep}compressed-source`,
-              cancelSignal,
-            ));
-          sourceArgs = [`${snapshot.outputFormat}:${compressedPath}`];
-        }
-        sourceArgs = await prepareWatermark({
-          sourceArgs,
-          snapshot,
-          watermarksRoot: runtime.watermarksRoot,
-          workspace,
-          diskLimitBytes: budget.diskLimitBytes,
-          signal: cancelSignal,
-        });
-        activeMediaJob(db, jobId);
+      let compressedPath: string | undefined;
+      if (kind === 'watermark' && snapshot.compressionEnabled) {
+        const compressed = savedMediaCandidate(db, jobId, 'compressed');
+        if (!compressed)
+          throw mediaError(
+            'MEDIA_VERSIONS_MISSING',
+            '本次任务压缩结果尚未生成',
+          );
+        const { storage } = activeMediaJob(db, jobId);
+        compressedPath =
+          generatedPaths.get(compressed.key) ??
+          (await mediaSourcePath(
+            runtime,
+            storage,
+            compressed,
+            `${inputDirectory}${sep}compressed-source`,
+            cancelSignal,
+          ));
       }
-      const { child, settled } = startMediaTool(
-        'magick',
-        [
-          '-limit',
-          'memory',
-          '256MiB',
-          '-limit',
-          'map',
-          '0',
-          '-limit',
-          'disk',
-          String(Math.floor(budget.diskLimitBytes)),
-          '-limit',
-          'thread',
-          '1',
-          ...sourceArgs,
-          '-strip',
-          '-quality',
-          String(kind === 'thumbnail' ? 80 : snapshot.quality),
-          `${kind === 'thumbnail' ? 'webp' : snapshot.outputFormat}:-`,
-        ],
-        {
-          buffer: { stdout: false, stderr: true },
-          workspace,
-          env: { MAGICK_TEMPORARY_PATH: workspace },
-          timeout: 120_000,
-          forceKillAfterDelay: 1000,
-          cancelSignal,
-        },
-      );
+      const { child, settled } = await startDerivedEncoding({
+        input: prepared.input,
+        facts,
+        kind,
+        snapshot,
+        compressedPath,
+        watermarksRoot: runtime.watermarksRoot,
+        workspace,
+        signal: cancelSignal,
+        diskLimitBytes: budget.diskLimitBytes,
+      });
       let saved;
       try {
         const { storage } = activeMediaJob(db, jobId);

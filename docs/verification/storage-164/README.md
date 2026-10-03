@@ -100,7 +100,7 @@ startup 管理组合显式读取 media/upload/probe 的真实引用与本地活�
 
 `GET /api/storages/:id` 保留原配置与 probes，并返回引用分类数量、本地活动、扫描状态和发现的待清理用量。`PATCH` 接入真实引用组合。所有者 `DELETE` 无有效引用后停用新写入、完整扫描清理，并在最后短事务复核配置及全部提供方、清空默认指针和删除配置。已终态、无任何对象路径且无需清理的短期上传结果由 upload 自己在该事务释放；活动、失败责任、媒体和统计历史不由此删除。未知链接或非普通条目阻止本地配置删除；只移除自有空目录，保留所选根目录、Bucket 和外部对象。失败保留配置、默认指针和诊断。
 
-迁移 `0020_swift_madelyne_pryor.sql` 新增发现及扫描两表，`0021_military_rhino.sql` 新增上传确切 Key 查询索引。未新增/升级依赖，未改冻结 PRD、需求编号或既定模块职责。
+最终迁移 `0021_clear_raza.sql` 新增发现及扫描两表和上传确切 Key 查询索引。推送期间 main 合入 #188 后，保留其已发布的 `0020_woozy_swordsman.sql` 与快照，重新生成本分支尚未合并的后续迁移。旧 `0020_swift_madelyne_pryor.sql`、`0021_military_rhino.sql` 只用于此前独立验证，未随本 PR 发布。未新增/升级依赖，未改冻结 PRD、需求编号或既定模块职责。
 
 ### 实际对象与恢复证据
 
@@ -127,7 +127,7 @@ R2 与 SeaweedFS 每服务 7 个预登记的新随机 Key，验证真实媒体/�
 | 命令                                                                 | 实际结果                                                                                          |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `pnpm install --frozen-lockfile`                                     | 退出 0，无依赖或锁文件变化                                                                        |
-| `pnpm run db:generate`                                               | 两次实际生成上述表与确切 Key 索引迁移，SQL 已审查                                                 |
+| `pnpm run db:generate`                                               | 首先生成表与确切 Key 索引，随后同步 main 的 #188 迁移再生成最终 0021；SQL 已审查                  |
 | `pnpm run typecheck`                                                 | 最终退出 0，Next 与 runtime 类型均通过                                                            |
 | `pnpm run lint`                                                      | 全仓最终退出 0；构建路径修复后另查 Local 文件                                                     |
 | `pnpm run test:unit --maxWorkers=4`                                  | 78 文件 / 1013 项通过，9.35 秒                                                                    |
@@ -160,4 +160,28 @@ pnpm exec vitest run --project integration tests/integration/runtime/health.test
 
 实际 Web 重启通过：同一独立 DATA_DIR 启动、正常停机、停用配置并写入未知对象、再次实际启动后清理；扫描记录时间/范围及数量正确，邻接目录和外部文件保留，SIGTERM 后维护结束再关数据库。R2/SeaweedFS 报告仍如实保留其重开数据库模拟范围。独立代码审计完成所有六项问题复核，当前无 Required/Optional；功能接口与持久行为通过，设计验收不适用。
 
-分支 `codex/issue-164-storage-listing`；PR #233 的完整正文沿用本记录作为唯一实施证据。正式状态在推送后回读记录；不合并、不关闭 Issue、不发布或部署，不删除分支/worktree。
+分支 `codex/issue-164-storage-listing`；PR #233 的完整正文沿用本记录作为唯一实施证据。不合并、不关闭 Issue、不发布或部署，不删除分支/worktree。
+
+### 同步 main 的 #188
+
+初次完整推送后回读 PR，main 在本轮检查期间合入 #188（`b3f2ba0`），出现队列与迁移冲突。因此先将 PR 恢复为草稿，再合并最新 main。保留预览与媒体任务共用调度和停止语义；正规媒体任务仍在异步执行前捕获存储 ID，并在整个执行期间保留活动写入保护。预览只拥有临时目录，没有存储配置或对象身份，不计入配置的活动写入。
+
+保留 main 已发布的 0020 SQL/快照和 journal 前缀；新 0021 只新增本轮两表和两索引。独立 SQLite 实际执行 main 迁移、写入预览样本，再升级最终 0021，样本完整保留，新增表及索引存在，`foreign_key_check` 为空。没有修改既有迁移或删除生产数据。此处涉及共享处理队列、上传路径和数据库迁移的新基线，因此完成一次新基线全量检查；真实服务适配器未变，不重复已经通过的 R2/SeaweedFS 对象实验。
+
+同一 macOS ARM64、Node 24.18.1、pnpm 11.19.0 环境实际执行：
+
+| 命令                                                                                     | 新基线实际结果                                                                                                                                   |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                         | 退出 0，依赖及锁文件无变更                                                                                                                       |
+| `pnpm run db:generate`                                                                   | 生成最终 `0021_clear_raza.sql`，仅两表和两索引；独立 Node SQLite 升级脚本退出 0，完整脚本和原执行回录见 `/tmp/ariso-164-main-sync-migration.log` |
+| `pnpm run build`                                                                         | 退出 0；runtime、Next 和 standalone 完成，保留既有可选原生包追踪诊断                                                                             |
+| `pnpm run typecheck`、`pnpm run lint`、`pnpm run format:check`                           | 均退出 0；新增队列测试另做单文件 lint 和格式检查，最终文档另做定向格式检查                                                                       |
+| `pnpm run test:unit --maxWorkers=4`                                                      | 80 文件 / 1058 项通过，6.78 秒                                                                                                                   |
+| `pnpm run test:integration --maxWorkers=4`                                               | 134 文件 / 1307 项通过，1 文件 / 1 项超时，286.44 秒；普通及真实媒体工具两组均执行，保留退出 1                                                   |
+| `pnpm exec vitest run --project media-tools tests/integration/media/preview.test.ts`     | 原失败文件 27/27 通过，15.90 秒，退出 0；原断言和默认 5 秒超时不变                                                                               |
+| `pnpm exec vitest run --project integration tests/integration/media/queue.test.ts`       | 新增存储保护和预览隔离行为 16/16 通过，5.35 秒                                                                                                   |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check` | 120 任务 / 298 需求无缺失或环，5 个拒绝用例通过，diff 无格式错误                                                                                 |
+
+全量唯一失败为新 main 的 `original SVG with viewBox-only matches actual formal properties and preserves source bytes`，5137ms 超过默认 5000ms，没有行为断言失败。按 `debugging-and-error-recovery` 读取真实正式处理和预览字节比对路径，再独立运行完整文件取得 27 项通过；未修改源码、测试断言、超时或项目配置。并行负载是可能原因，未将此推断当作已证明的缺陷修复；原并行执行中的超时仍如实记录。已通过的其余 134 文件不重复执行，失败文件取得完整通过证据。
+
+新增队列测试实际运行真实处理器和取消/清理路径：正规媒体任务执行和持久化后、外层 Promise 结算前活动写入仍为 1，结束为 0；预览占用唯一共享槽时存储活动为 0，后入媒体任务保持排队，停机取消并清理预览目录。独立审计实际读取这些行为测试、迁移升级证据和新检查日志，追加结论以 [代码审计](./code-audit.md#合入-main-的追加复审) 为准。新基线日志 `/tmp/ariso-164-main-sync-*.log`，私有凭据扫描 46 个变更文件没有发现泄漏。

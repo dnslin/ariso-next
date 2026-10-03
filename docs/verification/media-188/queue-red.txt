@@ -1,0 +1,93 @@
+Already up to date
+Done in 91ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-188-media-previews/ariso
+
+ ❯ |integration| tests/integration/media/queue.test.ts (15 tests | 3 failed) 3063ms
+   ❯ persistent media queue (10)
+     × stop waits for the current task to persist its outcome without claiming the next task 127ms
+     × stops after the database closes without repeatedly accessing a closed connection 323ms
+     × reports a database scheduling failure rather than swallowing it or retrying forever 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > persistent media queue > stop waits for the current task to persist its outcome without claiming the next task
+AssertionError: expected 'queued' to be 'running' // Object.is equality
+
+Expected: "running"
+Received: "queued"
+
+ ❯ tests/integration/media/queue.test.ts:253:37
+    251|     const second = enqueue();
+    252|     const active = start();
+    253|     expect(job(first.jobId).status).toBe('running');
+       |                                     ^
+    254|     await active.stop();
+    255|     expect(job(first.jobId).status).toBe('running');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > persistent media queue > stops after the database closes without repeatedly accessing a closed connection
+TypeError: The database connection is not open
+ ❯ Database.prepare node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21
+ ❯ BetterSQLiteSession.prepareQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:60:28
+ ❯ BetterSQLiteSession.prepareOneTimeQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/session.ts:250:15
+ ❯ QueryPromise._prepare node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/update.ts:425:78
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/update.ts:443:15
+ ❯ Object.stop src/server/media/previews.ts:569:10
+    567|         })
+    568|         .where(eq(mediaPreviews.status, 'queued'))
+    569|         .run();
+       |          ^
+    570|       await ready;
+    571|       await maintenance();
+ ❯ Object.stop src/server/media/queue.ts:265:7
+ ❯ tests/integration/media/queue.test.ts:266:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > persistent media queue > stops after the database closes without repeatedly accessing a closed connection
+TypeError: The database connection is not open
+ ❯ Database.prepare node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21
+ ❯ BetterSQLiteSession.prepareQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:60:28
+ ❯ BetterSQLiteSession.prepareOneTimeQuery node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/session.ts:250:15
+ ❯ QueryPromise._prepare node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/update.ts:425:78
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/update.ts:443:15
+ ❯ Object.stop src/server/media/previews.ts:569:10
+    567|         })
+    568|         .where(eq(mediaPreviews.status, 'queued'))
+    569|         .run();
+       |          ^
+    570|       await ready;
+    571|       await maintenance();
+ ❯ Object.stop src/server/media/queue.ts:265:7
+ ❯ tests/integration/media/queue.test.ts:70:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > persistent media queue > reports a database scheduling failure rather than swallowing it or retrying forever
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+undefined
+
+ ❯ tests/integration/media/queue.test.ts:276:32
+    274|     );
+    275|     start();
+    276|     await expect(queue!.stop()).rejects.toThrow('queue database failed…
+       |                                ^
+    277|     queue = undefined;
+    278|     expect(logger.error).toHaveBeenCalledOnce();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 12 passed (15)
+   Start at  23:36:29
+   Duration  4.72s (tests 67%, import 19%, transform 14%)
