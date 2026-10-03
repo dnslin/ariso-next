@@ -29,9 +29,14 @@ assert.ok(
   only === undefined ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'library-batch' &&
-      ['representative', 'visibility', 'feedback', 'tag-states'].includes(
-        only,
-      )),
+      [
+        'representative',
+        'visibility',
+        'feedback',
+        'tag-states',
+        'cache',
+        'review-fixes',
+      ].includes(only)),
   '--only requires an applicable targeted suite',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
