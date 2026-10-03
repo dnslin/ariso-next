@@ -411,6 +411,8 @@ export async function verifyLibraryContextEdges({ page, config, report }) {
             (e) => {
               const r = e.getBoundingClientRect();
               return {
+                name: e.textContent.trim(),
+                disabled: e.getAttribute('aria-disabled') === 'true',
                 height: r.height,
                 width: r.width,
                 top: r.top,
@@ -432,8 +434,37 @@ export async function verifyLibraryContextEdges({ page, config, report }) {
       for (const target of geometry.targets) {
         assert.ok(target.height >= (width < 1200 ? 44 : 36));
         assert.ok(target.width >= 44);
+      }
+      const enabledActions = geometry.targets.filter(
+        (target) => !target.disabled,
+      );
+      for (const [index, action] of enabledActions.entries()) {
+        await page.keyboard.press(index === 0 ? 'Home' : 'ArrowDown');
+        await page.waitForFunction(
+          (name) =>
+            document.activeElement
+              ?.closest('[role="menuitem"]')
+              ?.textContent.trim() === name,
+          action.name,
+        );
+        const focused = await page.evaluate(() => {
+          const target = document.activeElement
+            .closest('[role="menuitem"]')
+            .getBoundingClientRect();
+          const popup = document
+            .querySelector('[data-slot="dropdown-popover"]')
+            .getBoundingClientRect();
+          return {
+            targetTop: target.top,
+            targetBottom: target.bottom,
+            popupTop: popup.top,
+            popupBottom: popup.bottom,
+          };
+        });
         assert.ok(
-          target.top >= geometry.top && target.bottom <= geometry.bottom,
+          focused.targetTop >= focused.popupTop &&
+            focused.targetBottom <= focused.popupBottom,
+          `Keyboard navigation scrolls ${action.name} completely into the visible context menu`,
         );
       }
       const filename = `library-feedback-menu-edge-${theme}-${width}x${height}.png`;
@@ -452,6 +483,6 @@ export async function verifyLibraryContextEdges({ page, config, report }) {
     }
   }
   report.checks.push(
-    'Right/bottom context menus fit the main boundary at desktop 1440×600 and mobile 390×844/560 in both themes; every action is visible with its required target size and Escape restores the card.',
+    'Right/bottom context menus fit the main boundary at desktop 1440×600 and mobile 390×844/560 in both themes; every action retains its required target size, keyboard navigation brings each enabled action fully into the visible scrolling menu, and Escape restores the card.',
   );
 }

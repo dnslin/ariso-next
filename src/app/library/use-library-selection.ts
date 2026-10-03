@@ -1,21 +1,37 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import type { LibraryItem } from '../../server/library/types';
 
 import type { SelectedLibraryItem } from '../../server/library/selection-types';
 export type { SelectedLibraryItem } from '../../server/library/selection-types';
 
-function selectedItem(item: SelectedLibraryItem): SelectedLibraryItem {
+function selectedItem(
+  item: SelectedLibraryItem,
+  sourcePage?: number,
+  retained?: SelectedLibraryItem,
+): SelectedLibraryItem {
   return {
     id: item.id,
     displayName: item.displayName,
     thumbnailUrl: item.thumbnailUrl,
     storage: { ...item.storage },
+    ...((item.byteSize ?? retained?.byteSize) === undefined
+      ? {}
+      : { byteSize: item.byteSize ?? retained?.byteSize }),
+    ...((item.batchFailure ?? retained?.batchFailure)
+      ? { batchFailure: item.batchFailure ?? retained?.batchFailure }
+      : {}),
+    ...((item.sourcePage ?? retained?.sourcePage ?? sourcePage) === undefined
+      ? {}
+      : { sourcePage: item.sourcePage ?? retained?.sourcePage ?? sourcePage }),
   };
 }
 
-export function useLibrarySelection(identity: string, items: LibraryItem[]) {
+export function useLibrarySelection(
+  identity: string,
+  items: SelectedLibraryItem[],
+  sourcePage?: number,
+) {
   const [state, setState] = useState(() => ({
     identity,
     selected: new Map<string, SelectedLibraryItem>(),
@@ -37,17 +53,17 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
   );
 
   const toggle = useCallback(
-    (item: LibraryItem) => {
+    (item: SelectedLibraryItem) => {
       setState((previous) => {
         const next = new Map(
           previous.identity === identity ? previous.selected : [],
         );
         if (next.has(item.id)) next.delete(item.id);
-        else next.set(item.id, selectedItem(item));
+        else next.set(item.id, selectedItem(item, sourcePage));
         return { identity, selected: next };
       });
     },
-    [identity],
+    [identity, sourcePage],
   );
   const selectIds = useCallback(
     (ids: Iterable<string>) => {
@@ -59,13 +75,14 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
           const item = currentItems.get(id);
           const retained =
             previous.identity === identity ? previous.selected.get(id) : null;
-          if (item) next.set(id, selectedItem(item));
+          if (item)
+            next.set(id, selectedItem(item, sourcePage, retained ?? undefined));
           else if (retained) next.set(id, retained);
         }
         return { identity, selected: next };
       });
     },
-    [identity, currentItems],
+    [identity, currentItems, sourcePage],
   );
   const remove = useCallback(
     (id: string) => {
@@ -74,6 +91,21 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
           return previous;
         const next = new Map(previous.selected);
         next.delete(id);
+        return { identity, selected: next };
+      });
+    },
+    [identity],
+  );
+  const recordFailure = useCallback(
+    (id: string, message: string) => {
+      setState((previous) => {
+        const item =
+          previous.identity === identity
+            ? previous.selected.get(id)
+            : undefined;
+        if (!item) return previous;
+        const next = new Map(previous.selected);
+        next.set(id, { ...item, batchFailure: message });
         return { identity, selected: next };
       });
     },
@@ -88,10 +120,10 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
         previous.identity === identity ? previous.selected : [],
       );
       for (const item of currentItems.values())
-        next.set(item.id, selectedItem(item));
+        next.set(item.id, selectedItem(item, sourcePage, next.get(item.id)));
       return { identity, selected: next };
     });
-  }, [identity, currentItems]);
+  }, [identity, currentItems, sourcePage]);
   const deselectCurrent = useCallback(() => {
     setState((previous) => {
       if (previous.identity !== identity) return previous;
@@ -113,7 +145,18 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
           // A removed/reselected item belongs to a newer user action.
           if (next.get(id) !== checked) continue;
           const updated = byId.get(id);
-          if (updated) next.set(id, selectedItem(updated));
+          if (updated)
+            next.set(
+              id,
+              selectedItem(
+                {
+                  ...updated,
+                  byteSize: updated.byteSize ?? checked.byteSize,
+                  batchFailure: checked.batchFailure,
+                },
+                checked.sourcePage,
+              ),
+            );
           else next.delete(id);
         }
         return { identity, selected: next };
@@ -130,6 +173,7 @@ export function useLibrarySelection(identity: string, items: LibraryItem[]) {
     toggle,
     selectIds,
     remove,
+    recordFailure,
     clear,
     selectCurrent,
     deselectCurrent,

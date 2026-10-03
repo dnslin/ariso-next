@@ -184,3 +184,11 @@ PR #230 创建后实际发现 main 已合入 #154（PR #228），GitHub 报告 C
 4. 生产迟到孤儿扫描归 #164，S3 永久删除归 #163，公共同步上传 API 归 #167；未伪造这些接口或完成状态。历史实验不代表生产扫描已经接入。
 
 不创建 Release、不发布镜像、不部署、不合并、不主动关闭 Issue，不删除本分支或 worktree。PR #230 初次核对 statusCheckRollup 为空；没有触发远端检查，不能写作 CI 通过。合并版本推送后再次核对：OPEN、isDraft=true、MERGEABLE、CLEAN，statusCheckRollup 仍为空，见 [实际 PR 核对](./reports/pr-merged-state.json)。没有 CI 运行结果，未等待不存在的工作流。
+
+## 获授权合并时同步主分支（2026-10-03）
+
+用户明确要求合并 PR #230、更新清理本地分支并关闭 Issue #162。同步 `origin/main` 的 `40720ac`（已合并 PR #231）时，唯一冲突为 `scripts/verify-browser.mjs` 的聚焦浏览器套件分发。解决保留 `upload-s3`、`copy-dropdown`、`library-batch`，S3 cleanup 与图库六个 only 阶段、配置传递、setup 断言、报告和 fixture 收尾，以及 full 中新增的图库批量操作流程；未改本任务业务或设计。
+
+Node 24.18.1 / pnpm 11.19.0 / macOS ARM64。实际执行 `pnpm install --frozen-lockfile`、`node --check scripts/verify-browser.mjs`、`pnpm exec prettier --check scripts/verify-browser.mjs e2e/interaction-polish.mjs`、`pnpm exec eslint scripts/verify-browser.mjs e2e/interaction-polish.mjs --max-warnings=0` 均退出 0；`pnpm exec vitest run --project unit tests/unit/library tests/unit/upload` 为 33 文件 / 398 项通过。[原始检查记录](./reports/merge-231-checks.txt)。独立复审相对两个父版本核对入口及实际消费字段，通过，见[代码评审](./code-review.md#主分支冲突解决复审)。
+
+本轮只解决检查入口冲突，没有修改业务或构建输入，不机械重复两分支已有构建、真实服务和浏览器证据；此前未执行或未通过项仍按本记录保留。PR 没有远端检查，空列表不记为 CI 通过。预览服务健康检查 HTTP 200，独立应用和数据目录不引用待清理 worktree。

@@ -1,0 +1,140 @@
+const imgPublicSoftGlowMobile = "https://www.figma.com/api/mcp/asset/95d127e9-e3c6-45bf-8e6b-7ddd709139ca.svg";
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function MobileHeader({ className }: { className?: string }) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between overflow-clip px-[16px] relative w-[390px]"} data-node-id="112:1498" data-name="Mobile / Header">
+      <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[36px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="112:1495">
+        Ariso
+      </p>
+      <button className="bg-[var(--secondary,#e3f6f5)] content-stretch cursor-pointer flex h-[44px] items-center justify-center overflow-clip relative rounded-[22px] shrink-0 w-[64px]" data-node-id="112:1496" data-name="Mobile / 打开菜单">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="112:1497">
+          菜单
+        </p>
+      </button>
+    </div>
+  );
+}
+
+function PublicSoftGlowMobile({ className }: { className?: string }) {
+  return (
+    <div className={className || "h-[844px] relative w-[390px]"} data-node-id="192:1836" data-name="Public/Soft glow/Mobile">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPublicSoftGlowMobile} />
+    </div>
+  );
+}
+
+export default function Component23M() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="523:13438" data-name="23 · M / 批量关系 / 移除标签">
+      <PublicSoftGlowMobile className="absolute h-[844px] left-0 top-0 w-[390px]" />
+      <MobileHeader className="absolute bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between left-0 overflow-clip px-[16px] top-0 w-[390px]" />
+      <div className="absolute h-[588px] left-[16px] overflow-x-clip overflow-y-auto top-[76px] w-[358px]" data-node-id="523:13446" data-name="内容滚动区">
+        <div className="absolute content-stretch flex flex-col gap-[12px] items-start left-0 overflow-clip top-0 w-[358px]" data-node-id="523:13447" data-name="内容">
+          <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-[180px]" label="← 返回操作选择" />
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[34.5px] relative shrink-0 text-[23px] text-[color:var(--foreground,#272343)] w-[358px]" data-node-id="523:13450">
+            移除标签
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[21px] relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-[358px]" data-node-id="523:13451">
+            本次已选4张 · 已选2个目标
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[24px] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-[358px]" data-node-id="523:13452">
+            选择已有标签
+          </p>
+          <a className="bg-[var(--secondary,#e3f6f5)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex items-start overflow-clip p-[12px] relative rounded-[12px] shrink-0 w-[358px]" data-node-id="523:13453" data-name="目标 / 旅行 · TAG-TRAVEL">
+            <div className="[word-break:break-word] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[2px] items-start overflow-clip relative shrink-0 text-left w-[334px]" data-node-id="523:13454" data-name="目标信息">
+              <p className="leading-[24px] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-[334px]" data-node-id="523:13455">
+                ✓ 旅行 · TAG-TRAVEL
+              </p>
+              <p className="leading-[18px] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-[334px]" data-node-id="523:13456">
+                18张图片
+              </p>
+            </div>
+          </a>
+          <a className="bg-[var(--secondary,#e3f6f5)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex items-start overflow-clip p-[12px] relative rounded-[12px] shrink-0 w-[358px]" data-node-id="523:13457" data-name="目标 / 灵感 · TAG-IDEA">
+            <div className="[word-break:break-word] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[2px] items-start overflow-clip relative shrink-0 text-left w-[334px]" data-node-id="523:13458" data-name="目标信息">
+              <p className="leading-[24px] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-[334px]" data-node-id="523:13459">
+                ✓ 灵感 · TAG-IDEA
+              </p>
+              <p className="leading-[18px] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-[334px]" data-node-id="523:13460">
+                7张图片
+              </p>
+            </div>
+          </a>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[21px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[358px]" data-node-id="523:13461">
+            作用范围：4张图片 × 2个标签。
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[21px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[358px]" data-node-id="523:13462">
+            已无关系会显示“无需修改”；图片保留。
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[18px] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-[358px]" data-node-id="523:13463">
+            每张图的多个目标一起保存。任一目标失效，该图整项失败；其他图片继续。
+          </p>
+        </div>
+      </div>
+      <div className="absolute bg-[var(--surface,#fffffe)] content-stretch cursor-pointer flex flex-col gap-[8px] h-[164px] items-start left-[16px] overflow-clip py-[8px] top-[676px] w-[358px]" data-node-id="523:13464" data-name="固定底部操作栏">
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-[358px]" label="移除标签 · 4张" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-[358px]" label="阅读入口" />
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Mobile
+**Node ID:** 192:1836
+
+非后台手机页面共同背景。直接复用手机首页两处柔光的位置、大小、颜色与透明度，放在页面内容之下，不参与点击。
+
+## Mobile / Header
+**Node ID:** 112:1498
+
+手机后台64px固定页眉；Caveat品牌及44px高菜单按钮，宽度跟随屏幕。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

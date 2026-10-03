@@ -1,0 +1,324 @@
+{
+  "environment": {
+    "platform": "Darwin arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "memoryGiB": 16,
+    "logicalCPUs": 10,
+    "imageMagick": "7.1.2-32",
+    "exifTool": "13.55",
+    "browser": "已有Ego Lite",
+    "taskSpace": 10,
+    "page": "p1"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "锁文件未改"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "100 packages reused，0 downloads，锁文件未改"
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "All matched files use Prettier code style; final evidence included"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "testFilesPassed": 73,
+      "testsPassed": 905
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "无部署密钥/数据库；现有可选跨平台二进制trace警告"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "exitCode": 1,
+      "testsPassed": 1074,
+      "testsFailed": 6,
+      "result": "5项超时；1项byteSize字段精确断言已修正"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 1,
+      "testFilesPassed": 117,
+      "testFilesFailed": 1,
+      "testsPassed": 1079,
+      "testsFailed": 1,
+      "result": "唯一失败为执行期间重建产物缺少entrypoint，先前5项超时全部通过"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/media/trash-http.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testFilesPassed": 1,
+      "testsPassed": 3,
+      "result": "最终稳定构建后独立复验，全部1080场景已有通过证据"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch",
+      "exitCode": 0,
+      "screenshots": 107,
+      "result": "Final full added batch scenario passed; errors=[]; sessionWaits=[]; last unchecked border color fix followed by representative replay",
+      "layouts": 100,
+      "report": "reports/batch-browser.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=10 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-issue-177-full pnpm run test:browser",
+      "exitCode": 1,
+      "result": "Existing origin/main direct reprocess deep-link focus defect; scope repair awaiting user authorization; no assertion weakened",
+      "report": "reports/full-browser.json",
+      "diagnostic": "diagnostics/detail-focus-diagnostic.json"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only representative",
+      "exitCode": 0,
+      "screenshots": 8,
+      "layouts": 8,
+      "result": "Final unchecked foreground border at 390/1440, light/dark; errors=[]",
+      "report": "reports/batch-representative.json"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts",
+      "exitCode": 0,
+      "testsPassed": 37,
+      "result": "Visibility retained/success revision; prior summary red had 5 failed/9 passed"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts",
+      "exitCode": 0,
+      "testsPassed": 21,
+      "result": "Final visibility states and invalid readable thumbnail; prior last red had 1 failed/20 passed"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only visibility",
+      "exitCode": null,
+      "result": "NOT RUN: existing Ego TaskSpace 10 is agentDelegatedToUser; waitForControl timed out at 1000ms and 30000ms; no alternate space or weakened checks"
+    }
+  ],
+  "codeAudit": "passed including visibility controller, tag chooser/cache/error retry, and independent new browser script review",
+  "designAudit": "passed for this scope: independently read actual Figma and final 47 feedback screenshots plus affected supplemental tag-state screenshots from final41 report",
+  "humanAcceptance": "new draft pending after user feedback",
+  "releaseContainers": "not run; Release stage only",
+  "remaining": [
+    "User final UI acceptance of the revised Toast/tag chooser",
+    "Full browser existing direct reprocess deep-link focus defect; repair authorization pending"
+  ],
+  "pullRequest": {
+    "number": 231,
+    "url": "https://github.com/dnslin/ariso-next/pull/231",
+    "state": "OPEN",
+    "isDraft": true,
+    "baseRefName": "main",
+    "headRefName": "codex/issue-177-library-batch",
+    "mergeable": "MERGEABLE",
+    "remoteChecks": [],
+    "remoteCheckConclusion": "No checks reported; not CI passed"
+  },
+  "feedbackChecks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "lockfile unchanged"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-lint.txt"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-typecheck.txt"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "testFilesPassed": 75,
+      "testsPassed": 927,
+      "evidence": "reports/feedback-unit.txt"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/batch-targets.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/selection.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "testFilesPassed": 5,
+      "testsPassed": 60,
+      "result": "After final retry guard repair",
+      "evidence": "reports/feedback-final-affected.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "After final retry guard repair; existing optional cross-platform binary trace warnings retained",
+      "evidence": "reports/feedback-final-build.txt"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only feedback",
+      "exitCode": 0,
+      "screenshots": 47,
+      "evidence": "reports/feedback-browser.json"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only tag-states",
+      "exitCode": 1,
+      "result": "Confirmed unrelated cached album GET on tag retry",
+      "evidence": "reports/tag-cache-retry-red.json"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite library-batch --only tag-states",
+      "exitCode": 0,
+      "screenshots": 41,
+      "layouts": 38,
+      "result": "Repaired guard; only actual /api/tags GET on retry",
+      "evidence": "reports/feedback-tag-states.json"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "evidence": "reports/feedback-final-format.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 2,
+      "result": "New archived terminal text contained CR/trailing whitespace and blank EOF; normalized whitespace without changing results or diagnostics"
+    },
+    {
+      "command": "git diff e188562257ed8e0c1a5d6304b13ad817797cd579 --check",
+      "exitCode": 0,
+      "result": "Final whole-branch diff after terminal whitespace repair"
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 0,
+      "result": "After terminal whitespace repair"
+    }
+  ],
+  "tagSuccessToastUpdate": {
+    "date": "2026-10-03",
+    "scope": ["add-tags", "remove-tags"],
+    "completion": "Confirmed all changed/unchanged: close chooser, return original list, Toast actual counts; failed/unknown/unsent remain actionable",
+    "tests": "Not rerun per explicit user instruction; two focused cases added but not executed",
+    "browser": "Not rerun; user manual acceptance pending",
+    "audit": "Prior reports retained; not repeated for this update per user request",
+    "previewBuilds": [
+      {
+        "command": "pnpm run build",
+        "exitCode": 1,
+        "evidence": "reports/issue-177-tag-toast-preview-build.txt",
+        "result": "Input uses disabled rather than isDisabled; corrected after reading installed types"
+      },
+      {
+        "command": "pnpm run build",
+        "exitCode": 0,
+        "evidence": "reports/issue-177-tag-toast-preview-build-final.txt"
+      }
+    ]
+  },
+  "reviewFixes": {
+    "date": "2026-10-03",
+    "baselineHead": "94f940db534b58fe75e01246318583bdd18f4611",
+    "scope": [
+      "batch query cache synchronization",
+      "browser scenario decomposition",
+      "truthful Toast unit tests"
+    ],
+    "unit": {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-request.test.ts tests/unit/library/batch-summary.test.ts tests/unit/library/batch-targets.test.ts tests/unit/library/selection.test.ts",
+      "exitCode": 0,
+      "testFilesPassed": 7,
+      "testsPassed": 105,
+      "evidence": "reports/review-fix-unit.txt",
+      "note": "105 passed before final confirmed-chunk correction"
+    },
+    "lint": {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    "build": {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "evidence": "reports/review-fix-build-final.txt"
+    },
+    "browser": {
+      "exitCode": null,
+      "result": "NOT RUN: existing Ego TaskSpace 10 user control hard stop; user continuation requested; no new space"
+    },
+    "correctnessAudit": "cache source fix independently passed",
+    "structureAudit": "independently passed; initial virtual list ordering problem repaired and reread",
+    "humanAcceptance": "pending",
+    "remoteChecks": [],
+    "finalUnit": {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/query-hook.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/batch-feedback.test.ts",
+      "exitCode": 0,
+      "testFilesPassed": 3,
+      "testsPassed": 62,
+      "evidence": "reports/review-fix-unit-final.txt"
+    },
+    "remaining": [
+      "New browser scenarios not run: user control of existing Ego TaskSpace 10; continuation requested",
+      "Final human UI acceptance"
+    ],
+    "format": {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "evidence": "reports/review-fix-format.txt"
+    },
+    "taskDocs": {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    "assertionPreservation": {
+      "original": 201,
+      "current": 234,
+      "missing": [],
+      "evidence": "reports/review-fix-assert-preservation.json"
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  }
+}

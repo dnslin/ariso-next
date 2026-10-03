@@ -1,0 +1,19 @@
+AssertionError [ERR_ASSERTION]: Retrying tag targets never refetches the disabled cached current-album query
++ actual - expected
+
+  [
+    '/api/tags',
++   '/api/albums/issue177-album-a'
+  ]
+
+    at verifyTagRetryAfterAlbumError (file:////[eval2]:854:10)
+    at async file:////[eval2]:2531:5
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-batch.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso/scripts/verify-browser.mjs:325:14)
+    at async file:///Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso/scripts/verify-browser.mjs:386:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso/test-results/browser-library-177-tag-states-red

@@ -1,0 +1,36 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+$ vitest run --project unit tests/unit/library/batch-feedback.test.ts --maxWorkers=1
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso
+
+ ❯ |unit| tests/unit/library/batch-feedback.test.ts (17 tests | 2 failed) 606ms
+   × keeps initial public confirmation during the request and refresh instead of opening a success summary 112ms
+   × keeps initial private confirmation during the request and refresh instead of opening a success summary 104ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > keeps initial public confirmation during the request and refresh instead of opening a success summary
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > keeps initial private confirmation during the request and refresh instead of opening a success summary
+AssertionError: expected 'result' to be 'confirm' // Object.is equality
+
+Expected: "confirm"
+Received: "result"
+
+ ❯ tests/unit/library/batch-feedback.test.ts:310:32
+    308|     finishRefresh();
+    309|     await vi.waitFor(() => expect(calls.toast).toHaveBeenCalledOnce());
+    310|     expect(phaseDuringRequest).toBe('confirm');
+       |                                ^
+    311|   },
+    312| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 passed (17)
+   Start at  23:36:07
+   Duration  724ms (tests 92%, transform 5%, import 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.

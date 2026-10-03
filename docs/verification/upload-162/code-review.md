@@ -199,3 +199,7 @@ queue 保留主分支的活动任务 Map、每任务删除取消信号、实际�
 runner 为本轮复制的独立 production 包、临时 SQLite、随机端口和随机账号，显式拒绝 49241，使用指定 Ego space/page。收尾释放 Clipboard 等待、恢复原剪贴板，停止独立进程后删除本轮临时数据。没有重复远端存储写入、修改生产状态或真实预览数据。RED 使用旧产物并要求旧三按钮无法满足单入口断言，GREEN 必须完整退出 0 才能写运行通过。
 
 源码审查提出的两处聚焦证据问题已补齐并回读：默认 Markdown 通过真实 Enter 展开、Home/ArrowDown 定位并核对活动菜单项，再 Enter 选择；每次复制重新计数，委托原生 writeText 成功后记录本次完整文本，要求恰好一次实际写入，再读取 macOS pasteboard。旧 Toast 或相同旧剪贴板值不能满足该计数和当次文本断言。写入仍发生在可信菜单动作中，probe 没有向原生写入之前加 await，也没有伪造成功。中间 360/430/768 宽度仅增加真实几何检查，没有重复业务矩阵；主 verify-browser 新增 copy-dropdown 聚焦入口，使用独立 setup/数据目录与指定 pageLabel，full 默认和原 upload 分支均保留。当前源码与测试设计增量复审通过；实际新浏览器运行、设计对照及用户人工验收仍待各自结算，不把源码断言存在写成已经运行通过。
+
+## 主分支冲突解决复审
+
+2026-10-03，独立评审 agent `pr230_behavior_review` 实际读取解决后的 `scripts/verify-browser.mjs`，分别与 `e98e367` 及 `origin/main` `40720ac` 比较，并核对三个 e2e 脚本的消费字段。结论通过，无新增缺陷。S3 fixture / cleanup only、复制菜单 green、图库六个阶段及 `libraryBatchPhase`、full 的图库批量步骤、setup 断言、报告清理和 fixture 关闭均保留。评审者实际执行 Node 24 `--check`，退出 0；未运行浏览器。本轮未修改 UI，沿用此前人工验收结论，不将此复审记为新增设计或浏览器验收。
