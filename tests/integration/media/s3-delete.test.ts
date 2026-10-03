@@ -13,7 +13,10 @@ import {
   requestPermanentDelete,
   retryMediaCleanup,
 } from '../../../src/server/media/cleanup.ts';
-import { recoverMediaCandidateCleanup } from '../../../src/server/media/candidate-cleanup.ts';
+import {
+  cleanupMediaCandidates,
+  recoverMediaCandidateCleanup,
+} from '../../../src/server/media/candidate-cleanup.ts';
 import { acceptOriginal } from '../../../src/server/media/images.ts';
 import { getStorageReferences } from '../../../src/server/media/references.ts';
 import { recoverMediaJobs } from '../../../src/server/media/recovery.ts';
@@ -188,6 +191,7 @@ it('clears all owned S3 states on disabled storage while preserving a separate a
     'cleanup_failed',
   ] as const)
     keys.push((await extra(image, status, status !== 'planned')).key);
+  const storedKeys = keys.filter((key) => endpoint.objects.has(path(key)));
   const submission = createSubmission(connection.db, {
     requestId: randomUUID(),
     storageId,
@@ -247,7 +251,7 @@ it('clears all owned S3 states on disabled storage while preserving a separate a
       .filter((request) => request.method === 'DELETE')
       .map((request) => request.path)
       .sort(),
-  ).toEqual(keys.map(path).sort());
+  ).toEqual(storedKeys.map(path).sort());
   expect(requestPermanentDelete(connection.db, image.imageId)).toEqual(
     readMediaCleanup(connection.db, image.imageId),
   );
@@ -347,6 +351,68 @@ it('preserves a real S3 AccessDenied diagnostic and performs no automatic retry'
   expect(readMediaCleanup(connection.db, image.imageId).status).toBe(
     'succeeded',
   );
+});
+
+it('releases an absent S3 image and its references even when DELETE permission is revoked', async () => {
+  const image = await asset();
+  endpoint.objects.delete(path(image.key));
+  endpoint.faults.delete = true;
+  trashImage(connection.db, image.imageId);
+  requestPermanentDelete(connection.db, image.imageId);
+  await cleanup();
+  expect(readMediaCleanup(connection.db, image.imageId)).toMatchObject({
+    status: 'succeeded',
+    remaining: [],
+  });
+  expect(connection.db.select().from(mediaImages).all()).toEqual([]);
+  expect(
+    connection.db.transaction((tx) => getStorageReferences(tx, storageId)),
+  ).toEqual({
+    storageId,
+    images: [],
+    versions: [],
+    objects: [],
+    jobs: [],
+    cleanupJobs: [],
+  });
+  expect(
+    endpoint.requests.filter((request) => request.method === 'HEAD'),
+  ).toHaveLength(1);
+  expect(
+    endpoint.requests.filter((request) => request.method === 'DELETE'),
+  ).toEqual([]);
+});
+
+it('settles an absent S3 candidate without DELETE while preserving the published image', async () => {
+  const image = await asset();
+  const candidate = await extra(image, 'cleanup_pending', false);
+  endpoint.faults.delete = true;
+  const versions = connection.db.select().from(mediaVersions).all();
+  await cleanupMediaCandidates(runtime());
+  expect(
+    connection.db
+      .select()
+      .from(mediaObjects)
+      .where(eq(mediaObjects.id, candidate.id))
+      .get(),
+  ).toMatchObject({
+    status: 'deleted',
+    byteSize: 0,
+    byteSizeConfirmedAt: expect.any(Date),
+    error: null,
+    nextCleanupAt: null,
+  });
+  expect(connection.db.select().from(mediaVersions).all()).toEqual(versions);
+  expect(connection.db.select().from(mediaImages).all()).toHaveLength(1);
+  expect(
+    connection.db
+      .transaction((tx) => getStorageReferences(tx, storageId))
+      .objects.map((object) => object.key),
+  ).toEqual([image.key]);
+  expect(
+    endpoint.requests.filter((request) => request.method === 'DELETE'),
+  ).toEqual([]);
+  expect(await client.inspectObject(image.key)).toMatchObject({ size: 14 });
 });
 
 it('reconciles remote absence after DELETE committed but its exhausted durable intent did not settle', async () => {

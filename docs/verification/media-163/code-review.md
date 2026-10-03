@@ -1,6 +1,23 @@
 # Issue #163 独立代码审计
 
-审计日期：2026-10-04（Asia/Shanghai）。结论：**代码审计通过，未发现尚未解决的必修问题。** 本结论不代替[主记录](./README.md)中的适用检查与 PR 完成条件。
+审计日期：2026-10-04（Asia/Shanghai）。当前结论：**后续双角度评审发现的 P2 已修复，两位独立评审者复审通过，无未解决必修项。** 首次审计记录保留如下，后续发现与修复见下节。本结论不代替[主记录](./README.md)中的适用检查与 PR 完成条件。
+
+## PR #235 双角度评审与修复复审
+
+用户要求两位独立 agent 分别使用 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review`。两者从固定 base `4a3e964`、head `f4156c6` 独立读取需求、生产调用路径和测试，没有复用首次审计的结论。
+
+正确性评审确认一项 P2：共享 `cleanupMediaObject` 在 HEAD 已明确返回 null 后仍调用 DELETE。独立 SDK/HTTP/SQLite 复现 HEAD404 + DELETE403 后，任务 failed、图片 cleanup_failed、剩余项大小为0，但媒体引用仍保留；HEAD200 + DELETE403 对照保留真实失败。规格允许确认当前不存在后完成，迟到孤儿仍由 #164 承接。结构评审无额外必修项，认可修复应放在共享步骤，无需 S3 专用分支或额外抽象。
+
+本轮先添加两个正式 HTTP/SDK 回归：[RED 日志](./reports/absence-red.txt)确认永久删除及独立候选清理都失败。修复保留 HEAD 结果，仅非 null 时执行 DELETE；既有预算、错误、关停及数据库结算不变。混合对象状态测试仅调整缺失 Key 的 DELETE 预期，仍检查全部对象最终不存在。修复后的3文件39项定向验证见[日志](./reports/absence-focused.txt)。
+
+两位评审者对相对 `f4156c6` 的修复增量复审均通过，无新增必修项。正确性评审者另实际执行：
+
+```text
+pnpm exec vitest run --project integration tests/integration/media/s3-delete.test.ts tests/integration/media/delete.test.ts tests/integration/media/candidate-cleanup.test.ts tests/integration/media/queue.test.ts -t 'absent S3|real S3 AccessDenied|shutdown interrupts|aborts and settles|does not retry permission errors'
+pnpm exec vitest run --project integration tests/integration/media/candidate-cleanup.test.ts
+```
+
+使用 Node 24.18.1。第一命令7项通过、33项未选中，候选清理文件未匹配筛选；第二命令完整执行该文件1项通过，覆盖 Local/S3 候选清理、已发布保护、HEAD403、HEAD200 + DELETE403 和数据库结算失败恢复。结构评审者核对 RED/GREEN 证据并运行 `git diff --check` 通过，没有重复测试。两位没有重复全套检查或真实服务实验。主执行者本轮适用检查结果统一记录在[主记录](./README.md)。
 
 ## 审查依据与范围
 

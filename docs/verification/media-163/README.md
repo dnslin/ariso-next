@@ -9,6 +9,7 @@
 ## 实施结果
 
 - 永久删除受理与维护调度移除本地存储限制，复用已交付的 S3 确切 Key HEAD/DELETE。停用仍可维护。逐对象成功持久保存，失败只保留剩余项。
+- HEAD 明确当前不存在时直接结算已清，不额外发送 DELETE；仍存在的对象继续实际删除并保留权限或网络失败。永久删除及独立候选清理沿用同一规则，之后迟到对象仍由 #164 承接。
 - 重用删除任务的两次尝试预算：临时网络错误、503、429 和存储超时自动一次；权限失败直接保留 `cleanup_failed`。手动重试开新的有限周期，重启不重置预算。耗尽预算且结算中断时只 HEAD 核对，不再发第三次 DELETE。
 - HEAD/DELETE 各有30秒时限，并接入现有队列关停信号。关停保留未结算意图，恢复继续核对，不把取消等待当作业务删除失败。持久诊断包含 HTTP 状态及 S3 服务错误码。
 - 沿用写入前登记对象、删除态禁止新任务及旧任务发布、本地活动任务结束后才清理的实现。没有新增通用工作流、兼容层、依赖或数据迁移。
@@ -62,8 +63,35 @@
 
 AWS S3 按当前执行约定取消实测要求，保持未验证事实。Release 双架构镜像/容器验证未执行，本次不创建 Release、不发布镜像或部署。无 UI 或浏览器交互变更，本次不重复完整浏览器与物理设备检查；公开图片访问约束通过 delivery 接口核对。
 
+## PR 双角度评审修复
+
+2026-10-04，用户要求两个独立 agent 从正确性和严格结构质量角度评审 PR #235。正确性评审发现 HEAD404 后仍 DELETE 的 P2；结构评审没有额外必修项。根因和两者修复复审结论见[同一审计记录](./code-review.md#pr-235-双角度评审与修复复审)，首次通过结论及真实服务报告保留为当时证据。
+
+本轮在共享清理步骤保留 HEAD 结果，明确 null 时直接结算 deleted；仍存在的对象继续 DELETE，权限/网络、关停及数据库失败维持原有处理。新增两个正式 SDK/HTTP 回归，分别验证缺失原图能完成永久删除并释放引用、缺失候选清理保留原有图片及发布版本。原有存在对象403和HEAD失败路径继续验证，不把鉴权错误当成不存在。
+
+环境仍为 macOS arm64、Node 24.18.1、pnpm 11.19.0。所有新回归使用独立数据库、目录和本地 HTTP 夹具；不修改预览数据。先运行 RED，永久删除与候选清理两项均失败，其他9项未选中；修复后完整定向3文件39项通过。两位独立 agent 复审均通过，无未解决必修项。
+
+| 本轮实际命令                                                                                                                                                        | 结果与证据                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                    | 退出0，锁文件不变；[日志](./reports/absence-install.txt)                                                            |
+| `pnpm exec vitest run --project integration tests/integration/media/s3-delete.test.ts -t 'absent S3'`                                                               | 修复前退出1，两项失败，保留[RED](./reports/absence-red.txt)                                                         |
+| `pnpm exec vitest run --project integration tests/integration/media/s3-delete.test.ts tests/integration/media/delete.test.ts tests/integration/media/queue.test.ts` | 3文件39项通过；[日志](./reports/absence-focused.txt)                                                                |
+| `pnpm run test:unit --maxWorkers=2`                                                                                                                                 | 78文件1010项通过；[日志](./reports/absence-unit.txt)                                                                |
+| `pnpm run lint`                                                                                                                                                     | 退出0；[日志](./reports/absence-lint.txt)                                                                           |
+| `pnpm run typecheck`                                                                                                                                                | 退出0；[日志](./reports/absence-typecheck.txt)                                                                      |
+| `pnpm run build`                                                                                                                                                    | 退出0，既有可选跨平台依赖追踪诊断保留；[日志](./reports/absence-build.txt)                                          |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                                          | 首轮退出1，126文件通过、1文件失败；1200项通过、1项失败，336.81秒；[完整失败日志](./reports/absence-integration.txt) |
+| `pnpm exec vitest run --project integration tests/integration/delivery/local-http.test.ts`                                                                          | 失败文件独立重跑5项通过；[日志](./reports/absence-delivery-recheck.txt)                                             |
+| `pnpm exec vitest run --project integration --maxWorkers=2`                                                                                                         | 普通集成组重跑退出0，105文件896项通过，255.50秒；[日志](./reports/absence-integration-recheck.txt)                  |
+| `node docs/tasks/check.mjs`                                                                                                                                         | 120任务、298需求，无缺失ID或循环；[日志](./reports/absence-docs.txt)                                                |
+| `pnpm run format:check`、`git diff --check`                                                                                                                         | 退出0；[格式日志](./reports/absence-format.txt)                                                                     |
+
+首轮完整集成唯一失败为 `delivery/local-http.test.ts` 首个场景的 beforeEach：`local-fixture.ts` 在独立 SQLite 数据库通过 `acceptOriginal` 写入初始图片时遇到 `database is locked`，未进入响应断言或本次清理步骤。独立评审者核对夹具与队列事务路径，确认与本次变更无直接调用关系；具体持锁者未记录，不能认定唯一根因。未修改该范围外夹具、测试断言或超时；保留失败日志，失败文件5项和完整普通集成组896项复跑均通过。真实媒体工具组首轮22文件305项已通过，不重复工具测试。本轮两个项目均取得通过结果，不能把首次合并运行描述为退出0；既有夹具偶发竞争仍作为范围外限制报告。
+
+本轮未重复 R2/SeaweedFS 的七场景实验；既有真实报告用于原交付服务兼容证据，不能描述为修复后重新实测。当前缺失对象及权限对照通过真实 SDK/HTTP 夹具验证。无页面、组件或浏览器交互改动，设计与人工 UI 验收不适用。AWS、Release 双架构及容器仍未验证，不发布或部署；#164 的完整孤儿扫描仍未实现。
+
 ## 提交与 PR
 
-实现提交 `03baea7` 已推送到 `codex/issue-163-s3-delete`，创建正式待评审 [PR #235](https://github.com/dnslin/ariso-next/pull/235)。实际运行 `gh pr view 235 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefOid,mergeable,mergeStateStatus,statusCheckRollup`：OPEN、isDraft=false、MERGEABLE、CLEAN，远端检查列表为空。没有远端检查不记为 CI 通过，不等待不存在的工作流。后续证据提交只补交付链接与实际远端核对，不重复未改变的业务检查。
+首次实现提交 `03baea7` 已推送到 `codex/issue-163-s3-delete`，创建正式待评审 [PR #235](https://github.com/dnslin/ariso-next/pull/235)。首次实际运行 `gh pr view 235 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefOid,mergeable,mergeStateStatus,statusCheckRollup`：OPEN、isDraft=false、MERGEABLE、CLEAN，远端检查列表为空。没有远端检查不记为 CI 通过，不等待不存在的工作流。首次交付后的 `f4156c6` 仅补交付链接与实际远端核对；本次双角度评审修复及新验证结果见上节，继续使用同一分支和 PR。
 
 没有合并 PR、主动关闭 Issue、删除分支或 worktree。原项目目录及本次独立 worktree 均保留。
