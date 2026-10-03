@@ -40,6 +40,12 @@ import {
 } from './library-selection-menu';
 import { useLibrarySelection } from './use-library-selection';
 import { useSelectionReconciliation } from './use-selection-reconciliation';
+import { useLibraryBatch } from '../../components/library/use-library-batch';
+import {
+  BatchWorkspaceContent,
+  BatchWorkspaceFooter,
+} from '../../components/library/batch-workspace';
+import { libraryRequestParams } from './query-state';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
 export function LibraryScreen(props: {
@@ -87,7 +93,11 @@ export function LibraryScreen(props: {
     query.filters,
     query.loadingMode,
   ]);
-  const selection = useLibrarySelection(selectionIdentity, query.items);
+  const selection = useLibrarySelection(
+    selectionIdentity,
+    query.items,
+    query.loadingMode === 'pages' ? query.page : undefined,
+  );
   const removeMissingSource = useEffectEvent((id: string) => {
     selection.remove(id);
     query.onSelectionInvalid([id]);
@@ -121,7 +131,20 @@ export function LibraryScreen(props: {
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
   }, [resetUpload, client, returnTo]);
+  const batch = useLibraryBatch({
+    selection,
+    query: query.filters
+      ? libraryRequestParams(query.filters, {}).toString()
+      : '',
+    currentAlbumId: props.albumId,
+    onExpire: expireSession,
+    onRefresh: async (results, command) => {
+      await query.onBatchCompleted(results, command);
+      props.onRefresh?.();
+    },
+  });
   const reconciliation = useSelectionReconciliation({
+    enabled: !batch.pending && !batch.unresolved,
     selection,
     identity: selectionIdentity,
     filters: query.filters,
@@ -170,7 +193,9 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        detail.view === 'reprocess' ? (
+        batch.visible && batch.workspace?.phase !== 'confirm' ? (
+          <BatchWorkspaceFooter batch={batch} />
+        ) : detail.view === 'reprocess' ? (
           <DetailReprocessFooter actions={reprocess.footerActions} />
         ) : detail.view ? (
           <DetailVersionsFooter
@@ -185,7 +210,15 @@ export function LibraryScreen(props: {
         )
       }
     >
-      <div className={props.workspace || detail.view ? 'hidden' : 'contents'}>
+      <div
+        className={
+          props.workspace ||
+          detail.view ||
+          (batch.visible && batch.workspace?.phase !== 'confirm')
+            ? 'hidden'
+            : 'contents'
+        }
+      >
         <section
           className="grid min-w-0 gap-5 xl:gap-6"
           aria-labelledby="library-title"
@@ -225,12 +258,27 @@ export function LibraryScreen(props: {
                     contextMenu={contextMenu}
                     onContextMenuClose={() => setContextMenu(null)}
                     loadingMode={query.loadingMode}
-                    disabled={!query.canOperate || reconciliation.pending}
+                    disabled={
+                      !query.canOperate ||
+                      reconciliation.pending ||
+                      batch.unresolved ||
+                      batch.pending
+                    }
                     onOpen={detail.open}
+                    onBatch={batch.open}
                   />
                 ) : undefined
               }
             />
+            {batch.unresolved ? (
+              <Button
+                variant="outline"
+                className="h-11 w-fit rounded-lg"
+                onPress={batch.reopen}
+              >
+                查看待核对结果
+              </Button>
+            ) : null}
             {query.filters ? (
               <LibraryFiltersBar
                 filters={query.filters}
@@ -475,6 +523,12 @@ export function LibraryScreen(props: {
           dialogRef={detail.dialogRef}
         />
       ) : null}
+      <BatchWorkspaceContent
+        batch={batch}
+        client={client}
+        currentAlbumId={props.albumId}
+        timeZone={props.timeZone}
+      />
       {props.workspace?.content}
     </OwnerShell>
   );

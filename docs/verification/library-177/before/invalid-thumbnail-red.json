@@ -1,0 +1,12 @@
+{
+  "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts",
+  "exitCode": 1,
+  "testsPassed": 20,
+  "testsFailed": 1,
+  "testsTotal": 21,
+  "reason": "Known readable thumbnail missing when the invalid failed image only left the query",
+  "after": {
+    "exitCode": 0,
+    "testsPassed": 21
+  }
+}

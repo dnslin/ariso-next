@@ -1,0 +1,1 @@
+ALTER TABLE `media_objects` ADD `byte_size_confirmed_at` integer;

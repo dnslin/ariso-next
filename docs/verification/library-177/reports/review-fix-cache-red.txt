@@ -1,0 +1,47 @@
+Already up to date
+Done in 45ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso
+
+ ❯ |unit| tests/unit/library/query-hook.test.ts (11 tests | 2 failed | 9 skipped) 18ms
+   × batch completion refreshes the current page and invalidates previously cached pages 17ms
+   × batch completion preserves loaded pages and continues after the original deleted cursor anchor 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > batch completion refreshes the current page and invalidates previously cached pages
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/unit/library/query-hook.test.ts:338:54
+    336|   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json(page(…
+    337|   await mount(client).refresh();
+    338|   expect(client.getQueryState(first)?.isInvalidated).toBe(true);
+       |                                                      ^
+    339|   expect(client.getQueryData<LibraryPage>(first)?.items.map(item => it…
+    340|   expect(client.getQueryData<LibraryPage>(current)?.items.map(item => …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > batch completion preserves loaded pages and continues after the original deleted cursor anchor
+TypeError: Cannot read properties of undefined (reading 'pages')
+ ❯ tests/unit/library/query-hook.test.ts:357:18
+    355|   await mount(client).refresh();
+    356|   const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+    357|   expect(current.pages.flatMap(page => page.items.map(item => item.id)…
+       |                  ^
+    358|   expect(current.pages.map(page => page.nextCursor)).toEqual(['after-b…
+    359|   expect(current.pageParams).toEqual([null, 'after-b']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 skipped (11)
+   Start at  18:05:57
+   Duration  226ms (import 54%, transform 34%, tests 12%, worker 1%)

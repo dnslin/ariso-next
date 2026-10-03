@@ -55,6 +55,7 @@ export function useSelectionReconciliation({
   dataUpdatedAt,
   onSessionExpired,
   onInvalid,
+  enabled = true,
 }: {
   selection: LibrarySelection;
   identity: string;
@@ -62,6 +63,7 @@ export function useSelectionReconciliation({
   dataUpdatedAt: number;
   onSessionExpired: () => void;
   onInvalid: (ids: string[]) => void;
+  enabled?: boolean;
 }) {
   const [revision, setRevision] = useState(0);
   const [status, setStatus] = useState({
@@ -109,12 +111,12 @@ export function useSelectionReconciliation({
       });
   });
   useEffect(() => {
-    if (!dataUpdatedAt) return;
+    if (!dataUpdatedAt || !enabled) return;
     const controller = new AbortController();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Synchronize the pending state of this cancellable membership read.
     start(controller.signal);
     return () => controller.abort();
-  }, [identity, dataUpdatedAt, revision]);
+  }, [identity, dataUpdatedAt, revision, enabled]);
   return {
     ...(status.identity === identity
       ? status

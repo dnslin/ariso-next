@@ -49,12 +49,23 @@ async function ready() {
 }
 
 async function mutate(
-  operation: 'trash' | 'restore',
+  operation: 'trash' | 'restore' | 'delete' | 'cleanup' | 'retry',
   id = imageId,
   headers: Record<string, string> = {},
 ) {
-  const response = await fetch(`${origin}/api/images/${id}/${operation}`, {
-    method: 'POST',
+  const path =
+    operation === 'delete'
+      ? ''
+      : operation === 'retry'
+        ? '/cleanup/retry'
+        : `/${operation}`;
+  const response = await fetch(`${origin}/api/images/${id}${path}`, {
+    method:
+      operation === 'delete'
+        ? 'DELETE'
+        : operation === 'cleanup'
+          ? 'GET'
+          : 'POST',
     headers: { origin, cookie, ...headers },
     signal: AbortSignal.timeout(10000),
   });
@@ -244,3 +255,63 @@ it('reports deletion conflicts and real database faults without changing the ass
   }
   expect(await readFile(originalPath)).toEqual(bytes);
 });
+
+it('authenticates permanent delete, status and retry routes before touching storage', async () => {
+  const before = snapshot();
+  for (const operation of ['delete', 'cleanup', 'retry'] as const) {
+    const deniedHeaders: Record<string, string>[] = [
+      { cookie: '' },
+      { cookie: '', authorization: `Bearer ${token}` },
+      { cookie: `ariso.share_token=${token}` },
+    ];
+    for (const headers of deniedHeaders) {
+      expect((await mutate(operation, imageId, headers)).status).toBe(401);
+    }
+    if (operation !== 'cleanup') {
+      for (const requestOrigin of ['', 'https://foreign.example'])
+        expect(
+          (await mutate(operation, imageId, { origin: requestOrigin })).status,
+        ).toBe(403);
+    }
+  }
+  expect(snapshot()).toEqual(before);
+  expect((await mutate('delete')).status).toBe(409);
+  expect((await mutate('cleanup')).status).toBe(404);
+  expect((await mutate('retry')).status).toBe(409);
+  expect(await readFile(originalPath)).toEqual(bytes);
+});
+
+it('returns 202 acceptance and durable status across restart, then retains a deleted terminal result', async () => {
+  await mutate('trash');
+  const response = await mutate('delete');
+  expect(response.status).toBe(202);
+  expect(response.body).toMatchObject({
+    imageId,
+    status: 'queued',
+    remaining: [{ purpose: 'original' }],
+  });
+  expect((await mutate('restore')).status).toBe(409);
+  await vi.waitFor(
+    async () =>
+      expect((await mutate('cleanup')).body).toMatchObject({
+        imageId,
+        jobId: response.body.jobId,
+        status: 'succeeded',
+        remaining: [],
+      }),
+    { timeout: 10000 },
+  );
+  await expect(readFile(originalPath)).rejects.toMatchObject({
+    code: 'ENOENT',
+  });
+  const terminal = await mutate('cleanup');
+  expect(terminal.status).toBe(200);
+  expect(await mutate('delete')).toEqual(terminal);
+  expect(await mutate('retry')).toEqual(terminal);
+  expect(connection.db.select().from(mediaImages).all()).toEqual([]);
+  env.PORT = String(server.port);
+  await stop(server.child, server.closed);
+  server = await launch(resolve('.next/standalone'), directory, env);
+  await ready();
+  expect(await mutate('cleanup')).toEqual(terminal);
+}, 30000);

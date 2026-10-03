@@ -4,6 +4,25 @@
 
 分支 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。本次人工反馈已改为图片占满视口、图标入口和单一关闭入口，已取得最终构建、分段浏览器复验和独立审计证据。两项范围外检查失败及返修后的最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。
 
+## 用户授权合并前的冲突处理（2026-10-03）
+
+所有者明确要求合并PR、更新和清理本地分支、关闭Issue。第一次合并请求实际被GitHub以merge conflicts拒绝；随后取得最新 `origin/main` 的 `40720ac`（已合入#177）。在本任务工作区合入main，保留两边意图，不改已批准界面：
+
+- 设计交接保留#185大图与#177批量操作各自完整记录；任务卡自动合并。
+- 图库选择保留分页时的当前页参数，同时保留大图来源404后的选择与列表清理；批量工作区与大图上下文均保留。
+- 浏览器运行器同时保留viewer及library-batch的suite、only选项、真实脚本入口和对应配置，其他套件沿原行为。
+
+独立代码评审者只读核对三个合并点及调用路径，未发现合并阻断项；没有再次设计改稿，不重复截图矩阵。Node24.18.1 / pnpm11.19.0下实际执行：
+
+| 命令                                                                                                                                                                                                                                                                                            | 结果与证据                                                                               |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `pnpm run typecheck`                                                                                                                                                                                                                                                                            | 退出0，[类型](./checks/merge-main-typecheck.txt)。                                       |
+| `pnpm exec vitest run --project unit tests/unit/library/selection.test.ts tests/unit/library/selection-reconciliation.test.ts tests/unit/library/query-cache.test.ts tests/unit/library/query-hook.test.ts tests/unit/library/viewer-model.test.ts tests/unit/library/viewer-neighbors.test.ts` | 6文件/56项通过，[相关单元](./checks/merge-main-unit.txt)。                               |
+| `node --check scripts/verify-browser.mjs` / `pnpm exec eslint scripts/verify-browser.mjs src/app/library/library-screen.tsx --max-warnings=0` / `pnpm exec prettier --check docs/design/handoff.md scripts/verify-browser.mjs src/app/library/library-screen.tsx` / `node docs/tasks/check.mjs` | 均退出0，[静态与文档](./checks/merge-main-static.txt)，120任务/298需求。                 |
+| `pnpm run build`                                                                                                                                                                                                                                                                                | 退出0，既有其他平台可选原生包追踪警告保留；见[合并构建](./checks/merge-main-build.txt)。 |
+
+本段仅记录合并准备，不将所有者的合并授权冒充新的物理设备或镜像验证，不改写历史范围外失败。预览沿独立临时数据和独立standalone应用运行，清理本任务worktree不删除该预览数据。最终合并与关闭状态以GitHub为准。
+
 ## PR 双角度评审修复（2026-10-03）
 
 所有者要求修复双角度评审发现的1项Required和2项Optional。保留 `9207cc7` 的实际失败证据，不改写上一轮记录。界面继续按已批准的全视口图片、44px图标关闭与Esc、YARL连续浏览执行；匿名大图仍由#193承接，人工设计验收仍待所有者完成。

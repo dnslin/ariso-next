@@ -207,11 +207,16 @@ export const mediaObjects = sqliteTable(
       ],
     }).notNull(),
     byteSize: integer('byte_size'),
+    byteSizeConfirmedAt: integer('byte_size_confirmed_at', {
+      mode: 'timestamp_ms',
+    }),
     width: integer('width'),
     height: integer('height'),
     format: text('format'),
     mime: text('mime'),
     error: text('error'),
+    cleanupAttempts: integer('cleanup_attempts').notNull().default(0),
+    nextCleanupAt: integer('next_cleanup_at', { mode: 'timestamp_ms' }),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
   },
@@ -232,6 +237,20 @@ export const mediaObjects = sqliteTable(
     ),
   ],
 );
+
+/** Historical deletion result survives asset removal without retaining storage references. */
+export const mediaCleanupJobs = sqliteTable('media_cleanup_jobs', {
+  id: text('id').primaryKey().notNull(),
+  imageId: text('image_id').notNull().unique(),
+  status: text('status', {
+    enum: ['queued', 'running', 'failed', 'succeeded'],
+  }).notNull(),
+  cycle: integer('cycle').notNull().default(1),
+  error: text('error'),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  finishedAt: integer('finished_at', { mode: 'timestamp_ms' }),
+});
 
 export const mediaVersions = sqliteTable(
   'media_versions',
