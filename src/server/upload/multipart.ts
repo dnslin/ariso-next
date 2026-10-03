@@ -1,4 +1,4 @@
-import { statSync, statfsSync } from 'node:fs';
+import type { createMediaResources } from '../media/resources.ts';
 import { open } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { Readable, Transform, Writable } from 'node:stream';
@@ -22,13 +22,13 @@ export class MultipartReceiveError extends Error {
   }
 }
 
-const writes = new Set<{ device: number; remaining: number }>();
 const bufferSize = 64 * 1024;
 
 export async function receiveMultipart(
   request: Request,
   options: {
     path: string;
+    resources: ReturnType<typeof createMediaResources>;
     maxBytes: number;
     declaredSize: number;
     signal: AbortSignal;
@@ -49,11 +49,14 @@ export async function receiveMultipart(
     );
   const diskFailure = (cause: Error) => {
     if (cause instanceof MultipartReceiveError) return cause;
-    return (cause as NodeJS.ErrnoException).code === 'ENOSPC'
+    const code = (cause as NodeJS.ErrnoException).code;
+    return code === 'ENOSPC' || code === 'INSUFFICIENT_DISK_SPACE'
       ? error(
           'UPLOAD_INSUFFICIENT_SPACE',
           507,
-          `Disk full at ${options.path}`,
+          code === 'ENOSPC'
+            ? `Disk full at ${options.path}`
+            : `Insufficient disk space at ${options.path}: ${cause.message}`,
           cause,
         )
       : error(
@@ -166,15 +169,16 @@ export async function receiveMultipart(
     }
     const writer = (async () => {
       const directory = dirname(options.path);
-      const write = {
-        device: statSync(directory).dev,
-        remaining: options.declaredSize,
-      };
-      writes.add(write);
+      const writeId = options.path;
       let handle: Awaited<ReturnType<typeof open>> | undefined;
       let pendingWrite: Promise<void> | undefined;
       try {
         handle = await open(options.path, 'wx');
+        options.resources.reserveWrite(
+          writeId,
+          directory,
+          options.declaredSize,
+        );
         await pipeline(
           file,
           new Writable({
@@ -194,19 +198,14 @@ export async function receiveMultipart(
                     400,
                     'File exceeds declared size',
                   );
-                const fs = statfsSync(directory);
-                const needed = [...writes]
-                  .filter((entry) => entry.device === write.device)
-                  .reduce((sum, entry) => sum + entry.remaining, 0);
-                if (fs.bavail * fs.bsize < needed)
-                  throw error(
-                    'UPLOAD_INSUFFICIENT_SPACE',
-                    507,
-                    `Insufficient disk space at ${directory}`,
-                  );
                 let offset = 0;
                 while (offset < chunk.length) {
                   controller.signal.throwIfAborted();
+                  options.resources.reserveWrite(
+                    writeId,
+                    directory,
+                    options.declaredSize - byteSize - offset,
+                  );
                   const result = await handle!.write(
                     chunk,
                     offset,
@@ -215,7 +214,7 @@ export async function receiveMultipart(
                   if (!result.bytesWritten)
                     throw new Error(`No write progress at ${options.path}`);
                   offset += result.bytesWritten;
-                  write.remaining -= result.bytesWritten;
+                  options.resources.consumeWrite(writeId, result.bytesWritten);
                 }
                 byteSize += chunk.length;
                 idle.refresh();
@@ -244,7 +243,7 @@ export async function receiveMultipart(
         try {
           await handle?.close();
         } finally {
-          writes.delete(write);
+          if (handle) options.resources.releaseWrite(writeId);
         }
       }
     })().catch((cause: Error) => {

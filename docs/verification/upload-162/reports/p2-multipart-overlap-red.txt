@@ -1,0 +1,27 @@
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |integration| tests/integration/upload/multipart.test.ts (39 tests | 1 failed) 412ms
+   ❯ shared multipart disk reservations (10)
+     × reserves reception bytes while a native file write is still pending 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/upload/multipart.test.ts > shared multipart disk reservations > reserves reception bytes while a native file write is still pending
+AssertionError: expected function to throw an error, but it didn't
+ ❯ tests/integration/upload/multipart.test.ts:494:9
+    492|       expect(() =>
+    493|         resources.reserveWrite('other-download', directory, 200 * MiB),
+    494|       ).toThrow(expect.objectContaining({ code: 'INSUFFICIENT_DISK_SPA…
+       |         ^
+    495|     } finally {
+    496|       release.resolve();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 38 passed (39)
+   Start at  18:10:20
+   Duration  1.46s (transform 37%, import 33%, tests 30%)
+

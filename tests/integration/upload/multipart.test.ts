@@ -1,19 +1,32 @@
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, statfsSync } from 'node:fs';
 import * as fsPromises from 'node:fs/promises';
-import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { receiveMultipart } from '../../../src/server/upload/multipart';
+import { createMediaResources } from '../../../src/server/media/resources.ts';
+import { receiveSession } from '../../../src/server/upload/receive.ts';
+import { createSubmission } from '../../../src/server/upload/sessions.ts';
+import { collectionFixture } from '../collections/helpers.ts';
+
+vi.mock('node:fs', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:fs')>();
+  return { ...actual, statfsSync: vi.fn(actual.statfsSync) };
+});
 
 vi.mock('node:fs/promises', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:fs/promises')>();
   return { ...actual, open: vi.fn(actual.open) };
 });
 
+const MiB = 1024 * 1024;
+const lowWaterBytes = 256 * MiB;
 let directory: string;
+let resources: ReturnType<typeof createMediaResources>;
 beforeEach(async () => {
   directory = await mkdtemp(join(tmpdir(), 'ariso-multipart-'));
+  resources = createMediaResources();
 });
 afterEach(async () => {
   vi.restoreAllMocks();
@@ -49,6 +62,7 @@ function receive(
 ) {
   return receiveMultipart(req, {
     path: join(directory, 'original'),
+    resources,
     declaredSize,
     maxBytes,
     signal,
@@ -138,6 +152,7 @@ describe('production multipart reception', () => {
     await expect(
       receiveMultipart(request(body('image')), {
         path: join(directory, 'original'),
+        resources,
         declaredSize: 5,
         maxBytes: 5,
         signal: new AbortController().signal,
@@ -199,6 +214,7 @@ describe('production multipart reception', () => {
     await expect(
       receiveMultipart(request(body('image')), {
         path: join(directory, 'original'),
+        resources,
         declaredSize: 5,
         maxBytes: 5,
         signal: new AbortController().signal,
@@ -392,4 +408,199 @@ describe('production multipart reception', () => {
     controller.abort();
     expect(await readFile(join(directory, 'original'), 'utf8')).toBe('image');
   });
+});
+
+function availableDisk(bytes: number | (() => number)) {
+  vi.mocked(statfsSync).mockImplementation(
+    () =>
+      ({
+        bavail: typeof bytes === 'number' ? bytes : bytes(),
+        bsize: 1,
+      }) as ReturnType<typeof statfsSync>,
+  );
+}
+
+describe('shared multipart disk reservations', () => {
+  it('rejects reception that would overlap a shared S3 download reservation', async () => {
+    availableDisk(1024 * MiB);
+    resources.reserveWrite('direct-download', directory, 700 * MiB);
+    await expect(
+      receive(request(body('image')), 400 * MiB, 400 * MiB),
+    ).rejects.toMatchObject({
+      code: 'UPLOAD_INSUFFICIENT_SPACE',
+      status: 507,
+      cause: { code: 'INSUFFICIENT_DISK_SPACE' },
+    });
+    expect((await stat(join(directory, 'original'))).size).toBe(0);
+  });
+
+  it('passes the session context resource manager into multipart reception', async () => {
+    const fixture = collectionFixture();
+    try {
+      availableDisk(lowWaterBytes + 8);
+      resources.reserveWrite('media-download', fixture.storageRoot, 5);
+      const session = createSubmission(fixture.db, {
+        requestId: 'shared-disk',
+        files: [
+          { queueItemId: 'q', originalName: 'image.png', declaredSize: 5 },
+        ],
+      }).sessions[0];
+      await expect(
+        receiveSession(
+          { ...fixture, resources },
+          session.id,
+          request(body('image')),
+          new AbortController().signal,
+        ),
+      ).rejects.toMatchObject({
+        code: 'UPLOAD_INSUFFICIENT_SPACE',
+        status: 507,
+      });
+    } finally {
+      fixture.close();
+    }
+  });
+
+  it('reserves reception bytes while a native file write is still pending', async () => {
+    availableDisk(512 * MiB);
+    const { open: originalOpen } =
+      await vi.importActual<typeof import('node:fs/promises')>(
+        'node:fs/promises',
+      );
+    const entered = Promise.withResolvers<void>();
+    const release = Promise.withResolvers<void>();
+    vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+      const handle = await originalOpen(...args);
+      const write = handle.write.bind(handle);
+      vi.spyOn(handle, 'write').mockImplementationOnce(async () => {
+        entered.resolve();
+        await release.promise;
+        return write('image');
+      });
+      return handle;
+    });
+    const pending = expect(
+      receive(request(body('image'), undefined, 65536), 100 * MiB, 100 * MiB),
+    ).rejects.toMatchObject({ code: 'UPLOAD_SIZE_MISMATCH' });
+    await entered.promise;
+    try {
+      expect(() =>
+        resources.reserveWrite('other-download', directory, 200 * MiB),
+      ).toThrow(expect.objectContaining({ code: 'INSUFFICIENT_DISK_SPACE' }));
+      await expect(
+        receive(request(body('other')), 100 * MiB, 100 * MiB),
+      ).rejects.toMatchObject({
+        code: 'UPLOAD_RECEIVE_FAILED',
+        cause: { code: 'EEXIST' },
+      });
+      expect(() =>
+        resources.reserveWrite('other-download', directory, 200 * MiB),
+      ).toThrow(expect.objectContaining({ code: 'INSUFFICIENT_DISK_SPACE' }));
+    } finally {
+      release.resolve();
+      await pending;
+    }
+    expect(() =>
+      resources.reserveWrite('other-download', directory, 200 * MiB),
+    ).not.toThrow();
+  });
+
+  it('deducts each actual partial write as available disk space decreases', async () => {
+    let free = lowWaterBytes + 6;
+    availableDisk(() => free);
+    const { open: originalOpen } =
+      await vi.importActual<typeof import('node:fs/promises')>(
+        'node:fs/promises',
+      );
+    vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+      const handle = await originalOpen(...args);
+      const write = handle.write.bind(handle);
+      vi.spyOn(handle, 'write').mockImplementation(async () => {
+        const result = await write('x');
+        free -= result.bytesWritten;
+        return result;
+      });
+      return handle;
+    });
+    await expect(
+      receive(request(body('xxxxxx'), undefined, 65536), 6, 6),
+    ).resolves.toEqual({ byteSize: 6 });
+    expect(await readFile(join(directory, 'original'), 'utf8')).toBe('xxxxxx');
+    expect(free).toBe(lowWaterBytes);
+  });
+
+  it('rechecks shared space before writing another chunk', async () => {
+    let free = lowWaterBytes + 5;
+    availableDisk(() => free);
+    await expect(
+      receiveMultipart(request(body('image'), undefined, 1), {
+        resources,
+        path: join(directory, 'original'),
+        declaredSize: 5,
+        maxBytes: 5,
+        signal: new AbortController().signal,
+        onProgress() {
+          free = lowWaterBytes - 1;
+        },
+      }),
+    ).rejects.toMatchObject({
+      code: 'UPLOAD_INSUFFICIENT_SPACE',
+      status: 507,
+      cause: { code: 'INSUFFICIENT_DISK_SPACE' },
+    });
+    expect((await stat(join(directory, 'original'))).size).toBeLessThan(5);
+  });
+
+  it.each([
+    'success',
+    'size-mismatch',
+    'oversize',
+    'disk-error',
+    'cancel',
+  ] as const)(
+    'releases the shared reservation after %s before temporary cleanup',
+    async (outcome) => {
+      availableDisk(lowWaterBytes + 8);
+      const workspace = join(directory, 'workspace');
+      await mkdir(workspace);
+      const controller = new AbortController();
+      if (outcome === 'disk-error') {
+        const { open: originalOpen } =
+          await vi.importActual<typeof import('node:fs/promises')>(
+            'node:fs/promises',
+          );
+        vi.mocked(fsPromises.open).mockImplementationOnce(async (...args) => {
+          const handle = await originalOpen(...args);
+          vi.spyOn(handle, 'write').mockRejectedValueOnce(
+            Object.assign(new Error('disk full'), { code: 'ENOSPC' }),
+          );
+          return handle;
+        });
+      }
+      const pending = receiveMultipart(request(body('image'), undefined, 1), {
+        resources,
+        path: join(workspace, 'original'),
+        declaredSize: outcome === 'size-mismatch' ? 6 : 5,
+        maxBytes: outcome === 'oversize' ? 4 : 6,
+        signal: controller.signal,
+        onProgress() {
+          if (outcome === 'cancel') controller.abort();
+        },
+      });
+      const codes = {
+        'size-mismatch': 'UPLOAD_SIZE_MISMATCH',
+        oversize: 'UPLOAD_FILE_TOO_LARGE',
+        'disk-error': 'UPLOAD_INSUFFICIENT_SPACE',
+        cancel: 'UPLOAD_CANCELLED',
+      };
+      if (outcome === 'success')
+        await expect(pending).resolves.toEqual({ byteSize: 5 });
+      else
+        await expect(pending).rejects.toMatchObject({ code: codes[outcome] });
+      await rm(workspace, { recursive: true, force: true });
+      expect(() =>
+        resources.reserveWrite('next-download', directory, 8),
+      ).not.toThrow();
+    },
+  );
 });

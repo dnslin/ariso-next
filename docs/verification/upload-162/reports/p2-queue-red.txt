@@ -1,0 +1,33 @@
+Already up to date
+Done in 43ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |integration| tests/integration/media/queue.test.ts (15 tests | 1 failed | 14 skipped) 1104ms
+   ❯ remote maintenance scheduling (3)
+     × claims unrelated Local work and interrupts deletion while remote DELETE is still pending 1104ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > remote maintenance scheduling > claims unrelated Local work and interrupts deletion while remote DELETE is still pending
+AssertionError: expected 'queued' to be 'running' // Object.is equality
+
+Expected: "running"
+Received: "queued"
+
+ ❯ tests/integration/media/queue.test.ts:401:61
+    399|       await cleanup.entered();
+    400|       const next = enqueue();
+    401|       await vi.waitFor(() => expect(job(next.jobId).status).toBe('runn…
+       |                                                             ^
+    402|       expect(job(next.jobId).startedAt).toBeInstanceOf(Date);
+    403|       connection.db
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  18:06:43
+   Duration  1.72s (tests 67%, import 23%, transform 10%)
+

@@ -2,7 +2,20 @@
 
 审计日期：2026-10-02。审计者为未参与实现的独立 agent，使用 `code-review-and-quality`；React/Next.js 部分同时核对 `vercel-react-best-practices`。本记录仅给代码与测试有效性结论，不代替设计还原、真实服务兼容性或用户人工验收。
 
-## 当前结论（2026-10-03 双 agent 复核）
+## 当前结论（2026-10-03 P2 修复复审）
+
+**两项P2已闭合；本轮修复无剩余Required。** 审查基准为 `870ad24` 之后的最终七文件差异。`pr230_behavior_review` 使用 code-review-and-quality，新增的 `p2_structure_recheck` 使用 thermo-nuclear-code-quality-review 与 code-review-and-quality；两位未参与本次实现，各自实际读取最终差异、调用链、相关规格与测试，并确认最小修复成立。没有因测试通过而自动认可结构。
+
+| 原发现                   | 本次修复与复审                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 远端候选清理阻塞媒体调度 | 运行时持有一个维护Promise，同批永久删除/候选清理串行，主循环不等待远端I/O。新测试验证DELETE未返回时领取Local任务、永久删除中断、单批不重叠、停止中断并等待落库、DB结算失败自动停止领取且stop抛原错误。原失败与初次15项GREEN及最终542项集成均已读取。评审建议将新任务提交放在手动stop前，已修改并通过最终回归，证明自动停止行为。                                                   |
+| 中转遗漏共享磁盘预留     | 强制传入现有resources，删除独立账本。open(wx)取得路径所有权后登记，每次实际write前重检、按实际bytesWritten扣减；等待pendingWrite、close后释放，open失败不释放其它操作。runtime及直接begin/complete/receive保留同context实例。初次及后续空间不足均保留507和cause。测试观察真实文件、并发准入、部分写入、取消/错误/超限后的释放。原4项RED、同路径1项RED、最终6文件112项GREEN已核对。 |
+
+代码复审者实际执行：`node node_modules/vitest/vitest.mjs run --project integration tests/integration/media/delete.test.ts -t 'cancels a running writer|merges in-flight candidate'`，4项通过、9项按筛选未执行；[输出](./reports/p2-independent-delete.txt)。结构复审者实际执行：`node node_modules/vitest/vitest.mjs run --project integration tests/integration/media/queue.test.ts tests/integration/upload/multipart.test.ts`，2文件54项全部通过；[输出](./reports/p2-independent-54.txt)。两位 `git diff --check 870ad24` 均通过。结构者首次沙箱缓存EPERM未启动、pnpm无输出尝试中断，之后实际授权复跑成功；没有倒记失败尝试。
+
+主验证最终安装、格式、lint、类型、无部署密钥构建通过，70文件865单元与45文件542受影响集成通过；实际命令和原始结果统一见[主记录](./README.md#p2-审计返修2026-10-03)，不冒称由评审者重跑全套。未修改UI/数据库/依赖、未扩大到此前P3可选结构建议，未处理既有S3 begin/complete资源错误的HTTP状态映射；本次507验证范围是中转接收。此前复制专项失败与恢复界面交接缺口保持未完成，不能用本次代码通过替代完整任务或设计验收。
+
+## 2026-10-03 双 agent 首次复核（修复前）
 
 **Request Changes：两项 P2 必须修复，尚未修复。** 用户指定的两个独立 agent 分别使用 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review`，审查整个 PR #230；冻结代码 HEAD 为 `1a4ef75c21423fd2589a9b88db40d1fee53e9194`，base 为 `72c2dc8`。主 agent 回读调用路径、复现脚本与原始输出后确认以下结论。本轮只评审和归档，不修改生产代码；此前已修复项保持原历史记录，不代表本次新增发现已闭合。
 

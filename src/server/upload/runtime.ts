@@ -1,3 +1,4 @@
+import { createMediaResources } from '../media/resources.ts';
 import { setTimeout as delay } from 'node:timers/promises';
 import { eq } from 'drizzle-orm';
 import type { Logger } from 'pino';
@@ -23,6 +24,7 @@ import { uploadSessions } from './schema.ts';
 export function startUploadRuntime(
   context: UploadContext & { logger: Pick<Logger, 'info' | 'error'> },
 ) {
+  context.resources ??= createMediaResources();
   const active = new Map<
     string,
     { controller: AbortController; promise: ReturnType<typeof receiveSession> }

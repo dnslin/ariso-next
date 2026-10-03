@@ -60,7 +60,7 @@ export async function beginSession(
   if (storage.type === 's3') {
     const root = uploadTemporaryRoot(context);
     await mkdir(root, { recursive: true });
-    const resources = context.resources ?? createMediaResources();
+    const resources = (context.resources ??= createMediaResources());
     resources.reserveWrite(`upload-${id}`, root, first.declaredSize);
     resources.releaseWrite(`upload-${id}`);
   }
@@ -242,7 +242,7 @@ export async function completeSession(
       ifMatch: object.etag,
       signal,
     });
-    const resources = context.resources ?? createMediaResources();
+    const resources = (context.resources ??= createMediaResources());
     let bytes = 0;
     try {
       resources.reserveWrite(`upload-${id}`, dirname(path), object.size);

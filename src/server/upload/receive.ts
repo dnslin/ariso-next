@@ -1,3 +1,4 @@
+import { createMediaResources } from '../media/resources.ts';
 import { mkdir, rm } from 'node:fs/promises';
 import { dirname, join, sep } from 'node:path';
 import { publishS3Session, failUpload, uploadTemporaryRoot } from './s3.ts';
@@ -106,6 +107,7 @@ export async function receiveSession(
     let lastProgress = Date.now();
     const { byteSize } = await receiveMultipart(request, {
       path,
+      resources: (context.resources ??= createMediaResources()),
       maxBytes: submission.maxFileBytes,
       declaredSize: session.declaredSize,
       signal,
