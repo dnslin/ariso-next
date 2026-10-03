@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { and, asc, eq, inArray, ne, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { inspectObject } from '../storage/local.ts';
+import { inspectMediaObject } from './storage.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import { cleanupMediaObject } from './cleanup-object.ts';
 import { analyzeMediaError } from './errors.ts';
@@ -96,17 +96,6 @@ export function requestPermanentDelete(
           'MEDIA_NOT_TRASHED',
           409,
           '只能永久删除回收站中的图片',
-        );
-      const storage = tx
-        .select()
-        .from(storageConfigs)
-        .where(eq(storageConfigs.id, image.storageId))
-        .get()!;
-      if (storage.type !== 'local')
-        throw new MediaCleanupError(
-          'MEDIA_LOCAL_DELETE_ONLY',
-          409,
-          '当前永久删除仅支持本地存储，S3 删除由 T-MED-14 接入',
         );
       if (retry && !existing)
         throw new MediaCleanupError(
@@ -206,12 +195,7 @@ export async function cleanupPermanentDeletes(
     .from(mediaCleanupJobs)
     .innerJoin(mediaImages, eq(mediaImages.id, mediaCleanupJobs.imageId))
     .innerJoin(storageConfigs, eq(storageConfigs.id, mediaImages.storageId))
-    .where(
-      and(
-        inArray(mediaCleanupJobs.status, ['queued', 'running']),
-        eq(storageConfigs.type, 'local'),
-      ),
-    )
+    .where(inArray(mediaCleanupJobs.status, ['queued', 'running']))
     .orderBy(asc(mediaCleanupJobs.createdAt))
     .limit(20)
     .all();
@@ -219,7 +203,6 @@ export async function cleanupPermanentDeletes(
     if (signal?.aborted) break;
     if (activeImages.has(job.imageId) || hasActiveJob(db, job.imageId))
       continue;
-    const local = { ...storage, localPath: storage.localPath! };
     db.update(mediaCleanupJobs)
       .set({ status: 'running', updatedAt: new Date() })
       .where(eq(mediaCleanupJobs.id, job.id))
@@ -262,15 +245,17 @@ export async function cleanupPermanentDeletes(
         let confirmedAt = object.byteSizeConfirmedAt;
         let absent = false;
         try {
-          const facts = await inspectObject(
-            runtime.storageRoot,
-            local,
+          const facts = await inspectMediaObject(
+            runtime,
+            storage,
             object.key,
+            signal,
           );
           absent = facts === null;
           size = facts?.size ?? 0;
           confirmedAt = new Date();
         } catch (err) {
+          signal?.throwIfAborted();
           error = analyzeMediaError(err).diagnostic;
         }
         db.update(mediaObjects)
@@ -296,9 +281,13 @@ export async function cleanupPermanentDeletes(
         })
         .where(eq(mediaObjects.id, object.id))
         .run();
-      await cleanupMediaObject(runtime, local, object, {
-        retryAt: attempts < 2 ? new Date(Date.now() + 5000) : undefined,
-      });
+      await cleanupMediaObject(
+        runtime,
+        storage,
+        object,
+        { retryAt: attempts < 2 ? new Date(Date.now() + 5000) : undefined },
+        signal,
+      );
     }
     if (signal?.aborted) break;
     db.transaction(

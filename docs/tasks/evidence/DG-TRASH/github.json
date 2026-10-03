@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-03",
+  "issues": {
+    "140": {
+      "body": "任务 ID：`DG-TRASH`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-TRASH；核对记录占位、部分恢复/删除、未知结果与清理失败。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 140,
+      "state": "OPEN",
+      "title": "[DG-TRASH] 记录占位设计适用核对",
+      "url": "https://github.com/dnslin/ariso-next/issues/140",
+      "blocked_by": [],
+      "blocking": [
+        {
+          "number": 178,
+          "title": "[T-LIB-11] 回收站完整查询、批量删除与失败清理",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/178"
+        }
+      ]
+    },
+    "178": {
+      "body": "任务 ID：`T-LIB-11`\n\n- 任务组：`LIBRARY-BATCH`\n- 里程碑：M3\n- 需求：`R-15.7-01`、`R-18.1-01`、`R-18.2-01`、`R-18.2-02`、`R-18.3-01`、`R-18.3-02`、`R-18.3-03`、`A-26.11-04`、`A-26.11-05`、`A-26.11-06`、`A-26.11-07`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §9；扩展 M2 回收页，完整过滤/选择及 media 永久删除/重试命令，展示未清对象。\n- 直接前置：`T-LIB-08`、`T-LIB-12`、`T-MED-11`、`DG-TRASH`\n- 验收条件：回收页保留只读记录及已批准的所有者缩略图/详情预览；仅通过受保护的 /api/trash/{id}/preview 读取已存版本，公开 /i 仍拒绝回收图；固定回收顺序，查询范围不开放修改恢复信息。恢复停用资产记录但不冒充内容可读。>200显式删除分批，202受理保留记录，deleting/cleanup_failed禁止恢复，全清成功才移除；不新增自动清理或全筛选清空。\n- 验证方法：浏览器验证所有者预览可用，匿名/Bearer/分享授权均不可读，删除中/清理失败/停用拒绝预览且不增加公开计数；真实本地/后续S3注入部分清理失败、一次自动重试后手动重试/重启、未知结果核对和跨页失败保留；停用S3的跨提供方联验由存储验收继续覆盖。\n- 界面：所有者 /trash?image=<id> 与列表；library只读记录、media清理任务/剩余对象。桌面[30:1037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1037)、手机[102:852](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-852)、桌面状态[405:7599](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7599)、手机状态[405:7923](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-7923)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)。批量进度 [405:8601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8601) / [405:8924](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=405-8924)；DG-TRASH 对应DES-06-TRASH，手机沿用所有者预览及不可用原因占位，完整错误可展开；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 完整回收查询与跨页选择：保留已批准的所有者预览边界。\n  - [ ] 2. 批量永久删除与逐图结果：202受理留记录，删除态禁止恢复和预览。\n  - [ ] 3. 失败清理/重试/重启：剩余对象可核对，全清才移除。\n\n## 执行与依赖\n\n直接前置：#177、#79、#154、#140。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 178,
+      "state": "OPEN",
+      "title": "[T-LIB-11] 回收站完整查询、批量删除与失败清理",
+      "url": "https://github.com/dnslin/ariso-next/issues/178",
+      "blocked_by": [
+        {
+          "number": 177,
+          "title": "[T-LIB-08] 批量关系、可见性和回收恢复",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/177"
+        },
+        {
+          "number": 79,
+          "title": "[T-LIB-12] 单图回收恢复界面闭环",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/79"
+        },
+        {
+          "number": 154,
+          "title": "[T-MED-11] 本地持久永久删除、剩余清单与有限重试",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/154"
+        },
+        {
+          "number": 140,
+          "title": "[DG-TRASH] 记录占位设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/140"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 179,
+          "title": "[T-ANA-05] 工作台、统计图表与详情统计联动",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/179"
+        }
+      ]
+    }
+  }
+}

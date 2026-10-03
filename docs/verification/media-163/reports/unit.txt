@@ -1,0 +1,13 @@
+Already up to date
+Done in 70ms using pnpm v11.19.0
+$ vitest run --project unit --maxWorkers=2
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso
+
+{"level":"error","time":"2026-10-03T16:02:39.001Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-03T16:02:39.009Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+
+ Test Files  78 passed (78)
+      Tests  1010 passed (1010)
+   Start at  00:02:20
+   Duration  20.00s (import 53%, tests 33%, transform 13%, worker 1%)

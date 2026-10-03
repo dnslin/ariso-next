@@ -1,0 +1,78 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-163-s3-delete/ariso
+
+ ❯ |integration| tests/integration/media/s3-delete.test.ts (11 tests | 2 failed | 9 skipped) 71ms
+   × releases an absent S3 image and its references even when DELETE permission is revoked 50ms
+   × settles an absent S3 candidate without DELETE while preserving the published image 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/s3-delete.test.ts > releases an absent S3 image and its references even when DELETE permission is revoked
+AssertionError: expected { …(7) } to match object { status: 'succeeded', remaining: [] }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "remaining": [],
+-   "status": "succeeded",
++   "remaining": [
++     {
++       "attempts": 1,
++       "byteSize": 0,
++       "error": "STORAGE_OPERATION_FAILED: Storage delete failed: delete-163-78cbb02a-f57f-4209-b2a1-df31785c3132, original/84629923-ffde-4f11-a9cd-00f63b5195d5/中文 +%?.png: Injected upload fixture failure (HTTP 403, AccessDenied)",
++       "key": "original/84629923-ffde-4f11-a9cd-00f63b5195d5/中文 +%?.png",
++       "nextAttemptAt": null,
++       "objectId": "94027c7a-3031-4850-9d1f-b70a8737f27c",
++       "purpose": "original",
++       "status": "cleanup_failed",
++     },
++   ],
++   "status": "failed",
+  }
+
+ ❯ tests/integration/media/s3-delete.test.ts:362:58
+    360|   requestPermanentDelete(connection.db, image.imageId);
+    361|   await cleanup();
+    362|   expect(readMediaCleanup(connection.db, image.imageId)).toMatchObject…
+       |                                                          ^
+    363|     status: 'succeeded',
+    364|     remaining: [],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/media/s3-delete.test.ts > settles an absent S3 candidate without DELETE while preserving the published image
+AssertionError: expected { …(18) } to match object { status: 'deleted', …(4) }
+(13 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "byteSize": 0,
+    "byteSizeConfirmedAt": 2026-10-03T18:11:24.325Z,
+-   "error": null,
++   "error": "STORAGE_OPERATION_FAILED: Storage delete failed: delete-163-b0be98b1-d086-44d9-8268-5c1e798ab6af, images/36e1331e-2f45-4cd1-8f7b-91e9b620240f/candidate/7f223646-890d-4bcf-9ae7-638829a100c3: Injected upload fixture failure (HTTP 403, AccessDenied)",
+    "nextCleanupAt": null,
+-   "status": "deleted",
++   "status": "cleanup_failed",
+  }
+
+ ❯ tests/integration/media/s3-delete.test.ts:392:5
+    390|     connection.db.select().from(mediaObjects)
+    391|       .where(eq(mediaObjects.id, candidate.id)).get(),
+    392|   ).toMatchObject({
+       |     ^
+    393|     status: 'deleted',
+    394|     byteSize: 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 skipped (11)
+   Start at  02:11:23
+   Duration  620ms (import 61%, transform 26%, tests 13%)

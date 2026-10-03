@@ -154,7 +154,12 @@ export async function inspectMediaObject(
   }
   const storage = remoteStorage(runtime, config);
   try {
-    const result = await storage.inspectObject(key, { signal });
+    const result = await storage.inspectObject(key, {
+      signal: AbortSignal.any([
+        AbortSignal.timeout(30_000),
+        ...(signal ? [signal] : []),
+      ]),
+    });
     if (result && result.size === undefined)
       throw mediaError('STORAGE_OPERATION_FAILED', `S3 对象缺少字节数：${key}`);
     return result ? { size: result.size! } : null;
@@ -175,7 +180,12 @@ export async function deleteMediaObject(
   }
   const storage = remoteStorage(runtime, config);
   try {
-    await storage.deleteObject(key, { signal });
+    await storage.deleteObject(key, {
+      signal: AbortSignal.any([
+        AbortSignal.timeout(30_000),
+        ...(signal ? [signal] : []),
+      ]),
+    });
   } finally {
     storage.destroy();
   }

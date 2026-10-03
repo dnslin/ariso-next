@@ -171,8 +171,8 @@ export function startMediaQueue(runtime: MediaRuntime) {
             .catch((err: unknown) => {
               if (
                 signal.aborted &&
-                err instanceof Error &&
-                err.name === 'AbortError'
+                (err === signal.reason ||
+                  (err instanceof Error && err.name === 'AbortError'))
               )
                 return;
               failure ??= err;
