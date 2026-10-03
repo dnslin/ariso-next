@@ -61,3 +61,9 @@
 本地活动结束、已知对象成功删除或确认当前不存在后可完成图片删除。之后远端迟到对象由 T-STO-06 / #164 的命名空间周期扫描承接。本任务不实现扫描，不证明远端永不落盘，也不以 HEAD404 声称未来永无对象。
 
 AWS S3 按当前执行约定取消实测要求，保持未验证事实。Release 双架构镜像/容器验证未执行，本次不创建 Release、不发布镜像或部署。无 UI 或浏览器交互变更，本次不重复完整浏览器与物理设备检查；公开图片访问约束通过 delivery 接口核对。
+
+## 提交与 PR
+
+实现提交 `03baea7` 已推送到 `codex/issue-163-s3-delete`，创建正式待评审 [PR #235](https://github.com/dnslin/ariso-next/pull/235)。实际运行 `gh pr view 235 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefOid,mergeable,mergeStateStatus,statusCheckRollup`：OPEN、isDraft=false、MERGEABLE、CLEAN，远端检查列表为空。没有远端检查不记为 CI 通过，不等待不存在的工作流。后续证据提交只补交付链接与实际远端核对，不重复未改变的业务检查。
+
+没有合并 PR、主动关闭 Issue、删除分支或 worktree。原项目目录及本次独立 worktree 均保留。
