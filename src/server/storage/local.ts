@@ -1,5 +1,5 @@
 import { createWriteStream } from 'node:fs';
-import { open, rename, stat, unlink } from 'node:fs/promises';
+import { lstat, open, opendir, rename, stat, unlink } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { finished, pipeline } from 'node:stream/promises';
 import { randomUUID } from 'node:crypto';
@@ -247,5 +247,65 @@ export async function deleteObject(
   } catch (cause) {
     if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return;
     throw operationError(cause, storage, key, 'delete', path);
+  }
+}
+
+/** Read-only maintenance enumeration. References and deletion belong to the composition caller. */
+export async function* listObjects(
+  root: string,
+  storage: LocalStorage,
+  options: { signal?: AbortSignal; batchSize?: number } = {},
+): AsyncGenerator<{ key: string; size: number }[]> {
+  const batchSize = options.batchSize ?? 1000;
+  if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 1000)
+    throw new Error(
+      'Object listing batchSize must be an integer from 1 to 1000',
+    );
+  let path: string | undefined;
+  try {
+    options.signal?.throwIfAborted();
+    let directory: string;
+    try {
+      directory = namespace(root, storage, false);
+    } catch (cause) {
+      // An unused or already cleaned namespace has no objects; do not create it.
+      if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return;
+      throw cause;
+    }
+    async function* walk(parent: string): AsyncGenerator<{
+      key: string;
+      size: number;
+    }> {
+      path = parent;
+      options.signal?.throwIfAborted();
+      const entries = await opendir(parent);
+      // The async iterator closes its directory on completion, error and early return.
+      for await (const entry of entries) {
+        options.signal?.throwIfAborted();
+        path = join(parent, entry.name);
+        const info = await lstat(path);
+        options.signal?.throwIfAborted();
+        if (info.isDirectory()) yield* walk(path);
+        else if (info.isFile())
+          yield {
+            key: relative(directory, path).split(sep).join('/'),
+            size: info.size,
+          };
+        // Ariso writes regular files. Do not follow aliases into another object's tree.
+      }
+    }
+    let batch: { key: string; size: number }[] = [];
+    for await (const object of walk(directory)) {
+      batch.push(object);
+      if (batch.length === batchSize) {
+        yield batch;
+        options.signal?.throwIfAborted();
+        batch = [];
+      }
+    }
+    options.signal?.throwIfAborted();
+    if (batch.length) yield batch;
+  } catch (cause) {
+    throw operationError(cause, storage, '', 'list', path);
   }
 }

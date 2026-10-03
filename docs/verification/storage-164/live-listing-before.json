@@ -1,0 +1,1168 @@
+{
+  "startedAt": "2026-10-03T15:31:25.408Z",
+  "finishedAt": "2026-10-03T15:31:43.389Z",
+  "status": "failed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "scope": "Namespace enumeration only; not the production orphan scanner",
+  "aws": "Not tested; not required by the current service matrix",
+  "services": [
+    {
+      "service": "seaweedfs",
+      "target": {
+        "endpoint": "https://fs.447654.xyz",
+        "region": "us-east-1",
+        "bucket": "images",
+        "forcePathStyle": true
+      },
+      "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+      "neighborStorageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48-neighbor",
+      "pathPrefix": "verification-164 + %",
+      "plannedKeys": [
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "images/中文 + %2F?.bin",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/中文 + %2F?.bin",
+          "size": 12
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "images/nested/second.bin",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/nested/second.bin",
+          "size": 5
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "probes/zero",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/probes/zero",
+          "size": 0
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "uploads/session/inflight.partial",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/uploads/session/inflight.partial",
+          "size": 127
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "unexpected-orphan.bin",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/unexpected-orphan.bin",
+          "size": 1025
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48",
+          "key": "images/late-object.bin",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/late-object.bin",
+          "size": 4
+        },
+        {
+          "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48-neighbor",
+          "key": "images/neighbor.bin",
+          "remote": "verification-164 + %/ariso/verify-164-4e806399-8984-4c36-bb57-361e20009c48-neighbor/images/neighbor.bin",
+          "size": 8
+        }
+      ],
+      "status": "failed",
+      "checks": [
+        {
+          "name": "fresh-namespace-is-empty",
+          "status": "passed",
+          "evidence": {
+            "empty": true
+          }
+        },
+        {
+          "name": "write-exact-planned-keys",
+          "status": "passed",
+          "evidence": [
+            {
+              "key": "images/中文 + %2F?.bin",
+              "result": {
+                "etag": "\"d479c5901c477406118ac6a25159bc85\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE1AF09487B001BC40",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "images/nested/second.bin",
+              "result": {
+                "etag": "\"7cfdd07889b3295d6a550914ab35e068\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE2C992E3D95ADEE56",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "probes/zero",
+              "result": {
+                "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE32433AD8DBC3842A",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "uploads/session/inflight.partial",
+              "result": {
+                "etag": "\"6e0e00857d1375e573255279a31dea62\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE382A301CDADF605C",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "unexpected-orphan.bin",
+              "result": {
+                "etag": "\"d2e4f602e41407a6f0582f516678d91b\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE3DC5EF6F93140FA1",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "storageId": "verify-164-4e806399-8984-4c36-bb57-361e20009c48-neighbor",
+              "key": "images/neighbor.bin",
+              "result": {
+                "etag": "\"73415497e8b30e7a48e31465c7e103b3\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB0EBE57211B8946F3D0F3",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "disabled-pagination-size-and-namespace-isolation",
+          "status": "failed",
+          "evidence": {
+            "name": "AssertionError",
+            "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      key: 'images/nested/second.bin',\n      size: 5\n    },\n    {\n+     key: 'images/中文+++%2F?.bin',\n-     key: 'images/中文 + %2F?.bin',\n      size: 12\n    },\n    {\n      key: 'probes/zero',\n      size: 0\n",
+            "code": "ERR_ASSERTION"
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/中文 + %2F?.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBE6F84406E103939D5",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/nested/second.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBE7AEFF493876D05A5",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/probes/zero",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBE86C6F9616AC0B58B",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/uploads/session/inflight.partial",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBE91DF58826B11C886",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/unexpected-orphan.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBE9CDFE720B0B82213",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48/images/late-object.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBEA833361446C84207",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-4e806399-8984-4c36-bb57-361e20009c48-neighbor/images/neighbor.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB0EBEB370E7971474A904",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "final-planned-namespaces-empty",
+          "status": "passed",
+          "evidence": {
+            "namespaceEmpty": true,
+            "neighborNamespaceEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "service": "r2",
+      "target": {
+        "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+        "region": "auto",
+        "bucket": "image",
+        "forcePathStyle": true
+      },
+      "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+      "neighborStorageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764-neighbor",
+      "pathPrefix": "verification-164 + %",
+      "plannedKeys": [
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "images/中文 + %2F?.bin",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/中文 + %2F?.bin",
+          "size": 12
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "images/nested/second.bin",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/nested/second.bin",
+          "size": 5
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "probes/zero",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/probes/zero",
+          "size": 0
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "uploads/session/inflight.partial",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/uploads/session/inflight.partial",
+          "size": 127
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "unexpected-orphan.bin",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/unexpected-orphan.bin",
+          "size": 1025
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764",
+          "key": "images/late-object.bin",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/late-object.bin",
+          "size": 4
+        },
+        {
+          "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764-neighbor",
+          "key": "images/neighbor.bin",
+          "remote": "verification-164 + %/ariso/verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764-neighbor/images/neighbor.bin",
+          "size": 8
+        }
+      ],
+      "status": "passed",
+      "checks": [
+        {
+          "name": "fresh-namespace-is-empty",
+          "status": "passed",
+          "evidence": {
+            "empty": true
+          }
+        },
+        {
+          "name": "write-exact-planned-keys",
+          "status": "passed",
+          "evidence": [
+            {
+              "key": "images/中文 + %2F?.bin",
+              "result": {
+                "etag": "\"d479c5901c477406118ac6a25159bc85\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "images/nested/second.bin",
+              "result": {
+                "etag": "\"7cfdd07889b3295d6a550914ab35e068\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "probes/zero",
+              "result": {
+                "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "uploads/session/inflight.partial",
+              "result": {
+                "etag": "\"6e0e00857d1375e573255279a31dea62\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "key": "unexpected-orphan.bin",
+              "result": {
+                "etag": "\"d2e4f602e41407a6f0582f516678d91b\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            },
+            {
+              "storageId": "verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764-neighbor",
+              "key": "images/neighbor.bin",
+              "result": {
+                "etag": "\"73415497e8b30e7a48e31465c7e103b3\"",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "disabled-pagination-size-and-namespace-isolation",
+          "status": "passed",
+          "evidence": {
+            "batches": [
+              [
+                {
+                  "key": "images/nested/second.bin",
+                  "size": 5
+                },
+                {
+                  "key": "images/中文 + %2F?.bin",
+                  "size": 12
+                }
+              ],
+              [
+                {
+                  "key": "probes/zero",
+                  "size": 0
+                },
+                {
+                  "key": "unexpected-orphan.bin",
+                  "size": 1025
+                }
+              ],
+              [
+                {
+                  "key": "uploads/session/inflight.partial",
+                  "size": 127
+                }
+              ]
+            ],
+            "enabledAndDisabledMatch": true,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "exact-key-delete-and-late-object-next-round-after-restart",
+          "status": "passed",
+          "evidence": {
+            "batches": [
+              [
+                {
+                  "key": "images/late-object.bin",
+                  "size": 4
+                }
+              ]
+            ],
+            "restartStartsFromBeginning": true,
+            "neighborPreserved": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/中文 + %2F?.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/nested/second.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/probes/zero",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/uploads/session/inflight.partial",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/unexpected-orphan.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764/images/late-object.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "cleanup:verify-164-21bc8ed3-e4ad-4c6a-90c3-e5c8ff044764-neighbor/images/neighbor.bin",
+          "status": "passed",
+          "evidence": {
+            "deleted": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            },
+            "absent": true
+          }
+        },
+        {
+          "name": "final-planned-namespaces-empty",
+          "status": "passed",
+          "evidence": {
+            "namespaceEmpty": true,
+            "neighborNamespaceEmpty": true
+          }
+        }
+      ]
+    }
+  ],
+  "diagnosticReproduction": {
+    "startedAt": "2026-10-03T15:34:01.596Z",
+    "finishedAt": "2026-10-03T15:34:17.594Z",
+    "status": "failed",
+    "environment": {
+      "node": "v24.18.1",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "scope": "Namespace enumeration only; not the production orphan scanner",
+    "aws": "Not tested; not required by the current service matrix",
+    "services": [
+      {
+        "service": "seaweedfs",
+        "target": {
+          "endpoint": "https://fs.447654.xyz",
+          "region": "us-east-1",
+          "bucket": "images",
+          "forcePathStyle": true
+        },
+        "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+        "neighborStorageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb-neighbor",
+        "pathPrefix": "verification-164 + %",
+        "plannedKeys": [
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "images/中文 + %2F?.bin",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/中文 + %2F?.bin",
+            "size": 12
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "images/nested/second.bin",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/nested/second.bin",
+            "size": 5
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "probes/zero",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/probes/zero",
+            "size": 0
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "uploads/session/inflight.partial",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/uploads/session/inflight.partial",
+            "size": 127
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "unexpected-orphan.bin",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/unexpected-orphan.bin",
+            "size": 1025
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb",
+            "key": "images/late-object.bin",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/late-object.bin",
+            "size": 4
+          },
+          {
+            "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb-neighbor",
+            "key": "images/neighbor.bin",
+            "remote": "verification-164 + %/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb-neighbor/images/neighbor.bin",
+            "size": 8
+          }
+        ],
+        "status": "failed",
+        "checks": [
+          {
+            "name": "fresh-namespace-is-empty",
+            "status": "passed",
+            "evidence": {
+              "empty": true
+            }
+          },
+          {
+            "name": "write-exact-planned-keys",
+            "status": "passed",
+            "evidence": [
+              {
+                "key": "images/中文 + %2F?.bin",
+                "result": {
+                  "etag": "\"d479c5901c477406118ac6a25159bc85\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE2762541C188BEFB66",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "images/nested/second.bin",
+                "result": {
+                  "etag": "\"7cfdd07889b3295d6a550914ab35e068\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE27C3512955ACA1A75",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "probes/zero",
+                "result": {
+                  "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE281B872565D8B7E12",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "uploads/session/inflight.partial",
+                "result": {
+                  "etag": "\"6e0e00857d1375e573255279a31dea62\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE2872CBA718D316F67",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "unexpected-orphan.bin",
+                "result": {
+                  "etag": "\"d2e4f602e41407a6f0582f516678d91b\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE28CBC696496D54459",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "storageId": "verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb-neighbor",
+                "key": "images/neighbor.bin",
+                "result": {
+                  "etag": "\"73415497e8b30e7a48e31465c7e103b3\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "requestId": "18DB0EE2A40880C042B754C7",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "disabled-pagination-size-and-namespace-isolation",
+            "status": "failed",
+            "evidence": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      key: 'images/nested/second.bin',\n      size: 5\n    },\n    {\n+     key: 'images/中文+++%2F?.bin',\n-     key: 'images/中文 + %2F?.bin',\n      size: 12\n    },\n    {\n      key: 'probes/zero',\n      size: 0\n",
+              "code": "ERR_ASSERTION"
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/中文 + %2F?.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2BA782EE328C103B8",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/nested/second.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2C51128CEC2A72B0A",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/probes/zero",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2CF85FFD5C593CF17",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/uploads/session/inflight.partial",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2DA2DB307E3BB37AB",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/unexpected-orphan.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2E4F07E51FC922667",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/late-object.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2EF97C809454E6DCC",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb-neighbor/images/neighbor.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "requestId": "18DB0EE2FA913AF3BDEE42C7",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "final-planned-namespaces-empty",
+            "status": "passed",
+            "evidence": {
+              "namespaceEmpty": true,
+              "neighborNamespaceEmpty": true
+            }
+          }
+        ]
+      },
+      {
+        "service": "r2",
+        "target": {
+          "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+          "region": "auto",
+          "bucket": "image",
+          "forcePathStyle": true
+        },
+        "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+        "neighborStorageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75-neighbor",
+        "pathPrefix": "verification-164 + %",
+        "plannedKeys": [
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "images/中文 + %2F?.bin",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/中文 + %2F?.bin",
+            "size": 12
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "images/nested/second.bin",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/nested/second.bin",
+            "size": 5
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "probes/zero",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/probes/zero",
+            "size": 0
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "uploads/session/inflight.partial",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/uploads/session/inflight.partial",
+            "size": 127
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "unexpected-orphan.bin",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/unexpected-orphan.bin",
+            "size": 1025
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75",
+            "key": "images/late-object.bin",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/late-object.bin",
+            "size": 4
+          },
+          {
+            "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75-neighbor",
+            "key": "images/neighbor.bin",
+            "remote": "verification-164 + %/ariso/verify-164-358e8588-fa03-4534-b1a2-b361e7811c75-neighbor/images/neighbor.bin",
+            "size": 8
+          }
+        ],
+        "status": "passed",
+        "checks": [
+          {
+            "name": "fresh-namespace-is-empty",
+            "status": "passed",
+            "evidence": {
+              "empty": true
+            }
+          },
+          {
+            "name": "write-exact-planned-keys",
+            "status": "passed",
+            "evidence": [
+              {
+                "key": "images/中文 + %2F?.bin",
+                "result": {
+                  "etag": "\"d479c5901c477406118ac6a25159bc85\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "images/nested/second.bin",
+                "result": {
+                  "etag": "\"7cfdd07889b3295d6a550914ab35e068\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "probes/zero",
+                "result": {
+                  "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "uploads/session/inflight.partial",
+                "result": {
+                  "etag": "\"6e0e00857d1375e573255279a31dea62\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "key": "unexpected-orphan.bin",
+                "result": {
+                  "etag": "\"d2e4f602e41407a6f0582f516678d91b\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              },
+              {
+                "storageId": "verify-164-358e8588-fa03-4534-b1a2-b361e7811c75-neighbor",
+                "key": "images/neighbor.bin",
+                "result": {
+                  "etag": "\"73415497e8b30e7a48e31465c7e103b3\"",
+                  "metadata": {
+                    "httpStatusCode": 200,
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "disabled-pagination-size-and-namespace-isolation",
+            "status": "passed",
+            "evidence": {
+              "batches": [
+                [
+                  {
+                    "key": "images/nested/second.bin",
+                    "size": 5
+                  },
+                  {
+                    "key": "images/中文 + %2F?.bin",
+                    "size": 12
+                  }
+                ],
+                [
+                  {
+                    "key": "probes/zero",
+                    "size": 0
+                  },
+                  {
+                    "key": "unexpected-orphan.bin",
+                    "size": 1025
+                  }
+                ],
+                [
+                  {
+                    "key": "uploads/session/inflight.partial",
+                    "size": 127
+                  }
+                ]
+              ],
+              "enabledAndDisabledMatch": true,
+              "neighborPreserved": true
+            }
+          },
+          {
+            "name": "exact-key-delete-and-late-object-next-round-after-restart",
+            "status": "passed",
+            "evidence": {
+              "batches": [
+                [
+                  {
+                    "key": "images/late-object.bin",
+                    "size": 4
+                  }
+                ]
+              ],
+              "restartStartsFromBeginning": true,
+              "neighborPreserved": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/中文 + %2F?.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/nested/second.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/probes/zero",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/uploads/session/inflight.partial",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/unexpected-orphan.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75/images/late-object.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "cleanup:verify-164-358e8588-fa03-4534-b1a2-b361e7811c75-neighbor/images/neighbor.bin",
+            "status": "passed",
+            "evidence": {
+              "deleted": {
+                "metadata": {
+                  "httpStatusCode": 204,
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "absent": true
+            }
+          },
+          {
+            "name": "final-planned-namespaces-empty",
+            "status": "passed",
+            "evidence": {
+              "namespaceEmpty": true,
+              "neighborNamespaceEmpty": true
+            }
+          }
+        ]
+      }
+    ],
+    "rawXmlKeySamples": [
+      {
+        "service": "seaweedfs",
+        "encodingType": "url",
+        "key": "verification-164%20%2B%20%25/ariso/verify-164-84dbf2a1-11cd-439b-b889-b84710961bfb/images/%E4%B8%AD%E6%96%87+%2B+%252F%3F.bin"
+      },
+      {
+        "service": "r2",
+        "encodingType": "url",
+        "key": "verification-164%20%2B%20%25%2Fariso%2Fverify-164-358e8588-fa03-4534-b1a2-b361e7811c75%2Fimages%2F%E4%B8%AD%E6%96%87%20%2B%20%252F%3F.bin"
+      }
+    ]
+  }
+}
