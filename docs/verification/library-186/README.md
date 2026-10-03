@@ -45,7 +45,7 @@ macOS 26.6.2 / arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，Exif
 
 按现有执行约定，本次不执行物理手机、非零安全区、AMD64/ARM64 镜像或容器验证；发布验证由 Release 流程取得，不创建 Release、发布镜像或部署。真实对象存储测试沿当前 R2/SeaweedFS 矩阵记录；复用前置证据不能冒充本次新实测。
 
-分支：`codex/issue-186-batch-reprocess`。PR：待创建。
+分支：`codex/issue-186-batch-reprocess`。PR：[草稿 #236](https://github.com/dnslin/ariso-next/pull/236)。
 
 ## 结果未知的边界
 
@@ -86,3 +86,9 @@ macOS 26.6.2 / arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，Exif
 - `node docs/tasks/check.mjs`：通过，120任务、298需求，[日志](./checks/docs-final.txt)。
 - 最终格式检查首先发现8个浏览器JSON证据的排版问题；已仅格式化证据，不改变报告内容，复验通过，[日志](./checks/format-delivery.txt)。
 - `git diff --cached --check`：通过；证据日志仅规范化换行和行尾空白，保留诊断内容。
+
+## GitHub 交付状态
+
+实现提交 `aa79928` 已推送至 `origin/codex/issue-186-batch-reprocess`。`gh pr view 236 --json number,url,state,isDraft,headRefName,baseRefName,mergeable,statusCheckRollup` 实际返回 OPEN、draft、MERGEABLE，检查列表为空；[状态快照](./github-pr.json)。`gh pr checks 236` 返回“no checks reported”并退出1；[原始结果](./checks/github-pr-checks.txt)。当前没有远端检查，不标记CI通过或等待不存在的工作流。
+
+没有合并PR、主动关闭Issue、创建Release、发布镜像、部署或删除分支/worktree。原工作区保留。Ego TaskSpace16已完成本次自动检查并保留p1人工预览页，隔离预览服务仍运行。
