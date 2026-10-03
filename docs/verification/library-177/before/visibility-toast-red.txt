@@ -1,0 +1,93 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+$ vitest run --project unit tests/unit/library/batch-feedback.test.ts tests/unit/library/batch-summary.test.ts --maxWorkers=1
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-177-library-batch/ariso
+
+ ❯ |unit| tests/unit/library/batch-summary.test.ts (20 tests | 2 failed) 31ms
+   × never renders a separate success dialog after public failure-only retry 3ms
+   × never renders a separate success dialog after private failure-only retry 1ms
+ ❯ |unit| tests/unit/library/batch-feedback.test.ts (6 tests | 4 failed) 4253ms
+   × returns to the current list and toasts actual changed/unchanged counts after public finishes 1071ms
+   × returns to the current list and toasts actual changed/unchanged counts after private finishes 1057ms
+   × reports zero changes when all selected images already have the requested visibility 1004ms
+   × waits for the current list refresh and emits only one completion Toast 1054ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > returns to the current list and toasts actual changed/unchanged counts after public finishes
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > returns to the current list and toasts actual changed/unchanged counts after private finishes
+AssertionError: expected "vi.fn()" to be called once, but got 0 times
+ ❯ tests/unit/library/batch-feedback.test.ts:96:48
+     94|     batch.submit();
+     95|     await vi.waitFor(() => expect(onRefresh).toHaveBeenCalledOnce());
+     96|     await vi.waitFor(() => expect(calls.toast).toHaveBeenCalledOnce());
+       |                                                ^
+     97|     expect(calls.toast).toHaveBeenCalledWith(
+     98|       `批量设为${action === 'public' ? '公开' : '私有'}完成`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > reports zero changes when all selected images already have the requested visibility
+AssertionError: expected "vi.fn()" to be called once, but got 0 times
+ ❯ tests/unit/library/batch-feedback.test.ts:120:46
+    118|   const { batch } = mount('public');
+    119|   batch.submit();
+    120|   await vi.waitFor(() => expect(calls.toast).toHaveBeenCalledOnce());
+       |                                              ^
+    121|   expect(calls.toast).toHaveBeenCalledWith('批量设为公开完成', {
+    122|     description: '0张已修改 · 2张无需修改',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |unit| tests/unit/library/batch-feedback.test.ts > waits for the current list refresh and emits only one completion Toast
+AssertionError: expected "vi.fn()" to be called once, but got 0 times
+ ❯ tests/unit/library/batch-feedback.test.ts:164:46
+    162|   expect(calls.toast).not.toHaveBeenCalled();
+    163|   finishRefresh();
+    164|   await vi.waitFor(() => expect(calls.toast).toHaveBeenCalledOnce());
+       |                                              ^
+    165| });
+    166|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |unit| tests/unit/library/batch-summary.test.ts > never renders a separate success dialog after public failure-only retry
+AssertionError: expected '<div data-testid="library-batch" data…' not to contain 'role="dialog"'
+
+Expected: "role="dialog""
+Received: "<div data-testid="library-batch" data-batch-view="retry-success" class="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6 dark:bg-surface" role="dialog"><h2>2张图片已设为公开</h2><p class="text-sm">失败项重试成功。</p><p class="rounded-lg bg-default p-3 text-[13px] leading-normal">本次选择已清空。</p><button data-slot="button" data-testid="batch-done" class="button button--md button--primary h-12 w-full rounded-lg font-normal" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_3_">返回图库</button></div>"
+
+ ❯ tests/unit/library/batch-summary.test.ts:319:31
+    317|       ],
+    318|     };
+    319|     expect(render(batch)).not.toContain('role="dialog"');
+       |                               ^
+    320|     expect(render(batch)).not.toContain('失败项重试成功');
+    321|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |unit| tests/unit/library/batch-summary.test.ts > never renders a separate success dialog after private failure-only retry
+AssertionError: expected '<div data-testid="library-batch" data…' not to contain 'role="dialog"'
+
+Expected: "role="dialog""
+Received: "<div data-testid="library-batch" data-batch-view="retry-success" class="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6 dark:bg-surface" role="dialog"><h2>2张图片已设为私有</h2><p class="text-sm">失败项重试成功。</p><p class="rounded-lg bg-default p-3 text-[13px] leading-normal">本次选择已清空。</p><button data-slot="button" data-testid="batch-done" class="button button--md button--primary h-12 w-full rounded-lg font-normal" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_3_">返回图库</button></div>"
+
+ ❯ tests/unit/library/batch-summary.test.ts:319:31
+    317|       ],
+    318|     };
+    319|     expect(render(batch)).not.toContain('role="dialog"');
+       |                               ^
+    320|     expect(render(batch)).not.toContain('失败项重试成功');
+    321|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 20 passed (26)
+   Start at  23:29:57
+   Duration  4.85s (tests 91%, import 8%, transform 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

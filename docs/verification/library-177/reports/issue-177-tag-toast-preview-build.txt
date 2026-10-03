@@ -1,0 +1,15 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 55ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1715ms
+  Running TypeScript ...
+src/components/library/batch-targets.tsx(214,13): error TS2322: Type '{ "aria-label": string; isDisabled: boolean; value: string; onChange: (event: ChangeEvent<HTMLInputElement, HTMLInputElement>) => void; className: string; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & InputRootProps'.
+  Property 'isDisabled' does not exist on type 'IntrinsicAttributes & InputRootProps'. Did you mean 'disabled'?
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

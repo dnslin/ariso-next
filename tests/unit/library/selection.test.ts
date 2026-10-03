@@ -41,6 +41,7 @@ function item(id: string): LibraryItem {
 type Step = {
   identity?: string;
   items: LibraryItem[];
+  page?: number;
   act?: (selection: LibrarySelection) => void;
   check?: (selection: LibrarySelection) => void;
 };
@@ -51,7 +52,11 @@ function run(steps: Step[]) {
   function Probe() {
     const [index, setIndex] = useState(0);
     const step = steps[index];
-    const selection = useLibrarySelection(step.identity ?? 'query', step.items);
+    const selection = useLibrarySelection(
+      step.identity ?? 'query',
+      step.items,
+      step.page,
+    );
     step.check?.(selection);
     step.act?.(selection);
     if (index < steps.length - 1) setIndex(index + 1);
@@ -63,6 +68,100 @@ function run(steps: Step[]) {
 const ids = (selection: LibrarySelection) => [...selection.selected.keys()];
 
 describe('explicit library selection', () => {
+  it('retains the source page and updates presentation after server reconciliation', () => {
+    let snapshot: Map<
+      string,
+      import('../../../src/server/library/selection-types').SelectedLibraryItem
+    >;
+    run([
+      {
+        page: 1,
+        items: [item('a')],
+        act: (selection) => selection.selectCurrent(),
+      },
+      {
+        page: 2,
+        items: [item('b')],
+        act: (selection) => {
+          selection.selectCurrent();
+          selection.recordFailure('a', '目标相册已删除');
+        },
+      },
+      {
+        page: 2,
+        items: [item('b')],
+        act: (selection) => {
+          snapshot = new Map(selection.selected);
+          selection.reconcile(snapshot, [
+            { ...item('a'), displayName: 'renamed.jpg' },
+            item('b'),
+          ]);
+        },
+      },
+      {
+        page: 2,
+        items: [item('b')],
+        check: (selection) => {
+          expect(selection.selected.get('a')).toMatchObject({
+            sourcePage: 1,
+            displayName: 'renamed.jpg',
+            batchFailure: '目标相册已删除',
+          });
+          expect(selection.selected.get('b')?.sourcePage).toBe(2);
+          expect(selection.otherCount).toBe(1);
+        },
+      },
+    ]);
+  });
+  it('keeps a valid failure reason when current selection is extended by select-all or drag', () => {
+    run([
+      {
+        page: 3,
+        items: [item('a'), item('b')],
+        act: (selection) => selection.toggle(item('a')),
+      },
+      {
+        page: 3,
+        items: [item('a'), item('b')],
+        act: (selection) => selection.recordFailure('a', '目标已删除'),
+      },
+      {
+        page: 3,
+        items: [item('a'), item('b')],
+        act: (selection) => selection.selectCurrent(),
+      },
+      {
+        page: 3,
+        items: [item('a'), item('b')],
+        act: (selection) => selection.selectIds(['a', 'b']),
+      },
+      {
+        page: 3,
+        items: [item('a'), item('b')],
+        check: (selection) =>
+          expect(selection.selected.get('a')).toMatchObject({
+            sourcePage: 3,
+            batchFailure: '目标已删除',
+          }),
+      },
+      {
+        page: 3,
+        items: [item('a')],
+        act: (selection) => selection.remove('a'),
+      },
+      {
+        page: 3,
+        items: [item('a')],
+        act: (selection) => selection.toggle(item('a')),
+      },
+      {
+        page: 3,
+        items: [item('a')],
+        check: (selection) =>
+          expect(selection.selected.get('a')?.batchFailure).toBeUndefined(),
+      },
+    ]);
+  });
   it('adds and removes only the current page while retaining other pages', () => {
     const first = [item('a'), item('b')];
     const second = [item('c'), item('d')];
@@ -170,6 +269,7 @@ describe('explicit library selection', () => {
             'displayName',
             'thumbnailUrl',
             'storage',
+            'byteSize',
           ]);
         },
         act: (selection) => selection.remove('218'),
@@ -242,6 +342,7 @@ describe('explicit library selection', () => {
           expect(selection.selected.get('a')).toEqual({
             id: 'a',
             displayName: '新名称',
+            byteSize: 1024,
             thumbnailUrl: '/i/a?type=thumbnail',
             storage: updated.storage,
           });

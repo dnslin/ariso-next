@@ -16,7 +16,7 @@ const selectionInput = z.object({
 export type UploadSelectionInput = z.input<typeof selectionInput>;
 
 function assertTargets(
-  tx: CollectionsTransaction,
+  tx: BetterSQLite3Database,
   selection: CollectionSelection,
   code: 'COLLECTION_TARGET_NOT_FOUND' | 'COLLECTION_TARGET_REMOVED',
 ) {
@@ -212,4 +212,33 @@ export function removeMemberships(
     }));
     return { albums: albumResults, tags: tagResults };
   });
+}
+
+/** Read the actual targets and joins without changing them; deleted targets are not an absent success. */
+export function readMemberships(
+  db: BetterSQLite3Database,
+  imageId: string,
+  selection: CollectionSelection,
+) {
+  assertTargets(db, selection, 'COLLECTION_TARGET_NOT_FOUND');
+  const albumIds = new Set(
+    db
+      .select({ id: albumImages.albumId })
+      .from(albumImages)
+      .where(eq(albumImages.imageId, imageId))
+      .all()
+      .map((row) => row.id),
+  );
+  const tagIds = new Set(
+    db
+      .select({ id: imageTags.tagId })
+      .from(imageTags)
+      .where(eq(imageTags.imageId, imageId))
+      .all()
+      .map((row) => row.id),
+  );
+  return {
+    albums: selection.albumIds.map((id) => ({ id, present: albumIds.has(id) })),
+    tags: selection.tagIds.map((id) => ({ id, present: tagIds.has(id) })),
+  };
 }

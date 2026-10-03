@@ -22,13 +22,22 @@ const { values } = parseArgs({
 const suite = values.suite;
 const only = values.only;
 assert.ok(
-  ['full', 'upload', 'upload-regression'].includes(suite),
+  ['full', 'upload', 'upload-regression', 'library-batch'].includes(suite),
   'Unknown browser suite',
 );
 assert.ok(
   only === undefined ||
-    (suite === 'upload' && ['relations', 'submissions'].includes(only)),
-  '--only relations/submissions requires --suite upload',
+    (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
+    (suite === 'library-batch' &&
+      [
+        'representative',
+        'visibility',
+        'feedback',
+        'tag-states',
+        'cache',
+        'review-fixes',
+      ].includes(only)),
+  '--only requires an applicable targeted suite',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
@@ -52,6 +61,8 @@ for (const name of [
   'library-feedback.json',
   'library-selection.json',
   'library-selection-reconciliation.json',
+  'library-batch.json',
+  'library-batch-failure.png',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -327,12 +338,16 @@ try {
   if (suite !== 'full') {
     assert.ok(
       config.spaceId,
-      'Upload suite requires an existing EGO_TASK_SPACE',
+      'Targeted suite requires an existing EGO_TASK_SPACE',
     );
-    assert.equal(codes.length, 1, 'Empty upload runtime issues one setup code');
+    assert.equal(
+      codes.length,
+      1,
+      'Empty targeted runtime issues one setup code',
+    );
     secrets.push(codes[0]);
     const credentials = {
-      email: 'upload-browser@example.test',
+      email: `${suite}-browser@example.test`,
       password: randomBytes(24).toString('hex'),
     };
     secrets.push(credentials.password);
@@ -354,19 +369,33 @@ try {
       dataDirectory: join(temporary, 'data'),
     };
     const stages =
-      suite === 'upload'
-        ? [
-            ['upload-submissions', 'uploadSubmissions'],
-            ['upload-relations', 'uploadRelations'],
-          ]
-        : [
-            ['upload', 'upload'],
-            ['upload-polling', 'uploadPolling'],
-          ];
+      suite === 'library-batch'
+        ? [['library-batch', 'libraryBatch']]
+        : suite === 'upload'
+          ? [
+              ['upload-submissions', 'uploadSubmissions'],
+              ['upload-relations', 'uploadRelations'],
+            ]
+          : [
+              ['upload', 'upload'],
+              ['upload-polling', 'uploadPolling'],
+            ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
-      if (only !== undefined && script !== `upload-${only}`) continue;
-      await runBrowser(`../e2e/${script}.mjs`, uploadConfig, `${script}.log`);
+      if (
+        suite === 'upload' &&
+        only !== undefined &&
+        script !== `upload-${only}`
+      )
+        continue;
+      await runBrowser(
+        `../e2e/${script}.mjs`,
+        {
+          ...uploadConfig,
+          libraryBatchPhase: suite === 'library-batch' ? only : undefined,
+        },
+        `${script}.log`,
+      );
       report[result] = 'passed';
     }
   } else {
@@ -448,6 +477,12 @@ try {
           );
         }
         report.libraryQuery = 'passed';
+        await runBrowser(
+          '../e2e/library-batch.mjs',
+          identityConfig,
+          'library-batch.log',
+        );
+        report.libraryBatch = 'passed';
         await runBrowser(
           '../e2e/shell-navigation.mjs',
           identityConfig,

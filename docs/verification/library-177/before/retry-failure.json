@@ -1,0 +1,14 @@
+{
+  "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts",
+  "exitCode": 1,
+  "testFiles": {
+    "failed": 1
+  },
+  "tests": {
+    "failed": 1,
+    "passed": 6
+  },
+  "assertion": "AssertionError: expected '<li data-batch-result-id=\"first\" data…' to contain 'lucide-check'",
+  "designNode": "522:13419",
+  "repair": "重试仍失败保留水绿卡片、勾选标记和只读返回入口；相同命令修正后7项通过。"
+}

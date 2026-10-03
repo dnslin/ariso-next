@@ -19,6 +19,10 @@ import {
 } from '@tanstack/react-query';
 import type { LibraryPage } from '../../server/library/types';
 import type { LibraryFilters } from '../../server/library/query-schema';
+import type {
+  BatchCommand,
+  BatchItemResult,
+} from '../../server/library/batch-types';
 import { subscribeLibraryChanges } from '../../components/library/library-changes';
 import {
   libraryListKey,
@@ -283,6 +287,64 @@ export function useLibraryQuery(
     if (!enabled) return;
     await client.resetQueries({ queryKey, exact: true });
   }
+  async function onBatchCompleted(
+    results: BatchItemResult[],
+    command: BatchCommand,
+  ) {
+    if (!enabled || !filters || !results.length) return;
+    await client.cancelQueries({ queryKey: ['library'] });
+    const filterKey = hashKey([filters]);
+    const byId = new Map(results.map((result) => [result.id, result]));
+    const cached = client.getQueryCache().findAll({
+      queryKey: ['library'],
+      predicate: (query) => hashKey([query.queryKey[2]]) === filterKey,
+    });
+    const removed = new Set<string>();
+    for (const query of cached) {
+      const data = query.state.data as
+        LibraryPage | InfiniteData<LibraryPage> | undefined;
+      if (!data) continue;
+      for (const entry of 'pages' in data ? data.pages : [data])
+        for (const item of entry.items)
+          if (byId.get(item.id)?.inQuery === false) removed.add(item.id);
+    }
+    const update = (entry: LibraryPage): LibraryPage => ({
+      ...entry,
+      total: Math.max(0, entry.total - removed.size),
+      items: entry.items.flatMap((item) => {
+        const result = byId.get(item.id);
+        if (!result) return [item];
+        if (!result.inQuery) return [];
+        return [
+          command.type === 'visibility' && result.status !== 'failed'
+            ? { ...item, visibility: command.visibility }
+            : item,
+        ];
+      }),
+    });
+    for (const query of cached) {
+      const data = query.state.data as
+        LibraryPage | InfiniteData<LibraryPage> | undefined;
+      if (data)
+        client.setQueryData(
+          query.queryKey,
+          'pages' in data
+            ? { ...data, pages: data.pages.map(update) }
+            : update(data),
+        );
+    }
+    // Offset positions may shift; other query histories must reread their membership.
+    // This query's loaded pages retain the server cursor values, including deleted anchors.
+    await client.invalidateQueries({
+      queryKey: ['library'],
+      predicate: (query) =>
+        query.queryKey[1] === 'pages' ||
+        hashKey([query.queryKey[2]]) !== filterKey,
+      refetchType: 'none',
+    });
+    setRefreshAvailable(false);
+    if (loadingMode === 'pages') await paged.refetch({ throwOnError: true });
+  }
   function onSelectionInvalid(ids: string[]) {
     if (!ids.length || !filters) return;
     const filterKey = hashKey([filters]);
@@ -378,6 +440,7 @@ export function useLibraryQuery(
         return infinite.fetchNextPage({ cancelRefetch: false });
     },
     refresh,
+    onBatchCompleted,
     refreshAvailable,
     onItemRemoved,
     onSelectionInvalid,

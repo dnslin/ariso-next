@@ -1,0 +1,9 @@
+{
+  "command": "pnpm exec vitest run --project unit tests/unit/library/batch-summary.test.ts",
+  "exitCode": 1,
+  "testsPassed": 9,
+  "testsFailed": 5,
+  "testsTotal": 14,
+  "reason": "Actual exported visibility result component still appended failures to the original summary and did not render the failure-retry success dialog",
+  "after": "Related summary/request/selection 3 files, 37 tests passed; final component 21 tests passed"
+}

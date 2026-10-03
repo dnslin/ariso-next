@@ -1,16 +1,26 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { toast } from '@heroui/react/toast';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
+import { Checkbox } from '@heroui/react/checkbox';
 import { Link } from '@heroui/react/link';
 import { Tooltip } from '@heroui/react/tooltip';
 import { Spinner } from '@heroui/react/spinner';
 import { RefreshCw, Trash2 } from 'lucide-react';
+import {
+  BatchWorkspaceContent,
+  BatchWorkspaceFooter,
+} from '../../components/library/batch-workspace';
+import { useLibraryBatch } from '../../components/library/use-library-batch';
+import { LibrarySelectionMenu } from '../library/library-selection-menu';
+import { useLibrarySelection } from '../library/use-library-selection';
+import { useSelectionReconciliation } from '../library/use-selection-reconciliation';
+import { parseLibraryQuery } from '../../server/library/query-schema';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { TrashAction } from '../../components/library/trash-actions';
@@ -27,6 +37,9 @@ import type { LibraryDetail } from '../../server/library/detail-types';
 import { TrashRecord } from './trash-record';
 import { TrashThumbnail } from './trash-thumbnail';
 import { ArrowLeft } from 'lucide-react';
+
+const trashQuery = 'scope=trash&pageSize=40';
+const trashFilters = parseLibraryQuery(new URLSearchParams(trashQuery)).filters;
 
 async function readPage(page: number, signal: AbortSignal): Promise<TrashPage> {
   const response = await fetch(`/api/trash?page=${page}`, {
@@ -102,15 +115,58 @@ export function TrashScreen({
   const expired =
     unavailable?.status === 401 ||
     (error instanceof DetailReadError && error.status === 401);
-  useEffect(() => () => client.clear(), [client]);
-  useEffect(() => {
-    if (!expired) return;
+  const data = !expired ? list.data : undefined;
+  const currentItems = useMemo(
+    () =>
+      data?.items.map((item) => ({
+        id: item.id,
+        displayName: item.displayName,
+        byteSize: item.byteSize,
+        thumbnailUrl: item.thumbnailPath,
+        storage: item.storage,
+      })) ?? [],
+    [data],
+  );
+  const selection = useLibrarySelection(trashQuery, currentItems, page);
+  const clearSelection = selection.clear;
+  const expireSession = useCallback(() => {
+    clearSelection();
     resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
-  }, [client, expired, resetUpload]);
+  }, [client, resetUpload, clearSelection]);
+  const batch = useLibraryBatch({
+    selection,
+    query: trashQuery,
+    onExpire: expireSession,
+    onRefresh: () => client.invalidateQueries({ queryKey: ['trash'] }),
+  });
+  const reconciliation = useSelectionReconciliation({
+    selection,
+    identity: trashQuery,
+    filters: trashFilters,
+    dataUpdatedAt: list.dataUpdatedAt,
+    enabled: !batch.pending && !batch.unresolved,
+    onSessionExpired: expireSession,
+    onInvalid: (ids) => {
+      if (ids.length)
+        toast.warning('已更新选择', {
+          description: `${ids.length} 条记录已删除或离开回收站，已移除选择。`,
+        });
+    },
+  });
+  const selectionDisabled =
+    list.isFetching ||
+    batch.pending ||
+    batch.unresolved ||
+    reconciliation.pending ||
+    !!reconciliation.error;
+  useEffect(() => () => client.clear(), [client]);
+  useEffect(() => {
+    if (expired) expireSession();
+  }, [expired, expireSession]);
   useEffect(() => {
     const returningFromRecord = previousImageId.current !== null && !imageId;
     previousImageId.current = imageId;
@@ -122,12 +178,20 @@ export function TrashScreen({
     target?.focus({ preventScroll: true });
   }, [imageId, detail.isSuccess]);
 
+  function openRecord(id: string) {
+    triggerId.current = id;
+    setResult(null);
+    const url = new URL(window.location.href);
+    url.searchParams.set('image', id);
+    window.history.pushState(null, '', url);
+  }
   function closeRecord() {
     const url = new URL(window.location.href);
     url.searchParams.delete('image');
     window.history.replaceState(null, '', url);
   }
   function restored(record: LibraryDetail) {
+    selection.remove(record.id);
     setResult(record);
     if (record.storage.enabled)
       toast.success('记录已恢复', { description: record.displayName });
@@ -145,7 +209,6 @@ export function TrashScreen({
   }
   const record =
     !detail.isError && !expired && !missing ? detail.data : undefined;
-  const data = !expired ? list.data : undefined;
   const pages = data ? Math.max(1, Math.ceil(data.total / 40)) : null;
   return (
     <OwnerShell
@@ -158,7 +221,9 @@ export function TrashScreen({
         imageId ? `/trash?${new URLSearchParams({ image: imageId })}` : '/trash'
       }
       footer={
-        imageId ? (
+        batch.visible ? (
+          <BatchWorkspaceFooter batch={batch} />
+        ) : imageId ? (
           <div className="flex w-full items-end gap-3 md:justify-end [&>div]:flex-1 md:[&>div]:max-w-60">
             {record ? (
               <TrashAction
@@ -207,7 +272,9 @@ export function TrashScreen({
         )
       }
     >
-      {imageId ? (
+      {batch.visible ? (
+        <BatchWorkspaceContent batch={batch} client={client} />
+      ) : imageId ? (
         <>
           {!record ? (
             <Button
@@ -261,6 +328,71 @@ export function TrashScreen({
             {data ? `${data.total} 条记录 · ` : ''}
             文件仍占用空间，不会自动清理。
           </p>
+          <div
+            data-testid="trash-selection"
+            className="flex min-w-0 items-center justify-between gap-3"
+          >
+            <Checkbox
+              data-testid="trash-select-page"
+              aria-label="全选当前页回收记录"
+              isSelected={
+                !!currentItems.length &&
+                selection.currentCount === currentItems.length
+              }
+              isIndeterminate={
+                selection.currentCount > 0 &&
+                selection.currentCount < currentItems.length
+              }
+              isDisabled={!currentItems.length || selectionDisabled}
+              onChange={(selected) =>
+                selected
+                  ? selection.selectCurrent()
+                  : selection.deselectCurrent()
+              }
+            >
+              <Checkbox.Content className="flex min-h-11 items-center gap-2">
+                <Checkbox.Control className="size-5 border border-border bg-surface">
+                  <Checkbox.Indicator />
+                </Checkbox.Control>
+                <span className="text-sm">全选当前页</span>
+              </Checkbox.Content>
+            </Checkbox>
+            <LibrarySelectionMenu
+              scope="trash"
+              selection={selection}
+              loadingMode="pages"
+              disabled={selectionDisabled}
+              onOpen={(id) => openRecord(id)}
+              onBatch={(action, element) => batch.open(action, element)}
+            />
+          </div>
+          {batch.unresolved ? (
+            <Alert status="warning">
+              <Alert.Content>
+                <Alert.Title>恢复结果待核对</Alert.Title>
+                <Alert.Description>
+                  尚未确认的记录会保留选择，请先核对本次操作。
+                </Alert.Description>
+                <Button className="mt-3 min-h-11" onPress={batch.reopen}>
+                  核对本次结果
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
+          {reconciliation.error ? (
+            <Alert status="danger">
+              <Alert.Content>
+                <Alert.Title>已选记录核对失败</Alert.Title>
+                <Alert.Description>{reconciliation.error}</Alert.Description>
+                <Button
+                  className="mt-3 min-h-11"
+                  onPress={reconciliation.retry}
+                >
+                  重试核对
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
           {result && !result.storage.enabled ? (
             <Alert
               data-testid="trash-result"
@@ -299,19 +431,41 @@ export function TrashScreen({
               <Card.Content>
                 <ul data-testid="trash-list">
                   {data.items.map((item) => (
-                    <li key={item.id}>
+                    <li
+                      key={item.id}
+                      data-selected={
+                        selection.selected.has(item.id) || undefined
+                      }
+                      className="flex min-w-0 items-start gap-2 md:items-center"
+                    >
+                      <Checkbox
+                        aria-label={`选择回收图片：${item.displayName}`}
+                        isSelected={selection.selected.has(item.id)}
+                        isDisabled={selectionDisabled}
+                        onChange={() =>
+                          selection.toggle({
+                            id: item.id,
+                            displayName: item.displayName,
+                            byteSize: item.byteSize,
+                            thumbnailUrl: item.thumbnailPath,
+                            storage: item.storage,
+                          })
+                        }
+                        className="mt-3 shrink-0 md:mt-0"
+                      >
+                        <Checkbox.Content className="flex size-11 items-center justify-center">
+                          <Checkbox.Control className="size-5 border border-border bg-surface">
+                            <Checkbox.Indicator />
+                          </Checkbox.Control>
+                        </Checkbox.Content>
+                      </Checkbox>
                       <Button
                         variant="ghost"
                         data-testid={`trash-record-${item.id}`}
                         id={`trash-record-${item.id}`}
-                        className="grid h-auto min-h-20 w-full grid-cols-1 justify-items-start gap-1 whitespace-normal rounded-lg px-0 py-3 text-left text-sm font-normal [overflow-wrap:anywhere] md:min-h-18 md:grid-cols-3 md:items-center md:gap-4"
-                        onPress={() => {
-                          triggerId.current = item.id;
-                          setResult(null);
-                          const url = new URL(window.location.href);
-                          url.searchParams.set('image', item.id);
-                          window.history.pushState(null, '', url);
-                        }}
+                        isDisabled={batch.pending || batch.unresolved}
+                        className="grid h-auto min-h-20 min-w-0 flex-1 grid-cols-1 justify-items-start gap-1 whitespace-normal rounded-lg px-0 py-3 text-left text-sm font-normal [overflow-wrap:anywhere] md:min-h-18 md:grid-cols-3 md:items-center md:gap-4"
+                        onPress={() => openRecord(item.id)}
                       >
                         <span className="flex min-w-0 items-center gap-3">
                           <TrashThumbnail
