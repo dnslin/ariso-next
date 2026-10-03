@@ -1,9 +1,6 @@
 import { eq } from 'drizzle-orm';
-import {
-  deleteObject,
-  inspectObject,
-  type LocalStorage,
-} from '../storage/local.ts';
+import type { StorageConfig } from '../storage/schema.ts';
+import { deleteMediaObject, inspectMediaObject } from './storage.ts';
 import { analyzeMediaError } from './errors.ts';
 import type { MediaRuntime } from './process.ts';
 import { mediaImages, mediaObjects } from './schema.ts';
@@ -11,19 +8,20 @@ import { mediaImages, mediaObjects } from './schema.ts';
 /** Shared exact-key maintenance step; database settlement failures propagate to the scheduler. */
 export async function cleanupMediaObject(
   runtime: MediaRuntime,
-  storage: LocalStorage,
+  storage: StorageConfig,
   object: typeof mediaObjects.$inferSelect,
   policy: { retryAt?: Date; adoptDeletion?: boolean } = {},
+  signal?: AbortSignal,
 ) {
   let size = object.byteSize;
   let confirmedAt = object.byteSizeConfirmedAt;
   let failure: { error: unknown } | undefined;
   try {
     size =
-      (await inspectObject(runtime.storageRoot, storage, object.key))?.size ??
+      (await inspectMediaObject(runtime, storage, object.key, signal))?.size ??
       0;
     confirmedAt = new Date();
-    await deleteObject(runtime.storageRoot, storage, object.key);
+    await deleteMediaObject(runtime, storage, object.key, signal);
   } catch (error) {
     failure = { error };
   }

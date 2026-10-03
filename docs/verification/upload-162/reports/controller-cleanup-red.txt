@@ -1,0 +1,94 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ vitest run --project unit tests/unit/upload/controller.test.ts -t 'retains accepted cleanup|reconciles a failed manual'
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |unit| tests/unit/upload/controller.test.ts (31 tests | 5 failed | 26 skipped) 276ms
+   × retains accepted cleanup diagnostics separately from queued processing 66ms
+   × retains accepted cleanup diagnostics separately from running processing 53ms
+   × retains accepted cleanup diagnostics separately from succeeded processing 53ms
+   × retains accepted cleanup diagnostics separately from failed processing 50ms
+   × reconciles a failed manual cleanup response and continues reading its new pending cycle 54ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/controller.test.ts > retains accepted cleanup diagnostics separately from queued processing
+ FAIL  |unit| tests/unit/upload/controller.test.ts > retains accepted cleanup diagnostics separately from running processing
+ FAIL  |unit| tests/unit/upload/controller.test.ts > retains accepted cleanup diagnostics separately from succeeded processing
+AssertionError: expected { …(18) } to match object { cleanupStatus: 'failed', …(2) }
+(24 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "cleanupError": "DeleteObject AccessDenied: uploads/temporary/known.png",
+    "cleanupStatus": "failed",
+    "error": undefined,
+  }
+
+ ❯ tests/unit/upload/controller.test.ts:800:36
+    798|   c.transfer.resolve(result);
+    799|   await started;
+    800|   expect(c.controller.snapshot[0]).toMatchObject({ cleanupStatus: 'fai…
+       |                                    ^
+    801|   c.respond({ ...result, cleanupStatus: 'none', error: null });
+    802|   await c.controller.retryCleanup(c.controller.snapshot[0].id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |unit| tests/unit/upload/controller.test.ts > retains accepted cleanup diagnostics separately from failed processing
+AssertionError: expected { …(18) } to match object { cleanupStatus: 'failed', …(2) }
+(24 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "cleanupError": "DeleteObject AccessDenied: uploads/temporary/known.png",
+    "cleanupStatus": "failed",
+    "error": "压缩失败",
+  }
+
+ ❯ tests/unit/upload/controller.test.ts:800:36
+    798|   c.transfer.resolve(result);
+    799|   await started;
+    800|   expect(c.controller.snapshot[0]).toMatchObject({ cleanupStatus: 'fai…
+       |                                    ^
+    801|   c.respond({ ...result, cleanupStatus: 'none', error: null });
+    802|   await c.controller.retryCleanup(c.controller.snapshot[0].id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |unit| tests/unit/upload/controller.test.ts > reconciles a failed manual cleanup response and continues reading its new pending cycle
+AssertionError: expected { …(18) } to match object { state: 'upload-failed', …(2) }
+(24 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "cleanupError": " AccessDenied",
+-   "cleanupStatus": "pending",
++   "cleanupStatus": "failed",
+    "state": "upload-failed",
+  }
+
+ ❯ tests/unit/upload/controller.test.ts:817:36
+    815|   c.respond(submission({ state: 'failed', cleanupStatus: 'pending', er…
+    816|   await expect(c.controller.retryCleanup(c.controller.snapshot[0].id))…
+    817|   expect(c.controller.snapshot[0]).toMatchObject({ state: 'upload-fail…
+       |                                    ^
+    818|   c.respond(submission({ state: 'failed', cleanupStatus: 'none', error…
+    819|   await c.controller.refresh();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 26 skipped (31)
+   Start at  21:05:01
+   Duration  447ms (tests 79%, transform 11%, import 9%)
+
+[ELIFECYCLE] Command failed with exit code 1.

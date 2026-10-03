@@ -1,5 +1,13 @@
 import { randomUUID } from 'node:crypto';
-import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { createServer } from 'node:http';
+import { once } from 'node:events';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
@@ -31,6 +39,9 @@ import {
 } from '../../../src/server/media/recovery.ts';
 import * as processing from '../../../src/server/media/process.ts';
 import * as metadataProcessing from '../../../src/server/media/metadata-job.ts';
+import { requestPermanentDelete } from '../../../src/server/media/cleanup.ts';
+import { createSecretCrypto } from '../../../src/server/runtime/crypto.ts';
+import { storageConfigs } from '../../../src/server/storage/schema.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
@@ -63,11 +74,11 @@ afterEach(async () => {
   rmSync(directory, { recursive: true, force: true });
 });
 
-function enqueue() {
+function enqueue(storageId = resolveLocalUploadStorage(connection.db).id) {
   return connection.db.transaction((tx) =>
     acceptOriginal(tx, {
       imageId: randomUUID(),
-      storageId: resolveLocalUploadStorage(connection.db).id,
+      storageId,
       key: `missing/${randomUUID()}`,
       originalName: 'missing.png',
       visibility: 'private',
@@ -94,6 +105,50 @@ const job = (id: string) =>
   connection.db.select().from(mediaJobs).where(eq(mediaJobs.id, id)).get()!;
 
 describe('persistent media queue', () => {
+  it('preserves interrupted input and only removes inputs of known terminal media jobs', async () => {
+    const active = enqueue();
+    const settled = enqueue();
+    connection.db
+      .update(mediaJobs)
+      .set({ status: 'running' })
+      .where(eq(mediaJobs.id, active.jobId))
+      .run();
+    connection.db
+      .update(mediaJobs)
+      .set({ status: 'failed' })
+      .where(eq(mediaJobs.id, settled.jobId))
+      .run();
+    const unknownId = randomUUID();
+    for (const id of [active.jobId, settled.jobId, unknownId]) {
+      const input = join(directory, 'tmp', `media-input-${id}`);
+      mkdirSync(input);
+      writeFileSync(join(input, 'original'), 'owned input');
+    }
+    vi.spyOn(processing, 'processMediaJob').mockImplementation(
+      async (runtime, jobId) => {
+        expect(jobId).toBe(active.jobId);
+        expect(
+          existsSync(
+            join(runtime.temporaryRoot, `media-input-${jobId}`, 'original'),
+          ),
+        ).toBe(true);
+      },
+    );
+    start();
+    await vi.waitFor(() =>
+      expect(processing.processMediaJob).toHaveBeenCalledOnce(),
+    );
+    expect(job(active.jobId).recoveryCount).toBe(1);
+    expect(
+      existsSync(join(directory, 'tmp', `media-input-${settled.jobId}`)),
+    ).toBe(false);
+    expect(
+      existsSync(
+        join(directory, 'tmp', `media-input-${unknownId}`, 'original'),
+      ),
+    ).toBe(true);
+  });
+
   it('claims only queued work and persists its timestamp, snapshot and processing state', () => {
     const accepted = enqueue();
     const before = job(accepted.jobId);
@@ -225,6 +280,201 @@ describe('persistent media queue', () => {
       'queue database failed',
     );
     expect(connection.db.select().from(mediaJobs).get()!.status).toBe('queued');
+  });
+});
+
+async function remoteCleanup() {
+  let entered = false;
+  let deletes = 0;
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => (release = resolve));
+  const server = createServer(async (request, response) => {
+    if (request.method === 'DELETE') {
+      entered = true;
+      deletes++;
+      await gate;
+      response.writeHead(204).end();
+    } else response.writeHead(200, { 'content-length': '4' }).end();
+  });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const secretCrypto = createSecretCrypto(Buffer.alloc(32, 1));
+  const storageId = randomUUID();
+  const now = new Date();
+  connection.db
+    .insert(storageConfigs)
+    .values({
+      id: storageId,
+      name: 'held cleanup fixture',
+      type: 's3',
+      enabled: true,
+      endpoint: `http://127.0.0.1:${(server.address() as { port: number }).port}`,
+      region: 'test',
+      bucket: 'test',
+      pathPrefix: '',
+      forcePathStyle: true,
+      accessKeyEncrypted: secretCrypto.encryptSecret('test'),
+      secretKeyEncrypted: secretCrypto.encryptSecret('test'),
+      createdAt: now,
+      updatedAt: now,
+    })
+    .run();
+  const settled = enqueue(storageId);
+  connection.db
+    .update(mediaJobs)
+    .set({ status: 'succeeded' })
+    .where(eq(mediaJobs.id, settled.jobId))
+    .run();
+  const objectId = randomUUID();
+  connection.db
+    .insert(mediaObjects)
+    .values({
+      id: objectId,
+      imageId: settled.imageId,
+      jobId: settled.jobId,
+      storageId,
+      key: 'candidate/held',
+      purpose: 'temporary',
+      status: 'cleanup_pending',
+      byteSize: 4,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .run();
+  return {
+    objectId,
+    start() {
+      queue = startMediaQueue({
+        db: connection.db,
+        storageRoot: join(directory, 'storage'),
+        temporaryRoot: join(directory, 'tmp'),
+        secretCrypto,
+        logger,
+      });
+      return queue;
+    },
+    async entered() {
+      await vi.waitFor(() => expect(entered).toBe(true));
+    },
+    get deletes() {
+      return deletes;
+    },
+    release,
+    async close() {
+      release();
+      try {
+        await queue?.stop();
+      } finally {
+        queue = undefined;
+        server.closeAllConnections();
+        await new Promise<void>((resolve, reject) =>
+          server.close((error) => (error ? reject(error) : resolve())),
+        );
+      }
+    },
+  };
+}
+
+describe('remote maintenance scheduling', () => {
+  it('claims unrelated Local work and interrupts deletion while remote DELETE is still pending', async () => {
+    const cleanup = await remoteCleanup();
+    let activeSignal: AbortSignal | undefined;
+    vi.spyOn(processing, 'processMediaJob').mockImplementation(
+      async (runtime, id, signal) => {
+        activeSignal = signal;
+        await new Promise<void>((resolve) =>
+          signal!.addEventListener(
+            'abort',
+            () => {
+              settleMediaFailure(runtime.db, id, 'identify', signal!.reason);
+              resolve();
+            },
+            { once: true },
+          ),
+        );
+      },
+    );
+    try {
+      cleanup.start();
+      await cleanup.entered();
+      const next = enqueue();
+      await vi.waitFor(() => expect(job(next.jobId).status).toBe('running'));
+      expect(job(next.jobId).startedAt).toBeInstanceOf(Date);
+      connection.db
+        .update(mediaImages)
+        .set({ trashedAt: new Date() })
+        .where(eq(mediaImages.id, next.imageId))
+        .run();
+      requestPermanentDelete(connection.db, next.imageId);
+      await vi.waitFor(() => expect(job(next.jobId).status).toBe('cancelled'));
+      expect(activeSignal?.reason.code).toBe('MEDIA_IMAGE_DELETING');
+      // Keep the same remote operation pending beyond another maintenance interval.
+      await setTimeout(1100);
+      expect(cleanup.deletes).toBe(1);
+      expect(
+        connection.db
+          .select()
+          .from(mediaObjects)
+          .where(eq(mediaObjects.id, cleanup.objectId))
+          .get()!.status,
+      ).toBe('cleanup_pending');
+    } finally {
+      await cleanup.close();
+    }
+  });
+
+  it('aborts and settles in-flight remote maintenance before stop resolves', async () => {
+    const cleanup = await remoteCleanup();
+    try {
+      const active = cleanup.start();
+      await cleanup.entered();
+      await active.stop();
+      expect(
+        connection.db
+          .select()
+          .from(mediaObjects)
+          .where(eq(mediaObjects.id, cleanup.objectId))
+          .get(),
+      ).toMatchObject({
+        status: 'cleanup_failed',
+        error: expect.any(String),
+      });
+      const next = enqueue();
+      await setTimeout(100);
+      expect(job(next.jobId).status).toBe('queued');
+      await active.stop();
+    } finally {
+      await cleanup.close();
+    }
+  });
+
+  it('stops claiming and reports remote cleanup database settlement failure', async () => {
+    const cleanup = await remoteCleanup();
+    connection.db.$client.exec(
+      `CREATE TRIGGER interrupt_cleanup BEFORE UPDATE ON media_objects WHEN NEW.id = '${cleanup.objectId}' BEGIN SELECT RAISE(ABORT, 'candidate settlement failed'); END`,
+    );
+    try {
+      const active = cleanup.start();
+      await cleanup.entered();
+      cleanup.release();
+      await vi.waitFor(() => expect(logger.error).toHaveBeenCalled());
+      const next = enqueue();
+      await setTimeout(100);
+      expect(job(next.jobId).status).toBe('queued');
+      await expect(active.stop()).rejects.toThrow(
+        'candidate settlement failed',
+      );
+      queue = undefined;
+      expect(
+        connection.db
+          .select()
+          .from(mediaObjects)
+          .where(eq(mediaObjects.id, cleanup.objectId))
+          .get()!.status,
+      ).toBe('cleanup_pending');
+    } finally {
+      await cleanup.close();
+    }
   });
 });
 

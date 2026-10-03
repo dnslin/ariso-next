@@ -38,6 +38,7 @@ function initializeServerRuntime() {
       );
     }
     const mediaResources = createMediaResources();
+    const secretCrypto = createSecretCrypto(config.encryptionKey);
     const mediaQueue = startMediaQueue({
       db: connection.db,
       // DATA_DIR is absolute; keep runtime data paths absolute for output tracing.
@@ -45,10 +46,14 @@ function initializeServerRuntime() {
       temporaryRoot: resolve(config.dataDir, 'tmp'),
       watermarksRoot: resolve(config.dataDir, 'assets', 'watermarks'),
       resources: mediaResources,
+      secretCrypto,
       logger: createRuntimeLogger('media.queue', config.logLevel),
     });
     const uploads = startUploadRuntime({
       db: connection.db,
+      temporaryRoot: resolve(config.dataDir, 'tmp'),
+      secretCrypto,
+      resources: mediaResources,
       storageRoot: resolve(config.dataDir, 'storage'),
       logger: createRuntimeLogger('upload', config.logLevel),
     });

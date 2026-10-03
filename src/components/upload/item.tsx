@@ -15,6 +15,7 @@ import { notifyLibraryChanged } from '../library/library-changes';
 import { bytesLabel, stepLabels } from '../library/detail-labels';
 import { useResetUpload } from './provider';
 import { UploadResult, useUploadResult } from './result';
+import { UploadTransferDetails } from './transfer-details';
 import { TrashAction } from '../library/trash-actions';
 import type { UploadItem, UploadState } from './types';
 import type { UploadController } from './controller';
@@ -452,6 +453,7 @@ export const UploadQueueItem = memo(function UploadQueueItem({
           ) : null}
         </div>
       </div>
+      <UploadTransferDetails item={item} controller={controller} />
       {item.state === 'uploading' ? (
         <ProgressBar aria-label="文件传输进度" value={item.progress}>
           <ProgressBar.Output />
@@ -499,7 +501,8 @@ export const UploadQueueItem = memo(function UploadQueueItem({
           未创建图片。本地文件已释放，再次上传请重新选择。
         </p>
       ) : null}
-      {item.cleanupStatus === 'pending' || item.cleanupStatus === 'failed' ? (
+      {(item.imageId || ['cancelled', 'upload-failed'].includes(item.state)) &&
+      (item.cleanupStatus === 'pending' || item.cleanupStatus === 'failed') ? (
         <p className="text-sm">
           {item.cleanupStatus === 'pending'
             ? '临时文件等待服务端清理。'

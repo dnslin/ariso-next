@@ -127,10 +127,12 @@ function useUploadLifetime() {
     controller?.getSnapshot ?? emptySnapshot,
     emptySnapshot,
   );
-  const polling = items.some((item) =>
-    ['saving', 'processing-queued', 'processing', 'waiting-upload'].includes(
-      item.state,
-    ),
+  const polling = items.some(
+    (item) =>
+      item.cleanupStatus === 'pending' ||
+      ['saving', 'processing-queued', 'processing', 'waiting-upload'].includes(
+        item.state,
+      ),
   );
   useEffect(() => {
     if (!controller || !polling) return;

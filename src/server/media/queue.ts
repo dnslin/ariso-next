@@ -15,6 +15,7 @@ import {
   recoverMediaCandidateCleanup,
 } from './candidate-cleanup.ts';
 import { mediaError } from './errors.ts';
+import { discardMediaInput } from './input.ts';
 import { cleanupPermanentDeletes } from './cleanup.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
@@ -73,6 +74,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
     { imageId: string; controller: AbortController; execution: Promise<void> }
   >();
   let failure: unknown;
+  let maintenance: Promise<void> | undefined;
   async function consume() {
     try {
       recoverMediaJobs(runtime.db);
@@ -88,6 +90,17 @@ export function startMediaQueue(runtime: MediaRuntime) {
       }
       for (const entry of entries) {
         if (signal.aborted) break;
+        if (entry.startsWith('media-input-')) {
+          const jobId = entry.slice('media-input-'.length);
+          const job = runtime.db
+            .select({ status: mediaJobs.status })
+            .from(mediaJobs)
+            .where(eq(mediaJobs.id, jobId))
+            .get();
+          if (job && !['queued', 'running'].includes(job.status))
+            await discardMediaInput(runtime.temporaryRoot, jobId);
+          continue;
+        }
         if (!entry.startsWith('media-')) continue;
         const job = runtime.db
           .select({ id: mediaJobs.id })
@@ -144,17 +157,42 @@ export function startMediaQueue(runtime: MediaRuntime) {
             execution,
           });
         }
-        if (Date.now() >= nextCleanupAt) {
-          await cleanupPermanentDeletes(
-            runtime,
-            new Set([...active.values()].map(({ imageId }) => imageId)),
-            signal,
-          );
-          if (!runtime.db.$client.open) break;
-          await cleanupMediaCandidates(runtime, signal);
-          nextCleanupAt = Date.now() + 1000;
+        if (!maintenance && Date.now() >= nextCleanupAt) {
+          // One maintenance batch at a time; remote I/O never blocks claims or cancellation.
+          maintenance = (async () => {
+            await cleanupPermanentDeletes(
+              runtime,
+              new Set([...active.values()].map(({ imageId }) => imageId)),
+              signal,
+            );
+            if (runtime.db.$client.open && !signal.aborted)
+              await cleanupMediaCandidates(runtime, signal);
+          })()
+            .catch((err: unknown) => {
+              if (
+                signal.aborted &&
+                err instanceof Error &&
+                err.name === 'AbortError'
+              )
+                return;
+              failure ??= err;
+              runtime.logger.error(
+                { err },
+                'Media maintenance settlement failed',
+              );
+              controller.abort(
+                mediaError('MEDIA_INTERRUPTED', 'Media queue failed', err),
+              );
+            })
+            .finally(() => {
+              maintenance = undefined;
+              nextCleanupAt = Date.now() + 1000;
+            });
         }
-        await setTimeout(50, undefined, { signal, ref: active.size > 0 });
+        await setTimeout(50, undefined, {
+          signal,
+          ref: active.size > 0 || maintenance !== undefined,
+        });
       }
     } catch (err) {
       if (!(
@@ -169,7 +207,10 @@ export function startMediaQueue(runtime: MediaRuntime) {
         );
       }
     } finally {
-      await Promise.all([...active.values()].map(({ execution }) => execution));
+      await Promise.all([
+        maintenance,
+        ...[...active.values()].map(({ execution }) => execution),
+      ]);
     }
   }
   const completion = consume();

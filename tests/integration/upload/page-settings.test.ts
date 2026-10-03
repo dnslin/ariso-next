@@ -20,7 +20,7 @@ beforeEach(() => {
 afterEach(() => fixture.close());
 
 describe('upload page settings', () => {
-  it('reads current defaults and exposes only local storage labels and availability', () => {
+  it('reads current defaults and exposes Local and S3 storage labels and availability', () => {
     const { db, storage } = fixture;
     db.update(uploadSettings).set({ maxFileBytes: 12345, queueLimit: 7 }).run();
     db.update(mediaSettings).set({ defaultVisibility: 'private' }).run();
@@ -31,6 +31,20 @@ describe('upload page settings', () => {
         name: '已停用的本地存储',
         enabled: false,
         localPath: 'private/local/path',
+      })
+      .run();
+    db.insert(storageConfigs)
+      .values({
+        ...storage,
+        id: 's3',
+        type: 's3',
+        name: 'S3 图片',
+        localPath: null,
+        endpoint: 'https://private.example',
+        bucket: 'private-bucket',
+        region: 'auto',
+        accessKeyEncrypted: 'encrypted-access',
+        secretKeyEncrypted: 'encrypted-secret',
       })
       .run();
     const result = readUploadPageSettings(db);
@@ -45,9 +59,12 @@ describe('upload page settings', () => {
       storages: expect.arrayContaining([
         { id: storage.id, name: storage.name, enabled: true },
         { id: 'disabled', name: '已停用的本地存储', enabled: false },
+        { id: 's3', name: 'S3 图片', enabled: true },
       ]),
     });
-    expect(result.storages).toHaveLength(2);
+    expect(result.storages).toHaveLength(3);
+    expect(JSON.stringify(result)).not.toContain('private.example');
+    expect(JSON.stringify(result)).not.toContain('encrypted-');
     expect(JSON.stringify(result)).not.toContain('localPath');
     expect(JSON.stringify(result)).not.toContain('private/local/path');
   });

@@ -53,7 +53,6 @@ export function readUploadPageSettings(db: BetterSQLite3Database) {
           enabled: storageConfigs.enabled,
         })
         .from(storageConfigs)
-        .where(eq(storageConfigs.type, 'local'))
         .orderBy(asc(storageConfigs.createdAt), asc(storageConfigs.id))
         .all(),
     };

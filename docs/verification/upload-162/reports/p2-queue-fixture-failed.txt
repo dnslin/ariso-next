@@ -1,0 +1,31 @@
+Already up to date
+Done in 44ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |integration| tests/integration/media/queue.test.ts (15 tests | 1 failed | 14 skipped) 40ms
+   ❯ remote maintenance scheduling (3)
+     × claims unrelated Local work and interrupts deletion while remote DELETE is still pending 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/media/queue.test.ts > remote maintenance scheduling > claims unrelated Local work and interrupts deletion while remote DELETE is still pending
+SqliteError: FOREIGN KEY constraint failed
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ remoteCleanup tests/integration/media/queue.test.ts:343:6
+    341|       updatedAt: now,
+    342|     })
+    343|     .run();
+       |      ^
+    344|   return {
+    345|     objectId,
+ ❯ tests/integration/media/queue.test.ts:380:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  18:05:46
+   Duration  663ms (import 65%, transform 28%, tests 7%)

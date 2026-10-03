@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { selectCopyFormat } from './library-detail.mjs';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -221,7 +222,7 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
             navigator.clipboard.writeText = write;
           };
         });
-        await page.click(button('复制 URL'));
+        await selectCopyFormat(page, '复制 URL');
         await page.waitForFunction(() => typeof window.__m2Copied === 'string');
         const url = await page.evaluate(() => window.__m2Copied);
         assert.equal(new URL(url).pathname, `/i/${id}`);

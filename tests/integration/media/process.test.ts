@@ -1,8 +1,11 @@
 import { randomUUID } from 'node:crypto';
+import { createServer } from 'node:http';
+import { once } from 'node:events';
 import {
   mkdir,
   mkdtemp,
   readFile,
+  readdir,
   rm,
   stat,
   writeFile,
@@ -48,9 +51,13 @@ import {
   processMediaJob,
   type MediaRuntime,
 } from '../../../src/server/media/process.ts';
+import { createSecretCrypto } from '../../../src/server/runtime/crypto.ts';
+import { retainMediaInput } from '../../../src/server/media/input.ts';
+import { identifyImageFile } from '../../../src/server/media/file-formats.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import * as mediaTools from '../../../src/server/media/tools.ts';
 import { recoverMediaJobs } from '../../../src/server/media/recovery.ts';
+import { requestReprocess } from '../../../src/server/media/reprocess.ts';
 
 let directory: string;
 let connection: ReturnType<typeof openRuntimeDatabase>;
@@ -776,4 +783,156 @@ describe('T-MED-03 real JPEG/PNG processing', () => {
       accepted.bytes,
     );
   });
+});
+
+describe('T-UP-04 S3 media handoff', () => {
+  it.each([true, false])(
+    'publishes real derived S3 objects with retained input=%s and supports reprocessing',
+    async (retainedInput) => {
+      const objects = new Map<string, Buffer>();
+      const reads: string[] = [];
+      const outputsInCache: string[] = [];
+      const server = createServer(async (request, response) => {
+        const path = new URL(request.url!, 'http://localhost').pathname;
+        if (request.method === 'PUT') {
+          const chunks: Buffer[] = [];
+          for await (const chunk of request) chunks.push(Buffer.from(chunk));
+          const bytes = Buffer.concat(chunks);
+          for (const directory of await readdir(runtime.temporaryRoot)) {
+            if (
+              !directory.startsWith('media-') ||
+              directory.startsWith('media-input-')
+            )
+              continue;
+            for (const entry of await readdir(
+              join(runtime.temporaryRoot, directory),
+            )) {
+              if (entry.startsWith('derived-') || entry === 'compressed-source')
+                outputsInCache.push(join(directory, entry));
+            }
+          }
+          expect(Number(request.headers['content-length'])).toBe(bytes.length);
+          objects.set(path, bytes);
+          response.writeHead(200, { etag: '"saved"' });
+        } else if (request.method === 'HEAD') {
+          const bytes = objects.get(path);
+          response.writeHead(
+            bytes ? 200 : 404,
+            bytes ? { 'content-length': String(bytes.length) } : {},
+          );
+        } else if (request.method === 'DELETE') {
+          objects.delete(path);
+          response.writeHead(204);
+        } else {
+          reads.push(path);
+          const bytes = objects.get(path);
+          response.writeHead(bytes ? 200 : 404);
+          if (bytes) response.write(bytes);
+        }
+        response.end();
+      });
+      server.listen(0, '127.0.0.1');
+      await once(server, 'listening');
+      try {
+        const address = server.address() as { port: number };
+        const crypto = createSecretCrypto(Buffer.alloc(32, 1));
+        const storageId = randomUUID();
+        const now = new Date();
+        connection.db
+          .insert(storageConfigs)
+          .values({
+            id: storageId,
+            name: 'S3 media test',
+            type: 's3',
+            enabled: true,
+            endpoint: `http://127.0.0.1:${address.port}`,
+            region: 'test',
+            bucket: 'test',
+            pathPrefix: 'test',
+            forcePathStyle: true,
+            accessKeyEncrypted: crypto.encryptSecret('test-access'),
+            secretKeyEncrypted: crypto.encryptSecret('test-secret'),
+            createdAt: now,
+            updatedAt: now,
+          })
+          .run();
+        runtime = { ...runtime, secretCrypto: crypto };
+        const bytes = await readFile(
+          resolve('tests/fixtures/runtime/images/sample.png'),
+        );
+        const path = join(runtime.temporaryRoot, 'uploaded-original');
+        await writeFile(path, bytes);
+        const facts = await identifyImageFile(path, runtime.temporaryRoot);
+        const jobId = randomUUID();
+        const retained = retainedInput
+          ? await retainMediaInput(runtime.temporaryRoot, jobId, path, facts)
+          : join(runtime.temporaryRoot, `media-input-${jobId}`, 'original');
+        const accepted = connection.db.transaction((tx) =>
+          acceptOriginal(tx, {
+            ...facts,
+            imageId: randomUUID(),
+            jobId,
+            storageId,
+            key: 'original/accepted.png',
+            originalName: 'accepted.png',
+            visibility: 'private',
+            byteSize: bytes.length,
+            snapshot: {
+              ...createProcessingSnapshot(tx),
+              watermarkMode: 'text',
+              watermarkText: 'S3',
+            },
+            expectedVersions: ['compressed', 'thumbnail', 'watermark'],
+          }),
+        );
+        const originalPath = `/test/test/ariso/${storageId}/original/accepted.png`;
+        objects.set(originalPath, bytes);
+        const identification = vi.spyOn(mediaTools, 'startMediaTool');
+        await processNext();
+        expect(state(accepted.imageId).image.processingStatus).toBe('ready');
+        expect(reads).toEqual(retainedInput ? [] : [originalPath]);
+        expect(
+          identification.mock.calls.filter(
+            ([command, args]) =>
+              command === 'exiftool' && args.includes('-FileType'),
+          ),
+        ).toHaveLength(retainedInput ? 0 : 1);
+        identification.mockRestore();
+        for (const kind of ['compressed', 'thumbnail', 'watermark'] as const) {
+          const version = state(accepted.imageId).versions.find(
+            (item) => item.kind === kind,
+          )!.saved!;
+          const stored = objects.get(
+            `/test/test/ariso/${storageId}/${version.object.key}`,
+          )!;
+          expect(stored.subarray(0, 4).toString()).toBe('RIFF');
+          expect(stored.length).toBe(version.version.byteSize);
+        }
+        await expect(stat(retained)).rejects.toMatchObject({ code: 'ENOENT' });
+        const previous = state(accepted.imageId).versions.find(
+          (item) => item.kind === 'compressed',
+        )!.saved!.object.key;
+        requestReprocess(connection.db, accepted.imageId, {
+          scope: 'compressed',
+        });
+        await processNext();
+        expect(state(accepted.imageId).latestJob!.status).toBe('succeeded');
+        expect(
+          state(accepted.imageId).versions.find(
+            (item) => item.kind === 'compressed',
+          )!.saved!.object.key,
+        ).not.toBe(previous);
+        expect(reads.filter((key) => key === originalPath)).toHaveLength(
+          retainedInput ? 1 : 2,
+        );
+        expect(objects.get(originalPath)).toEqual(bytes);
+        expect(outputsInCache).toEqual([]);
+      } finally {
+        server.closeAllConnections();
+        await new Promise<void>((resolve, reject) =>
+          server.close((error) => (error ? reject(error) : resolve())),
+        );
+      }
+    },
+  );
 });

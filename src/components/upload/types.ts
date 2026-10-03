@@ -33,8 +33,11 @@ export type UploadItem = {
   jobId?: string;
   error?: string;
   step?: string;
+  cleanupError?: string;
   cleanupStatus?: 'none' | 'pending' | 'failed';
   cancelling?: boolean;
+  route?: 'local' | 'relay' | 'direct' | null;
+  routeReason?: string | null;
 };
 
 type SubmissionResponse = ReturnType<typeof submissionResult>;
@@ -49,6 +52,8 @@ export type UploadSessionResult = Pick<
   | 'error'
   | 'cleanupStatus'
 > & {
+  route?: 'local' | 'relay' | 'direct' | null;
+  routeReason?: string | null;
   job?: Pick<
     NonNullable<SubmissionResponse['sessions'][number]['job']>,
     'id' | 'status' | 'error' | 'step'
@@ -88,6 +93,15 @@ export type UploadTransport = {
   upload(
     sessionId: string,
     onProgress: (progress: number) => void,
+    onRoute: (
+      route: 'local' | 'relay' | 'direct',
+      reason: string | null,
+    ) => void,
+    onResubmit: (
+      requestId: string,
+      previousSessionId: string,
+      submission: Promise<UploadSubmissionResult>,
+    ) => Promise<void>,
   ): Promise<UploadSessionResult>;
   destroy(): void;
 };

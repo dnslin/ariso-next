@@ -118,6 +118,7 @@ export function UploadScreen(props: ScreenProps) {
             <Button
               variant="outline"
               className="flex-1 md:max-w-45"
+              data-testid="upload-clear-completed"
               onPress={() => {
                 controller.clearCompleted();
               }}

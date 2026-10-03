@@ -23,7 +23,7 @@ export function recoverMediaCandidateCleanup(db: MediaRuntime['db']) {
     .run();
 }
 
-/** Cleanup is independent of content success and can run on disabled local storage. */
+/** Cleanup is independent of content success and can run on disabled storage. */
 export async function cleanupMediaCandidates(
   runtime: MediaRuntime,
   signal?: AbortSignal,
@@ -36,7 +36,6 @@ export async function cleanupMediaCandidates(
     .where(
       and(
         eq(mediaObjects.status, 'cleanup_pending'),
-        eq(storageConfigs.type, 'local'),
         unreferenced,
         settled,
         notDeleting,
@@ -48,9 +47,10 @@ export async function cleanupMediaCandidates(
     if (signal?.aborted) break;
     await cleanupMediaObject(
       runtime,
-      { ...storage, localPath: storage.localPath! },
+      storage,
       object,
       { adoptDeletion: true },
+      signal,
     );
   }
 }

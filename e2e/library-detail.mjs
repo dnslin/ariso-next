@@ -12,7 +12,7 @@ import { once } from 'node:events';
 
 // Exercise the browser's real policy enforcement while all application bytes,
 // API responses and cookies still come from the disposable production server.
-async function clipboardDeniedProxy(origin) {
+export async function clipboardDeniedProxy(origin) {
   const upstream = new URL(origin);
   const errors = [];
   const server = createServer((incoming, outgoing) => {
@@ -50,6 +50,13 @@ async function clipboardDeniedProxy(origin) {
       await closed;
     },
   };
+}
+
+// Select through the shared single-entry format menu with real pointer input.
+export async function selectCopyFormat(page, label) {
+  await page.click('loc=role:button[name="选择复制格式"]');
+  await page.waitForSelector(`loc=role:menuitem[name="${label}"]`);
+  await page.click(`loc=role:menuitem[name="${label}"]`);
 }
 
 // Add real saved versions to existing cards without changing list pagination.
@@ -382,7 +389,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
   await page.click(button('复制链接'));
   await page.waitForSelector('loc=role:dialog[name="复制图片链接"]');
   await layouts('copy');
-  await page.click(button('复制 URL'));
+  await selectCopyFormat(page, '复制 URL');
   await page.waitForFunction(() =>
     document
       .querySelector('[data-slot="toast"]')
@@ -405,7 +412,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     );
     await page.click(button('复制链接'));
     await page.waitForSelector('[data-testid="copy-resolution"]');
-    await page.click(button('复制 URL'));
+    await selectCopyFormat(page, '复制 URL');
     await page.waitForSelector('loc=role:heading[name="浏览器未允许自动复制"]');
     const manual = await page.evaluate(() => {
       const input = document.querySelector(
@@ -427,7 +434,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
     await page.click('loc=role:button[name*="复制版本"]');
     await page.waitForSelector('loc=role:option[name="原图"]');
     await page.click('loc=role:option[name="原图"]');
-    await page.click(button('复制 Markdown'));
+    await selectCopyFormat(page, '复制 Markdown');
     await page.waitForSelector('textarea[aria-label="手动复制文本"]');
     assert.match(
       await page.evaluate(
@@ -437,7 +444,7 @@ export async function verifyLibraryDetail({ page, config, sql, report }) {
       /type=original/,
     );
     await page.click(button('返回复制选项'));
-    await page.click(button('复制 HTML'));
+    await selectCopyFormat(page, '复制 HTML');
     await page.waitForSelector('textarea[aria-label="手动复制文本"]');
     assert.match(
       await page.evaluate(

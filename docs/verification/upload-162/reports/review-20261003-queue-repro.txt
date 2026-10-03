@@ -1,0 +1,62 @@
+import assert from 'node:assert/strict';
+import { createServer } from 'node:http';
+import { once } from 'node:events';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+import { randomUUID } from 'node:crypto';
+const root = '/Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso';
+const { eq } = await import(`${root}/node_modules/drizzle-orm/index.js`);
+const { collectionFixture } = await import(`${root}/tests/integration/collections/helpers.ts`);
+const { startMediaQueue } = await import(`${root}/src/server/media/queue.ts`);
+const { mediaJobs, mediaObjects } = await import(`${root}/src/server/media/schema.ts`);
+const { acceptOriginal } = await import(`${root}/src/server/media/images.ts`);
+const { storageConfigs } = await import(`${root}/src/server/storage/schema.ts`);
+const { createSecretCrypto } = await import(`${root}/src/server/runtime/crypto.ts`);
+const fixture = collectionFixture();
+const temporaryRoot = join(fixture.storageRoot, '..', 'tmp');
+await mkdir(temporaryRoot);
+let entered;
+const deleting = new Promise(resolve => entered = resolve);
+let release;
+const gate = new Promise(resolve => release = resolve);
+const server = createServer(async (request, response) => {
+  if (request.method === 'DELETE') {
+    entered();
+    await gate;
+    response.writeHead(204).end();
+  } else response.writeHead(200, { 'content-length': '4' }).end();
+});
+server.listen(0, '127.0.0.1');
+await once(server, 'listening');
+const crypto = createSecretCrypto(Buffer.alloc(32, 1));
+const storageId = randomUUID();
+const now = new Date();
+fixture.db.insert(storageConfigs).values({ id: storageId, name: 'review local HTTP fixture', type: 's3', enabled: true, endpoint: `http://127.0.0.1:${server.address().port}`, region: 'test', bucket: 'test', pathPrefix: '', forcePathStyle: true, accessKeyEncrypted: crypto.encryptSecret('test'), secretKeyEncrypted: crypto.encryptSecret('test'), createdAt: now, updatedAt: now }).run();
+const old = fixture.db.transaction(tx => acceptOriginal(tx, { ...fixture.input(), storageId }));
+fixture.db.update(mediaJobs).set({ status: 'succeeded' }).where(eq(mediaJobs.id, old.jobId)).run();
+fixture.db.insert(mediaObjects).values({ id: randomUUID(), imageId: old.imageId, jobId: old.jobId, storageId, key: 'candidate/old', purpose: 'temporary', status: 'cleanup_pending', byteSize: 4, createdAt: now, updatedAt: now }).run();
+const errors = [];
+const queue = startMediaQueue({ db: fixture.db, storageRoot: fixture.storageRoot, temporaryRoot, secretCrypto: crypto, logger: { info() {}, error(...args) { errors.push(args); } } });
+try {
+  await deleting;
+  const nextImage = fixture.image();
+  const next = fixture.db.select().from(mediaJobs).where(eq(mediaJobs.imageId, nextImage)).get();
+  await delay(300);
+  const state = fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, next.id)).get();
+  assert.equal(state.status, 'queued');
+  assert.equal(state.startedAt, null);
+  console.log(JSON.stringify({ whileRemoteCleanupHeld: state.status, schedulerSlotsUsed: 0, unrelatedLocalJobStartedAt: state.startedAt }));
+  release();
+  for (let attempts = 0; attempts < 100; attempts++) {
+    const read = fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, next.id)).get();
+    if (read.startedAt) { console.log(JSON.stringify({ afterRemoteCleanupReleased: read.status, startedAt: read.startedAt })); break; }
+    await delay(20);
+  }
+} finally {
+  release();
+  await queue.stop();
+  fixture.close();
+  server.closeAllConnections();
+  await new Promise(resolve => server.close(resolve));
+}

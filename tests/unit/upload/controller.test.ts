@@ -3,6 +3,7 @@ import { UploadController } from '../../../src/components/upload/controller.ts';
 import type {
   UploadSessionResult,
   UploadSubmissionResult,
+  UploadTransport,
 } from '../../../src/components/upload/types.ts';
 
 const queued: UploadSessionResult = {
@@ -63,11 +64,20 @@ function setup(onUnauthorized?: () => void) {
   const onLibraryChanged = vi.fn();
   const transfer = deferred<UploadSessionResult>();
   let progress: (value: number) => void = () => {};
+  let resubmit: Parameters<UploadTransport['upload']>[3] = async () => {};
   const transport = {
-    upload: vi.fn((_session: string, callback: (value: number) => void) => {
-      progress = callback;
-      return transfer.promise;
-    }),
+    upload: vi.fn(
+      (
+        _session: string,
+        callback: (value: number) => void,
+        _route: Parameters<UploadTransport['upload']>[2],
+        onResubmit: Parameters<UploadTransport['upload']>[3],
+      ) => {
+        progress = callback;
+        resubmit = onResubmit;
+        return transfer.promise;
+      },
+    ),
     destroy: vi.fn(),
   };
   const createTransport = vi.fn(() => transport);
@@ -98,6 +108,7 @@ function setup(onUnauthorized?: () => void) {
     createTransport,
     transfer,
     progress: (value: number) => progress(value),
+    resubmit: (...args: Parameters<typeof resubmit>) => resubmit(...args),
     respond,
   };
 }
@@ -730,4 +741,333 @@ it('does not notify for a rejected upload or a cancelled transfer completing lat
   c.transfer.resolve(accepted('succeeded').sessions[0]);
   await started;
   expect(c.onLibraryChanged).not.toHaveBeenCalled();
+});
+
+it('continues reading a terminal item until its known cleanup responsibility settles', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  c.transfer.resolve({
+    ...queued,
+    state: 'failed',
+    cleanupStatus: 'pending',
+    error: 'upload failed',
+    route: 'direct',
+  });
+  await started;
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'upload-failed',
+    cleanupStatus: 'pending',
+    route: 'direct',
+    previewUrl: null,
+  });
+  c.respond(
+    submission({
+      state: 'failed',
+      cleanupStatus: 'failed',
+      error: 'known deletion denied',
+      route: 'direct',
+    }),
+  );
+  await c.controller.refresh();
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'upload-failed',
+    cleanupStatus: 'failed',
+  });
+  const id = c.controller.snapshot[0].id;
+  c.respond({ ...queued, state: 'failed', cleanupStatus: 'none', error: null });
+  await c.controller.retryCleanup(id);
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'upload-failed',
+    cleanupStatus: 'none',
+  });
+  expect(c.request.mock.calls.at(-1)).toEqual([
+    '/api/uploads/cleanup',
+    expect.objectContaining({
+      method: 'POST',
+      body: JSON.stringify({ sessionId: 'session' }),
+    }),
+  ]);
+  const requests = c.request.mock.calls.length;
+  await c.controller.refresh();
+  expect(c.request).toHaveBeenCalledTimes(requests);
+});
+
+it.each(['queued', 'running', 'succeeded', 'failed'] as const)(
+  'retains accepted cleanup diagnostics separately from %s processing',
+  async (status) => {
+    const c = setup();
+    c.controller.add(c.file);
+    c.respond(submission(), 201);
+    const started = c.controller.start('private');
+    await untilTransfer(c);
+    const result = accepted(status).sessions[0];
+    result.cleanupStatus = 'failed';
+    result.error = 'DeleteObject AccessDenied: uploads/temporary/known.png';
+    if (status === 'queued' || status === 'running')
+      c.respond({ ...accepted(status), sessions: [result] });
+    c.transfer.resolve(result);
+    await started;
+    expect(c.controller.snapshot[0]).toMatchObject({
+      cleanupStatus: 'failed',
+      cleanupError: result.error,
+      error: status === 'failed' ? '压缩失败' : undefined,
+    });
+    c.respond({ ...result, cleanupStatus: 'none', error: null });
+    await c.controller.retryCleanup(c.controller.snapshot[0].id);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      cleanupStatus: 'none',
+      cleanupError: undefined,
+      error: status === 'failed' ? '压缩失败' : undefined,
+    });
+  },
+);
+
+it('reconciles a failed manual cleanup response and continues reading its new pending cycle', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  c.transfer.resolve({
+    ...queued,
+    state: 'failed',
+    cleanupStatus: 'failed',
+    error: 'upload rejected\n清理失败: AccessDenied',
+  });
+  await started;
+  c.respond({ message: 'AccessDenied' }, 500);
+  c.respond(
+    submission({
+      state: 'failed',
+      cleanupStatus: 'pending',
+      error: 'upload rejected\n清理失败: AccessDenied',
+    }),
+  );
+  await expect(
+    c.controller.retryCleanup(c.controller.snapshot[0].id),
+  ).rejects.toThrow('AccessDenied');
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'upload-failed',
+    cleanupStatus: 'pending',
+    cleanupError: ' AccessDenied',
+  });
+  c.respond(
+    submission({
+      state: 'failed',
+      cleanupStatus: 'none',
+      error: 'upload rejected',
+    }),
+  );
+  await c.controller.refresh();
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'upload-failed',
+    cleanupStatus: 'none',
+    cleanupError: undefined,
+    error: 'upload rejected',
+  });
+});
+
+it('moves a signature replacement into its real frozen submission and retains the same transport until acceptance', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  const id = c.controller.snapshot[0].id;
+  const preview = c.controller.snapshot[0].previewUrl;
+  c.respond(submission(), 201);
+  const started = c.controller.start('private', 'local', {
+    albumIds: [],
+    tagIds: [],
+    labels: {
+      storageId: 'local',
+      storageName: 'Frozen storage',
+      albums: [],
+      tags: [],
+    },
+  });
+  await untilTransfer(c);
+  const metadata = deferred<UploadSubmissionResult>();
+  const replacing = c.resubmit(
+    'same-resubmit-request',
+    'session',
+    metadata.promise,
+  );
+  const replacement = {
+    ...submission({ id: 'new-session', queueItemId: id }),
+    id: 'new-submission',
+  };
+  metadata.resolve(replacement);
+  await replacing;
+  expect(c.controller.snapshot[0]).toMatchObject({
+    id,
+    previewUrl: preview,
+    sessionId: 'new-session',
+    submissionId: 'new-submission',
+    state: 'uploading',
+    frozenSubmission: {
+      id: 'new-submission',
+      number: 2,
+      count: 1,
+      storageName: 'Frozen storage',
+    },
+  });
+  c.respond({
+    ...replacement,
+    sessions: [
+      {
+        ...accepted('succeeded').sessions[0],
+        id: 'new-session',
+        queueItemId: id,
+      },
+    ],
+  });
+  c.transfer.resolve({
+    ...accepted('queued').sessions[0],
+    id: 'new-session',
+    queueItemId: id,
+  });
+  await started;
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'ready',
+    sessionId: 'new-session',
+    imageId: 'real-image',
+    previewUrl: null,
+  });
+  expect(c.request.mock.calls.at(-1)?.[0]).toBe(
+    '/api/uploads/submissions/new-submission',
+  );
+  expect(c.createTransport).toHaveBeenCalledOnce();
+  expect(c.transport.upload).toHaveBeenCalledOnce();
+});
+
+it('recovers a lost resubmit response with the same metadata request instead of sending the file again', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  const replacing = c.resubmit(
+    'same-resubmit-request',
+    'session',
+    Promise.reject(new Error('resubmit response lost')),
+  );
+  await expect(replacing).rejects.toThrow('resubmit response lost');
+  c.respond(
+    { ...submission({ id: 'new-session' }), id: 'new-submission' },
+    201,
+  );
+  c.transfer.reject(new Error('resubmit response lost'));
+  await started;
+  expect(c.request.mock.calls.at(-1)).toEqual([
+    '/api/uploads/sessions/session/resubmit',
+    expect.objectContaining({
+      method: 'POST',
+      body: JSON.stringify({ requestId: 'same-resubmit-request' }),
+    }),
+  ]);
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'unknown',
+    sessionId: 'new-session',
+    submissionId: 'new-submission',
+  });
+  expect(c.transport.upload).toHaveBeenCalledOnce();
+  expect(c.createTransport).toHaveBeenCalledOnce();
+});
+
+it.each([false, true])(
+  'cancels the replacement session after settling resubmit metadata (lost=%s)',
+  async (lost) => {
+    const c = setup();
+    c.controller.add(c.file);
+    const queueItemId = c.controller.snapshot[0].id;
+    c.respond(submission(), 201);
+    const started = c.controller.start('private');
+    await untilTransfer(c);
+    const metadata = deferred<UploadSubmissionResult>();
+    const replacing = c.resubmit(
+      'cancel-resubmit',
+      'session',
+      metadata.promise,
+    );
+    const outcome = replacing.catch(() => {});
+    const replacement = {
+      ...submission({ id: 'new-session', queueItemId }),
+      id: 'new-submission',
+    };
+    if (lost) c.respond(replacement, 201);
+    c.respond({ ...queued, id: 'new-session', state: 'cancelled' });
+    const cancelled = c.controller.cancel(queueItemId);
+    if (lost) metadata.reject(new TypeError('resubmit response lost'));
+    else metadata.resolve(replacement);
+    await outcome;
+    await cancelled;
+    c.transfer.resolve({
+      ...accepted('succeeded').sessions[0],
+      id: 'new-session',
+    });
+    await started;
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'cancelled',
+      sessionId: 'new-session',
+      submissionId: 'new-submission',
+      imageId: undefined,
+    });
+    const deletes = c.request.mock.calls.filter(
+      ([, init]) => init?.method === 'DELETE',
+    );
+    expect(deletes).toEqual([
+      ['/api/uploads/sessions/new-session', expect.any(Object)],
+    ]);
+    if (lost)
+      expect(
+        c.request.mock.calls.some(
+          ([url, init]) =>
+            url === '/api/uploads/sessions/session/resubmit' &&
+            init?.body === JSON.stringify({ requestId: 'cancel-resubmit' }),
+        ),
+      ).toBe(true);
+    expect(c.transport.destroy).toHaveBeenCalledOnce();
+    expect(c.transport.upload).toHaveBeenCalledOnce();
+  },
+);
+
+it('keeps an accepted replacement observable when its cancellation returns imageId conflict', async () => {
+  const c = setup();
+  c.controller.add(c.file);
+  const queueItemId = c.controller.snapshot[0].id;
+  c.respond(submission(), 201);
+  const started = c.controller.start('private');
+  await untilTransfer(c);
+  const metadata = deferred<UploadSubmissionResult>();
+  const replacing = c.resubmit('cancel-resubmit', 'session', metadata.promise);
+  c.respond({ message: 'already accepted', imageId: 'real-image' }, 409);
+  c.respond({
+    ...accepted('succeeded'),
+    id: 'new-submission',
+    sessions: [
+      { ...accepted('succeeded').sessions[0], id: 'new-session', queueItemId },
+    ],
+  });
+  const cancelled = c.controller.cancel(queueItemId);
+  metadata.resolve({
+    ...submission({ id: 'new-session', queueItemId }),
+    id: 'new-submission',
+  });
+  await replacing;
+  await cancelled;
+  c.transfer.resolve({
+    ...accepted('succeeded').sessions[0],
+    id: 'new-session',
+  });
+  await started;
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'ready',
+    sessionId: 'new-session',
+    submissionId: 'new-submission',
+    imageId: 'real-image',
+  });
+  expect(
+    c.request.mock.calls.find(([, init]) => init?.method === 'DELETE')?.[0],
+  ).toBe('/api/uploads/sessions/new-session');
 });

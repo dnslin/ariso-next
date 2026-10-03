@@ -207,10 +207,10 @@ it('真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，�
   expect(read).not.toHaveProperty('secretKeyEncrypted');
 });
 
-it('现有本地上传入口拒绝显式或默认 S3，在分配会话前返回明确冲突', async () => {
+it('显式或默认 S3 创建排队会话，接收字节前不创建图片或处理任务', async () => {
   const response = await request('/api/storages', 'POST', {
     type: 's3',
-    name: '尚未接入上传',
+    name: 'S3 上传目标',
     endpoint: 'https://objects.example.test',
     region: 'auto',
     bucket: 'upload-boundary',
@@ -238,9 +238,14 @@ it('现有本地上传入口拒绝显式或默认 S3，在分配会话前返回�
   const sessions = connection.db.$client
     .prepare('SELECT * FROM upload_sessions')
     .all();
+  const images = connection.db.$client
+    .prepare('SELECT * FROM media_images')
+    .all();
+  const jobs = connection.db.$client.prepare('SELECT * FROM media_jobs').all();
   try {
+    const created: string[] = [];
     for (const explicit of [true, false]) {
-      const rejected = await request('/api/uploads/submissions', 'POST', {
+      const queued = await request('/api/uploads/submissions', 'POST', {
         requestId: randomUUID(),
         files: [
           {
@@ -251,16 +256,30 @@ it('现有本地上传入口拒绝显式或默认 S3，在分配会话前返回�
         ],
         ...(explicit ? { storageId: storage.id } : {}),
       });
-      expect(rejected.status, await rejected.clone().text()).toBe(409);
-      expect(await rejected.json()).toMatchObject({
-        code: 'STORAGE_TYPE_UNSUPPORTED',
+      expect(queued.status, await queued.clone().text()).toBe(201);
+      const result = await queued.json();
+      expect(result).toMatchObject({
+        storageId: storage.id,
+        sessions: [
+          { state: 'queued', route: null, imageId: null, jobId: null },
+        ],
       });
+      created.push(result.id);
       expect(
         connection.db.$client.prepare('SELECT * FROM upload_submissions').all(),
-      ).toEqual(submissions);
+      ).toHaveLength(submissions.length + created.length);
       expect(
         connection.db.$client.prepare('SELECT * FROM upload_sessions').all(),
-      ).toEqual(sessions);
+      ).toHaveLength(sessions.length + created.length);
+      const recovered = await request(`/api/uploads/submissions/${result.id}`);
+      expect(recovered.status).toBe(200);
+      expect(await recovered.json()).toEqual(result);
+      expect(
+        connection.db.$client.prepare('SELECT * FROM media_images').all(),
+      ).toEqual(images);
+      expect(
+        connection.db.$client.prepare('SELECT * FROM media_jobs').all(),
+      ).toEqual(jobs);
     }
   } finally {
     expect(

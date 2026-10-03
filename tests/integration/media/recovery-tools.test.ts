@@ -1,3 +1,4 @@
+import { ok } from 'node:assert/strict';
 import { fork } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { once } from 'node:events';
@@ -502,6 +503,7 @@ describe('T-MED-04 actual processing recovery', () => {
     const candidate = connection.db.transaction((tx) =>
       planDerivedObject(tx, accepted.jobId, 'compressed'),
     );
+    ok(candidate.temporaryObjectId, 'Local writes own a partial object');
     connection.db
       .update(mediaObjects)
       .set({ status: 'writing' })

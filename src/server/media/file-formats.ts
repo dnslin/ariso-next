@@ -158,7 +158,8 @@ export async function identifyImageFile(
   workspace: string,
   signal?: AbortSignal,
 ) {
-  return (await readFacts(path, workspace, signal)).facts;
+  const { tags, facts } = await readFacts(path, workspace, signal);
+  return { ...facts, identificationTags: tags };
 }
 
 /** Full classification runs in the background job, after the original is preserved. */
@@ -167,8 +168,11 @@ export async function inspectImageFile(
   workspace: string,
   signal?: AbortSignal,
   diskLimitBytes?: number,
+  admitted?: Awaited<ReturnType<typeof identifyImageFile>>,
 ) {
-  const { tags, facts } = await readFacts(path, workspace, signal);
+  const { tags, facts } = admitted
+    ? { tags: admitted.identificationTags, facts: admitted }
+    : await readFacts(path, workspace, signal);
   let pageCount = 1;
   let animated = tags['File:FileType'] === 'APNG';
   let { width, height } = facts;

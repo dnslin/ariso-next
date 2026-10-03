@@ -1,0 +1,90 @@
+{
+  "status": "failed",
+  "phase": "green",
+  "startedAt": "2026-10-03T07:22:37.702Z",
+  "origin": "http://ariso-59851.localhost:59851",
+  "spaceId": 14,
+  "pageLabel": "p1",
+  "checks": [
+    "Exactly one copy-format trigger; the three old adjacent format buttons are absent."
+  ],
+  "layouts": [
+    {
+      "name": "library-copy",
+      "theme": "light",
+      "screenshot": "library-copy-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "dialog": {
+        "x": 480,
+        "y": 334.75,
+        "top": 334.75,
+        "bottom": 745.25,
+        "right": 960,
+        "width": 480,
+        "height": 410.5
+      },
+      "header": {
+        "x": 505,
+        "y": 359.75,
+        "top": 359.75,
+        "bottom": 403.75,
+        "right": 935,
+        "width": 430,
+        "height": 44
+      },
+      "body": {
+        "x": 505,
+        "y": 419.75,
+        "top": 419.75,
+        "bottom": 720.25,
+        "right": 935,
+        "width": 430,
+        "height": 300.5,
+        "scrollTop": 0,
+        "clientHeight": 301,
+        "scrollHeight": 301
+      },
+      "footer": null,
+      "trigger": {
+        "x": 505,
+        "y": 636.25,
+        "top": 636.25,
+        "bottom": 684.25,
+        "right": 935,
+        "width": 430,
+        "height": 48
+      },
+      "close": {
+        "x": 891,
+        "y": 359.75,
+        "top": 359.75,
+        "bottom": 403.75,
+        "right": 935,
+        "width": 44,
+        "height": 44
+      },
+      "menu": null,
+      "items": [],
+      "titleFont": "20px",
+      "resolution": "当前默认：压缩图；实际版本：压缩图"
+    }
+  ],
+  "clipboard": [],
+  "consumers": [],
+  "pressed": [],
+  "limitations": [
+    "Ego Chromium emulation; physical touch, software keyboards and device safe areas were not tested.",
+    "Pending/error checks hold or reject a real detail HTTP response at the browser transport boundary; writing holds only after the native Clipboard write has completed.",
+    "Fixtures belong only to a separate disposable production server and SQLite DB; the manual preview and its page are untouched."
+  ],
+  "entry": {
+    "single": 1,
+    "oldFormatButtons": []
+  },
+  "error": "AssertionError [ERR_ASSERTION]: library-menu: format trigger >=48px\n    at capture (file:////[eval2]:188:12)\n    at async file:////[eval2]:547:7",
+  "page": "[p1 \"Ariso\" | space \"ariso Issue 162 复制入口专项验收\"(14): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container \"后台侧栏\"\n    anchor \"Ariso 首页\" [ref=33, url=http://ariso-59851.localhost:59851/]\n      text \"Ariso\"\n    button \"收起侧栏\" [ref=34, loc=css:button[aria-label=\"收起侧栏\"]]\n      svg_root\n    container \"后台导航\"\n      svg_root\n      text \"总览\"\n      text \"尚未开放\"\n      anchor \"上传\" [ref=35, loc=css:a[aria-label=\"上传\"], url=http://ariso-59851.localhost:59851/upload]\n        svg_root\n        text \"上传\"\n      anchor \"图库\" [ref=36, loc=css:a[aria-label=\"图库\"], url=http://ariso-59851.localhost:59851/library]\n        svg_root\n        text \"图库\"\n      anchor \"相册\" [ref=37, loc=css:a[aria-label=\"相册\"], url=http://ariso-59851.localhost:59851/albums]\n        svg_root\n        text \"相册\"\n      anchor \"标签\" [ref=38, loc=css:a[aria-label=\"标签\"], url=http://ariso-59851.localhost:59851/tags]\n        svg_root\n        text \"标签\"\n      svg_root\n      text \"分享管理\"\n      text \"尚未开放\"\n      anchor \"回收站\" [ref=39, loc=css:a[aria-label=\"回收站\"], url=http://ariso-59851.localhost:59851/trash]\n        svg_root\n        text \"回收站\"\n      paragraph\n        text \"管理\"\n      svg_root\n      text \"访问统计\"\n      text \"尚未开放\"\n      svg_root\n      text \"存储管理\"\n      text \"尚未开放\"\n      svg_root\n      text \"站点设置\"\n      text \"尚未开放\"\n    button \"账号菜单\" [ref=40, loc=css:button[aria-label=\"账号菜单\"]]\n      text \"O\"\n      text \"Owner\"\n      text \"站点所有者\"\n  container \"图库\"\n    heading\n      text \"图库\"\n    paragraph\n      text \"保存每一刻，也让每一次查找更轻松。\"\n    searchbox \"搜索图片名称\" [ref=41, loc=css:input[placeholder=\"搜索图片名称…\"]]\n      text \"搜索图片名称…\"\n    button \"图片排序 上传时间 ↓ 上传时间 ↓\" [ref=42]\n      text \"上传时间 ↓\"\n    radiobutton \"网格\" [ref=43, loc=css:button[aria-label=\"网格\"]]\n      svg_root\n    radiobutton \"瀑布流\" [ref=44, loc=css:button[aria-label=\"瀑布流\"]]\n      svg_root\n    button \"刷新图库\" [ref=45, loc=css:button[aria-label=\"刷新图库\"]]\n      svg_root\n    button [ref=46]\n      svg_root\n      text \"添加条件\"\n    svg_root\n    button \"查看图片：copy-empty\" [ref=47, loc=css:button[aria-label=\"查看图片：copy-empty\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"copy-empty\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：library-003\" [ref=48, loc=css:button[aria-label=\"查看图片：library-003\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"library-003\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：中文下载样本.png\" [ref=49, loc=css:button[aria-label=\"查看图片：中文下载样本.png\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"中文下载样本.png\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：library-008\" [ref=50, loc=css:button[aria-label=\"查看图片：library-008\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"library-008\"\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    paragraph\n      text \"已加载全部图片\"\n  container\n    status\n      text \"4 张图片 · 已加载 4 张\"\n    button \"图片加载方式 加载更多 加载更多\" [ref=51]\n      text \"加载更多\"\n      svg_root\n    button \"每批图片数 40 张 / 批 40 张 / 批\" [ref=52]\n      text \"40 张 / 批\"\n      svg_root\n  dialog \"图片详情\"\n    heading\n      text \"图片详情\"\n    button \"关闭图片详情\" [ref=53, loc=css:button[aria-label=\"关闭图片详情\"]]\n      svg_root\n    container\n      container\n        text \"原图\"\n        text \"压缩图\"\n        text \"缩略图\"\n        text \"水印图\"\n      image\n      paragraph\n        text \"当前查看：\"\n        text \"压缩图\"\n        text \"· PNG · 6.5 KiB · 640 × 480 px\"\n      paragraph\n        text \"缩略图\"\n        text \"：\"\n        text \"该版本尚未保存\"\n      paragraph\n        text \"水印图\"\n        text \"：\"\n        text \"该版本尚未保存\"\n      heading\n        text \"中文下载样本.png\"\n      button \"版本信息\" [ref=54, loc=css:button[aria-label=\"版本信息\"]]\n        svg_root\n      button \"公开：查看访问说明\" [ref=55, loc=css:button[aria-label=\"公开：查看访问说明\"]]\n        text \"公开\"\n      paragraph\n        text \"已就绪\"\n      paragraph\n        text \"640\"\n        text \"×\"\n        text \"480\"\n        text \"px · 原图\"\n        text \"PNG\"\n        text \"·\"\n        text \"6.5 KiB\"\n      paragraph\n        text \"默认本地存储\"\n        text \"·\"\n        text \"2023/11/15 06:13:20\"\n      paragraph\n        text \"相册：\"\n        text \"无\"\n      paragraph\n        text \"标签：\"\n        text \"无\"\n      paragraph\n        text \"原始名称：\"\n        text \"中文下载样本.png\"\n      paragraph\n        text \"图片 ID：\"\n        text \"library-007\"\n    button [ref=56]\n      text \"复制链接\"\n    button [ref=57]\n      text \"下载压缩图\"\n    button [ref=58]\n      text \"删除图片\"\n  dialog \"复制图片链接\"\n    heading\n      text \"复制图片链接\"\n    button \"关闭复制链接\" [ref=59, loc=css:button[aria-label=\"关闭复制链接\"]]\n      svg_root\n    container\n      paragraph\n        text \"中文下载样本.png\"\n      paragraph\n        text \"默认链接跟随站点设置。当前预览版本不会自动改变复制模式。\"\n      text \"复制版本\"\n      button \"默认链接 复制版本\" [ref=60]\n        text \"默认链接\"\n        svg_root\n      paragraph\n        text \"当前默认：压缩图；实际版本：压缩图\"\n      button \"选择复制格式\" [ref=61, loc=css:button[aria-label=\"选择复制格式\"]]\n        text \"复制链接\"\n        svg_root\n      paragraph\n        text \"公开原图可能包含 GPS 和拍摄信息。\"\n  dialog \"复制链接\" [ref=62]\n    menu \"复制格式 复制链接\" [ref=63]\n      menuitem [ref=64]\n        text \"复制\"\n        text \"URL\"\n      menuitem [ref=65]\n        text \"复制\"\n        text \"Markdown\"\n      menuitem [ref=66]\n        text \"复制\"\n        text \"HTML\"\n",
+  "clipboardRestored": true,
+  "finishedAt": "2026-10-03T07:22:40.539Z"
+}

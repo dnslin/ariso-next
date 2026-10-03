@@ -1,0 +1,102 @@
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-162-s3-upload/ariso
+
+ ❯ |integration| tests/integration/upload/multipart.test.ts (39 tests | 4 failed) 374ms
+   ❯ shared multipart disk reservations (10)
+     × rejects reception that would overlap a shared S3 download reservation 4ms
+     × passes the session context resource manager into multipart reception 171ms
+     × reserves reception bytes while a native file write is still pending 5ms
+     × rechecks shared space before writing another chunk 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/upload/multipart.test.ts > shared multipart disk reservations > rejects reception that would overlap a shared S3 download reservation
+AssertionError: expected MultipartReceiveError: Received size diff… { …(2) } to match object { …(3) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "cause": {
+-     "code": "INSUFFICIENT_DISK_SPACE",
+-   },
+-   "code": "UPLOAD_INSUFFICIENT_SPACE",
+-   "status": 507,
++ MultipartReceiveError {
++   "code": "UPLOAD_SIZE_MISMATCH",
++   "status": 400,
+  }
+
+ ❯ tests/integration/upload/multipart.test.ts:423:72
+    421|     availableDisk(1024 * MiB);
+    422|     resources.reserveWrite('direct-download', directory, 700 * MiB);
+    423|     await expect(receive(request(body('image')), 400 * MiB, 400 * MiB)…
+       |                                                                        ^
+    424|       code: 'UPLOAD_INSUFFICIENT_SPACE', status: 507,
+    425|       cause: { code: 'INSUFFICIENT_DISK_SPACE' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |integration| tests/integration/upload/multipart.test.ts > shared multipart disk reservations > passes the session context resource manager into multipart reception
+AssertionError: expected Error: Unsupported image format: TXT { code: '…' } to match object { …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "UPLOAD_INSUFFICIENT_SPACE",
+-   "status": 507,
++ Error {
++   "code": "MEDIA_FORMAT_UNSUPPORTED",
+  }
+
+ ❯ tests/integration/upload/multipart.test.ts:437:128
+    435|         requestId: 'shared-disk', files: [{ queueItemId: 'q', original…
+    436|       }).sessions[0];
+    437|       await expect(receiveSession({ ...fixture, resources }, session.i…
+       |                                                                                                                                ^
+    438|         code: 'UPLOAD_INSUFFICIENT_SPACE', status: 507,
+    439|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |integration| tests/integration/upload/multipart.test.ts > shared multipart disk reservations > reserves reception bytes while a native file write is still pending
+AssertionError: expected function to throw an error, but it didn't
+ ❯ tests/integration/upload/multipart.test.ts:459:84
+    457|     await entered.promise;
+    458|     try {
+    459|       expect(() => resources.reserveWrite('other-download', directory,…
+       |                                                                                    ^
+    460|     } finally { release.resolve(); await pending; }
+    461|     expect(() => resources.reserveWrite('other-download', directory, 2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |integration| tests/integration/upload/multipart.test.ts > shared multipart disk reservations > rechecks shared space before writing another chunk
+AssertionError: promise resolved "{ byteSize: 5 }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "byteSize": 5,
+  }
+
+ ❯ tests/integration/upload/multipart.test.ts:488:8
+    486|       signal: new AbortController().signal,
+    487|       onProgress() { free = lowWaterBytes - 1; },
+    488|     })).rejects.toMatchObject({ code: 'UPLOAD_INSUFFICIENT_SPACE', sta…
+       |        ^
+    489|     expect((await stat(join(directory, 'original'))).size).toBeLessTha…
+    490|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 35 passed (39)
+   Start at  18:07:43
+   Duration  950ms (tests 43%, import 37%, transform 20%)

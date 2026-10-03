@@ -1,14 +1,22 @@
+import { createMediaResources } from '../media/resources.ts';
 import { setTimeout as delay } from 'node:timers/promises';
 import { eq } from 'drizzle-orm';
 import type { Logger } from 'pino';
 import {
   cleanupSession,
-  expireQueuedSessions,
+  expireUploadSessions,
   pendingCleanups,
+  purgeUploadResults,
   recoverUploadSessions,
   type UploadContext,
 } from './cleanup.ts';
-import { cancelSession, getSession } from './sessions.ts';
+import {
+  cancelSession,
+  getSession,
+  getSubmission,
+  resubmitSession,
+} from './sessions.ts';
+import { beginSession, completeSession } from './s3.ts';
 import { receiveSession } from './receive.ts';
 import { UploadError } from './errors.ts';
 import { uploadSessions } from './schema.ts';
@@ -16,6 +24,7 @@ import { uploadSessions } from './schema.ts';
 export function startUploadRuntime(
   context: UploadContext & { logger: Pick<Logger, 'info' | 'error'> },
 ) {
+  context.resources ??= createMediaResources();
   const active = new Map<
     string,
     { controller: AbortController; promise: ReturnType<typeof receiveSession> }
@@ -34,7 +43,13 @@ export function startUploadRuntime(
   }
   const maintenance = (async () => {
     while (!stopping.signal.aborted) {
-      expireQueuedSessions(context.db);
+      expireUploadSessions(context.db);
+      for (const [id, operation] of active) {
+        if (getSession(context.db, id).state === 'expired')
+          operation.controller.abort(
+            new UploadError('UPLOAD_EXPIRED', '提交一小时内无上传活动', 409),
+          );
+      }
       for (const { id } of pendingCleanups(context.db)) {
         if (active.has(id)) continue;
         try {
@@ -43,6 +58,7 @@ export function startUploadRuntime(
           context.logger.error({ err, sessionId: id }, 'Upload cleanup failed');
         }
       }
+      purgeUploadResults(context.db);
       try {
         await delay(60_000, undefined, { signal: stopping.signal, ref: false });
       } catch (error) {
@@ -54,32 +70,93 @@ export function startUploadRuntime(
   void maintenance.catch((err: unknown) =>
     context.logger.error({ err }, 'Upload maintenance stopped'),
   );
+  function run(
+    id: string,
+    operation: (signal: AbortSignal) => ReturnType<typeof receiveSession>,
+  ) {
+    if (stopping.signal.aborted)
+      throw new UploadError('UPLOAD_STOPPING', '服务正在停止', 503);
+    const controller = new AbortController();
+    const promise = operation(controller.signal)
+      .then(async (result) => {
+        if (result.state === 'accepted' && result.cleanupStatus !== 'none') {
+          try {
+            await clean(id);
+          } catch (err) {
+            context.logger.error(
+              { err, sessionId: id },
+              'Accepted upload temporary cleanup failed',
+            );
+          }
+        }
+        context.logger.info(
+          {
+            sessionId: id,
+            imageId: result.imageId,
+            storageId: result.storageId,
+            byteSize: result.byteSize,
+          },
+          'Upload accepted',
+        );
+        return getSession(context.db, id);
+      })
+      .finally(() => active.delete(id));
+    active.set(id, { controller, promise });
+    return promise;
+  }
   return {
-    receive(id: string, request: Request) {
+    async resubmit(id: string, requestId: string) {
       if (stopping.signal.aborted)
         throw new UploadError('UPLOAD_STOPPING', '服务正在停止', 503);
       if (active.has(id))
-        throw new UploadError('UPLOAD_STATE_CONFLICT', '会话正在接收', 409);
-      const controller = new AbortController();
-      const promise = receiveSession(context, id, request, controller.signal)
-        .then((result) => {
-          context.logger.info(
-            {
-              sessionId: id,
-              imageId: result.imageId,
-              storageId: result.storageId,
-              byteSize: result.byteSize,
-            },
-            'Upload accepted',
+        throw new UploadError(
+          'UPLOAD_STATE_CONFLICT',
+          '正在接收或固定的会话不能重新提交',
+          409,
+        );
+      const submission = resubmitSession(context.db, id, requestId);
+      const previous = context.db
+        .select()
+        .from(uploadSessions)
+        .where(eq(uploadSessions.id, id))
+        .get();
+      if (
+        previous?.cleanupStatus === 'pending' &&
+        (!previous.nextCleanupAt || previous.nextCleanupAt <= new Date())
+      ) {
+        try {
+          await clean(id);
+        } catch (err) {
+          context.logger.error(
+            { err, sessionId: id },
+            'Resubmitted upload temporary cleanup failed',
           );
-          return result;
-        })
-        .finally(() => active.delete(id));
-      active.set(id, { controller, promise });
-      return promise;
+        }
+      }
+      return getSubmission(context.db, submission.id);
     },
-    async cancel(id: string) {
-      cancelSession(context.db, id);
+    begin(id: string, origin: string | null) {
+      if (stopping.signal.aborted)
+        throw new UploadError('UPLOAD_STOPPING', '服务正在停止', 503);
+      return beginSession(context, id, origin);
+    },
+    receive(id: string, request: Request) {
+      if (active.has(id))
+        throw new UploadError('UPLOAD_STATE_CONFLICT', '会话正在接收', 409);
+      return run(id, (signal) => receiveSession(context, id, request, signal));
+    },
+    complete(id: string) {
+      const session = getSession(context.db, id);
+      if (session.route !== 'direct')
+        throw new UploadError('UPLOAD_STATE_CONFLICT', '该会话不是直传', 409);
+      const existing = active.get(id);
+      return (
+        existing?.promise ??
+        run(id, (signal) => completeSession(context, id, signal))
+      );
+    },
+    async cancel(id: string, transferFailed = false) {
+      cancelSession(context.db, id, transferFailed);
       const operation = active.get(id);
       if (operation) {
         operation.controller.abort(
@@ -95,7 +172,7 @@ export function startUploadRuntime(
       const session = getSession(context.db, id);
       if (
         active.has(id) ||
-        !['failed', 'cancelled', 'expired'].includes(session.state)
+        !['accepted', 'failed', 'cancelled', 'expired'].includes(session.state)
       )
         throw new UploadError(
           'UPLOAD_STATE_CONFLICT',
