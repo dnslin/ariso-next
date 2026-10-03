@@ -123,8 +123,8 @@ export function LibraryScreen(props: {
       : '',
     currentAlbumId: props.albumId,
     onExpire: expireSession,
-    onRefresh: async () => {
-      await query.refresh();
+    onRefresh: async (results, command) => {
+      await query.onBatchCompleted(results, command);
       props.onRefresh?.();
     },
   });

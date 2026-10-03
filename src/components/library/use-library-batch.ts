@@ -87,7 +87,10 @@ export function useLibraryBatch({
   query: string;
   currentAlbumId?: string;
   onExpire: () => void;
-  onRefresh: () => Promise<unknown>;
+  onRefresh: (
+    results: BatchItemResult[],
+    command: BatchCommand,
+  ) => Promise<unknown>;
 }) {
   const [workspace, setWorkspace] = useState<BatchWorkspace | null>(null);
   const [visible, setVisible] = useState(false);
@@ -262,14 +265,26 @@ export function useLibraryBatch({
             unsentIds,
           },
       );
-      if (!outcome.unknownIds.length) {
+      if (resultsById.size) {
         notifyLibraryChanged();
         let refreshError: string | null = null;
         try {
-          await onRefresh();
+          await onRefresh([...resultsById.values()], command);
         } catch (error) {
-          if (!feedback) throw error;
           refreshError = error instanceof Error ? error.message : String(error);
+          if (!feedback)
+            setWorkspace(
+              (previous) =>
+                previous && {
+                  ...previous,
+                  message: [
+                    previous.message,
+                    `列表刷新失败：${refreshError}，请刷新页面。`,
+                  ]
+                    .filter(Boolean)
+                    .join(' '),
+                },
+            );
         }
         if (feedback && !active.signal.aborted) {
           setWorkspace(null);

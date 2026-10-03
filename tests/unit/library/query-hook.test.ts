@@ -323,3 +323,174 @@ it.each(['pages', 'more'] as const)(
     client.clear();
   },
 );
+
+it('batch completion refreshes the current page and invalidates previously cached pages', async () => {
+  context.mode = 'pages';
+  context.search = 'q=photo&pageSize=20&page=2';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const client = new QueryClient();
+  const first = libraryListKey(filters, 'pages', 1);
+  const current = libraryListKey(filters, 'pages', 2);
+  client.setQueryData(first, page(['removed', 'earlier'], null));
+  client.setQueryData(current, page(['stay'], null));
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue(Response.json(page(['stay', 'next'], null, 99))),
+  );
+  await mount(client).onBatchCompleted(
+    [{ id: 'removed', status: 'changed', inQuery: false, message: '已回收' }],
+    { type: 'trash' },
+  );
+  expect(client.getQueryState(first)?.isInvalidated).toBe(true);
+  expect(
+    client.getQueryData<LibraryPage>(first)?.items.map((item) => item.id),
+  ).toEqual(['earlier']);
+  expect(
+    client.getQueryData<LibraryPage>(current)?.items.map((item) => item.id),
+  ).toEqual(['stay', 'next']);
+  client.clear();
+});
+
+it('batch completion preserves loaded pages and continues after the original deleted cursor anchor', async () => {
+  context.search = 'q=photo&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  client.setQueryData(key, {
+    pages: [page(['a', 'b'], 'after-b', 5), page(['c', 'd'], 'after-d', 5)],
+    pageParams: [null, 'after-b'],
+  });
+  const fetcher = vi
+    .fn()
+    .mockResolvedValue(Response.json(page(['e'], null, 3)));
+  vi.stubGlobal('fetch', fetcher);
+  await mount(client).onBatchCompleted(
+    ['b', 'd'].map((id) => ({
+      id,
+      status: 'changed' as const,
+      inQuery: false,
+      message: '已回收',
+    })),
+    { type: 'trash' },
+  );
+  const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(
+    current.pages.flatMap((page) => page.items.map((item) => item.id)),
+  ).toEqual(['a', 'c']);
+  expect(current.pages.map((page) => page.nextCursor)).toEqual([
+    'after-b',
+    'after-d',
+  ]);
+  expect(current.pageParams).toEqual([null, 'after-b']);
+  expect(fetcher).not.toHaveBeenCalled();
+  await mount(client).loadMore();
+  expect(
+    new URL(fetcher.mock.calls[0][0], 'https://example.test').searchParams.get(
+      'cursor',
+    ),
+  ).toBe('after-d');
+  expect(
+    client
+      .getQueryData<InfiniteData<LibraryPage>>(key)
+      ?.pages.flatMap((page) => page.items.map((item) => item.id)),
+  ).toEqual(['a', 'c', 'e']);
+  client.clear();
+});
+
+it('batch visibility updates cached loaded cards while leaving valid failed cards unchanged', async () => {
+  context.search = 'q=photo&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  const history = libraryListKey(
+    parseLibraryLocation(new URLSearchParams('q=other&pageSize=20')).filters,
+    'more',
+    1,
+  );
+  client.setQueryData(key, {
+    pages: [page(['changed', 'unchanged', 'failed'], 'original-cursor', 3)],
+    pageParams: [null],
+  });
+  client.setQueryData(history, {
+    pages: [page(['changed'], 'other-cursor')],
+    pageParams: [null],
+  });
+  const fetcher = vi.fn();
+  vi.stubGlobal('fetch', fetcher);
+  const results = [
+    {
+      id: 'changed',
+      status: 'changed' as const,
+      inQuery: true,
+      message: '已公开',
+    },
+    {
+      id: 'unchanged',
+      status: 'unchanged' as const,
+      inQuery: true,
+      message: '已公开',
+    },
+    {
+      id: 'failed',
+      status: 'failed' as const,
+      inQuery: true,
+      message: '保存失败',
+    },
+  ];
+  await mount(client).onBatchCompleted(results, {
+    type: 'visibility',
+    visibility: 'public',
+  });
+  const data = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(data.pages[0].items.map((item) => item.visibility)).toEqual([
+    'public',
+    'public',
+    'private',
+  ]);
+  expect(data.pages[0].total).toBe(3);
+  expect(data.pages[0].nextCursor).toBe('original-cursor');
+  expect(client.getQueryState(key)?.isInvalidated).toBe(false);
+  expect(client.getQueryState(history)?.isInvalidated).toBe(true);
+  expect(fetcher).not.toHaveBeenCalled();
+  client.clear();
+});
+
+it('rechecking an already removed item does not decrement loaded totals again', async () => {
+  context.search = 'tagId=a&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  client.setQueryData(key, {
+    pages: [page(['removed', 'stay'], 'original-cursor', 2)],
+    pageParams: [null],
+  });
+  const results = [
+    {
+      id: 'removed',
+      status: 'unchanged' as const,
+      inQuery: false,
+      message: '核对成功',
+    },
+  ];
+  await mount(client).onBatchCompleted(results, {
+    type: 'remove-tags',
+    tagIds: ['a'],
+  });
+  await mount(client).onBatchCompleted(results, {
+    type: 'remove-tags',
+    tagIds: ['a'],
+  });
+  const data = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(data.pages[0].items.map((item) => item.id)).toEqual(['stay']);
+  expect(data.pages[0].total).toBe(1);
+  expect(data.pages[0].nextCursor).toBe('original-cursor');
+  client.clear();
+});
