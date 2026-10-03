@@ -185,3 +185,5 @@ pnpm exec vitest run --project integration tests/integration/runtime/health.test
 全量唯一失败为新 main 的 `original SVG with viewBox-only matches actual formal properties and preserves source bytes`，5137ms 超过默认 5000ms，没有行为断言失败。按 `debugging-and-error-recovery` 读取真实正式处理和预览字节比对路径，再独立运行完整文件取得 27 项通过；未修改源码、测试断言、超时或项目配置。并行负载是可能原因，未将此推断当作已证明的缺陷修复；原并行执行中的超时仍如实记录。已通过的其余 134 文件不重复执行，失败文件取得完整通过证据。
 
 新增队列测试实际运行真实处理器和取消/清理路径：正规媒体任务执行和持久化后、外层 Promise 结算前活动写入仍为 1，结束为 0；预览占用唯一共享槽时存储活动为 0，后入媒体任务保持排队，停机取消并清理预览目录。独立审计实际读取这些行为测试、迁移升级证据和新检查日志，追加结论以 [代码审计](./code-audit.md#合入-main-的追加复审) 为准。新基线日志 `/tmp/ariso-164-main-sync-*.log`，私有凭据扫描 46 个变更文件没有发现泄漏。
+
+2026-10-04 最终实现及 main 合并提交 `e196469` 已推送。实际执行 `gh pr ready 233 --repo dnslin/ariso-next` 后，`gh pr view` 回读 `OPEN`、`isDraft: false`、`mergeable: MERGEABLE`、`statusCheckRollup: []`；PR 已正式待评审。`gh pr checks` 明确返回 no checks（该命令退出 1 是没有检查列表，不是 CI 失败）；`gh run list --branch codex/issue-164-storage-listing` 返回空列表。当前没有远端检查或运行，本地证据作为日常 PR 验证依据，不记作 CI 通过，也不等待不存在的工作流。没有合并 PR、主动关闭 Issue、发布、部署或清理 worktree。
