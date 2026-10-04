@@ -244,6 +244,8 @@
 
 ### EV-SHARING-01 分享授权与浏览器失效实验
 
+实验实施、实际命令、权限边界与未完成项见[实验报告](./evidence/EV-SHARING-01/README.md)。实验不替代后续生产 sharing 模块和界面验收。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[sharing §5–8](../specs/SPEC-sharing.md)

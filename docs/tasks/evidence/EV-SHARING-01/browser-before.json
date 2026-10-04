@@ -1,0 +1,46 @@
+{
+  "startedAt": "2026-10-04T16:57:36.451Z",
+  "scope": "protocol experiment",
+  "status": "failed",
+  "taskSpaceId": 30,
+  "pageLabel": "p1",
+  "origin": "http://127.0.0.1:64503",
+  "checks": [
+    "Real HttpOnly/Lax/host-only/path-scoped 24-hour Cookies; concurrent albums retain grants and private/trashed entries stay absent.",
+    "Two same-origin tabs unlock one album concurrently; each real issued grant remains valid.",
+    "A different host remains anonymous in the same profile; this is host isolation, not a second browser context.",
+    "Browser Cookie paths keep the owner route anonymous; a real owner Cookie still needs the sharing password. Explicitly forwarding grant Cookies and real private delivery are covered by separate HTTP tests."
+  ],
+  "lateResponses": [],
+  "twoBrowserContexts": "unverified",
+  "limitations": [
+    "Different hosts isolate cookies in one Ego profile; they are not two browser contexts.",
+    "Ego Target.createTarget is unavailable; no separate browser context is claimed.",
+    "The page is a protocol probe, not a delivered sharing UI or Figma acceptance.",
+    "Control gates and the client batch switch are explicit experiment operations."
+  ],
+  "cookies": [
+    {
+      "share": "a",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    },
+    {
+      "share": "b",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    }
+  ],
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://127.0.0.1:64503/s/[redacted]\"; last title was \"Sharing protocol experiment\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-04T16:58:03.376Z"
+}
