@@ -1,0 +1,47 @@
+Already up to date
+Done in 86ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso
+
+ ❯ |integration| tests/integration/library/copy.test.ts (11 tests | 1 failed) 1585ms
+   × rejects an explicitly selected inapplicable version even when its old bytes are still saved 86ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/copy.test.ts > rejects an explicitly selected inapplicable version even when its old bytes are still saved
+AssertionError: expected [ { imageId: 'animated-saved', …(6) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "accessWarning": null,
++     "actualVersion": "compressed",
++     "displayName": "animated-saved",
++     "imageId": "animated-saved",
++     "line": "https://images.example.test/i/animated-saved?type=compressed",
++     "originalDisclosure": false,
++     "sortKey": {
++       "id": "animated-saved",
++       "value": 1000,
++     },
++   },
++ ]
+
+ ❯ tests/integration/library/copy.test.ts:281:26
+    279|   for (const version of ['compressed', 'watermark'] as const) {
+    280|     const result = copy(['animated-saved'], '', version);
+    281|     expect(result.items).toEqual([]);
+       |                          ^
+    282|     expect(result.unavailable).toEqual([
+    283|       {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  15:57:45
+   Duration  2.75s (tests 62%, import 23%, transform 15%)

@@ -33,6 +33,7 @@ assert.ok(
     'copy-dropdown',
     'library-batch',
     'library-reprocess',
+    'library-copy',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -50,6 +51,8 @@ assert.ok(
         'deleted-source',
         'pending-navigation',
       ].includes(only)) ||
+    (suite === 'library-copy' &&
+      ['representative', 'feedback'].includes(only)) ||
     (suite === 'library-batch' &&
       [
         'representative',
@@ -88,6 +91,8 @@ for (const name of [
   'library-batch-failure.png',
   'library-reprocess.json',
   'library-reprocess-failure.png',
+  'library-copy.json',
+  'library-copy-failure.png',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -400,6 +405,7 @@ try {
       phase: suite === 'copy-dropdown' ? 'green' : undefined,
       viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
       viewerCheck: suite === 'viewer' ? only : undefined,
+      libraryCopyPhase: suite === 'library-copy' ? only : undefined,
     };
     if (suite === 'upload-s3') {
       const { openRuntimeDatabase } =
@@ -467,15 +473,17 @@ try {
               ? [['library-batch', 'libraryBatch']]
               : suite === 'library-reprocess'
                 ? [['library-batch-reprocess', 'libraryReprocess']]
-                : suite === 'upload'
-                  ? [
-                      ['upload-submissions', 'uploadSubmissions'],
-                      ['upload-relations', 'uploadRelations'],
-                    ]
-                  : [
-                      ['upload', 'upload'],
-                      ['upload-polling', 'uploadPolling'],
-                    ];
+                : suite === 'library-copy'
+                  ? [['library-copy', 'libraryCopy']]
+                  : suite === 'upload'
+                    ? [
+                        ['upload-submissions', 'uploadSubmissions'],
+                        ['upload-relations', 'uploadRelations'],
+                      ]
+                    : [
+                        ['upload', 'upload'],
+                        ['upload-polling', 'uploadPolling'],
+                      ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -585,6 +593,12 @@ try {
           'library-batch-reprocess.log',
         );
         report.libraryReprocess = 'passed';
+        await runBrowser(
+          '../e2e/library-copy.mjs',
+          identityConfig,
+          'library-copy.log',
+        );
+        report.libraryCopy = 'passed';
         await runBrowser(
           '../e2e/shell-navigation.mjs',
           identityConfig,

@@ -4,7 +4,7 @@ import { albums, albumImages, tags, imageTags } from '../collections/schema.ts';
 import { deliveryError } from '../delivery/errors.ts';
 import {
   buildImagePath,
-  buildImageUrl,
+  buildImageLinks,
   buildTrashPreviewPath,
   resolveImageVersion,
 } from '../delivery/links.ts';
@@ -21,22 +21,6 @@ import { requireSiteSettings } from '../site/settings.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import type { LibraryDetail, LibraryDetailLinks } from './detail-types.ts';
 import type { LibraryJobSummary } from './types.ts';
-
-function escapeHtml(value: string) {
-  return value.replace(
-    /[&<>"'\r\n]/g,
-    (character) =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-        '\n': '&#10;',
-        '\r': '&#13;',
-      })[character]!,
-  );
-}
 
 /** Owner-only record read. Delivery remains responsible for authorizing every content request. */
 export function readLibraryDetail(
@@ -71,18 +55,8 @@ export function readLibraryDetail(
     const blocked =
       previewBlocked ??
       (image.trashedAt ? '图片已回收，公开链接与下载不可用' : null);
-    const links = (kind?: VersionKind): LibraryDetailLinks => {
-      const url = buildImageUrl(publicUrl, imageId, kind);
-      const alt = image.displayName
-        .replace(/[\\[\]`*_{}()!<>]/g, '\\$&')
-        .replace(/[\r\n]/g, ' ');
-      return {
-        url,
-        markdown: `![${alt}](<${url.replace(/[<>]/g, (character) => encodeURIComponent(character))}>)`,
-        html: `<img src="${escapeHtml(url)}" alt="${escapeHtml(image.displayName)}">`,
-        downloadUrl: buildImageUrl(publicUrl, imageId, kind, true),
-      };
-    };
+    const links = (kind?: VersionKind): LibraryDetailLinks =>
+      buildImageLinks(publicUrl, imageId, image.displayName, kind);
     const summary = (
       statuses: LibraryJobSummary['status'][],
     ): LibraryJobSummary | null => {

@@ -1,0 +1,34 @@
+Error: Command failed: /Users/dnslin/.nvm/versions/node/v24.18.1/bin/node --input-type=module -e import Database from 'better-sqlite3'; const db = new Database(process.argv[1]); try { const statement = db.prepare(process.argv[2]); console.log(JSON.stringify(statement.reader ? statement.all() : statement.run())); } finally { db.close(); } /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-BoVbIS/data/ariso.db UPDATE media_images SET storage_id='issue187-disabled' WHERE id='issue177-199'
+file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/[eval1]:1
+import Database from 'better-sqlite3'; const db = new Database(process.argv[1]); try { const statement = db.prepare(process.argv[2]); console.log(JSON.stringify(statement.reader ? statement.all() : statement.run())); } finally { db.close(); }
+                                                                                                                                                                                                                ^
+
+SqliteError: FOREIGN KEY constraint failed
+    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/[eval1]:1:209
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:224:26
+    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:221:20)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  code: 'SQLITE_CONSTRAINT_FOREIGNKEY'
+}
+
+Node.js v24.18.1
+
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:509:28)
+    at maybeClose (node:internal/child_process:1124:16)
+    at Socket.<anonymous> (node:internal/child_process:481:11)
+    at Socket.emit (node:events:509:28)
+    at Pipe.<anonymous> (node:net:351:12)
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:363:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:494:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/docs/verification/library-187/browser/representative-r2

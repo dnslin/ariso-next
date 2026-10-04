@@ -8,6 +8,7 @@ import {
   mediaVersions,
   versionKinds,
   type DerivedVersionKind,
+  type VersionKind,
 } from './schema.ts';
 import type { ProcessingSnapshot } from './validation.ts';
 
@@ -112,6 +113,17 @@ export function acceptOriginal(
   return { imageId: input.imageId, objectId, jobId };
 }
 
+export function imageVersionApplicable(
+  classification: Image['classification'],
+  kind: VersionKind,
+) {
+  return kind === 'original' || kind === 'thumbnail'
+    ? true
+    : classification === null
+      ? null
+      : classification === 'static';
+}
+
 /** Asset facts only. Delivery owns authorization, storage availability and HTTP. */
 export function getImageAccessState(
   db: BetterSQLite3Database,
@@ -146,12 +158,7 @@ export function getImageAccessState(
         .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
         .get() ?? null;
     const versions = versionKinds.map((kind) => {
-      const applicable =
-        kind === 'original' || kind === 'thumbnail'
-          ? true
-          : image.classification === null
-            ? null
-            : image.classification === 'static';
+      const applicable = imageVersionApplicable(image.classification, kind);
       const stored = saved.find((row) => row.version.kind === kind) ?? null;
       const enabled =
         kind === 'compressed'
