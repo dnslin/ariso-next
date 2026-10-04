@@ -80,7 +80,7 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=4 
 
 ## 交付状态
 
-实现与本次功能场景证据已收齐；[独立代码审计](./code-audit.md)和[独立设计对照](./design-audit.md)分别通过。用户人工UI验收待完成。分支 `codex/issue-187-batch-copy`；提交与PR链接在创建后补充，不把PR创建当作验收完成。
+实现与本次功能场景证据已收齐；[独立代码审计](./code-audit.md)和[独立设计对照](./design-audit.md)分别通过。用户人工UI验收待完成。分支 `codex/issue-187-batch-copy`，实现提交 `dffeaf593630aaf5b72ae79c21ac85a04b4d63a7` 已推送；[PR #238](https://github.com/dnslin/ariso-next/pull/238) 为 OPEN / DRAFT。创建时[实际状态](./pr.json)的 `statusCheckRollup=[]`，`gh pr checks 238 --repo dnslin/ariso-next` [明确返回无检查](./checks/pr-checks.txt)，不记为CI通过，也不等待不存在的工作流。不把PR创建当作验收完成。
 
 人工验收使用独立生产预览 [issue187-preview.localhost:3197](http://issue187-preview.localhost:3197/library?q=issue177-&pageSize=80&page=3)，测试图及账号与用户数据隔离；本机配置仅存忽略目录 `.data/issue187-preview/`，不提交凭据。Ego Lite任务空间21的p1已登录，实际保留201张跨页选择与复制选项，[预览证据](./browser/preview-final/browser.json)。
 
