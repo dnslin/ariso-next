@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, type ComponentProps } from 'react';
+import Link from 'next/link';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
@@ -87,9 +88,12 @@ export function CorsScreen({
             查看检测结果
           </Button>
         ) : result && state.status === 'passed' ? (
-          <Button className={actionClass} isDisabled>
-            管理此存储（尚未开放）
-          </Button>
+          <Link
+            href={`/settings/storage/${storageId}`}
+            className={`${actionClass} flex items-center justify-center bg-accent text-accent-foreground`}
+          >
+            管理此存储
+          </Link>
         ) : (
           <Button
             data-testid="cors-start"
@@ -115,12 +119,12 @@ export function CorsScreen({
         }
         className="grid gap-5 pb-10 [overflow-wrap:anywhere]"
       >
-        <span
-          aria-disabled="true"
-          className="text-xs leading-normal text-muted"
+        <Link
+          href="/settings/storage"
+          className="-my-[13px] flex min-h-11 w-fit items-center text-sm leading-[18px] text-muted"
         >
-          ← 返回存储管理（尚未开放）
-        </span>
+          ← 返回存储管理
+        </Link>
         <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
           {title}
         </h1>

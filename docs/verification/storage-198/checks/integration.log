@@ -1,0 +1,179 @@
+Already up to date
+Done in 224ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso
+
+ ❯ |integration| tests/integration/analytics/count.test.ts (13 tests | 3 failed) 37574ms
+   × counts each compressed GET and download once without database writes 5864ms
+   × counts each watermark GET and download once without database writes 6465ms
+   × excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 6688ms
+ ❯ |integration| tests/integration/media/trash-http.test.ts (5 tests | 1 failed) 19176ms
+   × authenticates permanent delete, status and retry routes before touching storage 2043ms
+{"time": "2026-10-04T07:59:39.597Z", "level": "info", "module": "identity.setup", "event": "setup-code", "code": "[redacted setup code]", "msg": "请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-04T07:59:39.693Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time": "2026-10-04T07:59:40.217Z", "level": "info", "module": "identity.setup", "event": "setup-code", "code": "[redacted setup code]", "msg": "请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-04T07:59:40.226Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-Uy70Tz/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-04T07:59:40.231Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time": "2026-10-04T07:59:40.870Z", "level": "info", "module": "identity.setup", "event": "setup-code", "code": "[redacted setup code]", "msg": "请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-04T07:59:40.946Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 55872ms
+   ❯ real SVG image asset (1)
+     × composites the admitted asset at the configured size 8761ms
+ ❯ |media-tools| tests/integration/media/metadata.test.ts (10 tests | 3 failed) 39039ms
+   ❯ T-MED-07 complete metadata with real ExifTool and ImageMagick (10)
+     × an initial complete-read timeout failure does not invalidate reliable classification or ready versions 5136ms
+     × an initial complete-read output failure does not invalidate reliable classification or ready versions 5237ms
+     × atomically retains the previous metadata if marking a reread job succeeded fails and later recovers 5081ms
+ ❯ |media-tools| tests/integration/media/preview-http.test.ts (6 tests | 1 failed) 15390ms
+   × renders unsaved parameters and original bytes privately without changing settings or the library 5024ms
+ ❯ |media-tools| tests/integration/media/svg.test.ts (8 tests | 1 failed) 21567ms
+   ❯ isolated static SVG preview (8)
+     × scales a large canvas before raster allocation and retains original dimensions 5663ms
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 59823ms
+   × reports lifecycle, switch, failed-scope and queued-job conflicts 2975ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+ FAIL  |integration| tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+    118| }
+    119|
+    120| it.each(['original', 'compressed', 'watermark'])(
+       |                                                 ^
+    121|   'counts each %s GET and download once without database writes',
+    122|   async (version) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+    149| });
+    150|
+    151| it('excludes owner/private/thumbnail/HEAD/304 and rejected or missing …
+       | ^
+    152|   await complete('?type=original', { headers: { cookie: 'owner=yes' } …
+    153|   await complete('?type=thumbnail');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  |integration| tests/integration/media/trash-http.test.ts > authenticates permanent delete, status and retry routes before touching storage
+SqliteError: database is locked
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ acceptOriginal src/server/media/images.ts:67:6
+     65|       updatedAt: now,
+     66|     })
+     67|     .run();
+       |      ^
+     68|   const objectId = randomUUID();
+     69|   tx.insert(mediaObjects)
+ ❯ sqliteTransaction.<anonymous> tests/integration/media/trash-http.test.ts:125:22
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ tests/integration/media/trash-http.test.ts:124:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > an initial complete-read timeout failure does not invalidate reliable classification or ready versions
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > an initial complete-read output failure does not invalidate reliable classification or ready versions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/metadata.test.ts:354:42
+    352|   });
+    353|
+    354|   it.each(['timeout', 'output'] as const)(
+       |                                          ^
+    355|     'an initial complete-read %s failure does not invalidate reliable …
+    356|     async (limit) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata.test.ts > T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/metadata.test.ts:551:3
+    549|   });
+    550|
+    551|   it('atomically retains the previous metadata if marking a reread job…
+       |   ^
+    552|     const { imageId } = await accept(await complexJpeg());
+    553|     await processNext();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/preview-http.test.ts > renders unsaved parameters and original bytes privately without changing settings or the library
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/preview-http.test.ts:208:1
+    206| });
+    207|
+    208| it('renders unsaved parameters and original bytes privately without ch…
+       | ^
+    209|   const saved = requireMediaSettings(connection!.db);
+    210|   const bytes = await readFile(join(fixtures, 'source.png'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > reports lifecycle, switch, failed-scope and queued-job conflicts
+SqliteError: database is locked
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ acceptOriginal src/server/media/images.ts:67:6
+     65|       updatedAt: now,
+     66|     })
+     67|     .run();
+       |      ^
+     68|   const objectId = randomUUID();
+     69|   tx.insert(mediaObjects)
+ ❯ sqliteTransaction.<anonymous> tests/integration/media/reprocess-http.test.ts:146:5
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ tests/integration/media/reprocess-http.test.ts:145:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/svg.test.ts:205:3
+    203|   );
+    204|
+    205|   it('scales a large canvas before raster allocation and retains origi…
+       |   ^
+    206|     const f = await fixture(
+    207|       '<rect width="1000000" height="500000" fill="blue"/>',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: ENOTEMPTY: directory not empty, rmdir '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-svg-BiSbje'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > real SVG image asset > composites the admitted asset at the configured size
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/watermark.test.ts:690:3
+    688|     expect(mark.format).toBe(format);
+    689|   });
+    690|   it('composites the admitted asset at the configured size', async () …
+       |   ^
+    691|     const result = await watermark(
+    692|       await readFile(await image(['-size', '200x100', 'xc:white'])),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+
+ Test Files  7 failed | 130 passed (137)
+      Tests  11 failed | 1316 passed (1327)
+   Start at  15:57:01
+   Duration  451.33s (tests 95%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.

@@ -1,0 +1,909 @@
+{
+  "status": "passed",
+  "checks": [
+    "Fresh Local configuration deleted through the real API; empty state has no recreated storage or automatic default.",
+    {
+      "mode": "configuration-denied",
+      "stage": "configuration",
+      "reportPassed": false,
+      "probeId": "2535f72d-b30f-4c87-adb6-3d5183fd42a1",
+      "keyboardFocusTrapped": true
+    },
+    {
+      "mode": "versioning-enabled",
+      "stage": "configuration",
+      "reportPassed": false,
+      "probeId": "80c640f7-3c1d-4f72-9268-4b2094129425",
+      "keyboardFocusTrapped": true
+    },
+    {
+      "mode": "anonymous-unavailable",
+      "stage": "anonymous",
+      "reportPassed": false,
+      "probeId": "e7c84557-bd07-4785-9a2a-6b19bd65933a",
+      "keyboardFocusTrapped": true
+    },
+    "Official R2 endpoint with fake credentials opens only the confirmation UI; two full-width actions match the approved nodes, cancel makes no connection-test request or remote operation."
+  ],
+  "layouts": [
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "添加本地存储",
+          "width": 235,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "添加 S3 存储",
+          "width": 233,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-empty-light-1440.png"
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加 S3 存储",
+          "width": 172,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-empty-light-390.png"
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "添加本地存储",
+          "width": 235,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "添加 S3 存储",
+          "width": 233,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-empty-dark-1440.png"
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加 S3 存储",
+          "width": 172,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-empty-dark-390.png"
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-configuration-denied-light-1440.png"
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-configuration-denied-light-390.png"
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-configuration-denied-dark-1440.png"
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-configuration-denied-dark-390.png"
+    },
+    {
+      "state": "configuration-denied",
+      "width": 390,
+      "height": 480,
+      "screenshot": "storage-admin-configuration-denied-short.png",
+      "short": {
+        "top": 327,
+        "bottom": 375,
+        "viewport": 480
+      }
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回修改",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-versioning-enabled-light-1440.png"
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回修改",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-versioning-enabled-light-390.png"
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回修改",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-versioning-enabled-dark-1440.png"
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回修改",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-versioning-enabled-dark-390.png"
+    },
+    {
+      "state": "versioning-enabled",
+      "width": 390,
+      "height": 480,
+      "screenshot": "storage-admin-versioning-enabled-short.png",
+      "short": {
+        "top": 391,
+        "bottom": 439,
+        "viewport": 480
+      }
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-anonymous-unavailable-light-1440.png"
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-anonymous-unavailable-light-390.png"
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-anonymous-unavailable-dark-1440.png"
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": null,
+      "screenshot": "storage-admin-anonymous-unavailable-dark-390.png"
+    },
+    {
+      "state": "anonymous-unavailable",
+      "width": 390,
+      "height": 480,
+      "screenshot": "storage-admin-anonymous-unavailable-short.png",
+      "short": {
+        "top": 327,
+        "bottom": 375,
+        "viewport": 480
+      }
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-light-1440.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-light-390.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-dark-1440.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-dark-390.png"
+    }
+  ],
+  "dialogs": [
+    {
+      "state": "configuration-denied",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "configuration-denied",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48],
+      "buttonWidths": [430]
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48],
+      "buttonWidths": [308]
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48],
+      "buttonWidths": [430]
+    },
+    {
+      "state": "versioning-enabled",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48],
+      "buttonWidths": [308]
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "anonymous-unavailable",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [430, 430]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48],
+      "buttonWidths": [308, 308]
+    }
+  ]
+}

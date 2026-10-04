@@ -1,0 +1,20 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 59ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1895ms
+  Running TypeScript ...
+src/components/storage/storage-tip.tsx(23,14): error TS2322: Type '{ type: "button"; variant: "ghost"; isIconOnly: true; className: string; ref?: Ref<HTMLButtonElement> | undefined; key?: Key | null | undefined; disabled?: boolean | undefined; ... 285 more ...; onTransitionStartCapture?: TransitionEventHandler<...> | undefined; }' is not assignable to type 'ButtonRootProps'.
+  Types of property 'onClick' are incompatible.
+    Type 'MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type '((e: MouseEvent<FocusableElement, MouseEvent>) => void) | undefined'.
+      Type 'MouseEventHandler<HTMLButtonElement>' is not assignable to type '(e: MouseEvent<FocusableElement, MouseEvent>) => void'.
+        Types of parameters 'event' and 'e' are incompatible.
+          Type 'MouseEvent<FocusableElement, MouseEvent>' is not assignable to type 'MouseEvent<HTMLButtonElement, MouseEvent>'.
+            Type 'FocusableElement' is missing the following properties from type 'HTMLButtonElement': command, commandForElement, disabled, form, and 146 more.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

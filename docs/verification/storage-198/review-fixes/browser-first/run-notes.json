@@ -1,0 +1,62 @@
+{
+  "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH EGO_TASK_SPACE=27 BROWSER_REPORT_DIR=docs/verification/storage-198/review-fixes/browser node scripts/verify-browser.mjs --suite storage-admin --only regressions",
+  "buildId": "SkV-F8NXOT4Pzfu1jAFJA",
+  "exitCode": 1,
+  "note": "首轮新构建完整保留。创建场景的几何断言发生于 router.replace 的短暂加载页面；第 7 场景用 role=alert 读取实际无该 role 的 HeroUI Alert，读到空文案。服务器写入和数据库结果均符合目标。随后仅补实际 URL + storage-editor + 可用名称字段等待，改用已安装 HeroUI 的 alert-description slot 读取原错误，并滚回正文顶部截图；未修改产品或降低尺寸与错误文案断言。",
+  "taskSpaceId": 27,
+  "userTaskSpace20Untouched": true,
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "origin": "http://ariso-57257.localhost:57257",
+  "status": "failed",
+  "checks": [
+    {
+      "id": "create-lost-response-default",
+      "status": "failed"
+    },
+    {
+      "id": "update-lost-response-clear-default",
+      "status": "passed"
+    },
+    {
+      "id": "default-lost-response-read-only",
+      "status": "passed"
+    },
+    {
+      "id": "delete-normal-upload-cache",
+      "status": "passed"
+    },
+    {
+      "id": "delete-lost-response-upload-cache",
+      "status": "passed"
+    },
+    {
+      "id": "rename-preserves-external-default",
+      "status": "passed"
+    },
+    {
+      "id": "recovered-create-default-rejected-correction",
+      "status": "failed"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "unverified": [
+    "远端 S3 服务",
+    "旧完整 UI 断点/主题矩阵",
+    "物理触控、软键盘、非零安全区",
+    "最终容器及双架构发布"
+  ],
+  "preservedAfterRunAt": "docs/verification/storage-198/review-fixes/browser-first"
+}

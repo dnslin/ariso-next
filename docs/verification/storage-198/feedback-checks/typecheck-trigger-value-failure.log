@@ -1,0 +1,10 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+src/components/storage/storage-tip.tsx(23,14): error TS2322: Type '{ onClick: ((e: MouseEvent<FocusableElement, MouseEvent>) => void) | undefined; type: "button"; variant: "ghost"; isIconOnly: true; className: string; ... 287 more ...; onTransitionStartCapture?: TransitionEventHandler<...> | undefined; }' is not assignable to type 'ButtonRootProps'.
+  Types of property 'value' are incompatible.
+    Type 'string | number | readonly string[] | undefined' is not assignable to type 'string | undefined'.
+      Type 'number' is not assignable to type 'string'.
+[ELIFECYCLE] Command failed with exit code 2.

@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-10-04T10:35:06.000Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "storage-admin",
+  "only": "feedback",
+  "pageLabel": "p1",
+  "origin": "http://ariso-198.localhost:4198",
+  "taskSpaceId": 20,
+  "existingPreview": true,
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (storage-admin-feedback.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/scripts/verify-browser.mjs:224:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/scripts/verify-browser.mjs:248:5",
+  "finishedAt": "2026-10-04T10:35:13.810Z"
+}

@@ -21,7 +21,7 @@ const navigation = [
   '分享管理，尚未开放',
   '回收站',
   '访问统计，尚未开放',
-  '存储管理，尚未开放',
+  '存储管理',
   '站点设置，尚未开放',
 ];
 let createdAlbum = false;
@@ -137,6 +137,13 @@ try {
     `INSERT INTO albums (id,name,description,created_at,updated_at) VALUES ('${albumId}','公共导航验证','',1,1)`,
   );
   createdAlbum = true;
+  const storageResponse = await page.fetch('/api/storages');
+  assert.equal(storageResponse.status, 200);
+  const storages = JSON.parse(storageResponse.body);
+  const storage = storages.find((item) => item.type === 'local');
+  const corsStorage = storages.find((item) => item.type === 's3');
+  assert.ok(storage);
+  assert.ok(corsStorage);
   for (const theme of ['light', 'dark']) {
     await page.cdp('Emulation.setEmulatedMedia', {
       features: [
@@ -158,6 +165,18 @@ try {
         ['/trash', '/trash', 'trash'],
         ['/tags', '/tags', 'tags'],
         ['/admin', '/upload', 'admin-entry'],
+        ['/settings/storage', '/settings/storage', 'storage-list'],
+        ['/settings/storage/new', '/settings/storage', 'storage-new'],
+        [
+          `/settings/storage/${storage.id}`,
+          '/settings/storage',
+          'storage-edit',
+        ],
+        [
+          `/settings/storage/${corsStorage.id}/cors`,
+          '/settings/storage',
+          'storage-cors',
+        ],
       ]) {
         await page.goto(`${config.origin}${path}`);
         await page.waitForSelector('.shell-content');
@@ -165,6 +184,24 @@ try {
           (path) => location.pathname === path,
           path === '/admin' ? '/upload' : path,
         );
+        if (name === 'storage-cors') {
+          await page.waitForSelector(
+            '[data-testid="storage-cors"] a[href="/settings/storage"]',
+          );
+          const back = await page.evaluate(() => {
+            const node = document.querySelector(
+              '[data-testid="storage-cors"] a[href="/settings/storage"]',
+            );
+            const rect = node.getBoundingClientRect();
+            return {
+              text: node.textContent,
+              height: rect.height,
+              width: rect.width,
+            };
+          });
+          assert.equal(back.text.includes('尚未开放'), false);
+          assert.ok(back.height >= 44 && back.width >= 44);
+        }
         await page.evaluate(() => {
           window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
           document
@@ -239,7 +276,7 @@ try {
     }
   }
   report.checks.push(
-    'All seven implemented owner-shell entries retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
+    'All implemented owner-shell entries, including storage list/new/edit/CORS, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
   );
   report.checks.push(
     'Menu and close are accessible icon-only 44px targets; real hover adds no background or transform, keyboard focus remains visible and close/Escape restore trigger focus at 360/430/768/987 and short 390×560.',
