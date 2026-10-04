@@ -1,0 +1,74 @@
+AssertionError [ERR_ASSERTION]: No browser runtime or resource errors
++ actual - expected
+
++ [
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-024/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-025/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-026/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-021/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-027/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-028/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-022/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-023/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-029/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-030/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   },
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-59148.localhost:59148/api/trash/issue177-031/preview?type=thumbnail',
++     url: 'http://ariso-59148.localhost:59148/trash'
++   }
++ ]
+- []
+
+    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/e2e/browser-errors.mjs:44:10)
+    at async file:////[eval2]:513:19
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-cleanup.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:367:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:507:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/docs/verification/library-178/browser-cleanup-complete

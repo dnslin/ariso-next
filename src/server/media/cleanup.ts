@@ -58,13 +58,35 @@ export function readMediaCleanup(db: BetterSQLite3Database, imageId: string) {
     )
     .orderBy(asc(mediaObjects.key))
     .all();
+  // The live ledger includes already cleared objects until the whole task succeeds.
+  // Success removes the ledger, so historical totals are no longer available.
+  const deleted =
+    job.status === 'succeeded'
+      ? null
+      : db
+          .select({ purpose: mediaObjects.purpose })
+          .from(mediaObjects)
+          .where(
+            and(
+              eq(mediaObjects.imageId, imageId),
+              eq(mediaObjects.status, 'deleted'),
+            ),
+          )
+          .all();
   return {
     jobId: job.id,
     imageId,
     status: job.status,
+    waitingForWrites: job.status !== 'succeeded' && hasActiveJob(db, imageId),
     cycle: job.cycle,
     error: job.error,
     finishedAt: job.finishedAt,
+    totalObjects: deleted === null ? null : remaining.length + deleted.length,
+    deletedObjects: deleted === null ? null : deleted.length,
+    deletedPurposes:
+      deleted === null
+        ? null
+        : [...new Set(deleted.map((object) => object.purpose))],
     remaining,
   };
 }

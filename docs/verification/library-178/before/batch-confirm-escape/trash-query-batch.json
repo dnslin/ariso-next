@@ -1,0 +1,25 @@
+{
+  "status": "failed",
+  "taskSpaceId": 22,
+  "checks": [],
+  "layouts": [],
+  "screenshots": [
+    {
+      "file": "trash-batch-confirm-light-1440.png",
+      "state": "batch-confirm",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-dark-390.png",
+      "state": "batch-confirm",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"trash-batch-confirm\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "failureTasks": [],
+  "failureView": "[p1 \"Ariso\" | space \"ariso Issue 178 回收站验证\"(22): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  anchor [ref=19, loc=href:/trash?q=issue177-&pageSize=80&page=1#main-content, url=http://ariso-60590.localhost:60590/trash?q=issue177-&pageSize=80&page=1#main-content]\n    text \"跳到主要内容\"\n  container\n    anchor \"Ariso 首页\" [ref=20, url=http://ariso-60590.localhost:60590/]\n      text \"Ariso\"\n    button \"菜单\" [ref=21, loc=css:button[aria-label=\"菜单\"]]\n      svg_root\n  alertdialog \"永久删除已选1张图片？\" [ref=22, loc=role:alertdialog[name=\"永久删除已选1张图片？\"]]\n    heading\n      text \"永久删除已选\"\n      text \"1\"\n      text \"张图片？\"\n    container\n      paragraph\n        text \"共选\"\n        text \"1\"\n        text \"张：当前页\"\n        text \"1\"\n        text \"张，其他页\"\n        text \"0\"\n        text \"张。\"\n      paragraph\n        text \"任务受理后不可恢复。仅处理本次选定的\"\n        text \"1\"\n        text \"张图片，逐项返回结果；不会清空全部筛选结果。\"\n    container\n      button [ref=23]\n        text \"取消\"\n      button [ref=24]\n        text \"确认永久删除\"\n"
+}

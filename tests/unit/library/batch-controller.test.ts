@@ -78,6 +78,7 @@ const hooks = vi.hoisted(() => {
 vi.mock('react', () => hooks);
 vi.mock('@heroui/react/toast', () => ({ toast: { success: vi.fn() } }));
 import { useBatchReprocess } from '../../../src/components/library/use-batch-reprocess';
+import { useTrashBatch } from '../../../src/components/library/use-trash-batch';
 
 function selection(ids = ['image']): LibrarySelection {
   const selected = new Map(
@@ -403,3 +404,284 @@ it.each(['close', 'unmount'] as const)(
     expect(count).toBe(2);
   },
 );
+
+function mountTrash(
+  selected: LibrarySelection,
+  onRefresh: Parameters<typeof useTrashBatch>[0]['onRefresh'] = vi.fn(
+    async () => {},
+  ),
+) {
+  let batch!: ReturnType<typeof useTrashBatch>;
+  hooks.mount(() => {
+    batch = useTrashBatch({
+      selection: selected,
+      query: 'scope=trash',
+      onExpire: vi.fn(),
+      onRefresh,
+    });
+  });
+  return () => batch;
+}
+function cleanupResponse(
+  ids: string[],
+  status: 'queued' | 'running' | 'succeeded' | 'failed',
+  cycle = 1,
+  already = false,
+) {
+  return Response.json({
+    results: ids.map((id) => ({
+      id,
+      status: already ? 'unchanged' : 'accepted',
+      inQuery: true,
+      message: '任务已受理',
+      taskId: `cleanup-${id}`,
+      cleanup: {
+        jobId: `cleanup-${id}`,
+        imageId: id,
+        status,
+        waitingForWrites: false,
+        cycle,
+        error: status === 'failed' ? '对象删除失败' : null,
+        finishedAt: null,
+        remaining: [],
+        totalObjects: null,
+        deletedObjects: null,
+        deletedPurposes: null,
+      },
+    })),
+  });
+}
+it('keeps trash acceptance distinct from actual cleanup, including existing tasks', async () => {
+  const selected = selection(['first', 'existing', 'rejected']);
+  selected.currentIds = new Set(['first']);
+  selected.currentCount = 1;
+  const onRefresh = vi
+    .fn<Parameters<typeof useTrashBatch>[0]['onRefresh']>()
+    .mockResolvedValue(undefined);
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => {
+      const first = await cleanupResponse(['first'], 'queued').json();
+      const existing = await cleanupResponse(
+        ['existing'],
+        'running',
+        1,
+        true,
+      ).json();
+      return Response.json({
+        results: [
+          ...first.results,
+          ...existing.results,
+          {
+            id: 'rejected',
+            status: 'failed',
+            inQuery: true,
+            message: '已离开可删除状态',
+          },
+        ],
+      });
+    }),
+  );
+  const get = mountTrash(selected, onRefresh);
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  expect(get().workspace?.currentCount).toBe(1);
+  expect(get().workspace?.rows.map((row) => row.state)).toEqual([
+    'task',
+    'task',
+    'rejected',
+  ]);
+  expect([...selected.selected.keys()]).toEqual(['rejected']);
+  expect(get().failedIds).toEqual(['rejected']);
+  expect(onRefresh).toHaveBeenCalledTimes(1);
+  expect(onRefresh.mock.calls[0][0]).toHaveLength(3);
+});
+it('checks lost cleanup responses without replay and waits for an explicit continuation', async () => {
+  const requests: { ids: string[]; mode: string; command: { type: string } }[] =
+    [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1) throw new Error('lost');
+      return cleanupResponse(request.ids, 'succeeded');
+    }),
+  );
+  const get = mountTrash(
+    selection(Array.from({ length: 201 }, (_, i) => `image-${i}`)),
+  );
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  expect(get().unknownIds).toHaveLength(200);
+  expect(get().unsentIds).toEqual(['image-200']);
+  get().retry();
+  await flush();
+  expect(requests).toHaveLength(1);
+  get().check();
+  await flush();
+  expect(requests[1]).toMatchObject({
+    mode: 'check',
+    command: { type: 'delete-permanent' },
+  });
+  expect(get().unknownIds).toEqual([]);
+  expect(get().unsentIds).toEqual(['image-200']);
+  await vi.advanceTimersByTimeAsync(1500);
+  expect(requests).toHaveLength(2);
+  get().retry();
+  await flush();
+  expect(requests[2].ids).toEqual(['image-200']);
+});
+it('does not mistake the old failed cycle for a retry result and preserves its retry baseline during checks', async () => {
+  const requests: {
+    ids: string[];
+    mode: string;
+    command: { type: string; attempts?: unknown };
+  }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1)
+        return cleanupResponse(request.ids, 'failed', 2);
+      if (requests.length === 2) throw new Error('retry response lost');
+      if (requests.length === 3)
+        return Response.json({
+          results: [
+            {
+              id: 'image',
+              status: 'unknown',
+              inQuery: true,
+              message: '仍是旧失败周期',
+            },
+          ],
+        });
+      return cleanupResponse(request.ids, 'succeeded', 3);
+    }),
+  );
+  const get = mountTrash(selection());
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().retryTasks();
+  await flush();
+  expect(requests[1]).toMatchObject({
+    mode: 'apply',
+    command: {
+      type: 'retry-cleanup',
+      attempts: { image: { taskId: 'cleanup-image', cycle: 2 } },
+    },
+  });
+  expect(get().workspace?.rows[0]).toMatchObject({
+    state: 'unknown',
+    cleanup: undefined,
+  });
+  get().check();
+  await flush();
+  expect(get().unknownIds).toEqual(['image']);
+  expect(requests[2].command).toEqual(requests[1].command);
+  get().check();
+  await flush();
+  expect(get().workspace?.rows[0].cleanup).toMatchObject({
+    status: 'succeeded',
+    cycle: 3,
+  });
+});
+it('closing a submitting trash snapshot stops unsent requests and preserves sent identities for checking', async () => {
+  const ids = Array.from({ length: 201 }, (_, i) => `image-${i}`);
+  let active!: AbortSignal;
+  const fetch = vi.fn(async (_url, init) => {
+    active = init.signal;
+    return new Promise<Response>((_resolve, reject) =>
+      active.addEventListener('abort', () => reject(new Error('aborted'))),
+    );
+  });
+  vi.stubGlobal('fetch', fetch);
+  const get = mountTrash(selection(ids));
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().close();
+  await flush();
+  expect(active.aborted).toBe(true);
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(get().unknownIds).toEqual(ids.slice(0, 200));
+  expect(get().unsentIds).toEqual([ids[200]]);
+  expect(get().pending).toBe(false);
+  get().reopen();
+  await flush();
+  expect(get().visible).toBe(true);
+});
+it('retains the last cleanup progress and a recoverable refresh failure', async () => {
+  let count = 0;
+  const onRefresh = vi
+    .fn()
+    .mockResolvedValueOnce(undefined)
+    .mockRejectedValueOnce(new Error('列表读取失败'))
+    .mockResolvedValueOnce(undefined);
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      count++;
+      if (count === 2) throw new Error('progress offline');
+      return cleanupResponse(
+        request.ids,
+        count === 1 ? 'running' : 'succeeded',
+      );
+    }),
+  );
+  const get = mountTrash(selection(), onRefresh);
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  await vi.advanceTimersByTimeAsync(1010);
+  expect(get().progressError).not.toBe('');
+  expect(get().workspace?.rows[0].cleanup?.status).toBe('running');
+  await vi.advanceTimersByTimeAsync(2000);
+  expect(count).toBe(2);
+  get().checkProgress();
+  await flush();
+  await vi.advanceTimersByTimeAsync(1010);
+  expect(get().workspace?.rows[0].cleanup?.status).toBe('succeeded');
+  expect(get().refreshError).toBe('列表读取失败');
+  get().retryRefresh();
+  await flush();
+  expect(get().refreshError).toBe('');
+});
+
+it('closing between chunks retains received tasks and leaves only the later chunk unsent', async () => {
+  const ids = Array.from({ length: 201 }, (_, i) => `image-${i}`);
+  const selected = selection(ids);
+  const fetch = vi.fn(async (_url, init) =>
+    cleanupResponse(JSON.parse(init.body).ids, 'queued'),
+  );
+  vi.stubGlobal('fetch', fetch);
+  const get = mountTrash(selected);
+  const remove = selected.remove;
+  selected.remove = (id) => {
+    remove(id);
+    if (id === ids[199]) get().close();
+  };
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(get().unknownIds).toEqual([]);
+  expect(get().unsentIds).toEqual([ids[200]]);
+  expect(
+    get().workspace?.rows.filter((row) => row.state === 'task'),
+  ).toHaveLength(200);
+  expect(get().workspace?.message).toBe(
+    '已停止未发送的请求。已受理的清理任务继续执行。',
+  );
+});

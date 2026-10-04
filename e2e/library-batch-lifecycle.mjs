@@ -25,6 +25,11 @@ export async function verifyBatchLifecycle(context) {
     layouts,
     pickFirstTwo,
     expectResults,
+    choose,
+    loaded,
+    resize,
+    setTheme,
+    shot,
   } = context;
   await sql(`DELETE FROM album_images WHERE image_id='${batchImageId(0)}'`);
   report.activeCheck = 'trash-restore-preserves-surviving-data';
@@ -35,6 +40,36 @@ export async function verifyBatchLifecycle(context) {
   await sql(
     `INSERT INTO image_tags (image_id,tag_id) VALUES ('${batchImageId(0)}','${batchTagIds[0]}'),('${batchImageId(0)}','${batchTagIds[1]}')`,
   );
+  // The shared selection menu also serves the real album detail route.
+  await page.goto(`${config.origin}/albums/${batchAlbumIds[0]}`);
+  await loaded(1);
+  await choose(0);
+  for (const width of [1440, 390]) {
+    await resize(width);
+    for (const theme of ['light', 'dark']) {
+      await setTheme(theme);
+      await page.click('loc=role:button[name="操作已选 1 张图片"]');
+      await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
+      const items = await page.evaluate(() =>
+        [...document.querySelectorAll('[role="menuitem"]')].map((item) =>
+          item.textContent.trim(),
+        ),
+      );
+      assert.equal(items.includes('永久删除所选'), false);
+      assert.ok(items.includes('移入回收站'));
+      await shot('album-shared-menu', width, theme);
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]', {
+        state: 'hidden',
+      });
+    }
+  }
+  report.checks.push(
+    'Shared selection menu checked on the real album detail route in desktop/mobile light/dark; permanent deletion remains exclusive to trash.',
+  );
+  await page.goto(`${config.origin}/library?q=issue177-&pageSize=80&page=1`);
+  await loaded(80);
+  await resize(1440);
   await pickFirstTwo('移入回收站');
   await layouts('trash-confirm', [390, 1440]);
   await monitor();
@@ -76,6 +111,7 @@ export async function verifyBatchLifecycle(context) {
   );
   await page.goto(`${config.origin}/trash`);
   await page.waitForSelector('[data-testid="trash-list"]');
+  await page.click('loc=role:button[name="选择记录"]');
   for (let number = 1; number <= 5; number++) {
     await page.waitForSelector(
       `[data-testid="trash-record-${batchImageId((number - 1) * 40)}"]`,
@@ -84,7 +120,7 @@ export async function verifyBatchLifecycle(context) {
     await page.waitForFunction(
       (count) =>
         document
-          .querySelector('[data-testid="trash-selection"]')
+          .querySelector('[data-testid="library-selection"]')
           ?.textContent.includes(`共选 ${count} 张`),
       number * 40,
     );
@@ -98,7 +134,7 @@ export async function verifyBatchLifecycle(context) {
   );
   await page.waitForFunction(() =>
     document
-      .querySelector('[data-testid="trash-selection"]')
+      .querySelector('[data-testid="library-selection"]')
       ?.textContent.includes('共选 201 张'),
   );
   await action('恢复所选', 201);

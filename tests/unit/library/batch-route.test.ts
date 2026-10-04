@@ -182,3 +182,77 @@ it('returns reprocessing acceptance and exact-task uncertainty as independent HT
     expect.any(Function),
   );
 });
+
+it('returns cleanup acceptance, an already requested task and unconfirmed retry separately', async () => {
+  const cleanup = {
+    jobId: 'cleanup-task',
+    imageId: 'image',
+    status: 'queued' as const,
+    waitingForWrites: false,
+    cycle: 2,
+    error: null,
+    finishedAt: null,
+    totalObjects: 1,
+    deletedObjects: 0,
+    deletedPurposes: [],
+    remaining: [],
+  };
+  const result = {
+    results: [
+      {
+        id: 'image',
+        status: 'accepted' as const,
+        taskId: cleanup.jobId,
+        cleanup,
+        message: '受理',
+        inQuery: true,
+      },
+      {
+        id: 'existing',
+        status: 'unchanged' as const,
+        taskId: cleanup.jobId,
+        cleanup: { ...cleanup, imageId: 'existing' },
+        code: 'MEDIA_CLEANUP_ALREADY_REQUESTED',
+        message: '已有任务',
+        inQuery: true,
+      },
+      {
+        id: 'unknown',
+        status: 'unknown' as const,
+        code: 'LIBRARY_BATCH_TASK_UNCONFIRMED',
+        message: '待核对',
+        inQuery: true,
+      },
+    ],
+  };
+  vi.mocked(runLibraryBatch).mockResolvedValue(result);
+  const command = {
+    type: 'retry-cleanup',
+    attempts: Object.fromEntries(
+      ['image', 'existing', 'unknown'].map((id) => [
+        id,
+        { taskId: cleanup.jobId, cycle: 1 },
+      ]),
+    ),
+  };
+  expect(
+    await post(
+      JSON.stringify({
+        ...valid,
+        ids: ['image', 'existing', 'unknown'],
+        query: 'scope=trash',
+        command,
+        mode: 'check',
+      }),
+    ),
+  ).toEqual({ status: 200, body: result });
+  expect(runLibraryBatch).toHaveBeenCalledWith(
+    {},
+    expect.objectContaining({
+      command,
+      mode: 'check',
+      filters: expect.objectContaining({ scope: 'trash' }),
+    }),
+    expect.any(Function),
+  );
+});

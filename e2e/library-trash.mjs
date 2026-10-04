@@ -249,7 +249,7 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     source: `(() => {
       const original = window.fetch;
       window.fetch = async (...args) => {
-        if (new URL(String(args[0]), location.href).pathname !== '/api/trash') return original(...args);
+        if (!(new URL(String(args[0]), location.href).pathname === '/api/images' && new URL(String(args[0]), location.href).searchParams.get('scope') === 'trash')) return original(...args);
         window.fetch = original;
         const response = await original(...args);
         await new Promise((resolve) => { window.__releaseInitialTrashRead = resolve; });
@@ -691,7 +691,11 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
     const original = window.fetch;
     window.fetch = async (...args) => {
       const response = await original(...args);
-      if (new URL(String(args[0]), location.href).pathname === '/api/trash') {
+      if (
+        new URL(String(args[0]), location.href).pathname === '/api/images' &&
+        new URL(String(args[0]), location.href).searchParams.get('scope') ===
+          'trash'
+      ) {
         window.fetch = original;
         throw new TypeError('Verification: real trash list response lost');
       }

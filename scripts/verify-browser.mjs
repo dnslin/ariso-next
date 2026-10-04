@@ -33,6 +33,7 @@ assert.ok(
     'copy-dropdown',
     'library-batch',
     'library-reprocess',
+    'trash',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -50,12 +51,17 @@ assert.ok(
         'deleted-source',
         'pending-navigation',
       ].includes(only)) ||
+    (suite === 'trash' &&
+      ['representative', 'cleanup', 'query-error', 'confirmation'].includes(
+        only,
+      )) ||
     (suite === 'library-batch' &&
       [
         'representative',
         'visibility',
         'feedback',
         'tag-states',
+        'lifecycle',
         'cache',
         'review-fixes',
       ].includes(only)),
@@ -86,6 +92,8 @@ for (const name of [
   'library-selection-reconciliation.json',
   'library-batch.json',
   'library-batch-failure.png',
+  'trash-query-batch.json',
+  'trash-cleanup.json',
   'library-reprocess.json',
   'library-reprocess-failure.png',
   'library-filters.json',
@@ -465,19 +473,31 @@ try {
             ? [['library-viewer-run', 'libraryViewer']]
             : suite === 'library-batch'
               ? [['library-batch', 'libraryBatch']]
-              : suite === 'library-reprocess'
-                ? [['library-batch-reprocess', 'libraryReprocess']]
-                : suite === 'upload'
-                  ? [
-                      ['upload-submissions', 'uploadSubmissions'],
-                      ['upload-relations', 'uploadRelations'],
-                    ]
-                  : [
-                      ['upload', 'upload'],
-                      ['upload-polling', 'uploadPolling'],
-                    ];
+              : suite === 'trash'
+                ? [
+                    ['trash-query-batch', 'trashQueryBatch'],
+                    ['trash-cleanup', 'trashCleanup'],
+                  ]
+                : suite === 'library-reprocess'
+                  ? [['library-batch-reprocess', 'libraryReprocess']]
+                  : suite === 'upload'
+                    ? [
+                        ['upload-submissions', 'uploadSubmissions'],
+                        ['upload-relations', 'uploadRelations'],
+                      ]
+                    : [
+                        ['upload', 'upload'],
+                        ['upload-polling', 'uploadPolling'],
+                      ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
+      if (
+        suite === 'trash' &&
+        ((['representative', 'query-error', 'confirmation'].includes(only) &&
+          script === 'trash-cleanup') ||
+          (only === 'cleanup' && script === 'trash-query-batch'))
+      )
+        continue;
       if (
         suite === 'upload' &&
         only !== undefined &&
@@ -489,6 +509,7 @@ try {
         {
           ...focusedConfig,
           libraryBatchPhase: suite === 'library-batch' ? only : undefined,
+          trashPhase: suite === 'trash' ? only : undefined,
         },
         `${script}.log`,
       );
@@ -585,6 +606,18 @@ try {
           'library-batch-reprocess.log',
         );
         report.libraryReprocess = 'passed';
+        await runBrowser(
+          '../e2e/trash-query-batch.mjs',
+          identityConfig,
+          'trash-query-batch.log',
+        );
+        report.trashQueryBatch = 'passed';
+        await runBrowser(
+          '../e2e/trash-cleanup.mjs',
+          identityConfig,
+          'trash-cleanup.log',
+        );
+        report.trashCleanup = 'passed';
         await runBrowser(
           '../e2e/shell-navigation.mjs',
           identityConfig,

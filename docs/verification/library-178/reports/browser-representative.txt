@@ -1,0 +1,55 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs -- --suite trash --only representative
+$ next build tests/experiments/shell --webpack
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.mjs took 6ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.5s
+  Running TypeScript ...
+  Finished TypeScript in 3.0s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/2) ...
+✓ Generating static pages using 4 workers (2/2) in 251ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /[[...path]]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+$ next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.mjs took 6ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app
+Error: Could not find the Next.js package (next/package.json)
+Resolved from: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/experiments/ui/app
+Filesystem root used for resolution: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/experiments/ui
+
+Possible causes:
+  - node_modules is being reorganized by a concurrent install (e.g. pnpm adding a package with a `next` peer dependency). This is transient and should clear once the install completes.
+  - node_modules/next was removed, renamed, or has a broken symlink.
+  - The workspace root is incorrect — see turbopack.root in the Next.js config docs for how to configure it.
+  - In a monorepo, the Next.js package may only exist in a directory above the closest directory containing a package manager lockfile. The workspace root is detected by locating the nearest package manager lockfile.
+  - Next.js is installed globally rather than as a project dependency. This is not supported; install it locally.
+
+Note: To ensure a hermetic build and a portable cache, files outside of the workspace root are not compiled.
+
+https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory
+
+
+    at <unknown> (Filesystem root used for resolution: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/experiments/ui)
+    at <unknown> (https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory)
+[ELIFECYCLE] Command failed with exit code 1.
+[WARN]  Local package.json exists, but node_modules missing, did you mean to install?
+[ELIFECYCLE] Command failed with exit code 1.

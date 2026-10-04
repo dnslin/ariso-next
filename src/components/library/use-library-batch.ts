@@ -12,7 +12,10 @@ import { notifyLibraryChanged } from './library-changes';
 import { BatchRequestError, requestBatch } from './batch-request';
 
 export type BatchAction =
-  | Exclude<BatchCommand['type'], 'visibility' | 'reprocess'>
+  | Exclude<
+      BatchCommand['type'],
+      'visibility' | 'reprocess' | 'delete-permanent' | 'retry-cleanup'
+    >
   | 'public'
   | 'private';
 export type BatchSnapshotItem = SelectedLibraryItem & {
