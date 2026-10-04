@@ -120,6 +120,7 @@ export function requestReprocess(
   db: BetterSQLite3Database,
   imageId: string,
   input: unknown = {},
+  jobId: string = randomUUID(),
 ) {
   const { scope } = reprocessInputSchema.parse(input);
   return db.transaction(
@@ -165,7 +166,6 @@ export function requestReprocess(
         snapshot,
       );
       const now = new Date();
-      const jobId = randomUUID();
       tx.insert(mediaJobs)
         .values({
           id: jobId,

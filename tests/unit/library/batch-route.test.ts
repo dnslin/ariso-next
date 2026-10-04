@@ -128,3 +128,57 @@ it('logs each database failure with command, mode and image context, and retains
   );
   expect(logError).toHaveBeenCalledWith({ err: error }, 'Library batch failed');
 });
+
+it('returns reprocessing acceptance and exact-task uncertainty as independent HTTP 200 item outcomes', async () => {
+  const taskId = 'eb3471f8-d191-4bd9-b2ca-20d9f9f43bfe';
+  const unknownTaskId = 'cdbcf870-c038-402e-8b23-45014e3ecf6b';
+  const task = {
+    id: taskId,
+    status: 'queued' as const,
+    scope: 'all' as const,
+    step: 'identify',
+    error: null,
+    expectedVersions: ['thumbnail' as const],
+    generatedVersions: [],
+  };
+  const result = {
+    results: [
+      {
+        id: 'image',
+        status: 'accepted' as const,
+        message: '已受理',
+        inQuery: true,
+        taskId,
+        task,
+      },
+      {
+        id: 'unknown',
+        status: 'unknown' as const,
+        message: '待核对',
+        code: 'LIBRARY_BATCH_TASK_UNCONFIRMED',
+        inQuery: true,
+      },
+    ],
+  };
+  vi.mocked(runLibraryBatch).mockResolvedValue(result);
+  const command = {
+    type: 'reprocess',
+    scope: 'all',
+    taskIds: { image: taskId, unknown: unknownTaskId },
+  };
+  expect(
+    await post(
+      JSON.stringify({
+        ...valid,
+        ids: ['image', 'unknown'],
+        command,
+        mode: 'check',
+      }),
+    ),
+  ).toEqual({ status: 200, body: result });
+  expect(runLibraryBatch).toHaveBeenCalledWith(
+    {},
+    expect.objectContaining({ command, mode: 'check' }),
+    expect.any(Function),
+  );
+});

@@ -26,7 +26,9 @@ const snapshotItem = (id: string): BatchSnapshotItem => ({
   source: '第2页',
   inCurrentPage: true,
 });
-const results = (statuses: BatchItemResult['status'][]): BatchItemResult[] =>
+const results = (
+  statuses: Exclude<BatchItemResult['status'], 'accepted'>[],
+): BatchItemResult[] =>
   statuses.map((status, index) => ({
     id: `image-${index}`,
     status,

@@ -243,6 +243,8 @@ export function BatchWorkspaceContent({
                   ? {
                       changed: '已修改',
                       unchanged: '无需修改',
+                      accepted: '任务已受理',
+                      unknown: '结果待核对',
                       failed: workspace.retrying ? '再次失败' : '失败',
                     }[result.status]
                   : workspace.unsentIds.includes(item.id)

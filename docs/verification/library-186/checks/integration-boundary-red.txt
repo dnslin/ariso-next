@@ -1,0 +1,46 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-186-batch-reprocess/ariso
+
+ ❯ |integration| tests/integration/library/batch-reprocess.test.ts (16 tests | 1 failed | 15 skipped) 32ms
+   × rechecks current query, storage, active task, disabled ranges and format for every item 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/batch-reprocess.test.ts > rechecks current query, storage, active task, disabled ranges and format for every item
+AssertionError: expected [ { id: 'disabled', …(4) }, …(5) ] to match object [ { id: 'disabled', …(2) }, …(5) ]
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -19,11 +19,11 @@
+      "id": "outside",
+      "inQuery": false,
+      "status": "failed",
+    },
+    {
+-     "code": "MEDIA_IMAGE_UNAVAILABLE",
++     "code": "LIBRARY_IMAGE_OUTSIDE_QUERY",
+      "id": "deleting",
+      "status": "failed",
+    },
+    {
+      "code": "MEDIA_IMAGE_NOT_FOUND",
+
+ ❯ tests/integration/library/batch-reprocess.test.ts:346:64
+    344|     defaultLinkVersion: 'original',
+    345|   });
+    346|   expect((await run(ids, command(ids, 'compressed'))).results).toMatch…
+       |                                                                ^
+    347|     { id: 'disabled', status: 'failed', code: 'MEDIA_REPROCESS_DISABLE…
+    348|     { id: 'active', status: 'failed', code: 'MEDIA_JOB_CONFLICT' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 skipped (16)
+   Start at  23:48:21
+   Duration  477ms (import 64%, transform 26%, tests 9%, worker 1%)

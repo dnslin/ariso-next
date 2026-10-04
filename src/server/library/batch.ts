@@ -12,7 +12,9 @@ import {
   MediaImageFieldsError,
   updateImageFields,
 } from '../media/image-fields.ts';
-import { mediaImages } from '../media/schema.ts';
+import { readGeneratedMediaVersions } from '../media/objects.ts';
+import { MediaReprocessError, requestReprocess } from '../media/reprocess.ts';
+import { mediaImages, mediaJobs } from '../media/schema.ts';
 import { MediaTrashError, restoreImage, trashImage } from '../media/trash.ts';
 import type {
   BatchCommand,
@@ -44,6 +46,11 @@ export const batchCommandSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ type: z.literal('trash') }),
   z.strictObject({ type: z.literal('restore') }),
+  z.strictObject({
+    type: z.literal('reprocess'),
+    scope: z.enum(['all', 'compressed', 'thumbnail', 'watermark']),
+    taskIds: z.record(z.string().min(1), z.uuid()),
+  }),
 ]);
 export const libraryBatchSchema = z.strictObject({
   ids: z
@@ -63,6 +70,18 @@ export function parseLibraryBatch(input: unknown) {
       parsed.error.issues.map((issue) => issue.message).join('；'),
       'LIBRARY_INVALID_BATCH',
     );
+  if (parsed.data.command.type === 'reprocess') {
+    const { taskIds } = parsed.data.command;
+    if (
+      Object.keys(taskIds).length !== parsed.data.ids.length ||
+      parsed.data.ids.some((id) => !Object.hasOwn(taskIds, id)) ||
+      new Set(Object.values(taskIds)).size !== parsed.data.ids.length
+    )
+      throw new LibraryQueryError(
+        '每张选中图片必须对应一个独立的本次任务 ID',
+        'LIBRARY_INVALID_BATCH',
+      );
+  }
   const query = parseLibraryQuery(new URLSearchParams(parsed.data.query));
   if (query.page !== null || query.cursor !== null)
     throw new LibraryQueryError(
@@ -74,7 +93,7 @@ export function parseLibraryBatch(input: unknown) {
     (query.filters.scope === 'trash')
   )
     throw new LibraryQueryError(
-      '恢复仅用于回收站；相册、标签、可见性和回收操作仅用于正常图库或相册',
+      '恢复仅用于回收站；相册、标签、可见性、回收和重处理操作仅用于正常图库或相册',
       'LIBRARY_INVALID_BATCH',
     );
   return { ...parsed.data, filters: query.filters };
@@ -97,7 +116,7 @@ function inQuery(
 function applyCommand(
   db: Parameters<typeof updateImageFields>[0],
   id: string,
-  command: BatchCommand,
+  command: Exclude<BatchCommand, { type: 'reprocess' }>,
 ) {
   if (command.type === 'visibility')
     return updateImageFields(db, id, { visibility: command.visibility })
@@ -128,7 +147,7 @@ function applyCommand(
 function checkCommand(
   db: BetterSQLite3Database,
   id: string,
-  command: BatchCommand,
+  command: Exclude<BatchCommand, { type: 'reprocess' }>,
 ) {
   const image = db
     .select()
@@ -154,6 +173,56 @@ function checkCommand(
   return command.type.startsWith('add-')
     ? present.every((target) => target.present)
     : present.every((target) => !target.present);
+}
+
+function reprocessResult(
+  db: BetterSQLite3Database,
+  id: string,
+  command: Extract<BatchCommand, { type: 'reprocess' }>,
+  mode: 'apply' | 'check',
+  inQuery: boolean,
+): BatchItemResult {
+  const taskId = command.taskIds[id];
+  let task = db.select().from(mediaJobs).where(eq(mediaJobs.id, taskId)).get();
+  if (
+    task &&
+    (task.imageId !== id ||
+      task.kind !== 'process' ||
+      task.scope !== command.scope)
+  )
+    throw new MediaReprocessError(
+      'MEDIA_REPROCESS_TASK_CONFLICT',
+      409,
+      '本次任务 ID 已用于其他图片或处理范围',
+    );
+  if (!task && mode === 'apply') {
+    requestReprocess(db, id, { scope: command.scope }, taskId);
+    task = db.select().from(mediaJobs).where(eq(mediaJobs.id, taskId)).get()!;
+  }
+  if (!task)
+    return {
+      id,
+      status: 'unknown',
+      code: 'LIBRARY_BATCH_TASK_UNCONFIRMED',
+      message: '尚未查到本次任务，请稍后继续核对；不要重复提交',
+      inQuery,
+    };
+  return {
+    id,
+    status: 'accepted',
+    message: '本次重处理任务已受理，可查看任务处理结果',
+    inQuery,
+    taskId,
+    task: {
+      id: task.id,
+      status: task.status,
+      scope: task.scope,
+      step: task.step,
+      error: task.error,
+      expectedVersions: task.expectedVersions,
+      generatedVersions: readGeneratedMediaVersions(db, [task]).get(task.id)!,
+    },
+  };
 }
 
 /** Each explicit image commits independently. check only observes the desired state.
@@ -194,6 +263,14 @@ export async function runLibraryBatch(
                     'LIBRARY_IMAGE_OUTSIDE_QUERY',
                     409,
                   );
+                if (command.type === 'reprocess')
+                  return reprocessResult(
+                    operation,
+                    id,
+                    command,
+                    mode,
+                    currentInQuery,
+                  );
                 const changed = applyCommand(operation, id, command);
                 return {
                   id,
@@ -204,6 +281,14 @@ export async function runLibraryBatch(
                   inQuery: inQuery(operation, id, filters),
                 };
               }
+              if (command.type === 'reprocess')
+                return reprocessResult(
+                  operation,
+                  id,
+                  command,
+                  mode,
+                  currentInQuery,
+                );
               const confirmed = checkCommand(operation, id, command);
               return {
                 id,
@@ -222,6 +307,7 @@ export async function runLibraryBatch(
               error instanceof CollectionError ||
               error instanceof MediaImageFieldsError ||
               error instanceof MediaTrashError ||
+              error instanceof MediaReprocessError ||
               error instanceof LibraryQueryError;
             if (!expected) onFailure(error, id);
             return {
