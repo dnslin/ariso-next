@@ -63,3 +63,11 @@ macOS 26.6.2 / ARM64，Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32、Exif
 真实服务配置仅在忽略的本机文件中读取，报告不含凭据。两服务使用独立 SQLite、随机 prefix 和 storage ID，最终由真实 SDK 列举核对该命名空间为空。R2 全 Bucket 无锁声明复用同 Bucket 的 [EV-STORAGE-01](../../tasks/evidence/EV-STORAGE-01/README.md) 已有授权证据；本轮没有进入控制台重新检查规则，也没有修改远端 Bucket/CORS。relay 上传没有冒充浏览器 CORS 已通过。
 
 AWS S3 实测已由现行执行约定取消，保持未验证。物理手机触控/软键盘/非零安全区不属于当前验收要求；AMD64/ARM64 镜像与真实容器留到 Release 流程，本次不创建 Release、发布镜像或部署。PR 创建不能替代任务完成；未获确认、缺证据或检查失败时保持草稿。
+
+## 提交与 PR 状态
+
+实现提交 `0b3337f` 已推送到 `codex/issue-198-storage-admin`，已创建并关联 [草稿 PR #239](https://github.com/dnslin/ariso-next/pull/239)。GitHub 实际读取状态为 OPEN / isDraft=true / mergeStateStatus=CLEAN；statusCheckRollup为空，分支workflow run列表为空。`gh pr checks 239 --repo dnslin/ariso-next` 退出1并明确“no checks reported”，表示没有检查，不是CI通过；不等待不存在的工作流。
+
+首次创建后的实际查询保存在 [github-status.json](checks/github-status.json)，其中head为实现提交。本段和该状态文件属于随后仅补充证据的提交，不重复应用测试。现有发布工作流仅在Release published触发，本次没有创建Release、发布镜像、部署、合并PR、关闭Issue或删除分支/worktree。
+
+下一步由用户人工查看本记录的最终截图与草稿PR，验收界面并确认上方必要设计补充。完整集成失败与未批准项仍保持开放，不能以PR创建代替Issue完成。
