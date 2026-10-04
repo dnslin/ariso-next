@@ -65,4 +65,8 @@
 
 文档核对已写入消费卡，适用本地检查、独立文档与设计适用审计均已完成。业务代码完成、真实浏览器验证、产品设计对照、人工验收均不能由本 DG 代替，留给对应实施任务。DES-06-AUTH、相关 DES-05/07、RG-03/07保持开放。
 
-提交、推送与PR尚待完成。本次不合并、不关闭Issue、不发布/部署、不删除分支或worktree。工作流仅在 `release.published` 执行镜像验证；PR实际状态及远端检查将在创建后核对，无远端检查不能记为CI通过。
+已提交并通过 `git push --set-upstream origin codex/issue-127-account-design` 推送，使用 `gh pr create --draft --body-file` 创建[草稿 PR #241](https://github.com/dnslin/ariso-next/pull/241)，关联 #127，并附加到本聊天。PR 描述只链接本统一证据，不重复维护设计/验证记录。交付状态记录补写后的 `pnpm exec prettier --check docs/tasks/evidence/DG-ACCOUNT/README.md` 与差异检查也通过。
+
+创建后实际运行 `gh pr view 241 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,mergeable,statusCheckRollup,headRefOid`：OPEN、isDraft=true、base=main、head=codex/issue-127-account-design、MERGEABLE、statusCheckRollup为空。`gh pr checks 241 --repo dnslin/ariso-next` 退出1，输出 no checks reported，表示没有远端检查，不是 CI 通过。`.github/workflows/ci.yml` 仅 `workflow_call`，由 `images.yml` 的 `release.published` 调用；本 PR 不触发，没有等待或人为创建 Release。
+
+本次不合并、不关闭 Issue、不发布/部署、不删除分支或 worktree。草稿留供审阅，管理型 worktree 与分支保留。#165/#181 的真实产品预览、独立测试凭证及用户人工验收仍由消费任务交付，不能用本轮设计资料代替。
