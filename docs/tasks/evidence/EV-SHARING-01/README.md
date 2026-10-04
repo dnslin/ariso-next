@@ -81,3 +81,11 @@ Ego Lite 唯一 TaskSpace 为 30。真实能力探测 `Target.createBrowserConte
 代码实现完成，格式/静态/类型/构建通过，单元与受影响的分享集成通过。集成全量首次失败及修复后的定向结果分别保留。分享真实浏览器已通过，默认浏览器全量失败，后续未执行段保持未验证。独立评审结论见[审计记录](./audit.md)。本任务没有产品 UI，设计评审和产品页面人工验收不适用；不关闭 DES/RG 或 SHARING 业务任务。
 
 EV-SHARING-01 整体仍未完成：同 origin 的两个独立浏览器上下文缺少真实证据，用户尚未批准调整该条件。PR 保留草稿，不合并、不关闭 Issue。发布阶段的容器与双架构验证未执行，不记作本地或远端检查通过。
+
+## 提交与远端状态
+
+实施提交 `78b9c0f` 已推送到 `codex/issue-148-sharing-experiment`，创建关联 Issue #148 的 [PR #243](https://github.com/dnslin/ariso-next/pull/243)，目标为 main，实际状态为 OPEN / Draft。
+
+已运行 `gh pr view 243 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup`，回读草稿状态且 `statusCheckRollup=[]`；`gh pr checks 243 --repo dnslin/ariso-next` 退出 1，明确输出 no checks reported。这表示没有远端检查，不是 CI 通过，也没有等待或触发不存在的日常工作流。
+
+保留本任务分支、独立 worktree 和未完成项。未合并、未关闭 Issue、未发布或部署。补充远端状态只改变证据文档，按统一执行约定检查文档，不重复应用构建或浏览器流程。

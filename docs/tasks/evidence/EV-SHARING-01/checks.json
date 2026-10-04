@@ -119,6 +119,16 @@
     {
       "command": "pnpm exec prettier docs/tasks/evidence/EV-SHARING-01 tests/experiments/sharing/browser.mjs --check",
       "exitCode": 0
+    },
+    {
+      "command": "gh pr view 243 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup",
+      "exitCode": 0,
+      "note": "OPEN / Draft; statusCheckRollup empty"
+    },
+    {
+      "command": "gh pr checks 243 --repo dnslin/ariso-next",
+      "exitCode": 1,
+      "note": "no checks reported; not a CI failure or success"
     }
   ],
   "browser": {
@@ -136,5 +146,14 @@
   },
   "twoBrowserContexts": "unverified",
   "productUi": "not applicable",
-  "releaseValidation": "not run; Release only"
+  "releaseValidation": "not run; Release only",
+  "pullRequest": {
+    "url": "https://github.com/dnslin/ariso-next/pull/243",
+    "state": "OPEN",
+    "isDraft": true,
+    "baseRefName": "main",
+    "headRefName": "codex/issue-148-sharing-experiment",
+    "checksReported": 0,
+    "ci": "No checks reported; this is not a passing CI result"
+  }
 }
