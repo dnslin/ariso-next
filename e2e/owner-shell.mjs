@@ -22,11 +22,11 @@ export async function verifyOwnerShell(page, config) {
     { label: '上传', href: '/upload' },
     { label: '图库', href: '/library' },
     { label: '相册', href: '/albums' },
-    { label: '标签', href: null },
+    { label: '标签', href: '/tags' },
     { label: '分享管理', href: null },
     { label: '回收站', href: '/trash' },
     { label: '访问统计', href: null },
-    { label: '存储管理', href: null },
+    { label: '存储管理', href: '/settings/storage' },
     { label: '站点设置', href: null },
   ];
   const routes = ['/upload', '/library', '/trash', '/albums'];
@@ -484,7 +484,7 @@ export async function verifyOwnerShell(page, config) {
     await verifyUIRefinement({ page, config, report });
     await assertNoBrowserErrors(page);
     report.checks.push(
-      'Upload/library/trash/albums share all ten design menu entries; the four implemented routes are links, and the remaining six explain that they are not yet available.',
+      'Upload/library/trash/albums share all ten design menu entries; the six implemented routes are links, and the remaining four explain that they are not yet available.',
       'Computed navigation text decoration is none, including hover; heading origins match across all four routes at desktop, phone and tablet widths.',
       'Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.',
       'Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu.',

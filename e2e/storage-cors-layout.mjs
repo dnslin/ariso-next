@@ -313,7 +313,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
   const proxy = await clipboardDeniedProxy(config.origin);
   try {
     await resize(page, 390);
-    await page.goto(`${proxy.origin}/settings/storage/${id}`);
+    await page.goto(`${proxy.origin}/settings/storage/${id}/cors`);
     await ensureCorsOverview(page);
     await page.click(button('查看 CORS 示例'));
     await page.waitForSelector('loc=role:dialog[name="CORS 配置示例"]');
@@ -358,7 +358,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
       path: join(config.output, 'cors-origin-mismatch-390.png'),
     });
     await page.click('loc=role:link[name="打开配置地址"]');
-    await page.waitForURL(`${config.origin}/settings/storage/${id}`);
+    await page.waitForURL(`${config.origin}/settings/storage/${id}/cors`);
     await page.waitForSelector(
       '[data-testid="storage-cors"][data-state="passed"]',
     );
@@ -368,7 +368,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
     assert.deepEqual(proxy.errors, []);
   } finally {
     await proxy.close();
-    await page.goto(`${config.origin}/settings/storage/${id}`);
+    await page.goto(`${config.origin}/settings/storage/${id}/cors`);
     await ensureCorsOverview(page);
   }
   report.checks.push(

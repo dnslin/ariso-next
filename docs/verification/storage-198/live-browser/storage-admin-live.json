@@ -1,0 +1,4384 @@
+{
+  "status": "passed",
+  "taskSpaceId": 20,
+  "checks": [],
+  "services": [
+    {
+      "service": "seaweedfs",
+      "status": "passed",
+      "checks": [
+        "Real UI create disabled → service connection passed → manual enable → default → rename with blank credential fields preserves revision/test.",
+        "Real relay upload reads thumbnail and locks referenced storage; disable preserves default and rejects new content; clear default, trash/permanent cleanup and scanned configuration deletion leave the exact independent namespace empty."
+      ],
+      "storageId": "c73e24de-df45-437f-a08e-ab46a55132be",
+      "namespace": "storage-admin-198/c22ec23f-869d-46f5-9783-33ede2acf85d/ariso/c73e24de-df45-437f-a08e-ab46a55132be/",
+      "connection": {
+        "probeId": "055292aa-2a70-4efb-b298-98e6ba9941fc",
+        "storageId": "c73e24de-df45-437f-a08e-ab46a55132be",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "18DB476DFCA20125336D364C",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "18DB476E021DD28B3765BBF7",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DB476E07B6D525CA123B23",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "18DB476E0D297A187A7F86AF",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://fs.447654.xyz/images/storage-admin-198/c22ec23f-869d-46f5-9783-33ede2acf85d/ariso/c73e24de-df45-437f-a08e-ab46a55132be/probes/055292aa-2a70-4efb-b298-98e6ba9941fc",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "18DB476E255FC37E471D9DA0",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "18DB476E2AF1B948E45DF84F",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-10-04T08:50:14.601Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      },
+      "defaultFooter": {
+        "height": 81,
+        "success": false
+      },
+      "upload": {
+        "imageId": "100151f8-4ecb-421e-bdc0-c9c805834393",
+        "route": "relay",
+        "ownerThumbnailDecoded": {
+          "width": 64,
+          "height": 48
+        }
+      },
+      "finalKeys": []
+    },
+    {
+      "service": "r2",
+      "status": "passed",
+      "checks": [
+        "Real UI create disabled → service connection passed → manual enable → default → rename with blank credential fields preserves revision/test.",
+        "Real relay upload reads thumbnail and locks referenced storage; disable preserves default and rejects new content; clear default, trash/permanent cleanup and scanned configuration deletion leave the exact independent namespace empty."
+      ],
+      "storageId": "5a2c69fc-d607-4770-8514-c2dd514a8f0f",
+      "namespace": "storage-admin-198/e94cb904-12e9-441f-a294-5e5a859e753e/ariso/5a2c69fc-d607-4770-8514-c2dd514a8f0f/",
+      "connection": {
+        "probeId": "63a86602-de0e-406c-923c-115ecc8019b6",
+        "storageId": "5a2c69fc-d607-4770-8514-c2dd514a8f0f",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "official-capability-and-owner-confirmation",
+              "automaticVersionOrLockDetection": false,
+              "capabilitySource": "https://developers.cloudflare.com/r2/api/s3/api/",
+              "r2NoBucketLocksConfirmed": true
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com/image/storage-admin-198/e94cb904-12e9-441f-a294-5e5a859e753e/ariso/5a2c69fc-d607-4770-8514-c2dd514a8f0f/probes/63a86602-de0e-406c-923c-115ecc8019b6",
+              "httpStatusCode": 400,
+              "serviceCode": "InvalidArgument",
+              "basis": "r2-authorization-required"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-10-04T08:50:32.526Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": true,
+          "confirmedAt": "2026-10-04T08:50:31.106Z"
+        }
+      },
+      "defaultFooter": {
+        "height": 81,
+        "success": false
+      },
+      "upload": {
+        "imageId": "74ae9810-d65d-4bc8-bc82-0e949a50c753",
+        "route": "relay",
+        "ownerThumbnailDecoded": {
+          "width": 64,
+          "height": 48
+        }
+      },
+      "finalKeys": []
+    }
+  ],
+  "layouts": [
+    {
+      "state": "list",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "添加存储",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 默认本地存储",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页存储数量",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "当前第 1 页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-list-light-1440.png"
+    },
+    {
+      "state": "list",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加存储",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 默认本地存储",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页存储数量",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "当前第 1 页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 103.5703125,
+        "success": false
+      },
+      "screenshot": "storage-admin-list-light-390.png"
+    },
+    {
+      "state": "list",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "添加存储",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 默认本地存储",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页存储数量",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "当前第 1 页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-list-dark-1440.png"
+    },
+    {
+      "state": "list",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加存储",
+          "width": 144,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 默认本地存储",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每页存储数量",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "当前第 1 页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下一页",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 103.5703125,
+        "success": false
+      },
+      "screenshot": "storage-admin-list-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-saved",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-saved-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-saved",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-saved-light-390.png"
+    },
+    {
+      "state": "seaweedfs-saved",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-saved-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-saved",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-saved-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-passed-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-passed-light-390.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-passed-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-passed",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-passed-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-default-selected",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-default-selected-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-default-selected",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 189,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-default-selected-light-390.png"
+    },
+    {
+      "state": "seaweedfs-default-selected",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-default-selected-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-default-selected",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 189,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-default-selected-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-referenced",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-referenced-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-referenced",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-referenced-light-390.png"
+    },
+    {
+      "state": "seaweedfs-referenced",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-referenced-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-referenced",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-referenced-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-clear-default-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-clear-default-light-390.png"
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-clear-default-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-clear-default-dark-390.png"
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-delete-light-1440.png"
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-delete-light-390.png"
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-delete-dark-1440.png"
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-seaweedfs-delete-dark-390.png"
+    },
+    {
+      "state": "r2-saved",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-saved-light-1440.png"
+    },
+    {
+      "state": "r2-saved",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-saved-light-390.png"
+    },
+    {
+      "state": "r2-saved",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-saved-dark-1440.png"
+    },
+    {
+      "state": "r2-saved",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回配置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-saved-dark-390.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-light-1440.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-light-390.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-dark-1440.png"
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回配置",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已确认，开始测试",
+          "width": 144,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-owner-confirm-dark-390.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-passed-light-1440.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-passed-light-390.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-passed-dark-1440.png"
+    },
+    {
+      "state": "r2-passed",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.703125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新测试",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用存储",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-passed-dark-390.png"
+    },
+    {
+      "state": "r2-default-selected",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-default-selected-light-1440.png"
+    },
+    {
+      "state": "r2-default-selected",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 189,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-default-selected-light-390.png"
+    },
+    {
+      "state": "r2-default-selected",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-default-selected-dark-1440.png"
+    },
+    {
+      "state": "r2-default-selected",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回存储管理",
+          "width": 86.6875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "停用存储",
+          "width": 189,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-default-selected-dark-390.png"
+    },
+    {
+      "state": "r2-referenced",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-referenced-light-1440.png"
+    },
+    {
+      "state": "r2-referenced",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-referenced-light-390.png"
+    },
+    {
+      "state": "r2-referenced",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-referenced-dark-1440.png"
+    },
+    {
+      "state": "r2-referenced",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看连接测试结果",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "浏览器直传设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与删除限制",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除存储配置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看引用与清理状态",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "测试连接",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-referenced-dark-390.png"
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-clear-default-light-1440.png"
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-clear-default-light-390.png"
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-clear-default-dark-1440.png"
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "清空默认",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 81,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-clear-default-dark-390.png"
+    },
+    {
+      "state": "r2-delete",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-delete-light-1440.png"
+    },
+    {
+      "state": "r2-delete",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-delete-light-390.png"
+    },
+    {
+      "state": "r2-delete",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 73,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-delete-dark-1440.png"
+    },
+    {
+      "state": "r2-delete",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "取消",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认删除",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "footer": {
+        "height": 77,
+        "success": false
+      },
+      "screenshot": "storage-admin-r2-delete-dark-390.png"
+    }
+  ],
+  "limitations": [
+    "R2 whole-Bucket no-lock confirmation reuses the previously authorized same-Bucket evidence; clicking this run’s confirmation does not claim a fresh console inspection.",
+    "Remote Bucket policies and CORS configuration are not modified. Upload uses the actual relay route because the new configuration has no passed browser CORS result."
+  ],
+  "listBorders": [
+    {
+      "theme": "light",
+      "width": 1440,
+      "token": "#bae8e8",
+      "cells": [
+        "rgb(186, 232, 232)",
+        "rgb(186, 232, 232)",
+        "rgb(186, 232, 232)",
+        "rgb(186, 232, 232)"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "token": "#607d85",
+      "cells": [
+        "rgb(96, 125, 133)",
+        "rgb(96, 125, 133)",
+        "rgb(96, 125, 133)",
+        "rgb(96, 125, 133)"
+      ]
+    }
+  ],
+  "dialogs": [
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-clear-default",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "seaweedfs-delete",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-owner-confirm",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-clear-default",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-delete",
+      "theme": "light",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-delete",
+      "theme": "light",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-delete",
+      "theme": "dark",
+      "viewport": 1440,
+      "width": 480,
+      "containerWidth": 480,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    },
+    {
+      "state": "r2-delete",
+      "theme": "dark",
+      "viewport": 390,
+      "width": 358,
+      "containerWidth": 358,
+      "containerFlex": "0 0 auto",
+      "padding": "24px",
+      "gap": "16px",
+      "titleSize": "20px",
+      "bodyMargin": "0px",
+      "footerMargin": "0px",
+      "buttons": [48, 48]
+    }
+  ]
+}

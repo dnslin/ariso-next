@@ -19,6 +19,7 @@ const { values } = parseArgs({
   options: {
     suite: { type: 'string', default: 'full' },
     only: { type: 'string' },
+    'storage-config': { type: 'string' },
   },
 });
 const suite = values.suite;
@@ -33,6 +34,7 @@ assert.ok(
     'copy-dropdown',
     'library-batch',
     'library-reprocess',
+    'storage-admin',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -40,6 +42,7 @@ assert.ok(
   only === undefined ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'upload-s3' && only === 'cleanup') ||
+    (suite === 'storage-admin' && ['live', 'dialogs'].includes(only)) ||
     (suite === 'viewer' &&
       [
         'representative',
@@ -101,6 +104,12 @@ for (const name of [
   'upload-s3.json',
   'copy-dropdown.json',
   'storage-cors.json',
+  'storage-admin.json',
+  'storage-admin-failure.png',
+  'storage-admin-dialogs.json',
+  'storage-admin-dialogs-failure.png',
+  'storage-admin-live.json',
+  'storage-admin-live-failure.png',
   'delivery-s3/browser.json',
   'm2-1440.json',
   'm2-390.json',
@@ -205,6 +214,27 @@ try {
     BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
     ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
   };
+  if (suite === 'storage-admin' && only === 'live') {
+    for (const name of [
+      'HTTP_PROXY',
+      'HTTPS_PROXY',
+      'ALL_PROXY',
+      'http_proxy',
+      'https_proxy',
+      'all_proxy',
+      'NODE_USE_ENV_PROXY',
+    ])
+      if (process.env[name]) productionEnv[name] = process.env[name];
+    const bypass = [
+      ...new Set(
+        `${process.env.NO_PROXY ?? ''},${process.env.no_proxy ?? ''},localhost,127.0.0.1,::1,.localhost`
+          .split(',')
+          .filter(Boolean),
+      ),
+    ].join(',');
+    productionEnv.NO_PROXY = bypass;
+    productionEnv.no_proxy = bypass;
+  }
   let spawnError;
   async function startProduction(dataDirectory) {
     const logStart = logs.length;
@@ -400,7 +430,43 @@ try {
       phase: suite === 'copy-dropdown' ? 'green' : undefined,
       viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
       viewerCheck: suite === 'viewer' ? only : undefined,
+      storageNavigation: suite === 'storage-admin' && only === undefined,
     };
+    if (suite === 'storage-admin' && only === 'live') {
+      assert.ok(
+        values['storage-config'],
+        'Live storage management suite requires --storage-config',
+      );
+      const targets = JSON.parse(
+        await readFile(resolve(values['storage-config']), 'utf8'),
+      );
+      assert.ok(Array.isArray(targets), 'Storage targets must be an array');
+      for (const service of ['r2', 'seaweedfs'])
+        assert.ok(
+          targets.some((target) => target.service === service),
+          `Missing ${service} target`,
+        );
+      for (const target of targets) {
+        assert.ok(
+          target.credentials?.accessKeyId &&
+            target.credentials?.secretAccessKey,
+          'Target credentials must be present',
+        );
+        secrets.push(
+          target.credentials.accessKeyId,
+          target.credentials.secretAccessKey,
+        );
+      }
+      focusedConfig.storageTargets = targets.filter((target) =>
+        ['r2', 'seaweedfs'].includes(target.service),
+      );
+      focusedConfig.r2NoLockEvidence =
+        'docs/tasks/evidence/EV-STORAGE-01/README.md';
+    }
+    if (suite === 'storage-admin' && only !== 'live') {
+      corsFixture = await startCorsFixture(origin);
+      focusedConfig.corsFixture = corsFixture.endpoint;
+    }
     if (suite === 'upload-s3') {
       const { openRuntimeDatabase } =
         await import('../src/server/runtime/db.ts');
@@ -457,25 +523,34 @@ try {
       focusedConfig.uploadS3 = targets;
     }
     const stages =
-      suite === 'copy-dropdown'
-        ? [['library-copy-dropdown', 'copyDropdown']]
-        : suite === 'upload-s3'
-          ? [['upload-s3', 'uploadS3']]
-          : suite === 'viewer'
-            ? [['library-viewer-run', 'libraryViewer']]
-            : suite === 'library-batch'
-              ? [['library-batch', 'libraryBatch']]
-              : suite === 'library-reprocess'
-                ? [['library-batch-reprocess', 'libraryReprocess']]
-                : suite === 'upload'
-                  ? [
-                      ['upload-submissions', 'uploadSubmissions'],
-                      ['upload-relations', 'uploadRelations'],
-                    ]
-                  : [
-                      ['upload', 'upload'],
-                      ['upload-polling', 'uploadPolling'],
-                    ];
+      suite === 'storage-admin'
+        ? only === 'live'
+          ? [['storage-admin-live', 'storageAdmin']]
+          : only === 'dialogs'
+            ? [['storage-admin-dialogs', 'storageAdmin']]
+            : [
+                ['storage-admin', 'storageAdmin'],
+                ['shell-navigation', 'shellNavigation'],
+              ]
+        : suite === 'copy-dropdown'
+          ? [['library-copy-dropdown', 'copyDropdown']]
+          : suite === 'upload-s3'
+            ? [['upload-s3', 'uploadS3']]
+            : suite === 'viewer'
+              ? [['library-viewer-run', 'libraryViewer']]
+              : suite === 'library-batch'
+                ? [['library-batch', 'libraryBatch']]
+                : suite === 'library-reprocess'
+                  ? [['library-batch-reprocess', 'libraryReprocess']]
+                  : suite === 'upload'
+                    ? [
+                        ['upload-submissions', 'uploadSubmissions'],
+                        ['upload-relations', 'uploadRelations'],
+                      ]
+                    : [
+                        ['upload', 'upload'],
+                        ['upload-polling', 'uploadPolling'],
+                      ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -549,6 +624,12 @@ try {
       report.identity.push({ width, setup: 'passed', restart: 'passed' });
       if (width === 390) {
         corsFixture = await startCorsFixture(origin);
+        await runBrowser(
+          '../e2e/storage-admin.mjs',
+          { ...identityConfig, corsFixture: corsFixture.endpoint },
+          'storage-admin.log',
+        );
+        report.storageAdmin = 'passed';
         await runBrowser(
           '../e2e/storage-cors.mjs',
           { ...identityConfig, corsFixture: corsFixture.endpoint },
