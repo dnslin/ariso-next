@@ -284,3 +284,7 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0、现有 Ego Lite，唯一 TaskSpace 3
 代码和聚焦回归完成；本轮适用离线检查与聚焦/键盘/响应式浏览器验证分别记录。默认完整浏览器和完整确认检查未通过，完整 UI 人工验收尚未完成。#148 同 origin 两个独立浏览器会话仍未验证，本修复不替代该项。PR #243 保持草稿，不合并、不关闭 Issue、不发布或部署。
 
 独立验收环境已运行，实际账号登录及两张图片的真实worker处理通过，并附独立相册。地址和操作清单交给用户；账号密码只保存在忽略的本地访问记录与私人聊天，不提交到仓库或PR。环境持续保留，直到用户明确要求停止或清理。
+
+焦点修复提交 `b246b5a` 已推送到 `codex/issue-148-sharing-experiment`。使用 `gh pr view 243 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,statusCheckRollup` 回读 OPEN / Draft，远端实施 head 为 `b246b5aee9abfa7b133baaaf19fcdc6cdb7cd47d`，`statusCheckRollup=[]`；`gh pr checks` 明确返回 no checks reported，没有远端检查，不记为 CI 通过。已有 [PR #243](https://github.com/dnslin/ariso-next/pull/243) 的标题和正文已更新最终范围与上述限制；本段的后续文档提交只补远端回读，不重复产品检查。
+
+独立预览的重处理页已打开并 handOff 给用户；服务和测试数据继续保留。最后实际读取的浏览器视口为390×280；用户可调回桌面尺寸或在常用浏览器打开私人交付的预览地址。浏览器已经交给用户，本轮不再操作；需要用户明确要求继续浏览器验证后，才按 Ego 技能接回同一 TaskSpace。
