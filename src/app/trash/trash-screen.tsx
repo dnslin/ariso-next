@@ -47,6 +47,7 @@ import type { LibraryPage } from '../../server/library/types';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import { TrashRecord } from './trash-record';
 import { TrashThumbnail } from './trash-thumbnail';
+import { TrashFilters, TrashPageSize } from './trash-filters';
 import { ArrowLeft } from 'lucide-react';
 
 export function TrashScreen({
@@ -295,12 +296,30 @@ export function TrashScreen({
           </div>
         ) : (
           <div className="grid w-full gap-2 md:grid-cols-[1fr_auto] md:items-center">
-            <p data-testid="trash-count" role="status" className="text-[13px]">
-              {data
-                ? `共 ${data.total} 项 · ${trashFilters?.pageSize ?? 40} 条 / 页 · ${page} / ${pages}`
-                : '数量待确认'}
-            </p>
+            <div className="flex min-w-0 items-center justify-between gap-3 md:justify-start">
+              <p
+                data-testid="trash-count"
+                role="status"
+                className="text-[13px]"
+              >
+                {data ? `共 ${data.total} 项` : '数量待确认'}
+              </p>
+              {trashFilters ? (
+                <div className="flex shrink-0 items-center gap-2 text-[13px]">
+                  <span>每页</span>
+                  <TrashPageSize
+                    value={trashFilters.pageSize}
+                    disabled={selectionDisabled}
+                    onChange={(pageSize) => void list.applyQuery({ pageSize })}
+                  />
+                  <span>条</span>
+                </div>
+              ) : null}
+            </div>
             <div className="flex gap-3">
+              <span className="flex items-center text-[13px]">
+                {page} / {pages ?? '—'}
+              </span>
               <Button
                 variant="outline"
                 className="min-h-11 flex-1 rounded-lg md:w-30"
@@ -413,6 +432,15 @@ export function TrashScreen({
               </Button>
             )}
           </div>
+          {trashFilters ? (
+            <TrashFilters
+              filters={trashFilters}
+              client={client}
+              disabled={selectionDisabled}
+              onApply={(patch) => void list.applyQuery(patch)}
+              onSessionExpired={expireSession}
+            />
+          ) : null}
           {selectionMode || selection.selected.size ? (
             <div
               data-testid="trash-selection"
@@ -446,24 +474,15 @@ export function TrashScreen({
             </div>
           ) : null}
           {permanentBatch.workspace?.phase === 'result' ? (
-            <Alert status={permanentBatch.unresolved ? 'warning' : 'default'}>
-              <Alert.Content>
-                <Alert.Title>
-                  {permanentBatch.unresolved
-                    ? '永久删除结果待核对'
-                    : '本次清理任务'}
-                </Alert.Title>
-                <Alert.Description>
-                  后台清理独立继续。未发送的记录需要显式继续提交。
-                </Alert.Description>
-                <Button
-                  className="mt-3 min-h-11"
-                  onPress={permanentBatch.reopen}
-                >
-                  查看本次结果
-                </Button>
-              </Alert.Content>
-            </Alert>
+            <Button
+              variant="outline"
+              className="min-h-11 w-fit rounded-lg"
+              onPress={permanentBatch.reopen}
+            >
+              {permanentBatch.unresolved
+                ? '查看待核对结果'
+                : '查看本次清理结果'}
+            </Button>
           ) : null}
           {batch.unresolved ? (
             <Alert status="warning">

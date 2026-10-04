@@ -1,0 +1,804 @@
+{
+  "status": "failed",
+  "taskSpaceId": 25,
+  "checks": [
+    "三个真实HeroUI筛选改变URL并重置页1、清选择，已停用存储可筛选；搜索与存储显式清除；20/40/80实际条数、分页和记录返回保留完整查询。"
+  ],
+  "layouts": [
+    {
+      "state": "approved-disabled-storage-filter",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-disabled-storage-filter",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-page-size-20",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-page-size-40",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-page-size-80",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-filter-list",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "short-list",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "filtered-empty",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "batch-confirm",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "batch-confirm",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-results-table",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-results-table",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-approved-disabled-storage-filter-light-390.png",
+      "state": "approved-disabled-storage-filter",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-disabled-storage-filter-dark-1440.png",
+      "state": "approved-disabled-storage-filter",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-page-size-20-light-1440.png",
+      "state": "approved-page-size-20",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-page-size-40-light-390.png",
+      "state": "approved-page-size-40",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-page-size-80-light-1440.png",
+      "state": "approved-page-size-80",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-light-1440.png",
+      "state": "approved-filter-list",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-dark-1440.png",
+      "state": "approved-filter-list",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-filter-list-light-390.png",
+      "state": "approved-filter-list",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-dark-390.png",
+      "state": "approved-filter-list",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-filter-list-light-360-430.png",
+      "state": "approved-filter-list",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-dark-360-430.png",
+      "state": "approved-filter-list",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-filter-list-light-430-430.png",
+      "state": "approved-filter-list",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-dark-430-430.png",
+      "state": "approved-filter-list",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-filter-list-light-768-430.png",
+      "state": "approved-filter-list",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-filter-list-dark-768-430.png",
+      "state": "approved-filter-list",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-short-list-dark-390-480.png",
+      "state": "short-list",
+      "width": 390,
+      "height": 480,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-filtered-empty-light-390.png",
+      "state": "filtered-empty",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-light-1440.png",
+      "state": "batch-confirm",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-dark-390.png",
+      "state": "batch-confirm",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-results-table-light-1440.png",
+      "state": "approved-results-table",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-results-table-dark-1440.png",
+      "state": "approved-results-table",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    }
+  ],
+  "activeCheck": "approved-per-item-failures",
+  "accordionTriggers": [
+    {
+      "id": "issue177-000",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-001",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-002",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-003",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-004",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-005",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-006",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-007",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-008",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-009",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-010",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-011",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-012",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-013",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-014",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-015",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-016",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-017",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-018",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    },
+    {
+      "id": "issue177-019",
+      "expanded": "false",
+      "height": 68,
+      "minHeight": "44px"
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Approved short-name accordion items must be at least 80px: [{\"id\":\"issue177-000\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-001\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-002\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-003\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-004\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-005\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-006\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-007\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-008\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-009\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-010\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-011\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-012\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-013\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-014\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-015\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-016\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-017\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-018\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"},{\"id\":\"issue177-019\",\"expanded\":\"false\",\"height\":68,\"minHeight\":\"44px\"}]\n    at verifyResultPresentation (file:////[eval2]:308:10)\n    at async file:////[eval2]:751:5",
+  "failureTasks": [
+    {
+      "image_id": "issue177-000",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-001",
+      "status": "failed",
+      "cycle": 1,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单"
+    },
+    {
+      "image_id": "issue177-002",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-003",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-004",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-005",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-006",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-007",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-008",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-009",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-010",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-011",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-012",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-013",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-014",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-015",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-016",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-017",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-018",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    },
+    {
+      "image_id": "issue177-019",
+      "status": "succeeded",
+      "cycle": 1,
+      "error": null
+    }
+  ],
+  "failureView": "[p1 \"Ariso\" | space \"Issue178 approved UI verification\"(25): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    anchor [ref=143, loc=href:/trash?pageSize=80&page=3#main-content, url=http://ariso-57217.localhost:57217/trash?pageSize=80&page=3#main-content]\n      text \"跳到主要内容\"\n    container\n      anchor \"Ariso 首页\" [ref=144, url=http://ariso-57217.localhost:57217/]\n        text \"Ariso\"\n      button \"菜单\" [ref=145, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=146]\n        container \"批量清理结果\"\n          container\n            button [ref=147]\n              svg_root\n              text \"返回回收站\"\n            heading [ref=148]\n              text \"批量清理结果\"\n            status\n              text \"已清理\"\n              text \"19\"\n              text \"/\"\n              text \"21\"\n              text \"张\"\n              text \"· 清理失败 1 张\"\n            paragraph\n              text \"未受理 1 张\"\n          container \"逐图清理结果，第1页\"\n            heading [ref=149]\n              text \"逐图清理结果，第\"\n              text \"1\"\n              text \"页\"\n            container\n              container\n                heading\n                  button [ref=150]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-000.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-000.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"2c4ac61b-0c69-4f3f-83e1-e4ee01daa594\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=151]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-001.png\"\n                    text \"清理失败\"\n                    svg_root\n                group \"issue177-001.png清理失败\"\n                  paragraph\n                    text \"MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"23fbb5d0-26ef-4c16-94eb-c2665d35dffa\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n                    container\n                      list_item\n                        text \"已清理\"\n                      list_item\n                        text \"缩略图\"\n                  container\n                    paragraph\n                      text \"剩余对象 ·\"\n                      text \"1\"\n                      text \"个\"\n                    container\n                      paragraph\n                        text \"原图\"\n                        text \"·\"\n                        text \"6.5 KiB\"\n                      paragraph\n                        text \"issue177-batch/issue177-001-original.png\"\n                      paragraph\n                        text \"STORAGE_OPERATION_FAILED: Storage inspect failed: d2a133a7-700d-471f-8309-681eaa7309ca, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-OSZUyr/data/storage/default/ariso/d2a133a...\"\n                      paragraph\n                        text \"本轮尝试\"\n                        text \"1\"\n                        text \"次\"\n                  button [ref=152]\n                    text \"重试剩余对象\"\n              container\n                heading\n                  button [ref=153]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-002.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-002.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"33a4429d-1760-4050-ba92-b0e3dd65a08b\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=154]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-003.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-003.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"b56ab198-8c3d-4cf7-a03f-e8e0cef80d00\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=155]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-004.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-004.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"8b88f31b-c147-4b8c-9db8-cc60fab8874e\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=156]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-005.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-005.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"ee5c865c-328d-4543-9ce3-6d52f524edf2\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=157]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-006.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-006.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"2349d1e2-7ed5-4722-bf38-ce756fc71974\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=158]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-007.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-007.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"949bf228-f407-4b63-9a66-839e5c428586\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              container\n                heading\n                  button [ref=159]\n                    svg_root \"永久删除任务已受理，不能预览\"\n                    text \"issue177-008.png\"\n                    text \"已清理\"\n                    svg_root\n                group \"issue177-008.png已清理\"\n                  paragraph\n                    text \"已全部清理，记录已移除。\"\n                  unordered_list\n                    container\n                      list_item\n                        text \"任务\"\n                      list_item\n                        text \"4269df9c-81f8-46e4-9790-bfff35514cf5\"\n                    container\n                      list_item\n                        text \"周期\"\n                      list_item\n                        text \"1\"\n              heading\n                button [ref=160]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-009.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-009.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"6b72ac35-e237-493e-a90c-c38ffcb0e85e\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=161]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-010.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-010.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"913979bf-92ec-49ba-a9be-b89cbc39597b\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=162]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-011.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-011.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"ab326286-981e-4d6a-8bd9-3232371035c4\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=163]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-012.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-012.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"32d9e7b3-5a52-4dc8-8dfc-8b58b00e76d7\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=164]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-013.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-013.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"bc1d637a-addc-463c-b671-41d750a4ac2a\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=165]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-014.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-014.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"03af3097-9963-4fdb-9b27-0cc1e286016a\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=166]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-015.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-015.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"7cb24827-7273-499f-8ca0-756381bf7a2d\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=167]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-016.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-016.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"2f6fb3f8-74ef-4f4d-8832-0da2bc6d5593\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=168]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-017.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-017.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"dc9c5b6a-3bde-4e15-95bd-3cdbd1e5395a\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=169]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-018.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-018.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"23ad7515-2497-47cd-a0e7-f4ab09e5eb5c\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n              heading\n                button [ref=170]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-019.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-019.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"b78647f7-6cda-49f9-b0e1-5af32b7ac880\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"1\"\n            navigation \"逐图结果分页\"\n              text \"21\"\n              text \"项 · 20条 / 页\"\n              unordered_list\n                list_item\n                  button [ref=171]\n                    text \"上一页\"\n                list_item\n                  text \"1\"\n                  text \"/\"\n                  text \"2\"\n                list_item\n                  button [ref=172]\n                    text \"下一页\"\n      button [ref=173]\n        text \"返回回收站\"\n  alert\n"
+}

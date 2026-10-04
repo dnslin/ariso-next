@@ -35,7 +35,6 @@ export function useTrashBatch({
   const [workspace, setWorkspace] = useState<TrashBatchWorkspace | null>(null);
   const [visible, setVisible] = useState(false);
   const [pending, setPending] = useState(false);
-  const [showFailures, setShowFailures] = useState(false);
   const [progressError, setProgressError] = useState('');
   const [progressAttempt, setProgressAttempt] = useState(0);
   const [refreshError, setRefreshError] = useState('');
@@ -98,7 +97,6 @@ export function useTrashBatch({
     refreshRequest.current = null;
     setRefreshError('');
     setProgressError('');
-    setShowFailures(false);
     const items = [...selection.selected.values()].map((item) => ({
       ...item,
       inCurrentPage: selection.currentIds.has(item.id),
@@ -193,7 +191,6 @@ export function useTrashBatch({
     controller.current = active;
     inFlight.current = true;
     setPending(true);
-    setShowFailures(false);
     setProgressError('');
     const target = new Set(ids);
     let rows = workspace.rows.map((row) => {
@@ -351,7 +348,6 @@ export function useTrashBatch({
     workspace,
     visible,
     pending,
-    showFailures,
     unknownIds,
     unsentIds,
     failedIds,
@@ -360,7 +356,6 @@ export function useTrashBatch({
     open,
     close,
     reopen: () => setVisible(true),
-    toggleFailures: () => setShowFailures((value) => !value),
     submit: () =>
       workspace &&
       void run(
@@ -368,8 +363,23 @@ export function useTrashBatch({
         'apply',
       ),
     check: () => void run(unknownIds, 'check'),
-    retry: () => void run([...new Set([...failedIds, ...unsentIds])], 'apply'),
-    retryTasks: () => void run(failedTaskIds, 'apply', true),
+    checkItem: (id: string) => {
+      const row = workspace?.rows.find((row) => row.id === id);
+      if (
+        row?.state === 'unknown' ||
+        (row?.state === 'task' &&
+          (row.cleanup?.status === 'queued' ||
+            row.cleanup?.status === 'running'))
+      )
+        void run([id], 'check');
+    },
+    retryItem: (id: string) => {
+      if (failedIds.includes(id) || unsentIds.includes(id))
+        void run([id], 'apply');
+    },
+    retryTask: (id: string) => {
+      if (failedTaskIds.includes(id)) void run([id], 'apply', true);
+    },
     progressError,
     checkProgress: () => {
       setProgressError('');

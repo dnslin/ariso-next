@@ -52,9 +52,15 @@ assert.ok(
         'pending-navigation',
       ].includes(only)) ||
     (suite === 'trash' &&
-      ['representative', 'cleanup', 'query-error', 'confirmation'].includes(
-        only,
-      )) ||
+      [
+        'representative',
+        'cleanup',
+        'query-error',
+        'confirmation',
+        'approved-ui',
+        'approved-results',
+        'approved-progress',
+      ].includes(only)) ||
     (suite === 'library-batch' &&
       [
         'representative',
@@ -493,7 +499,14 @@ try {
     for (const [script, result] of stages) {
       if (
         suite === 'trash' &&
-        ((['representative', 'query-error', 'confirmation'].includes(only) &&
+        (([
+          'representative',
+          'query-error',
+          'confirmation',
+          'approved-ui',
+          'approved-results',
+          'approved-progress',
+        ].includes(only) &&
           script === 'trash-cleanup') ||
           (only === 'cleanup' && script === 'trash-query-batch'))
       )

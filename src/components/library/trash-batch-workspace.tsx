@@ -3,11 +3,11 @@
 import { useEffect, useRef } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
-import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
 import { Spinner } from '@heroui/react/spinner';
 import { ArrowLeft } from 'lucide-react';
 import type { TrashBatch } from './use-trash-batch';
+import { TrashBatchResults } from './trash-batch-results';
 
 const footerButton =
   'h-12 min-h-12 min-w-0 flex-1 rounded-lg px-2 font-normal md:w-50 md:flex-none';
@@ -85,16 +85,14 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
   const rejected = workspace.rows.filter(
     (row) => row.state === 'rejected',
   ).length;
-  const rows = [
-    { label: '已全部清理', count: completed, detail: '记录已移除' },
-    { label: '清理失败', count: failed, detail: '可重试剩余对象，不可恢复' },
-    { label: '仍在清理', count: running, detail: '记录保留，不可恢复' },
-    {
-      label: '受理失败',
-      count: rejected,
-      detail: `${batch.failedIds.length}张仍保留选择，可重新提交`,
-    },
-  ];
+  const secondary = [
+    running ? `清理中 ${running} 张` : '',
+    rejected ? `未受理 ${rejected} 张` : '',
+    batch.unknownIds.length ? `待核对 ${batch.unknownIds.length} 张` : '',
+    batch.unsentIds.length ? `未提交 ${batch.unsentIds.length} 张` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
   return (
     <section
       data-testid="trash-batch"
@@ -102,62 +100,44 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
       aria-busy={batch.pending}
       className="grid min-w-0 gap-5"
     >
-      <Button
-        variant="ghost"
-        className="-my-3 h-11 w-fit gap-1 rounded-lg bg-transparent p-0 text-xs font-normal text-muted hover:bg-transparent"
-        onPress={batch.close}
-      >
-        <ArrowLeft size={14} aria-hidden />
-        返回回收站
-      </Button>
-      <h1
-        ref={title}
-        id="trash-batch-title"
-        tabIndex={-1}
-        className="text-[28px] font-medium leading-normal md:text-[30px]"
-      >
-        批量清理进度
-      </h1>
-      <p
-        role="status"
-        data-testid="trash-batch-summary"
-        className="text-[13px] leading-normal"
-      >
-        {completed}张已清理完成 · {failed}张清理失败 · {running}张仍在清理
-        {batch.unknownIds.length ? ` · ${batch.unknownIds.length}张待核对` : ''}
-        {batch.unsentIds.length ? ` · ${batch.unsentIds.length}张尚未提交` : ''}
-      </p>
-      <p className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-        只有已全部清理的{completed}
-        张移出回收站。失败和执行中的记录继续保留。受理失败的{rejected}
-        张未进入任务。
-      </p>
-      <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 dark:bg-surface">
-        <Card.Content className="p-0">
-          <dl data-testid="trash-batch-result-summary">
-            {rows.map((row) => (
-              <div
-                key={row.label}
-                className="grid min-h-18 content-start py-2 text-sm leading-normal md:grid-cols-3 md:content-center md:items-center md:gap-4 md:py-0"
-              >
-                <dt>{row.label}</dt>
-                <dd>
-                  {row.count}张
-                  <span className="md:hidden"> · {row.detail}</span>
-                </dd>
-                <dd className="hidden md:block">{row.detail}</dd>
-              </div>
-            ))}
-          </dl>
-        </Card.Content>
-      </Card>
+      <header>
+        <Button
+          variant="ghost"
+          className="-ml-2 mb-3 h-11 w-fit gap-1 rounded-lg bg-transparent px-2 text-xs font-normal text-muted hover:bg-transparent"
+          onPress={batch.close}
+        >
+          <ArrowLeft size={14} aria-hidden />
+          返回回收站
+        </Button>
+        <h1
+          ref={title}
+          id="trash-batch-title"
+          tabIndex={-1}
+          className="mb-3 text-[28px] font-medium leading-normal"
+        >
+          批量清理结果
+        </h1>
+        <p
+          role="status"
+          data-testid="trash-batch-summary"
+          className="text-sm font-medium leading-normal"
+        >
+          已清理 {completed} / {workspace.items.length} 张
+          {failed ? ` · 清理失败 ${failed} 张` : ''}
+        </p>
+        {secondary ? (
+          <p className="mt-1 text-[13px] leading-normal text-muted">
+            {secondary}
+          </p>
+        ) : null}
+      </header>
       {batch.pending ? (
         <p role="status" className="flex items-center gap-2 text-sm">
           <Spinner size="sm" />
-          正在提交并核对实际清理任务…
+          正在提交…
         </p>
       ) : null}
-      {workspace.message ? (
+      {workspace.message && !batch.unresolved ? (
         <Alert status="warning">
           <Alert.Content>
             <Alert.Description>{workspace.message}</Alert.Description>
@@ -165,15 +145,20 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
         </Alert>
       ) : null}
       {batch.unresolved ? (
-        <Button
-          data-testid="trash-batch-check"
-          variant="outline"
-          className="h-12 w-fit rounded-lg"
-          isDisabled={batch.pending}
-          onPress={batch.check}
-        >
-          核对已发送结果 · {batch.unknownIds.length}张
-        </Button>
+        <div className="grid justify-items-start gap-2">
+          <p className="text-[13px] text-muted">
+            请先核对未决结果，再继续提交或重试。
+          </p>
+          <Button
+            data-testid="trash-batch-check"
+            variant="outline"
+            className="min-h-11 w-fit rounded-lg font-normal"
+            isDisabled={batch.pending}
+            onPress={batch.check}
+          >
+            核对结果 · {batch.unknownIds.length}张
+          </Button>
+        </div>
       ) : null}
       {batch.progressError ? (
         <Alert status="warning">
@@ -208,28 +193,7 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
           </Alert.Content>
         </Alert>
       ) : null}
-      {batch.unsentIds.length || batch.failedIds.length ? (
-        <Button
-          data-testid="trash-batch-retry"
-          className="h-12 w-fit rounded-lg"
-          isDisabled={batch.pending || batch.unresolved}
-          onPress={batch.retry}
-        >
-          继续未提交和受理失败项 ·{' '}
-          {batch.unsentIds.length + batch.failedIds.length}张
-        </Button>
-      ) : null}
-      {batch.failedTaskIds.length ? (
-        <Button
-          data-testid="trash-batch-retry-cleanup"
-          variant="outline"
-          className="h-12 w-fit rounded-lg"
-          isDisabled={batch.pending || batch.unresolved}
-          onPress={batch.retryTasks}
-        >
-          重试剩余对象 · {batch.failedTaskIds.length}张
-        </Button>
-      ) : null}
+      <TrashBatchResults key={workspace.items[0]?.id} batch={batch} />
     </section>
   );
 }
@@ -246,13 +210,6 @@ export function TrashBatchWorkspaceFooter({ batch }: { batch: TrashBatch }) {
         onPress={batch.close}
       >
         返回回收站
-      </Button>
-      <Button
-        className={footerButton}
-        isDisabled
-        onPress={batch.toggleFailures}
-      >
-        查看失败明细
       </Button>
     </div>
   );

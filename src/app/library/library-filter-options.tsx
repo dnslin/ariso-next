@@ -43,6 +43,7 @@ export function LibraryFilterOptionsField({
   client,
   onSessionExpired,
   disabled = false,
+  presentation = 'condition',
 }: {
   kind: LibraryFilterOptionKind;
   label: string;
@@ -51,6 +52,7 @@ export function LibraryFilterOptionsField({
   client: QueryClient;
   onSessionExpired: () => void;
   disabled?: boolean;
+  presentation?: 'condition' | 'field';
 }) {
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -100,7 +102,9 @@ export function LibraryFilterOptionsField({
   );
   return (
     <Autocomplete<LibraryFilterOption, 'single' | 'multiple'>
-      className="min-w-0 max-w-72 flex-1"
+      className={
+        presentation === 'field' ? 'min-w-0 flex-1' : 'min-w-0 max-w-72 flex-1'
+      }
       selectionMode={kind === 'tags' ? 'multiple' : 'single'}
       value={kind === 'tags' ? selectedIds : (selectedIds[0] ?? null)}
       onChange={(value) =>
@@ -116,13 +120,27 @@ export function LibraryFilterOptionsField({
       allowsEmptyCollection
       placeholder="全部"
     >
-      <Label className="sr-only">{label}</Label>
-      <Autocomplete.Trigger className="h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 py-0 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11">
-        <span className="shrink-0 text-sm text-muted">
-          {kind === 'tags' ? '标签' : label}
-        </span>
+      <Label className={presentation === 'field' ? 'text-sm' : 'sr-only'}>
+        {label}
+      </Label>
+      <Autocomplete.Trigger
+        className={
+          presentation === 'field'
+            ? 'h-12 min-h-12 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-0 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-12 [&>button]:w-11'
+            : 'h-11 min-h-11 w-full items-center gap-2 rounded-lg border-0 bg-transparent px-3 py-0 pe-11 shadow-none [&>button]:absolute [&>button]:inset-y-0 [&>button]:right-0 [&>button]:h-11 [&>button]:w-11'
+        }
+      >
+        {presentation === 'condition' ? (
+          <span className="shrink-0 text-sm text-muted">
+            {kind === 'tags' ? '标签' : label}
+          </span>
+        ) : null}
         <Autocomplete.Value className="min-w-0 truncate text-sm text-foreground">
-          {names.length ? names.join('、') : '全部'}
+          {names.length
+            ? names.join('、')
+            : presentation === 'field'
+              ? `全部${label}`
+              : '全部'}
         </Autocomplete.Value>
         <Autocomplete.Indicator className="end-3.5 size-4">
           <ChevronDown aria-hidden="true" />

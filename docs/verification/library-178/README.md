@@ -13,19 +13,19 @@
 - 清理数量、用途、Key、大小、错误和尝试时间来自真实对象账本。全部完成后账本移除，历史数量返回null，不构造历史明细或假进度。
 - 使用最新 main 的 Local/S3 确切清理实现（#163 已合入），不沿用 #140 核对时的 S3 拒绝状态。完整孤儿扫描仍由 #164 承接。
 
-## 尚未完成与设计批准边界
+## 设计批准与人工验收边界
 
-#140 明确要求新增完整查询工具区与任意逐图明细在实施前补齐交接。已向用户提出具体方案：搜索下方三个 HeroUI 下拉框（桌面同排、手机逐行），固定底栏增加20/40/80选择，批量汇总内分页显示逐图结果。当前尚未取得批准，因此这三个筛选控件、页大小选择控件与任意逐图明细没有实施；URL/服务端能力不能替代界面交付。批量“查看失败明细”入口禁用，不称完成。该边界由本 Issue 联同 P2-DESIGN 承接，不转交为后续优化。
+#140 要求新增工具区与任意逐图明细在实施前补齐交接。2026-10-04 用户先要求展示大小与布局，随后明确要求删除常驻 mint 说明、手机结果改用 HeroUI 手风琴。展示实际 HeroUI 修订预览后，用户选择桌面结果并明确批准“我很喜欢就用这种嘛”。批准图为[桌面结果](./approved-design/trash-results-desktop.png)、[手机手风琴](./approved-design/trash-results-mobile.png)及[筛选与页大小布局](./approved-design/trash-proposal-desktop.png)。这些是批准的设计预览，不是生产页面证据；没有修改 Figma。
 
-已表达的单图确认、存储停用两步确认、排队、清理失败、再次失败、未知结果弹框及批量汇总继续实施。加载、独立读取失败和提交禁用消费既有 Spinner/Alert 规则。
+已按批准方案实施：搜索下方三个真实 HeroUI 筛选（桌面同排、手机逐行）；固定底栏20/40/80选择；逐图结果每页20项，桌面 HeroUI Table，手机单项展开 HeroUI Accordion。简短真实计数替代重复汇总和常驻规则说明；错误、任务、剩余对象和精确单图核对/重试置于对应结果。未知结果仍禁止写入，未发送项仍需显式继续；未新增数据契约、依赖或清理引擎。
 
-本任务完整设计验收及用户最终人工 UI 验收仍未完成。批量异常核对/继续与任意明细的组合布局也归上述设计交接缺口，不因行为已验证而冒充获批。PR 保持草稿，不关闭 Issue、不合并、不发布或部署、不删除分支或 worktree。
+此前三处新增 UI 设计缺口已取得本次批准并补齐实现。最终真实页面仍须用户人工验收；方案批准不代替最终验收。PR 保持草稿，不关闭 Issue、不合并、不发布或部署、不删除分支或 worktree。前一轮审计与失败记录保留其当时范围，新一轮验证和独立对照见下方增量记录。
 
 ## Figma 与真实页面对照
 
 本轮实际读取主列表 `30:1037/102:852`、记录 `405:6888/405:6735`、单图确认 `405:7357/405:7839`、排队 `405:7370`、清理中 `405:7383/405:7865`、清理中 `405:7396/405:7878`、完成 `405:7802/405:7968`、部分失败 `405:7599/405:7923`、停用 `405:7813/405:7979`、再次失败 `530:13418/530:13680`、批量进度 `405:8601/405:8924` 的可用上下文与截图。各节点实际文件见 [figma](./figma/)；本轮 get_design_context 额度用尽，未知结果 `405:7826/405:7992` 等节点复用 #140 实际导出原图与节点树，未冒充重新读取。独立评审另以只读 Figma Plugin API 实取批量确认 `405:8398/405:8879`、停用警告 `405:7813`、第二确认 `406:3314/406:7189` 原图和尺寸树，来源记录见设计审计。
 
-独立设计评审者另行实际查看上述 Figma 信息与原图，再对照本轮 Ego 截图，先整页与公共外壳、再业务布局与控件。[设计审计](./design-audit.md)逐项记录节点、真实截图和结论。列表代表已通过；批量汇总结构已核对，未批准的任意明细与异常控制组合不称整页通过。单图确认、未知、等待处理、实际清理中、失败、再次失败、完成与停用两步已由真实图独立复核；短弹框字体行高和批量范围说明已由独立评审实际复核最终图，通过；批量确认取消、回焦和零受理也已取得真实浏览器通过证据。
+独立设计评审者实际查看上述 Figma 信息与原图，再对照 Ego 截图，先整页与公共外壳、再业务布局与控件。[设计审计](./design-audit.md)逐项记录节点、真实截图和结论。首轮列表代表与批量汇总完成已有设计对照，当时任意明细与异常控制尚未批准；本次批准后的完整结果与筛选按增量记录单独验收。单图确认、未知、等待处理、实际清理中、失败、再次失败、完成与停用两步已由真实图独立复核；短弹框字体行高和批量范围说明已由独立评审实际复核最终图，通过；批量确认取消、回焦和零受理也已取得真实浏览器通过证据。
 
 ## 环境与实际检查
 
@@ -78,3 +78,38 @@ macOS / Darwin arm64；Node24.18.1、pnpm11.19.0，已有 ImageMagick7 与 ExifT
 本轮浏览器检查结束后已按 Ego 技能收尾同一 TaskSpace22，[记录](./reports/browser-finish.txt)。测试服务与独立数据已清理，不将截图证据描述为仍在线的人工预览。人工验收需在用户选择的预览环境执行。
 
 创建后实际执行 `gh pr view 240 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus`：OPEN、草稿、目标main、mergeStateStatus CLEAN，statusCheckRollup为空。当前没有远端检查，不记作CI通过，不等待不存在的工作流。没有合并、关闭Issue、发布、部署或清理分支/worktree。
+
+## 用户批准 UI 增量（2026-10-04）
+
+本次只补齐已批准的三个筛选、条数选择及逐图结果表达，不改清理提供方、数据库或依赖。公共存储选项复用 `LibraryFilterOptionsField`，原图库与相册默认条件条保持原行为；手机与桌面共享同一真实逐图结果及精确 ID 操作。原界面留下的未消费失败展开状态及整批重试方法已删除，没有保留兼容入口。
+
+环境仍为 macOS arm64 / Node24.18.1 / pnpm11.19.0。使用本机已有 Ego Lite，新增批准方案工作阶段使用 TaskSpace25；该阶段收尾后，独立评审指出新版提交/等待/执行状态尚缺专门截图，另用 TaskSpace26 只补该遗漏。所有 runner 设置对应 `EGO_TASK_SPACE`、`EGO_KEEP_SPACE=1` 并补本地 NO_PROXY/no_proxy。此前 TaskSpace22、23、24 已收尾，没有换空间重试失败。所有数据位于 runner 的独立临时目录。
+
+| 实际命令                                                                                                                                                                                                                                                                                   | 结果与证据                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                                                                           | 通过，锁文件未变：[记录](./reports/install-approved-ui.txt)。                                                                                                          |
+| `pnpm run test:unit`                                                                                                                                                                                                                                                                       | 87文件 / 1152项通过：[记录](./reports/unit-approved-ui.txt)。删除审计指出的旧接口后，仅复测受影响控制器，15项通过：[定向记录](./reports/unit-approved-audit-fix.txt)。 |
+| `pnpm exec vitest run --project integration tests/integration/library/query.test.ts tests/integration/library/sqlite-query.test.ts tests/integration/library/filter-options.test.ts tests/integration/library/filter-options-http.test.ts tests/integration/library/batch-cleanup.test.ts` | 构建完成后5文件 / 60项通过：[记录](./reports/integration-approved-ui.txt)。本增量不改存储清理，未重复真实工具与R2/SeaweedFS实验，先前实际范围仍见上文。                |
+| `pnpm run build`                                                                                                                                                                                                                                                                           | 通过；审计清理与设计修复后再次完成受影响构建：[最终记录](./reports/build-approved-final-colors.txt)。保留可选依赖 tracer 诊断，不冒充没有诊断。                        |
+| `pnpm run typecheck`                                                                                                                                                                                                                                                                       | 通过：[记录](./reports/typecheck-approved-final.txt)。此后生产代码仅调整局部 Tailwind 高度、居中、标题字号和错误颜色，没有变更类型或数据契约。                         |
+| `pnpm run lint`                                                                                                                                                                                                                                                                            | 审计修复后通过：[记录](./reports/lint-approved-final.txt)；最后样式改动的4文件静态检查通过：[定向记录](./reports/lint-approved-style-final.txt)。                      |
+
+设计修复取得真实失败后处理：手机 Accordion 在项目公共样式下仅68px，计算最小高度44px，偏离批准80px；[失败报告](./browser-approved-interaction/trash-query-batch.json)和[实际DOM](./reports/accordion-before-height.json)保留，局部采用 `min-h-20!`，不改公共CSS。真实图另发现两个 Select 选值顶对齐，实际控制框48px、值46px、行高20px且 alignItems 为 normal；为这两个筛选及44px条数控件补 `items-center`。主题切换时字段背景动画被截图捕获为灰色，实际稳态计算颜色为浅色 `rgb(255,255,254)`；截图等待实际有限动画结束，未修改生产颜色。
+
+测试夹具失败也原样保留：[首次](./browser-approved-ui/trash-query-batch.json)因直接更换已有图片存储违反复合外键，改为独立停用存储元数据记录，没有关闭外键；[第二次](./browser-approved-layout/trash-query-batch.json)因脚本把 HeroUI 选值误认为触发按钮内部文本，改用实际无障碍名称定位。没有削弱查询、选择或错误断言。
+
+`node scripts/verify-browser.mjs --suite trash --only approved-ui` 的查询阶段已通过：三个筛选、停用存储、搜索/存储清除、条数20/40/80、页1重置与选择清空、记录返回保留查询；实际控件48/48/44px、值20px、中心偏移均0。[该轮报告](./browser-approved-final/trash-query-batch.json)整体仍为 failed：结果分页的测试定位误用空元素的 text-is，真实页面已有上一页/下一页按钮；未把整条命令记通过。该轮80px Accordion键盘Enter与单展开也实际通过。后续采用 `--only approved-results` 仅复测结果、逐项操作及公共消费者，不重复已通过查询前置；该定向入口同样接入原 runner，默认完整路径仍保留全部新增检查。
+
+独立设计评审继续指出批量结果桌面标题仍为30px、错误文本仍使用通用 danger 色，偏离批准预览的28px/42px与浅色 `#9e3542`、深色 `#ff858a`。已仅调整结果标题和逐项错误，不改公共主题；[修复前实际DOM](./reports/results-before-color-title.json)及该轮真实截图保留。
+
+`node scripts/verify-browser.mjs --suite trash --only approved-results` 最终通过，[runner](./browser-approved-results/runner.json)与[业务报告](./browser-approved-results/trash-query-batch.json)均为 passed，浏览器 errors 为空。实际覆盖21项两类失败、每页20项结果分页、Accordion Enter与单展开、准确图片ID的逐项受理/对象重试；201项200+1在真实响应丢失后仅只读核对，未决时禁止继续，第11页未发送项在核对后显式提交，持久任务最终201项 succeeded。图库与相册详情的默认公共条件条分别在桌面/手机回归，真实存储/标签选择与当前导航正确。71图/71布局记录是取证清单，不代替独立设计对照。
+
+`node scripts/verify-browser.mjs --suite trash --only approved-progress` 最终通过，[runner](./browser-approved-progress/runner.json)与[业务报告](./browser-approved-progress/trash-query-batch.json)均为 passed、errors为空。仅补新版提交中、排队等待写入与清理中：真实批量受理响应已收到后暂缓交给界面，拍实际 pending/Spinner；独立持久媒体任务提供活动写责任，真实清理任务保持 queued/waitingForWrites；将原图对象的下一次尝试设为未来后结束写责任，生产 worker 实际清理缩略图并进入 running（1/2），最后让对象到期并实际成功、移除图片记录。没有写清理任务状态或伪造响应，也没有把定时账本夹具称为远端写入或 DELETE 延迟实测。三个状态分别拍1440×1080、390×844浅深色，12张实际图；没有重跑已通过的筛选、21项失败、201项核对或公共消费流程。新定向场景接入默认完整路径与 approved-ui。
+
+设计证据分三段：查询、页大小使用[最终查询段](./browser-approved-final/)，结果及公共消费使用[最终结果段](./browser-approved-results/)，新增提交/等待/执行使用[状态补充段](./browser-approved-progress/)。1440×1080、390×844浅深色与360/430/768宽及430px短视口均有实际图；逐项节点、整页/公共区域和控件结论由[独立设计审计](./design-audit.md)维护。相应功能结论与[代码审计](./code-audit.md)分别记录。单图状态及重复失败继续消费上文已取得的生产证据，未重复整套单图流程。
+
+本阶段已按 Ego 技能分别完成 TaskSpace25 与补充状态 TaskSpace26 一次收尾：[25记录](./reports/browser-approved-finish.txt)、[26记录](./reports/browser-approved-progress-finish.txt)。runner临时服务、记录及真实Local文件已清理；不把已停止的测试站点称为在线人工预览。最终用户人工 UI 验收仍待进行，PR继续草稿。没有实施Release镜像、容器、物理设备检查，也没有合并、关闭Issue或删除分支/worktree。
+
+新增进度脚本的 `pnpm exec eslint e2e/trash-query-batch.mjs scripts/verify-browser.mjs --max-warnings=0` 通过：[记录](./reports/lint-approved-progress.txt)。`node docs/tasks/check.mjs` 通过：120个任务、298个需求，无缺失ID或依赖环：[记录](./reports/docs-approved-final.txt)。
+
+收齐独立代码与设计审计后，`pnpm run format:check` 全库通过：[记录](./reports/format-approved-final.txt)。本轮没有未解决的代码审计阻断或已观察设计偏差；最终人工验收仍是待完成项，不将此记录当作用户验收批准。

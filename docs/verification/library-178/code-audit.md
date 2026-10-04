@@ -2,6 +2,8 @@
 
 2026-10-04，独立审计 agent 使用 `code-review-and-quality`，按项目 `AGENTS.md`、`docs/tasks/execution.md`、`docs/design/handoff.md` 与 `SPEC-library` 第 7、9 节审读未提交改动。审计者未参与实现，也未修改业务代码。本记录为实现中阶段审计；最终界面、浏览器证据与提交范围收齐后仍需复核。
 
+下文保留各阶段的实际范围与结论。用户随后批准三处新增 UI 的预览和实施，最新范围以文末“用户批准 UI 增量复核”为准；此前等待设计批准的结论是历史状态，最终真实 UI 的人工验收仍未完成。
+
 ## 阶段结论
 
 发现 1 个 P2 问题，已完成代码修复复核。当前已审读范围没有其余可确认的功能阻断。此结论不代表 Issue 全部完成、设计验收通过或检查全部通过。
@@ -103,3 +105,49 @@ throwOnError invalidate rejected: HTTP 500
 最后实际回读 `browser-confirm-verified/trash-query-batch.json` 与同目录 runner，均为 `passed`，桌面浅色与手机深色各一张确认截图，`errors` 为空。已核对脚本确实先按 Escape，断言确认框隐藏，再断言实际焦点回到重新挂载的“操作已选 1 张图片”，最后查询数据库断言没有任何测试图片的清理任务。报告是在全部断言后写入通过。`reports/unit-batch-focus-final.txt` 同时为 1 文件 / 12 项通过。Escape 与回焦两个 P2 已取得真实失败、代码修复和同场景通过证据，闭环完成。
 
 **最终代码审计结论：当前已实现范围没有未解决的代码审计阻断。** 原刷新失败隐藏、批量确认 Escape 无效及关闭后未回来源三个 P2 均已修复并取得针对证据。先前失败记录继续保留，不改写为成功。三处尚未确认的新增 UI 与用户人工验收仍未完成；此结论不代表 Issue #178 全部交付或设计验收通过，PR 继续保留草稿。
+
+## 用户批准 UI 增量复核
+
+本轮以 `0404a8c` 为基线，独立审读三个真实筛选控件、20/40/80 页大小、公共筛选组件的 `presentation`、批量逐图 Table/Accordion、20 项结果分页、逐项核对与重试及实际浏览器场景。使用 `code-review-and-quality` 与 `vercel-react-best-practices`，不参与业务实现，不重复大型测试，不操作实现者的 Ego 页面。
+
+本轮发现一个需修复的结构问题：旧汇总界面替换后，`useTrashBatch` 仍保留无人消费的 `showFailures/toggleFailures` 和批量 `retry/retryTasks` 公共方法，后两者只被旧单元测试调用。实现者已删除这些本次变成死代码的状态与方法，保留实际 `run` 内的重试模式；旧测试改调用真实逐项 `retryItem('image-200')` 与 `retryTask('image')`，保留未知禁止重放、显式继续及周期基线断言。复核时发现的一处残留 `setShowFailures(false)` 也已删除。普通图库和重处理控制器没有因此改动。实际 `reports/unit-approved-audit-fix.txt` 为 1 文件 / 15 项通过。
+
+空搜索参数也已定向复核：本项目 `parseAsString` 不带默认值，直接序列化空字符串会保留 `?q=`；新增浏览器场景要求清除搜索后移除 q。`applyQuery` 现在仅将空字符串转为 `q: null`，复用 nuqs 的删除参数行为，不改变严格 query parser、查询类型或其他字段。新场景保留真实 URL 的断言，实际浏览器结果尚待取得。
+
+已审读的增量行为：
+
+- 筛选仍沿用 `/api/images?scope=trash` 的真实查询契约。变更条件或页大小回第一页并关闭详情，选择身份包含实际筛选与页大小，跨页只改变页码。存储选项复用公共组件已有的选项查询、分页、停用项标识、错误与会话处理；新增 `field` 只改变呈现，原 `condition` 默认值与公共消费方式保持不变。
+- 结果页对冻结选择的真实 rows 每页切片 20 项。桌面 Table 与手机单项展开 Accordion 消费相同 row 组件，状态、对象键、失败原因、未知大小、原任务 ID 和周期均来自实际结果。已受理或待核对项不沿用旧可预览缩略图。汇总只保留一处，确认范围和不可恢复说明仍在确认阶段。
+- `retryItem` 仅接受仍属于查询且保留选择的受理失败 ID，或该快照的未发送 ID；`retryTask` 仅接受真实失败且仍属于查询的任务 ID。两者只传 `[id]`，不会顺手重试其他失败项。重试 command 继续保存该任务 ID 和当前周期，检查旧周期不能证明新受理。
+- `checkItem` 仅对目标 ID 发 `check`。只要还存在任何 unknown，控制器 `run` 的 apply 分支仍拒绝所有写入，界面同时禁用继续或重试；核对后不会自动补发 unsent。已有离开后的请求取消、定时读取清理与保留后台责任继续成立，没有新增队列、数据表、兼容接口或依赖。
+- 三个新增控制器测试断言准确请求 ID、mode、任务周期和未操作项保留，覆盖逐项核对后其他 199 项仍未知、未知时拒绝继续、另一个 unsent 不自动提交、查询外项拒绝重试。测试仍使用原轻量 Hook 调度器，其边界不替代真实 DOM 与焦点检查。
+
+新增浏览器脚本已经审读，包含真实筛选 URL、选择清空、页大小和详情返回查询；真实 Local 对象目录故障与数据库受理失败分别展示实际错误；逐项重试核对准确 ID 和原周期；丢弃真实受理响应后检查只读请求、未发送项禁用及显式继续。桌面/手机、浅深色、短视口、Accordion Enter 单项展开、20 项分页和公共图库/相册筛选消费也有实际断言。审读脚本不等于这些新场景已运行通过。
+
+已回读实现者实际留存的增量报告：`unit-approved-filters.txt` 为 2 文件 / 19 项通过；`unit-approved-ui.txt` 为 87 文件 / 1152 项通过；`integration-approved-ui.txt` 为 5 文件 / 60 项通过；`typecheck-approved-ui.txt` 无类型错误。上述完整单元和类型报告早于最后死代码删除，受影响控制器的后续 15 项报告已取得，最终构建和浏览器仍由主记录补齐。
+
+**增量代码结论：当前已审读实现没有未解决的代码审计阻断。** 死代码问题已在本次修复，空搜索删除参数逻辑已完成源码复核。最终新 UI 浏览器报告与设计评审尚未收齐，真实最终界面的用户人工验收仍待进行；本结论不代替这些验收，也不宣称 Issue #178 全部完成。
+
+### 增量最终证据补录
+
+已实际回读 `browser-approved-results/runner.json` 与 `trash-query-batch.json`，两者均为 `passed`。环境为 macOS ARM64、Node 24.18.1、独立 task space 25；业务报告含 4 条检查、71 张截图、71 条布局记录、空 `errors`，持久数据库读取 `completedTasks` 为 201 件 `succeeded`。脚本在全部行为断言及 `assertNoBrowserErrors` 后才设置通过，没有将截图数量或无溢出替代行为验证。
+
+再次核对脚本，分页定位仅从无法匹配的文本选择器改为实际 button 语义，仍断言页面号和实际 20 项切片。`approved-results` 定向入口只跳过已取得证据的查询前置段，保留全部结果、失败、未知核对与公共消费场景：21 项中的真实对象故障和受理失败分别显示实际错误；逐项提交只发送该 ID；清理重试携带原任务 ID 和周期；200 项响应丢失后逐项与全部检查均只读，剩余 1 项在未知时禁用，确认后仍须显式继续；最终数据库 201 项成功、请求分批准确为 200+1、只在全部完成后取得空列表。公共图库和相册的原 `condition` 筛选菜单仍核验真实查询与选择。
+
+`browser-approved-final` 的查询段已完成其真实行为检查，报告包含搜索和存储显式清除、三筛选的页码重置与清选择、20/40/80 实际条数及详情返回完整 URL；三个 Select 的实际 `centerOffset` 均为 0。但该轮在结果分页的旧选择器上失败，`runner.json` 与业务报告仍为 `failed`，原错误明确是 `:text-is("下一页")` 匹配 0 元素。不能将取得的查询段证据描述为这一整轮通过。
+
+最后源变化只局部调整 Accordion 最低 80px、Select 垂直居中、结果标题 28px/42px 和浅深色错误文字，没有再修改控制器或后端生命周期。浏览器保留最低 80px 的实际断言；最新结果报告满足该断言。已回读 `build-approved-final-colors.txt` 的实际构建产物记录、`typecheck-approved-final.txt` 和 `lint-approved-final.txt`，类型与静态输出无错误；构建的依赖追踪警告继续保留在原报告，不改写为零警告。本审计未重复运行大型检查。
+
+**最终增量代码审计结论：没有未解决的代码审计阻断，新增逐项操作、未知结果禁写和公共筛选消费已取得真实浏览器行为证据。** 失败整轮记录继续保留。设计还原结论由独立设计审计维护，本记录不给设计通过声明；真实最终 UI 的用户人工验收仍待进行，PR 保持草稿。
+
+### 新版结果提交与进度状态补录
+
+已独立审读新增 `verifyApprovedProgress` 与 `approved-progress` 运行入口。没有业务源码变化，也没有直接写入清理任务状态或伪造 HTTP 返回。提交中场景先让原始 fetch 实际取得生产 `/api/images/batch` 的受理响应，再只延迟向页面返回该响应，保留真实 `pending`、Spinner 和 row 的 `waiting`。报告核验唯一 apply 请求只含目标 ID，真实受理任务为 queued。
+
+等待夹具在独立数据库登记一个 running 的 `media_jobs` 责任，再通过真实 cleanup HTTP 读取 queued、`waitingForWrites: true` 和两件剩余对象。该登记只是持久活动责任夹具，不冒充实际执行中的写入 Promise；真实运行中写入者的证明仍见前述集成记录。设置原对象 `next_cleanup_at` 为未来并结束该活动责任后，由原生产 queue 调用 `cleanupPermanentDeletes` 自行置 running，删除已到期缩略图并保留原对象。实际 HTTP 与页面均核验 1/2、剩余 original 一件及 `waitingForWrites: false`。恢复对象到期后，由同一 worker 取得成功任务、空 remaining 与图片记录移除，成功后的历史计数仍为 null。
+
+脚本 `finally` 先释放延迟响应 gate 并恢复原 fetch，再删除该测试活动责任、清理测试任务/对象/图片和夹具文件；运行器仍收尾独立服务与临时目录。`assertNoBrowserErrors` 继续在设置 passed 之前执行，没有放宽错误断言。此次夹具不改变生产队列或资源生命周期。
+
+已回读 `browser-approved-progress/runner.json` 与 `trash-query-batch.json`，两者均为 `passed`：Node 24.18.1、macOS ARM64、独立 task space 26，1 条行为检查、12 张截图、12 条布局记录、`errors: []`，运行器记录 `temporaryDirectoryRemoved: true`。`progressTasks` 的 accepted、queued、running、succeeded 共用同一真实任务 ID 与周期 1，依次保留真实 0/2、0/2、1/2 和完成后 null 历史计数。桌面 Table 与展开手机 Accordion 的提交中、等待和执行中状态分别取得浅深色证据。
+
+**补录后代码审计结论保持无未解决阻断。** 此次只审新增脚本、真实报告及原 worker 调用路径，没有重跑已通过的大检查；设计结论与最终用户人工验收边界保持不变。

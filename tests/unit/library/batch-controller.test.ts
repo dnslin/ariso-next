@@ -519,7 +519,7 @@ it('checks lost cleanup responses without replay and waits for an explicit conti
   await flush();
   expect(get().unknownIds).toHaveLength(200);
   expect(get().unsentIds).toEqual(['image-200']);
-  get().retry();
+  get().retryItem('image-200');
   await flush();
   expect(requests).toHaveLength(1);
   get().check();
@@ -532,7 +532,7 @@ it('checks lost cleanup responses without replay and waits for an explicit conti
   expect(get().unsentIds).toEqual(['image-200']);
   await vi.advanceTimersByTimeAsync(1500);
   expect(requests).toHaveLength(2);
-  get().retry();
+  get().retryItem('image-200');
   await flush();
   expect(requests[2].ids).toEqual(['image-200']);
 });
@@ -569,7 +569,7 @@ it('does not mistake the old failed cycle for a retry result and preserves its r
   await flush();
   get().submit();
   await flush();
-  get().retryTasks();
+  get().retryTask('image');
   await flush();
   expect(requests[1]).toMatchObject({
     mode: 'apply',
@@ -684,4 +684,117 @@ it('closing between chunks retains received tasks and leaves only the later chun
   expect(get().workspace?.message).toBe(
     '已停止未发送的请求。已受理的清理任务继续执行。',
   );
+});
+
+it('checks only the requested unknown item and does not submit unsent items until all unknown results are resolved', async () => {
+  const requests: { ids: string[]; mode: string }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1) throw new Error('lost response');
+      return cleanupResponse(request.ids, 'succeeded');
+    }),
+  );
+  const get = mountTrash(
+    selection(Array.from({ length: 202 }, (_, i) => `image-${i}`)),
+  );
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().checkItem('image-3');
+  await flush();
+  expect(requests[1]).toMatchObject({ ids: ['image-3'], mode: 'check' });
+  expect(get().unknownIds).toHaveLength(199);
+  get().retryItem('image-200');
+  await flush();
+  expect(requests).toHaveLength(2);
+  get().check();
+  await flush();
+  expect(get().unknownIds).toEqual([]);
+  expect(get().unsentIds).toEqual(['image-200', 'image-201']);
+  get().retryItem('image-200');
+  await flush();
+  expect(requests[3]).toMatchObject({ ids: ['image-200'], mode: 'apply' });
+  expect(get().unsentIds).toEqual(['image-201']);
+  await vi.advanceTimersByTimeAsync(1500);
+  expect(requests).toHaveLength(4);
+});
+
+it('retries only the chosen failed cleanup task with its own cycle and refuses tasks outside the frozen query', async () => {
+  const requests: {
+    ids: string[];
+    mode: string;
+    command: unknown;
+  }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1) {
+        const response = await cleanupResponse(request.ids, 'failed', 4).json();
+        response.results[2].inQuery = false;
+        return Response.json(response);
+      }
+      return cleanupResponse(request.ids, 'succeeded', 5);
+    }),
+  );
+  const get = mountTrash(selection(['first', 'second', 'outside']));
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().retryTask('outside');
+  await flush();
+  expect(requests).toHaveLength(1);
+  get().retryTask('second');
+  await flush();
+  expect(requests[1]).toEqual({
+    ids: ['second'],
+    query: 'scope=trash',
+    mode: 'apply',
+    command: {
+      type: 'retry-cleanup',
+      attempts: { second: { taskId: 'cleanup-second', cycle: 4 } },
+    },
+  });
+  expect(get().workspace?.rows[0].cleanup?.status).toBe('failed');
+  expect(get().workspace?.rows[1].cleanup?.status).toBe('succeeded');
+  expect(get().workspace?.rows[2].cleanup?.status).toBe('failed');
+});
+
+it('resubmits only a retained rejected item and refuses one that left the query', async () => {
+  const requests: { ids: string[]; mode: string }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1)
+        return Response.json({
+          results: request.ids.map((id: string) => ({
+            id,
+            status: 'failed',
+            inQuery: id !== 'outside',
+            message: '不能受理',
+          })),
+        });
+      return cleanupResponse(request.ids, 'succeeded');
+    }),
+  );
+  const get = mountTrash(selection(['first', 'second', 'outside']));
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().retryItem('outside');
+  await flush();
+  expect(requests).toHaveLength(1);
+  get().retryItem('second');
+  await flush();
+  expect(requests[1]).toMatchObject({ ids: ['second'], mode: 'apply' });
+  expect(get().failedIds).toEqual(['first']);
 });

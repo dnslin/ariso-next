@@ -94,6 +94,7 @@ export function useTrashQuery(client: QueryClient) {
   function applyQuery(patch: Partial<TrashQueryPatch>) {
     return setParams({
       ...patch,
+      ...(patch.q === '' ? { q: null } : {}),
       pageSize: String(patch.pageSize ?? filters?.pageSize ?? 40),
       page: '1',
       image: null,
