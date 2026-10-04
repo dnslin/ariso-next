@@ -64,6 +64,8 @@ node docs/tasks/check.mjs
 
 默认浏览器全量命令退出 1。初始化和重启的 1440/390 两宽度、存储管理及 CORS 已通过。已有图库场景在 `e2e/library-detail-171-confirmation.mjs:31` 期望焦点为 `detail-workspace-title`，实际为 null；流程尚未到分享和其后场景，不算全量通过。本次没有改动该图库实现或断言，范围外问题留待所属任务处理。见 [browser-full.json](./browser-full.json)。新分享场景接入默认入口，定向模式不替代全量结果。
 
+用户追问失败原因后，使用 Node 24、现有 `launchLocalDelivery`、独立新图片和原 Ego TaskSpace 30 的 p5 定向诊断。直接进入重新处理页，标题和选项已显示，实际焦点仍在 BODY；等待标题获得焦点 2 秒仍未发生，排除了只是首轮断言立即读取的问题。`library-screen.tsx` 在详情尚未返回时已经挂载 `DetailReprocess`，此时组件返回 null，标题 ref 为空。设置焦点的 effect 只依赖 receipt/job 状态，详情返回后这些值未改变，不会再次执行；导航的焦点 effect 同样只依赖 view/imageId。该已有图库焦点缺陷仍未修复，不属于分享授权失败。诊断没有修改产品代码，临时服务与独立数据已经回收，见 [focus-diagnosis.json](./focus-diagnosis.json)。
+
 取消实验使用真实 Next HTTP 服务和阻塞的 CLI 夹具：服务返回 200 后给运行器 SIGINT，运行器按预期退出 1，服务端口关闭、浏览器子进程结束、临时 SQLite 目录删除。该结果证明资源回收，不证明真实 Ego 的取消行为，见 [cancellation.json](./cancellation.json) 与 [cancellation-runner.json](./cancellation-runner.json)。命令与结果汇总见 [checks.json](./checks.json)。
 
 ## 浏览器、评审与完成状态

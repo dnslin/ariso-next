@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-05",
+  "status": "reproduced",
+  "environment": {
+    "node": "v24.19.0",
+    "browser": "existing Ego Lite",
+    "taskSpaceId": 30,
+    "pageLabel": "p5"
+  },
+  "method": "Existing launchLocalDelivery, independent new public image, direct /library?image=<test-image-id>&detailView=reprocess, real owner session in a unique test host",
+  "observations": [
+    {
+      "phase": "choices-ready",
+      "headingExists": true,
+      "heading": "重新处理这张图片",
+      "activeTag": "BODY",
+      "activeTestId": null,
+      "focusEvents": []
+    },
+    {
+      "phase": "after-focus-wait",
+      "waitMs": 2000,
+      "focusEventuallyReached": false,
+      "headingExists": true,
+      "activeTag": "BODY",
+      "activeTestId": null,
+      "focusEvents": []
+    }
+  ],
+  "diagnosis": "Focus effects execute before asynchronous detail creates the heading, and their dependencies do not change when the detail arrives.",
+  "productionCodeChanged": false,
+  "temporaryServiceAndDataRemoved": true,
+  "originalFullBrowserOutcome": "failed; not replaced by this diagnosis"
+}
