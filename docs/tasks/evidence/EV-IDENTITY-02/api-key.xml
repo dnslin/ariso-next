@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites tests="39" failures="0" errors="0" skipped="0">
+  <testsuite name="tests/integration/identity/api-key-http.test.ts" timestamp="2026-10-04T16:42:39.719Z" hostname="dnslins-Mac-mini.local" tests="31" failures="0" errors="0" skipped="0" time="3.710474375">
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="Cookie management returns plaintext once, sanitizes later reads, persists across reopening and enables/disables/revokes independently" time="0.346043792">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="HTTP creation supports expiresIn=undefined seconds with an optional UTC expiry" time="0.1038825">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="HTTP creation supports expiresIn=1 seconds with an optional UTC expiry" time="0.106607292">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="HTTP creation supports expiresIn=60 seconds with an optional UTC expiry" time="0.117267875">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="HTTP creation supports expiresIn=34560000 seconds with an optional UTC expiry" time="0.11167375">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="HTTP upload rejects exactly at expiry and after expiry without creating a session" time="0.114236875">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="only Bearer POST passes the upload probe; API key headers do not create a Cookie session or grant owner access" time="0.194536708">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="generic plugin endpoints are never exposed, even to the owner; malformed methods and trailing path variants remain closed" time="0.211306167">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;&quot;} without inserting keys" time="0.096832917">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;  &quot;} without inserting keys" time="0.096115125">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;} without inserting keys" time="0.104086583">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {} without inserting keys" time="0.104834458">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:0} without inserting keys" time="0.10387775">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:-1} without inserting keys" time="0.113443083">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:0.5} without inserting keys" time="0.111372">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:100000000000000000000} without inserting keys" time="0.100440583">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:1.7976931348623157e+308} without inserting keys" time="0.110740417">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:null} without inserting keys" time="0.101190291">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;expiresIn&quot;:&quot;Infinity&quot;} without inserting keys" time="0.094371458">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;userId&quot;:&quot;other&quot;} without inserting keys" time="0.097233333">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;permissions&quot;:{&quot;upload&quot;:[&quot;delete&quot;]}} without inserting keys" time="0.111221125">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;disableKeyHashing&quot;:true} without inserting keys" time="0.106017959">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input {&quot;name&quot;:&quot;bad&quot;,&quot;rateLimitEnabled&quot;:true} without inserting keys" time="0.097374875">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input &quot;{&quot; without inserting keys" time="0.102617208">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management rejects invalid or privileged input &quot;{\&quot;name\&quot;:\&quot;bad\&quot;,\&quot;expiresIn\&quot;:1e999}&quot; without inserting keys" time="0.103289792">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="Cookie management checks origin and cannot override fixed permissions through server API headers" time="0.125591458">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management INSERT failure is reported, preserves data and permits explicit retry" time="0.10780025">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management UPDATE failure is reported, preserves data and permits explicit retry" time="0.102106292">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="management DELETE failure is reported, preserves data and permits explicit retry" time="0.105783042">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="verification database failure is HTTP 401 with diagnosis, and the same key works after repair" time="0.102847542">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key-http.test.ts" name="generated table remains identical to the pinned CLI schema and a reopened fixture applies no extra migrations" time="0.104342709">
+        </testcase>
+  </testsuite>
+  <testsuite name="tests/integration/identity/api-key.test.ts" timestamp="2026-10-04T16:42:39.720Z" hostname="dnslins-Mac-mini.local" tests="8" failures="0" errors="0" skipped="0" time="0.4311955">
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="official plugin creates only a hash with upload:create, no partial plaintext or default usage quota" time="0.08537375">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="library accepts equality but the upload boundary rejects now &gt;= expiresAt with millisecond precision" time="0.050276625">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="fixed upload:create cannot satisfy {&quot;upload&quot;:[&quot;read&quot;]}" time="0.049385417">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="fixed upload:create cannot satisfy {&quot;upload&quot;:[&quot;delete&quot;]}" time="0.04773225">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="fixed upload:create cannot satisfy {&quot;library&quot;:[&quot;read&quot;]}" time="0.04843725">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="fixed upload:create cannot satisfy {&quot;settings&quot;:[&quot;write&quot;]}" time="0.047817292">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="a stored key without upload:create is refused even when otherwise valid" time="0.04963375">
+        </testcase>
+    <testcase classname="tests/integration/identity/api-key.test.ts" name="database read/write faults become invalid with the original diagnostic, and recovery accepts the same key" time="0.051903958">
+        </testcase>
+  </testsuite>
+</testsuites>

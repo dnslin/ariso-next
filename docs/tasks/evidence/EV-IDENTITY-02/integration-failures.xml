@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites>
+  <testsuite name="tests/integration/analytics/count.test.ts" timestamp="2026-10-04T16:42:39.710Z" hostname="dnslins-Mac-mini.local" tests="13" failures="2" errors="0" skipped="0" time="33.072697625">
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each original GET and download once without database writes" time="3.7824245">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each compressed GET and download once without database writes" time="4.282033709">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each watermark GET and download once without database writes" time="5.080921666">
+      <failure message="Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:120:49
+            </failure>
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts the actual original when the default version is inapplicable" time="2.614472">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="excludes owner/private/thumbnail/HEAD/304 and rejected or missing content" time="6.631523708">
+      <failure message="Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/analytics/count.test.ts:151:1
+            </failure>
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="reads committed timezone after response preparation and keeps already archived dates unchanged" time="4.088314875">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="does not retry or duplicate a repeated delivery callback within one request" time="3.312610167">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="handles first-block real file failure over HTTP" time="0.049302334">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="handles later-block real file failure over HTTP" time="0.061352417">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="keeps one count after client cancellation following the first network block" time="0.04856675">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="logs aggregation failure with event context and still returns complete legal content" time="1.629432375">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="logs capacity loss without truncating content" time="1.403693333">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="does not count a client cancelled before its first body block" time="0.086396708">
+        </testcase>
+  </testsuite>
+</testsuites>
