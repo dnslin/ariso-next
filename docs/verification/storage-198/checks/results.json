@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-04",
+  "environment": {
+    "os": "macOS 26.6.2",
+    "architecture": "ARM64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0"
+  },
+  "checks": [
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "files": 86,
+      "tests": 1121,
+      "log": "unit.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/storage-form.test.ts tests/unit/storage/storage-reconciliation.test.ts tests/unit/storage/connection-report.test.ts tests/unit/storage/storage-references-panel.test.ts",
+      "exitCode": 0,
+      "files": 4,
+      "tests": 23,
+      "log": "unit-final.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/storage-references-panel.test.ts",
+      "exitCode": 0,
+      "files": 1,
+      "tests": 6,
+      "log": "maintenance-final.log"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "exitCode": 1,
+      "files": 137,
+      "tests": 1327,
+      "passedFiles": 130,
+      "passedTests": 1316,
+      "log": "integration.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 tests/integration/analytics/count.test.ts tests/integration/media/trash-http.test.ts tests/integration/media/metadata.test.ts tests/integration/media/preview-http.test.ts tests/integration/media/reprocess-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts",
+      "exitCode": 1,
+      "files": 7,
+      "tests": 80,
+      "passedFiles": 5,
+      "passedTests": 78,
+      "log": "integration-retry.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "log": "lint-final.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "log": "typecheck-complete.log"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "log": "build-final.log",
+      "limitations": "Next standalone file tracing reports unavailable optional platform bindings/dependencies; retained verbatim, actual command exited zero."
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "log": "lint-delivery.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "log": "typecheck-delivery.log"
+    },
+    {
+      "command": "pnpm exec eslint src/components/storage --max-warnings=0",
+      "exitCode": 0,
+      "scope": "Final visual/dialog repair"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/connection-report.test.ts tests/unit/storage/storage-references-panel.test.ts",
+      "exitCode": 0,
+      "files": 2,
+      "tests": 12,
+      "log": "unit-dialog.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "log": "typecheck-dialog.log"
+    },
+    {
+      "command": "EGO_TASK_SPACE=20 BROWSER_REPORT_DIR=docs/verification/storage-198/browser node scripts/verify-browser.mjs --suite storage-admin",
+      "exitCode": 0,
+      "log": "../browser/storage-admin.log",
+      "reports": [
+        "../browser/storage-admin.json",
+        "../browser/shell-navigation.json"
+      ]
+    },
+    {
+      "command": "EGO_TASK_SPACE=20 BROWSER_REPORT_DIR=docs/verification/storage-198/dialog-browser node scripts/verify-browser.mjs --suite storage-admin --only dialogs",
+      "exitCode": 0,
+      "log": "../dialog-browser/storage-admin-dialogs.log",
+      "report": "../dialog-browser/storage-admin-dialogs.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=20 BROWSER_REPORT_DIR=docs/verification/storage-198/live-browser node scripts/verify-browser.mjs --suite storage-admin --only live --storage-config /Volumes/data/project/ariso/.data/upload-v02.json",
+      "exitCode": 0,
+      "log": "../live-browser/storage-admin-live.log",
+      "report": "../live-browser/storage-admin-live.json"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "rejectionCases": 5
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "log": "format-delivery.log",
+      "earlierFailure": "format-first.log: generated evidence JSON formatting; values unchanged, five files formatted"
+    }
+  ]
+}

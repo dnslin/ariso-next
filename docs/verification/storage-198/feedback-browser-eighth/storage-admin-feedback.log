@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: local: invalid input adds a visible danger boundary to the ordinary field: {"normalBoundary":{"borderColor":"rgb(96, 125, 133)","outlineColor":"rgb(244, 241, 248)","outlineWidth":"3px","outlineStyle":"none"},"error":{"value":"../outside","invalid":"true","groupInvalid":"true","borderColor":"rgb(96, 125, 133)","outlineColor":"rgb(255, 133, 138)","outlineWidth":"1px","outlineStyle":"none","dangerColor":"rgb(255, 133, 138)","description":"请输入存储根目录内的相对路径","focused":true,"responses":[{"path":"/api/storages","method":"POST","status":400,"code":"STORAGE_INVALID_INPUT","fields":[{"field":"localPath","message":"请输入存储根目录内的相对路径"}]}]}}
+    at invalidCreate (file:////[eval2]:424:10)
+    at async file:////[eval2]:599:3
+
+ego's nodejs process exited with code 1.

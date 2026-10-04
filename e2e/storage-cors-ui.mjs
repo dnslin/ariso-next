@@ -84,7 +84,7 @@ export async function verifyCorsAccessBoundaries(
     );
     assert.equal(response.status, boundary.status);
     assert.equal(JSON.parse(response.body).code, boundary.code);
-    await page.goto(`${config.origin}/settings/storage/${boundary.id}`);
+    await page.goto(`${config.origin}/settings/storage/${boundary.id}/cors`);
     await page.waitForSelector(
       '[data-testid="storage-cors"][data-state="error"]',
     );
@@ -108,11 +108,11 @@ export async function verifyCorsAccessBoundaries(
     );
   }
   report.checks.push(
-    'Actual missing, controlled deleted and existing Local storage routes expose their real 404/400 errors without runnable CORS controls or probe creation; no management UI implemented',
+    'Actual missing, controlled deleted and existing Local storage routes expose their real 404/400 errors without runnable CORS controls or probe creation; CORS boundary remains separate from the management editor',
   );
 }
 export async function openCorsUi(page, config, id) {
-  await page.goto(`${config.origin}/settings/storage/${id}`);
+  await page.goto(`${config.origin}/settings/storage/${id}/cors`);
   await page.waitForFunction(() => {
     const state = document.querySelector('[data-testid="storage-cors"]')
       ?.dataset.state;
@@ -190,6 +190,17 @@ export async function verifyCorsUiFailures({
   const record = (result) =>
     entry.probes.push({ key: `probes/${result.probeId}`, report: result });
   await verifyCorsLayouts(page, config, 'passed', report);
+  await page.waitForSelector(`a[href="/settings/storage/${id}"]`);
+  assert.equal(
+    await page.evaluate(
+      (id) =>
+        document
+          .querySelector(`a[href="/settings/storage/${id}"]`)
+          .textContent.trim(),
+      id,
+    ),
+    '管理此存储',
+  );
   await verifyCorsDialogs(page, config, id, report);
   await page.reload();
   await page.waitForSelector(`${root}[data-state="passed"]`);

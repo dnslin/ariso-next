@@ -39,10 +39,9 @@ const navigation = [
     section: '管理',
   },
   {
-    href: '/storage',
+    href: '/settings/storage',
     label: '存储管理',
     icon: <HardDrive />,
-    unavailable: true,
   },
   {
     href: '/settings',

@@ -1,0 +1,54 @@
+[
+  {
+    "phase": "full",
+    "consumers": true,
+    "albumSuccess": true
+  },
+  {
+    "phase": "revision",
+    "consumers": true,
+    "albumSuccess": true
+  },
+  {
+    "phase": "representative",
+    "consumers": false,
+    "albumSuccess": false
+  },
+  {
+    "phase": "feedback",
+    "consumers": false,
+    "albumSuccess": false
+  }
+]
+[
+  {
+    "suite": "library-copy",
+    "storagePreview": true
+  },
+  {
+    "suite": "storage-admin",
+    "storagePreview": true
+  },
+  {
+    "suite": "library-batch",
+    "storagePreview": true
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+true !== false
+
+    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/docs/verification/library-187/review-fixes/check-dispatch.mjs:48:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.1

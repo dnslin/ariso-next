@@ -1,0 +1,61 @@
+{
+  "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH EGO_TASK_SPACE=27 BROWSER_REPORT_DIR=docs/verification/storage-198/review-fixes/browser node scripts/verify-browser.mjs --suite storage-admin --only regressions",
+  "buildId": "SkV-F8NXOT4Pzfu1jAFJA",
+  "exitCode": 0,
+  "note": "最终同组 6 场景及新增第 7 场景全部通过。正常和丢 DELETE 响应路径各触发 1 次真实 /upload/settings 读取，已删除 ID 从实际选项移除、默认 null、同文档待上传 sample.png 保留。第 7 项默认 PATCH 为真实 409 STORAGE_DISABLED，然后用户启用保存后为 200，POST 仍仅 1 次。实际检查了创建成功 1440 浅色、删除后上传 390 深色和 409 原错误 1440 浅色截图。",
+  "taskSpaceId": 27,
+  "userTaskSpace20Untouched": true,
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "origin": "http://ariso-57904.localhost:57904",
+  "status": "passed",
+  "checks": [
+    {
+      "id": "create-lost-response-default",
+      "status": "passed"
+    },
+    {
+      "id": "update-lost-response-clear-default",
+      "status": "passed"
+    },
+    {
+      "id": "default-lost-response-read-only",
+      "status": "passed"
+    },
+    {
+      "id": "delete-normal-upload-cache",
+      "status": "passed"
+    },
+    {
+      "id": "delete-lost-response-upload-cache",
+      "status": "passed"
+    },
+    {
+      "id": "rename-preserves-external-default",
+      "status": "passed"
+    },
+    {
+      "id": "recovered-create-default-rejected-correction",
+      "status": "passed"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "unverified": [
+    "远端 S3 服务",
+    "旧完整 UI 断点/主题矩阵",
+    "物理触控、软键盘、非零安全区",
+    "最终容器及双架构发布"
+  ]
+}

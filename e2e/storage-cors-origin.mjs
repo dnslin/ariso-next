@@ -40,7 +40,7 @@ export async function verifyLongCorsOrigin(page, config, storageId, report) {
   const longOrigin = `${new URL(config.origin).protocol}//${'cors-'.repeat(10)}source.${'long-'.repeat(10)}example.test`;
   await changeSiteOrigin(config, longOrigin);
   try {
-    await page.goto(`${config.origin}/settings/storage/${storageId}`);
+    await page.goto(`${config.origin}/settings/storage/${storageId}/cors`);
     await page.waitForSelector(
       '[data-testid="storage-cors"][data-state="invalidated"]',
     );
@@ -158,7 +158,7 @@ export async function verifyLongCorsOrigin(page, config, storageId, report) {
     );
   } finally {
     await changeSiteOrigin(config, config.origin);
-    await page.goto(`${config.origin}/settings/storage/${storageId}`);
+    await page.goto(`${config.origin}/settings/storage/${storageId}/cors`);
     await page.waitForSelector(
       '[data-testid="storage-cors"][data-state="invalidated"]',
     );

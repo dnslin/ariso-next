@@ -205,3 +205,11 @@ P2与P3已实现，并由原两位独立评审者分别复审关闭，见[审计
 | `node docs/tasks/check.mjs`、`git diff --cached --check`                                                                                                                                                         | exit0，无未解决冲突。文档追加后再次检查文档格式与任务定义。                                                                                                                        |
 
 PR 合并和 Issue 关闭按用户明确指令执行；没有新增远端 PR 检查，没有将空检查列表记作 CI 通过。清理只针对本任务 worktree 与开发分支，保留其他任务；忽略的预览数据及本地评审记录在归档前另行保存，历史提交和已跟踪证据随 worktree 归档保留。
+
+### main 后续存储管理融合
+
+准备合并期间 main 又合入 PR #239（`c0e0df7`）。第二次融合仅浏览器运行器发生冲突；保留 storage-admin、trash、library-copy 的定向/full入口与各自配置字段。main 新增的顶层 `only === 'feedback'` 会把复制反馈定向检查误导到存储现有预览，已补上明确的 `suite === 'storage-admin'` 条件。
+
+扩展既有离线诊断执行实际源码 guard 和纯 stages 表达式：[修前 exit1](./merge-main/storage-dispatch-before.txt) 确认 library-copy 被误导，[修后 exit0](./merge-main/storage-dispatch-after.txt) 确认仅 storage-admin 的 feedback 使用该预览入口，copy/trash/storage/reprocess 分派保留。诊断没有启动浏览器或改动用户预览数据。独立评审者实际读取融合差异、诊断与日志后确认无新增必改项。
+
+新输入后的 `pnpm run typecheck` [通过](./merge-main/storage-typecheck.txt)，`pnpm run build` [通过](./merge-main/storage-build.txt)。`node --check` 对运行器和诊断均 exit0；两文件的定向 Prettier 与 ESLint 检查 exit0。该次冲突没有改动应用业务实现，未机械重跑上一融合已通过的 1173 项单元与 26 项集成；最新 main 的既有存储功能保持，不重新审计另一任务。文档格式、任务定义和 `git diff --cached --check` 在提交前复查。
