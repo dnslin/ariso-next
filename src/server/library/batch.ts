@@ -12,6 +12,7 @@ import {
   MediaImageFieldsError,
   updateImageFields,
 } from '../media/image-fields.ts';
+import { MediaCleanupError } from '../media/cleanup.ts';
 import { readGeneratedMediaVersions } from '../media/objects.ts';
 import { MediaReprocessError, requestReprocess } from '../media/reprocess.ts';
 import { mediaImages, mediaJobs } from '../media/schema.ts';
@@ -21,6 +22,7 @@ import type {
   BatchItemResult,
   LibraryBatchResponse,
 } from './batch-types.ts';
+import { cleanupBatchResult } from './batch-cleanup.ts';
 import {
   assertLibraryReferences,
   libraryPredicate,
@@ -46,6 +48,17 @@ export const batchCommandSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ type: z.literal('trash') }),
   z.strictObject({ type: z.literal('restore') }),
+  z.strictObject({ type: z.literal('delete-permanent') }),
+  z.strictObject({
+    type: z.literal('retry-cleanup'),
+    attempts: z.record(
+      z.string().min(1),
+      z.strictObject({
+        taskId: z.string().min(1),
+        cycle: z.number().int().positive(),
+      }),
+    ),
+  }),
   z.strictObject({
     type: z.literal('reprocess'),
     scope: z.enum(['all', 'compressed', 'thumbnail', 'watermark']),
@@ -82,6 +95,17 @@ export function parseLibraryBatch(input: unknown) {
         'LIBRARY_INVALID_BATCH',
       );
   }
+  if (parsed.data.command.type === 'retry-cleanup') {
+    const { attempts } = parsed.data.command;
+    if (
+      Object.keys(attempts).length !== parsed.data.ids.length ||
+      parsed.data.ids.some((id) => !Object.hasOwn(attempts, id))
+    )
+      throw new LibraryQueryError(
+        '每张选中图片必须携带提交前的清理任务 ID 和周期',
+        'LIBRARY_INVALID_BATCH',
+      );
+  }
   const query = parseLibraryQuery(new URLSearchParams(parsed.data.query));
   if (query.page !== null || query.cursor !== null)
     throw new LibraryQueryError(
@@ -89,11 +113,13 @@ export function parseLibraryBatch(input: unknown) {
       'LIBRARY_INVALID_BATCH',
     );
   if (
-    (parsed.data.command.type === 'restore') !==
+    (parsed.data.command.type === 'restore' ||
+      parsed.data.command.type === 'delete-permanent' ||
+      parsed.data.command.type === 'retry-cleanup') !==
     (query.filters.scope === 'trash')
   )
     throw new LibraryQueryError(
-      '恢复仅用于回收站；相册、标签、可见性、回收和重处理操作仅用于正常图库或相册',
+      '恢复、永久删除和重试清理仅用于回收站；其他操作仅用于正常图库或相册',
       'LIBRARY_INVALID_BATCH',
     );
   return { ...parsed.data, filters: query.filters };
@@ -116,7 +142,10 @@ function inQuery(
 function applyCommand(
   db: Parameters<typeof updateImageFields>[0],
   id: string,
-  command: Exclude<BatchCommand, { type: 'reprocess' }>,
+  command: Exclude<
+    BatchCommand,
+    { type: 'reprocess' | 'delete-permanent' | 'retry-cleanup' }
+  >,
 ) {
   if (command.type === 'visibility')
     return updateImageFields(db, id, { visibility: command.visibility })
@@ -147,7 +176,10 @@ function applyCommand(
 function checkCommand(
   db: BetterSQLite3Database,
   id: string,
-  command: Exclude<BatchCommand, { type: 'reprocess' }>,
+  command: Exclude<
+    BatchCommand,
+    { type: 'reprocess' | 'delete-permanent' | 'retry-cleanup' }
+  >,
 ) {
   const image = db
     .select()
@@ -248,7 +280,12 @@ export async function runLibraryBatch(
                   .select({ id: mediaImages.id })
                   .from(mediaImages)
                   .where(eq(mediaImages.id, id))
-                  .get()
+                  .get() &&
+                !(
+                  mode === 'check' &&
+                  (command.type === 'delete-permanent' ||
+                    command.type === 'retry-cleanup')
+                )
               )
                 throw new MediaTrashError(
                   'MEDIA_IMAGE_NOT_FOUND',
@@ -263,6 +300,25 @@ export async function runLibraryBatch(
                     'LIBRARY_IMAGE_OUTSIDE_QUERY',
                     409,
                   );
+              }
+              if (
+                command.type === 'delete-permanent' ||
+                command.type === 'retry-cleanup'
+              )
+                return {
+                  ...cleanupBatchResult(
+                    operation,
+                    id,
+                    command,
+                    mode,
+                    currentInQuery,
+                  ),
+                  inQuery:
+                    mode === 'apply'
+                      ? inQuery(operation, id, filters)
+                      : currentInQuery,
+                };
+              if (mode === 'apply') {
                 if (command.type === 'reprocess')
                   return reprocessResult(
                     operation,
@@ -308,6 +364,7 @@ export async function runLibraryBatch(
               error instanceof MediaImageFieldsError ||
               error instanceof MediaTrashError ||
               error instanceof MediaReprocessError ||
+              error instanceof MediaCleanupError ||
               error instanceof LibraryQueryError;
             if (!expected) onFailure(error, id);
             return {

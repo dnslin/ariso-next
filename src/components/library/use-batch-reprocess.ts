@@ -176,7 +176,7 @@ export function useBatchReprocess({
     return rows.map((row): ReprocessRow => {
       const result = byId.get(row.id);
       if (!result) return row;
-      if (result.status === 'accepted')
+      if (result.status === 'accepted' && result.task)
         return { ...row, outcome: { state: 'accepted', result } };
       if (result.status === 'failed')
         return {
@@ -372,6 +372,7 @@ export function useBatchReprocess({
         const terminal = confirmed.filter(
           (result) =>
             result.status === 'accepted' &&
+            result.task &&
             result.task.status !== 'queued' &&
             result.task.status !== 'running',
         );

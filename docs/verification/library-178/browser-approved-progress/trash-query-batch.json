@@ -1,0 +1,330 @@
+{
+  "status": "passed",
+  "taskSpaceId": 26,
+  "checks": [
+    "一项真实永久删除：只延迟已收到的真实受理响应保留提交中Spinner；活动写责任保持queued等待；未来next_cleanup_at使production worker进入running并真实清理1/2；到期后实际完成。Table/展开Accordion各浅深截图，不写清理任务状态或伪造HTTP。"
+  ],
+  "layouts": [
+    {
+      "state": "approved-progress-submitting",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-submitting",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-submitting",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-progress-submitting",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-progress-waiting-for-writes",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-waiting-for-writes",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-waiting-for-writes",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-progress-waiting-for-writes",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-progress-running",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-running",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-progress-running",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-progress-running",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-approved-progress-submitting-light-1440.png",
+      "state": "approved-progress-submitting",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-submitting-dark-1440.png",
+      "state": "approved-progress-submitting",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-progress-submitting-light-390.png",
+      "state": "approved-progress-submitting",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-submitting-dark-390.png",
+      "state": "approved-progress-submitting",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-progress-waiting-for-writes-light-1440.png",
+      "state": "approved-progress-waiting-for-writes",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-waiting-for-writes-dark-1440.png",
+      "state": "approved-progress-waiting-for-writes",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-progress-waiting-for-writes-light-390.png",
+      "state": "approved-progress-waiting-for-writes",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-waiting-for-writes-dark-390.png",
+      "state": "approved-progress-waiting-for-writes",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-progress-running-light-1440.png",
+      "state": "approved-progress-running",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-running-dark-1440.png",
+      "state": "approved-progress-running",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-progress-running-light-390.png",
+      "state": "approved-progress-running",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-progress-running-dark-390.png",
+      "state": "approved-progress-running",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "activeCheck": "approved-progress-running",
+  "progressTasks": {
+    "accepted": {
+      "jobId": "304de940-0192-450d-b391-0cffe43daf69",
+      "imageId": "issue177-000",
+      "status": "queued",
+      "waitingForWrites": true,
+      "cycle": 1,
+      "error": null,
+      "finishedAt": null,
+      "totalObjects": 2,
+      "deletedObjects": 0,
+      "deletedPurposes": [],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_pending",
+          "byteSize": 6631,
+          "attempts": 0,
+          "nextAttemptAt": null,
+          "error": null
+        },
+        {
+          "objectId": "issue177-000-thumbnail",
+          "key": "issue177-batch/issue177-000-thumbnail.png",
+          "purpose": "thumbnail",
+          "status": "cleanup_pending",
+          "byteSize": 6631,
+          "attempts": 0,
+          "nextAttemptAt": null,
+          "error": null
+        }
+      ]
+    },
+    "queued": {
+      "jobId": "304de940-0192-450d-b391-0cffe43daf69",
+      "imageId": "issue177-000",
+      "status": "queued",
+      "waitingForWrites": true,
+      "cycle": 1,
+      "error": null,
+      "finishedAt": null,
+      "totalObjects": 2,
+      "deletedObjects": 0,
+      "deletedPurposes": [],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_pending",
+          "byteSize": 6631,
+          "attempts": 0,
+          "nextAttemptAt": null,
+          "error": null
+        },
+        {
+          "objectId": "issue177-000-thumbnail",
+          "key": "issue177-batch/issue177-000-thumbnail.png",
+          "purpose": "thumbnail",
+          "status": "cleanup_pending",
+          "byteSize": 6631,
+          "attempts": 0,
+          "nextAttemptAt": null,
+          "error": null
+        }
+      ]
+    },
+    "running": {
+      "jobId": "304de940-0192-450d-b391-0cffe43daf69",
+      "imageId": "issue177-000",
+      "status": "running",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": null,
+      "finishedAt": null,
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_pending",
+          "byteSize": 6631,
+          "attempts": 0,
+          "nextAttemptAt": "2026-10-04T11:22:32.751Z",
+          "error": null
+        }
+      ]
+    },
+    "succeeded": {
+      "jobId": "304de940-0192-450d-b391-0cffe43daf69",
+      "imageId": "issue177-000",
+      "status": "succeeded",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": null,
+      "finishedAt": "2026-10-04T11:17:38.979Z",
+      "totalObjects": null,
+      "deletedObjects": null,
+      "deletedPurposes": null,
+      "remaining": []
+    }
+  },
+  "errors": []
+}

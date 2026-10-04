@@ -11,11 +11,3 @@ export interface TrashItem {
   deletionStatus: 'deleting' | 'cleanup_failed' | null;
   storage: { id: string; name: string; enabled: boolean };
 }
-
-export interface TrashPage {
-  items: TrashItem[];
-  total: number;
-  page: number;
-  pageSize: 40;
-  hasMore: boolean;
-}

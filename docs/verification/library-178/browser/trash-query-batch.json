@@ -1,0 +1,335 @@
+{
+  "status": "passed",
+  "taskSpaceId": 22,
+  "checks": [
+    "跨页选择保留、查询改变清空、逐项受理失败保留和显式重试",
+    "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+    "非法查询显式错误和重置"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 1080,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "light"
+    },
+    {
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 1080,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "dark"
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "dark"
+    },
+    {
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "light"
+    },
+    {
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 104,
+          "minHeight": "104px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "light"
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "searchHeight": 48,
+      "rows": [
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        },
+        {
+          "className": "button button--md button--ghost grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]",
+          "height": 72,
+          "minHeight": "72px",
+          "spacing": ".25rem"
+        }
+      ],
+      "theme": "light"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-list-light-1440.png",
+      "state": "list",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-list-dark-1440.png",
+      "state": "list",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-list-light-390.png",
+      "state": "list",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-list-dark-390.png",
+      "state": "list",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-list-light-360.png",
+      "state": "list",
+      "width": 360,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-list-light-430.png",
+      "state": "list",
+      "width": 430,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-list-light-768.png",
+      "state": "list",
+      "width": 768,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-short-list-dark-390-480.png",
+      "state": "short-list",
+      "width": 390,
+      "height": 480,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-filtered-empty-light-390.png",
+      "state": "filtered-empty",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-light-1440.png",
+      "state": "batch-confirm",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-dark-390.png",
+      "state": "batch-confirm",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-partial-light-1440.png",
+      "state": "batch-partial",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-partial-dark-390.png",
+      "state": "batch-partial",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-unknown-light-1440.png",
+      "state": "batch-unknown",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-unknown-dark-390.png",
+      "state": "batch-unknown",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-completed-dark-1440.png",
+      "state": "batch-completed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-query-error-light-390.png",
+      "state": "query-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    }
+  ],
+  "completedTasks": [
+    {
+      "status": "succeeded",
+      "count": 201
+    }
+  ],
+  "errors": []
+}

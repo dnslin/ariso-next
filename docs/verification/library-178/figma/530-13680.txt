@@ -1,0 +1,128 @@
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function Component11M() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="530:13680" data-name="11 · M / 表单与异常 / 剩余清理再次失败">
+      <div className="absolute bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between left-0 overflow-clip px-[16px] top-0 w-[390px]" data-node-id="530:13681" data-name="Mobile / Header">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[36px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I530:13681;112:1495">
+          Ariso
+        </p>
+        <div className="bg-[var(--secondary,#e3f6f5)] content-stretch flex h-[44px] items-center justify-center overflow-clip relative rounded-[22px] shrink-0 w-[64px]" data-node-id="I530:13681;112:1496" data-name="Mobile / 打开菜单">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I530:13681;112:1497">
+            菜单
+          </p>
+        </div>
+      </div>
+      <div className="absolute h-[660px] left-[16px] overflow-x-clip overflow-y-auto top-[88px] w-[358px]" data-node-id="530:13701" data-name="表单内容滚动区">
+        <div className="absolute content-stretch flex flex-col gap-[16px] items-start left-0 overflow-clip top-0 w-[358px]" data-node-id="530:13702" data-name="表单主体">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[24px] text-[color:var(--foreground,#272343)] w-full" data-node-id="530:13703">
+            剩余清理再次失败
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13704">
+            old-cover.jpg · 已清理 4 / 6 个对象
+          </p>
+          <div className="[word-break:break-word] bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[6px] items-start leading-[1.5] overflow-clip px-[16px] py-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:13705" data-name="最近结果">
+            <p className="relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13706">
+              最近结果
+            </p>
+            <p className="relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="530:13707">
+              连接中断；自动重试 1 / 1 次后仍失败
+            </p>
+          </div>
+          <div className="[word-break:break-word] bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[6px] items-start overflow-clip px-[16px] py-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:13708" data-name="剩余对象 1">
+            <p className="leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13709">
+              剩余对象 1
+            </p>
+            <div className="leading-[0] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="530:13710">
+              <p className="leading-[1.5] mb-0">images/old-cover/watermark.webp</p>
+              <p className="leading-[1.5]">Timeout · 未确认删除</p>
+            </div>
+          </div>
+          <div className="[word-break:break-word] bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[6px] items-start overflow-clip px-[16px] py-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:13711" data-name="剩余对象 2">
+            <p className="leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13712">
+              剩余对象 2
+            </p>
+            <div className="leading-[0] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="530:13713">
+              <p className="leading-[1.5] mb-0">images/old-cover/candidate.webp</p>
+              <p className="leading-[1.5]">Timeout · 未确认删除</p>
+            </div>
+          </div>
+          <div className="[word-break:break-word] bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col font-['Noto_Sans_SC:Regular'] font-normal gap-[6px] items-start leading-[1.5] overflow-clip px-[16px] py-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:13714" data-name="剩余占用">
+            <p className="relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13715">
+              剩余占用
+            </p>
+            <p className="relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="530:13716">
+              待核对 · 保留 2 个对象的清理责任
+            </p>
+          </div>
+          <div className="bg-[var(--secondary,#e3f6f5)] content-stretch flex flex-col items-start overflow-clip px-[14px] py-[12px] relative rounded-[8px] shrink-0 w-full" data-node-id="530:13717" data-name="状态说明">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="530:13718">
+              本轮自动重试已结束。确认连接恢复后，可手动重试剩余对象。已清理 4 个对象不会重新删除；记录不可恢复，存储配置仍不能删除。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[var(--background,#fffffe)] content-stretch cursor-pointer flex gap-[12px] h-[80px] items-center justify-end left-[16px] overflow-clip top-[764px] w-[358px]" data-node-id="530:13719" data-name="固定底栏">
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[90px]" label="返回" />
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[256px]" label="重试剩余 2 个对象" />
+      </div>
+    </div>
+  );
+}
+
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Mobile / Header
+**Node ID:** 112:1498
+
+手机后台64px固定页眉；Caveat品牌及44px高菜单按钮，宽度跟随屏幕。
+
+## Button/Outline
+**Node ID:** 3:23
+
+Ariso Button/Outline；36px 高；标签可覆盖。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

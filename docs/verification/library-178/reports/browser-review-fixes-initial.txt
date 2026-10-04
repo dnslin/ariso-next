@@ -1,0 +1,24 @@
+AssertionError [ERR_ASSERTION]: No browser runtime or resource errors
++ actual - expected
+
++ [
++   {
++     kind: 'error',
++     message: 'Resource failed: http://ariso-56397.localhost:56397/api/trash/issue177-000/preview?type=original',
++     url: 'http://ariso-56397.localhost:56397/trash?image=issue177-000'
++   }
++ ]
+- []
+
+    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/e2e/browser-errors.mjs:44:10)
+    at async file:////[eval2]:147:19
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:374:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:522:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/docs/verification/library-178/browser-review-fixes

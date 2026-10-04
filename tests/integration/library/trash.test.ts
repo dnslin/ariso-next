@@ -4,10 +4,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  parseTrashQuery,
-  readTrashPage,
-} from '../../../src/server/library/trash.ts';
+import { readLibraryPage } from '../../../src/server/library/queries.ts';
+import { parseLibraryQuery } from '../../../src/server/library/query-schema.ts';
 import {
   mediaImages,
   mediaObjects,
@@ -36,6 +34,11 @@ afterEach(() => {
   connection.close();
   rmSync(directory, { recursive: true, force: true });
 });
+const parse = (query = '') =>
+  parseLibraryQuery(new URLSearchParams(`scope=trash&${query}`));
+const readPage = (page = 1) =>
+  readLibraryPage(connection.db, parse(`page=${page}`));
+
 function seed(id: string, trashedAt: Date | null = new Date(1000)) {
   connection.db
     .insert(mediaImages)
@@ -56,13 +59,13 @@ function seed(id: string, trashedAt: Date | null = new Date(1000)) {
     .run();
 }
 
-it('reads fixed pages in trash-time descending and ID ascending order, retaining real totals beyond the end', () => {
+it('reads pages in fixed trash-time descending and ID ascending order, retaining real totals beyond the end', () => {
   seed('normal', null);
   for (let index = 0; index < 81; index++)
     seed(`image-${String(index).padStart(3, '0')}`);
   seed('newest', new Date(2000));
   seed('oldest', new Date(0));
-  const pages = [1, 2, 3].map((page) => readTrashPage(connection.db, page));
+  const pages = [1, 2, 3].map((page) => readPage(page));
   expect(pages.map((page) => page.items.length)).toEqual([40, 40, 3]);
   expect(pages.map((page) => page.hasMore)).toEqual([true, true, false]);
   expect(pages.every((page) => page.total === 83 && page.pageSize === 40)).toBe(
@@ -76,11 +79,12 @@ it('reads fixed pages in trash-time descending and ID ascending order, retaining
     ),
     'oldest',
   ]);
-  expect(readTrashPage(connection.db, 4)).toEqual({
+  expect(readPage(4)).toEqual({
     items: [],
     total: 83,
     page: 4,
     pageSize: 40,
+    nextCursor: null,
     hasMore: false,
   });
 });
@@ -91,10 +95,24 @@ it('reads current processing/storage/deletion facts without image content and ex
   connection.db.update(mediaImages).set({ processingStatus: 'ready' }).run();
   for (const deletionStatus of [null, 'deleting', 'cleanup_failed'] as const) {
     connection.db.update(mediaImages).set({ deletionStatus }).run();
-    const record = readTrashPage(connection.db).items[0];
+    const record = readPage().items[0];
     expect(record).toEqual({
+      width: null,
+      height: null,
+      createdAt: new Date(0).toISOString(),
+      versions: {
+        original: false,
+        compressed: false,
+        thumbnail: false,
+        watermark: false,
+      },
+      thumbnailDimensions: null,
+      activeJob: null,
+      latestFailedJob: null,
+      metadataJob: null,
+      processingJob: null,
       id: 'record',
-      thumbnailPath: null,
+      thumbnailUrl: null,
       displayName: 'record',
       originalName: 'record.png',
       format: 'PNG',
@@ -115,18 +133,67 @@ it('reads current processing/storage/deletion facts without image content and ex
     .set({ trashedAt: null, deletionStatus: null })
     .where(eq(mediaImages.id, 'record'))
     .run();
-  expect(readTrashPage(connection.db)).toEqual({
+  expect(readPage()).toEqual({
     items: [],
     total: 0,
     page: 1,
     pageSize: 40,
+    nextCursor: null,
     hasMore: false,
   });
 });
 
+it('combines actual trash filters and supports 20/40/80 pages and cursors without changing the fixed order', () => {
+  seed('normal', null);
+  for (let index = 0; index < 81; index++)
+    seed(`record-${String(index).padStart(3, '0')}`);
+  const storageId = resolveLocalUploadStorage(connection.db).id;
+  connection.db
+    .update(mediaImages)
+    .set({ processingStatus: 'ready', deletionStatus: 'deleting' })
+    .where(eq(mediaImages.id, 'record-000'))
+    .run();
+  const filtered = readLibraryPage(
+    connection.db,
+    parse(
+      `q=record&storageId=${storageId}&status=ready&deletionStatus=deleting&page=1`,
+    ),
+  );
+  expect(filtered.total).toBe(1);
+  expect(filtered.items.map((item) => item.id)).toEqual(['record-000']);
+  expect(filtered.items[0]).toMatchObject({
+    processingStatus: 'ready',
+    deletionStatus: 'deleting',
+    storage: { id: storageId },
+  });
+  for (const pageSize of [20, 40, 80]) {
+    const first = readLibraryPage(
+      connection.db,
+      parse(`page=1&pageSize=${pageSize}`),
+    );
+    expect(first.items).toHaveLength(pageSize);
+    expect(first.total).toBe(81);
+    expect(first.items[0].id).toBe('record-000');
+    const cursorFirst = readLibraryPage(
+      connection.db,
+      parse(`pageSize=${pageSize}`),
+    );
+    expect(cursorFirst.items).toEqual(first.items);
+    expect(cursorFirst.nextCursor).toEqual(expect.any(String));
+    const next = readLibraryPage(
+      connection.db,
+      parse(`pageSize=${pageSize}&cursor=${cursorFirst.nextCursor}`),
+    );
+    expect(next.items[0].id).toBe(
+      `record-${String(pageSize).padStart(3, '0')}`,
+    );
+    expect(next.total).toBe(81);
+  }
+});
+
 it('exposes an owner thumbnail only for an available stored version, including failed images', () => {
   seed('preview');
-  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  expect(readPage().items[0].thumbnailUrl).toBeNull();
   const storageId = resolveLocalUploadStorage(connection.db).id;
   connection.db
     .insert(mediaObjects)
@@ -156,25 +223,31 @@ it('exposes an owner thumbnail only for an available stored version, including f
       createdAt: new Date(),
     })
     .run();
-  expect(readTrashPage(connection.db).items[0]).toMatchObject({
+  expect(readPage().items[0]).toMatchObject({
     processingStatus: 'failed',
-    thumbnailPath: '/api/trash/preview/preview?type=thumbnail',
+    thumbnailUrl: '/api/trash/preview/preview?type=thumbnail',
   });
   connection.db.update(mediaObjects).set({ status: 'writing' }).run();
-  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  expect(readPage().items[0].thumbnailUrl).toBeNull();
   connection.db.update(mediaObjects).set({ status: 'stored' }).run();
   connection.db.update(storageConfigs).set({ enabled: false }).run();
-  expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+  expect(readPage().items[0].thumbnailUrl).toBeNull();
   connection.db.update(storageConfigs).set({ enabled: true }).run();
   for (const deletionStatus of ['deleting', 'cleanup_failed'] as const) {
     connection.db.update(mediaImages).set({ deletionStatus }).run();
-    expect(readTrashPage(connection.db).items[0].thumbnailPath).toBeNull();
+    expect(readPage().items[0].thumbnailUrl).toBeNull();
   }
 });
 
 it('accepts only one positive integral page within a safe offset', () => {
-  expect(parseTrashQuery(new URLSearchParams())).toBe(1);
-  expect(parseTrashQuery(new URLSearchParams('page=2'))).toBe(2);
+  expect(parse()).toMatchObject({
+    filters: { scope: 'trash', pageSize: 40, sort: 'trashed_desc' },
+    page: null,
+    cursor: null,
+  });
+  expect(parse('page=2').page).toBe(2);
+  for (const pageSize of [20, 40, 80])
+    expect(parse(`pageSize=${pageSize}`).filters.pageSize).toBe(pageSize);
   for (const query of [
     'page=',
     'page=0',
@@ -185,12 +258,12 @@ it('accepts only one positive integral page within a safe offset', () => {
     'page=Infinity',
     'page=9007199254740991',
     'page=1&page=2',
-    'pageSize=20',
+    'pageSize=200',
     'sort=asc',
     'cursor=x',
   ])
-    expect(() => parseTrashQuery(new URLSearchParams(query)), query).toThrow(
-      '回收站页码无效',
+    expect(() => parse(query), query).toThrow(
+      expect.objectContaining({ code: 'LIBRARY_INVALID_QUERY', status: 400 }),
     );
 });
 
@@ -231,7 +304,10 @@ describe('owner-only trash HTTP', () => {
         { authorization: `Bearer ${token}` },
         { cookie: `ariso.share_token=${token}` },
       ] as Record<string, string>[]) {
-        const response = await fetch(`${origin}/api/trash`, { headers });
+        const response = await fetch(
+          `${origin}/api/images?scope=trash&page=1`,
+          { headers },
+        );
         expect(response.status).toBe(401);
         expect(response.headers.get('cache-control')).toBe('no-store');
       }
@@ -253,7 +329,7 @@ describe('owner-only trash HTTP', () => {
           updatedAt: new Date(),
         })
         .run();
-      const response = await fetch(`${origin}/api/trash`, {
+      const response = await fetch(`${origin}/api/images?scope=trash&page=1`, {
         headers: { cookie },
       });
       expect(response.status).toBe(200);
@@ -273,7 +349,7 @@ describe('owner-only trash HTTP', () => {
       });
       expect(
         (
-          await fetch(`${origin}/api/trash?page=bad`, {
+          await fetch(`${origin}/api/images?scope=trash&page=bad`, {
             headers: { cookie },
           })
         ).status,

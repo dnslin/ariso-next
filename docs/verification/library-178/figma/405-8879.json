@@ -1,0 +1,367 @@
+{
+  "readOnly": true,
+  "source": "Figma use_figma Plugin API",
+  "date": "2026-10-04",
+  "node": {
+    "id": "405:8879",
+    "name": "27 · M / 回收站 / 永久删除已选 12 张？",
+    "type": "FRAME",
+    "width": 358,
+    "height": 325,
+    "x": 590,
+    "y": 5265,
+    "visible": true,
+    "layoutMode": "VERTICAL",
+    "itemSpacing": 16,
+    "paddingLeft": 24,
+    "paddingRight": 24,
+    "paddingTop": 24,
+    "paddingBottom": 24,
+    "cornerRadius": 12,
+    "fills": [
+      {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 0.9972943663597107
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:2:3"
+          }
+        }
+      }
+    ],
+    "children": [
+      {
+        "id": "405:8880",
+        "name": "标题",
+        "type": "TEXT",
+        "width": 308,
+        "height": 30,
+        "x": 25,
+        "y": 25,
+        "visible": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.15335790812969208,
+              "g": 0.13767622411251068,
+              "b": 0.26326560974121094
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:4"
+              }
+            }
+          }
+        ],
+        "text": "永久删除已选 12 张？",
+        "fontSize": 20,
+        "fontName": {
+          "family": "Noto Sans SC",
+          "style": "Medium",
+          "variationSettings": {
+            "wght": 500
+          }
+        },
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 150
+        }
+      },
+      {
+        "id": "405:8881",
+        "name": "说明",
+        "type": "TEXT",
+        "width": 308,
+        "height": 21,
+        "x": 25,
+        "y": 71,
+        "visible": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.15335790812969208,
+              "g": 0.13767622411251068,
+              "b": 0.26326560974121094
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:4"
+              }
+            }
+          }
+        ],
+        "text": "当前页 2 张 · 其他页 10 张",
+        "fontSize": 14,
+        "fontName": {
+          "family": "Noto Sans SC",
+          "style": "Regular",
+          "variationSettings": {
+            "wght": 400
+          }
+        },
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 150
+        }
+      },
+      {
+        "id": "405:8882",
+        "name": "说明",
+        "type": "FRAME",
+        "width": 308,
+        "height": 64,
+        "x": 25,
+        "y": 108,
+        "visible": true,
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 8,
+        "paddingLeft": 12,
+        "paddingRight": 12,
+        "paddingTop": 12,
+        "paddingBottom": 12,
+        "cornerRadius": 8,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.890357494354248,
+              "g": 0.9648423790931702,
+              "b": 0.9609216451644897
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:7"
+              }
+            }
+          }
+        ],
+        "children": [
+          {
+            "id": "405:8883",
+            "name": "说明文字",
+            "type": "TEXT",
+            "width": 284,
+            "height": 40,
+            "x": 12,
+            "y": 12,
+            "visible": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.15335790812969208,
+                  "g": 0.13767622411251068,
+                  "b": 0.26326560974121094
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:4"
+                  }
+                }
+              }
+            ],
+            "text": "任务受理后不可恢复。仅处理本次选定的 12 张图片，逐项返回结果；不会清空全部筛选结果。",
+            "fontSize": 13,
+            "fontName": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            }
+          }
+        ]
+      },
+      {
+        "id": "405:8888",
+        "name": "取消",
+        "type": "INSTANCE",
+        "width": 308,
+        "height": 48,
+        "x": 25,
+        "y": 188,
+        "visible": true,
+        "layoutMode": "HORIZONTAL",
+        "itemSpacing": 0,
+        "paddingLeft": 0,
+        "paddingRight": 0,
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "cornerRadius": 8,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 0.9972943663597107
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:3"
+              }
+            }
+          }
+        ],
+        "children": [
+          {
+            "id": "I405:8888;3:24",
+            "name": "按钮",
+            "type": "TEXT",
+            "width": 28,
+            "height": 21,
+            "x": 140,
+            "y": 13.5,
+            "visible": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.15335790812969208,
+                  "g": 0.13767622411251068,
+                  "b": 0.26326560974121094
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:4"
+                  }
+                }
+              }
+            ],
+            "text": "取消",
+            "fontSize": 14,
+            "fontName": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            }
+          }
+        ]
+      },
+      {
+        "id": "405:8890",
+        "name": "确认永久删除",
+        "type": "INSTANCE",
+        "width": 308,
+        "height": 48,
+        "x": 25,
+        "y": 252,
+        "visible": true,
+        "layoutMode": "HORIZONTAL",
+        "itemSpacing": 0,
+        "paddingLeft": 0,
+        "paddingRight": 0,
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "cornerRadius": 8,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9999533891677856,
+              "g": 0.8474100828170776,
+              "b": 0.027540821582078934
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:2:6"
+              }
+            }
+          }
+        ],
+        "children": [
+          {
+            "id": "I405:8890;3:22",
+            "name": "按钮",
+            "type": "TEXT",
+            "width": 84,
+            "height": 21,
+            "x": 112,
+            "y": 13.5,
+            "visible": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.15335790812969208,
+                  "g": 0.13767622411251068,
+                  "b": 0.26326560974121094
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:264:1392"
+                  }
+                }
+              }
+            ],
+            "text": "确认永久删除",
+            "fontSize": 14,
+            "fontName": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
