@@ -1,0 +1,5 @@
+独立代码评审（/root/review，code-review-and-quality）：本次增量通过，无未解决 Critical/Required。
+新增 detail?.id 在 undefined→真实 ID 后 DOM 已挂载才聚焦；同图 DTO 更新不会因对象引用变化重新聚焦；换图经过 ID 过滤；result 分支自己的标题 effect 保持。
+回归延迟真实 HTTP 响应，不替换 DTO、不伪造焦点。新场景通过已有 confirmation verifier 接入默认完整调用链。
+评审要求将浏览器清理移出 finally，避免用户接管或失败后继续操作；已修正并由最终 confirmation 定向命令实际执行。
+默认全量的存储 scan=null 断言失败与确认 shellFooter=false 断言失败，相关源文件相对 origin/main 未变，均与本次 effect 依赖修改无关；仍保留失败，不改范围外逻辑。

@@ -231,3 +231,56 @@ UI仅在真实提交错误区域补44px人工恢复动作，取消与恢复复�
 ## 所有者合并与关闭指令（2026-10-02）
 
 所有者在本次修复与两份独立复审完成后，明确要求“合并pr 清理并更新本地分支 关闭issue”。按该指令推进PR #227合并、关闭Issue #171、更新本地main及清理本次开发分支/worktree。此前记录的完整编辑/元数据UI未实现范围、真实浏览器及人工设计未验收、范围外完整浏览器失败仍保留，不因本次合并或关闭改写为通过。清理本次worktree时停止其临时预览，独立预览数据保留；没有Release、镜像发布或部署。
+
+## 冷进入重处理页的标题焦点修复（2026-10-05，PR #243）
+
+用户在 Issue #148 的默认浏览器失败诊断后明确要求修复此缺陷。本段是该授权的后续增量，不改变 #171 未交付范围、冻结 PRD、既定布局或分享实验的完成条件。代码只有 `DetailReprocess` 聚焦 effect 增加 `detail?.id`：首次详情异步返回后标题已存在，触发聚焦；同图数据对象更新不增加聚焦触发。未改公共外壳、HeroUI 控件、依赖、接口或数据契约。实现沿用 `docs/design/handoff.md` 的 2026-10-02 人工返修。
+
+### 行为与默认入口
+
+新增 `e2e/library-detail-171-focus.mjs` 延迟真实 GET 详情响应，先检查加载说明已出现、标题尚不存在，再放行真实响应并等待标题聚焦。没有伪造 DTO、焦点或成功数据。修复前实际等待 3 秒失败，见 [before.json](./focus-243/before.json)；此前等待 2 秒仍聚焦 BODY 的诊断保留在 [#148 证据](../../tasks/evidence/EV-SHARING-01/focus-diagnosis.json)。修复后浅深色 × 1440/390 四种状态均聚焦 `detail-workspace-title`、正文滚动为 0、无横向溢出，见 [cold-focus.json](./focus-243/cold-focus.json)。
+
+调用链实际核对为 `pnpm run test:browser` → `scripts/verify-browser.mjs` → `e2e/library.mjs` → `verifyLibraryDetail171` → `verifyDetail171Confirmation` → 新聚焦回归。未新增 suite/only 或改变共用参数分发。注入脚本在成功导航后移除；放行响应时删除一次回调；失败或用户接管后不通过 finally 继续操作浏览器。最终修改后的新场景由下述确认定向命令执行并通过。
+
+额外四种真实键盘检查：刷新聚焦标题后，Tab 进入处理说明；HeroUI 用 box-shadow 绘制的 2px 焦点环实际可见；Space 选择仅缩略图后，确认聚焦取消；Esc 保留选项并回焦。短视口 390×280 的确认正文可滚动，主区域不被带动，两按钮在视口内且达到 44px；相册复用路由在桌面/手机直接进入也聚焦标题。对应 [keyboard-before-short.json](./focus-243/keyboard-before-short.json) 和 [remaining.json](./focus-243/remaining.json)。前者整条命令因后续重复 Space 操作已选单选项未重新打开弹窗而失败；更正独立驱动操作后只续跑短视口与相册，不把首次失败改记为通过。
+
+曾尝试用 `visibilitychange` 触发同图详情刷新，该独立驱动未使当前独立 QueryClient 实际刷新，等待名称变化失败，删除了这个无真实触发路径的测试假设。没有修改 QueryClient，也不声称已实测同图后台刷新。此边界由 ID 的稳定依赖与独立源码评审核对，不能替代浏览器刷新证据。
+
+### 设计对照与独立评审
+
+实际重新读取 Figma `521:10712 / 521:10141` 的高保真信息和截图，保存于 [focus-243/figma](./focus-243/figma/)。原节点的宽按钮、常驻提示、手机文字菜单与旧确认整页，按本记录及 handoff 中用户批准的 2026-10-01/02 调整覆盖；没有恢复旧稿，也没有修改或声称同步 Figma。此次不改变视觉方案。
+
+| 状态 / 视口与主题              | 真实截图                                                                                                                                                                                                                          | 逐项结论                                                                                                                                                          |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 冷进入 / 1440×1080 浅深        | [浅](./focus-243/screens/detail-171-cold-focus-light-1440.png) / [深](./focus-243/screens/detail-171-cold-focus-dark-1440.png)                                                                                                    | 先核对整页与公共区域：232px 侧栏、32px 正文、品牌/账号/当前项和固定底栏一致；然后核对标题、Tips、图片身份、640px 两列56px HeroUI 单选及200×48按钮，符合获批交接。 |
+| 冷进入 / 390×844 浅深          | [浅](./focus-243/screens/detail-171-cold-focus-light-390.png) / [深](./focus-243/screens/detail-171-cold-focus-dark-390.png)                                                                                                      | 公共64px手机头部、16px正文、图标菜单和等分48px底栏；同样标题层级与单列56px选项。独立原图没有缩略图，显示真实 ImageOff 占位，未替换为设计示例图片。                |
+| 键盘 / 1440×1080、390×844 浅深 | [桌浅](./focus-243/screens/keyboard-light-1440.png) / [桌深](./focus-243/screens/keyboard-dark-1440.png) / [手浅](./focus-243/screens/keyboard-light-390.png) / [手深](./focus-243/screens/keyboard-dark-390.png)                 | 实际 Tab 焦点与 HeroUI 可见焦点环；真实已处理测试图片显示缩略图。                                                                                                 |
+| 确认 / 1440×1080、390×844 浅深 | [桌浅](./focus-243/screens/confirmation-light-1440.png) / [桌深](./focus-243/screens/confirmation-dark-1440.png) / [手浅](./focus-243/screens/confirmation-light-390.png) / [手深](./focus-243/screens/confirmation-dark-390.png) | 沿用户批准的紧凑 AlertDialog，真实更新/保留摘要与取消聚焦；Esc回焦通过。空公共页脚缺陷保留为下述范围外问题，完整确认检查未通过。                                  |
+| 短视口 / 390×280 深            | [稳定实际图](./focus-243/screens/confirmation-short-stable-dark-390-280.png)                                                                                                                                                      | 对话框正文独立滚动、主滚动不变、取消/提交可达；不是物理键盘或安全区设备证据。                                                                                     |
+
+使用 frontend-ui-engineering 核对焦点与键盘；figma-use / figma-design-to-code 实际读取设计；vercel-react-best-practices 使用稳定 ID 限定 effect 触发。独立代码评审使用 code-review-and-quality，结论通过，具体见 [code-audit.txt](./focus-243/code-audit.txt)。独立设计评审者另行实际读取 Figma 并查看真实四种冷进入截图，结论为本次无视觉回归；追加四组键盘/普通确认截图已独立查看并通过。短视口初图截在 HeroUI 开场过渡中，评审拒绝据其给出视觉通过；仅等待 data-entering 消失并重拍该状态，两按钮稳定为48px，见 [short-stable.json](./focus-243/short-stable.json)。初图保留为过程证据，独立设计终审实际查看稳定图，结论通过本次聚焦修复与代表 UI；完整确认的现有空页脚问题仍未修复。评审未机械重复实现者已通过的检查。
+
+本次范围是正常详情首次出现的焦点。加载与真实无缩略图状态已覆盖；错误、空列表、禁用、任务成功/失败/取消页面未改变，未把它们记作本轮重新验证。公共组件未修改，不要求重验所有公共消费路由；图库和相册重处理的实际消费已核对。
+
+### 实际命令与结果
+
+macOS arm64，Node 24.19.0、pnpm 11.19.0、现有 Ego Lite，唯一 TaskSpace 30。采用独立临时数据库与测试图片；没有修改其他任务或既有用户预览数据。沿用本轮已通过且输入未变的冻结安装及后端集成结果，不机械重跑。
+
+| 本次实际命令                                                                                                                                      | 结果                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run build`                                                                                                                                  | 退出0；仍有既有 SQLite Debug / 可选 OpenTelemetry 追踪诊断，未隐藏。                                                                                                                |
+| `pnpm run typecheck`                                                                                                                              | 退出0。                                                                                                                                                                             |
+| `pnpm run lint`                                                                                                                                   | 退出0；最终脚本收齐后再次检查退出0。                                                                                                                                                |
+| `pnpm exec vitest run --project unit tests/unit/library --reporter=default --reporter=junit --outputFile=test-results/focus-fix/library-unit.xml` | 37文件439项通过，见 [library-unit.xml](./focus-243/library-unit.xml)。                                                                                                              |
+| `node test-results/focus-fix/run.mjs before` / `after` / `final`                                                                                  | 未提交的独立诊断驱动，复用实际生产服务；before冷聚焦失败；after四项聚焦通过但不具真实触发路径的刷新尝试失败；删除该假设后的final四项通过。                                          |
+| `EGO_TASK_SPACE=30 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/focus-fix/full pnpm run test:browser`                                         | 退出1，见 [full-runner.json](./focus-243/full-runner.json)。既有存储检查期望扫描记录为空，实际已由后台扫描生成passed记录，先于图库失败；未执行后续，未记全量通过。                  |
+| `node test-results/focus-fix/confirmation.mjs confirmation`                                                                                       | 独立实际生产fixture调用既有确认验证：最终新聚焦4项与360/390/430/768/1440浅深10组范围布局通过，完整确认因既有空页脚断言失败，见 [confirmation.json](./focus-243/confirmation.json)。 |
+| `node test-results/focus-fix/preview-check.mjs`                                                                                                   | 四组键盘行为通过后，独立驱动对已选项再次Space的假设失败；仅修正并续跑短视口与相册后退出0。报告分别保留，不替代完整确认验证。                                                        |
+
+默认全量的新失败位于 `e2e/storage-admin.mjs:613`（eval日志614），[实际报告](./focus-243/full-storage-admin.json)返回 scan.status=passed。`startStorageMaintenance` 启动即扫描所有配置，随后每60秒执行，测试假定记录仍为空，有既有时间窗口。确认失败位于 `e2e/library-detail-171-layouts.mjs:90`：`LibraryScreen` 传入 React 元素，内部 `DetailReprocessFooter` 返回 null 后 `AdminShell` 的 truthy判断仍渲染空 `.shell-footer`。这些代码与断言相对 origin/main 均未修改，独立评审确认与本次新增 ID 依赖无关。两项保持未修复，未削弱断言或跳过失败。
+
+格式检查发现新增原始JSON缺少项目格式，已仅格式化这些新证据文件，定向检查通过；`node docs/tasks/check.mjs` 通过120个任务、298个需求，`git diff --check` 通过。
+
+代码和聚焦回归完成；本轮适用离线检查与聚焦/键盘/响应式浏览器验证分别记录。默认完整浏览器和完整确认检查未通过，完整 UI 人工验收尚未完成。#148 同 origin 两个独立浏览器会话仍未验证，本修复不替代该项。PR #243 保持草稿，不合并、不关闭 Issue、不发布或部署。
+
+独立验收环境已运行，实际账号登录及两张图片的真实worker处理通过，并附独立相册。地址和操作清单交给用户；账号密码只保存在忽略的本地访问记录与私人聊天，不提交到仓库或PR。环境持续保留，直到用户明确要求停止或清理。

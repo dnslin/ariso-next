@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { verifyDetail171Focus } from './library-detail-171-focus.mjs';
 import {
   image,
   endpoint,
@@ -26,6 +27,7 @@ export async function verifyDetail171Confirmation({
   const settings = await readProcessingSettings(sql);
   try {
     await enableProcessing(sql);
+    await verifyDetail171Focus({ page, config, sql, report });
     await openDetail171(page, config);
     await page.waitForSelector(`${workspace} [role="radiogroup"]`);
     assert.equal(
