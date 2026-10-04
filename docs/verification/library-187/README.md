@@ -148,4 +148,6 @@ Ego实际读取原预览的相册A：桌面工具栏、卡片右键及手机勾�
 
 [代码审计](./code-audit.md)与[设计评审](./design-audit.md)分别追加本次结论；旧通过不是新稿验收。浏览器硬停依据ego-browser技能“Stop when the user takes control… Do not retry or route around the stop.”，已请求本次接管后的明确恢复指示；此限制不影响离线Figma、代码检查与文档整理。
 
+本轮实施与证据提交`aad2cde48f8f024e1f0e0964a597b39ede312700`已推送至`codex/issue-187-batch-copy`，现有[PR #238](https://github.com/dnslin/ariso-next/pull/238)已更新为“feat(library): 跨页批量复制与原页反馈”。[实际PR状态](./revision/pr.json)仍为OPEN/DRAFT、statusCheckRollup=[]；[gh pr checks](./revision/pr-checks.txt)返回no checks reported，不记为CI通过，也不等待不存在的工作流。
+
 尚需本轮native Clipboard、部分/空/HTTP/manual/GPS、上传原生选择、回收站右键/Escape、全部公共消费与短视口Toast证据，并由独立设计评审收齐状态结论。实际页面还须用户再次人工验收。PR保持OPEN/DRAFT；不合并、不关闭Issue、不发布镜像、不部署、不清理分支或worktree。物理设备和双架构容器按既有执行约定未在本地运行，不标通过。
