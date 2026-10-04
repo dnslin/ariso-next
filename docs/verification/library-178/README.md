@@ -1,6 +1,6 @@
 # T-LIB-11 · Issue #178 回收查询与清理
 
-本轮在 `codex/issue-178-trash` 独立 worktree 实施，起点为最新 `origin/main` 的 `1ca3ae0`。原工作区及其他任务的 worktree 保留。Issue 原生直接前置 #177、#79、#154、#140 均已完成，下游为 #179；评论为空。需求编号沿用 R-15.7-01、R-18.1-01、R-18.2-01/02、R-18.3-01/02/03、A-26.11-04/05/06/07。
+本轮在 `codex/issue-178-trash` 独立 worktree 实施，起点为最新 `origin/main` 的 `1ca3ae0`。原工作区及其他任务的 worktree 保留。已提交并推送，关联 [草稿 PR #240](https://github.com/dnslin/ariso-next/pull/240)。Issue 原生直接前置 #177、#79、#154、#140 均已完成，下游为 #179；评论为空。需求编号沿用 R-15.7-01、R-18.1-01、R-18.2-01/02、R-18.3-01/02/03、A-26.11-04/05/06/07。
 
 任务、需求、设计与验证规则分别消费 [任务卡](../../tasks/m3-m4-experience.md#t-lib-11-回收站完整查询批量删除与失败清理)、SPEC-library §7/9、[设计交接](../../design/handoff.md)、[执行约定](../../tasks/execution.md) 和 [DG-TRASH](../../tasks/evidence/DG-TRASH/README.md)。不改写冻结 PRD 或 Figma。
 
@@ -76,3 +76,5 @@ macOS / Darwin arm64；Node24.18.1、pnpm11.19.0，已有 ImageMagick7 与 ExifT
 终端文本记录仅去除行尾空白、回车与末尾空行，诊断和结果保留。
 
 本轮浏览器检查结束后已按 Ego 技能收尾同一 TaskSpace22，[记录](./reports/browser-finish.txt)。测试服务与独立数据已清理，不将截图证据描述为仍在线的人工预览。人工验收需在用户选择的预览环境执行。
+
+创建后实际执行 `gh pr view 240 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus`：OPEN、草稿、目标main、mergeStateStatus CLEAN，statusCheckRollup为空。当前没有远端检查，不记作CI通过，不等待不存在的工作流。没有合并、关闭Issue、发布、部署或清理分支/worktree。
