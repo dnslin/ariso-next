@@ -84,3 +84,32 @@ AWS S3 实测已由现行执行约定取消，保持未验证。物理手机触�
 - `svg.test.ts` 的“大画布先缩放再分配”用例处理1000000×500000的SVG并期望640×320预览，超过测试5秒期限。实际媒体工具的运行期限是120秒；该失败首先说明测试期限被超过，不能据此声称渲染结果错误或稳定不可用。具体慢阶段仍未定位。
 
 为诊断是否稳定失败，实际只运行一次这两个失败用例：`pnpm exec vitest run --project media-tools --maxWorkers=1 tests/integration/media/reprocess-http.test.ts tests/integration/media/svg.test.ts -t 'preserves old HTTP bytes when atomic publication fails|scales a large canvas before raster allocation'`。本轮退出0，2项通过，14项未匹配；这不是完整集成检查，未匹配项不记为本轮通过。原始输出见 [failure-diagnosis.log](checks/failure-diagnosis.log)。这次未复现表明失败并不稳定，尚不能宣称已修复或把此前完整批次改为通过。没有修改媒体代码、测试超时或断言；草稿状态和进一步诊断责任继续保留。
+
+## 用户 UI 反馈返修（2026-10-04）
+
+用户实际预览后提供标注截图，明确要求输入前图标、用图标 Tips 收纳重复说明、相关按钮并排及遵守既有圆角。该反馈授权本小节列出的呈现调整，不代表确认先前 R2、未知保存、删除后扫描责任等未完成设计补充，也不代表最终人工验收通过。本轮从当前 PR 分支增量修改，没有另建分支或改 Figma。
+
+- 存储表单复用 HeroUI 3.2.6 InputGroup/Prefix/Input，使用 Lucide 名称、目录、存储、地址和凭据图标。字段外标签、密码输入、只读、禁用和服务端 FieldError 沿用现有契约。
+- 引用锁定 Local 的四处逐字段说明改成 CircleHelp 入口，复用 HeroUI Tooltip/Popover；桌面悬停或键盘聚焦可读，点击或 Enter 展开、Esc 关闭回焦，44px 点击目标。页面保留“存在引用，暂不可删除”的必要状态，补充处理方法在提示和真实引用页中提供。
+- 默认设置、单一“引用与清理”入口、删除配置在同一 flex-wrap 操作组中按空间排列，动作统一 8px 圆角。删掉第二个引用入口和重复删除禁用长文；引用页仍可继续进入清理页。原危险删除确认与服务端检查保持原流程，未把重要确认藏进 Tips。
+- 实际修改前页面记录 [before-locked-local.png](feedback-browser/before-locked-local.png)：表单图标数为0，两个引用入口重复；引用/默认入口实际圆角24px，删除12px，操作分别位于不同纵向位置。桌面/手机对应实际读取节点为 530:12788 / 530:12423；新建 Local/S3 两端由独立评审读取 77:924 / 102:2712、66:794 / 102:2843。原结构保留，本轮图标、说明收纳和操作排列差异以上述用户反馈为批准依据。
+
+本轮环境仍为 macOS ARM64、Node24.18.1、pnpm11.19.0。已经实际运行 `pnpm install --frozen-lockfile`、`pnpm run build`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`，均退出0；单元86文件1122项通过。原有构建平台可选依赖/依赖追踪诊断仍保留在 [最终构建日志](feedback-checks/build-final.log)，退出0不代表日志没有诊断。此次没有服务端/API/数据库契约变更，不重复完整媒体集成或两远端服务操作；先前完整集成失败仍保持开放，未冒充本轮通过。
+
+预览已用当前构建更新并保留原独立验收数据、账号与地址；健康与登录实际200。最终浏览器报告、独立审计与设计结论在以下追加证据中记录，用户仍需再次人工查看返修后的界面。
+
+返修验证的失败也保留原始证据：[第一轮](feedback-browser-first/storage-admin-feedback.json)将44px InputGroup整体点击区误测为内部42px输入，[第二轮](feedback-browser-second/storage-admin-feedback.json)发现桌面悬停未显示 Tooltip，[第三轮](feedback-browser-third/storage-admin-feedback.json)发现展开的提示入口被 HeroUI `data-pressed` 持续缩为42.68px，[第四轮](feedback-browser-fourth/storage-admin-feedback.json)在库下一动画帧恢复焦点之前读取了瞬时焦点。分别按实际库实现修正真实点击区测量、HeroUI悬停状态、Tips入口按压样式和精确焦点等待；没有降低44px、焦点身份或业务断言。第三轮[实际尺寸诊断](feedback-browser-third/tip-target-diagnosis.json)同时确认Power图标与状态文字间距为0，已补为8px。类型适配过程的失败日志保留在 [feedback-checks/](feedback-checks/)，最终构建及类型检查通过后才更新预览。
+
+[第五轮](feedback-browser-fifth/storage-admin-feedback.json)与[第六轮](feedback-browser-sixth/storage-admin-feedback.json)均在五个桌面提示已完成卸载与回焦后、切换手机设备模式前超时，不能把未执行的手机步骤记成失败或通过。[连续焦点跟踪](feedback-browser-sixth/continuous-focus-trace.json)实测手机背景关闭正常回原入口；[尺寸跟踪](feedback-browser-sixth/resize-tooltip-trace.json)定位到保持桌面Tooltip开启、同时切换CDP桌面/手机模式时，旧浮层位置撑大模拟layout viewport。代表设备之间先在已完成精确回焦断言后真实移焦、等Tooltip卸载，再切换；没有修改产品或去掉手机断言，也不声称该仿真模式切换已修复。[正常桌面窗口缩窄](feedback-browser-sixth/desktop-window-resize.json)另行实际保持`mobile=false`从1440缩到390，Tooltip完整重定位、文档宽390无溢出、原入口焦点保留，区分真实响应式与切换设备模式。手机背景关闭使用实际浮层外可接收输入的坐标，未点击模态浮层下的inert标题。
+
+[第七轮](feedback-browser-seventh/storage-admin-feedback.json)已实际通过12组锁定布局和12项提示操作，随后短视口仍显示的只读Tooltip拦截“引用与清理”的真实点击。仅将本组件的纯说明Tooltip设为`pointer-events-none`，保持Popover可交互；没有在短视口点击操作之前移焦绕过故障。重新构建后更新同一预览，健康及登录200，最终报告继续验证原点击路径。
+
+[第八轮](feedback-browser-eighth/storage-admin-feedback.json)已通过该点击路径，真实Local非法创建返回400，输入保留、字段错误关联及焦点通过；但可见边界测量遗漏HeroUI的危险色ring而失败。实际[错误截图](feedback-browser-eighth/storage-admin-feedback-failure.png)有2px红环，[离焦诊断](feedback-browser-eighth/local-error-unfocused.json)有1px solid危险色outline。扩充测量以同时检查真实border、solid outline或无偏移无模糊且至少1px的危险色ring，并增加离焦边界保持检查；没有把`outline-style:none`或仅颜色变量记通过，也没有为测量不足修改产品。第八轮S3非法输入未执行，留待最终报告。
+
+最终实际执行 `EGO_TASK_SPACE=20 BROWSER_REPORT_DIR=docs/verification/storage-198/feedback-browser node scripts/verify-browser.mjs --suite storage-admin --only feedback --preview-config .data/issue198-preview/local.json`，退出0；[运行器](feedback-browser/runner.json)和[行为/布局报告](feedback-browser/storage-admin-feedback.json)均为`passed`，时间11:04:15–11:05:01 UTC。28组实际布局覆盖锁定Local的360/390/430/768/1440浅深色及390×480短视口、新建Local/S3和两种字段错误的1440/390浅深色；12项提示包含悬停、真实Tab聚焦、Enter、Esc回焦、手机背景关闭与短视口。三按钮桌面/平板同排，360/390自然2+1，圆角8px、高44px；展开Tips44×44、Select图标间距8px。
+
+最终单次报告仅两次非法POST，Local路径和S3地址均实际400、字段关联正确、输入保留并聚焦错误；危险色ring实测2px，离焦后仍有1px solid危险色outline。真实配置ID集合与默认选择前后不变，没有连接测试、扫描或删除请求。新增Tooltip不再拦截短视口下的真实“引用与清理”点击，原引用和清理页路径通过。浏览器已恢复默认Local桌面浅色，预览保持运行供用户验收。
+
+独立代码和设计返修结论分别追加在 [代码审计](code-review.md#用户反馈返修2026-10-04)、[设计评审](design-review.md#用户反馈返修2026-10-04)。当前界面返修通过不替代完整任务验收；此前完整集成失败、必要设计补充批准和用户人工验收继续开放，PR仍为草稿。物理设备、发布镜像和保持桌面Tooltip开启切换CDP设备模式未验证；没有以未执行项计通过。
+
+收尾的全仓库 `pnpm run format:check` 输出见 [格式日志](feedback-checks/format-final.log)，文档 `node docs/tasks/check.mjs` 输出见 [文档日志](feedback-checks/docs.log)。源码和浏览器脚本的最后受影响范围分别见 [lint-final](feedback-checks/lint-final.log)、[最后Tips样式](feedback-checks/lint-tip-final.log)和[浏览器脚本](feedback-checks/lint-browser.log)；类型、单元和构建输出同在 [feedback-checks/](feedback-checks/)。没有机械重跑媒体集成、两真实服务或未改变的公共消费路由。

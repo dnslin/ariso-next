@@ -102,3 +102,25 @@ SeaweedFS配置证据来自真实配置API：版本未启用、锁未配置，�
 - 实际读取首轮、第二轮与第三轮浏览器JSON：均失败，原因分别为开关可访问名称、保存待测返回链接点击目标、CORS底栏链接测试选择范围。另读取最终主流程、最小短框、两服务live JSON及runner，均为通过；读取最终受影响单元、维护追加复验、lint/typecheck/build日志与集成复跑日志，核对结果和限制。该记录未执行重复的单元、集成、构建或整套浏览器测试；不声称由本审计者独立重跑通过。
 
 范围外的原媒体集成失败由实施记录保留实际结果，本轮不修改其路径、超时、断言或冻结规则。源码专项审计通过不关闭上述设计与验证门槛，仍须保留草稿并等待用户人工 UI 验收。
+
+## 用户反馈返修（2026-10-04）
+
+本轮仅审查用户明确要求的输入前图标、按需说明、同组操作和圆角返修，以及相应浏览器脚本。评审者未参与实现；重新读取 AGENTS.md、`code-review-and-quality`、`vercel-react-best-practices`、设计交付规范、执行约定和锁定 HeroUI 3.2.6 的 InputGroup、TextField、Tooltip、Popover、Button 实现及类型。前轮全量审计与测试结论保留，不重复执行业务大套。
+
+**本轮源码与针对性行为验证的独立审计通过，没有 Critical 或未解决的本轮 Required。** 悬停提示不显示、启用说明继承 Select 上下文、按压后触发器缩成42.68px，以及短视口 Tooltip 遮挡真实操作，均已在本轮修复并取得最终通过证据。此结论只覆盖用户反馈返修，不能关闭原完整任务的集成失败、设计补充及人工验收门槛。
+
+- InputGroup.Input 仍消费 TextField 的 name、value、只读、禁用和校验上下文；字段外 Label 与 FieldError 保留。Lucide 前置图标标为装饰，不充当字段名称；凭据仍为 password 输入，保存和留空保留逻辑没有变化。
+- 默认、单一引用/清理及删除组成同一操作组。引用入口先到真实分类，再进入已有清理页；旧主流程 helper 已维护这一调用路径，没有删掉引用、默认或维护能力。删除的引用/活动写入条件、busy/unknown 禁用、服务端重新检查、风险确认及未知核对保持原实现。页面仍直接显示“存在引用，暂不可删除”，只读标签仍可见，错误与必要确认没有被 Tips 隐藏。
+- StorageTip 的唯一触发器是 HeroUI Button，采用官方 Tooltip.Trigger 的 render 组合。Popover 展开时关闭 Tooltip；桌面悬停采用 HeroUI 的 hover 回调，聚焦/关闭采用库的 onOpenChange，没有新建定时器或 DOM 监听。禁用触发器的按压缩放，展开后仍为44px；只读说明的 Tooltip 不接收指针事件，Popover 保持可交互，避免提示遮挡下方实际操作。render 的 DOM 按钮属性局部适配为 Button 的属性类型：该闭合组件不接受外部触发器 value/事件参数，实际始终输出同一个原生 button，完整透传 props/ref，不丢回调或新增兼容组件。两次真实类型失败仍保留在本轮构建日志中，由最终构建与类型结果承接。
+- 启用状态说明曾实际继承 Select 的 ListBox ButtonContext，导致提示入口拥有错误的 popup/可访问名称。最终标签与 Tip 已移到 Select 外，选择器通过 aria-labelledby 关联外标签，value/onChange/busy 仍由原组件控制；没有通过改宽松选择器来掩盖上下文污染。
+- feedback runner 复用独立预览和既有 Ego Space，只执行两个应返回 HTTP 400 的无效创建，核对字段错误、输入保留、焦点、配置 ID 集合及默认指针。脚本拦截并记录意外维护操作，最终还原 fetch 并移除新文档 hook，避免测试拦截遗留给人工预览。没有执行远端测试、扫描或删除，也不把这轮 UI 验证冒充两服务重新通过。
+
+共用 `readGeometry` 仅对 `input[data-slot="input-group-input"]` 测量其实际 HeroUI InputGroup，另外保留内部 input 的原始宽高。已读取库的 group click→input.focus 实现；普通控件、溢出检查与手机/桌面 44/24px 阈值不变。最终场景另实际点击前置图标并确认输入聚焦，不能以换用大容器掩盖不可点击的空白。
+
+最终实际读取 [feedback-browser/storage-admin-feedback.json](feedback-browser/storage-admin-feedback.json) 与 [runner.json](feedback-browser/runner.json)，均为 `passed`，执行时间11:04:15–11:05:01 UTC，macOS ARM64、Node v24.18.1、Ego Space20/p1。报告含28组布局与12项提示交互：引用 Local 覆盖浅深色360/390/430/768/1440及390×480短视口，新建 Local/S3 和真实字段错误覆盖两端浅深色。所有展开提示为44×44px、transform:none，桌面悬停与真实Tab聚焦可读，Enter/点击展开、Escape/可见背景点击关闭、浮层卸载及精确原触发器回焦均通过。启用说明不带 ListBox 语义，打开说明不改变启用值；短视口关闭后直接点击引用/清理操作成功，没有通过预先移焦来绕过 Tooltip 遮挡。
+
+Local 相对路径与 S3 Endpoint 分别真实提交无效值并取得400 `STORAGE_INVALID_INPUT`。错误文字与输入关联、原值保留、自动焦点、输入/组 invalid 状态均通过；聚焦时实测2px danger ring，移焦后仍有1px solid danger outline。断言测量实际 border/outline/box-shadow 中的可见错误边界并与普通边界比较，不将只有颜色或CSS变量认作错误可见。两个无效创建未新增配置，默认指针不变，维护测试/扫描/删除请求为0。
+
+历史 [feedback-browser-first](feedback-browser-first/)、[second](feedback-browser-second/)、[third](feedback-browser-third/)、[fourth](feedback-browser-fourth/)、[fifth](feedback-browser-fifth/)、[sixth](feedback-browser-sixth/)、[seventh](feedback-browser-seventh/)、[eighth](feedback-browser-eighth/) 保留原始失败。测量与时序维护没有削弱阈值或业务断言：回焦严格等待库的异步恢复后再核对原可访问名称；背景点击使用真实浮层外坐标，避免给 inert 页面标题发送不可接收的输入；错误边界补量 HeroUI 的实际 ring，而非为少测 ring 的脚本改产品。不同设备代表验证在已完成精确回焦后移焦并关闭提示再切换CDP设备类型，桌面开态直接切手机类型保持未验证。另实际读取 [desktop-window-resize.json](feedback-browser-sixth/desktop-window-resize.json)：正常桌面窗口以 mobile=false 从1440缩至390，Tooltip 从426–746重新定位到142–390，scrollWidth为390、原Tip焦点保留，证明正常缩窄没有文档溢出；不能把这一结果冒充混合仿真类型切换通过。
+
+本审计实际执行 `git diff --check` 时通过，只读取源码、依赖类型和真实报告，没有重复运行应用测试、构建或浏览器大套。设计结论与用户再次人工验收分别承接；既有完整媒体集成失败、R2 等未批准设计补充没有因本次呈现返修而关闭，PR继续保持草稿。

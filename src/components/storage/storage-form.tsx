@@ -2,7 +2,17 @@
 
 import { Card } from '@heroui/react/card';
 import { TextField } from '@heroui/react/textfield';
-import { Input } from '@heroui/react/input';
+import { InputGroup } from '@heroui/react/input-group';
+import {
+  Folder,
+  Globe,
+  HardDrive,
+  KeyRound,
+  MapPin,
+  Power,
+  Tag,
+} from 'lucide-react';
+import { StorageTip } from './storage-tip';
 import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { Switch } from '@heroui/react/switch';
@@ -59,6 +69,7 @@ export function StorageForm({
     label: string,
     placeholder?: string,
     readOnly = false,
+    tip?: string,
   ) => (
     <TextField
       name={name}
@@ -70,22 +81,46 @@ export function StorageForm({
       validationBehavior="aria"
       className={`min-w-0 ${lockedLocal ? 'gap-1.5' : 'gap-2'}`}
     >
-      <Label
-        className={`${lockedLocal ? 'text-sm' : 'text-[13px]'} font-normal ${readOnly && !lockedLocal ? 'text-muted' : ''}`}
+      <div className="flex items-center justify-between gap-2">
+        <Label
+          className={`${lockedLocal ? 'text-sm' : 'text-[13px]'} font-normal ${readOnly && !lockedLocal ? 'text-muted' : ''}`}
+        >
+          {label}
+          {readOnly ? ' · 只读' : ''}
+        </Label>
+        {tip ? <StorageTip label={label}>{tip}</StorageTip> : null}
+      </div>
+      <InputGroup
+        className={`h-11 w-full border border-border shadow-none ${lockedLocal ? 'rounded-lg min-[1200px]:h-10 min-[1200px]:min-h-10' : 'rounded-xl'} ${readOnly ? 'bg-default/80' : 'bg-background'}`}
       >
-        {label}
-        {readOnly ? (lockedLocal ? ' · 只读' : '（只读）') : ''}
-      </Label>
-      <Input
-        type={
-          name === 'secretKey' || name === 'accessKey' ? 'password' : 'text'
-        }
-        autoComplete={
-          name === 'secretKey' || name === 'accessKey' ? 'new-password' : 'off'
-        }
-        placeholder={placeholder}
-        className={`h-11 w-full border border-border text-base font-normal shadow-none min-[1200px]:text-sm ${lockedLocal ? 'rounded-lg pl-9 pr-3 min-[1200px]:h-10' : 'rounded-xl px-3.5'} ${readOnly ? 'bg-default/80 text-muted' : 'bg-background'}`}
-      />
+        <InputGroup.Prefix className="border-0 pl-3 pr-2 text-muted">
+          {name === 'name' ? (
+            <Tag className="size-4" aria-hidden="true" />
+          ) : name === 'endpoint' ? (
+            <Globe className="size-4" aria-hidden="true" />
+          ) : name === 'region' ? (
+            <MapPin className="size-4" aria-hidden="true" />
+          ) : name === 'bucket' ? (
+            <HardDrive className="size-4" aria-hidden="true" />
+          ) : name === 'accessKey' || name === 'secretKey' ? (
+            <KeyRound className="size-4" aria-hidden="true" />
+          ) : (
+            <Folder className="size-4" aria-hidden="true" />
+          )}
+        </InputGroup.Prefix>
+        <InputGroup.Input
+          type={
+            name === 'secretKey' || name === 'accessKey' ? 'password' : 'text'
+          }
+          autoComplete={
+            name === 'secretKey' || name === 'accessKey'
+              ? 'new-password'
+              : 'off'
+          }
+          placeholder={placeholder}
+          className={`h-full min-w-0 py-0 pl-0 pr-3 text-base font-normal min-[1200px]:text-sm ${readOnly ? 'text-muted' : ''}`}
+        />
+      </InputGroup>
       <FieldError>{errors[name]}</FieldError>
     </TextField>
   );
@@ -131,59 +166,80 @@ export function StorageForm({
           onSubmit();
         }}
       >
-        <div className="grid gap-1.5">
-          {field('name', '存储名称')}
-          <p className="text-xs text-muted">可修改名称，不移动已有文件。</p>
-        </div>
+        {field(
+          'name',
+          '存储名称',
+          undefined,
+          false,
+          '修改名称不会移动已有文件。',
+        )}
         <TextField value="本地存储" isReadOnly className="gap-1.5">
-          <Label className="text-sm font-normal">存储类型 · 只读</Label>
-          <Input className="h-11 w-full rounded-lg border border-border bg-default/80 pl-9 pr-3 text-base font-normal text-muted shadow-none min-[1200px]:h-10 min-[1200px]:text-sm" />
-          <p className="text-xs text-muted">存在引用时不能切换为 S3。</p>
+          <div className="flex items-center justify-between gap-2">
+            <Label className="text-sm font-normal">存储类型 · 只读</Label>
+            <StorageTip label="存储类型">
+              此存储已有引用，不能切换类型。使用 S3 时请新建存储。
+            </StorageTip>
+          </div>
+          <InputGroup className="h-11 w-full rounded-lg border border-border bg-default/80 shadow-none min-[1200px]:h-10 min-[1200px]:min-h-10">
+            <InputGroup.Prefix className="border-0 pl-3 pr-2 text-muted">
+              <HardDrive className="size-4" aria-hidden="true" />
+            </InputGroup.Prefix>
+            <InputGroup.Input className="h-full min-w-0 py-0 pl-0 pr-3 text-base font-normal text-muted min-[1200px]:text-sm" />
+          </InputGroup>
         </TextField>
+        {field(
+          'localPath',
+          '相对路径',
+          undefined,
+          true,
+          '此位置仍被图片、上传或清理任务使用。更换目录请新建存储，已有文件不会移动。',
+        )}
         <div className="grid gap-1.5">
-          {field('localPath', '相对路径', undefined, true)}
-          <p className="text-xs text-muted">存在引用时不能更改物理位置。</p>
+          <div className="flex items-center justify-between gap-2">
+            <Label id="storage-enabled-label" className="text-sm font-normal">
+              启用状态
+            </Label>
+            <StorageTip label="启用状态">
+              停用后，访问与新上传不可用；默认选择保留，已有记录、删除与维护清理仍可管理。
+            </StorageTip>
+          </div>
+          <Select
+            aria-labelledby="storage-enabled-label"
+            name="enabled"
+            value={value.enabled ? 'enabled' : 'disabled'}
+            isDisabled={busy}
+            onChange={(next) =>
+              onChange({ ...value, enabled: next === 'enabled' })
+            }
+          >
+            <Select.Trigger className="h-11 w-full gap-2 rounded-lg border border-border bg-background px-3 text-base font-normal shadow-none min-[1200px]:h-10 min-[1200px]:text-sm">
+              <Power
+                className="size-4 shrink-0 text-muted"
+                aria-hidden="true"
+              />
+              <Select.Value className="flex-1 text-left" />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {[
+                  { id: 'enabled', name: '已启用' },
+                  { id: 'disabled', name: '已停用' },
+                ].map((state) => (
+                  <ListBox.Item
+                    id={state.id}
+                    key={state.id}
+                    textValue={state.name}
+                    className="min-h-11"
+                  >
+                    {state.name}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
         </div>
-        <Select
-          aria-label="启用此存储"
-          name="enabled"
-          value={value.enabled ? 'enabled' : 'disabled'}
-          isDisabled={busy}
-          onChange={(next) =>
-            onChange({ ...value, enabled: next === 'enabled' })
-          }
-          className="gap-1.5"
-        >
-          <Label className="text-sm font-normal">启用状态</Label>
-          <Select.Trigger className="h-11 w-full rounded-lg border border-border bg-background pl-9 pr-3 text-base font-normal shadow-none min-[1200px]:h-10 min-[1200px]:text-sm">
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {[
-                { id: 'enabled', name: '已启用' },
-                { id: 'disabled', name: '已停用' },
-              ].map((state) => (
-                <ListBox.Item
-                  id={state.id}
-                  key={state.id}
-                  textValue={state.name}
-                  className="min-h-11"
-                >
-                  {state.name}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
-        <p className="-mt-2.5 text-xs text-muted">
-          仍可修改启停状态。停用不阻止删除与维护清理。
-        </p>
-        <p className="rounded-lg bg-default px-3.5 py-3 text-[13px] leading-normal text-muted">
-          需要使用其他位置时新建存储。当前引用解除前不能删除此配置。
-        </p>
       </form>
     );
   return (
@@ -215,7 +271,7 @@ export function StorageForm({
               variant={value.type === type ? 'primary' : 'outline'}
               aria-pressed={value.type === type}
               isDisabled={busy}
-              className={`h-11 min-w-0 flex-1 rounded-xl px-4 text-sm font-normal min-[1200px]:h-10 min-[1200px]:flex-none ${type === 'local' ? 'min-[1200px]:w-35' : 'min-[1200px]:w-40'}`}
+              className={`h-11 min-w-0 flex-1 rounded-lg px-4 text-sm font-normal min-[1200px]:h-10 min-[1200px]:flex-none ${type === 'local' ? 'min-[1200px]:w-35' : 'min-[1200px]:w-40'}`}
               onPress={() =>
                 onChange({
                   ...value,

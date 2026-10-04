@@ -8,6 +8,7 @@ import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
 import { AlertDialog } from '@heroui/react/alert-dialog';
+import { ListChecks, LockKeyhole, Settings2 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload, useUploadQueue } from '../upload/provider';
 import { StorageForm } from './storage-form';
@@ -15,6 +16,7 @@ import { storageFormInitial, storageFormPayload } from './storage-form-utils';
 import { StorageConnectionResult } from './storage-connection-result';
 import { StorageReferenceView } from './storage-reference-view';
 import { StorageDeleteDialog } from './storage-delete-dialog';
+import { StorageTip } from './storage-tip';
 import { StorageMaintenanceView } from './storage-maintenance-view';
 import {
   reconcileStorageSave,
@@ -35,7 +37,7 @@ type ShellProps = Omit<
   'children' | 'footer'
 >;
 const actionClass =
-  'h-11 min-w-0 rounded-xl px-3 text-sm font-normal min-[1200px]:h-10';
+  'h-11 min-w-0 rounded-lg px-3 text-sm font-normal min-[1200px]:h-10';
 
 export function StorageEditor({
   storageId,
@@ -636,7 +638,7 @@ function StorageEditorReady({
         {!(locked && !s3) ? (
           <Link
             href="/settings/storage"
-            className="flex h-11 w-45 items-center justify-center rounded-xl border border-border text-sm no-underline min-[1200px]:h-10"
+            className="flex h-11 w-45 items-center justify-center rounded-lg border border-border text-sm no-underline min-[1200px]:h-10"
           >
             ‹ 返回存储管理
           </Link>
@@ -726,7 +728,7 @@ function StorageEditorReady({
           <>
             <Button
               variant="outline"
-              className="min-h-11 justify-self-start"
+              className="min-h-11 justify-self-start rounded-lg"
               onPress={() => setSavedView(true)}
             >
               查看连接测试结果
@@ -737,7 +739,7 @@ function StorageEditorReady({
             {connected ? (
               <Link
                 href={`/settings/storage/${encodeURIComponent(effective.id)}/cors`}
-                className="flex min-h-11 items-center rounded-xl border border-border px-4 text-sm no-underline justify-self-start"
+                className="flex min-h-11 items-center rounded-lg border border-border px-4 text-sm no-underline justify-self-start"
               >
                 浏览器直传设置
               </Link>
@@ -749,40 +751,43 @@ function StorageEditorReady({
           </>
         ) : null}
         {detail && locked ? (
-          <Button
-            variant="outline"
-            className="min-h-11 justify-self-start"
-            onPress={() => setReferenceView(true)}
+          <div className="flex w-full max-w-190 items-center gap-2 text-[13px] text-muted">
+            <LockKeyhole className="size-4 shrink-0" aria-hidden="true" />
+            <span>存在引用，暂不可删除</span>
+            <StorageTip label="删除限制">
+              先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。
+            </StorageTip>
+          </div>
+        ) : null}
+        {detail ? (
+          <div
+            data-testid="storage-editor-actions"
+            className="flex flex-wrap items-center gap-3"
           >
-            查看引用与删除限制
-          </Button>
-        ) : null}
-        {detail ? (
-          <StorageDeleteDialog
-            storage={detail}
-            onDeleted={() => router.push('/settings/storage')}
-            onRefresh={() => void refresh()}
-            isDisabled={busy || unknown || Boolean(refreshError)}
-          />
-        ) : null}
-        {detail ? (
-          <div className="flex flex-wrap gap-3">
             <Button
               variant="outline"
-              className="min-h-11"
+              className="min-h-11 rounded-lg px-3 text-sm font-normal"
               data-testid="storage-open-default"
               onPress={() => setMaintenanceView('default')}
             >
+              <Settings2 className="size-4 shrink-0" aria-hidden="true" />
               默认存储设置
             </Button>
             <Button
               variant="outline"
-              className="min-h-11"
+              className="min-h-11 rounded-lg px-3 text-sm font-normal"
               data-testid="storage-open-cleanup"
-              onPress={() => setMaintenanceView('cleanup')}
+              onPress={() => setReferenceView(true)}
             >
-              查看引用与清理状态
+              <ListChecks className="size-4 shrink-0" aria-hidden="true" />
+              引用与清理
             </Button>
+            <StorageDeleteDialog
+              storage={detail}
+              onDeleted={() => router.push('/settings/storage')}
+              onRefresh={() => void refresh()}
+              isDisabled={busy || unknown || Boolean(refreshError)}
+            />
           </div>
         ) : null}
         {r2Confirmation ? (

@@ -60,12 +60,26 @@ export async function readGeometry(page) {
       targets: [...document.querySelectorAll('button,a,input,textarea')]
         .filter(visible)
         .map((node) => {
-          const rect = node.getBoundingClientRect();
+          // HeroUI's InputGroup click handler focuses its input from the entire
+          // bordered group, including the prefix. Measure that actual target.
+          const inputGroup = node.matches(
+            'input[data-slot="input-group-input"]',
+          )
+            ? node.closest('[data-slot="input-group"]')
+            : null;
+          const rect = (inputGroup ?? node).getBoundingClientRect();
           return {
             name:
               node.getAttribute('aria-label') || node.textContent || node.name,
             width: rect.width,
             height: rect.height,
+            ...(inputGroup
+              ? {
+                  target: 'HeroUI InputGroup',
+                  inputWidth: node.getBoundingClientRect().width,
+                  inputHeight: node.getBoundingClientRect().height,
+                }
+              : {}),
             navigation: node.classList.contains('shell-nav-link'),
           };
         }),

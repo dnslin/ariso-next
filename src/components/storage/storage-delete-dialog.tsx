@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
+import { Trash2 } from 'lucide-react';
 import {
   storageRequest,
   storageUrl,
@@ -68,7 +69,7 @@ export function StorageDeleteDialog({
     }
   }
   return (
-    <div className="grid gap-2 justify-items-start">
+    <>
       <AlertDialog
         isOpen={open}
         onOpenChange={(value) => {
@@ -78,14 +79,15 @@ export function StorageDeleteDialog({
         <Button
           data-testid="storage-delete"
           variant="outline"
-          className="min-h-11 rounded-xl"
+          className="min-h-11 rounded-lg px-3 text-sm font-normal"
           isDisabled={isDisabled || blocked}
           onPress={() => {
             setError('');
             setOpen(true);
           }}
         >
-          删除存储配置
+          <Trash2 className="size-4 shrink-0" aria-hidden="true" />
+          删除配置
         </Button>
         <AlertDialog.Backdrop isKeyboardDismissDisabled={busy}>
           <AlertDialog.Container
@@ -150,11 +152,6 @@ export function StorageDeleteDialog({
           </AlertDialog.Container>
         </AlertDialog.Backdrop>
       </AlertDialog>
-      {blocked ? (
-        <p className="text-[13px] text-muted">
-          仍有引用或活动写入。请先处理上方引用和清理责任。
-        </p>
-      ) : null}
-    </div>
+    </>
   );
 }

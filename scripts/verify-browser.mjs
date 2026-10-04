@@ -20,6 +20,7 @@ const { values } = parseArgs({
     suite: { type: 'string', default: 'full' },
     only: { type: 'string' },
     'storage-config': { type: 'string' },
+    'preview-config': { type: 'string' },
   },
 });
 const suite = values.suite;
@@ -42,7 +43,8 @@ assert.ok(
   only === undefined ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'upload-s3' && only === 'cleanup') ||
-    (suite === 'storage-admin' && ['live', 'dialogs'].includes(only)) ||
+    (suite === 'storage-admin' &&
+      ['live', 'dialogs', 'feedback'].includes(only)) ||
     (suite === 'viewer' &&
       [
         'representative',
@@ -63,6 +65,11 @@ assert.ok(
         'review-fixes',
       ].includes(only)),
   '--only requires an applicable targeted suite',
+);
+assert.ok(
+  !values['preview-config'] ||
+    (suite === 'storage-admin' && only === 'feedback'),
+  '--preview-config applies only to storage-admin feedback',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
@@ -110,6 +117,8 @@ for (const name of [
   'storage-admin-dialogs-failure.png',
   'storage-admin-live.json',
   'storage-admin-live-failure.png',
+  'storage-admin-feedback.json',
+  'storage-admin-feedback-failure.png',
   'delivery-s3/browser.json',
   'm2-1440.json',
   'm2-390.json',
@@ -122,7 +131,6 @@ for (const name of [
   ),
 ])
   await rm(join(output, name), { force: true });
-const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
 const report = {
   startedAt: new Date().toISOString(),
   platform: process.platform,
@@ -189,6 +197,86 @@ const interrupt = () =>
   controller.abort(new Error('Browser verification interrupted'));
 process.once('SIGINT', interrupt);
 process.once('SIGTERM', interrupt);
+async function runBrowser(script, browserConfig, logName) {
+  const source = await readFile(new URL(script, import.meta.url), 'utf8');
+  browser = spawn('ego-browser', ['nodejs'], {
+    detached: true,
+    stdio: ['pipe', 'pipe', 'pipe'],
+  });
+  let browserLogs = '';
+  browser.stdout.on('data', (chunk) => {
+    browserLogs += chunk;
+  });
+  browser.stderr.on('data', (chunk) => {
+    browserLogs += chunk;
+  });
+  const closed = once(browser, 'close', { signal: controller.signal });
+  browser.stdin.on('error', () => {
+    /* Process close/error below reports a failed CLI. */
+  });
+  browser.stdin.end(
+    `const config = ${JSON.stringify(browserConfig)};\n${source}`,
+  );
+  // Full screenshot matrices can exceed five minutes; behavior waits stay bounded.
+  const timeout = setTimeout(interrupt, 600000);
+  try {
+    const [code] = await closed;
+    assert.equal(code, 0, `Ego browser verification failed (${logName})`);
+  } finally {
+    clearTimeout(timeout);
+    const safeLogs = redact(browserLogs);
+    process.stdout.write(safeLogs);
+    await writeFile(join(output, logName), safeLogs);
+  }
+}
+if (only === 'feedback') {
+  try {
+    assert.ok(values['preview-config'], 'Feedback requires --preview-config');
+    const preview = JSON.parse(
+      await readFile(resolve(values['preview-config']), 'utf8'),
+    );
+    const spaceId = Number(process.env.EGO_TASK_SPACE);
+    assert.ok(
+      Number.isInteger(spaceId) && spaceId > 0,
+      'Existing Ego space required',
+    );
+    assert.ok(preview.origin && preview.email && preview.password);
+    secrets.push(preview.password);
+    report.origin = preview.origin;
+    report.taskSpaceId = spaceId;
+    report.existingPreview = true;
+    await runBrowser(
+      '../e2e/storage-admin-feedback.mjs',
+      {
+        origin: preview.origin,
+        credentials: { email: preview.email, password: preview.password },
+        spaceId,
+        pageLabel,
+        output,
+        geometryScript: pathToFileURL(resolve('e2e/browser-geometry.mjs')).href,
+      },
+      'storage-admin-feedback.log',
+    );
+    report.storageAdminFeedback = 'passed';
+    report.status = 'passed';
+  } catch (error) {
+    report.error = redact(error.stack ?? String(error));
+    process.exitCode = 1;
+    console.error(report.error);
+  } finally {
+    await stop(browser);
+    report.finishedAt = new Date().toISOString();
+    await writeFile(
+      join(output, 'runner.json'),
+      `${JSON.stringify(report, null, 2)}\n`,
+    );
+    process.removeListener('SIGINT', interrupt);
+    process.removeListener('SIGTERM', interrupt);
+    console.log(`Browser report: ${output}`);
+  }
+  process.exit(process.exitCode ?? 0);
+}
+const temporary = await mkdtemp(join(tmpdir(), 'ariso-browser-'));
 try {
   const app = join(temporary, 'app');
   await cp(resolve('.next/standalone'), app, {
@@ -362,38 +450,6 @@ try {
       Number.isInteger(config.spaceId) && config.spaceId > 0,
       'Invalid EGO_TASK_SPACE',
     );
-  async function runBrowser(script, browserConfig, logName) {
-    const source = await readFile(new URL(script, import.meta.url), 'utf8');
-    browser = spawn('ego-browser', ['nodejs'], {
-      detached: true,
-      stdio: ['pipe', 'pipe', 'pipe'],
-    });
-    let browserLogs = '';
-    browser.stdout.on('data', (chunk) => {
-      browserLogs += chunk;
-    });
-    browser.stderr.on('data', (chunk) => {
-      browserLogs += chunk;
-    });
-    const closed = once(browser, 'close', { signal: controller.signal });
-    browser.stdin.on('error', () => {
-      /* Process close/error below reports a failed CLI. */
-    });
-    browser.stdin.end(
-      `const config = ${JSON.stringify(browserConfig)};\n${source}`,
-    );
-    // Full screenshot matrices can exceed five minutes; behavior waits stay bounded.
-    const timeout = setTimeout(interrupt, 600000);
-    try {
-      const [code] = await closed;
-      assert.equal(code, 0, `Ego browser verification failed (${logName})`);
-    } finally {
-      clearTimeout(timeout);
-      const safeLogs = redact(browserLogs);
-      process.stdout.write(safeLogs);
-      await writeFile(join(output, logName), safeLogs);
-    }
-  }
   if (suite !== 'full') {
     assert.ok(
       config.spaceId,

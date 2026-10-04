@@ -1,0 +1,6511 @@
+{
+  "status": "passed",
+  "taskSpaceId": 20,
+  "origin": "http://ariso-198.localhost:4198",
+  "checks": [
+    "Editable name and read-only type/path fields retain associated labels and prefix icons; tips open with keyboard/click, close with Escape or outside click, and restore focus at desktop/mobile/short viewports.",
+    "Single reference-and-cleanup action reaches actual reference counts and the existing cleanup view without running maintenance.",
+    {
+      "check": "local-actual-invalid-create",
+      "field": "localPath",
+      "normalBoundary": {
+        "borderColor": "rgb(96, 125, 133)",
+        "outlineColor": "rgb(244, 241, 248)",
+        "outlineWidth": "3px",
+        "outlineStyle": "none",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(130, 219, 211) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "value": "../outside",
+      "invalid": "true",
+      "groupInvalid": "true",
+      "borderColor": "rgb(96, 125, 133)",
+      "outlineColor": "rgb(255, 133, 138)",
+      "outlineWidth": "1px",
+      "outlineStyle": "none",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(255, 133, 138) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "dangerRingSpread": 2,
+      "dangerColor": "rgb(255, 133, 138)",
+      "description": "请输入存储根目录内的相对路径",
+      "focused": true,
+      "unfocused": {
+        "invalid": "true",
+        "borderColor": "rgb(96, 125, 133)",
+        "outlineColor": "rgb(255, 133, 138)",
+        "outlineWidth": "1px",
+        "outlineStyle": "solid"
+      }
+    },
+    {
+      "check": "s3-actual-invalid-create",
+      "field": "endpoint",
+      "normalBoundary": {
+        "borderColor": "rgb(96, 125, 133)",
+        "outlineColor": "rgb(244, 241, 248)",
+        "outlineWidth": "3px",
+        "outlineStyle": "none",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "value": "invalid-endpoint",
+      "invalid": "true",
+      "groupInvalid": "true",
+      "borderColor": "rgb(96, 125, 133)",
+      "outlineColor": "rgb(255, 133, 138)",
+      "outlineWidth": "1px",
+      "outlineStyle": "none",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 0px, rgb(255, 133, 138) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+      "dangerRingSpread": 2,
+      "dangerColor": "rgb(255, 133, 138)",
+      "description": "请输入不含凭据、查询或片段的 HTTP(S) S3 API 地址",
+      "focused": true,
+      "unfocused": {
+        "invalid": "true",
+        "borderColor": "rgb(96, 125, 133)",
+        "outlineColor": "rgb(255, 133, 138)",
+        "outlineWidth": "1px",
+        "outlineStyle": "solid"
+      }
+    },
+    "Both invalid creates return actual HTTP 400 field errors, preserve inputs/focus, create no rows and leave the default unchanged. No test, scan or delete request is issued."
+  ],
+  "layouts": [
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 226,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-360.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 256,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-390.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 296,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 679,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-430.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 634,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 679,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-768.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 760,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 160,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 240,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 624,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 624,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 624,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-1440.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 328,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 226,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 328,
+          "inputWidth": 290,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-360.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 256,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-390.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 398,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 296,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 398,
+          "inputWidth": 360,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 679,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-430.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 736,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 634,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 736,
+          "inputWidth": 698,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 679,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-768.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 760,
+          "height": 40,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 760,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 160,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 240,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 40,
+          "width": 760,
+          "inputWidth": 722,
+          "inputHeight": 38,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 624,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 624,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 624,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-1440.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 256,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-light-390x480.png"
+    },
+    {
+      "state": "local-referenced",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储名称说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "存储类型说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "相对路径说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 358,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用状态说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "已启用",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除限制说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回列表",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 256,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria3281265134-_r_m_",
+          "inputId": "react-aria3281265134-_r_m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "storageType",
+          "label": "存储类型 · 只读",
+          "labelFor": "react-aria3281265134-_r_10_",
+          "inputId": "react-aria3281265134-_r_10_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径 · 只读",
+          "labelFor": "react-aria3281265134-_r_1a_",
+          "inputId": "react-aria3281265134-_r_1a_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": true,
+          "disabled": false,
+          "height": 44,
+          "width": 358,
+          "inputWidth": 320,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "actions": {
+        "wrap": "wrap",
+        "buttons": [
+          {
+            "id": "storage-open-default",
+            "name": "默认存储设置",
+            "top": 679,
+            "width": 130,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-open-cleanup",
+            "name": "引用与清理",
+            "top": 679,
+            "width": 116,
+            "height": 44,
+            "radius": "8px",
+            "disabled": false
+          },
+          {
+            "id": "storage-delete",
+            "name": "删除配置",
+            "top": 735,
+            "width": 102,
+            "height": 44,
+            "radius": "8px",
+            "disabled": true
+          }
+        ],
+        "selectPrefix": true,
+        "selectGap": 8,
+        "visibleGuideParagraphs": 0,
+        "referenceEntrances": 1
+      },
+      "screenshot": "storage-feedback-local-referenced-dark-390x480.png"
+    },
+    {
+      "state": "local-new",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria6814256627-_r_q_",
+          "inputId": "react-aria6814256627-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria6814256627-_r_v_",
+          "inputId": "react-aria6814256627-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-new-light-1440.png"
+    },
+    {
+      "state": "local-new",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria6814256627-_r_q_",
+          "inputId": "react-aria6814256627-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria6814256627-_r_v_",
+          "inputId": "react-aria6814256627-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-new-light-390.png"
+    },
+    {
+      "state": "local-new",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria6814256627-_r_q_",
+          "inputId": "react-aria6814256627-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria6814256627-_r_v_",
+          "inputId": "react-aria6814256627-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-new-dark-1440.png"
+    },
+    {
+      "state": "local-new",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria6814256627-_r_q_",
+          "inputId": "react-aria6814256627-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria6814256627-_r_v_",
+          "inputId": "react-aria6814256627-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-new-dark-390.png"
+    },
+    {
+      "state": "s3-new",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8500340775-_r_q_",
+          "inputId": "react-aria8500340775-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8500340775-_r_1c_",
+          "inputId": "react-aria8500340775-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8500340775-_r_1h_",
+          "inputId": "react-aria8500340775-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8500340775-_r_1m_",
+          "inputId": "react-aria8500340775-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8500340775-_r_1r_",
+          "inputId": "react-aria8500340775-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8500340775-_r_20_",
+          "inputId": "react-aria8500340775-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8500340775-_r_25_",
+          "inputId": "react-aria8500340775-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-new-light-1440.png"
+    },
+    {
+      "state": "s3-new",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8500340775-_r_q_",
+          "inputId": "react-aria8500340775-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8500340775-_r_1c_",
+          "inputId": "react-aria8500340775-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8500340775-_r_1h_",
+          "inputId": "react-aria8500340775-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8500340775-_r_1m_",
+          "inputId": "react-aria8500340775-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8500340775-_r_1r_",
+          "inputId": "react-aria8500340775-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8500340775-_r_20_",
+          "inputId": "react-aria8500340775-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8500340775-_r_25_",
+          "inputId": "react-aria8500340775-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-new-light-390.png"
+    },
+    {
+      "state": "s3-new",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8500340775-_r_q_",
+          "inputId": "react-aria8500340775-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8500340775-_r_1c_",
+          "inputId": "react-aria8500340775-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8500340775-_r_1h_",
+          "inputId": "react-aria8500340775-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8500340775-_r_1m_",
+          "inputId": "react-aria8500340775-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8500340775-_r_1r_",
+          "inputId": "react-aria8500340775-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8500340775-_r_20_",
+          "inputId": "react-aria8500340775-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8500340775-_r_25_",
+          "inputId": "react-aria8500340775-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-new-dark-1440.png"
+    },
+    {
+      "state": "s3-new",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8500340775-_r_q_",
+          "inputId": "react-aria8500340775-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8500340775-_r_1c_",
+          "inputId": "react-aria8500340775-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8500340775-_r_1h_",
+          "inputId": "react-aria8500340775-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8500340775-_r_1m_",
+          "inputId": "react-aria8500340775-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8500340775-_r_1r_",
+          "inputId": "react-aria8500340775-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8500340775-_r_20_",
+          "inputId": "react-aria8500340775-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8500340775-_r_25_",
+          "inputId": "react-aria8500340775-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-new-dark-390.png"
+    },
+    {
+      "state": "local-field-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria815532008-_r_q_",
+          "inputId": "react-aria815532008-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria815532008-_r_v_",
+          "inputId": "react-aria815532008-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-field-error-light-1440.png"
+    },
+    {
+      "state": "local-field-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria815532008-_r_q_",
+          "inputId": "react-aria815532008-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria815532008-_r_v_",
+          "inputId": "react-aria815532008-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-field-error-light-390.png"
+    },
+    {
+      "state": "local-field-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria815532008-_r_q_",
+          "inputId": "react-aria815532008-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria815532008-_r_v_",
+          "inputId": "react-aria815532008-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 1094,
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-field-error-dark-1440.png"
+    },
+    {
+      "state": "local-field-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria815532008-_r_q_",
+          "inputId": "react-aria815532008-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "localPath",
+          "label": "相对路径",
+          "labelFor": "react-aria815532008-_r_v_",
+          "inputId": "react-aria815532008-_r_v_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-local-field-error-dark-390.png"
+    },
+    {
+      "state": "s3-field-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8304685469-_r_q_",
+          "inputId": "react-aria8304685469-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8304685469-_r_1c_",
+          "inputId": "react-aria8304685469-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8304685469-_r_1h_",
+          "inputId": "react-aria8304685469-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8304685469-_r_1m_",
+          "inputId": "react-aria8304685469-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8304685469-_r_1r_",
+          "inputId": "react-aria8304685469-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8304685469-_r_20_",
+          "inputId": "react-aria8304685469-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8304685469-_r_25_",
+          "inputId": "react-aria8304685469-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-field-error-light-1440.png"
+    },
+    {
+      "state": "s3-field-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8304685469-_r_q_",
+          "inputId": "react-aria8304685469-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8304685469-_r_1c_",
+          "inputId": "react-aria8304685469-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8304685469-_r_1h_",
+          "inputId": "react-aria8304685469-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8304685469-_r_1m_",
+          "inputId": "react-aria8304685469-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8304685469-_r_1r_",
+          "inputId": "react-aria8304685469-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8304685469-_r_20_",
+          "inputId": "react-aria8304685469-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8304685469-_r_25_",
+          "inputId": "react-aria8304685469-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(186, 232, 232)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-field-error-light-390.png"
+    },
+    {
+      "state": "s3-field-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 140,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 160,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 535,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 128,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8304685469-_r_q_",
+          "inputId": "react-aria8304685469-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8304685469-_r_1c_",
+          "inputId": "react-aria8304685469-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8304685469-_r_1h_",
+          "inputId": "react-aria8304685469-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8304685469-_r_1m_",
+          "inputId": "react-aria8304685469-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8304685469-_r_1r_",
+          "inputId": "react-aria8304685469-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8304685469-_r_20_",
+          "inputId": "react-aria8304685469-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8304685469-_r_25_",
+          "inputId": "react-aria8304685469-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 535,
+          "inputWidth": 497,
+          "inputHeight": 42,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "14px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-field-error-dark-1440.png"
+    },
+    {
+      "state": "s3-field-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "本地存储",
+          "width": 176,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "S3 兼容存储",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "endpoint",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "region",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "bucket",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "accessKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "secretKey",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "pathPrefix",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存后测试",
+          "width": 126,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 72,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "label": "存储名称",
+          "labelFor": "react-aria8304685469-_r_q_",
+          "inputId": "react-aria8304685469-_r_q_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "labelFor": "react-aria8304685469-_r_1c_",
+          "inputId": "react-aria8304685469-_r_1c_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "labelFor": "react-aria8304685469-_r_1h_",
+          "inputId": "react-aria8304685469-_r_1h_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "bucket",
+          "label": "Bucket",
+          "labelFor": "react-aria8304685469-_r_1m_",
+          "inputId": "react-aria8304685469-_r_1m_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "accessKey",
+          "label": "Access Key ID",
+          "labelFor": "react-aria8304685469-_r_1r_",
+          "inputId": "react-aria8304685469-_r_1r_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "secretKey",
+          "label": "Secret Access Key",
+          "labelFor": "react-aria8304685469-_r_20_",
+          "inputId": "react-aria8304685469-_r_20_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        },
+        {
+          "name": "pathPrefix",
+          "label": "Path Prefix",
+          "labelFor": "react-aria8304685469-_r_25_",
+          "inputId": "react-aria8304685469-_r_25_",
+          "externalLabel": true,
+          "prefix": true,
+          "decorative": true,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "prefixBeforeInput": true,
+          "readOnly": false,
+          "disabled": false,
+          "height": 44,
+          "width": 324,
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "borderColor": "rgb(96, 125, 133)",
+          "fontSize": "16px"
+        }
+      ],
+      "screenshot": "storage-feedback-s3-field-error-dark-390.png"
+    }
+  ],
+  "tips": [
+    {
+      "name": "存储名称说明",
+      "mode": "hover",
+      "text": "修改名称不会移动已有文件。",
+      "screenshot": "storage-feedback-tooltip-hover-light-1440.png"
+    },
+    {
+      "name": "相对路径说明",
+      "mode": "focus",
+      "text": "此位置仍被图片、上传或清理任务使用。更换目录请新建存储，已有文件不会移动。",
+      "screenshot": "storage-feedback-tooltip-focus-light-1440.png"
+    },
+    {
+      "name": "存储名称说明",
+      "text": "存储名称修改名称不会移动已有文件。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 981,
+        "right": 1299,
+        "top": 177,
+        "bottom": 257
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard"
+    },
+    {
+      "name": "存储类型说明",
+      "text": "存储类型此存储已有引用，不能切换类型。使用 S3 时请新建存储。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 981,
+        "right": 1299,
+        "top": 283,
+        "bottom": 383
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard"
+    },
+    {
+      "name": "相对路径说明",
+      "text": "相对路径此位置仍被图片、上传或清理任务使用。更换目录请新建存储，已有文件不会移动。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 981,
+        "right": 1299,
+        "top": 389,
+        "bottom": 489
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard",
+      "screenshot": "storage-feedback-tip-light-1440.png"
+    },
+    {
+      "name": "启用状态说明",
+      "text": "启用状态停用后，访问与新上传不可用；默认选择保留，已有记录、删除与维护清理仍可管理。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 981,
+        "right": 1299,
+        "top": 495,
+        "bottom": 595
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard"
+    },
+    {
+      "name": "删除限制说明",
+      "text": "删除限制先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 427,
+        "right": 745,
+        "top": 609,
+        "bottom": 729
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard"
+    },
+    {
+      "name": "删除限制说明",
+      "text": "删除限制先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dialogBounds": {
+        "left": 59,
+        "right": 377,
+        "top": 668,
+        "bottom": 788
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "closePoint": {
+        "x": 382,
+        "y": 24
+      },
+      "mode": "click-outside",
+      "screenshot": "storage-feedback-tip-light-390.png"
+    },
+    {
+      "name": "相对路径说明",
+      "text": "相对路径此位置仍被图片、上传或清理任务使用。更换目录请新建存储，已有文件不会移动。",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dialogBounds": {
+        "left": 59,
+        "right": 377,
+        "top": 444,
+        "bottom": 544
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "click",
+      "screenshot": "storage-feedback-tip-dark-390.png"
+    },
+    {
+      "name": "删除限制说明",
+      "text": "删除限制先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "dialogBounds": {
+        "left": 427,
+        "right": 745,
+        "top": 609,
+        "bottom": 729
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard",
+      "screenshot": "storage-feedback-tip-dark-1440.png"
+    },
+    {
+      "name": "删除限制说明",
+      "text": "删除限制先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。",
+      "viewport": {
+        "width": 390,
+        "height": 480
+      },
+      "dialogBounds": {
+        "left": 59,
+        "right": 377,
+        "top": 262,
+        "bottom": 382
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard",
+      "screenshot": "storage-feedback-tip-light-390x480.png"
+    },
+    {
+      "name": "删除限制说明",
+      "text": "删除限制先在“引用与清理”中查看图片、上传和清理任务。解除引用后才能删除；更换存储位置请新建配置。",
+      "viewport": {
+        "width": 390,
+        "height": 480
+      },
+      "dialogBounds": {
+        "left": 59,
+        "right": 377,
+        "top": 262,
+        "bottom": 382
+      },
+      "insideViewport": true,
+      "target": {
+        "width": 44,
+        "height": 44
+      },
+      "expanded": "true",
+      "pressed": "true",
+      "transform": "none",
+      "focusInDialog": true,
+      "mode": "keyboard",
+      "screenshot": "storage-feedback-tip-dark-390x480.png"
+    }
+  ],
+  "mutations": [
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "status": 400,
+      "code": "STORAGE_INVALID_INPUT",
+      "fields": [
+        {
+          "field": "localPath",
+          "message": "请输入存储根目录内的相对路径"
+        }
+      ]
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "status": 400,
+      "code": "STORAGE_INVALID_INPUT",
+      "fields": [
+        {
+          "field": "endpoint",
+          "message": "请输入不含凭据、查询或片段的 HTTP(S) S3 API 地址"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Existing isolated preview is reused; only two deliberately invalid creates are submitted. No valid save, connection test, scan or delete is performed.",
+    "Browser mobile emulation does not certify physical touch, soft keyboard or nonzero safe areas.",
+    "Device modes start after blurring the prior tip and moving the pointer away; switching CDP device modes while a desktop tooltip remains open is not covered."
+  ]
+}

@@ -61,6 +61,8 @@ async function openDefault(id) {
 async function openCleanup(id) {
   await open(id);
   await page.click('[data-testid="storage-open-cleanup"]');
+  await page.waitForSelector('[data-testid="storage-reference-view"]');
+  await page.click(button('查看清理状态'));
   await page.waitForSelector('[data-testid="storage-cleanup-view"]');
 }
 async function savedByName(name) {
@@ -712,7 +714,7 @@ try {
   });
   assert.equal(blockedDelete.status, 409, blockedDelete.body);
   assert.equal(JSON.parse(blockedDelete.body).code, 'STORAGE_IN_USE');
-  await page.click(button('查看引用与删除限制'));
+  await page.click('[data-testid="storage-open-cleanup"]');
   await page.waitForSelector('[data-testid="storage-reference-view"]');
   assert.ok(
     await page.evaluate(() =>
