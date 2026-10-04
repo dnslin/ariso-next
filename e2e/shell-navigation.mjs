@@ -6,7 +6,7 @@ const { identitySql } = await import(config.identitySessionScript);
 const { signInToLibrary } = await import(
   new URL('./library-login.mjs', config.identitySessionScript).href
 );
-const page = (await taskSpace(config.spaceId)).page('p1');
+const page = (await taskSpace(config.spaceId)).page(config.pageLabel ?? 'p1');
 const report = { status: 'failed', checks: [], layouts: [], screenshots: [] };
 const albumId = 'browser-shell-navigation';
 const menu = 'button[aria-label="菜单"]';
@@ -22,7 +22,7 @@ const navigation = [
   '回收站',
   '访问统计，尚未开放',
   '存储管理',
-  '站点设置，尚未开放',
+  '站点设置',
 ];
 let createdAlbum = false;
 async function shot(name) {
@@ -167,6 +167,7 @@ try {
         ['/admin', '/upload', 'admin-entry'],
         ['/settings/storage', '/settings/storage', 'storage-list'],
         ['/settings/storage/new', '/settings/storage', 'storage-new'],
+        ['/settings/processing', '/settings/processing', 'processing-settings'],
         [
           `/settings/storage/${storage.id}`,
           '/settings/storage',
@@ -276,7 +277,7 @@ try {
     }
   }
   report.checks.push(
-    'All implemented owner-shell entries, including storage list/new/edit/CORS, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
+    'All implemented owner-shell entries, including storage list/new/edit/CORS and processing settings, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
   );
   report.checks.push(
     'Menu and close are accessible icon-only 44px targets; real hover adds no background or transform, keyboard focus remains visible and close/Escape restore trigger focus at 360/430/768/987 and short 390×560.',

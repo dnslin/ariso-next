@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { RouterProvider } from '@heroui/react/rac';
 import { UploadProvider } from '../upload/provider';
 import { ThemeProvider } from 'next-themes';
@@ -10,6 +10,7 @@ import { Toast, ToastProvider } from '@heroui/react/toast';
 
 export function Providers({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [client] = useState(() => new QueryClient());
   return (
     <RouterProvider navigate={router.push}>
@@ -20,7 +21,11 @@ export function Providers({ children }: { children: ReactNode }) {
             aria-label="操作通知"
             placement="bottom end"
             width={420}
-            className="bottom-6 sm:end-7 sm:bottom-7"
+            className={
+              pathname === '/settings/processing'
+                ? 'bottom-[100px] sm:end-7'
+                : 'bottom-6 sm:end-7 sm:bottom-7'
+            }
           >
             {({ toast: notification }) => (
               <Toast

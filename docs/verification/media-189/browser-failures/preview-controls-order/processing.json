@@ -1,0 +1,198 @@
+{
+  "status": "failed",
+  "taskSpaceId": 29,
+  "origin": "http://ariso-55441.localhost:55441",
+  "phase": "preview",
+  "checks": [],
+  "layouts": [
+    {
+      "state": "preview-empty",
+      "theme": "light",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-empty-light-390.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "preview",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    'original',\n+   'thumbnail',\n    'compressed',\n-   'thumbnail',\n    'watermark'\n  ]\n\n    at terminalControls (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-preview.mjs:34:12)\n    at async verifyProcessingPreview (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-preview.mjs:111:5)\n    at async file:////[eval2]:59:5",
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "original",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 61,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "5e233d76-748c-4970-a683-9a315746fcc6",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:01:25.900Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:01:25.908Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/5e233d76-748c-4970-a683-9a315746fcc6",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "5e233d76-748c-4970-a683-9a315746fcc6",
+          "target": "original",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:01:25.900Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:01:25.933Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/5e233d76-748c-4970-a683-9a315746fcc6",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "5e233d76-748c-4970-a683-9a315746fcc6",
+          "target": "original",
+          "status": "succeeded",
+          "result": {
+            "format": "PNG",
+            "mime": "image/png",
+            "width": 64,
+            "height": 48,
+            "byteSize": 420
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:01:25.900Z",
+          "finishedAt": "2026-10-04T20:01:26.063Z",
+          "expiresAt": "2026-10-04T20:31:26.063Z",
+          "updatedAt": "2026-10-04T20:01:26.063Z",
+          "resultUrl": "/api/media/previews/5e233d76-748c-4970-a683-9a315746fcc6/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/5e233d76-748c-4970-a683-9a315746fcc6/result",
+        "method": "GET",
+        "status": 200
+      }
+    ],
+    "faultUsed": false,
+    "fault": null
+  },
+  "finishedAt": "2026-10-04T20:01:27.147Z"
+}

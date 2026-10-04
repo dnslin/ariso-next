@@ -1,0 +1,5 @@
+{
+  "stage": "settings",
+  "error": "ElementResolutionError: page.fill timed out after 3000ms: Selector [name=\"quality\"] matched 1 elements, but none can receive input; element has a zero-sized bounding box\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "explanation": "The name selector resolves HeroUI NumberField's native hidden form input. The test must use the visible editable textbox."
+}

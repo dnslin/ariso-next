@@ -1,0 +1,202 @@
+{
+  "status": "failed",
+  "taskSpaceId": 29,
+  "origin": "http://ariso-61260.localhost:61260",
+  "phase": "settings",
+  "checks": [
+    {
+      "check": "Real GET fills the form; keyboard save PATCH persists quality, visibility and concurrency; re-entry reads the saved values without a success page.",
+      "saved": {
+        "quality": 76,
+        "defaultVisibility": "private",
+        "concurrency": 2
+      }
+    },
+    {
+      "check": "Out-of-range quality stays entered, receives its field error and keyboard focus, and sends no invalid PATCH."
+    }
+  ],
+  "layouts": [
+    {
+      "state": "save-failure",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-save-failure-dark-390.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "settings",
+  "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"processing-save\"] matched 1 elements, but none can receive input; <div role=\"alert\"> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [],
+    "faultUsed": false,
+    "fault": {
+      "path": "/api/settings/media",
+      "method": "PATCH"
+    }
+  },
+  "finishedAt": "2026-10-04T18:16:34.211Z"
+}

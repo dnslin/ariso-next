@@ -1,0 +1,137 @@
+# T-MED-12 / Issue #189 处理设置、水印和真实预览界面
+
+日期：2026-10-05。关联 [Issue #189](https://github.com/dnslin/ariso-next/issues/189)。本轮从最新 `origin/main` 的 `569e34d` 创建 `codex/issue-189-processing`，独立管理型 worktree 为 `/Users/dnslin/.codex/worktrees/issue-189-processing/ariso`。原工作区 `/Volumes/data/project/ariso` 未修改。
+
+## 当前状态
+
+原四项获批方案已实施并同步 Figma。处理设置的完整真实浏览器场景通过，公共导航消费路由定向检查通过。新增的显式清空素材操作仍待单独批准；UI 人工验收未完成。默认全量在既有图库冷读取焦点问题中断，不能记作全量通过。最终保持草稿 PR。
+
+| 完成条件     | 当前事实                                                                                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 产品代码     | 获批主流程已实现；显式清空素材选择仍未实施，素材到期后的该恢复路径未完成                                                                                   |
+| 本地检查     | 最终源码的类型、静态、构建和全仓格式通过；单元/集成保留初次失败及失败项定向通过证据                                                                        |
+| 浏览器       | 默认入口 processing 四组共30条记录/78布局通过；最后修复后预览7条/11布局、恢复13条/19布局通过；公共消费者48个基线及10个菜单边界通过；全量整体失败边界见下方 |
+| 独立功能评审 | [评审记录](./code-review.md)：R2/R4–R9已由源码与实际回归关闭；范围内仅R1清空素材待批准和实施，整体仍为Request changes                                      |
+| 独立设计评审 | [设计对照](./product-design-review.md)：已实现四项获批范围、公共消费页面及瞬态修复通过；清空提案与用户人工验收仍独立开放                                   |
+| 用户人工验收 | 尚未完成；独立预览保持可用                                                                                                                                 |
+| 提交/推送/PR | 交付收尾中，保留草稿；不合并、不关闭 Issue、不发布、不部署、不清理                                                                                         |
+
+## 产品实施
+
+`/settings/processing` 通过所有者鉴权，读取并保存真实20个标量设置。保存与预览分别复用完整设置及17个渲染字段校验。默认可见性、链接版本与并发只影响新提交，预览独立冻结渲染快照；已有业务图片未改动。HeroUI负责外标签、精确数字、颜色、开关、选择、对话框和中性通知；九宫格是业务组合。没有新增依赖、页面CSS或冻结PRD改动。
+
+预览提交真实文件与未保存参数，GET驱动真实状态、实际编码/MIME、尺寸、大小及有效期。SVG原图按附件提供；HEIC无法解码时提供同一原文件入口。GIF不适用目标明确拒绝，不偷换目标。同名文件重新选择也标明旧结果。Blob地址随结果生命周期释放。活动任务锁定测试图和目标，底栏提供取消；取消先停止旧GET并暂停自动读取，再等待DELETE。响应未知只通过明确核对恢复；有预览ID才查询，缺ID只在明确确认后重建。任务结束后重新开放选择和生成。
+
+素材GET仅返回所有者可读的属性与可用性，不采用、不延长到期、不列文件或读图。保存才采用素材。素材拒绝或到期保留原ID与当前参数；关闭或切模式也保留参数。明确清空入口见末尾待批准提案，当前没有实现。
+
+公共导航中的站点设置指向实际路由。共享设置分类统一52px容器、44px选项及可见背景圆角。唯一通知队列在本处理页距底100px，客户端导航后恢复公共默认位置。会话失效先释放上传资源，处理页保留禁用表单和明确登录入口；其他页沿原到期跳转。没有改变上传独立QueryClient的既有挂载策略。
+
+## 实际检查
+
+环境：macOS 26.6.2 / ARM64、Node 24.18.1、pnpm 11.19.0、现有 Ego Lite、ImageMagick 7 与 ExifTool。命令使用 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`。没有下载浏览器或修改全局代理。分支创建时最新main为569e34d；收尾fetch看到7fed1d4的API-key实验及文档并发提交，本次源码无重叠，未将未执行的新main检查算作通过。
+
+| 实际命令                                                                                                                                                                                  | 结果与证据                                                                                                                                                                                                                                                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                          | Node24下通过，锁文件未改；默认Node26那次不计作规定环境验证                                                                                                                                                                                                                              |
+| `pnpm run typecheck` / `pnpm run lint`                                                                                                                                                    | 最终源码通过：[类型](./typecheck.txt)、[静态](./lint.txt)                                                                                                                                                                                                                               |
+| `pnpm run build`                                                                                                                                                                          | 最终源码通过：[构建](./build.txt)。无数据库配置/部署密钥构建；tracing保留跨平台可选依赖和OpenTelemetry诊断，退出0不代表这些依赖或另一架构已经验证。本地产物带入忽略测试数据库的限制见下方                                                                                               |
+| `pnpm run test:unit`                                                                                                                                                                      | 94文件/1205测试通过，1suite因build前缺dist失败：[初轮](./unit.txt)                                                                                                                                                                                                                      |
+| `pnpm exec vitest run --project unit tests/unit/runtime/verify-image.test.ts`                                                                                                             | build后失败suite的5测试通过：[定向](./unit-runtime.txt)。合计95文件/1210测试取得证据，未将初轮记为全绿                                                                                                                                                                                  |
+| `pnpm run test:integration --maxWorkers=4`                                                                                                                                                | 普通集成及真实工具两组执行；140文件/1354测试通过，既有S3处理用例5s超时：[初轮](./integration.txt)                                                                                                                                                                                       |
+| `pnpm exec vitest run --project media-tools tests/integration/media/process.test.ts -t 'retained input=false' --maxWorkers=1`                                                             | 失败用例单独通过：[定向](./integration-retry.txt)。没有改超时/断言，其他24项仅筛选未重跑，不计作新通过                                                                                                                                                                                  |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile` / `run typecheck` / `run build`                                                                                               | 通过：[安装](./ui-install.txt)、[类型](./ui-typecheck.txt)；默认浏览器命令也实际构建UI及外壳夹具                                                                                                                                                                                        |
+| `EGO_TASK_SPACE=29 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-189-final-full pnpm run test:browser`                                                                         | 默认full实际执行。processing完整四组通过，身份1440/390 setup/restart及storage-admin/cors通过；随后既有library焦点断言失败：[runner](./browser-final/runner.json)、[处理报告](./browser-final/processing.json)、[库报告](./browser-final/library.json)                                   |
+| `EGO_TASK_SPACE=29 EGO_PAGE_LABEL=p8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-189-consumers-isolated node scripts/verify-browser.mjs --suite processing --only consumers` | 定向消费者通过：[runner](./browser-consumers/runner.json)、[公共报告](./browser-consumers/shell-navigation.json)。12路由×两主题×两端48基线及10菜单边界；[p1隔离前后](./page-isolation.json)实际保持URL/标题/任务ID/成功状态/文件目标结果内容。p8是TaskSpace实际分配的永久编号           |
+| `EGO_TASK_SPACE=29 EGO_PAGE_LABEL=p8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-189-transients node scripts/verify-browser.mjs --suite processing --only recovery`          | 修正前瞬态功能通过12条/19布局：[报告](./browser-transients/processing.json)。独立设计对照随后发现读取布局与活动取消操作偏差，保留初图，未以功能通过关闭设计项                                                                                                                           |
+| `EGO_TASK_SPACE=29 EGO_PAGE_LABEL=p8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-189-recovery-final node scripts/verify-browser.mjs --suite processing --only recovery`      | 最后UI与竞态修复后通过13条/19布局：[报告](./browser-transients-fixed/processing.json)、[runner](./browser-transients-fixed/runner.json)。两端读取卡、运行/取消/未知锁定与底栏、终态解锁均有真实控件断言；取消等待期间visibility不发新GET，旧真实响应不能覆盖cancelled，明确核对仍能读取 |
+| `EGO_TASK_SPACE=29 EGO_PAGE_LABEL=p8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-189-preview-final node scripts/verify-browser.mjs --suite processing --only preview`        | 最后查询修复后通过7条/11布局：[报告](./browser-preview-final/processing.json)、[runner](./browser-preview-final/runner.json)。四目标真实字节/私有快照、成功后四目标可选、同名替换、SVG/GIF/HEIC边界继续通过                                                                             |
+| `node --check e2e/processing-helpers.mjs` / `node --check e2e/processing-recovery.mjs` / `node --check e2e/processing-preview.mjs` / 定向 `pnpm exec eslint … --max-warnings=0`           | 独立测试agent在Node24实际执行，退出0；最终全仓lint另见上方日志                                                                                                                                                                                                                          |
+| `node docs/tasks/check.mjs`                                                                                                                                                               | 通过120tasks/298requirements：[记录](./docs.txt)                                                                                                                                                                                                                                        |
+| `pnpm run format:check`                                                                                                                                                                   | 初次发现4个新增证据文件格式问题：[初轮](./format-initial.txt)；仅格式化本任务新增源码/证据后，全仓通过：[最终](./format.txt)。未改业务断言                                                                                                                                              |
+
+默认调用链是 `test:browser` → 外壳与UI构建 → `verify-browser.mjs` → 第二个身份runtime的完整 `processing.mjs` → representative/settings/preview/recovery。主要新能力确实在默认入口执行，不只依赖定向场景。最后新增的控件与取消竞态断言仍在默认消费的preview/recovery函数内；本轮只重跑受影响两组，没有重复输入未变的设置/公共消费者，也没有将定向结果改写为默认全量通过。`--only`按所属suite分发，storage-config仅属于storage-admin/live。定向consumers不宣称重新执行四组业务。全量在图库失败后尚未执行的library-query/batch/copy、trash、albums/tags、upload等后续场景保持未执行，定向公共导航不替代它们。
+
+初次运行和修复的证据保留：[36px分类](./browser-failures/target-36px.json)、[42px数字](./browser-failures/number-42px.json)、[30px九宫格](./browser-failures/position-30px.json)、[隐藏数字定位错误](./browser-failures/hidden-number-input.json)、[焦点时序](./browser-failures/focus-before-animation-frame.json)、[通知遮住保存](./browser-failures/toast-over-footer.json)、[身份限流429](./browser-failures/full-login-429.json)。没有删失败、弱化断言或把筛选项算作通过。
+
+## 实际行为、审计与限制
+
+最终[处理报告](./browser-final/processing.json)保留全部30条行为记录、请求状态、真实字节摘要、渲染快照与78个布局。设置覆盖保存/重入、101越界不请求且聚焦、空最长边保存null、无效颜色保留、九位置键盘和精确小数。素材覆盖POST临时、预览不采用、保存采用、真实GET重入、422/413保留旧ID、到期409保留参数。四目标验证真实MIME/字节/尺寸、业务行未变化与私有快照；SVG、GIF、HEIC来自真实接口及浏览器行为。HEIC原文件有预期的真实资源解码错误，不用运行时错误数组为空冒充所有格式可显示。
+
+恢复覆盖实际接收413且附ID/仅一个刷新入口、未知创建不自动重建、明确确认、过期410、格式失败、DELETE响应未知、迟到GET、真实清理失败和重试。取消未知不再宣称缓存queued/running是当前事实。实际通知折叠旧层中心不可命中；真正hover展开后全部关闭目标44px且可命中。41.8/39.6px是HeroUI持续折叠缩放，未经证明的退场归因已更正。
+
+跨页上传生命周期的失败先由真实成功保存200→刷新upload-settings401取得，实际跳至/login：[RED](./browser-failures/upload-expiry-redirect/processing.json)。失败PNG是finally重新认证后的处理页，不称为登录截图。最终GREEN证明同一实际401保留质量66和禁用表单；焦点核对get-session=null也保留。两视口原身份到期默认跳转及真实退出失败/重试继续通过，见[1440](./browser-final/identity-1440-restart.json)、[390](./browser-final/identity-390-restart.json)。早先visibility补测只超时，未取得401，不算产品失败；真实调用链和锁定QueryClient源码调查见[独立代码评审](./code-review.md)。
+
+全量的范围外失败发生在 `e2e/library-detail-171-confirmation.mjs:31`，实际聚焦对象没有 `detail-workspace-title`。独立评审核对：冷读取先挂载 `DetailReprocess`，首次effect时数据及heading为空；读取完成后其effect依赖不变，标题出现却没有再次聚焦。这些图库源码、helper和断言与基线相同，本次无修改，未发现公共改动因果。保留失败，没有只加等待或改图库；后续全量场景保持未验证，PR保持草稿。
+
+设计依据、实际截图和差异处理见[产品设计评审](./product-design-review.md)、[获批Figma同步](./figma-sync.md)。桌面真实结果下段另补[1440×1080浅色截图](./desktop-success-details-light-1440.png)与[四列实际位置](./desktop-success-details.json)，不以照片数量代替对照。最后loading/running/cancelling两端修正图见[恢复定向](./browser-transients-fixed/processing.json)，独立对照原获批节点，不新增设计方案。物理触控/软键盘/非零安全区依执行约定不要求设备实测；发布镜像、Linux/另一架构与容器未验证，也未为日常PR创建Release。
+
+新增取消竞态先取得[真实RED](./browser-failures/cancel-focus-race/processing.json)：DELETE发送前暂停，visibility触发的新同ID GET真实返回succeeded；DELETE200先确认cancelled/deleted后，迟到GET将界面覆盖为succeeded。最小修复在请求中或结果未知时禁用自动查询，保留已有取消在途读及主动refetch。最终[GREEN](./browser-transients-fixed/processing.json)严格断言同一等待边界无新GET、旧响应不能覆盖取消，未知结果的手动读取继续通过。新增控件测试另有[目标顺序误判](./browser-failures/preview-controls-order/cause.md)，按获批原型纠正准确预期后通过，未改产品顺序。
+
+本地人工预览数据位于忽略的test-results中。此次standalone的tracing实际带入4份372736字节的该SQLite测试库副本（含嵌套旧预览副本），未带入配置凭证文件，打包规则本次未改。这个本地副本仅用于独立预览，没有提交、发布、部署或制作镜像；不将它当成可发布产物。发布仍按既有Release流程从干净检出取得容器证据，本次没有验证或修改该范围。
+
+人工验收地址为 [处理设置](http://localhost:4188/settings/processing)。已更新到最终产品构建，独立账号及配置/设置保留，见[可用状态](./manual-preview.json)。账号密码仅保留在本地忽略配置并单独交付用户，不进入代码/证据/PR。请核对默认/压缩编辑保存重入、文字与图片水印及九宫格、真实测试图四目标、返回保留输入、旧结果身份、取消/核对和两端布局；对应节点见下方与设计评审。用户人工验收未完成，预览和测试数据持续保留。
+
+## 原四项获批提案与实施前证据
+
+以下保留实施前调查、原型检查与评审的历史依据，不把原型当作产品完成证据。
+
+## 范围与实际前置
+
+通过 `gh` 读取 Issue、评论及原生关系：Issue 无评论；blocked by #188、#57、#132 均已 completed 关闭；blocking #194 仍 open。前置底层能力已实现，但设计缺口仍由本消费者承接。[任务卡及 DG-PROCESSING 核对结论](../../tasks/m3-m4-platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)明确要求补齐默认字段、任意测试图/完整目标、响应未知组合和素材展示边界后取得用户确认。这不是重新请求实施、提交或 PR 授权。
+
+本任务覆盖所有者 `/settings/processing` 的压缩、默认可见性、默认链接、并发、文字/图片水印、素材上传以及未保存渲染参数的真实预览。需求编号保持 `R-14.1-01`、`R-11.3-01`、`R-11.3-02`、`R-11.5-01`、`R-11.5-02`、`R-11.6-01`、`R-11.6-02`、`R-14.4-01`、`R-14.4-02`、`R-11.2-02`、`R-22.1-01`、`R-22.4-01`。重处理、T-SITE-02、发布与部署不属于本次范围。冻结 PRD 未修改。
+
+已读 `docs/README.md`、相关任务/规格及 #151、#152、#188 的实际证据。现有设置 GET/PATCH、素材 POST、预览 POST/GET/result/DELETE 可消费。素材内部属性查询已存在，但 HTTP 只有上传入口；重新进入设置只能读到素材 ID。没有通用 `GET /api/media/jobs/{id}`，不借用计划能力。默认值与并发不进入渲染快照；预览状态、真实结果和清理状态来自预览自己的接口。
+
+实施前确认需复用 `OwnerShell` → `AdminShell`、`SessionControls`、`SettingsCategories`、现有 HeroUI 控件与唯一 ToastProvider，并更新共享导航、检查全部已实现消费路由。当时浏览器运行器默认 full 尚未包含 processing 场景；本次已将其接入 full 与定向入口，并限定 suite/only 的所属范围。实际结果以上方产品记录为准，完成条件继续采用 [执行约定](../../tasks/execution.md)。
+
+## 原四项方案（已获用户批准）
+
+[可点击原型](http://127.0.0.1:4189/design-plans/issue189-review/index.html)。源文件位于 `design-plans/issue189-review/`；独立静态服务端口 4189 保持运行，无需账号。入口的状态选择器仅供审阅，不进入产品。所有数据、计时、保存反馈和结果占位均明确为演示，没有连接后端、生成真实图片或保存设置。
+
+1. 顶部新增「默认与任务」分组，容纳新上传默认可见性、默认外链版本和并发。保留既有关闭当前默认版本的明确确认，以及无效组合的字段错误。
+2. 预览页选择真实测试文件，提供 original / compressed / thumbnail / watermark 四目标。结果保留提交时的文件和目标身份；输入改变后标明旧结果，重新生成是明确操作。SVG 原图附件与不可显示原图有可操作说明。
+3. 补齐初次读取失败、会话失效及保存/创建/取消响应未知的核对。未知保存保留输入并 GET 核对；有预览 ID 则 GET，缺 ID 不自动重建。成功反馈保留原页、输入和滚动。
+4. 仅新增所有者 `GET /api/media/watermark-assets/{id}` 属性读取，展示真实 ID、格式、MIME、尺寸、字节大小、状态和到期信息。没有素材列表、字节读取或虚构原始文件名；不为文件名修改数据结构。
+
+用户已批准这四项，当前据此实施。已获授权的实施、验证、审计、提交、推送和创建 PR 范围继续有效。
+
+## Figma 与原型对照
+
+实际读取设计信息与截图，文件 `74sT9Hrf8G4czcWeTkET5b`。主节点为设置 34:338 / 102:1526，文字水印 60:686 / 102:2120，图片水印 60:879 / 102:2361，预览 367:2258 / 367:5113。补充默认冲突、过期、未采用、取消和清理失败节点见[独立设计复审](./prototype-design-review.md)。原设计适用核对沿用 [DG-PROCESSING 证据](../../tasks/evidence/DG-PROCESSING/README.md)，批准后已同步，见 [Figma实际回写与截图复核](./figma-sync.md)。
+
+| 对照范围                 | 实际网页截图                                                                                                                                                                                                 | 差异与处理                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 整页与公共区域、默认分组 | [桌面 1440×1080 浅色](./prototype/screenshots/settings-light-1440.png)、[手机 390×844 浅色](./prototype/screenshots/settings-light-390.png)                                                                  | 依照已批准的公共区域省略旧工作空间面包屑；新增分组属于待批准提案                |
+| 手机派生字段             | [390×844 浅色](./prototype/screenshots/derived-light-390.png)                                                                                                                                                | 开关标签左、控件右；格式与质量恢复并排，不缩放桌面整页                          |
+| 水印文字与已存素材       | [文字浅色](./prototype/screenshots/text-light-390.png)、[素材深色](./prototype/screenshots/asset-saved-dark-390.png)                                                                                         | 九宫格沿既定布局；字体名称改为真实能力的内置中文/拉丁；素材属性为待批准接口展示 |
+| 预览空、成功与输入变化   | [手机空状态](./prototype/screenshots/preview-empty-light-390.png)、[桌面成功容器](./prototype/screenshots/preview-success-light-1440.png)、[手机旧结果](./prototype/screenshots/preview-stale-light-390.png) | 没有假滤镜或图片处理；独立保留旧结果身份，明确需要重新生成                      |
+| SVG 原图切换目标         | [390×844 深色](./prototype/screenshots/preview-original-stale-dark-390.png)                                                                                                                                  | 切换后继续保留原 SVG 文件名、MIME 和附件说明                                    |
+| 响应未知与核对差异       | [创建未知](./prototype/screenshots/preview-create-unknown-light-390.png)、[保存差异](./prototype/screenshots/save-different-light-390.png)                                                                   | 缺 ID 不自动重建；差异按钮为「保留当前输入」，随后仍需明确保存                  |
+| 清理失败和短视口         | [390×500 深色](./prototype/screenshots/preview-cleanup-dark-short-390.png)                                                                                                                                   | 滚动后错误与重试清理可读，底栏固定，不把清理失败当作成功                        |
+
+## 本轮实际检查与审计
+
+环境为 macOS 26.6.2 / ARM64、Node 24.18.1、pnpm 11.19.0、现有 Ego Lite。项目命令使用 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`。没有下载浏览器、安装新依赖或修改全局代理。
+
+| 实际命令 / 操作                                           | 结果                                                                          |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                          | Node 24 下通过，锁文件未修改；此前一次在默认 Node 26 运行，不计作规定环境验证 |
+| `pnpm exec prettier design-plans/issue189-review --check` | 通过；[格式记录](./prototype/format.txt)                                      |
+| `node --check design-plans/issue189-review/surface.js`    | 退出 0；[语法记录](./prototype/syntax.txt)为空输出                            |
+| `node docs/tasks/check.mjs`                               | 通过：120 tasks / 298 requirements；[文档依赖检查](./prototype/docs.txt)      |
+| `ego-browser nodejs`，复用 TaskSpace 29 / p1              | 使用真实浏览器检查原型；没有执行产品默认 `pnpm run test:browser`              |
+
+实际原型操作覆盖设置/预览往返保留质量输入、两种水印共享透明度、提交时冻结示例参数、异步完成不强制离开设置、目标切换保留原 SVG 身份、无效默认版本阻止保存、关闭默认版本的取消与明确确认。360/390/430/768/1440 的 500px 短视口检查无横向溢出、底栏保持可见、可见按钮高度不少于44px。最新手机格式和质量控件顶部均为408px。上述结果仅验证原型，不证明服务端、生产表单或真实图片处理。
+
+浏览器检查脚本一次误读不存在的 `#format`/`#quality`，退出1；随后实际观察页面，以真实 `name` 属性检查通过。一次原型 fill 因目标不可见超时，观察页面后在同一 TaskSpace 恢复，没有换浏览器绕过停止边界。没有掩盖失败为首次全通过。
+
+独立 `contract_audit` 使用 code-review-and-quality 审核契约、验证调用链和原型代码，必修问题修正后复审通过：[记录](./prototype-code-review.md)。独立 `design_review` 实际读取18个 Figma 节点、查看12张网页截图，按公共区域和业务区域分别对照，修正后认为原型可以提交批准：[记录](./prototype-design-review.md)。两份结论均不替代最终产品独立评审。
+
+实施前这些产品检查尚未执行；后续结果以本页顶部产品记录为准。原型地址无需凭证。没有 Release、镜像发布、部署、合并、关闭 Issue 或清理操作。
+
+## 审计新增交互提案：显式清空水印素材
+
+独立评审用临时SQLite实际证明：保留已过期素材ID时，off/text保存均返回409；显式null则可保存。规格要求清空选择后才释放设置引用，当前获批原型遗漏该入口。推荐在水印公共说明底部增加44px「清空素材选择」，切换模式和关闭仍不自动清空，清空后明确保存才生效；图片模式为空继续要求选择素材。
+
+[可点击补充原型](http://127.0.0.1:4189/design-plans/issue189-review/surface.html?scenario=asset-expired)、[手机清空前](./prototype/screenshots/asset-clear-390.png)、[清空后](./prototype/screenshots/asset-cleared-390.png)已由真实Ego查看与操作，独立设计评审认为位置与目标可用。当前等待用户批准，未提前改产品或Figma。

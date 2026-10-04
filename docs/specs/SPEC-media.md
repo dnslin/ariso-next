@@ -269,6 +269,7 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 ### 水印素材提供方契约（T-MED-13）
 
 - `POST /api/media/watermark-assets` 接收 `multipart/form-data`，仅一个 `file`，不接收其他字段；成功返回 `201`，包含素材 `id/path/format/mime/width/height/byteSize/expiresAt`。按实际字节识别，文件最多 5 MiB；表单整体另保留 64 KiB 信封空间。所有者会话及当前站点 Origin 校验先于读取文件。
+- `GET /api/media/watermark-assets/{id}` 仅所有者 Cookie 可读，返回与 POST 相同的真实素材属性、生命周期 `status`、`expiresAt`、诊断 `error`、创建/更新时间及 `available`，响应 `private, no-store`。`available` 仅在 `status=ready` 且临时期限未到时为 true；采用后 `expiresAt=null` 不再受原临时期限限制。已到期或写入/清理/已删除记录仍保留真实状态和属性，`available=false`；不存在返回 404。读取不采用、不延长到期、不建立引用；不提供列表、文件名或素材字节。
 - 原文件放在 `${DATA_DIR}/assets/watermarks/<id>/source`，每次上传分配新 ID。`path` 相对 watermarks 目录，仅是内部素材路径，不是公开 URL。数据库在写入前登记所属目录，校验成功才进入 `ready`；SVG 校验预览位于同一所属目录。
 - `updateMediaSettings(tx, input)` 的完整输入增加可空 `watermarkAssetId`。图片模式必须选择素材；切为关闭/文字模式可以保留已选素材，设置本身仍持有引用。采用与设置更新同事务，采用清空一小时到期时间；清空选择后才释放该设置引用。
 - `createProcessingSnapshot(tx)` 仅在图片模式写入 `watermarkAsset` 的不可变 ID、路径与实际属性，其他模式为 null。历史任务保留这些属性，但只有 queued/running 内容任务阻止清理；自动重试仍为 queued。
@@ -300,6 +301,7 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 | `/settings/processing`                                         | 压缩、文字/图片水印、真实临时预览                                |
 | `GET/PATCH /api/settings/media`                                | 读取/原子保存；请求体仅允许对应设置字段                          |
 | `POST /api/media/watermark-assets`                             | 校验并保存临时水印素材，返回 ID/属性/到期时间                    |
+| `GET /api/media/watermark-assets/{id}`                         | 所有者读取素材属性、真实状态、到期与可用性；不读取文件字节       |
 | `POST /api/media/previews`                                     | 上传测试图和参数，创建预览任务                                   |
 | `GET /api/media/previews/{id}/result`                          | 读取私有真实结果；到期为 410，SVG 原文件为附件                   |
 | `GET/DELETE /api/media/previews/{id}`                          | 获取预览状态/结果或取消清理；仅当前所有者                        |

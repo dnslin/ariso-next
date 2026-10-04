@@ -37,12 +37,21 @@ assert.ok(
     'library-reprocess',
     'library-copy',
     'storage-admin',
+    'processing',
     'trash',
   ].includes(suite),
   'Unknown browser suite',
 );
 assert.ok(
   only === undefined ||
+    (suite === 'processing' &&
+      [
+        'representative',
+        'settings',
+        'preview',
+        'recovery',
+        'consumers',
+      ].includes(only)) ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'upload-s3' && only === 'cleanup') ||
     (suite === 'storage-admin' &&
@@ -87,6 +96,10 @@ assert.ok(
   !values['preview-config'] ||
     (suite === 'storage-admin' && only === 'feedback'),
   '--preview-config applies only to storage-admin feedback',
+);
+assert.ok(
+  !values['storage-config'] || (suite === 'storage-admin' && only === 'live'),
+  '--storage-config applies only to storage-admin live',
 );
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
@@ -142,6 +155,8 @@ for (const name of [
   'storage-admin-feedback-failure.png',
   'storage-admin-regressions.json',
   'storage-admin-regressions-failure.png',
+  'processing.json',
+  'processing-failure.png',
   'delivery-s3/browser.json',
   'm2-1440.json',
   'm2-390.json',
@@ -511,6 +526,9 @@ try {
       viewerCheck: suite === 'viewer' ? only : undefined,
       libraryCopyPhase: suite === 'library-copy' ? only : undefined,
       storageNavigation: suite === 'storage-admin' && only === undefined,
+      processingPhase: suite === 'processing' ? only : undefined,
+      processingNavigationFixtures:
+        suite === 'processing' && (only === undefined || only === 'consumers'),
     };
     if (suite === 'storage-admin' && only === 'live') {
       assert.ok(
@@ -607,43 +625,50 @@ try {
       focusedConfig.uploadS3 = targets;
     }
     const stages =
-      suite === 'storage-admin'
-        ? only === 'live'
-          ? [['storage-admin-live', 'storageAdmin']]
-          : only === 'dialogs'
-            ? [['storage-admin-dialogs', 'storageAdmin']]
-            : only === 'regressions'
-              ? [['storage-admin-regressions', 'storageAdminRegressions']]
-              : [
-                  ['storage-admin', 'storageAdmin'],
-                  ['shell-navigation', 'shellNavigation'],
-                ]
-        : suite === 'copy-dropdown'
-          ? [['library-copy-dropdown', 'copyDropdown']]
-          : suite === 'upload-s3'
-            ? [['upload-s3', 'uploadS3']]
-            : suite === 'viewer'
-              ? [['library-viewer-run', 'libraryViewer']]
-              : suite === 'library-batch'
-                ? [['library-batch', 'libraryBatch']]
-                : suite === 'trash'
-                  ? [
-                      ['trash-query-batch', 'trashQueryBatch'],
-                      ['trash-cleanup', 'trashCleanup'],
-                    ]
-                  : suite === 'library-reprocess'
-                    ? [['library-batch-reprocess', 'libraryReprocess']]
-                    : suite === 'library-copy'
-                      ? [['library-copy', 'libraryCopy']]
-                      : suite === 'upload'
-                        ? [
-                            ['upload-submissions', 'uploadSubmissions'],
-                            ['upload-relations', 'uploadRelations'],
-                          ]
-                        : [
-                            ['upload', 'upload'],
-                            ['upload-polling', 'uploadPolling'],
-                          ];
+      suite === 'processing'
+        ? only === undefined || only === 'consumers'
+          ? [
+              ['processing', 'processing'],
+              ['shell-navigation', 'shellNavigation'],
+            ]
+          : [['processing', 'processing']]
+        : suite === 'storage-admin'
+          ? only === 'live'
+            ? [['storage-admin-live', 'storageAdmin']]
+            : only === 'dialogs'
+              ? [['storage-admin-dialogs', 'storageAdmin']]
+              : only === 'regressions'
+                ? [['storage-admin-regressions', 'storageAdminRegressions']]
+                : [
+                    ['storage-admin', 'storageAdmin'],
+                    ['shell-navigation', 'shellNavigation'],
+                  ]
+          : suite === 'copy-dropdown'
+            ? [['library-copy-dropdown', 'copyDropdown']]
+            : suite === 'upload-s3'
+              ? [['upload-s3', 'uploadS3']]
+              : suite === 'viewer'
+                ? [['library-viewer-run', 'libraryViewer']]
+                : suite === 'library-batch'
+                  ? [['library-batch', 'libraryBatch']]
+                  : suite === 'trash'
+                    ? [
+                        ['trash-query-batch', 'trashQueryBatch'],
+                        ['trash-cleanup', 'trashCleanup'],
+                      ]
+                    : suite === 'library-reprocess'
+                      ? [['library-batch-reprocess', 'libraryReprocess']]
+                      : suite === 'library-copy'
+                        ? [['library-copy', 'libraryCopy']]
+                        : suite === 'upload'
+                          ? [
+                              ['upload-submissions', 'uploadSubmissions'],
+                              ['upload-relations', 'uploadRelations'],
+                            ]
+                          : [
+                              ['upload', 'upload'],
+                              ['upload-polling', 'uploadPolling'],
+                            ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -733,6 +758,12 @@ try {
       );
       report.identity.push({ width, setup: 'passed', restart: 'passed' });
       if (width === 390) {
+        await runBrowser(
+          '../e2e/processing.mjs',
+          identityConfig,
+          'processing.log',
+        );
+        report.processing = 'passed';
         corsFixture = await startCorsFixture(origin);
         await runBrowser(
           '../e2e/storage-admin.mjs',

@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -49,6 +50,14 @@ function useUploadLifetime() {
   const [started, setStarted] = useState(false);
   const [controller, setController] = useState<UploadController | null>(null);
   const ownedController = useRef<UploadController | null>(null);
+  const sessionExpiryHandler = useRef<(() => void) | null>(null);
+  const registerSessionExpiry = useCallback((handler: () => void) => {
+    sessionExpiryHandler.current = handler;
+    return () => {
+      if (sessionExpiryHandler.current === handler)
+        sessionExpiryHandler.current = null;
+    };
+  }, []);
   const [chosenStorageId, setStorageId] = useState<string>();
   const [chosenVisibility, setVisibility] =
     useState<UploadSettings['defaultVisibility']>();
@@ -74,7 +83,8 @@ function useUploadLifetime() {
   }, [pathname, reset]);
   const expire = useCallback(() => {
     reset();
-    window.location.replace('/login?reason=expired&returnTo=%2Fupload');
+    if (sessionExpiryHandler.current) sessionExpiryHandler.current();
+    else window.location.replace('/login?reason=expired&returnTo=%2Fupload');
   }, [reset]);
   const query = useQuery(
     {
@@ -186,19 +196,30 @@ function useUploadLifetime() {
     setTags,
     expire,
     reset,
+    registerSessionExpiry,
   };
 }
 
 const UploadContext = createContext<ReturnType<
   typeof useUploadLifetime
 > | null>(null);
-const ResetUploadContext = createContext<(() => void) | null>(null);
+const ResetUploadContext = createContext<Pick<
+  ReturnType<typeof useUploadLifetime>,
+  'reset' | 'registerSessionExpiry'
+> | null>(null);
 
 /** One browser-document upload lifetime, shared across owner routes; never persisted. */
 export function UploadProvider({ children }: { children: ReactNode }) {
   const upload = useUploadLifetime();
+  const lifecycle = useMemo(
+    () => ({
+      reset: upload.reset,
+      registerSessionExpiry: upload.registerSessionExpiry,
+    }),
+    [upload.reset, upload.registerSessionExpiry],
+  );
   return (
-    <ResetUploadContext value={upload.reset}>
+    <ResetUploadContext value={lifecycle}>
       <UploadContext value={upload}>{children}</UploadContext>
     </ResetUploadContext>
   );
@@ -209,7 +230,17 @@ export function useUploadQueue() {
   return upload;
 }
 export function useResetUpload() {
-  const reset = useContext(ResetUploadContext);
-  if (!reset) throw new Error('UploadProvider is missing');
-  return reset;
+  const lifecycle = useContext(ResetUploadContext);
+  if (!lifecycle) throw new Error('UploadProvider is missing');
+  return lifecycle.reset;
+}
+
+/** The current owner page can retain its form when background uploads lose the session. */
+export function useUploadSessionExpiry(onExpire?: () => void) {
+  const lifecycle = useContext(ResetUploadContext);
+  if (!lifecycle) throw new Error('UploadProvider is missing');
+  useEffect(
+    () => (onExpire ? lifecycle.registerSessionExpiry(onExpire) : undefined),
+    [lifecycle, onExpire],
+  );
 }
