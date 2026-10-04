@@ -1,0 +1,44 @@
+{
+  "defaultIntegrationCommand": "pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/api-key/integration.xml",
+  "defaultIntegrationExitCode": 1,
+  "defaultIntegrationResult": {
+    "files": 142,
+    "tests": 1386,
+    "passed": 1384,
+    "failed": 2,
+    "skipped": 0
+  },
+  "issue144": {
+    "files": 2,
+    "tests": 39,
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0
+  },
+  "failedCasesRetry": {
+    "command": "pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts --maxWorkers=1 -t 'counts each watermark|excludes owner' --reporter=default --reporter=junit --outputFile=test-results/api-key/analytics-retry.xml",
+    "exitCode": 0,
+    "passed": 2,
+    "unselectedAlreadyRun": 11
+  },
+  "unit": {
+    "files": 93,
+    "tests": 1202,
+    "passed": 1202
+  },
+  "review": "Approve after date-overflow regression repair",
+  "browser": "not applicable: no product UI or production behavior changes",
+  "release": "not executed; reserved for release.published",
+  "checks": {
+    "frozenInstall": 0,
+    "formatCheck": 0,
+    "lint": 0,
+    "affectedLintAfterRepair": 0,
+    "typecheckAfterRepair": 0,
+    "buildFinal": 0,
+    "unit": 0,
+    "dbGenerate": 0,
+    "taskDependencies": 0,
+    "diffCheck": 0
+  }
+}
