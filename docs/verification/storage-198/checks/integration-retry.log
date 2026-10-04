@@ -1,0 +1,51 @@
+Already up to date
+Done in 41ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso
+
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 14953ms
+   × preserves old HTTP bytes when atomic publication fails and records the readable failure 1148ms
+ ❯ |media-tools| tests/integration/media/svg.test.ts (8 tests | 1 failed) 16316ms
+   ❯ isolated static SVG preview (8)
+     × scales a large canvas before raster allocation and retains original dimensions 5047ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > preserves old HTTP bytes when atomic publication fails and records the readable failure
+SqliteError: database is locked
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ acceptOriginal src/server/media/images.ts:67:6
+     65|       updatedAt: now,
+     66|     })
+     67|     .run();
+       |      ^
+     68|   const objectId = randomUUID();
+     69|   tx.insert(mediaObjects)
+ ❯ sqliteTransaction.<anonymous> tests/integration/media/reprocess-http.test.ts:146:5
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ tests/integration/media/reprocess-http.test.ts:145:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |media-tools| tests/integration/media/svg.test.ts > isolated static SVG preview > scales a large canvas before raster allocation and retains original dimensions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/svg.test.ts:205:3
+    203|   );
+    204|
+    205|   it('scales a large canvas before raster allocation and retains origi…
+       |   ^
+    206|     const f = await fixture(
+    207|       '<rect width="1000000" height="500000" fill="blue"/>',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  2 failed | 78 passed (80)
+   Start at  16:06:11
+   Duration  101.80s (tests 96%, import 3%, transform 1%)
+
