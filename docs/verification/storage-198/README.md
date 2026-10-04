@@ -71,3 +71,16 @@ AWS S3 实测已由现行执行约定取消，保持未验证。物理手机触�
 首次创建后的实际查询保存在 [github-status.json](checks/github-status.json)，其中head为实现提交。本段和该状态文件属于随后仅补充证据的提交，不重复应用测试。现有发布工作流仅在Release published触发，本次没有创建Release、发布镜像、部署、合并PR、关闭Issue或删除分支/worktree。
 
 下一步由用户人工查看本记录的最终截图与草稿PR，验收界面并确认上方必要设计补充。完整集成失败与未批准项仍保持开放，不能以PR创建代替Issue完成。
+
+## 人工预览与失败解释补充（2026-10-04）
+
+已启动持久的本机独立预览：[存储管理](http://ariso-198.localhost:4198/settings/storage)。预览由本分支最终standalone运行，监听127.0.0.1:4198；数据位于忽略目录 `.data/issue198-preview/data`，原项目数据库没有改动。登录账号为 `review198@example.test`；密码仅通过本轮对话交给用户并保存在本机忽略文件，不提交到仓库。
+
+实际完成健康检查200、API登录200、Ego TaskSpace20/p1表单登录、存储列表与真实Local样本上传。预览包含默认Local（有图片引用）、无引用Local，以及停用未测试的SeaweedFS/R2配置；远端配置使用独立随机 `issue198-review/` prefix，用户点击连接测试/上传才产生远端操作。服务保留运行供人工验收，没有复用或修改用户原预览数据。重点人工确认两端/主题布局、表单与结果页、默认/引用/清理反馈，以及本记录已有必要设计补充。
+
+先前失败共有两项，不是一项：
+
+- `reprocess-http.test.ts` 的“原子发布失败时保留旧HTTP字节”用例在 `beforeEach` 准备数据时，`acceptOriginal` 插入media_images触发 `SqliteError: database is locked`。测试连接与Web后台使用同一临时数据库；准备事务先读处理设置再写入，存在与另一连接争写的窗口。日志没有记录当时的锁持有者，尚未确认确切竞争来源，不能直接断言与本PR无关。
+- `svg.test.ts` 的“大画布先缩放再分配”用例处理1000000×500000的SVG并期望640×320预览，超过测试5秒期限。实际媒体工具的运行期限是120秒；该失败首先说明测试期限被超过，不能据此声称渲染结果错误或稳定不可用。具体慢阶段仍未定位。
+
+为诊断是否稳定失败，实际只运行一次这两个失败用例：`pnpm exec vitest run --project media-tools --maxWorkers=1 tests/integration/media/reprocess-http.test.ts tests/integration/media/svg.test.ts -t 'preserves old HTTP bytes when atomic publication fails|scales a large canvas before raster allocation'`。本轮退出0，2项通过，14项未匹配；这不是完整集成检查，未匹配项不记为本轮通过。原始输出见 [failure-diagnosis.log](checks/failure-diagnosis.log)。这次未复现表明失败并不稳定，尚不能宣称已修复或把此前完整批次改为通过。没有修改媒体代码、测试超时或断言；草稿状态和进一步诊断责任继续保留。
