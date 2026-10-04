@@ -7,9 +7,8 @@ import { resizeViewport, setTheme } from './browser-geometry.mjs';
 
 const run = promisify(execFile);
 export const copyDialog = '[data-testid="library-copy-dialog"]';
-export const formatTrigger = '[data-testid="library-copy-format"]';
 export const copyNames = {
-  default: '默认链接',
+  default: '默认（跟随站点）',
   original: '原图',
   compressed: '压缩图',
   thumbnail: '缩略图',
@@ -58,21 +57,24 @@ export function createCopyHelpers(context) {
     await page.waitForSelector(`loc=role:option[name="${copyNames[value]}"]`);
     await page.click(`loc=role:option[name="${copyNames[value]}"]`);
   }
-  async function format(value, keyboard = false) {
-    await page.focus(formatTrigger);
+  async function selectFormat(value, keyboard = false) {
+    const selector = `[data-copy-format="${value}"]`;
     if (keyboard) {
-      await page.keyboard.press('Enter');
-      await page.waitForSelector('loc=role:menuitem[name="复制 URL"]');
-      await page.keyboard.press('Home');
-      for (let i = 0; i < ['url', 'markdown', 'html'].indexOf(value); i++)
-        await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('Enter');
-    } else {
-      await page.click(formatTrigger);
-      const label = value === 'markdown' ? 'Markdown' : value.toUpperCase();
-      await page.waitForSelector(`loc=role:menuitem[name="复制 ${label}"]`);
-      await page.click(`loc=role:menuitem[name="复制 ${label}"]`);
-    }
+      await page.focus(selector);
+      await page.keyboard.press('Space');
+    } else await page.click(selector);
+    assert.equal(
+      await page.evaluate(
+        (selector) =>
+          document.querySelector(selector)?.getAttribute('aria-checked'),
+        selector,
+      ),
+      'true',
+    );
+  }
+  async function format(value, keyboard = false) {
+    await selectFormat(value, keyboard);
+    await page.click('[data-testid="library-copy-submit"]');
   }
   async function monitor(mode = 'reverse') {
     await page.evaluate((mode) => {
@@ -149,15 +151,41 @@ export function createCopyHelpers(context) {
   }
   const traffic = () => page.evaluate(() => window.__copyTraffic);
   async function completed() {
-    await page.waitForSelector('[data-testid="library-copy-result"]');
+    await page.waitForFunction(() => {
+      const dialog = document.querySelector(
+        '[data-testid="library-copy-dialog"]',
+      );
+      return dialog
+        ? dialog.querySelector('[data-testid="library-copy-submit"]')
+            ?.disabled === false &&
+            !!dialog.querySelector('[data-testid="library-copy-feedback"]')
+        : window.__copyWrites?.length === 1;
+    });
     await batch.settle();
-    await page.waitForFunction(
-      () => document.activeElement?.id === 'library-copy-title',
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="library-copy-result"]'),
+      ),
+      false,
+      'Copy keeps the original list instead of replacing it with a result page',
     );
   }
   async function again() {
-    await page.click('[data-testid="library-copy-again"]');
-    await page.waitForSelector(copyDialog);
+    if (
+      !(await page.evaluate(
+        () => !!document.querySelector('[data-testid="library-copy-dialog"]'),
+      ))
+    ) {
+      const count = await page.evaluate(() =>
+        Number(
+          document
+            .querySelector('[data-testid="library-selection"] button')
+            ?.getAttribute('aria-label')
+            ?.match(/\d+/)?.[0],
+        ),
+      );
+      await open(count);
+    }
   }
   async function verifyNative(expected) {
     await page.waitForFunction(() => window.__copyWrites.length === 1);
@@ -229,6 +257,9 @@ export function createCopyHelpers(context) {
             overflow: document.documentElement.scrollWidth > innerWidth,
             surface: rect(surface),
             controls,
+            formats: [...surface.querySelectorAll('[data-copy-format]')].map(
+              (node) => ({ value: node.dataset.copyFormat, ...rect(node) }),
+            ),
             focusedWithin: surface.contains(document.activeElement),
           };
         });
@@ -240,6 +271,17 @@ export function createCopyHelpers(context) {
         assert.ok(
           geometry.surface.x >= 0 && geometry.surface.right <= width + 1,
         );
+        if (geometry.formats.length) {
+          const widths = geometry.formats.map((node) => node.width);
+          assert.ok(
+            Math.max(...widths) - Math.min(...widths) <= 1,
+            'Visible format controls fill equal grid columns',
+          );
+          assert.ok(
+            geometry.formats.every((node) => node.height === 44),
+            'Approved prototype has 44px inner format controls',
+          );
+        }
         for (const control of geometry.controls)
           assert.ok(
             control.width >= (width >= 1200 ? 24 : 43) &&
@@ -267,6 +309,7 @@ export function createCopyHelpers(context) {
     open,
     version,
     format,
+    selectFormat,
     monitor,
     traffic,
     completed,

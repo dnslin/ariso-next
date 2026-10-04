@@ -1,5 +1,7 @@
 # T-LIB-10 / Issue #187 批量复制交付记录
 
+**当前状态：初版UI未通过人工验收；简化方案已获批准，返修已实现并同步Figma。新浏览器验收因用户接管Ego21暂停，设计状态验收与再次人工验收未完成，PR保持草稿。** 下方初版结论属于历史证据；当前结果见[本轮返修](#人工反馈后的获批返修2026-10-04)。
+
 日期：2026-10-04（Asia/Shanghai）。关联 [Issue #187](https://github.com/dnslin/ariso-next/issues/187)；需求 `R-15.8-01`、`R-15.8-02`、`R-13.4-02`。范围及规则沿 [任务卡](../../tasks/m3-m4-experience.md#t-lib-10-跨页批量复制与剪贴板降级)、[library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)，不维护第二份规则。
 
 ## 前置与基线
@@ -82,8 +84,68 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=4 
 
 实现与本次功能场景证据已收齐；[独立代码审计](./code-audit.md)和[独立设计对照](./design-audit.md)分别通过。用户人工UI验收待完成。分支 `codex/issue-187-batch-copy`，实现提交 `dffeaf593630aaf5b72ae79c21ac85a04b4d63a7` 已推送；[PR #238](https://github.com/dnslin/ariso-next/pull/238) 为 OPEN / DRAFT。创建时[实际状态](./pr.json)的 `statusCheckRollup=[]`，`gh pr checks 238 --repo dnslin/ariso-next` [明确返回无检查](./checks/pr-checks.txt)，不记为CI通过，也不等待不存在的工作流。不把PR创建当作验收完成。
 
-人工验收使用独立生产预览 [issue187-preview.localhost:3197](http://issue187-preview.localhost:3197/library?q=issue177-&pageSize=80&page=3)，测试图及账号与用户数据隔离；本机配置仅存忽略目录 `.data/issue187-preview/`，不提交凭据。Ego Lite任务空间21的p1已登录，实际保留201张跨页选择与复制选项，[预览证据](./browser/preview-final/browser.json)。
+人工验收使用独立生产预览 [issue187-preview.localhost:3197](http://issue187-preview.localhost:3197/library?q=issue177-&pageSize=80&page=3)，测试图及账号与用户数据隔离；本机配置仅存忽略目录 `.data/issue187-preview/`，不提交凭据。初版曾在Ego Lite任务空间21的p1保留201张跨页选择与复制选项，[历史预览证据](./browser/preview-final/browser.json)；不将该会话状态视为返修后当前状态。
 
-[回收站共用菜单回归](./browser/preview-final/trash-consumer.json)在1440/390两端浅深色实际通过，原恢复/选择操作保留，没有扩散复制、重处理或未实现删除入口；临时回收的198已恢复。初次测试误把桌面控件也要求44px，保留[失败](./browser/preview-final/trash-consumer-r1.json)，随后按设计交接“桌面不强制44px”和现有browserGeometry的鼠标目标约定纠正测试，不修改既有产品或放宽手机44px要求。
+初版历史补充：[回收站共用菜单回归](./browser/preview-final/trash-consumer.json)在1440/390两端浅深色实际通过，原恢复/选择操作保留，没有扩散复制、重处理或未实现删除入口；临时回收的198已恢复。初次测试误把桌面控件也要求44px，保留[失败](./browser/preview-final/trash-consumer-r1.json)，随后按设计交接“桌面不强制44px”和现有browserGeometry的鼠标目标约定纠正测试，不修改既有产品或放宽手机44px要求。 此项只验证旧工具栏菜单，未覆盖本轮新卡片右键接入。
 
-PR保持草稿；不合并、不主动关闭Issue、不清理分支或worktree。
+## 人工反馈后的获批返修（2026-10-04）
+
+用户提供三张实际截图，否定手机上传按钮布局、复制整页结果与常驻彩色说明、版本/格式二次下拉，并指出未找到回收站右键与相册复制入口。先用 `improve-ui`、`apple-design` 和 `frontend-design` 提供[独立可操作原型](../../../design-plans/issue187-review/index.html)，未在审阅前修改产品；用户随后明确“按照这个方式来”，并授权同步Figma。实施使用 `frontend-ui-engineering` 处理响应式和成熟控件复用，遵守 `vercel-react-best-practices`；设计同步使用 `figma-use`、`figma-generate-design`，缺少的复制控件按 `figma-generate-library` 在原组件区局部补齐。当前规则只维护于[设计交接](../../design/handoff.md#批量复制与手机上传返修2026-10-04用户批准方案)，不改冻结PRD。
+
+### 最终实施范围
+
+- 图库与相册复用紧凑CopyDialog；版本Select、常显URL/Markdown/HTML单选及单一复制按钮。删除CopyResult、CopyPreview及仅为整页结果捕获缩略图的路径，未引入依赖、迁移或接口变更。
+- 仅全部链接真实写入Clipboard后关闭弹窗，用中性底部Toast显示实际数量；原列表、查询、选择、滚动和来源焦点保持。部分不可用、全不可用、HTTP错误和完整手动文本留在同一弹窗；真实访问限制及公开原图GPS事实按需灰字，移除常驻绿色说明及通用重复警告。
+- 唯一共享ToastProvider采用获批尺寸和底部位置，支持库已有indicator字段和始终可见44px关闭目标；其他Toast语义和业务流程不改。
+- 小于1200px上传空输入区紧凑双按钮并排，两个原生文件选择动作不变。回收站真实右键与Shift+F10接入已有共用选择菜单，恢复/查看/选择管理不扩展为复制外链或永久删除；后者仍由T-LIB-11承接。
+
+### 实际前置复现与修复证据
+
+Ego实际读取原预览的相册A：桌面工具栏、卡片右键及手机勾选都能进入旧复制弹窗，因此没有把这一入口伪报为缺失。旧回收站4条用户预览记录的鼠标右键与Shift+F10都没有共用菜单，先保存[实际失败](./browser/revision-preflight)，再补卡片事件接入；未对这份预览数据库写入测试数据。
+
+- [browser-r1](./revision/browser-r1)：真实URL格式按钮只有约33px宽，未填满等宽组，记录失败后补 `w-full`。同时诊断Ego当前TaskSpace CDP不支持Browser.setPermission；按实际Page CDP能力恢复权限，不下载其他浏览器。
+- [browser-r2](./revision/browser-r2)：16项配置/加载布局取得证据；脚本错误地要求HeroUI输出字符串false的aria-busy导致等待超时，改为真实反馈出现且提交按钮恢复启用。实际单选使用radio/aria-checked，按已安装组件契约检查，不弱化剪贴板和排序断言。
+- [browser-r3](./revision/browser-r3)：同一稳定产物的配置/加载检查已执行，随后Ego报告用户接管并硬停。该轮整体为中断，不能记为浏览器通过；没有创建其他TaskSpace或浏览器绕过，也没有在用户控制后恢复权限、截图或覆盖剪贴板。
+
+代码审计发现删整页后遗漏originalDisclosure显示，已仅按真实公开ready原图事实恢复灰字/Toast说明，并补跨批事实保留测试。设计审计发现标签字重和新增Figma深稿颜色不一致，已明确500字重、surface选择框/取消按钮，以及新深稿侧栏当前项/图标颜色；继续复用公共外壳，不反改产品来迎合旧画板。
+
+### Figma同步与对照
+
+原选择387:5769/5709、固定387:5788/5728、manual387:5972/5928、empty387:5983/5939、partial388:6482/6690、上传101:1014中的101:1104保留编号；原26–32成功框改为通知样例。新增[642:5564分区](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=642-5564)含浅深整页choose/success、HTTP错误和原列表返回目标，生成中650:6855/6880。所有页面仍为可编辑图层，复用现有按钮、字体与主题变量；[navigation-current](./revision/figma/navigation-sync.json)同步已有CSS浅深当前项颜色，未改变产品配色。照片复用原画板素材，没有把整页截图铺成设计。
+
+| 对照区域             | 当前节点与代表设计截图                                                                                                                                                                                                                    | 当前结论                                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 选择与格式           | 1440×1080 [642:6011](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=642-6011) / 390×844 [642:6738](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=642-6738)，[手机终稿](./revision/figma/copy-mobile-final.png) | 已独立读取设计与新真实截图；结构/常显格式/尺寸符合，标签500修正后实页续验待完成。                                               |
+| 原列表成功           | 桌面642:6259 / 手机642:6914，[通知设计](./revision/figma/copy-success-mobile-final.png)                                                                                                                                                   | 通知取消整页，浅深可编辑稿已同步；真实native Clipboard与Toast截图仍待续验。                                                     |
+| 部分、空、错误、手动 | partial388:6482/6690、empty387:5983/5939、error642:6487/7070、manual387:5972/5928                                                                                                                                                         | 已独立读取设计；不能以源码吻合替代本轮真实状态验收。                                                                            |
+| 手机上传             | 101:1014，[390×844设计](./revision/figma/upload-mobile.png)                                                                                                                                                                               | 输入区226px、32px图标、20px标题、双148×48按钮/12间隔；真实浅深/断点/原生chooser仍待续验。既有设置区按此前交接，不扩大本轮重排。 |
+| 公共区域与菜单       | 统一OwnerShell及LibrarySelectionMenu；新深稿642:7249/7497                                                                                                                                                                                 | 新深稿颜色已修；真实消费路由、短视口通知、回收菜单截图仍待续验。                                                                |
+
+[控件变更](./revision/figma/controls-sync.json)、[状态入口/图层计数](./revision/figma/states-sync.json)、[最终颜色修正](./revision/figma/final-corrections.json)、[生成中稿](./revision/figma/loading-sync.json)、[公共导航](./revision/figma/public-shell-sync.json)、[面包屑](./revision/figma/breadcrumb-sync.json)及[选择统计底图修正](./revision/figma/selection-summary-sync.json)记录实际Figma操作。新整页移除旧底图彩色选择说明，统计沿实际LibrarySelectionMenu的sr-only及已选入口；Figma没有反向要求产品恢复旧横幅。首次同步边框解析和水平自动布局测量问题已按实际截图修正，早期图保留用于诊断，终稿入口以本表为准。
+
+### 本轮实际检查
+
+环境：macOS arm64、Node24.18.1、pnpm11.19.0，项目现有HeroUI3.2.6及Ego Lite；独立测试数据库，未下载Playwright/Chromium。
+
+| 命令                                                                                                                                                                     | 结果                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                         | [通过](./revision/install.txt)，无锁文件变更。                                                                       |
+| `pnpm run lint`                                                                                                                                                          | [最终完整检查通过](./revision/lint-final.txt)。首次原型临时脚本的unused变量问题已删除临时提取脚本，原失败保留。      |
+| `pnpm run typecheck`                                                                                                                                                     | [最终检查通过](./revision/typecheck-final.txt)，Next路由、应用与runtime TypeScript均执行。                           |
+| `pnpm run test:unit`                                                                                                                                                     | [83文件、1112项通过](./revision/unit-final.txt)，含跨批保留原图/访问限制事实的新验证。                               |
+| `pnpm run build`                                                                                                                                                         | [审计后构建通过](./revision/build-reviewed.txt)，之前拼错Toast placement的失败原样保留于build-initial-failure.txt。  |
+| `pnpm exec vitest run --project integration tests/integration/library/copy.test.ts tests/integration/library/copy-http.test.ts tests/integration/library/detail.test.ts` | [20/20通过](./revision/integration-copy.txt)。                                                                       |
+| `pnpm exec vitest run --project media-tools tests/integration/media/watermark.test.ts -t 'composites the admitted asset at the configured size'`                         | [2项通过，28项未执行](./revision/integration-watermark.txt)；这是历史唯一剩余SVG超时的定向复验，不称新全量集成通过。 |
+| `node scripts/verify-browser.mjs --suite library-copy --only revision`                                                                                                   | [r3中断](./revision/browser-r3.txt)，用户接管后暂停；必要状态仍缺证据。                                              |
+
+完整`pnpm run format:check`[通过](./revision/format-final.txt)；[文档任务检查](./revision/docs.txt)已通过。初版与新轮日志分别保留，未运行项不记通过。普通集成与真实工具两组的初版失败文件已分批复验，本轮UI返修只重跑受影响copy/detail与历史剩余失败，不机械重复15种格式版本或旧全库浏览器长链。
+
+### 当前人工预览
+
+独立生产预览仍使用[同一3197地址](http://issue187-preview.localhost:3197)。审计后构建已替换页面资源，原账号、图片及回收记录保留；仅运行密钥更新可能要求重新登录。[更新记录](./revision/preview-refresh.txt)确认health=200、dataRetained/accountRetained=true。配置和密码仅在忽略的.data目录，不提交。该HTTP健康结果不替代浏览器验证。人工关注/upload的小屏双按钮、/library和/albums/issue177-album-a的已选入口/三个常显格式/原列表复制通知、/trash卡片右键与Shift+F10菜单；浅深色桌面与手机都需再次验收。
+
+### 当前审计与完成边界
+
+[代码审计](./code-audit.md)与[设计评审](./design-audit.md)分别追加本次结论；旧通过不是新稿验收。浏览器硬停依据ego-browser技能“Stop when the user takes control… Do not retry or route around the stop.”，已请求本次接管后的明确恢复指示；此限制不影响离线Figma、代码检查与文档整理。
+
+尚需本轮native Clipboard、部分/空/HTTP/manual/GPS、上传原生选择、回收站右键/Escape、全部公共消费与短视口Toast证据，并由独立设计评审收齐状态结论。实际页面还须用户再次人工验收。PR保持OPEN/DRAFT；不合并、不关闭Issue、不发布镜像、不部署、不清理分支或worktree。物理设备和双架构容器按既有执行约定未在本地运行，不标通过。

@@ -54,7 +54,6 @@ export function LibrarySelectionMenu({
   onContextMenuClose,
   onBatch,
   scope = 'normal',
-  openSelectedRequest = 0,
 }: {
   selection: LibrarySelection;
   loadingMode: LibraryLoadingMode;
@@ -64,14 +63,8 @@ export function LibrarySelectionMenu({
   onContextMenuClose?: () => void;
   onBatch?: (action: SelectionBatchAction, element: HTMLElement) => void;
   scope?: 'normal' | 'trash';
-  openSelectedRequest?: number;
 }) {
   const [open, setOpen] = useState(false);
-  const [openedRequest, setOpenedRequest] = useState(openSelectedRequest);
-  if (openedRequest !== openSelectedRequest) {
-    setOpenedRequest(openSelectedRequest);
-    setOpen(true);
-  }
   const [menuOpen, setMenuOpen] = useState(false);
   const contextAnchor = useRef<HTMLSpanElement>(null);
   const [page, setPage] = useState(1);

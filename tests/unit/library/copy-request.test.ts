@@ -70,6 +70,48 @@ it('keeps unavailable records distinct from an HTTP error after an earlier chunk
     ),
   ).rejects.toMatchObject({ status: 401 });
 });
+it('preserves public-original and owner-only facts when merging multiple chunks', async () => {
+  const ids = Array.from({ length: 201 }, (_, index) => String(index));
+  const ownerWarning = '此链接仅所有者登录后可访问，外部访客无权访问';
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      return Response.json({
+        items: request.ids.map((id: string) => ({
+          imageId: id,
+          displayName: id,
+          sortKey: { value: Number(id), id },
+          actualVersion: id === '0' || id === '200' ? 'original' : 'compressed',
+          line: `https://example.test/i/${id}`,
+          accessWarning: id === '200' ? ownerWarning : null,
+          originalDisclosure: id === '0',
+        })),
+        unavailable: [],
+        sort: 'uploaded_asc',
+      });
+    }),
+  );
+  const result = await requestCopy(
+    { ids, query: 'sort=uploaded_asc', version: 'default', format: 'url' },
+    new AbortController().signal,
+  );
+  expect(result.items.find((item) => item.imageId === '0')).toMatchObject({
+    actualVersion: 'original',
+    originalDisclosure: true,
+    accessWarning: null,
+  });
+  expect(result.items.find((item) => item.imageId === '1')).toMatchObject({
+    actualVersion: 'compressed',
+    originalDisclosure: false,
+    accessWarning: null,
+  });
+  expect(result.items.find((item) => item.imageId === '200')).toMatchObject({
+    actualVersion: 'original',
+    originalDisclosure: false,
+    accessWarning: ownerWarning,
+  });
+});
 it('does not replace an existing clipboard when all records are unavailable', async () => {
   const writeText = vi.fn();
   vi.stubGlobal('navigator', { clipboard: { writeText } });

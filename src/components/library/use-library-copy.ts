@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { createElement, useEffect, useRef, useState } from 'react';
+import { toast } from '@heroui/react/toast';
+import { CircleCheck } from 'lucide-react';
 import type { LibrarySelection } from '../../app/library/use-library-selection';
 import type {
   LibraryCopyFormat,
@@ -9,7 +11,6 @@ import type {
 } from '../../server/library/copy-types';
 import type { SelectedLibraryItem } from '../../server/library/selection-types';
 import { CopyRequestError, requestCopy, writeCopyText } from './copy-request';
-import { captureCopyPreview } from './copy-preview';
 
 interface CopyWorkspace {
   items: SelectedLibraryItem[];
@@ -17,29 +18,23 @@ interface CopyWorkspace {
   query: string;
   version: LibraryCopyVersion;
   format: LibraryCopyFormat;
-  phase: 'choose' | 'result' | 'empty';
+  phase: 'choose' | 'feedback' | 'manual';
   result: (LibraryCopyResponse & { text: string }) | null;
   copied: boolean;
   error: string | null;
-  preview: ReturnType<typeof captureCopyPreview>;
 }
 
 export function useLibraryCopy({
   selection,
   query,
   onExpire,
-  onReturnToSelection,
-  album,
 }: {
   selection: LibrarySelection;
   query: string;
   onExpire: () => void;
-  onReturnToSelection: () => void;
-  album: boolean;
 }) {
   const [workspace, setWorkspace] = useState<CopyWorkspace | null>(null);
   const [pending, setPending] = useState(false);
-  const [manual, setManual] = useState(false);
   const busy = useRef(false);
   const controller = useRef<AbortController | null>(null);
   const source = useRef<HTMLElement | null>(null);
@@ -47,7 +42,6 @@ export function useLibraryCopy({
   useEffect(() => () => controller.current?.abort(), [query]);
   if (workspace && workspace.query !== query) {
     setWorkspace(null);
-    setManual(false);
     setPending(false);
   }
   function open(element: HTMLElement) {
@@ -61,7 +55,6 @@ export function useLibraryCopy({
     element.focus({ preventScroll: true });
     const scroller = element.closest('main');
     scroll.current = { element: scroller, top: scroller?.scrollTop ?? 0 };
-    setManual(false);
     setWorkspace({
       items,
       currentCount: selection.currentCount,
@@ -72,13 +65,11 @@ export function useLibraryCopy({
       result: null,
       copied: false,
       error: null,
-      preview: captureCopyPreview(items),
     });
   }
-  function close(returnToSelection = false) {
+  function close() {
     if (busy.current) return;
     setWorkspace(null);
-    setManual(false);
     requestAnimationFrame(() => {
       // React Aria restores overlay focus on the first animation frame.
       requestAnimationFrame(() => {
@@ -94,18 +85,17 @@ export function useLibraryCopy({
           document
             .getElementById('library-title')
             ?.focus({ preventScroll: true });
-        if (returnToSelection) onReturnToSelection();
       });
     });
   }
-  async function copy(format: LibraryCopyFormat) {
+  async function copy() {
     if (!workspace || busy.current) return;
     busy.current = true;
     setPending(true);
     const active = new AbortController();
     controller.current = active;
     setWorkspace(
-      (previous) => previous && { ...previous, format, error: null },
+      (previous) => previous && { ...previous, result: null, error: null },
     );
     try {
       const result = await requestCopy(
@@ -113,29 +103,52 @@ export function useLibraryCopy({
           ids: workspace.items.map((item) => item.id),
           query: workspace.query,
           version: workspace.version,
-          format,
+          format: workspace.format,
         },
         active.signal,
       );
       active.signal.throwIfAborted();
       const outcome = await writeCopyText(result.text);
       if (active.signal.aborted) return;
+      if (outcome === 'copied' && !result.unavailable.length) {
+        busy.current = false;
+        close();
+        const restricted = result.items.filter(
+          (item) => item.accessWarning,
+        ).length;
+        const originalDisclosure = result.items.some(
+          (item) => item.originalDisclosure,
+        );
+        toast(`已复制 ${result.items.length} 条链接`, {
+          variant: 'default',
+          indicator: createElement(CircleCheck, {
+            size: 20,
+            'aria-hidden': true,
+          }),
+          description:
+            [
+              restricted ? `${restricted} 条链接仅供所有者登录后访问。` : '',
+              originalDisclosure ? '公开原图可能包含 GPS 和拍摄信息。' : '',
+            ]
+              .filter(Boolean)
+              .join(' ') || undefined,
+        });
+        return;
+      }
       setWorkspace(
         (previous) =>
           previous && {
             ...previous,
             result,
-            phase: outcome === 'empty' ? 'empty' : 'result',
+            phase: outcome === 'manual' ? 'manual' : 'feedback',
             copied: outcome === 'copied',
           },
       );
-      setManual(outcome === 'manual');
     } catch (error) {
       if (active.signal.aborted) return;
       if (error instanceof CopyRequestError && error.status === 401) {
         selection.clear();
         setWorkspace(null);
-        setManual(false);
         onExpire();
         return;
       }
@@ -143,7 +156,7 @@ export function useLibraryCopy({
         (previous) =>
           previous && {
             ...previous,
-            error: `链接生成失败：${error instanceof Error ? error.message : String(error)}。已保留选择和复制模式，请重试。`,
+            error: error instanceof Error ? error.message : String(error),
           },
       );
     } finally {
@@ -154,36 +167,32 @@ export function useLibraryCopy({
   return {
     workspace,
     pending,
-    manual,
-    contentVisible: workspace?.phase === 'result',
-    returnLabel: album ? '返回相册内容' : '返回图库',
+    manual: workspace?.phase === 'manual',
     open,
     close,
     copy,
-    returnToSelection: () => close(true),
-    closeManual: () => {
-      setManual(false);
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() =>
-          document
-            .getElementById('library-copy-title')
-            ?.focus({ preventScroll: true }),
-        ),
-      );
-    },
     chooseVersion: (version: LibraryCopyVersion) =>
       setWorkspace(
-        (previous) => previous && { ...previous, version, error: null },
+        (previous) =>
+          previous && {
+            ...previous,
+            version,
+            phase: 'choose',
+            result: null,
+            error: null,
+          },
       ),
-    chooseAgain: () => {
+    chooseFormat: (format: LibraryCopyFormat) =>
       setWorkspace(
-        (previous) => previous && { ...previous, phase: 'choose', error: null },
-      );
-      requestAnimationFrame(() => {
-        if (scroll.current.element)
-          scroll.current.element.scrollTop = scroll.current.top;
-      });
-    },
+        (previous) =>
+          previous && {
+            ...previous,
+            format,
+            phase: 'choose',
+            result: null,
+            error: null,
+          },
+      ),
   };
 }
 export type LibraryCopy = ReturnType<typeof useLibraryCopy>;

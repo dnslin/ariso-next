@@ -241,6 +241,7 @@ async function layouts(
               ...rect(node),
             })),
             headingSize: getComputedStyle(card.querySelector('h2')).fontSize,
+            padding: getComputedStyle(card).paddingLeft,
           };
         })(),
         dialog:
@@ -310,12 +311,28 @@ async function layouts(
         const choose = result.picker.buttons.find(
           (target) => target.name === '选择图片',
         );
-        assert.equal(choose.width, width >= 1200 ? 160 : 144);
+        assert.equal(choose.height, 48);
+        if (width >= 1200) assert.equal(choose.width, 160);
         assert.equal(
           result.picker.headingSize,
-          width >= 1200 ? '28px' : '26px',
+          width >= 1200 ? '28px' : '20px',
         );
-        if (width >= 1200) {
+        if (width < 1200) {
+          const folder = result.picker.buttons.find(
+            (target) => target.name === '选择文件夹',
+          );
+          assert.deepEqual(
+            [folder.width, folder.height, folder.top],
+            [choose.width, 48, choose.top],
+            'Approved mobile actions are equal and share a row',
+          );
+          assert.equal(folder.left - choose.left - choose.width, 12);
+          assert.deepEqual(
+            [result.picker.icon.width, result.picker.icon.height],
+            [32, 32],
+          );
+          assert.equal(result.picker.padding, '24px');
+        } else {
           assert.deepEqual(
             [result.picker.icon.width, result.picker.icon.height],
             [64, 64],

@@ -20,6 +20,7 @@ const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
 const representative = config.libraryCopyPhase === 'representative';
 const feedbackOnly = config.libraryCopyPhase === 'feedback';
+const revision = config.libraryCopyPhase === 'revision';
 const report = {
   status: 'failed',
   phase: config.libraryCopyPhase ?? 'full',
@@ -36,7 +37,8 @@ const report = {
 const h = createCopyHelpers({ page, config, report });
 let fixture, savedClipboard, savedPreference, errorScript;
 const preferenceKey = 'ariso:library-preferences:v1';
-const widths = representative ? [390, 1440] : [360, 390, 430, 768, 1440];
+const widths =
+  representative || revision ? [390, 1440] : [360, 390, 430, 768, 1440];
 
 async function snapshot() {
   const result = {};
@@ -198,6 +200,10 @@ try {
   await h.selectAll201();
   await h.open(201);
   if (!feedbackOnly) await h.capture('options', widths);
+  if (revision) {
+    await h.capture('options', [360, 430, 768]);
+    await h.capture('options', [390], true);
+  }
   report.stage = 'escape-return-focus';
   await page.evaluate(() => {
     window.__copyFocusEvents = [];
@@ -225,13 +231,19 @@ try {
   await h.open(201);
   report.stage = 'cross-page-native-copy';
   await h.monitor('hold');
+  await h.selectFormat('markdown');
+  assert.deepEqual(
+    await h.traffic(),
+    [],
+    'Changing format only selects it and never sends a request',
+  );
   const before = await snapshot();
   await h.format('url');
   await page.waitForFunction(() => typeof window.__copyRelease === 'function');
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelector('[data-testid="library-copy-format"]')?.disabled,
+        document.querySelector('[data-testid="library-copy-submit"]')?.disabled,
     ),
     true,
     'Generating disables duplicate format activation',
@@ -244,6 +256,15 @@ try {
     ),
     true,
     'Generating preserves the selected version',
+  );
+  assert.equal(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[data-copy-format]')].every(
+        (node) => node.disabled,
+      ),
+    ),
+    true,
+    'Generating disables every visible format choice',
   );
   await page.waitForFunction(
     () => document.activeElement?.getAttribute('role') === 'status',
@@ -295,7 +316,21 @@ try {
     before,
     'Copy has no analytics or storage-probe side effects',
   );
+  await assertModalFocus('partial-success');
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelectorAll('[data-testid="library-copy-dialog"] img')
+          .length,
+    ),
+    0,
+    'Partial feedback only shows unavailable items and never adds a success image table',
+  );
   if (!feedbackOnly) await h.capture('partial-result', widths);
+  if (revision) {
+    await h.capture('partial-result', [360, 430, 768]);
+    await h.capture('partial-result', [390], true);
+  }
   assert.equal(
     await page.evaluate(
       (id) => !!document.querySelector(`[data-copy-unavailable="${id}"]`),
@@ -303,11 +338,61 @@ try {
     ),
     true,
   );
+  if (revision) {
+    assert.equal(
+      /GPS|拍摄信息/.test(
+        await page.evaluate(
+          () =>
+            document.querySelector('[data-testid="library-copy-dialog"]')
+              .textContent,
+        ),
+      ),
+      initial.items.some((item) => item.originalDisclosure),
+      'Default output only discloses actual original metadata',
+    );
+    await h.version('original');
+    await h.monitor();
+    await h.format('url');
+    await h.completed();
+    const publicOriginal = await expectedOutput();
+    assert.ok(publicOriginal.items.some((item) => item.originalDisclosure));
+    assert.match(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="library-copy-dialog"]')
+            .textContent,
+      ),
+      /公开原图.*GPS.*拍摄信息/,
+    );
+    await h.verifyNative(publicOriginal.text);
+    await h.noImageReads();
+    await h.capture('partial-public-original', [390, 1440]);
+    await h.version('compressed');
+    await h.monitor();
+    await h.format('url');
+    await h.completed();
+    const compressed = await expectedOutput();
+    await h.verifyNative(compressed.text);
+    await h.noImageReads();
+    assert.ok(compressed.items.every((item) => !item.originalDisclosure));
+    assert.doesNotMatch(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="library-copy-dialog"]')
+            .textContent,
+      ),
+      /GPS|拍摄信息/,
+      'Non-original copy does not invent an original metadata warning',
+    );
+    report.checks.push(
+      'Actual public-original metadata warning is present for original/default and absent for fixed compressed output, with complete native Clipboard text for both.',
+    );
+  }
   report.checks.push(
     '201 selections survive pages; real responses reversed within every chunk merge by full query order including equal keys; native URL pasteboard exact; private/failed remain available, disabled storage excluded, no image GET or count/probe writes.',
   );
 
-  if (!representative && !feedbackOnly) {
+  if (!representative && !feedbackOnly && !revision) {
     for (const version of [
       'default',
       'original',
@@ -383,10 +468,20 @@ try {
   await h.format('html');
   await page.waitForSelector('[data-testid="library-copy-manual"]');
   const manualOutput = await expectedOutput();
+  if (revision)
+    assert.match(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="library-copy-dialog"]')
+            .textContent,
+      ),
+      /公开原图.*GPS.*拍摄信息/,
+    );
   // Keyboard native copy is independent of navigator.clipboard permission. The probe records only its denied write attempt.
   await renderedManual(manualOutput.text);
   if (!feedbackOnly) {
     await h.capture('manual', widths);
+    if (revision) await h.capture('manual', [360, 430, 768]);
     await h.capture('manual', [390], true);
   }
   await page.focus('[data-testid="library-copy-manual"]');
@@ -399,14 +494,14 @@ try {
     'Manual focus remains trapped within the dialog',
   );
   await page.click('[data-testid="library-copy-manual-return"]');
-  await h.completed();
-  assert.match(
-    await page.evaluate(
-      () =>
-        document.querySelector('[data-testid="library-copy-title"]')
-          .textContent,
-    ),
-    /已生成/,
+  await page.waitForSelector('[data-testid="library-copy-dialog"]', {
+    state: 'hidden',
+  });
+  await h.selected(201);
+  await page.waitForFunction(
+    () =>
+      document.activeElement?.getAttribute('aria-label') ===
+      '操作已选 201 张图片',
   );
   await page.cdp('Browser.setPermission', {
     permission: { name: 'clipboard-write' },
@@ -414,12 +509,11 @@ try {
     origin: config.origin,
   });
   report.checks.push(
-    'Chromium denies the actual native Clipboard write; all 200 HTML lines stay selected and focused; Command+C copies the exact full text, including mobile visual wrapping; result says generated rather than copied.',
+    'Chromium denies the actual native Clipboard write; all 200 HTML lines stay selected and focused; Command+C copies the exact full text, including mobile visual wrapping; the same modal presents manual text without claiming an automatic copy succeeded.',
   );
 
   if (!representative) {
     report.stage = 'all-unavailable';
-    await page.click('[data-testid="library-copy-return"]');
     await page.goto(`${config.origin}/library?q=issue177-&pageSize=80&page=3`);
     await h.loaded(41);
     await h.choose(199);
@@ -427,15 +521,12 @@ try {
     await h.monitor();
     const sentinel = (await h.traffic()).length;
     await h.format('url');
-    await page.waitForSelector(
-      '[data-testid="library-copy-dialog"] [data-testid="library-copy-return"]',
-    );
+    await page.waitForSelector('[data-testid="library-copy-feedback"]');
     assert.match(
       await page.evaluate(
         () =>
-          document.querySelector(
-            '[data-testid="library-copy-dialog"] h1,[data-testid="library-copy-dialog"] h2',
-          ).textContent,
+          document.querySelector('[data-testid="library-copy-feedback"]')
+            .textContent,
       ),
       /没有可复制的链接/,
     );
@@ -468,11 +559,19 @@ try {
     await h.monitor();
     await h.format('url');
     await h.completed();
+    const retried = await expectedOutput();
+    await h.verifyNative(retried.text);
+    await h.noImageReads();
     report.checks.push(
       'All unavailable writes nothing and preserves the pasteboard; real-response HTTP failure retains an actionable error and retries independently of empty results.',
     );
 
-    await page.click('[data-testid="library-copy-return"]');
+    if (revision) {
+      const { verifyCopyConsumers } = await import(
+        new URL('./library-copy-consumers.mjs', config.libraryDetailScript).href
+      );
+      await verifyCopyConsumers({ page, config, report, sql, h });
+    }
     await sql("DELETE FROM album_images WHERE album_id='issue177-album-a'");
     report.stage = 'album-order';
     await sql(
@@ -495,7 +594,169 @@ try {
     ]);
     await h.verifyNative(albumOutput.text);
     await h.noImageReads();
-    await h.capture('album-result', [390, 1440]);
+    await page.waitForSelector('[data-testid="library-copy-dialog"]', {
+      state: 'hidden',
+    });
+    await h.selected(3);
+    if (revision) {
+      const { resizeViewport, setTheme } = await import(
+        new URL('./browser-geometry.mjs', config.libraryDetailScript).href
+      );
+      for (const theme of ['light', 'dark']) {
+        await setTheme(page, theme);
+        for (const width of [390, 1440]) {
+          await resizeViewport(page, width);
+          const card = '[data-image-id="issue177-000"]';
+          await page.click(card, { button: 'right' });
+          await page.waitForSelector('loc=role:menuitem[name="复制链接"]');
+          await page.click('loc=role:menuitem[name="复制链接"]');
+          await page.waitForSelector('[data-testid="library-copy-dialog"]');
+          await page.keyboard.press('Escape');
+          await page.waitForFunction(
+            (selector) =>
+              document.activeElement ===
+              document.querySelector(`${selector} [data-library-open]`),
+            card,
+          );
+          const beforeSuccess = await page.evaluate(() => ({
+            url: location.href,
+            top: document.querySelector('main').scrollTop,
+          }));
+          await h.open(3);
+          await h.version('original');
+          await h.monitor();
+          await h.format('url');
+          await h.completed();
+          const result = await expectedOutput();
+          await h.verifyNative(result.text);
+          await h.noImageReads();
+          await h.selected(3);
+          await page.waitForFunction(
+            () =>
+              document.activeElement?.getAttribute('aria-label') ===
+              '操作已选 3 张图片',
+          );
+          assert.deepEqual(
+            await page.evaluate(() => ({
+              url: location.href,
+              top: document.querySelector('main').scrollTop,
+            })),
+            beforeSuccess,
+          );
+          await page.waitForSelector(
+            '[data-slot="toast-title"]:has-text("已复制 3 条链接")',
+          );
+          const toast = await page.evaluate(() => {
+            const node = [
+              ...document.querySelectorAll('[data-slot="toast-title"]'),
+            ].find((n) => n.textContent === '已复制 3 条链接');
+            const surface = node.closest('[data-slot="toast"]');
+            const rect = surface.getBoundingClientRect();
+            return {
+              text: node.textContent,
+              color: getComputedStyle(surface).backgroundColor,
+              radius: getComputedStyle(surface).borderRadius,
+              width: rect.width,
+              bottom: rect.bottom,
+              height: innerHeight,
+              description:
+                surface.querySelector('[data-slot="toast-description"]')
+                  ?.textContent ?? '',
+              neutral: surface.classList.contains('toast--default'),
+              placement: surface.getAttribute('data-placement'),
+            };
+          });
+          assert.match(
+            toast.description,
+            /公开原图.*GPS.*拍摄信息/,
+            'Only the actual public-original toast discloses original metadata',
+          );
+          assert.equal(
+            toast.neutral,
+            true,
+            'Successful copy uses the existing neutral default toast style',
+          );
+          assert.ok(
+            toast.bottom > toast.height / 2,
+            'The approved copy toast appears at the bottom',
+          );
+          assert.equal(
+            await page.evaluate(
+              () =>
+                !!document.querySelector(
+                  '[data-testid="library-copy-dialog"],[data-testid="library-copy-result"]',
+                ),
+            ),
+            false,
+          );
+          await page.screenshot({
+            path: join(
+              config.output,
+              `library-copy-success-${theme}-${width}.png`,
+            ),
+          });
+          if (width === 390) {
+            await resizeViewport(page, 390, 400);
+            const short = await page.evaluate(() => {
+              const surface = document.querySelector(
+                '[data-slot="toast"][data-frontmost="true"]',
+              );
+              const close = surface.querySelector('[data-slot="toast-close"]');
+              const rect = close.getBoundingClientRect();
+              const footer = document
+                .querySelector('footer')
+                ?.getBoundingClientRect();
+              return {
+                overflow: document.documentElement.scrollWidth > innerWidth,
+                toast: surface.getBoundingClientRect().toJSON(),
+                close: rect.toJSON(),
+                closeHit: close.contains(
+                  document.elementFromPoint(
+                    rect.x + rect.width / 2,
+                    rect.y + rect.height / 2,
+                  ),
+                ),
+                footer: footer?.toJSON(),
+              };
+            });
+            assert.equal(short.overflow, false);
+            assert.equal(
+              short.closeHit,
+              true,
+              'Short viewport toast remains dismissable through its actual close target',
+            );
+            assert.ok(short.close.width >= 44 && short.close.height >= 44);
+            await page.screenshot({
+              path: join(
+                config.output,
+                `library-copy-success-${theme}-${width}-short.png`,
+              ),
+            });
+            report.layouts.push({
+              state: 'success-short',
+              theme,
+              width,
+              height: 400,
+              ...short,
+            });
+            await resizeViewport(page, 390);
+          }
+          report.layouts.push({
+            state: 'album-success',
+            width,
+            theme,
+            toast,
+            nativePasteboard: true,
+            selectionRetained: 3,
+            scrollRetained: true,
+            mouseContextAndToolbar: true,
+          });
+        }
+      }
+      report.checks.push(
+        'Album mouse context and toolbar share the same copy modal on both responsive themes; full native clipboard success closes it, returns focus, preserves list, route, scroll and selection, and shows only the neutral bottom toast.',
+      );
+    }
     await h.again();
     report.stage = 'unauthorized';
     assert.ok(
@@ -537,6 +798,10 @@ try {
   report.status = 'passed';
 } catch (error) {
   report.error = error.stack ?? String(error);
+  if (String(error).includes('user has taken control')) {
+    report.stoppedForUserControl = true;
+    throw error;
+  }
   try {
     report.focus = await page.evaluate(() => ({
       tag: document.activeElement?.tagName,
@@ -553,33 +818,40 @@ try {
   }
   throw error;
 } finally {
-  if (errorScript)
-    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
-      identifier: errorScript,
+  report.finishedAt = new Date().toISOString();
+  await writeFile(
+    join(config.output, 'library-copy.json'),
+    `${JSON.stringify(report, null, 2)}\n`,
+  );
+  if (!report.stoppedForUserControl) {
+    if (errorScript)
+      await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+        identifier: errorScript,
+      });
+    await page.cdp('Browser.setPermission', {
+      permission: { name: 'clipboard-write' },
+      setting: 'prompt',
+      origin: config.origin,
     });
-  await page.cdp('Browser.setPermission', {
-    permission: { name: 'clipboard-write' },
-    setting: 'prompt',
-    origin: config.origin,
-  });
-  await page.evaluate(() => {
-    sessionStorage.removeItem('ariso:issue187-copy-auth');
-    window.__copyRelease?.();
-    if (window.__copyOriginalFetch) window.fetch = window.__copyOriginalFetch;
-    if (window.__copyNativeWrite)
-      navigator.clipboard.writeText = window.__copyNativeWrite;
-  });
-  if (savedPreference !== undefined)
-    await page.evaluate(
-      ({ key, value }) =>
-        value === null
-          ? localStorage.removeItem(key)
-          : localStorage.setItem(key, value),
-      { key: preferenceKey, value: savedPreference },
-    );
+    await page.evaluate(() => {
+      sessionStorage.removeItem('ariso:issue187-copy-auth');
+      window.__copyRelease?.();
+      if (window.__copyOriginalFetch) window.fetch = window.__copyOriginalFetch;
+      if (window.__copyNativeWrite)
+        navigator.clipboard.writeText = window.__copyNativeWrite;
+    });
+    if (savedPreference !== undefined)
+      await page.evaluate(
+        ({ key, value }) =>
+          value === null
+            ? localStorage.removeItem(key)
+            : localStorage.setItem(key, value),
+        { key: preferenceKey, value: savedPreference },
+      );
+  }
   await cleanLibraryBatch(sql, fixture);
   await sql("DELETE FROM storage_configs WHERE id='issue187-disabled'");
-  if (savedClipboard) {
+  if (savedClipboard && !report.stoppedForUserControl) {
     await restoreClipboard(savedClipboard);
     report.clipboardRestored = true;
   }

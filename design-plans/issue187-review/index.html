@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Ariso 修改提案 · 交互原型</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f4f4f7;
+      color: #272343;
+      font:
+        14px/1.5 system-ui,
+        'PingFang SC',
+        sans-serif;
+    }
+    .review {
+      padding: 18px 24px;
+      border-bottom: 1px solid #dcdce5;
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .review strong {
+      font-size: 18px;
+    }
+    .review p {
+      margin: 6px 0 12px;
+      color: #626477;
+    }
+    .tools {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .tools button,
+    .tools select {
+      font: inherit;
+      background: white;
+      border: 1px solid #d3d4dd;
+      border-radius: 8px;
+      padding: 8px 12px;
+      min-height: 40px;
+      color: inherit;
+    }
+    .tools button[aria-pressed='true'] {
+      background: #ffd807;
+      border-color: #ffd807;
+    }
+    .tools label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stage {
+      padding: 28px 12px;
+      display: flex;
+      justify-content: center;
+      overflow: auto;
+    }
+    .viewport {
+      flex: none;
+      border: 1px solid #d9d9e3;
+      border-radius: 18px;
+      overflow: hidden;
+      background: white;
+      width: 390px;
+      height: 844px;
+      box-shadow: 0 8px 30px #2723430d;
+    }
+    .viewport.desktop {
+      width: 1440px;
+      height: 900px;
+      border-radius: 10px;
+    }
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .caption {
+      margin: 0;
+      padding: 0 24px 24px;
+      color: #626477;
+      text-align: center;
+    }
+    .tools button:focus-visible,
+    .tools select:focus-visible {
+      outline: 2px solid #287e79;
+      outline-offset: 3px;
+    }
+  </style>
+  <div class="review">
+    <strong>Ariso · 修改提案</strong>
+    <p>
+      可点击原型。只模拟界面反馈，不连接后端、不写剪贴板。产品预览保持原样。
+    </p>
+    <div class="tools">
+      <button id="phone" aria-pressed="true">手机 390</button
+      ><button id="desktop" aria-pressed="false">桌面 1440</button
+      ><label
+        >页面<select id="screen">
+          <option value="copy">复制</option>
+          <option value="upload">上传</option>
+        </select></label
+      ><label
+        >复制反馈<select id="outcome">
+          <option value="success">全部成功</option>
+          <option value="partial">部分不可复制</option>
+          <option value="empty">全部不可复制</option>
+          <option value="manual">浏览器拒绝复制</option>
+          <option value="error">请求失败</option>
+        </select></label
+      ><button id="dark" aria-pressed="false">深色</button
+      ><button id="reset">重新打开</button>
+    </div>
+  </div>
+  <div class="stage">
+    <div id="viewport" class="viewport">
+      <iframe id="surface" title="Ariso 待审阅原型" src="surface.html"></iframe>
+    </div>
+  </div>
+  <p class="caption">
+    请在原型中选择版本与格式，再点击「复制」。成功后关闭弹窗，回到原列表。
+  </p>
+  <script>
+    const frame = document.getElementById('surface'),
+      view = document.getElementById('viewport');
+    let mode = 'phone',
+      dark = false;
+    const value = (id) => document.getElementById(id).value;
+    function render() {
+      frame.src =
+        'surface.html?screen=' +
+        value('screen') +
+        '&outcome=' +
+        value('outcome') +
+        '&dark=' +
+        (dark ? '1' : '0');
+    }
+    for (const id of ['phone', 'desktop'])
+      document.getElementById(id).onclick = () => {
+        mode = id;
+        view.classList.toggle('desktop', id === 'desktop');
+        for (const other of ['phone', 'desktop'])
+          document
+            .getElementById(other)
+            .setAttribute('aria-pressed', other === id);
+      };
+    for (const id of ['screen', 'outcome'])
+      document.getElementById(id).onchange = render;
+    document.getElementById('dark').onclick = () => {
+      dark = !dark;
+      document.getElementById('dark').setAttribute('aria-pressed', dark);
+      render();
+    };
+    document.getElementById('reset').onclick = render;
+  </script>
+</html>

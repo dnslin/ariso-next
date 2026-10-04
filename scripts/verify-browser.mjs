@@ -52,7 +52,7 @@ assert.ok(
         'pending-navigation',
       ].includes(only)) ||
     (suite === 'library-copy' &&
-      ['representative', 'feedback'].includes(only)) ||
+      ['representative', 'feedback', 'revision'].includes(only)) ||
     (suite === 'library-batch' &&
       [
         'representative',

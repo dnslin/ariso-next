@@ -49,10 +49,6 @@ import { useLibraryBatch } from '../../components/library/use-library-batch';
 import { useLibraryCopy } from '../../components/library/use-library-copy';
 import { CopyDialog } from '../../components/library/copy-dialog';
 import {
-  CopyResult,
-  CopyResultFooter,
-} from '../../components/library/copy-result';
-import {
   BatchWorkspaceContent,
   BatchWorkspaceFooter,
 } from '../../components/library/batch-workspace';
@@ -159,12 +155,7 @@ export function LibraryScreen(props: {
   };
   const batch = useLibraryBatch(batchOptions);
   const batchReprocess = useBatchReprocess(batchOptions);
-  const [openSelectedRequest, setOpenSelectedRequest] = useState(0);
-  const copy = useLibraryCopy({
-    ...batchOptions,
-    album: !!props.albumId,
-    onReturnToSelection: () => setOpenSelectedRequest((value) => value + 1),
-  });
+  const copy = useLibraryCopy(batchOptions);
   const batchPending = batch.pending || batchReprocess.pending || copy.pending;
   const batchUnresolved = batch.unresolved || batchReprocess.unresolved;
   const batchContentVisible =
@@ -221,10 +212,8 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        copy.contentVisible ? (
-          <CopyResultFooter copy={copy} />
-        ) : batchReprocess.visible &&
-          batchReprocess.workspace?.phase === 'result' ? (
+        batchReprocess.visible &&
+        batchReprocess.workspace?.phase === 'result' ? (
           <BatchReprocessFooter batch={batchReprocess} />
         ) : batch.visible && batch.workspace?.phase !== 'confirm' ? (
           <BatchWorkspaceFooter batch={batch} />
@@ -245,10 +234,7 @@ export function LibraryScreen(props: {
     >
       <div
         className={
-          props.workspace ||
-          detail.view ||
-          batchContentVisible ||
-          copy.contentVisible
+          props.workspace || detail.view || batchContentVisible
             ? 'hidden'
             : 'contents'
         }
@@ -290,7 +276,6 @@ export function LibraryScreen(props: {
                     key={selectionIdentity}
                     selection={selection}
                     contextMenu={contextMenu}
-                    openSelectedRequest={openSelectedRequest}
                     onContextMenuClose={() => setContextMenu(null)}
                     loadingMode={query.loadingMode}
                     disabled={
@@ -567,7 +552,6 @@ export function LibraryScreen(props: {
         />
       ) : null}
       <BatchReprocessContent batch={batchReprocess} />
-      <CopyResult copy={copy} />
       <CopyDialog copy={copy} />
       <BatchWorkspaceContent
         batch={batch}

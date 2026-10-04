@@ -270,50 +270,38 @@ export function UploadScreen(props: ScreenProps) {
             ) : (
               <Card
                 data-testid="upload-picker"
-                className="min-h-70 min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface px-4 py-5 text-center shadow-none md:min-h-90 md:p-6 min-[1200px]:gap-0"
+                className="min-w-0 items-center justify-center gap-4 rounded-[20px] border border-dashed border-border bg-surface p-6 text-center shadow-none min-[1200px]:min-h-90 min-[1200px]:gap-0"
               >
                 <span
                   aria-hidden
                   data-testid="upload-idle-motion"
                   className="motion-safe:animate-[upload-float_2.8s_ease-in-out_infinite] min-[1200px]:mb-5 min-[1200px]:flex min-[1200px]:size-16 min-[1200px]:items-center min-[1200px]:justify-center min-[1200px]:rounded-2xl min-[1200px]:bg-default"
                 >
-                  <CloudUpload size={40} />
+                  <CloudUpload className="size-8 min-[1200px]:size-10" />
                 </span>
-                <h2 className="text-[26px] font-medium min-[1200px]:mb-2 min-[1200px]:text-[28px]">
+                <h2 className="text-xl font-medium leading-normal min-[1200px]:mb-2 min-[1200px]:text-[28px]">
                   <span className="md:hidden">选择要上传的图片</span>
                   <span className="hidden md:inline">把图片放在这里</span>
                 </h2>
-                <div className="flex flex-wrap items-center justify-center text-[13px] min-[1200px]:hidden">
-                  <span className="hidden md:inline">拖拽、粘贴或</span>
-                  <span className="md:hidden">支持多选 · </span>
-                  <Button
-                    variant="outline"
-                    className="mx-1 min-h-11 rounded-lg px-2 text-[13px] font-normal"
-                    onPress={input.chooseDirectory}
-                  >
-                    选择文件夹
-                  </Button>
-                  <span> · 单文件最大 {bytesLabel(settings.maxFileBytes)}</span>
-                </div>
                 <p className="hidden text-sm min-[1200px]:mb-6 min-[1200px]:block">
                   拖入图片或文件夹，也可粘贴截图
                 </p>
-                <div className="flex min-[1200px]:gap-3">
+                <div className="grid w-full grid-cols-2 gap-3 min-[1200px]:flex min-[1200px]:w-auto">
                   <Button
-                    className="h-12 min-h-12 w-36 font-normal min-[1200px]:w-40 min-[1200px]:font-medium"
+                    className="h-12 min-h-12 min-w-0 w-full px-2 font-normal min-[1200px]:w-40 min-[1200px]:px-4 min-[1200px]:font-medium"
                     onPress={choose}
                   >
                     选择图片
                   </Button>
                   <Button
                     variant="outline"
-                    className="hidden h-12 min-h-12 w-40 font-medium min-[1200px]:inline-flex"
+                    className="h-12 min-h-12 min-w-0 w-full px-2 font-normal min-[1200px]:w-40 min-[1200px]:px-4 min-[1200px]:font-medium"
                     onPress={input.chooseDirectory}
                   >
                     选择文件夹
                   </Button>
                 </div>
-                <p className="hidden text-[13px] leading-5 text-muted min-[1200px]:mt-4 min-[1200px]:block">
+                <p className="text-xs leading-5 text-muted min-[1200px]:mt-4 min-[1200px]:text-[13px]">
                   支持多选 · 单文件最大 {bytesLabel(settings.maxFileBytes)}
                 </p>
               </Card>

@@ -1,0 +1,7 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+src/components/shell/providers.tsx(19,44): error TS2820: Type '"bottom-end"' is not assignable to type '"top" | "bottom end" | "bottom" | "bottom start" | "top start" | "top end" | undefined'. Did you mean '"bottom end"'?
+[ELIFECYCLE] Command failed with exit code 2.

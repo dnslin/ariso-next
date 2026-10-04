@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Ariso 原型</title>
+  <style>
+    @font-face {
+      font-family: Caveat;
+      src: url('caveat.woff2');
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      font:
+        14px/1.5 'PingFang SC',
+        'Noto Sans SC',
+        system-ui,
+        sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      --bg: #fffffe;
+      --surface: #fffffe;
+      --ink: #272343;
+      --muted: #626477;
+      --border: #bae8e8;
+      --accent: #ffd807;
+      --selected: #fff7c2;
+      --line: #e5e5eb;
+      --danger: #b82434;
+    }
+    body.dark {
+      --bg: #181a22;
+      --surface: #22252f;
+      --ink: #f4f1f8;
+      --muted: #b8b9c9;
+      --border: #607d85;
+      --selected: #494222;
+      --line: #393c47;
+      --danger: #ff858a;
+    }
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+    button {
+      cursor: pointer;
+      min-height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+      padding: 0 16px;
+    }
+    button:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid #287e79;
+      outline-offset: 3px;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #272343;
+      font-weight: 500;
+    }
+    button.icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+    }
+    .brand {
+      font-family: Caveat, cursive;
+      font-size: 40px;
+      line-height: 1;
+    }
+    .shell {
+      display: flex;
+      height: 100dvh;
+      overflow: hidden;
+    }
+    .sidebar {
+      display: none;
+    }
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+    .mobile-header {
+      height: 64px;
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    .content {
+      padding: 24px 16px;
+      overflow: auto;
+      flex: 1;
+    }
+    h1 {
+      font-size: 28px;
+      line-height: 1.4;
+      margin: 0 0 20px;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 20px;
+      line-height: 1.5;
+      margin: 0;
+      font-weight: 600;
+    }
+    p {
+      margin: 0;
+    }
+    .muted {
+      color: var(--muted);
+    }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .search {
+      min-width: 0;
+      flex: 1;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+    }
+    .selected-button {
+      white-space: nowrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+    }
+    .card.selected {
+      border: 2px solid var(--accent);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+    .card .photo {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(140deg, #d6c8bc, #c7a988);
+      display: grid;
+      place-items: center;
+      font-size: 40px;
+      color: #6d514a;
+    }
+    .card:nth-child(2n) .photo {
+      background: linear-gradient(145deg, #a6b7ac, #dcdfd5);
+      color: #58766a;
+    }
+    .card:nth-child(3n) .photo {
+      background: linear-gradient(145deg, #c4d3dc, #819cba);
+      color: #2d455b;
+    }
+    .card p {
+      padding: 10px 12px 4px;
+      font-size: 13px;
+    }
+    .card small {
+      display: block;
+      padding: 0 12px 12px;
+      color: var(--muted);
+    }
+    .card .check {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: var(--accent);
+      color: #272343;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+    }
+    .selection-row {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      color: var(--muted);
+    }
+    .page-current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .footer {
+      padding: 12px 16px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex: none;
+    }
+    .footer button {
+      height: 48px;
+      width: 100%;
+    }
+    .dropzone {
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .dropzone svg {
+      margin: auto;
+      width: 32px;
+      height: 32px;
+    }
+    .upload-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .upload-buttons button {
+      height: 48px;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+    .limit {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .settings {
+      margin-top: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      display: grid;
+      gap: 16px;
+    }
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+    .field label {
+      font-weight: 500;
+    }
+    .field select {
+      appearance: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      width: 100%;
+      height: 48px;
+      padding: 0 38px 0 12px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23626477' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+    }
+    .veil {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: #16162565;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+    }
+    .dialog {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      width: 100%;
+      max-width: 480px;
+      padding: 24px;
+      max-height: calc(100dvh - 32px);
+      overflow: auto;
+      box-shadow: 0 12px 36px #16162514;
+    }
+    .dialog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .dialog-head .icon {
+      border: 0;
+      font-size: 22px;
+      background: transparent;
+      padding: 0;
+      flex: none;
+    }
+    .dialog-intro {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 22px;
+    }
+    .dialog form {
+      display: grid;
+      gap: 20px;
+    }
+    .format-label {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .formats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .formats button {
+      padding: 0 4px;
+      min-height: 44px;
+      height: 44px;
+      background: transparent;
+      border: 0;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .formats button[aria-pressed='true'] {
+      background: var(--accent);
+      color: #272343;
+    }
+    .dialog-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .dialog-actions button {
+      height: 48px;
+    }
+    .status {
+      font-size: 13px;
+      display: grid;
+      gap: 8px;
+    }
+    .status strong {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .failures {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .failure-row {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .failure-row span:last-child {
+      color: var(--muted);
+    }
+    .error {
+      color: var(--danger);
+    }
+    .manual {
+      width: 100%;
+      height: 176px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--bg);
+      padding: 12px;
+      line-height: 1.6;
+      font-size: 13px;
+      margin-top: 16px;
+    }
+    .manual-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .manual-actions button {
+      height: 48px;
+      min-width: 120px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      z-index: 15;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 6px 26px #27234314;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+    }
+    .toast svg {
+      width: 20px;
+      height: 20px;
+      flex: none;
+    }
+    .toast p + p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .toast button {
+      border: 0;
+      margin-left: auto;
+      min-height: 24px;
+      padding: 0 4px;
+      background: transparent;
+    }
+    .popup {
+      position: absolute;
+      top: 166px;
+      right: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      z-index: 10;
+      min-width: 190px;
+      padding: 6px;
+      box-shadow: 0 4px 20px #27234314;
+    }
+    .popup button {
+      display: block;
+      border: 0;
+      width: 100%;
+      text-align: left;
+      padding: 0 12px;
+      background: transparent;
+    }
+    .popup button:hover {
+      background: var(--selected);
+    }
+    .hidden {
+      display: none !important;
+    }
+    @media (min-width: 1200px) {
+      .sidebar {
+        width: 232px;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--border);
+        padding: 32px 20px;
+        gap: 28px;
+      }
+      .sidebar .brand {
+        font-size: 48px;
+      }
+      .sidebar nav {
+        display: grid;
+        gap: 8px;
+      }
+      .nav-item {
+        padding: 12px;
+        border-radius: 12px;
+      }
+      .nav-item.current {
+        background: var(--selected);
+        font-weight: 600;
+      }
+      .sidebar .user {
+        margin-top: auto;
+        font-size: 13px;
+      }
+      .mobile-header {
+        display: none;
+      }
+      .content {
+        padding: 32px;
+      }
+      .grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .toolbar {
+        max-width: 780px;
+      }
+      .toast {
+        left: auto;
+        right: 28px;
+        bottom: 28px;
+        min-width: 300px;
+        max-width: 420px;
+      }
+      .dropzone {
+        max-width: 760px;
+        padding: 40px;
+      }
+      .dropzone h2 {
+        font-size: 28px;
+      }
+      .upload-buttons {
+        width: 332px;
+        margin: auto;
+      }
+      .limit {
+        font-size: 13px;
+      }
+      .settings {
+        max-width: 760px;
+      }
+      .footer {
+        padding: 16px 32px 20px;
+      }
+      .footer button {
+        width: 220px;
+        float: right;
+      }
+      .popup {
+        top: 143px;
+        right: 32px;
+      }
+      .dialog {
+        padding: 24px;
+      }
+      .sidebar + .workspace:has(.dialog) {
+        min-width: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">Ariso</div>
+        <nav>
+          <div class="nav-item">⌂　总览</div>
+          <div class="nav-item" id="nav-upload">↑　上传</div>
+          <div class="nav-item current" id="nav-library">▧　图库</div>
+          <div class="nav-item">▱　相册</div>
+          <div class="nav-item">♧　标签</div>
+          <div class="nav-item">♲　回收站</div>
+        </nav>
+        <div class="user">Owner<br /><span class="muted">站点所有者</span></div>
+      </aside>
+      <div class="workspace">
+        <header class="mobile-header">
+          <span class="brand">Ariso</span
+          ><button
+            class="icon"
+            aria-label="菜单"
+            style="border: 0; font-size: 22px"
+          >
+            ☰
+          </button>
+        </header>
+        <main class="content" id="content"></main>
+        <footer class="footer hidden" id="upload-footer">
+          <button class="primary" disabled>开始上传</button>
+        </footer>
+      </div>
+    </div>
+    <div class="veil hidden" id="veil">
+      <section
+        class="dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="title"
+      >
+        <header class="dialog-head">
+          <h2 id="title">复制链接</h2>
+          <button id="close" class="icon" aria-label="关闭">×</button>
+        </header>
+        <p class="dialog-intro" id="intro">已选201张 · 当前页41张</p>
+        <div id="body"></div>
+      </section>
+    </div>
+    <div class="toast hidden" id="toast" role="status"></div>
+    <div class="popup hidden" id="popup">
+      <button id="entry-copy">复制链接</button
+      ><button id="entry-selected">查看已选清单</button
+      ><button id="entry-clear">取消全部选择</button>
+    </div>
+    <script>
+      const params = new URLSearchParams(location.search),
+        screen = params.get('screen') || 'copy',
+        outcome = params.get('outcome') || 'success';
+      if (params.get('dark') === '1') document.body.classList.add('dark');
+      const $ = (id) => document.getElementById(id);
+      let source = null,
+        format = 'URL',
+        version = 'default',
+        pending = false,
+        timer;
+      const cloud =
+        '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 24H7a6 6 0 0 1-1-12 9 9 0 0 1 17-2 7 7 0 0 1 2 14h-3M16 29V15m-5 5 5-5 5 5"/></svg>';
+      function notify(title, desc = '') {
+        clearTimeout(timer);
+        $('toast').innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><p>' +
+          title +
+          '</p>' +
+          (desc ? '<p>' + desc + '</p>' : '') +
+          '</div><button aria-label="关闭提示">×</button>';
+        $('toast').classList.remove('hidden');
+        $('toast').querySelector('button').onclick = () =>
+          $('toast').classList.add('hidden');
+        timer = setTimeout(() => $('toast').classList.add('hidden'), 4500);
+      }
+      function close() {
+        if (pending) return;
+        $('veil').classList.add('hidden');
+        source?.focus();
+      }
+      function chooser() {
+        source = $('selection');
+        $('popup').classList.add('hidden');
+        $('toast').classList.add('hidden');
+        $('title').textContent = '复制链接';
+        $('intro').textContent = '已选201张 · 当前页41张 · 其他页160张';
+        $('body').innerHTML =
+          '<form id="copy-form"><div class="field"><label for="version">复制版本</label><select id="version"><option value="default">默认（跟随站点）</option><option value="original">原图</option><option value="compressed">压缩图</option><option value="thumbnail">缩略图</option><option value="watermark">水印图</option></select></div><div><div class="format-label" id="format-label">格式</div><div class="formats" role="group" aria-labelledby="format-label">' +
+          ['URL', 'Markdown', 'HTML']
+            .map(
+              (f) =>
+                '<button type="button" aria-pressed="' +
+                (f === format) +
+                '" data-format="' +
+                f +
+                '">' +
+                f +
+                '</button>',
+            )
+            .join('') +
+          '</div></div><div id="feedback" class="status hidden" aria-live="polite"></div><div class="dialog-actions"><button type="button" id="cancel">取消</button><button class="primary" id="copy-submit">复制</button></div></form>';
+        $('version').value = version;
+        $('version').onchange = () => {
+          version = $('version').value;
+          $('feedback').classList.add('hidden');
+          $('copy-submit').textContent = '复制';
+        };
+        for (const b of $('body').querySelectorAll('[data-format]'))
+          b.onclick = () => {
+            format = b.dataset.format;
+            for (const item of $('body').querySelectorAll('[data-format]'))
+              item.setAttribute('aria-pressed', item === b);
+            $('feedback').classList.add('hidden');
+          };
+        $('cancel').onclick = close;
+        $('copy-form').onsubmit = copy;
+        $('veil').classList.remove('hidden');
+        $('version').focus();
+      }
+      function showFeedback(html) {
+        $('feedback').innerHTML = html;
+        $('feedback').classList.remove('hidden');
+      }
+      function manual() {
+        $('title').textContent = '手动复制';
+        $('intro').textContent = '浏览器未允许自动复制，请选中文本后复制。';
+        const lines = Array.from(
+          { length: 4 },
+          (_, i) => 'https://ariso.example/i/image-' + (i + 1),
+        );
+        $('body').innerHTML =
+          '<textarea id="manual-text" class="manual" aria-label="手动复制文本" readonly></textarea><div class="manual-actions"><button id="done" class="primary">完成</button></div>';
+        $('manual-text').value = lines.join('\n');
+        $('done').onclick = close;
+        $('manual-text').focus();
+        $('manual-text').select();
+      }
+      async function copy(e) {
+        e.preventDefault();
+        if (pending) return;
+        pending = true;
+        for (const el of $('body').querySelectorAll('button,select'))
+          el.disabled = true;
+        $('close').disabled = true;
+        $('copy-submit').textContent = '正在复制…';
+        await new Promise((resolve) => setTimeout(resolve, 550));
+        pending = false;
+        for (const el of $('body').querySelectorAll('button,select'))
+          el.disabled = false;
+        $('close').disabled = false;
+        $('copy-submit').textContent = '复制';
+        if (outcome === 'success') {
+          close();
+          notify('已复制201条链接');
+        } else if (outcome === 'manual') {
+          manual();
+        } else if (outcome === 'partial') {
+          showFeedback(
+            '<strong>已复制198条，3张不可复制</strong><div class="failures"><div class="failure-row"><span>验收图片-199.png</span><span>原图未保存</span></div><div class="failure-row"><span>验收图片-083.png</span><span>存储已停用</span></div><div class="failure-row"><span>验收图片-042.gif</span><span>水印图不适用</span></div></div>',
+          );
+          $('cancel').textContent = '关闭';
+        } else if (outcome === 'empty') {
+          showFeedback(
+            '<strong class="error">没有可复制的链接</strong><p>所选版本未保存，请更换版本后重试。</p><p class="muted">剪贴板未改变。</p>',
+          );
+        } else {
+          showFeedback(
+            '<strong class="error">链接生成失败</strong><p>暂时无法连接服务，请重试。</p>',
+          );
+          $('copy-submit').textContent = '重试';
+        }
+      }
+      $('close').onclick = close;
+      $('veil').onclick = (e) => {
+        if (e.target === $('veil')) close();
+      };
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          close();
+          $('popup').classList.add('hidden');
+        }
+        if (e.key === 'Tab' && !$('veil').classList.contains('hidden')) {
+          const els = [
+            ...$('veil').querySelectorAll(
+              'button:not(:disabled),select:not(:disabled),textarea',
+            ),
+          ].filter((el) => el.offsetParent !== null);
+          if (!els.length) {
+            e.preventDefault();
+            return;
+          }
+          const first = els[0],
+            last = els.at(-1);
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+      if (screen === 'upload') {
+        $('content').innerHTML =
+          '<h1>上传图片</h1><p class="muted">选择图片，确认设置后开始上传。</p><section class="dropzone">' +
+          cloud +
+          '<h2>选择要上传的图片</h2><div class="upload-buttons"><button class="primary" id="pick-images">选择图片</button><button id="pick-folder">选择文件夹</button></div><p class="limit">支持多选 · 单文件最大50.0 MiB</p></section><section class="settings"><h2>本次上传设置</h2><div class="field"><label for="storage">存储位置</label><select id="storage"><option>默认本地存储</option></select></div><div class="field"><label for="visibility">可见性</label><select id="visibility"><option>公开</option><option>私有</option></select></div><div class="field"><label for="album">相册</label><select id="album"><option>选择相册（可多选）</option></select></div></section>';
+        $('upload-footer').classList.remove('hidden');
+        $('nav-upload').classList.add('current');
+        $('nav-library').classList.remove('current');
+        $('pick-images').onclick = () => notify('原型：选择图片');
+        $('pick-folder').onclick = () => notify('原型：选择文件夹');
+      } else {
+        $('content').innerHTML =
+          '<h1>图库</h1><div class="toolbar"><input class="search" value="验收图片" aria-label="搜索图片"><button id="selection" class="selected-button">已选201张⌄</button></div><div class="grid">' +
+          Array.from(
+            { length: 15 },
+            (_, i) =>
+              '<article class="card selected"><span class="check">✓</span><div class="photo">' +
+              ['◯', '⌒', '▱'][i % 3] +
+              '</div><p>验收图片-' +
+              String(160 + i).padStart(3, '0') +
+              '.png</p><small>私有 · 已就绪</small></article>',
+          ).join('') +
+          '</div><div class="selection-row"><span>‹</span><span>1</span><span>2</span><span class="page-current">3</span><span>›</span></div>';
+        $('selection').onclick = () => $('popup').classList.toggle('hidden');
+        $('entry-copy').onclick = chooser;
+        $('entry-selected').onclick = () => {
+          $('popup').classList.add('hidden');
+          notify('原型：已选清单');
+        };
+        $('entry-clear').onclick = () => {
+          $('popup').classList.add('hidden');
+          notify('原型：取消选择');
+        };
+        chooser();
+      }
+    </script>
+  </body>
+</html>
