@@ -1,0 +1,57 @@
+{
+  "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH EGO_TASK_SPACE=27 BROWSER_REPORT_DIR=docs/verification/storage-198/review-fixes/browser-red node scripts/verify-browser.mjs --suite storage-admin --only regressions",
+  "buildId": "e0xsMQJHuhS16On1WtSTj",
+  "exitCode": 1,
+  "note": "旧 standalone 的 6 个场景中，5 个目标缺陷实际失败，默认 PATCH 响应丢失后仅 GET 核对的已有路径通过。第 7 个明确 409 拒绝及用户纠正场景尚未加入本次旧构建运行。",
+  "taskSpaceId": 27,
+  "userTaskSpace20Untouched": true,
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "origin": "http://ariso-55954.localhost:55954",
+  "status": "failed",
+  "checks": [
+    {
+      "id": "create-lost-response-default",
+      "status": "failed"
+    },
+    {
+      "id": "update-lost-response-clear-default",
+      "status": "failed"
+    },
+    {
+      "id": "default-lost-response-read-only",
+      "status": "passed"
+    },
+    {
+      "id": "delete-normal-upload-cache",
+      "status": "failed"
+    },
+    {
+      "id": "delete-lost-response-upload-cache",
+      "status": "failed"
+    },
+    {
+      "id": "rename-preserves-external-default",
+      "status": "failed"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "unverified": [
+    "远端 S3 服务",
+    "旧完整 UI 断点/主题矩阵",
+    "物理触控、软键盘、非零安全区",
+    "最终容器及双架构发布"
+  ]
+}

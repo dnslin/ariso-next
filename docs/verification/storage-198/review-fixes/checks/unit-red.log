@@ -1,0 +1,97 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso
+
+ ❯ |unit| tests/unit/storage/storage-reconciliation.test.ts (9 tests | 6 failed) 16ms
+   × reads the actual null default and preserves read failures instead of reporting a successful save 3ms
+   × finishes a selected default after recovering a created configuration, without creating it twice 0ms
+   × does not write the default on repeated configuration-only saves after another window changes it 0ms
+   × clearing this configuration default preserves another default (saved-local) 0ms
+   × clearing this configuration default preserves another default (other-local) 0ms
+   × tracks an attempted default before its response is lost and only reads that stage back 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > reads the actual null default and preserves read failures instead of reporting a successful save
+AssertionError: expected { matched: true, …(2) } to match object { matched: true, storage: { …(5) } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "matched": true,
+-   "storage": {
+-     "enabled": true,
+-     "id": "saved-local",
+-     "localPath": "archive",
+-     "name": "本地归档",
+-     "type": "local",
+-   },
+  }
+
+ ❯ tests/unit/storage/storage-reconciliation.test.ts:91:5
+     89|   expect(
+     90|     await reconcileStorageSave({ kind: 'default', id: null, storage: l…
+     91|   ).toMatchObject({ matched: true, storage: local });
+       |     ^
+     92|   vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline'…
+     93|   await expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > finishes a selected default after recovering a created configuration, without creating it twice
+TypeError: finishStorageDefault is not a function
+ ❯ tests/unit/storage/storage-reconciliation.test.ts:124:9
+    122|   const result = await reconcileStorageSave(pending);
+    123|   expect(result.matched).toBe(true);
+    124|   await finishStorageDefault(result.storage!, pending.defaultChoice, v…
+       |         ^
+    125|   expect(defaultStorageId).toBe(local.id);
+    126|   expect(fetch.mock.calls.filter(([, init]) => init?.method === 'POST'…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > does not write the default on repeated configuration-only saves after another window changes it
+TypeError: finishStorageDefault is not a function
+ ❯ tests/unit/storage/storage-reconciliation.test.ts:133:9
+    131|   vi.stubGlobal('fetch', fetch);
+    132|   const pending = vi.fn();
+    133|   await finishStorageDefault(local, undefined, pending);
+       |         ^
+    134|   await finishStorageDefault(local, undefined, pending);
+    135|   expect(fetch).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > clearing this configuration default preserves another default (saved-local)
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > clearing this configuration default preserves another default (other-local)
+TypeError: finishStorageDefault is not a function
+ ❯ tests/unit/storage/storage-reconciliation.test.ts:150:9
+    148|   });
+    149|   vi.stubGlobal('fetch', fetch);
+    150|   await finishStorageDefault(local, false, vi.fn());
+       |         ^
+    151|   expect(defaultStorageId).toBe(expected);
+    152|   expect(fetch.mock.calls.filter(([, init]) => init?.method === 'PATCH…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |unit| tests/unit/storage/storage-reconciliation.test.ts > tracks an attempted default before its response is lost and only reads that stage back
+TypeError: finishStorageDefault is not a function
+ ❯ tests/unit/storage/storage-reconciliation.test.ts:166:16
+    164|   vi.stubGlobal('fetch', fetch);
+    165|   const pending = vi.fn();
+    166|   await expect(finishStorageDefault(local, true, pending)).rejects.toT…
+       |                ^
+    167|   const result = await reconcileStorageSave(pending.mock.calls[0][0]);
+    168|   expect(result).toMatchObject({ matched: true, storage: local, settin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 3 passed (9)
+   Start at  21:35:50
+   Duration  113ms (transform 44%, tests 38%, import 14%, worker 4%)

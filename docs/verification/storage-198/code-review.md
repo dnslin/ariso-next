@@ -124,3 +124,13 @@ Local 相对路径与 S3 Endpoint 分别真实提交无效值并取得400 `STORA
 历史 [feedback-browser-first](feedback-browser-first/)、[second](feedback-browser-second/)、[third](feedback-browser-third/)、[fourth](feedback-browser-fourth/)、[fifth](feedback-browser-fifth/)、[sixth](feedback-browser-sixth/)、[seventh](feedback-browser-seventh/)、[eighth](feedback-browser-eighth/) 保留原始失败。测量与时序维护没有削弱阈值或业务断言：回焦严格等待库的异步恢复后再核对原可访问名称；背景点击使用真实浮层外坐标，避免给 inert 页面标题发送不可接收的输入；错误边界补量 HeroUI 的实际 ring，而非为少测 ring 的脚本改产品。不同设备代表验证在已完成精确回焦后移焦并关闭提示再切换CDP设备类型，桌面开态直接切手机类型保持未验证。另实际读取 [desktop-window-resize.json](feedback-browser-sixth/desktop-window-resize.json)：正常桌面窗口以 mobile=false 从1440缩至390，Tooltip 从426–746重新定位到142–390，scrollWidth为390、原Tip焦点保留，证明正常缩窄没有文档溢出；不能把这一结果冒充混合仿真类型切换通过。
 
 本审计实际执行 `git diff --check` 时通过，只读取源码、依赖类型和真实报告，没有重复运行应用测试、构建或浏览器大套。设计结论与用户再次人工验收分别承接；既有完整媒体集成失败、R2 等未批准设计补充没有因本次呈现返修而关闭，PR继续保持草稿。
+
+## 双角度评审必修返修（2026-10-04）
+
+用户另行要求code-review-and-quality与thermo-nuclear-code-quality-review分别独立评审完整PR，固定原HEAD为3e0ee36、merge-base为1ca3ae0。首轮发现两项正确性P2（配置丢响应遗漏默认第二步、删除遗漏持久上传缓存）和一项状态职责P2（跨窗口默认改变后连续改名覆盖）；此前专项审计结论保留为历史，不把它继续视为当前完整PR无缺陷。
+
+修复后两名原独立评审者分别复核本轮完整差异、调用链、类型、单元与浏览器测试，没有参与实现。最终结论为本修复范围通过、无剩余Critical/Required：显式默认意图与服务器状态分离；正常/恢复共享具体第二阶段；默认阶段仅回读；已确认删除统一更新实际上传client且不重置队列。复审发现的新接续阶段明确409误入unknown也已修正并真实验证可纠正、同ID继续保存。
+
+两位评审者实际读取[red](review-fixes/browser-red/storage-admin-regressions.json)、[green](review-fixes/browser/storage-admin-regressions.json)与runner及最终检查日志，核对7场景23断言7布局通过、86文件1128单元和3文件15存储集成通过；未各自机械重跑全套检查。正确性评审另用Node24真实helper最小实验核对409结构及pending阶段；结构评审确认删掉settings长期副本、配置默认副本与syncDefault约定，没有增加通用状态框架。当前editor898行，未跨越1000行；截图/JSON与代码规模分开计算。原Optional内容视图枚举、overview读取优化保留未实施。
+
+测试通过范围与实际命令统一见[本轮实施记录](README.md#本轮环境命令与结果)。原完整媒体失败、完整Figma及人工验收仍开放；本结论不支持把草稿直接转为正式待评审。两位最终报告在本节收敛，不另建一套仓库规则或重复证据记录。

@@ -113,3 +113,54 @@ AWS S3 实测已由现行执行约定取消，保持未验证。物理手机触�
 独立代码和设计返修结论分别追加在 [代码审计](code-review.md#用户反馈返修2026-10-04)、[设计评审](design-review.md#用户反馈返修2026-10-04)。当前界面返修通过不替代完整任务验收；此前完整集成失败、必要设计补充批准和用户人工验收继续开放，PR仍为草稿。物理设备、发布镜像和保持桌面Tooltip开启切换CDP设备模式未验证；没有以未执行项计通过。
 
 收尾的全仓库 `pnpm run format:check` 输出见 [格式日志](feedback-checks/format-final.log)，文档 `node docs/tasks/check.mjs` 输出见 [文档日志](feedback-checks/docs.log)。源码和浏览器脚本的最后受影响范围分别见 [lint-final](feedback-checks/lint-final.log)、[最后Tips样式](feedback-checks/lint-tip-final.log)和[浏览器脚本](feedback-checks/lint-browser.log)；类型、单元和构建输出同在 [feedback-checks/](feedback-checks/)。没有机械重跑媒体集成、两真实服务或未改变的公共消费路由。
+
+## 双角度评审返修计划（2026-10-04）
+
+用户要求规划并解决两份评审的必修问题。本轮将范围按保存/默认状态与删除/上传缓存两组处理，涵盖三条已确认缺陷；两项 Optional 建议不实施。继续使用当前独立 worktree 和 PR #239，不修改冻结需求、API、数据库或现有设计规则。
+
+- [x] 保存与默认状态：先取得新建并设为默认、编辑并清空默认时第一步响应丢失的失败证据；配置回读确认后接续未执行的默认步骤，默认步骤响应丢失时只回读，不重复写入。只有用户明确修改默认字段才产生默认写入；另一窗口改变默认后，连续仅改名保存不能覆盖它。修改边界为编辑器、既有保存核对模块、表单输入类型与相关单元测试。
+- [x] 删除与上传缓存：先复现同一 UploadProvider 生命周期中的站内删除/返回；正常删除与丢响应后404确认共用完成处理，及时移除已删除的上传选项、同步默认并刷新实际缓存拥有者，保留本地待上传队列。修改边界为编辑器与删除对话框，实际行为由专门浏览器回归覆盖。
+- [x] 验证检查点：使用 Node24/pnpm、冻结安装、格式/lint/类型/单元/构建与适用 storage 集成；先失败后成功的真实浏览器回归使用独立临时服务、SQLite 和 Local 目录，覆盖桌面/手机代表状态，不操作用户 TaskSpace20或现有4198预览。完整媒体检查与远端服务的既有未完成范围继续如实保留，不机械重复。
+- [x] 独立复审与交付记录：代码正确性及结构分别复审，证据追加到本记录和现有审计记录；提交、推送、更新原草稿PR及最终远端检查由PR实际状态承接。必要设计批准、用户人工验收和既有完整集成失败不因本次修复自动完成。
+
+依赖顺序为失败证据→两组修复→相关验证→独立复审→证据与推送。没有新增依赖或后端契约前置。本轮两组必修修复已完成实现与验证；推送和最终远端状态由本节后续记录及PR承接，不改变完整Issue的既有未完成范围。
+
+### 实际修复与失败闭环
+
+- 配置阶段记录用户明确修改的默认选择，正常保存与配置回读共用已有核对模块中的第二阶段函数。POST/PATCH已确认成功后才执行尚未发送的默认设置；默认PATCH之前记录具体阶段和配置ID，其响应丢失后仅GET核对。未编辑默认字段时不读写默认，名称保存不能恢复旧默认；明确取消本配置默认也不清掉另一配置。
+- 默认显示来自当前query，移除settings长期副本、配置输入中的isDefault副本和syncDefault调用约定；保留配置编辑基线与未保存输入。本轮没有通用mutation框架、兼容层、依赖或schema改动。
+- 两条已确认删除来源均await同一完成回调。先在UploadProvider实际拥有的client中剪除被删ID并同步相应默认，再并发失效存储列表、设置和上传设置，最后导航；未清空provider、队列或其他上传选择。已有未提交文件保留，已删存储不再可选。
+- 独立复审又发现接续默认被明确409拒绝时误入unknown的问题；按真实错误分流，保留默认意图与输入、退出unknown供用户修正，401沿用过期处理。最终真实浏览器验证拒绝→启用→保存同一ID，POST只有1次，未把明确拒绝包装为未知或成功。
+
+[单元red](review-fixes/checks/unit-red.log)保留6失败/3通过：其中5项因尚未实现第二阶段函数而失败，不能冒充完整页面缺陷复现。原页面的实际缺陷由[旧构建浏览器red](review-fixes/browser-red/storage-admin-regressions.json)证明：6场景中5个业务失败，单独默认PATCH丢响应仅回读原本通过。实际POST201、PATCH/DELETE200与API/SQLite最终状态都有记录，故障只在真实请求完成后丢响应，不伪造服务器成功。
+
+[首次green](review-fixes/browser-first/storage-admin-regressions.json)保留两个驱动失败：router.replace期间误测短暂加载页链接；错误文字误读role=alert而HeroUI实际使用alert-description slot。随后精确等待目标ID编辑页ready、读取真实错误节点，未降低44px或业务断言，没有改产品来适配脚本。
+
+最终[runner](review-fixes/browser/runner.json)与[行为报告](review-fixes/browser/storage-admin-regressions.json)均passed，时间13:50:25–13:51:09 UTC：7场景、23项断言、7组代表截图。创建丢响应POST1/默认PATCH1；编辑丢响应配置PATCH1/清默认PATCH1；默认丢响应PATCH1后GET；正常和丢响应删除各DELETE1、上传设置刷新1次且同document/queued保持；外部默认B后连续两次改名默认PATCH0；409纠正默认PATCH状态[409,200]、启用PATCH仅enabled:true且POST1。末态均用真实API与SQLite核对。
+
+### 本轮环境、命令与结果
+
+macOS ARM64，Node24.18.1、pnpm11.19.0。浏览器使用独立Ego TaskSpace27和临时standalone/SQLite/Local目录，结束后已finish并清临时服务目录；没有操作用户TaskSpace20、4198人工预览数据或远端S3。
+
+| 实际命令                                                                                                                                                                         | 结果与证据                                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pnpm install --frozen-lockfile                                                                                                                                                   | 退出0；[安装日志](review-fixes/checks/install.log)，锁文件不变。                                                                                    |
+| pnpm run lint、pnpm run typecheck                                                                                                                                                | 最终均退出0；[lint](review-fixes/checks/lint-final.log)、[类型](review-fixes/checks/typecheck-final.log)。                                          |
+| pnpm exec vitest run --project unit tests/unit/storage/storage-reconciliation.test.ts tests/unit/storage/storage-form.test.ts                                                    | 首轮16项通过；随后409分流的核对文件10项通过，[聚焦日志](review-fixes/checks/unit-review-fix.log)。                                                  |
+| pnpm run test:unit                                                                                                                                                               | 最终86文件1128项通过；[最终单元日志](review-fixes/checks/unit-final.log)。                                                                          |
+| pnpm run build                                                                                                                                                                   | 退出0，编译/17页生成完成；[完整构建日志](review-fixes/checks/build.log)保留既有resvg可选平台绑定及opentelemetry/nft解析诊断，不声称日志无错误文字。 |
+| pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts tests/integration/storage/defaults.test.ts tests/integration/storage/overview.test.ts | 构建后执行，3文件15项通过；[集成日志](review-fixes/checks/integration.log)。                                                                        |
+| EGO_TASK_SPACE=27 BROWSER_REPORT_DIR=docs/verification/storage-198/review-fixes/browser node scripts/verify-browser.mjs --suite storage-admin --only regressions                 | 退出0；[运行记录](review-fixes/browser/run-notes.json)含准确命令与新旧BUILD_ID。                                                                    |
+| pnpm run format:check、node docs/tasks/check.mjs、git diff --check                                                                                                               | 格式与文档检查均退出0，见[格式](review-fixes/checks/format.log)、[文档](review-fixes/checks/docs.log)；提交前另执行差异空白检查。                   |
+
+检查只在源码/测试改变后重跑受影响范围。生产代码本轮仅修改前端保存与缓存，不重复完整媒体集成、全部旧浏览器矩阵或远端服务；先前SQLite lock与SVG超时的完整批次仍未通过，不因本轮15项存储集成改为通过。发布镜像、容器、物理设备未执行，不记通过。
+
+### 复审、界面证据与人工预览
+
+独立正确性和结构复审均已读最新源码与原始red/green、checks报告，无剩余本轮Critical/Required；具体结论追加到[代码审计](code-review.md#双角度评审必修返修2026-10-04)。Optional视图/overview建议未实施。
+
+本轮未改变布局、公共壳、样式或设计稿；7张1440×1080浅色/390×844深色实际图只验证保存与缓存状态，截图入口及设计范围在[设计记录](design-review.md#保存与缓存修复的代表状态2026-10-04)。没有重新执行完整Figma逐项验收，不将功能passed当成既有设计补充批准或人工验收通过。
+
+[人工预览](http://ariso-198.localhost:4198/settings/storage)已用本轮最新构建重启，健康/登录200，账号密码沿用先前提供值；[预览检查](review-fixes/checks/preview.log)与[数据对照](review-fixes/checks/preview-data.json)证明存储集合、默认指针与媒体数量不变。未控制用户浏览器，用户刷新后可查看修复。密码和服务密钥仍仅在忽略的本机配置中，未提交。
+
+PR #239继续草稿：本轮必修闭环不关闭先前完整媒体失败、必要设计批准及用户人工验收责任；GitHub无远端检查不记为CI通过。不合并、不关闭Issue、不发布或部署、不清理分支/worktree。

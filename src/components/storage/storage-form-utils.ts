@@ -16,13 +16,9 @@ export type StorageFormInput = {
   accessKey: string;
   secretKey: string;
   enabled: boolean;
-  isDefault: boolean;
 };
 
-export function storageFormInitial(
-  storage?: StorageSummary,
-  defaultStorageId: string | null = null,
-): StorageFormInput {
+export function storageFormInitial(storage?: StorageSummary): StorageFormInput {
   return {
     type: storage?.type ?? 'local',
     name: storage?.name ?? '',
@@ -35,7 +31,6 @@ export function storageFormInitial(
     accessKey: '',
     secretKey: '',
     enabled: storage?.enabled ?? true,
-    isDefault: Boolean(storage && storage.id === defaultStorageId),
   };
 }
 

@@ -11,6 +11,7 @@ import { AlertDialog } from '@heroui/react/alert-dialog';
 import { ListChecks, LockKeyhole, Settings2 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload, useUploadQueue } from '../upload/provider';
+import type { UploadSettings } from '../upload/settings';
 import { StorageForm } from './storage-form';
 import { storageFormInitial, storageFormPayload } from './storage-form-utils';
 import { StorageConnectionResult } from './storage-connection-result';
@@ -20,6 +21,7 @@ import { StorageTip } from './storage-tip';
 import { StorageMaintenanceView } from './storage-maintenance-view';
 import {
   reconcileStorageSave,
+  finishStorageDefault,
   type PendingStorageSave,
 } from './storage-reconciliation';
 import {
@@ -156,12 +158,10 @@ function StorageEditorReady({
   const [storage, setStorage] = useState<StorageSummary | undefined>(
     initial.storage,
   );
-  const [settings, setSettings] = useState(initial.settings);
+  const settings = initial.settings;
+  const [defaultChoice, setDefaultChoice] = useState<boolean>();
   const [input, setInput] = useState(() => {
-    const value = storageFormInitial(
-      initial.storage,
-      initial.settings.defaultStorageId,
-    );
+    const value = storageFormInitial(initial.storage);
     return initial.storage
       ? value
       : { ...value, type: initialType, enabled: initialType === 'local' };
@@ -203,11 +203,23 @@ function StorageEditorReady({
   const connected =
     effective?.connectionStatus === 'passed' &&
     effective.connectionRevision === effective.configRevision;
+  const formInput = {
+    ...input,
+    isDefault:
+      defaultChoice ??
+      Boolean(effective && effective.id === settings.defaultStorageId),
+  };
 
-  async function refresh(syncEnabled = false, syncDefault = false) {
+  async function invalidateConsumers() {
+    await Promise.all([
+      client.invalidateQueries({ queryKey: ['storage-overview'] }),
+      client.invalidateQueries({ queryKey: ['storage-settings'] }),
+      upload.client.invalidateQueries({ queryKey: ['upload-settings'] }),
+    ]);
+  }
+  async function refresh(syncEnabled = false) {
     const result = await onRefresh();
     if (result.data) {
-      setSettings(result.data.settings);
       if (result.data.storage) {
         setStorage(result.data.storage);
         if (syncEnabled)
@@ -215,18 +227,9 @@ function StorageEditorReady({
             ...current,
             enabled: result.data!.storage!.enabled,
           }));
-        if (syncDefault)
-          setInput((current) => ({
-            ...current,
-            isDefault:
-              result.data!.settings.defaultStorageId ===
-              result.data!.storage!.id,
-          }));
       }
     }
-    await client.invalidateQueries({ queryKey: ['storage-overview'] });
-    await client.invalidateQueries({ queryKey: ['storage-settings'] });
-    await upload.client.invalidateQueries({ queryKey: ['upload-settings'] });
+    await invalidateConsumers();
     if (effective)
       await client.invalidateQueries({
         queryKey: ['storage-cors', effective.id],
@@ -234,9 +237,10 @@ function StorageEditorReady({
   }
   async function reconcile() {
     if (!pendingSave.current) return;
+    const pending = pendingSave.current;
     setMessage('正在核对已保存的存储配置，输入会保留。');
     try {
-      const result = await reconcileStorageSave(pendingSave.current);
+      const result = await reconcileStorageSave(pending);
       if (result.storage) setReconciledStorage(result.storage);
       if (result.matched && !result.credentialsUnverified) {
         if (result.storage) {
@@ -245,10 +249,19 @@ function StorageEditorReady({
             ...current,
             enabled: result.storage!.enabled,
           }));
+          if (pending.kind !== 'default')
+            await finishStorageDefault(
+              result.storage,
+              pending.defaultChoice,
+              (next) => {
+                pendingSave.current = next;
+              },
+            );
         }
-        if (result.settings) setSettings(result.settings);
         pendingSave.current = null;
+        setDefaultChoice(undefined);
         setUnknown(false);
+        setSuccess('');
         setMessage('已回读核对，本次修改已保存。');
         await refresh();
         if (!initial.storage && result.storage)
@@ -264,6 +277,22 @@ function StorageEditorReady({
         );
       }
     } catch (cause) {
+      if (cause instanceof StorageRequestError && cause.status === 401) {
+        showError(cause);
+        return;
+      }
+      if (
+        cause instanceof StorageRequestError &&
+        cause.status < 500 &&
+        pending.kind !== 'default' &&
+        pendingSave.current?.kind === 'default'
+      ) {
+        pendingSave.current = null;
+        setUnknown(false);
+        setSuccess('存储配置已保存；默认存储设置尚未完成。');
+        showError(cause);
+        return;
+      }
       setUnknown(true);
       setMessage(
         `无法核对保存结果，输入已保留。请恢复连接后重新核对：${cause instanceof Error ? cause.message : String(cause)}`,
@@ -298,7 +327,7 @@ function StorageEditorReady({
       );
     }
   }
-  async function save(nextInput = input) {
+  async function save() {
     if (inFlight.current || unknown) return;
     inFlight.current = true;
     setBusy(true);
@@ -307,12 +336,14 @@ function StorageEditorReady({
     setErrors({});
     let saved: StorageSummary | undefined;
     try {
-      const payload = storageFormPayload(nextInput, storage);
+      const payload = storageFormPayload(input, storage);
+      const choice = s3 ? undefined : defaultChoice;
       if (storage)
         pendingSave.current = {
           kind: 'update',
           id: storage.id,
           input: payload,
+          defaultChoice: choice,
         };
       else {
         const before = await storageRequest<StorageSummary[]>('/api/storages');
@@ -321,6 +352,7 @@ function StorageEditorReady({
           beforeIds: before.map((row) => row.id),
           input:
             payload as import('../../server/storage/validation').StorageCreateInput,
+          defaultChoice: choice,
         };
       }
       saved =
@@ -335,26 +367,12 @@ function StorageEditorReady({
               },
             );
       setStorage(saved);
+      setInput(storageFormInitial(saved));
+      await finishStorageDefault(saved, choice, (next) => {
+        pendingSave.current = next;
+      });
       pendingSave.current = null;
-      setInput((current) => ({
-        ...storageFormInitial(saved),
-        isDefault: current.isDefault,
-      }));
-      const desiredDefault = nextInput.isDefault
-        ? saved.id
-        : settings.defaultStorageId === saved.id
-          ? null
-          : settings.defaultStorageId;
-      if (!s3 && desiredDefault !== settings.defaultStorageId) {
-        pendingSave.current = { kind: 'default', id: desiredDefault };
-        const next = await storageRequest<StorageSettings>(storageSettingsUrl, {
-          method: 'PATCH',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ defaultStorageId: desiredDefault }),
-        });
-        setSettings(next);
-        pendingSave.current = null;
-      }
+      setDefaultChoice(undefined);
       setSuccess(
         s3 && !saved.enabled
           ? '配置已保存，等待连接测试。保存不会自动启用；连接测试通过后，再手动启用此存储。'
@@ -366,7 +384,12 @@ function StorageEditorReady({
           `/settings/storage/${encodeURIComponent(saved.id)}?saved=1`,
         );
     } catch (error) {
-      if (saved) setSuccess('存储配置已保存；默认存储设置尚未完成。');
+      if (saved)
+        setSuccess(
+          pendingSave.current
+            ? '存储配置已保存；默认存储设置尚未完成。'
+            : '配置已保存；页面刷新未完成。',
+        );
       if (
         pendingSave.current &&
         (!(error instanceof StorageRequestError) || error.status >= 500)
@@ -555,7 +578,10 @@ function StorageEditorReady({
         defaultStorageId={settings.defaultStorageId}
         busy={busy || unknown || Boolean(refreshError)}
         onReturn={() => setMaintenanceView(null)}
-        onRefresh={() => refresh(false, maintenanceView === 'default')}
+        onRefresh={() => {
+          if (maintenanceView === 'default') setDefaultChoice(undefined);
+          return refresh();
+        }}
         onRetryCleanup={retryCleanup}
         onRetryScan={scan}
         onDisable={() => void setEnabled(!detail.enabled)}
@@ -670,12 +696,8 @@ function StorageEditorReady({
                 isDisabled={busy}
                 onPress={() => {
                   setStorage(reconciledStorage);
-                  setInput(
-                    storageFormInitial(
-                      reconciledStorage,
-                      settings.defaultStorageId,
-                    ),
-                  );
+                  setInput(storageFormInitial(reconciledStorage));
+                  setDefaultChoice(undefined);
                   setUnknown(false);
                   pendingSave.current = null;
                   setMessage('已使用当前保存的配置，请核对后继续。');
@@ -715,13 +737,16 @@ function StorageEditorReady({
           </Alert>
         ) : null}
         <StorageForm
-          value={input}
+          value={formInput}
           storage={effective}
           storageRoot={storageRoot}
           locked={locked}
           busy={busy || unknown || Boolean(refreshError)}
           errors={errors}
-          onChange={setInput}
+          onChange={({ isDefault, ...next }) => {
+            if (isDefault !== formInput.isDefault) setDefaultChoice(isDefault);
+            setInput(next);
+          }}
           onSubmit={() => void save()}
         />
         {effective && s3 ? (
@@ -784,7 +809,26 @@ function StorageEditorReady({
             </Button>
             <StorageDeleteDialog
               storage={detail}
-              onDeleted={() => router.push('/settings/storage')}
+              onDeleted={async () => {
+                upload.client.setQueryData<UploadSettings>(
+                  ['upload-settings'],
+                  (current) =>
+                    current
+                      ? {
+                          ...current,
+                          defaultStorageId:
+                            current.defaultStorageId === detail.id
+                              ? null
+                              : current.defaultStorageId,
+                          storages: current.storages.filter(
+                            (row) => row.id !== detail.id,
+                          ),
+                        }
+                      : current,
+                );
+                await invalidateConsumers();
+                router.push('/settings/storage');
+              }}
               onRefresh={() => void refresh()}
               isDisabled={busy || unknown || Boolean(refreshError)}
             />

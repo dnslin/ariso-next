@@ -34,10 +34,9 @@ const saved: StorageSummary = {
 
 describe('storage form requests', () => {
   it('does not populate existing secrets and sends only the name for a rename', () => {
-    const value = storageFormInitial(saved, saved.id);
+    const value = storageFormInitial(saved);
     expect(value.accessKey).toBe('');
     expect(value.secretKey).toBe('');
-    expect(value.isDefault).toBe(true);
     expect(storageFormPayload({ ...value, name: '归档 2026' }, saved)).toEqual({
       name: '归档 2026',
     });

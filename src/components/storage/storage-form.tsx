@@ -35,13 +35,13 @@ export function StorageForm({
   onChange,
   onSubmit,
 }: {
-  value: StorageFormInput;
+  value: StorageFormInput & { isDefault: boolean };
   storage?: StorageSummary;
   storageRoot: string;
   locked: boolean;
   busy: boolean;
   errors: Record<string, string>;
-  onChange: (value: StorageFormInput) => void;
+  onChange: (value: StorageFormInput & { isDefault: boolean }) => void;
   onSubmit: () => void;
 }) {
   const s3 = value.type === 's3';

@@ -44,7 +44,7 @@ assert.ok(
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
     (suite === 'upload-s3' && only === 'cleanup') ||
     (suite === 'storage-admin' &&
-      ['live', 'dialogs', 'feedback'].includes(only)) ||
+      ['live', 'dialogs', 'feedback', 'regressions'].includes(only)) ||
     (suite === 'viewer' &&
       [
         'representative',
@@ -119,6 +119,8 @@ for (const name of [
   'storage-admin-live-failure.png',
   'storage-admin-feedback.json',
   'storage-admin-feedback-failure.png',
+  'storage-admin-regressions.json',
+  'storage-admin-regressions-failure.png',
   'delivery-s3/browser.json',
   'm2-1440.json',
   'm2-390.json',
@@ -519,7 +521,11 @@ try {
       focusedConfig.r2NoLockEvidence =
         'docs/tasks/evidence/EV-STORAGE-01/README.md';
     }
-    if (suite === 'storage-admin' && only !== 'live') {
+    if (
+      suite === 'storage-admin' &&
+      only !== 'live' &&
+      only !== 'regressions'
+    ) {
       corsFixture = await startCorsFixture(origin);
       focusedConfig.corsFixture = corsFixture.endpoint;
     }
@@ -584,10 +590,12 @@ try {
           ? [['storage-admin-live', 'storageAdmin']]
           : only === 'dialogs'
             ? [['storage-admin-dialogs', 'storageAdmin']]
-            : [
-                ['storage-admin', 'storageAdmin'],
-                ['shell-navigation', 'shellNavigation'],
-              ]
+            : only === 'regressions'
+              ? [['storage-admin-regressions', 'storageAdminRegressions']]
+              : [
+                  ['storage-admin', 'storageAdmin'],
+                  ['shell-navigation', 'shellNavigation'],
+                ]
         : suite === 'copy-dropdown'
           ? [['library-copy-dropdown', 'copyDropdown']]
           : suite === 'upload-s3'

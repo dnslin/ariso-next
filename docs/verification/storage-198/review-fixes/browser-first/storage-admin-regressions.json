@@ -1,0 +1,2782 @@
+{
+  "status": "failed",
+  "taskSpaceId": 27,
+  "origin": "http://ariso-57257.localhost:57257",
+  "checks": [
+    {
+      "id": "create-lost-response-default",
+      "status": "failed",
+      "assertions": [
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=299, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=300, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=301, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=302, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=303, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=304, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=305, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=306, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=307, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=308, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=309, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=310, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=311, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=312]\n        container\n          container\n            heading\n              text \"添加存储\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=313, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            group \"存储类型\"\n              button [ref=314]\n                text \"本地存储\"\n              button [ref=315]\n                text \"S3 兼容存储\"\n            container\n              heading\n                text \"存储位置\"\n              container\n                container\n                  text \"存储名称\"\n                  container\n                    svg_root\n                    textbox \"存储名称\" [ref=316, loc=css:input[name=\"name\"]]\n                      text \"请输入存储名称\"\n                container\n                  text \"相对路径\"\n                  container\n                    svg_root\n                    textbox \"相对路径\" [ref=317, loc=css:input[name=\"localPath\"]]\n                      text \"default 或 archive/blog\"\n              paragraph\n                text \"实际目录：\"\n                text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              paragraph\n                text \"填写\"\n                text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n                text \"下的相对路径，例如 default 或 archive/blog。\"\n              container\n                container\n                  text \"启用此存储\"\n                  text \"已开启\"\n                container\n                  text \"设为默认存储\"\n                  text \"已关闭\"\n              paragraph\n                text \"如使用其他硬盘，请先将目录挂载到\"\n                text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n                text \"下。\"\n      container\n        button [ref=318]\n          text \"取消\"\n        button [ref=319]\n          text \"创建存储\"\n",
+      "error": "AssertionError [ERR_ASSERTION]: create-reconciled: 返回存储管理 has a usable target (84×20)\n    at assertGeometry (file:///Users/dnslin/.codex/worktrees/issue-198-storage-admin/ariso/e2e/browser-geometry.mjs:94:12)\n    at evidence (file:////[eval2]:141:3)\n    at async file:////[eval2]:265:5\n    at async scenario (file:////[eval2]:180:5)\n    at async file:////[eval2]:254:3",
+      "browser": {
+        "documentId": "4eba4455-7cbe-449b-9f3c-252e3e717643",
+        "requests": [
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "POST",
+            "body": {
+              "type": "local",
+              "name": "regression-create-default",
+              "localPath": "regression-create-default",
+              "enabled": true
+            },
+            "status": 201,
+            "responseLost": true
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd"
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [],
+        "faultUsed": true
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=320, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=321, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=322, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=323, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=324, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=325, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=326, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=327, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=328, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=329, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=330, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=331, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=332, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=333]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=334, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=335, loc=css:input[name=\"name\"]]\n                    text \"regression-create-default\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=336, loc=css:input[name=\"localPath\"]]\n                    text \"regression-create-default\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-create-default\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已开启\"\n            paragraph\n              text \"如使用其他硬盘，请先将目录挂载到\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下。\"\n          container\n            button [ref=337]\n              svg_root\n              text \"默认存储设置\"\n            button [ref=338]\n              svg_root\n              text \"引用与清理\"\n            button [ref=339]\n              svg_root\n              text \"删除配置\"\n      container\n        button [ref=340]\n          text \"取消\"\n        button [ref=341]\n          text \"保存配置\"\n",
+      "notices": [],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd"
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "update-lost-response-clear-default",
+      "status": "passed",
+      "assertions": [
+        {
+          "label": "Real rename PATCH succeeds once and is read back",
+          "status": "passed"
+        },
+        {
+          "label": "Recovered rename completes the explicit clear-default PATCH",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "cleanupId": "3bac1d75-602b-4653-9d63-d94bd91a0315",
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=342, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=343, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=344, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=345, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=346, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=347, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=348, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=349, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=350, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=351, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=352, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=353, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=354, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=355]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=356, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=357, loc=css:input[name=\"name\"]]\n                    text \"regression-clear-default\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=358, loc=css:input[name=\"localPath\"]]\n                    text \"regression-clear-default\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-clear-default\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已开启\"\n            paragraph\n              text \"如使用其他硬盘，请先将目录挂载到\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下。\"\n          container\n            button [ref=359]\n              svg_root\n              text \"默认存储设置\"\n            button [ref=360]\n              svg_root\n              text \"引用与清理\"\n            button [ref=361]\n              svg_root\n              text \"删除配置\"\n      container\n        button [ref=362]\n          text \"取消\"\n        button [ref=363]\n          text \"保存配置\"\n",
+      "result": {
+        "saved": {
+          "id": "3bac1d75-602b-4653-9d63-d94bd91a0315",
+          "name": "regression-clear-default-renamed",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-clear-default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:27.979Z",
+          "updatedAt": "2026-10-04T13:46:29.749Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false,
+          "probes": [],
+          "references": {
+            "counts": {
+              "images": 0,
+              "versions": 0,
+              "objects": 0,
+              "jobs": 0,
+              "cleanupJobs": 0,
+              "uploads": 0,
+              "probes": 0,
+              "orphans": 0
+            },
+            "activeWrites": 0
+          },
+          "scan": null,
+          "orphans": {
+            "storageId": "3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "knownBytes": 0,
+            "objects": []
+          }
+        },
+        "defaultId": null
+      },
+      "browser": {
+        "documentId": "813cebf0-3698-4451-b66e-0fb13ec9b844",
+        "requests": [
+          {
+            "path": "/api/storages/3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "method": "PATCH",
+            "body": {
+              "name": "regression-clear-default-renamed"
+            },
+            "status": 200,
+            "responseLost": true
+          },
+          {
+            "path": "/api/storages/3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": null
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/storages/3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [],
+        "faultUsed": true
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=364, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=365, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=355]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=356, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          text \"已回读核对，本次修改已保存。\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=357, loc=css:input[name=\"name\"]]\n                    text \"regression-clear-default-renamed\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=358, loc=css:input[name=\"localPath\"]]\n                    text \"regression-clear-default\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-clear-default\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              text \"启用此存储\"\n              text \"已开启\"\n      container\n        button [ref=362]\n          text \"取消\"\n        button [ref=363]\n          text \"保存配置\"\n",
+      "notices": [],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "3bac1d75-602b-4653-9d63-d94bd91a0315",
+            "name": "regression-clear-default-renamed",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-clear-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:27.979Z",
+            "updatedAt": "2026-10-04T13:46:29.749Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": null
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "3bac1d75-602b-4653-9d63-d94bd91a0315",
+              "name": "regression-clear-default-renamed",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-clear-default"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "default-lost-response-read-only",
+      "status": "passed",
+      "assertions": [
+        {
+          "label": "Lost real default PATCH is verified through GET without repeating mutation",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "cleanupId": "b14dd67a-e50d-4224-b0c0-e865fc07792d",
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=366, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=367, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=368]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=369, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=370, loc=css:input[name=\"name\"]]\n                    text \"regression-default-lost\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=371, loc=css:input[name=\"localPath\"]]\n                    text \"regression-default-lost\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-default-lost\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已关闭\"\n      container\n        button [ref=372]\n          text \"取消\"\n        button [ref=373]\n          text \"保存配置\"\n",
+      "result": {
+        "target": {
+          "id": "b14dd67a-e50d-4224-b0c0-e865fc07792d",
+          "name": "regression-default-lost",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-default-lost",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:31.577Z",
+          "updatedAt": "2026-10-04T13:46:31.577Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false
+        },
+        "defaultId": "b14dd67a-e50d-4224-b0c0-e865fc07792d"
+      },
+      "browser": {
+        "documentId": "0d2d3fec-d8dc-477b-99e9-d0c988bb57a0",
+        "requests": [
+          {
+            "path": "/api/storages/b14dd67a-e50d-4224-b0c0-e865fc07792d",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": "b14dd67a-e50d-4224-b0c0-e865fc07792d"
+            },
+            "status": 200,
+            "responseLost": true
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/b14dd67a-e50d-4224-b0c0-e865fc07792d",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [],
+        "faultUsed": true
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=366, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=367, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=368]\n        container\n          form\n            container\n              container\n                svg_root\n                textbox \"存储名称\" [ref=370, loc=css:input[name=\"name\"]]\n                  text \"regression-default-lost\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=371, loc=css:input[name=\"localPath\"]]\n                    text \"regression-default-lost\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-default-lost\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已开启\"\n            paragraph\n              text \"如使用其他硬盘，请先将目录挂载到\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下。\"\n          container\n            button [ref=374]\n              svg_root\n              text \"默认存储设置\"\n            button [ref=375]\n              svg_root\n              text \"引用与清理\"\n            button [ref=376]\n              svg_root\n              text \"删除配置\"\n      container\n        button [ref=372]\n          text \"取消\"\n        button [ref=373]\n          text \"保存配置\"\n",
+      "notices": [],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "b14dd67a-e50d-4224-b0c0-e865fc07792d",
+            "name": "regression-default-lost",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-default-lost",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:31.577Z",
+            "updatedAt": "2026-10-04T13:46:31.577Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": "b14dd67a-e50d-4224-b0c0-e865fc07792d"
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "b14dd67a-e50d-4224-b0c0-e865fc07792d",
+              "name": "regression-default-lost",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-default-lost"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": "b14dd67a-e50d-4224-b0c0-e865fc07792d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "delete-normal-upload-cache",
+      "status": "passed",
+      "assertions": [
+        {
+          "label": "Same browser document and unsubmitted local queue survive actual navigation",
+          "status": "passed"
+        },
+        {
+          "label": "One real DELETE clears the database default; lost response is checked by GET 404",
+          "status": "passed"
+        },
+        {
+          "label": "Persistent UploadProvider refreshes its settings and cannot choose deleted storage",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=377, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=378, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=379, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=380, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=381, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=382, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=383, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=384, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=385, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=386, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=387, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=388, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=389, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=390]\n        container \"上传图片\"\n          container\n            heading [ref=391]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              svg_root\n              heading\n                text \"把图片放在这里\"\n              paragraph\n                text \"拖入图片或文件夹，也可粘贴截图\"\n              container\n                button [ref=392]\n                  text \"选择图片\"\n                button [ref=393]\n                  text \"选择文件夹\"\n              paragraph\n                text \"支持多选 · 单文件最大\"\n                text \"50.0 MiB\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"regression-delete-normal 存储位置\" [ref=394]\n                  text \"regression-delete-normal\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=395]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=396, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=397, loc=css:button[aria-label=\"选择标签\"]]\n                  text \"选择标签（可多选）\"\n                  svg_root\n              paragraph\n                text \"开始上传时固定本次设置。自动拆出的各批共用这些设置。\"\n      button [ref=398]\n        text \"开始上传\"\n",
+      "options": [
+        {
+          "name": "默认本地存储",
+          "selected": "false",
+          "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5"
+        },
+        {
+          "name": "regression-create-default",
+          "selected": "false",
+          "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd"
+        }
+      ],
+      "result": {
+        "target": {
+          "id": "ecc147a7-4115-421c-9721-87ec35b443f1",
+          "name": "regression-delete-normal",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-delete-normal",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:33.055Z",
+          "updatedAt": "2026-10-04T13:46:33.055Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false
+        },
+        "uploadSettings": {
+          "maxFileBytes": 52428800,
+          "batchSize": 20,
+          "queueLimit": 500,
+          "defaultVisibility": "public",
+          "defaultStorageId": null,
+          "albums": [],
+          "tags": [],
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "enabled": true
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "browser": {
+        "documentId": "56936e38-3ea4-45bb-a52f-d412ef20915e",
+        "requests": [
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/ecc147a7-4115-421c-9721-87ec35b443f1",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/ecc147a7-4115-421c-9721-87ec35b443f1",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/ecc147a7-4115-421c-9721-87ec35b443f1",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/ecc147a7-4115-421c-9721-87ec35b443f1",
+            "method": "DELETE",
+            "status": 200
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [
+          {
+            "maxFileBytes": 52428800,
+            "batchSize": 20,
+            "queueLimit": 500,
+            "defaultVisibility": "public",
+            "defaultStorageId": null,
+            "albums": [],
+            "tags": [],
+            "storages": [
+              {
+                "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+                "name": "默认本地存储",
+                "enabled": true
+              },
+              {
+                "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+                "name": "regression-create-default",
+                "enabled": true
+              }
+            ]
+          }
+        ],
+        "faultUsed": false
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=399, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=400, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=401, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=402, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=403, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=404, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=405, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=406, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=407, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=408, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=409, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=410, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=411, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=412]\n        container \"上传图片\"\n          container\n            heading [ref=413]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              toolbar \"上传队列操作\"\n                heading\n                  text \"待上传 1 张\"\n                container\n                  button [ref=414]\n                    text \"选择文件夹\"\n                  button [ref=415]\n                    text \"继续添加\"\n              container\n                image\n                container\n                  paragraph\n                    text \"sample.png\"\n                  paragraph\n                    text \"6.5 KiB\"\n                  status\n                    text \"上传状态：\"\n                    text \"等待上传\"\n                button [ref=416]\n                  text \"移除\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"选择一个项目 存储位置\" [ref=417]\n                  text \"选择一个项目\"\n                  svg_root\n              alert\n                text \"默认存储缺失或已停用，请明确选择可用的存储。\"\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=418]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=419, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=420, loc=css:button[aria-label=\"选择标签\"]]\n                  text \"选择标签（可多选）\"\n                  svg_root\n              paragraph\n                text \"开始上传时固定本次设置。自动拆出的各批共用这些设置。\"\n      button [ref=421]\n        text \"开始上传\"\n",
+      "notices": [
+        "上传状态：等待上传",
+        "默认存储缺失或已停用，请明确选择可用的存储。"
+      ],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": null
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "delete-lost-response-upload-cache",
+      "status": "passed",
+      "assertions": [
+        {
+          "label": "Same browser document and unsubmitted local queue survive actual navigation",
+          "status": "passed"
+        },
+        {
+          "label": "One real DELETE clears the database default; lost response is checked by GET 404",
+          "status": "passed"
+        },
+        {
+          "label": "Persistent UploadProvider refreshes its settings and cannot choose deleted storage",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=422, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=423, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=424]\n        container \"上传图片\"\n          container\n            heading [ref=425]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              svg_root\n              heading\n                text \"选择要上传的图片\"\n              container\n                text \"支持多选 ·\"\n                button [ref=426]\n                  text \"选择文件夹\"\n                container\n                  text \"· 单文件最大\"\n                  text \"50.0 MiB\"\n              button [ref=427]\n                text \"选择图片\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"regression-delete-lost 存储位置\" [ref=428]\n                  text \"regression-delete-lost\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=429]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=430, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n      button [ref=431]\n        text \"开始上传\"\n",
+      "options": [
+        {
+          "name": "默认本地存储",
+          "selected": "false",
+          "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5"
+        },
+        {
+          "name": "regression-create-default",
+          "selected": "false",
+          "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd"
+        }
+      ],
+      "result": {
+        "target": {
+          "id": "d009da77-2346-41a0-a497-d1ad2c4fb089",
+          "name": "regression-delete-lost",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-delete-lost",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:40.699Z",
+          "updatedAt": "2026-10-04T13:46:40.699Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false
+        },
+        "uploadSettings": {
+          "maxFileBytes": 52428800,
+          "batchSize": 20,
+          "queueLimit": 500,
+          "defaultVisibility": "public",
+          "defaultStorageId": null,
+          "albums": [],
+          "tags": [],
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "enabled": true
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "browser": {
+        "documentId": "14b1200f-3617-4e4e-a45a-ca15f3f0d9ef",
+        "requests": [
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/d009da77-2346-41a0-a497-d1ad2c4fb089",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/d009da77-2346-41a0-a497-d1ad2c4fb089",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/d009da77-2346-41a0-a497-d1ad2c4fb089",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/d009da77-2346-41a0-a497-d1ad2c4fb089",
+            "method": "DELETE",
+            "status": 200,
+            "responseLost": true
+          },
+          {
+            "path": "/api/storages/d009da77-2346-41a0-a497-d1ad2c4fb089",
+            "method": "GET",
+            "status": 404,
+            "error": {
+              "code": "STORAGE_NOT_FOUND",
+              "message": "存储不存在: d009da77-2346-41a0-a497-d1ad2c4fb089",
+              "storageId": "d009da77-2346-41a0-a497-d1ad2c4fb089"
+            }
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [
+          {
+            "maxFileBytes": 52428800,
+            "batchSize": 20,
+            "queueLimit": 500,
+            "defaultVisibility": "public",
+            "defaultStorageId": null,
+            "albums": [],
+            "tags": [],
+            "storages": [
+              {
+                "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+                "name": "默认本地存储",
+                "enabled": true
+              },
+              {
+                "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+                "name": "regression-create-default",
+                "enabled": true
+              }
+            ]
+          }
+        ],
+        "faultUsed": true
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=432, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=433, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=434]\n        container \"上传图片\"\n          container\n            heading [ref=435]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              container\n                image\n                container\n                  paragraph\n                    text \"sample.png\"\n                  paragraph\n                    text \"6.5 KiB\"\n                  status\n                    text \"上传状态：\"\n                    text \"等待上传\"\n                button [ref=436]\n                  text \"移除\"\n              button [ref=437]\n                text \"选择文件夹\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"选择一个项目 存储位置\" [ref=438]\n                  text \"选择一个项目\"\n                  svg_root\n              alert\n                text \"默认存储缺失或已停用，请明确选择可用的存储。\"\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=439]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=440, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=441, loc=css:button[aria-label=\"选择标签\"]]\n      container\n        button [ref=442]\n          text \"继续添加\"\n        button [ref=443]\n          text \"开始上传\"\n",
+      "notices": [
+        "上传状态：等待上传",
+        "默认存储缺失或已停用，请明确选择可用的存储。"
+      ],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": null
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rename-preserves-external-default",
+      "status": "passed",
+      "assertions": [
+        {
+          "label": "Two explicit name-only saves preserve external default B without default PATCH",
+          "status": "passed"
+        },
+        {
+          "label": "Explicit default switch still selects A and clears default",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=444, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=445, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=446, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=447, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=448, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=449, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=450, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=451, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=452, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=453, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=454, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=455, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=456, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=457]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=458, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=459, loc=css:input[name=\"name\"]]\n                    text \"regression-default-a\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=460, loc=css:input[name=\"localPath\"]]\n                    text \"regression-default-a\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-default-a\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已开启\"\n            paragraph\n              text \"如使用其他硬盘，请先将目录挂载到\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下。\"\n          container\n            button [ref=461]\n              svg_root\n              text \"默认存储设置\"\n            button [ref=462]\n              svg_root\n              text \"引用与清理\"\n            button [ref=463]\n              svg_root\n              text \"删除配置\"\n      container\n        button [ref=464]\n          text \"取消\"\n        button [ref=465]\n          text \"保存配置\"\n",
+      "defaultsAfterRename": [
+        "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+        "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12"
+      ],
+      "result": {
+        "a": {
+          "id": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+          "name": "regression-default-a",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-default-a",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:52.858Z",
+          "updatedAt": "2026-10-04T13:46:52.858Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false
+        },
+        "b": {
+          "id": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+          "name": "regression-default-b",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-default-b",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:52.864Z",
+          "updatedAt": "2026-10-04T13:46:52.864Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false
+        },
+        "afterEnable": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+        "afterClear": null
+      },
+      "browser": {
+        "documentId": "332ef67e-2dd2-41e1-91b7-a6b93f07d38b",
+        "requests": [
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "PATCH",
+            "body": {
+              "name": "regression-default-a-first"
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "PATCH",
+            "body": {
+              "name": "regression-default-a-second"
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5"
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": null
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/storages/7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [],
+        "faultUsed": false
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=444, url=http://ariso-57257.localhost:57257/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=445, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=446, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=447, loc=css:a[aria-label=\"上传\"], url=http://ariso-57257.localhost:57257/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=448, loc=css:a[aria-label=\"图库\"], url=http://ariso-57257.localhost:57257/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=449, loc=css:a[aria-label=\"相册\"], url=http://ariso-57257.localhost:57257/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=450, loc=css:a[aria-label=\"标签\"], url=http://ariso-57257.localhost:57257/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=451, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=452, loc=css:a[aria-label=\"回收站\"], url=http://ariso-57257.localhost:57257/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=453, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=454, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-57257.localhost:57257/settings/storage]\n          svg_root\n          text \"存储管理\"\n        group \"站点设置，尚未开放\" [ref=455, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=456, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=457]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=458, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          status\n            text \"配置已保存。\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=459, loc=css:input[name=\"name\"]]\n                    text \"regression-default-a-second\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=460, loc=css:input[name=\"localPath\"]]\n                    text \"regression-default-a\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-default-a\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已关闭\"\n            paragraph\n              text \"如使用其他硬盘，请先将目录挂载到\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下。\"\n          container\n            button [ref=461]\n              svg_root\n              text \"默认存储设置\"\n            button [ref=462]\n              svg_root\n              text \"引用与清理\"\n            button [ref=463]\n              svg_root\n              text \"删除配置\"\n      container\n        button [ref=464]\n          text \"取消\"\n        button [ref=465]\n          text \"保存配置\"\n",
+      "notices": ["配置已保存。"],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "name": "regression-default-a-second",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-default-a",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:52.858Z",
+            "updatedAt": "2026-10-04T13:46:55.294Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+            "name": "regression-default-b",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-default-b",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:52.864Z",
+            "updatedAt": "2026-10-04T13:46:52.864Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": null
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+              "name": "regression-default-b",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-default-b"
+            },
+            {
+              "id": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+              "name": "regression-default-a-second",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-default-a"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "recovered-create-default-rejected-correction",
+      "status": "failed",
+      "assertions": [
+        {
+          "label": "Recovered real POST proceeds to an explicit 409 STORAGE_DISABLED default refusal",
+          "status": "passed"
+        },
+        {
+          "label": "Explicit refusal preserves default intent and leaves correction controls usable",
+          "status": "failed",
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(controls.message.includes(`存储已停用: ${target.id}`))\n"
+        },
+        {
+          "label": "User enable-and-save completes default without creating a second storage",
+          "status": "passed"
+        },
+        {
+          "label": "Final real SQLite rows and default agree with the authoritative API",
+          "status": "passed"
+        }
+      ],
+      "startSnapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=466, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=467, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=468]\n        container\n          container\n            heading\n              text \"添加存储\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=469, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            group \"存储类型\"\n              button [ref=470]\n                text \"本地存储\"\n              button [ref=471]\n                text \"S3 兼容存储\"\n            container\n              heading\n                text \"存储位置\"\n              container\n                container\n                  text \"存储名称\"\n                  container\n                    svg_root\n                    textbox \"存储名称\" [ref=472, loc=css:input[name=\"name\"]]\n                      text \"请输入存储名称\"\n                container\n                  text \"相对路径\"\n                  container\n                    svg_root\n                    textbox \"相对路径\" [ref=473, loc=css:input[name=\"localPath\"]]\n                      text \"default 或 archive/blog\"\n              paragraph\n                text \"实际目录：\"\n                text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              paragraph\n                text \"填写\"\n                text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n                text \"下的相对路径，例如 default 或 archive/blog。\"\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n      container\n        button [ref=474]\n          text \"取消\"\n        button [ref=475]\n          text \"创建存储\"\n",
+      "rejected": {
+        "target": {
+          "id": "798e52da-3e3a-4780-8e5d-74569f62e4d9",
+          "name": "regression-disabled-default",
+          "type": "local",
+          "enabled": false,
+          "localPath": "regression-disabled-default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:59.190Z",
+          "updatedAt": "2026-10-04T13:46:59.190Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false,
+          "usage": {
+            "knownBytes": 0,
+            "unconfirmedObjects": 0
+          }
+        },
+        "controls": {
+          "saveDisabled": false,
+          "enabledDisabled": false,
+          "isDefault": true,
+          "message": ""
+        },
+        "browser": {
+          "documentId": "859c2322-2885-4150-aa48-1475bc1927b7",
+          "requests": [
+            {
+              "path": "/api/settings/storage",
+              "method": "GET",
+              "status": 200
+            },
+            {
+              "path": "/api/storages",
+              "method": "GET",
+              "status": 200
+            },
+            {
+              "path": "/api/storages",
+              "method": "POST",
+              "body": {
+                "type": "local",
+                "name": "regression-disabled-default",
+                "localPath": "regression-disabled-default",
+                "enabled": false
+              },
+              "status": 201,
+              "responseLost": true
+            },
+            {
+              "path": "/api/storages",
+              "method": "GET",
+              "status": 200
+            },
+            {
+              "path": "/api/settings/storage",
+              "method": "GET",
+              "status": 200
+            },
+            {
+              "path": "/api/settings/storage",
+              "method": "PATCH",
+              "body": {
+                "defaultStorageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+              },
+              "status": 409,
+              "error": {
+                "code": "STORAGE_DISABLED",
+                "message": "存储已停用: 798e52da-3e3a-4780-8e5d-74569f62e4d9",
+                "storageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+              }
+            }
+          ],
+          "uploadSettings": [],
+          "faultUsed": true
+        },
+        "defaultId": null
+      },
+      "result": {
+        "corrected": {
+          "id": "798e52da-3e3a-4780-8e5d-74569f62e4d9",
+          "name": "regression-disabled-default",
+          "type": "local",
+          "enabled": true,
+          "localPath": "regression-disabled-default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "pathPrefix": null,
+          "forcePathStyle": null,
+          "configRevision": 1,
+          "connectionStatus": "untested",
+          "connectionRevision": null,
+          "connectionReport": null,
+          "connectionTestedAt": null,
+          "corsStatus": "untested",
+          "corsReport": null,
+          "corsRevision": null,
+          "corsOrigin": null,
+          "corsTestedAt": null,
+          "createdAt": "2026-10-04T13:46:59.190Z",
+          "updatedAt": "2026-10-04T13:47:00.360Z",
+          "hasAccessKey": false,
+          "hasSecretKey": false,
+          "probes": [],
+          "references": {
+            "counts": {
+              "images": 0,
+              "versions": 0,
+              "objects": 0,
+              "jobs": 0,
+              "cleanupJobs": 0,
+              "uploads": 0,
+              "probes": 0,
+              "orphans": 0
+            },
+            "activeWrites": 0
+          },
+          "scan": null,
+          "orphans": {
+            "storageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9",
+            "knownBytes": 0,
+            "objects": []
+          }
+        },
+        "defaultId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+      },
+      "browser": {
+        "documentId": "859c2322-2885-4150-aa48-1475bc1927b7",
+        "requests": [
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages",
+            "method": "POST",
+            "body": {
+              "type": "local",
+              "name": "regression-disabled-default",
+              "localPath": "regression-disabled-default",
+              "enabled": false
+            },
+            "status": 201,
+            "responseLost": true
+          },
+          {
+            "path": "/api/storages",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+            },
+            "status": 409,
+            "error": {
+              "code": "STORAGE_DISABLED",
+              "message": "存储已停用: 798e52da-3e3a-4780-8e5d-74569f62e4d9",
+              "storageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+            }
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/798e52da-3e3a-4780-8e5d-74569f62e4d9",
+            "method": "PATCH",
+            "body": {
+              "enabled": true
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "PATCH",
+            "body": {
+              "defaultStorageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+            },
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/storages/798e52da-3e3a-4780-8e5d-74569f62e4d9",
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "path": "/api/settings/storage",
+            "method": "GET",
+            "status": 200
+          }
+        ],
+        "uploadSettings": [],
+        "faultUsed": true
+      },
+      "snapshot": "[p1 \"Ariso\" | space \"PR 239 storage regression fixes\"(27): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container\n      anchor \"Ariso 首页\" [ref=476, url=http://ariso-57257.localhost:57257/]\n        text \"Ariso\"\n      button \"菜单\" [ref=477, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=478]\n        container\n          container\n            heading\n              text \"本地存储配置\"\n            paragraph\n              text \"管理本地目录、启用状态与默认存储。\"\n          anchor [ref=479, url=http://ariso-57257.localhost:57257/settings/storage]\n            text \"‹ 返回存储管理\"\n          form\n            heading\n              text \"存储位置\"\n            container\n              container\n                text \"存储名称\"\n                container\n                  svg_root\n                  textbox \"存储名称\" [ref=480, loc=css:input[name=\"name\"]]\n                    text \"regression-disabled-default\"\n              container\n                text \"相对路径\"\n                container\n                  svg_root\n                  textbox \"相对路径\" [ref=481, loc=css:input[name=\"localPath\"]]\n                    text \"regression-disabled-default\"\n            paragraph\n              text \"实际目录：\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"/regression-disabled-default\"\n            paragraph\n              text \"填写\"\n              text \"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-dixpUt/data/storage\"\n              text \"下的相对路径，例如 default 或 archive/blog。\"\n            container\n              container\n                text \"启用此存储\"\n                text \"已开启\"\n              container\n                text \"设为默认存储\"\n                text \"已开启\"\n      container\n        button [ref=482]\n          text \"取消\"\n        button [ref=483]\n          text \"保存配置\"\n",
+      "notices": [],
+      "authoritative": {
+        "storages": [
+          {
+            "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+            "name": "默认本地存储",
+            "type": "local",
+            "enabled": true,
+            "localPath": "default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:20.412Z",
+            "updatedAt": "2026-10-04T13:46:20.412Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+            "name": "regression-create-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-create-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:25.854Z",
+            "updatedAt": "2026-10-04T13:46:25.854Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+            "name": "regression-default-a-second",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-default-a",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:52.858Z",
+            "updatedAt": "2026-10-04T13:46:55.294Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+            "name": "regression-default-b",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-default-b",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:52.864Z",
+            "updatedAt": "2026-10-04T13:46:52.864Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          },
+          {
+            "id": "798e52da-3e3a-4780-8e5d-74569f62e4d9",
+            "name": "regression-disabled-default",
+            "type": "local",
+            "enabled": true,
+            "localPath": "regression-disabled-default",
+            "endpoint": null,
+            "region": null,
+            "bucket": null,
+            "pathPrefix": null,
+            "forcePathStyle": null,
+            "configRevision": 1,
+            "connectionStatus": "untested",
+            "connectionRevision": null,
+            "connectionReport": null,
+            "connectionTestedAt": null,
+            "corsStatus": "untested",
+            "corsReport": null,
+            "corsRevision": null,
+            "corsOrigin": null,
+            "corsTestedAt": null,
+            "createdAt": "2026-10-04T13:46:59.190Z",
+            "updatedAt": "2026-10-04T13:47:00.360Z",
+            "hasAccessKey": false,
+            "hasSecretKey": false,
+            "usage": {
+              "knownBytes": 0,
+              "unconfirmedObjects": 0
+            }
+          }
+        ],
+        "settings": {
+          "id": 1,
+          "defaultStorageId": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+        },
+        "database": {
+          "storages": [
+            {
+              "id": "16e37c2f-4b25-460d-8e96-2269a953f8e5",
+              "name": "默认本地存储",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "default"
+            },
+            {
+              "id": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12",
+              "name": "regression-default-b",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-default-b"
+            },
+            {
+              "id": "798e52da-3e3a-4780-8e5d-74569f62e4d9",
+              "name": "regression-disabled-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-disabled-default"
+            },
+            {
+              "id": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5",
+              "name": "regression-default-a-second",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-default-a"
+            },
+            {
+              "id": "e15b6b2f-2d9f-4eca-9c68-7506e7d678fd",
+              "name": "regression-create-default",
+              "type": "local",
+              "enabled": 1,
+              "local_path": "regression-create-default"
+            }
+          ],
+          "settings": [
+            {
+              "default_storage_id": "798e52da-3e3a-4780-8e5d-74569f62e4d9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "rename-clear-reconciled",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-rename-clear-reconciled-dark-390.png"
+    },
+    {
+      "state": "delete-normal-return-upload",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "选择文件夹",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "继续添加",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "移除",
+          "width": 140,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择一个项目",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择相册",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择标签",
+          "width": 310,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "开始上传",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-delete-normal-return-upload-light-1440.png"
+    },
+    {
+      "state": "delete-lost-return-upload",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "移除",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择文件夹",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择一个项目",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择相册",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择标签",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "继续添加",
+          "width": 174,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "开始上传",
+          "width": 172,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-delete-lost-return-upload-dark-390.png"
+    },
+    {
+      "state": "external-default-after-two-renames",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 1094,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 1056,
+          "inputHeight": 42,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 40,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 40,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-external-default-after-two-renames-light-1440.png"
+    },
+    {
+      "state": "recovered-default-rejected",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建存储",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-recovered-default-rejected-dark-390.png"
+    },
+    {
+      "state": "recovered-default-corrected",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "‹ 返回存储管理",
+          "width": 180,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "localPath",
+          "width": 324,
+          "height": 44,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 286,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "默认存储设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "引用与清理",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "删除配置",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 136,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "storage-regression-recovered-default-corrected-dark-390.png"
+    }
+  ],
+  "backgroundRequests": [
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-clear-default",
+        "localPath": "regression-clear-default"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": "3bac1d75-602b-4653-9d63-d94bd91a0315"
+      },
+      "status": 200
+    },
+    {
+      "path": "/api/storages/3bac1d75-602b-4653-9d63-d94bd91a0315",
+      "method": "DELETE",
+      "status": 200
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-default-lost",
+        "localPath": "regression-default-lost"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": null
+      },
+      "status": 200
+    },
+    {
+      "path": "/api/storages/b14dd67a-e50d-4224-b0c0-e865fc07792d",
+      "method": "DELETE",
+      "status": 200
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-delete-normal",
+        "localPath": "regression-delete-normal"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": "ecc147a7-4115-421c-9721-87ec35b443f1"
+      },
+      "status": 200
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-delete-lost",
+        "localPath": "regression-delete-lost"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": "d009da77-2346-41a0-a497-d1ad2c4fb089"
+      },
+      "status": 200
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-default-a",
+        "localPath": "regression-default-a"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/storages",
+      "method": "POST",
+      "body": {
+        "type": "local",
+        "name": "regression-default-b",
+        "localPath": "regression-default-b"
+      },
+      "status": 201
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": "7f9a7a67-7da4-4438-9221-d6e185b3d8d5"
+      },
+      "status": 200
+    },
+    {
+      "path": "/api/settings/storage",
+      "method": "PATCH",
+      "body": {
+        "defaultStorageId": "65b294a1-1d5e-4f43-b9c4-5bd7a3790b12"
+      },
+      "status": 200
+    }
+  ],
+  "limitations": [
+    "Only Local storage recovery, deletion and default intent are exercised; remote S3 services and the full existing layout matrix are outside this regression run.",
+    "Representative actual pages use 1440×1080 light and 390×844 dark; physical touch, soft keyboard and nonzero safe areas are not exercised."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Storage regressions failed; see individual assertions in storage-admin-regressions.json\n\n'failed' !== 'passed'\n\n    at file:////[eval2]:749:10"
+}

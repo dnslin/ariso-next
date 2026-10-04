@@ -11,9 +11,42 @@ import {
 } from './storage-api';
 
 export type PendingStorageSave =
-  | { kind: 'create'; beforeIds: string[]; input: StorageCreateInput }
-  | { kind: 'update'; id: string; input: StorageUpdateInput }
-  | { kind: 'default'; id: string | null };
+  | {
+      kind: 'create';
+      beforeIds: string[];
+      input: StorageCreateInput;
+      defaultChoice?: boolean;
+    }
+  | {
+      kind: 'update';
+      id: string;
+      input: StorageUpdateInput;
+      defaultChoice?: boolean;
+    }
+  | { kind: 'default'; id: string | null; storage: StorageSummary };
+
+/** Only an explicitly edited default field starts this second save step. */
+export async function finishStorageDefault(
+  storage: StorageSummary,
+  choice: boolean | undefined,
+  onPending: (pending: PendingStorageSave) => void,
+) {
+  if (choice === undefined) return;
+  const settings = await storageRequest<StorageSettings>(storageSettingsUrl);
+  const id = choice
+    ? storage.id
+    : settings.defaultStorageId === storage.id
+      ? null
+      : settings.defaultStorageId;
+  if (id === settings.defaultStorageId) return;
+  // Record the attempted step before sending it; a lost response must only be read back.
+  onPending({ kind: 'default', id, storage });
+  await storageRequest<StorageSettings>(storageSettingsUrl, {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ defaultStorageId: id }),
+  });
+}
 
 export function matchesSavedStorage(
   storage: StorageSummary,
@@ -46,6 +79,7 @@ export async function reconcileStorageSave(pending: PendingStorageSave) {
     const settings = await storageRequest<StorageSettings>(storageSettingsUrl);
     return {
       matched: settings.defaultStorageId === pending.id,
+      storage: pending.storage,
       settings,
       credentialsUnverified: false,
     };

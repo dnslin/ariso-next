@@ -18,7 +18,7 @@ export function StorageDeleteDialog({
   isDisabled,
 }: {
   storage: StorageDetail;
-  onDeleted: () => void;
+  onDeleted: () => Promise<void>;
   onRefresh: () => void;
   isDisabled?: boolean;
 }) {
@@ -38,7 +38,7 @@ export function StorageDeleteDialog({
       onRefresh();
     } catch (cause) {
       if (cause instanceof StorageRequestError && cause.status === 404) {
-        onDeleted();
+        await onDeleted();
         return;
       }
       setError(
@@ -54,7 +54,7 @@ export function StorageDeleteDialog({
     setError('');
     try {
       await storageRequest(storageUrl(storage.id), { method: 'DELETE' });
-      onDeleted();
+      await onDeleted();
     } catch (cause) {
       if (!(cause instanceof StorageRequestError) || cause.status >= 500) {
         setUnknown(true);
