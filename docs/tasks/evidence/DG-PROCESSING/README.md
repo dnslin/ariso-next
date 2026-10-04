@@ -61,3 +61,9 @@
 按[纯文档适用检查](../../execution.md#适用检查)，无业务或构建输入变化，不运行应用 lint、类型、单元/集成、构建、浏览器或真实服务测试，不添加空测试。没有真实页面变化，功能验证和设计还原验收本轮不适用，未伪造网页截图；由 #189 后续实际页面完成浏览器验证、独立设计评审和用户人工验收。物理设备及 AMD64/ARM64 镜像/容器未测，遵守现有验证时机，不创建 Release、发布镜像或部署。
 
 本次不合并 PR、不主动关闭 Issue、不删除分支或 worktree。
+
+## PR 与远端回读
+
+已提交实施记录 `37f6013e6c8345e0c5cdbe16496e35cbfbb8145a`，推送 `codex/issue-132-processing-design`，创建并附加正式待评审 [PR #237](https://github.com/dnslin/ariso-next/pull/237)。使用 `Refs #132` 关联，不自动关闭 Issue。推送仅在命令内使用 `gh auth git-credential`，未改全局 Git 或代理配置。
+
+实际执行 `gh pr view 237 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --repo dnslin/ariso-next --branch codex/issue-132-processing-design --json databaseId,status,conclusion,workflowName` 及 `gh pr checks 237 --repo dnslin/ariso-next`。首次回读为 OPEN、非草稿、CLEAN；检查汇总与 Actions 列表为空，`gh pr checks` 返回1并提示 no checks。这是没有远端检查，不记作CI通过，不等待不存在的工作流。PR按本地纯文档适用检查交付，未触发Release流程。
