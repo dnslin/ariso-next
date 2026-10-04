@@ -21,6 +21,7 @@ const sql = (statement) => identitySql(config, statement);
 const representative = config.libraryCopyPhase === 'representative';
 const feedbackOnly = config.libraryCopyPhase === 'feedback';
 const revision = config.libraryCopyPhase === 'revision';
+const detailedFeedback = !representative && !feedbackOnly;
 const report = {
   status: 'failed',
   phase: config.libraryCopyPhase ?? 'full',
@@ -37,8 +38,7 @@ const report = {
 const h = createCopyHelpers({ page, config, report });
 let fixture, savedClipboard, savedPreference, errorScript;
 const preferenceKey = 'ariso:library-preferences:v1';
-const widths =
-  representative || revision ? [390, 1440] : [360, 390, 430, 768, 1440];
+const widths = representative ? [390, 1440] : [360, 390, 430, 768, 1440];
 
 async function snapshot() {
   const result = {};
@@ -200,8 +200,7 @@ try {
   await h.selectAll201();
   await h.open(201);
   if (!feedbackOnly) await h.capture('options', widths);
-  if (revision) {
-    await h.capture('options', [360, 430, 768]);
+  if (detailedFeedback) {
     await h.capture('options', [390], true);
   }
   report.stage = 'escape-return-focus';
@@ -327,8 +326,7 @@ try {
     'Partial feedback only shows unavailable items and never adds a success image table',
   );
   if (!feedbackOnly) await h.capture('partial-result', widths);
-  if (revision) {
-    await h.capture('partial-result', [360, 430, 768]);
+  if (detailedFeedback) {
     await h.capture('partial-result', [390], true);
   }
   assert.equal(
@@ -338,7 +336,7 @@ try {
     ),
     true,
   );
-  if (revision) {
+  if (detailedFeedback) {
     assert.equal(
       /GPS|拍摄信息/.test(
         await page.evaluate(
@@ -468,7 +466,7 @@ try {
   await h.format('html');
   await page.waitForSelector('[data-testid="library-copy-manual"]');
   const manualOutput = await expectedOutput();
-  if (revision)
+  if (detailedFeedback)
     assert.match(
       await page.evaluate(
         () =>
@@ -481,7 +479,6 @@ try {
   await renderedManual(manualOutput.text);
   if (!feedbackOnly) {
     await h.capture('manual', widths);
-    if (revision) await h.capture('manual', [360, 430, 768]);
     await h.capture('manual', [390], true);
   }
   await page.focus('[data-testid="library-copy-manual"]');
@@ -566,7 +563,7 @@ try {
       'All unavailable writes nothing and preserves the pasteboard; real-response HTTP failure retains an actionable error and retries independently of empty results.',
     );
 
-    if (revision) {
+    if (detailedFeedback) {
       const { verifyCopyConsumers } = await import(
         new URL('./library-copy-consumers.mjs', config.libraryDetailScript).href
       );
@@ -598,7 +595,7 @@ try {
       state: 'hidden',
     });
     await h.selected(3);
-    if (revision) {
+    if (detailedFeedback) {
       const { resizeViewport, setTheme } = await import(
         new URL('./browser-geometry.mjs', config.libraryDetailScript).href
       );

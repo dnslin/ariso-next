@@ -1,0 +1,40 @@
+[
+  {
+    "phase": "full",
+    "consumers": false,
+    "albumSuccess": false
+  },
+  {
+    "phase": "revision",
+    "consumers": true,
+    "albumSuccess": true
+  },
+  {
+    "phase": "representative",
+    "consumers": false,
+    "albumSuccess": false
+  },
+  {
+    "phase": "feedback",
+    "consumers": false,
+    "albumSuccess": false
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: full: consumers
+
+false !== true
+
+    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/docs/verification/library-187/review-fixes/check-dispatch.mjs:30:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.1
