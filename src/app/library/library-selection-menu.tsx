@@ -53,6 +53,7 @@ export function LibrarySelectionMenu({
   contextMenu,
   onContextMenuClose,
   onBatch,
+  onPermanentDelete,
   scope = 'normal',
 }: {
   selection: LibrarySelection;
@@ -62,6 +63,7 @@ export function LibrarySelectionMenu({
   contextMenu?: LibraryContextMenu | null;
   onContextMenuClose?: () => void;
   onBatch?: (action: SelectionBatchAction, element: HTMLElement) => void;
+  onPermanentDelete?: (element: HTMLElement) => void;
   scope?: 'normal' | 'trash';
 }) {
   const [open, setOpen] = useState(false);
@@ -169,7 +171,11 @@ export function LibrarySelectionMenu({
         <Button
           ref={attachTrigger}
           variant="outline"
-          className={buttonClass}
+          className={
+            scope === 'trash'
+              ? 'h-12 w-26 shrink-0 rounded-lg px-2 text-sm font-normal md:w-40'
+              : buttonClass
+          }
           isDisabled={disabled}
           aria-label={`操作已选 ${total} 张图片`}
         >
@@ -202,7 +208,10 @@ export function LibrarySelectionMenu({
                 : []
             }
             onAction={(key) => {
-              if (actions.includes(key as SelectionBatchAction)) {
+              if (key === 'delete-permanent') {
+                const target = contextMenu?.target ?? trigger.current;
+                if (target) onPermanentDelete?.(target);
+              } else if (actions.includes(key as SelectionBatchAction)) {
                 const target = contextMenu?.target ?? trigger.current;
                 if (target) onBatch?.(key as SelectionBatchAction, target);
               } else if (key === 'view') openPanel();
@@ -243,6 +252,16 @@ export function LibrarySelectionMenu({
                   </Dropdown.Item>
                 ))
               : null}
+            {scope === 'trash' && onPermanentDelete ? (
+              <Dropdown.Item
+                id="delete-permanent"
+                textValue="永久删除所选"
+                isDisabled={disabled}
+                className="min-h-11"
+              >
+                永久删除所选
+              </Dropdown.Item>
+            ) : null}
             {total === 1 ? (
               <Dropdown.Item
                 id="open"

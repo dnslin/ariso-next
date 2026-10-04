@@ -30,7 +30,7 @@ export function TrashThumbnail({ item }: { item: TrashItem }) {
         alt=""
         loading="lazy"
         decoding="async"
-        className="size-14 shrink-0 rounded-lg object-cover md:size-16"
+        className="size-14 shrink-0 rounded-lg object-contain md:size-16"
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}
       />

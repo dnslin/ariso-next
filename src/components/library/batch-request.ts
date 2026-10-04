@@ -20,12 +20,14 @@ export async function requestBatch(
   mode: 'apply' | 'check',
   signal: AbortSignal,
   onResults: (results: BatchItemResult[]) => void,
+  onSending?: (ids: string[]) => void,
 ) {
   const unknownIds: string[] = [];
   for (let offset = 0; offset < ids.length; offset += 200) {
     signal.throwIfAborted();
     const chunk = ids.slice(offset, offset + 200);
     try {
+      onSending?.(chunk);
       const response = await fetch('/api/images/batch', {
         method: 'POST',
         signal,
@@ -42,7 +44,14 @@ export async function requestBatch(
                     chunk.map((id) => [id, command.taskIds[id]]),
                   ),
                 }
-              : command,
+              : command.type === 'retry-cleanup'
+                ? {
+                    ...command,
+                    attempts: Object.fromEntries(
+                      chunk.map((id) => [id, command.attempts[id]]),
+                    ),
+                  }
+                : command,
           mode,
         }),
       });

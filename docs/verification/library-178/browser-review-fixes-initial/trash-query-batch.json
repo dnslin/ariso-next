@@ -1,0 +1,381 @@
+{
+  "status": "failed",
+  "taskSpaceId": 28,
+  "checks": [
+    "另一真实窗口恢复A；本页搜索A→B→A主动重新查询得到空结果，后退恢复B，清空查询显示实际200条。",
+    "单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动完成且不误报未知。",
+    "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。"
+  ],
+  "layouts": [
+    {
+      "state": "review-query-reapplied-empty",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-query-history-clear",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-single-cycle-three",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "review-single-cycle-three",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "review-batch-current-cycle",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "review-batch-current-cycle",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-review-query-reapplied-empty-light-1440.png",
+      "state": "review-query-reapplied-empty",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-query-history-clear-dark-390.png",
+      "state": "review-query-history-clear",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-review-single-cycle-three-light-1440.png",
+      "state": "review-single-cycle-three",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-single-cycle-three-dark-390.png",
+      "state": "review-single-cycle-three",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-review-batch-current-cycle-light-1440.png",
+      "state": "review-batch-current-cycle",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-batch-current-cycle-dark-390.png",
+      "state": "review-batch-current-cycle",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "phase": "review-fixes",
+  "activeCheck": "review-batch-cleanup-cycles",
+  "reviewQueryRefresh": {
+    "restore": {
+      "results": [
+        {
+          "id": "issue177-000",
+          "status": "changed",
+          "message": "操作已完成",
+          "inQuery": false
+        }
+      ]
+    },
+    "reappliedTotal": 0,
+    "historyQuery": "issue177-001",
+    "clearedTotal": 200,
+    "origin": "http://ariso-56397.localhost:56397"
+  },
+  "reviewSingleCycles": {
+    "first": {
+      "jobId": "989353e1-d9df-4136-98bf-375b33fcd1f7",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-04T13:42:48.948Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: 0409b840-f4b8-495c-ba75-8832e8a194b1, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-WRVQkj/data/storage/default/ariso/0409b840-f4b8-495c-ba75-8832e8a194b1/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "second": {
+      "jobId": "989353e1-d9df-4136-98bf-375b33fcd1f7",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 2,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-04T13:42:49.998Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: 0409b840-f4b8-495c-ba75-8832e8a194b1, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-WRVQkj/data/storage/default/ariso/0409b840-f4b8-495c-ba75-8832e8a194b1/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "accepted": {
+      "path": "/api/images/issue177-000/cleanup/retry",
+      "method": "POST",
+      "status": 202,
+      "task": {
+        "jobId": "989353e1-d9df-4136-98bf-375b33fcd1f7",
+        "imageId": "issue177-000",
+        "status": "queued",
+        "waitingForWrites": false,
+        "cycle": 3,
+        "error": null,
+        "finishedAt": null,
+        "totalObjects": 2,
+        "deletedObjects": 1,
+        "deletedPurposes": ["thumbnail"],
+        "remaining": [
+          {
+            "objectId": "issue177-000-original",
+            "key": "issue177-batch/issue177-000-original.png",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 6631,
+            "attempts": 0,
+            "nextAttemptAt": null,
+            "error": null
+          }
+        ]
+      }
+    },
+    "third": {
+      "jobId": "989353e1-d9df-4136-98bf-375b33fcd1f7",
+      "imageId": "issue177-000",
+      "status": "succeeded",
+      "waitingForWrites": false,
+      "cycle": 3,
+      "error": null,
+      "finishedAt": "2026-10-04T13:42:52.013Z",
+      "totalObjects": null,
+      "deletedObjects": null,
+      "deletedPurposes": null,
+      "remaining": []
+    }
+  },
+  "reviewBatchCycles": {
+    "first": {
+      "jobId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-04T13:43:03.183Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: 0409b840-f4b8-495c-ba75-8832e8a194b1, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-WRVQkj/data/storage/default/ariso/0409b840-f4b8-495c-ba75-8832e8a194b1/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "accepted": {
+      "id": "issue177-000",
+      "status": "accepted",
+      "message": "已核对本次清理任务，请查看实际执行结果",
+      "inQuery": true,
+      "taskId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+      "cleanup": {
+        "jobId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+        "imageId": "issue177-000",
+        "status": "queued",
+        "waitingForWrites": true,
+        "cycle": 2,
+        "error": null,
+        "finishedAt": null,
+        "totalObjects": 2,
+        "deletedObjects": 1,
+        "deletedPurposes": ["thumbnail"],
+        "remaining": [
+          {
+            "objectId": "issue177-000-original",
+            "key": "issue177-batch/issue177-000-original.png",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 6631,
+            "attempts": 0,
+            "nextAttemptAt": null,
+            "error": null
+          }
+        ]
+      }
+    },
+    "second": {
+      "jobId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 2,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-04T13:43:07.283Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: 0409b840-f4b8-495c-ba75-8832e8a194b1, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-WRVQkj/data/storage/default/ariso/0409b840-f4b8-495c-ba75-8832e8a194b1/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "third": {
+      "jobId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+      "imageId": "issue177-000",
+      "status": "succeeded",
+      "waitingForWrites": false,
+      "cycle": 3,
+      "error": null,
+      "finishedAt": "2026-10-04T13:43:08.339Z",
+      "totalObjects": null,
+      "deletedObjects": null,
+      "deletedPurposes": null,
+      "remaining": []
+    },
+    "requests": [
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "retry-cleanup",
+          "attempts": {
+            "issue177-000": {
+              "taskId": "768cb1ed-8588-4849-97f7-812d425a4e0b",
+              "cycle": 1
+            }
+          }
+        },
+        "mode": "apply"
+      },
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "delete-permanent"
+        },
+        "mode": "check"
+      },
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "delete-permanent"
+        },
+        "mode": "check"
+      },
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "delete-permanent"
+        },
+        "mode": "check"
+      }
+    ]
+  },
+  "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-56397.localhost:56397/api/trash/issue177-000/preview?type=original',\n+     url: 'http://ariso-56397.localhost:56397/trash?image=issue177-000'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/e2e/browser-errors.mjs:44:10)\n    at async file:////[eval2]:147:19",
+  "failureTasks": [],
+  "failureView": "[p1 \"Ariso\" | space \"ariso PR240 review fixes\"(28): 2 managed, 0 untracked — p1* \"Ariso\", p2 \"Ariso\"]\nroot\n  container\n    anchor [ref=1, loc=href:/trash?q=issue177-&pageSize=80&page=1#main-content, url=http://ariso-56397.localhost:56397/trash?q=issue177-&pageSize=80&page=1#main-content]\n      text \"跳到主要内容\"\n    container\n      anchor \"Ariso 首页\" [ref=2, url=http://ariso-56397.localhost:56397/]\n        text \"Ariso\"\n      button \"菜单\" [ref=3, loc=css:button[aria-label=\"菜单\"]]\n        svg_root\n    container\n      container [ref=4]\n        container \"批量清理结果\"\n          container\n            button [ref=5]\n              svg_root\n              text \"返回回收站\"\n            heading [ref=6]\n              text \"批量清理结果\"\n            status\n              text \"已清理\"\n              text \"1\"\n              text \"/\"\n              text \"1\"\n              text \"张\"\n          container \"逐图清理结果，第1页\"\n            heading [ref=7]\n              text \"逐图清理结果，第\"\n              text \"1\"\n              text \"页\"\n            container\n              heading\n                button [ref=8]\n                  svg_root \"永久删除任务已受理，不能预览\"\n                  text \"issue177-000.png\"\n                  text \"已清理\"\n                  svg_root\n              group \"issue177-000.png已清理\"\n                paragraph\n                  text \"已全部清理，记录已移除。\"\n                unordered_list\n                  container\n                    list_item\n                      text \"任务\"\n                    list_item\n                      text \"768cb1ed-8588-4849-97f7-812d425a4e0b\"\n                  container\n                    list_item\n                      text \"周期\"\n                    list_item\n                      text \"3\"\n            navigation \"逐图结果分页\"\n              container\n                text \"1\"\n                text \"项 · 20条 / 页\"\n              unordered_list\n                list_item\n                  button [ref=9]\n                    text \"上一页\"\n                list_item\n                  text \"1\"\n                  text \"/\"\n                  text \"1\"\n                list_item\n                  button [ref=10]\n                    text \"下一页\"\n      button [ref=11]\n        text \"返回回收站\"\n  alert\n"
+}

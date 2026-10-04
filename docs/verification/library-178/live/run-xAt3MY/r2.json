@@ -1,0 +1,246 @@
+{
+  "service": "r2",
+  "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+  "bucket": "image",
+  "storageId": "issue178-cd61a847-6034-4dfa-a687-b3402f9b4723",
+  "namespace": "ariso/issue178-cd61a847-6034-4dfa-a687-b3402f9b4723/",
+  "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+  "keys": [
+    "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+    "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt"
+  ],
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "startedAt": "2026-10-04T07:58:59.680Z",
+  "finishedAt": "2026-10-04T07:59:08.563Z",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "registered-real-original-and-temporary-objects",
+      "status": "passed",
+      "detail": {
+        "objects": [
+          {
+            "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+            "size": 6631
+          },
+          {
+            "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+            "size": 37
+          }
+        ],
+        "registered": [
+          {
+            "id": "f04fbbbe-63e7-488a-b9b1-b6e67a5d434c",
+            "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+            "jobId": null,
+            "storageId": "issue178-cd61a847-6034-4dfa-a687-b3402f9b4723",
+            "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 6631,
+            "byteSizeConfirmedAt": "2026-10-04T07:59:00.510Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-04T07:58:59.681Z",
+            "updatedAt": "2026-10-04T07:59:00.510Z"
+          },
+          {
+            "id": "6ff249dc-9555-4706-ae62-636c61bd446c",
+            "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+            "jobId": null,
+            "storageId": "issue178-cd61a847-6034-4dfa-a687-b3402f9b4723",
+            "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 37,
+            "byteSizeConfirmedAt": "2026-10-04T07:59:00.899Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-04T07:58:59.681Z",
+            "updatedAt": "2026-10-04T07:59:00.899Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "disabled-storage-batch-acceptance-keeps-real-record-and-counts",
+      "status": "passed",
+      "detail": {
+        "result": {
+          "id": "5f283814-0b88-4495-893e-77cbfed165d8",
+          "status": "accepted",
+          "message": "清理任务已受理，全部对象清完后才会移除记录",
+          "inQuery": true,
+          "taskId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+          "cleanup": {
+            "jobId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+            "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+            "status": "queued",
+            "cycle": 1,
+            "error": null,
+            "finishedAt": null,
+            "totalObjects": 2,
+            "deletedObjects": 0,
+            "deletedPurposes": [],
+            "remaining": [
+              {
+                "objectId": "f04fbbbe-63e7-488a-b9b1-b6e67a5d434c",
+                "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+                "purpose": "original",
+                "status": "cleanup_pending",
+                "byteSize": 6631,
+                "attempts": 0,
+                "nextAttemptAt": null,
+                "error": null
+              },
+              {
+                "objectId": "6ff249dc-9555-4706-ae62-636c61bd446c",
+                "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+                "purpose": "temporary",
+                "status": "cleanup_pending",
+                "byteSize": 37,
+                "attempts": 0,
+                "nextAttemptAt": null,
+                "error": null
+              }
+            ]
+          }
+        },
+        "duplicate": {
+          "id": "5f283814-0b88-4495-893e-77cbfed165d8",
+          "status": "unchanged",
+          "code": "MEDIA_CLEANUP_ALREADY_REQUESTED",
+          "message": "清理任务已存在，请查看实际执行结果",
+          "inQuery": true,
+          "taskId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+          "cleanup": {
+            "jobId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+            "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+            "status": "queued",
+            "cycle": 1,
+            "error": null,
+            "finishedAt": null,
+            "totalObjects": 2,
+            "deletedObjects": 0,
+            "deletedPurposes": [],
+            "remaining": [
+              {
+                "objectId": "f04fbbbe-63e7-488a-b9b1-b6e67a5d434c",
+                "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+                "purpose": "original",
+                "status": "cleanup_pending",
+                "byteSize": 6631,
+                "attempts": 0,
+                "nextAttemptAt": null,
+                "error": null
+              },
+              {
+                "objectId": "6ff249dc-9555-4706-ae62-636c61bd446c",
+                "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+                "purpose": "temporary",
+                "status": "cleanup_pending",
+                "byteSize": 37,
+                "attempts": 0,
+                "nextAttemptAt": null,
+                "error": null
+              }
+            ]
+          }
+        },
+        "recordRetained": true,
+        "namespaceObjectsBeforeCleanup": [
+          {
+            "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+            "size": 6631
+          },
+          {
+            "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+            "size": 37
+          }
+        ]
+      }
+    },
+    {
+      "name": "production-cleanup-durable-success-and-empty-namespace",
+      "status": "passed",
+      "detail": {
+        "durable": {
+          "jobId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+          "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+          "status": "succeeded",
+          "cycle": 1,
+          "error": null,
+          "finishedAt": "2026-10-04T07:59:04.237Z",
+          "totalObjects": null,
+          "deletedObjects": null,
+          "deletedPurposes": null,
+          "remaining": []
+        },
+        "checked": {
+          "id": "5f283814-0b88-4495-893e-77cbfed165d8",
+          "status": "accepted",
+          "message": "已核对本次清理任务，请查看实际执行结果",
+          "inQuery": false,
+          "taskId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+          "cleanup": {
+            "jobId": "873995a0-c56e-41f2-a23f-6fb9a5654a26",
+            "imageId": "5f283814-0b88-4495-893e-77cbfed165d8",
+            "status": "succeeded",
+            "cycle": 1,
+            "error": null,
+            "finishedAt": "2026-10-04T07:59:04.237Z",
+            "totalObjects": null,
+            "deletedObjects": null,
+            "deletedPurposes": null,
+            "remaining": []
+          }
+        },
+        "imageRemoved": true,
+        "heads": [
+          {
+            "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+            "exists": false
+          },
+          {
+            "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+            "exists": false
+          }
+        ],
+        "namespaceObjects": []
+      }
+    }
+  ],
+  "diagnostics": [],
+  "finalObjects": [],
+  "cleanup": [
+    {
+      "key": "original/5f283814-0b88-4495-893e-77cbfed165d8.png",
+      "status": "absent",
+      "rescueDeleteSent": false
+    },
+    {
+      "key": "temporary/5f283814-0b88-4495-893e-77cbfed165d8.txt",
+      "status": "absent",
+      "rescueDeleteSent": false
+    }
+  ],
+  "limits": [
+    "Only two explicitly registered real objects in a new isolated namespace per service; user configuration, bucket policy and user data are untouched.",
+    "This validates production library batch orchestration and media cleanup against real services. It does not repeat Issue 163 processing, response-loss, permission, retry or interruption experiments.",
+    "No UI, AWS, container, image publication, deployment or release validation. Historical object totals are unavailable after successful ledger removal."
+  ]
+}

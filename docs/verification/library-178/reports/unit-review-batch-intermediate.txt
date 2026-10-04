@@ -1,0 +1,37 @@
+Already up to date
+Done in 258ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-178-trash/ariso
+
+ ❯ |unit| tests/unit/library/batch-controller.test.ts (18 tests | 1 failed) 38ms
+   × does not mistake the old failed cycle for a retry result and preserves its retry baseline during checks 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-controller.test.ts > does not mistake the old failed cycle for a retry result and preserves its retry baseline during checks
+AssertionError: expected { Object (id, command, ...) } to match object { state: 'unknown', result: undefined }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "result": undefined,
+    "state": "unknown",
+  }
+
+ ❯ tests/unit/library/batch-controller.test.ts:581:36
+    579|     },
+    580|   });
+    581|   expect(get().workspace?.rows[0]).toMatchObject({
+       |                                    ^
+    582|     state: 'unknown',
+    583|     result: undefined,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 20 passed (21)
+   Start at  21:33:05
+   Duration  162ms (transform 57%, tests 29%, import 12%, worker 3%)

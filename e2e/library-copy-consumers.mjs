@@ -69,11 +69,10 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
         ),
       );
       assert.ok(items.includes('恢复所选'));
+      assert.ok(items.includes('永久删除所选'));
       assert.ok(items.includes('查看图片'));
       assert.ok(items.includes('查看已选清单'));
-      assert.ok(
-        items.every((name) => !/复制|重新处理|永久删除|移入回收站/.test(name)),
-      );
+      assert.ok(items.every((name) => !/复制|重新处理|移入回收站/.test(name)));
       await page.screenshot({
         path: join(config.output, `copy-consumer-trash-${theme}-${width}.png`),
       });
@@ -114,7 +113,7 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
   );
   await sql("UPDATE media_images SET trashed_at=NULL WHERE id='issue177-198'");
   report.checks.push(
-    'Trash native right-click and Shift+F10 use the restore-only shared menu; Escape returns focus to the actual record, with no copy, reprocess or deletion action.',
+    'Trash native right-click and Shift+F10 use the shared restore and permanent-delete menu; Escape returns focus to the actual record, with no copy, reprocess or move-to-trash action.',
   );
   report.stage = 'shared-toast-route-smoke';
   const [storage] = await sql(

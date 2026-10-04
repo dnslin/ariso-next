@@ -1,0 +1,4301 @@
+{
+  "status": "passed",
+  "taskSpaceId": 25,
+  "checks": [
+    "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+    "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+    "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+    "图库及相册详情实际回归：桌面/手机默认condition控件仍44px，存储/标签菜单真实查询与选择正常，公共当前导航正确。"
+  ],
+  "layouts": [
+    {
+      "state": "batch-confirm",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "batch-confirm",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-results-table",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-results-table",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-results-accordion",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-results-accordion",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-results-accordion-short",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-results-page-2",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "batch-partial",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "batch-cleanup-failure-expanded",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-cleanup-failure",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry-cleanup",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "batch-rejected-expanded",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-rejected",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "batch-unknown",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "batch-unknown",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unknown",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        },
+        {
+          "testId": "trash-batch-item-check",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled-short",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-disabled",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-unsent-enabled",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-retry",
+          "height": 44
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-completed",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-completed",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 430,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 430,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        },
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    },
+    {
+      "state": "approved-completed",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-completed",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "batch-completed",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-consumer-library",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-consumer-library",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-consumer-albums",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "approved-consumer-albums",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-batch-confirm-light-1440.png",
+      "state": "batch-confirm",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-confirm-dark-390.png",
+      "state": "batch-confirm",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-results-table-light-1440.png",
+      "state": "approved-results-table",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-results-table-dark-1440.png",
+      "state": "approved-results-table",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-results-accordion-light-390.png",
+      "state": "approved-results-accordion",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-results-accordion-dark-390.png",
+      "state": "approved-results-accordion",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-results-accordion-short-light-360-430.png",
+      "state": "approved-results-accordion-short",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-results-page-2-light-1440.png",
+      "state": "approved-results-page-2",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-partial-light-1440.png",
+      "state": "batch-partial",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-cleanup-failure-expanded-dark-390.png",
+      "state": "batch-cleanup-failure-expanded",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-light-1440.png",
+      "state": "approved-cleanup-failure",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-dark-1440.png",
+      "state": "approved-cleanup-failure",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-light-390.png",
+      "state": "approved-cleanup-failure",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-dark-390.png",
+      "state": "approved-cleanup-failure",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-light-360-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-dark-360-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-light-430-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-dark-430-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-light-768-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-cleanup-failure-dark-768-430.png",
+      "state": "approved-cleanup-failure",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-rejected-expanded-light-390.png",
+      "state": "batch-rejected-expanded",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-light-1440.png",
+      "state": "approved-rejected",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-dark-1440.png",
+      "state": "approved-rejected",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-rejected-light-390.png",
+      "state": "approved-rejected",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-dark-390.png",
+      "state": "approved-rejected",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-rejected-light-360-430.png",
+      "state": "approved-rejected",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-dark-360-430.png",
+      "state": "approved-rejected",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-rejected-light-430-430.png",
+      "state": "approved-rejected",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-dark-430-430.png",
+      "state": "approved-rejected",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-rejected-light-768-430.png",
+      "state": "approved-rejected",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-rejected-dark-768-430.png",
+      "state": "approved-rejected",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-unknown-light-1440.png",
+      "state": "batch-unknown",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-batch-unknown-dark-390.png",
+      "state": "batch-unknown",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unknown-light-1440.png",
+      "state": "approved-unknown",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unknown-dark-1440.png",
+      "state": "approved-unknown",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unknown-light-390.png",
+      "state": "approved-unknown",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unknown-dark-390.png",
+      "state": "approved-unknown",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unknown-light-360-430.png",
+      "state": "approved-unknown",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unknown-dark-360-430.png",
+      "state": "approved-unknown",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unknown-light-430-430.png",
+      "state": "approved-unknown",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unknown-dark-430-430.png",
+      "state": "approved-unknown",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unknown-light-768-430.png",
+      "state": "approved-unknown",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unknown-dark-768-430.png",
+      "state": "approved-unknown",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-390.png",
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-short-light-430-430.png",
+      "state": "approved-unsent-disabled-short",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-light-1440.png",
+      "state": "approved-unsent-disabled",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-1440.png",
+      "state": "approved-unsent-disabled",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-light-390.png",
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-390.png",
+      "state": "approved-unsent-disabled",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-light-360-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-360-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-light-430-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-430-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-light-768-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-unsent-disabled-dark-768-430.png",
+      "state": "approved-unsent-disabled",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-unsent-enabled-light-390.png",
+      "state": "approved-unsent-enabled",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-light-1440.png",
+      "state": "approved-completed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-dark-1440.png",
+      "state": "approved-completed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-completed-light-390.png",
+      "state": "approved-completed",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-dark-390.png",
+      "state": "approved-completed",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-completed-light-360-430.png",
+      "state": "approved-completed",
+      "width": 360,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-dark-360-430.png",
+      "state": "approved-completed",
+      "width": 360,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-completed-light-430-430.png",
+      "state": "approved-completed",
+      "width": 430,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-dark-430-430.png",
+      "state": "approved-completed",
+      "width": 430,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-completed-light-768-430.png",
+      "state": "approved-completed",
+      "width": 768,
+      "height": 430,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-completed-dark-768-430.png",
+      "state": "approved-completed",
+      "width": 768,
+      "height": 430,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-batch-completed-dark-1440.png",
+      "state": "batch-completed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-consumer-library-light-1440.png",
+      "state": "approved-consumer-library",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-consumer-library-dark-390.png",
+      "state": "approved-consumer-library",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-approved-consumer-albums-light-1440.png",
+      "state": "approved-consumer-albums",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-consumer-albums-dark-390.png",
+      "state": "approved-consumer-albums",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "activeCheck": "approved-filter-consumers",
+  "accordionTriggers": [
+    {
+      "id": "issue177-000",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-001",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-002",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-003",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-004",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-005",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-006",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-007",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-008",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-009",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-010",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-011",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-012",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-013",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-014",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-015",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-016",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-017",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-018",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    },
+    {
+      "id": "issue177-019",
+      "expanded": "false",
+      "height": 80,
+      "minHeight": "80px"
+    }
+  ],
+  "completedTasks": [
+    {
+      "status": "succeeded",
+      "count": 201
+    }
+  ],
+  "errors": []
+}
