@@ -99,9 +99,9 @@ export function CopyDialog({ copy }: { copy: LibraryCopy }) {
             ) : (
               <>
                 <p className="text-[13px] text-muted">
-                  已选 {workspace.items.length} 张 · 当前页{' '}
+                  已选 {workspace.ids.length} 张 · 当前页{' '}
                   {workspace.currentCount} 张 · 其他页{' '}
-                  {workspace.items.length - workspace.currentCount} 张
+                  {workspace.ids.length - workspace.currentCount} 张
                 </p>
                 <Select
                   value={workspace.version}

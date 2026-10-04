@@ -9,11 +9,10 @@ import type {
   LibraryCopyResponse,
   LibraryCopyVersion,
 } from '../../server/library/copy-types';
-import type { SelectedLibraryItem } from '../../server/library/selection-types';
 import { CopyRequestError, requestCopy, writeCopyText } from './copy-request';
 
 interface CopyWorkspace {
-  items: SelectedLibraryItem[];
+  ids: string[];
   currentCount: number;
   query: string;
   version: LibraryCopyVersion;
@@ -46,17 +45,14 @@ export function useLibraryCopy({
   }
   function open(element: HTMLElement) {
     if (busy.current || !selection.selected.size) return;
-    const items = [...selection.selected.values()].map((item) => ({
-      ...item,
-      storage: { ...item.storage },
-    }));
+    const ids = [...selection.selected.keys()];
     source.current = element;
     // The menu item is removed on action; let Modal capture the surviving source.
     element.focus({ preventScroll: true });
     const scroller = element.closest('main');
     scroll.current = { element: scroller, top: scroller?.scrollTop ?? 0 };
     setWorkspace({
-      items,
+      ids,
       currentCount: selection.currentCount,
       query,
       version: 'default',
@@ -100,7 +96,7 @@ export function useLibraryCopy({
     try {
       const result = await requestCopy(
         {
-          ids: workspace.items.map((item) => item.id),
+          ids: workspace.ids,
           query: workspace.query,
           version: workspace.version,
           format: workspace.format,

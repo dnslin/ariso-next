@@ -151,3 +151,32 @@ Ego实际读取原预览的相册A：桌面工具栏、卡片右键及手机勾�
 本轮实施与证据提交`aad2cde48f8f024e1f0e0964a597b39ede312700`已推送至`codex/issue-187-batch-copy`，现有[PR #238](https://github.com/dnslin/ariso-next/pull/238)已更新为“feat(library): 跨页批量复制与原页反馈”。[实际PR状态](./revision/pr.json)仍为OPEN/DRAFT、statusCheckRollup=[]；[gh pr checks](./revision/pr-checks.txt)返回no checks reported，不记为CI通过，也不等待不存在的工作流。
 
 尚需本轮native Clipboard、部分/空/HTTP/manual/GPS、上传原生选择、回收站右键/Escape、全部公共消费与短视口Toast证据，并由独立设计评审收齐状态结论。实际页面还须用户再次人工验收。PR保持OPEN/DRAFT；不合并、不关闭Issue、不发布镜像、不部署、不清理分支或worktree。物理设备和双架构容器按既有执行约定未在本地运行，不标通过。
+
+## 双角度评审后的修复（2026-10-04）
+
+用户要求分别使用code-review-and-quality和thermo-nuclear-code-quality-review评审完整PR，再规划并解决两项发现。评审固定head为3371991：正确性评审无高置信阻塞缺陷；结构评审提出P2默认full漏掉revision独占的新增反馈/消费场景，以及P3复制快照仍克隆无用完整选择实体。后者由用户明确纳入修复范围。
+
+### 实施计划与验收条件
+
+1. P2：full与revision共用详细反馈检查，包含真实消费者、相册成功通知、原列表与焦点/滚动保持、GPS事实及短视口；revision继续跳过旧15组合，representative/feedback保留定向范围。统一已存在的宽度矩阵，消除重复捕获。先记录实际源码分派条件的失败，再复查修复后的模式；该离线诊断不替代真实浏览器。
+2. P3：CopyWorkspace只保存打开时冻结的ids数组，数量与请求均消费该数组；删除SelectedLibraryItem依赖、完整实体/storage克隆及提交时map。查询、版本、格式、阶段、错误、焦点和请求中断语义保持。
+3. 验证：Node24/pnpm冻结安装、语法/格式/lint/类型、现有复制回归单元与适用完整单元、构建后copy/detail集成；原两位独立评审者复查具体发现及调用路径。实际结果和命令随后追加本节，提交推送现有分支并更新PR。Ego仍因用户接管暂停，本次授权修复不冒充接管后的恢复指示；浏览器与最终人工验收继续待完成。
+
+### 实施结果与实际验证
+
+P2与P3已实现，并由原两位独立评审者分别复审关闭，见[审计结论](./code-audit.md#双角度评审发现的修复复审)。默认full现在包含全部新增详细反馈/消费检查；revision保留定向重跑，不整套执行两遍。打开弹窗时仅保留独立ids数组，计数与请求均沿此快照；没有新增依赖、接口、视觉或Figma改动。
+
+环境为macOS arm64、Node24.18.1、pnpm11.19.0。只运行本轮适用检查；后端/媒介实现未改动，沿用已通过的其他模块证据，不重复旧全库集成、媒介矩阵或15种格式/版本浏览器组合。
+
+| 实际命令                                                                                                                                                                 | 结果                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                         | [通过](./review-fixes/install.txt)，锁文件未变。                                                                                                                             |
+| `node docs/verification/library-187/review-fixes/check-dispatch.mjs`                                                                                                     | [修前exit1](./review-fixes/dispatch-before.txt)，实际full两入口false；[修后exit0](./review-fixes/dispatch-after.txt)，full/revision均true，精简两模式false。仅离线分派诊断。 |
+| `node --check e2e/library-copy.mjs`                                                                                                                                      | exit0，实际语法检查通过。                                                                                                                                                    |
+| `pnpm run lint`                                                                                                                                                          | [通过](./review-fixes/lint.txt)。                                                                                                                                            |
+| `pnpm run typecheck`                                                                                                                                                     | [通过](./review-fixes/typecheck.txt)，应用与runtime均执行。                                                                                                                  |
+| `pnpm run test:unit`                                                                                                                                                     | [83文件、1112项通过](./review-fixes/unit.txt)，没有修改单元断言来适应简化。                                                                                                  |
+| `pnpm run build`                                                                                                                                                         | [通过](./review-fixes/build.txt)，保留已有可选平台依赖追踪诊断，不隐藏日志。                                                                                                 |
+| `pnpm exec vitest run --project integration tests/integration/library/copy.test.ts tests/integration/library/copy-http.test.ts tests/integration/library/detail.test.ts` | [3文件、20项通过](./review-fixes/integration-copy.txt)，在稳定构建后执行。                                                                                                   |
+
+完整`pnpm run format:check`[通过](./review-fixes/format.txt)，`node docs/tasks/check.mjs`[通过](./review-fixes/docs.txt)，`git diff --check`通过。代码问题关闭不代表原UI交付验收关闭：本轮未运行Ego、未接管浏览器、未修改用户预览数据；前述真实UI状态、独立设计与最终人工验收继续待完成，PR保留草稿。
