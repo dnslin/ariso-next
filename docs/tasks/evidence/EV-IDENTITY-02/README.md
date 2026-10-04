@@ -101,3 +101,11 @@ pnpm exec vitest run --project integration tests/integration/identity/api-key-ht
 生产构建退出 0，同时 nft 追踪打印原有平台可选 resvg、SQLite Debug、OpenTelemetry 等缺失依赖诊断，日志保留；不把诊断删掉或记作无警告构建。真实 standalone 回归由全量集成检查提供。
 
 浏览器/设计/UI 人工验收：不适用。真正上传、图库/私有图片完整权限矩阵、Token 界面及恢复创建响应丢失的交互由消费任务验收。AMD64/ARM64 镜像和容器尚未运行，按现有 Release 流程执行；本次不创建 Release、不发布或部署。代码实现、插件验收、独立评审和本地检查记录已完成；完整集成首轮超时及定向恢复按上述实际结果保留。PR/远端状态在创建后回读补充，不把无远端检查当作 CI 通过。
+
+## 提交与 PR 状态
+
+实现提交为 [4313633](https://github.com/dnslin/ariso-next/commit/4313633d47c4bf77241ac67e1ce44a1f0bae8983)，已推送 `codex/issue-144-api-key`。创建并关联 [PR #242](https://github.com/dnslin/ariso-next/pull/242)，引用 #144；本次没有自动关闭 Issue。
+
+2026-10-05 实际执行 `gh pr view 242 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeable,mergeStateStatus` 和 `gh pr checks 242`：PR 为 OPEN、非草稿，合并状态 CLEAN/MERGEABLE，`statusCheckRollup=[]`。checks 命令返回 `no checks reported`（退出 1），没有远端 CI 运行，不能记作 CI 通过，也没有等待不存在的工作流。`gh issue view 144 --json number,state,url` 确认 Issue 仍 OPEN。
+
+代码与插件前置验收已完成；独立评审为 Approve。适用本地检查已执行，全部测试场景经过首轮或失败范围复跑取得通过结果，保留首轮完整命令退出 1 的事实。浏览器、设计和 UI 人工验收均不适用；完整生产消费任务与 Release 验证未执行。PR 等待用户评审，未合并、发布或部署；本任务分支和工作区保留。
