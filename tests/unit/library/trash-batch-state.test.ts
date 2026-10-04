@@ -37,14 +37,27 @@ it('observes an already accepted cleanup task rather than reporting no change as
   };
   expect(recordCleanupResults([row], [result])[0]).toMatchObject({
     state: 'task',
-    cleanup: { status: 'failed', cycle: 2 },
+    result: { cleanup: { status: 'failed', cycle: 2 } },
   });
 });
 
 it('starts an explicit retry from the failed cycle and removes its old terminal outcome', () => {
-  const retry = retryCleanupRow({ ...row, state: 'task', cleanup });
+  const taskRow = recordCleanupResults(
+    [row],
+    [
+      {
+        id: 'image',
+        status: 'accepted',
+        taskId: 'task',
+        message: '已受理',
+        inQuery: true,
+        cleanup,
+      },
+    ],
+  )[0];
+  const retry = retryCleanupRow(taskRow);
   expect(retry.state).toBe('unsent');
-  expect(retry.cleanup).toBeUndefined();
+  expect(retry.result).toBeUndefined();
   expect(cleanupCommandFor([retry])).toEqual({
     type: 'retry-cleanup',
     attempts: { image: { taskId: 'task', cycle: 2 } },
@@ -61,11 +74,23 @@ it('starts an explicit retry from the failed cycle and removes its old terminal 
         },
       ],
     )[0],
-  ).toMatchObject({ state: 'unknown', cleanup: undefined });
+  ).toMatchObject({ state: 'unknown', result: { status: 'unknown' } });
 });
 
 it('keeps a missing task unconfirmed and preserves unrelated prior outcomes', () => {
-  const other = { ...row, id: 'other', state: 'task' as const, cleanup };
+  const other = recordCleanupResults(
+    [{ ...row, id: 'other' }],
+    [
+      {
+        id: 'other',
+        status: 'accepted',
+        taskId: 'task',
+        message: '已受理',
+        inQuery: true,
+        cleanup,
+      },
+    ],
+  )[0];
   const updated = recordCleanupResults(
     [row, other],
     [
@@ -80,4 +105,33 @@ it('keeps a missing task unconfirmed and preserves unrelated prior outcomes', ()
   );
   expect(updated[0].state).toBe('unknown');
   expect(updated[1]).toBe(other);
+});
+
+it('replaces a known task with its actual rejection without retaining an old cleanup snapshot', () => {
+  const accepted = recordCleanupResults(
+    [row],
+    [
+      {
+        id: 'image',
+        status: 'accepted',
+        taskId: 'task',
+        message: '已受理',
+        inQuery: true,
+        cleanup,
+      },
+    ],
+  );
+  const rejection = {
+    id: 'image',
+    status: 'failed' as const,
+    message: '任务身份已变化',
+    code: 'MEDIA_CLEANUP_TASK_CONFLICT',
+    inQuery: true,
+  };
+  expect(recordCleanupResults(accepted, [rejection])[0]).toEqual({
+    id: 'image',
+    command: row.command,
+    state: 'rejected',
+    result: rejection,
+  });
 });

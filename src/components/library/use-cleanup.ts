@@ -149,7 +149,12 @@ export function useCleanup({
         retry ? 'retry' : 'delete',
         controller.signal,
       );
-      if (!controller.signal.aborted) observe(current);
+      if (!controller.signal.aborted) {
+        // A successful write response confirms acceptance even if another page
+        // advanced the task since this page last read it.
+        submitted.current = undefined;
+        observe(current);
+      }
     } catch (failure) {
       if (controller.signal.aborted) return;
       if (failure instanceof CleanupRequestError && failure.status === 401)

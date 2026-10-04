@@ -68,7 +68,7 @@ export function useTrashBatch({
       .filter(
         (row) =>
           row.state === 'rejected' &&
-          row.result?.inQuery &&
+          row.result.inQuery &&
           selection.selected.has(row.id),
       )
       .map((row) => row.id) ?? [];
@@ -77,8 +77,8 @@ export function useTrashBatch({
       .filter(
         (row) =>
           row.state === 'task' &&
-          row.cleanup?.status === 'failed' &&
-          row.result?.inQuery,
+          row.result.cleanup.status === 'failed' &&
+          row.result.inQuery,
       )
       .map((row) => row.id) ?? [];
   function open(element: HTMLElement) {
@@ -197,7 +197,7 @@ export function useTrashBatch({
       if (!target.has(row.id) || mode === 'check') return row;
       return retryTasks
         ? retryCleanupRow(row)
-        : { ...row, state: 'unsent' as const, result: undefined };
+        : { id: row.id, command: row.command, state: 'unsent' as const };
     });
     setWorkspace({ ...workspace, rows, phase: 'result', message: '' });
     const observed: BatchItemResult[] = [];
@@ -223,7 +223,13 @@ export function useTrashBatch({
             ? (sent) => {
                 const sentIds = new Set(sent);
                 rows = rows.map((row) =>
-                  sentIds.has(row.id) ? { ...row, state: 'waiting' } : row,
+                  sentIds.has(row.id)
+                    ? {
+                        id: row.id,
+                        command: row.command,
+                        state: 'waiting' as const,
+                      }
+                    : row,
                 );
                 setWorkspace((previous) => previous && { ...previous, rows });
               }
@@ -232,7 +238,9 @@ export function useTrashBatch({
         if (active.signal.aborted) return;
         const unknown = new Set(outcome.unknownIds);
         rows = rows.map((row) =>
-          unknown.has(row.id) ? { ...row, state: 'unknown' } : row,
+          unknown.has(row.id) && row.state !== 'unknown'
+            ? { id: row.id, command: row.command, state: 'unknown' as const }
+            : row,
         );
         setWorkspace(
           (previous) =>
@@ -248,7 +256,13 @@ export function useTrashBatch({
       // An aborted write may have been received. Only sent rows become unknown.
       rows = rows.map((row) =>
         row.state === 'waiting'
-          ? { ...row, state: active.signal.aborted ? 'unknown' : 'unsent' }
+          ? {
+              id: row.id,
+              command: row.command,
+              state: active.signal.aborted
+                ? ('unknown' as const)
+                : ('unsent' as const),
+            }
           : row,
       );
       if (session.current === current)
@@ -278,28 +292,29 @@ export function useTrashBatch({
       const targets = snapshot.rows.filter(
         (row) =>
           row.state === 'task' &&
-          (row.cleanup?.status === 'queued' ||
-            row.cleanup?.status === 'running'),
+          (row.result.cleanup.status === 'queued' ||
+            row.result.cleanup.status === 'running'),
       );
       const updates: BatchItemResult[] = [];
       try {
-        for (const type of ['delete-permanent', 'retry-cleanup'] as const) {
-          const scoped = targets.filter((row) => row.command.type === type);
-          if (!scoped.length) continue;
-          const outcome = await requestBatch(
-            scoped.map((row) => row.id),
-            snapshot.query,
-            cleanupCommandFor(scoped),
-            'check',
-            signal,
-            (results) => updates.push(...results),
+        const outcome = await requestBatch(
+          targets.map((row) => row.id),
+          snapshot.query,
+          { type: 'delete-permanent' },
+          'check',
+          signal,
+          (results) => updates.push(...results),
+        );
+        if (signal.aborted) return;
+        const unread = updates.filter((result) => !result.cleanup);
+        if (unread.length || outcome.unknownIds.length)
+          setProgressError(
+            unread.length
+              ? unread
+                  .map((result) => `${result.id}：${result.message}`)
+                  .join('；')
+              : outcome.message || '暂时无法读取清理进度，请重新核对。',
           );
-          if (signal.aborted) return;
-          if (outcome.unknownIds.length)
-            setProgressError(
-              outcome.message || '暂时无法读取清理进度，请重新核对。',
-            );
-        }
         const confirmed = updates.filter((result) => !!result.cleanup);
         setWorkspace(
           (previous) =>
@@ -330,7 +345,8 @@ export function useTrashBatch({
   const processing = !!workspace?.rows.some(
     (row) =>
       row.state === 'task' &&
-      (row.cleanup?.status === 'queued' || row.cleanup?.status === 'running'),
+      (row.result.cleanup.status === 'queued' ||
+        row.result.cleanup.status === 'running'),
   );
   useEffect(() => {
     if (!visible || !workspace || pending || progressError || !processing)
@@ -365,13 +381,7 @@ export function useTrashBatch({
     check: () => void run(unknownIds, 'check'),
     checkItem: (id: string) => {
       const row = workspace?.rows.find((row) => row.id === id);
-      if (
-        row?.state === 'unknown' ||
-        (row?.state === 'task' &&
-          (row.cleanup?.status === 'queued' ||
-            row.cleanup?.status === 'running'))
-      )
-        void run([id], 'check');
+      if (row?.state === 'unknown') void run([id], 'check');
     },
     retryItem: (id: string) => {
       if (failedIds.includes(id) || unsentIds.includes(id))

@@ -578,17 +578,17 @@ it('does not mistake the old failed cycle for a retry result and preserves its r
       attempts: { image: { taskId: 'cleanup-image', cycle: 2 } },
     },
   });
-  expect(get().workspace?.rows[0]).toMatchObject({
-    state: 'unknown',
-    cleanup: undefined,
-  });
+  expect(get().workspace?.rows[0].state).toBe('unknown');
+  expect(get().workspace?.rows[0].result).toBeUndefined();
   get().check();
   await flush();
   expect(get().unknownIds).toEqual(['image']);
+  expect(get().workspace?.rows[0].result?.message).toBe('仍是旧失败周期');
+  expect(get().workspace?.rows[0].result?.cleanup).toBeUndefined();
   expect(requests[2].command).toEqual(requests[1].command);
   get().check();
   await flush();
-  expect(get().workspace?.rows[0].cleanup).toMatchObject({
+  expect(get().workspace?.rows[0].result?.cleanup).toMatchObject({
     status: 'succeeded',
     cycle: 3,
   });
@@ -645,13 +645,13 @@ it('retains the last cleanup progress and a recoverable refresh failure', async 
   await flush();
   await vi.advanceTimersByTimeAsync(1010);
   expect(get().progressError).not.toBe('');
-  expect(get().workspace?.rows[0].cleanup?.status).toBe('running');
+  expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('running');
   await vi.advanceTimersByTimeAsync(2000);
   expect(count).toBe(2);
   get().checkProgress();
   await flush();
   await vi.advanceTimersByTimeAsync(1010);
-  expect(get().workspace?.rows[0].cleanup?.status).toBe('succeeded');
+  expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('succeeded');
   expect(get().refreshError).toBe('列表读取失败');
   get().retryRefresh();
   await flush();
@@ -761,9 +761,9 @@ it('retries only the chosen failed cleanup task with its own cycle and refuses t
       attempts: { second: { taskId: 'cleanup-second', cycle: 4 } },
     },
   });
-  expect(get().workspace?.rows[0].cleanup?.status).toBe('failed');
-  expect(get().workspace?.rows[1].cleanup?.status).toBe('succeeded');
-  expect(get().workspace?.rows[2].cleanup?.status).toBe('failed');
+  expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('failed');
+  expect(get().workspace?.rows[1].result?.cleanup?.status).toBe('succeeded');
+  expect(get().workspace?.rows[2].result?.cleanup?.status).toBe('failed');
 });
 
 it('resubmits only a retained rejected item and refuses one that left the query', async () => {
@@ -798,3 +798,96 @@ it('resubmits only a retained rejected item and refuses one that left the query'
   expect(requests[1]).toMatchObject({ ids: ['second'], mode: 'apply' });
   expect(get().failedIds).toEqual(['first']);
 });
+
+it('reads an accepted retry as current cleanup facts after another window advances its cycle', async () => {
+  const requests: { mode: string; command: { type: string } }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const request = JSON.parse(init.body);
+      requests.push(request);
+      if (requests.length === 1) return cleanupResponse(['image'], 'failed', 1);
+      if (requests.length === 2)
+        return cleanupResponse(['image'], 'running', 2);
+      if (request.command.type === 'retry-cleanup')
+        return Response.json({
+          results: [
+            {
+              id: 'image',
+              status: 'failed',
+              inQuery: true,
+              code: 'MEDIA_CLEANUP_CYCLE_CHANGED',
+              message: '清理周期已变化，请重新读取任务',
+            },
+          ],
+        });
+      return cleanupResponse(['image'], 'succeeded', 4);
+    }),
+  );
+  const get = mountTrash(selection());
+  get().open({ isConnected: false } as HTMLElement);
+  await flush();
+  get().submit();
+  await flush();
+  get().retryTask('image');
+  await flush();
+  await vi.advanceTimersByTimeAsync(1010);
+  expect(requests[2]).toMatchObject({
+    mode: 'check',
+    command: { type: 'delete-permanent' },
+  });
+  expect(get().workspace?.rows[0].result?.cleanup).toMatchObject({
+    status: 'succeeded',
+    cycle: 4,
+  });
+  expect(get().progressError).toBe('');
+});
+
+it.each(['failed', 'unknown'] as const)(
+  'surfaces a per-item %s without cleanup and stops polling until a requested reread',
+  async (status) => {
+    const requests: { mode: string; command: { type: string } }[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_url, init) => {
+        const request = JSON.parse(init.body);
+        requests.push(request);
+        if (requests.length === 1)
+          return cleanupResponse(['image'], 'running', 2);
+        if (requests.length === 2)
+          return Response.json({
+            results: [
+              {
+                id: 'image',
+                status,
+                inQuery: true,
+                code: 'MEDIA_CLEANUP_TASK_CONFLICT',
+                message: '清理任务已变化，请重新读取',
+              },
+            ],
+          });
+        return cleanupResponse(['image'], 'succeeded', 3);
+      }),
+    );
+    const get = mountTrash(selection());
+    get().open({ isConnected: false } as HTMLElement);
+    await flush();
+    get().submit();
+    await flush();
+    await vi.advanceTimersByTimeAsync(1010);
+    expect(get().progressError).toContain('清理任务已变化，请重新读取');
+    expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('running');
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(requests).toHaveLength(2);
+    get().checkProgress();
+    await flush();
+    await vi.advanceTimersByTimeAsync(1010);
+    expect(requests).toHaveLength(3);
+    expect(requests[2]).toMatchObject({
+      mode: 'check',
+      command: { type: 'delete-permanent' },
+    });
+    expect(get().progressError).toBe('');
+    expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('succeeded');
+  },
+);

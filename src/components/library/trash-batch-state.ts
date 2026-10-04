@@ -5,13 +5,18 @@ import type {
 } from '../../server/library/batch-types';
 import type { BatchSnapshotItem } from './use-library-batch';
 
-export interface TrashBatchRow {
+type CleanupResult = Extract<BatchItemResult, { cleanup: LibraryCleanupTask }>;
+type UnconfirmedResult = Exclude<BatchItemResult, CleanupResult>;
+
+export type TrashBatchRow = {
   id: string;
   command: CleanupCommand;
-  state: 'unsent' | 'waiting' | 'unknown' | 'rejected' | 'task';
-  result?: BatchItemResult;
-  cleanup?: LibraryCleanupTask;
-}
+} & (
+  | { state: 'unsent' | 'waiting'; result?: never }
+  | { state: 'unknown'; result?: UnconfirmedResult }
+  | { state: 'rejected'; result: BatchItemResult & { status: 'failed' } }
+  | { state: 'task'; result: CleanupResult }
+);
 export interface TrashBatchWorkspace {
   items: BatchSnapshotItem[];
   currentCount: number;
@@ -45,29 +50,33 @@ export function recordCleanupResults(
     const result = byId.get(row.id);
     if (!result) return row;
     if (result.cleanup)
-      return { ...row, state: 'task', result, cleanup: result.cleanup };
-    return {
-      ...row,
-      state: result.status === 'failed' ? 'rejected' : 'unknown',
-      result,
-      cleanup: undefined,
-    };
+      return { id: row.id, command: row.command, state: 'task', result };
+    return result.status === 'failed'
+      ? {
+          id: row.id,
+          command: row.command,
+          state: 'rejected',
+          result: { ...result, status: 'failed' },
+        }
+      : { id: row.id, command: row.command, state: 'unknown', result };
   });
 }
 
 /** A retry keeps its previous cycle until a newer cycle is observed. */
 export function retryCleanupRow(row: TrashBatchRow): TrashBatchRow {
-  if (row.state !== 'task' || row.cleanup?.status !== 'failed') return row;
+  if (row.state !== 'task' || row.result.cleanup.status !== 'failed')
+    return row;
   return {
-    ...row,
+    id: row.id,
     command: {
       type: 'retry-cleanup',
       attempts: {
-        [row.id]: { taskId: row.cleanup.jobId, cycle: row.cleanup.cycle },
+        [row.id]: {
+          taskId: row.result.cleanup.jobId,
+          cycle: row.result.cleanup.cycle,
+        },
       },
     },
     state: 'unsent',
-    result: undefined,
-    cleanup: undefined,
   };
 }

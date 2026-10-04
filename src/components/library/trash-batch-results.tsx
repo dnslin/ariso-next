@@ -51,7 +51,7 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
             key={row.id}
             id={row.id}
             data-image-id={row.id}
-            data-state={row.cleanup?.status ?? row.state}
+            data-state={row.result?.cleanup?.status ?? row.state}
           >
             <Accordion.Heading>
               <Accordion.Trigger
@@ -95,7 +95,7 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
                 key={row.id}
                 id={row.id}
                 data-image-id={row.id}
-                data-state={row.cleanup?.status ?? row.state}
+                data-state={row.result?.cleanup?.status ?? row.state}
               >
                 <Table.Cell className="whitespace-normal px-3 py-4 align-top">
                   <span className="flex min-w-0 items-center gap-3 [overflow-wrap:anywhere]">

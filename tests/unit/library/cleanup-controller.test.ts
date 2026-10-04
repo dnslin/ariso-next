@@ -90,31 +90,35 @@ function result(
   status: 'queued' | 'failed' | 'succeeded',
   cycle = 1,
   waitingForWrites = false,
+  httpStatus = 200,
 ) {
-  return Response.json({
-    jobId: 'job',
-    imageId: 'image',
-    status,
-    waitingForWrites,
-    cycle,
-    error: status === 'failed' ? 'AccessDenied' : null,
-    finishedAt: null,
-    remaining:
-      status === 'succeeded'
-        ? []
-        : [
-            {
-              objectId: 'o',
-              key: 'image.webp',
-              purpose: 'watermark',
-              status: 'cleanup_failed',
-              byteSize: null,
-              attempts: 2,
-              nextAttemptAt: null,
-              error: 'AccessDenied',
-            },
-          ],
-  });
+  return Response.json(
+    {
+      jobId: 'job',
+      imageId: 'image',
+      status,
+      waitingForWrites,
+      cycle,
+      error: status === 'failed' ? 'AccessDenied' : null,
+      finishedAt: null,
+      remaining:
+        status === 'succeeded'
+          ? []
+          : [
+              {
+                objectId: 'o',
+                key: 'image.webp',
+                purpose: 'watermark',
+                status: 'cleanup_failed',
+                byteSize: null,
+                attempts: 2,
+                nextAttemptAt: null,
+                error: 'AccessDenied',
+              },
+            ],
+    },
+    { status: httpStatus },
+  );
 }
 beforeEach(() => {
   vi.useFakeTimers();
@@ -204,6 +208,37 @@ it('does not confirm a lost retry using the same already failed cycle', async ()
     error: '',
     task: { cycle: 3, status: 'failed' },
   });
+});
+it('accepts an explicit retry response after another window advances the failed cycle and keeps polling', async () => {
+  const fetch = vi
+    .fn()
+    .mockResolvedValueOnce(result('failed', 1))
+    // Another window has already retried cycle 2 and observed its failure.
+    // This request succeeds and the server explicitly accepts cycle 3.
+    .mockResolvedValueOnce(result('queued', 3, false, 202))
+    .mockResolvedValueOnce(result('succeeded', 3));
+  vi.stubGlobal('fetch', fetch);
+  const get = mount('cleanup_failed');
+  get().open();
+  await flush();
+  expect(get().task).toMatchObject({ cycle: 1, status: 'failed' });
+  await get().retry();
+  await flush();
+  expect(get()).toMatchObject({
+    unknown: false,
+    error: '',
+    task: { cycle: 3, status: 'queued' },
+  });
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(get()).toMatchObject({
+    unknown: false,
+    task: { cycle: 3, status: 'succeeded' },
+  });
+  expect(fetch.mock.calls.map(([, init]) => init.method)).toEqual([
+    'GET',
+    'POST',
+    'GET',
+  ]);
 });
 it('keeps queued acceptance visible and waits for actual success before showing completion', async () => {
   vi.stubGlobal(

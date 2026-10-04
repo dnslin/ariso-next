@@ -73,14 +73,15 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
       </AlertDialog>
     );
   const completed = workspace.rows.filter(
-    (row) => row.cleanup?.status === 'succeeded',
+    (row) => row.result?.cleanup?.status === 'succeeded',
   ).length;
   const failed = workspace.rows.filter(
-    (row) => row.cleanup?.status === 'failed',
+    (row) => row.result?.cleanup?.status === 'failed',
   ).length;
   const running = workspace.rows.filter(
     (row) =>
-      row.cleanup?.status === 'queued' || row.cleanup?.status === 'running',
+      row.result?.cleanup?.status === 'queued' ||
+      row.result?.cleanup?.status === 'running',
   ).length;
   const rejected = workspace.rows.filter(
     (row) => row.state === 'rejected',

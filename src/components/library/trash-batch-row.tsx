@@ -8,15 +8,17 @@ import type { BatchSnapshotItem } from './use-library-batch';
 import { BatchThumbnail } from './batch-targets';
 
 export function trashRowStatus(row: TrashBatchRow) {
-  if (row.state === 'task' && row.cleanup) {
-    switch (row.cleanup.status) {
+  if (row.state === 'task') {
+    switch (row.result.cleanup.status) {
       case 'succeeded':
         return { label: '已清理', color: 'success' } as const;
       case 'failed':
         return { label: '清理失败', color: 'danger' } as const;
       case 'queued':
         return {
-          label: row.cleanup.waitingForWrites ? '等待写入结束' : '排队中',
+          label: row.result.cleanup.waitingForWrites
+            ? '等待写入结束'
+            : '排队中',
           color: 'default',
         } as const;
       case 'running':
@@ -60,7 +62,7 @@ export function TrashBatchFileIcon({
   const readable =
     item.storage.enabled &&
     (row.state === 'unsent' ||
-      (row.state === 'rejected' && row.result?.inQuery));
+      (row.state === 'rejected' && row.result.inQuery));
   return readable && item.thumbnailUrl ? (
     <BatchThumbnail
       key={item.thumbnailUrl}
@@ -92,7 +94,7 @@ export function TrashBatchRowDetails({
   row: TrashBatchRow;
   batch: TrashBatch;
 }) {
-  const task = row.cleanup;
+  const task = row.result?.cleanup;
   const rejected = row.state === 'rejected';
   const unknown = row.state === 'unknown';
   const unsent = row.state === 'unsent';

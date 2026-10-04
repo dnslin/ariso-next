@@ -91,14 +91,32 @@ export function useTrashQuery(client: QueryClient) {
     };
   }, [identity, scrollReady]);
 
-  function applyQuery(patch: Partial<TrashQueryPatch>) {
-    return setParams({
+  async function applyQuery(patch: Partial<TrashQueryPatch>) {
+    const update = {
       ...patch,
       ...(patch.q === '' ? { q: null } : {}),
       pageSize: String(patch.pageSize ?? filters?.pageSize ?? 40),
       page: '1',
       image: null,
-    });
+    };
+    const next = new URLSearchParams(params.toString());
+    for (const [key, value] of Object.entries(update)) {
+      next.delete(key);
+      if (value !== null) next.set(key, String(value));
+    }
+    let target: LibraryFilters | null = null;
+    try {
+      target = parseTrashLocation(next).filters;
+    } catch {
+      // Invalid values remain in the URL for the existing error and reset UI.
+    }
+    if (target && JSON.stringify(target) !== JSON.stringify(filters)) {
+      // Applying a filter reads a new first page; Back retains the other caches.
+      const queryKey = ['trash', target, 1];
+      await client.cancelQueries({ queryKey, exact: true });
+      client.removeQueries({ queryKey, exact: true });
+    }
+    return setParams(update);
   }
   function resetQuery() {
     const url = new URL(window.location.href);
