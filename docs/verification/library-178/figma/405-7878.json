@@ -1,0 +1,561 @@
+{
+  "readOnly": true,
+  "source": "Figma use_figma Plugin API",
+  "date": "2026-10-04",
+  "node": {
+    "id": "405:7878",
+    "name": "15 · M / 回收站 / 正在清理文件",
+    "type": "FRAME",
+    "x": 2550,
+    "y": 2433,
+    "width": 390,
+    "height": 844,
+    "layoutMode": "NONE",
+    "itemSpacing": 0,
+    "paddingLeft": 0,
+    "paddingRight": 0,
+    "paddingTop": 0,
+    "paddingBottom": 0,
+    "cornerRadius": 0,
+    "children": [
+      {
+        "id": "405:7879",
+        "name": "Mobile / Header",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 64,
+        "layoutMode": "HORIZONTAL",
+        "itemSpacing": 0,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "cornerRadius": 0,
+        "children": [
+          {
+            "id": "I405:7879;112:1495",
+            "name": "Ariso",
+            "type": "TEXT",
+            "x": 16,
+            "y": 5,
+            "width": 63,
+            "height": 54,
+            "characters": "Ariso",
+            "fontSize": 36,
+            "fontName": {
+              "family": "Caveat",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            }
+          },
+          {
+            "id": "I405:7879;112:1496",
+            "name": "Mobile / 打开菜单",
+            "type": "FRAME",
+            "x": 310,
+            "y": 10,
+            "width": 64,
+            "height": 44,
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 0,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "cornerRadius": 22,
+            "children": [
+              {
+                "id": "I405:7879;112:1497",
+                "name": "菜单",
+                "type": "TEXT",
+                "x": 18,
+                "y": 11.5,
+                "width": 28,
+                "height": 21,
+                "characters": "菜单",
+                "fontSize": 14,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "405:7880",
+        "name": "图片处理内容滚动区",
+        "type": "FRAME",
+        "x": 16,
+        "y": 88,
+        "width": 358,
+        "height": 660,
+        "layoutMode": "NONE",
+        "itemSpacing": 0,
+        "paddingLeft": 0,
+        "paddingRight": 0,
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "cornerRadius": 0,
+        "children": [
+          {
+            "id": "405:7881",
+            "name": "Main",
+            "type": "FRAME",
+            "x": 0,
+            "y": 0,
+            "width": 358,
+            "height": 644,
+            "layoutMode": "VERTICAL",
+            "itemSpacing": 20,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 40,
+            "cornerRadius": 0,
+            "children": [
+              {
+                "id": "405:7882",
+                "name": "面包屑",
+                "type": "TEXT",
+                "x": 0,
+                "y": 0,
+                "width": 358,
+                "height": 18,
+                "characters": "← 返回回收站",
+                "fontSize": 12,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              },
+              {
+                "id": "405:7883",
+                "name": "页面标题",
+                "type": "TEXT",
+                "x": 0,
+                "y": 38,
+                "width": 358,
+                "height": 42,
+                "characters": "正在清理文件",
+                "fontSize": 28,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium",
+                  "variationSettings": {
+                    "wght": 500
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              },
+              {
+                "id": "405:7884",
+                "name": "状态摘要",
+                "type": "TEXT",
+                "x": 0,
+                "y": 100,
+                "width": 358,
+                "height": 22,
+                "characters": "old-cover.jpg · 已确认清理 3 / 6 个对象",
+                "fontSize": 13,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              },
+              {
+                "id": "405:7885",
+                "name": "说明",
+                "type": "FRAME",
+                "x": 0,
+                "y": 142,
+                "width": 358,
+                "height": 64,
+                "layoutMode": "VERTICAL",
+                "itemSpacing": 8,
+                "paddingLeft": 12,
+                "paddingRight": 12,
+                "paddingTop": 12,
+                "paddingBottom": 12,
+                "cornerRadius": 8,
+                "children": [
+                  {
+                    "id": "405:7886",
+                    "name": "说明文字",
+                    "type": "TEXT",
+                    "x": 12,
+                    "y": 12,
+                    "width": 334,
+                    "height": 40,
+                    "characters": "永久删除已开始，不可恢复。空间按实际确认结果释放，待核对部分不会显示为零。",
+                    "fontSize": 13,
+                    "fontName": {
+                      "family": "Noto Sans SC",
+                      "style": "Regular",
+                      "variationSettings": {
+                        "wght": 400
+                      }
+                    },
+                    "lineHeight": {
+                      "unit": "PERCENT",
+                      "value": 150
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "405:7887",
+                "name": "图片处理状态明细",
+                "type": "FRAME",
+                "x": 0,
+                "y": 226,
+                "width": 358,
+                "height": 378,
+                "layoutMode": "VERTICAL",
+                "itemSpacing": 0,
+                "paddingLeft": 12,
+                "paddingRight": 12,
+                "paddingTop": 8,
+                "paddingBottom": 8,
+                "cornerRadius": 16,
+                "children": [
+                  {
+                    "id": "406:7059",
+                    "name": "处理明细 / 已清理",
+                    "type": "INSTANCE",
+                    "x": 13,
+                    "y": 9,
+                    "width": 332,
+                    "height": 72,
+                    "layoutMode": "HORIZONTAL",
+                    "itemSpacing": 4,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "cornerRadius": 0,
+                    "children": [
+                      {
+                        "id": "I406:7059;31:136",
+                        "name": "内容",
+                        "type": "TEXT",
+                        "x": 0,
+                        "y": 0,
+                        "width": 332,
+                        "height": 44,
+                        "characters": "已清理\n原图 / 缩略图 / 压缩图 · 3 个对象",
+                        "fontSize": 14,
+                        "fontName": {
+                          "family": "Noto Sans SC",
+                          "style": "Regular",
+                          "variationSettings": {
+                            "wght": 400
+                          }
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 22
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "406:7064",
+                    "name": "处理明细 / 正在清理",
+                    "type": "INSTANCE",
+                    "x": 13,
+                    "y": 81,
+                    "width": 332,
+                    "height": 72,
+                    "layoutMode": "HORIZONTAL",
+                    "itemSpacing": 4,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "cornerRadius": 0,
+                    "children": [
+                      {
+                        "id": "I406:7064;31:136",
+                        "name": "内容",
+                        "type": "TEXT",
+                        "x": 0,
+                        "y": 0,
+                        "width": 332,
+                        "height": 44,
+                        "characters": "正在清理\n水印版本 · 1 个对象",
+                        "fontSize": 14,
+                        "fontName": {
+                          "family": "Noto Sans SC",
+                          "style": "Regular",
+                          "variationSettings": {
+                            "wght": 400
+                          }
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 22
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "406:7069",
+                    "name": "处理明细 / 待清理",
+                    "type": "INSTANCE",
+                    "x": 13,
+                    "y": 153,
+                    "width": 332,
+                    "height": 72,
+                    "layoutMode": "HORIZONTAL",
+                    "itemSpacing": 4,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "cornerRadius": 0,
+                    "children": [
+                      {
+                        "id": "I406:7069;31:136",
+                        "name": "内容",
+                        "type": "TEXT",
+                        "x": 0,
+                        "y": 0,
+                        "width": 332,
+                        "height": 44,
+                        "characters": "待清理\n旧版本 / 候选文件 · 2 个对象",
+                        "fontSize": 14,
+                        "fontName": {
+                          "family": "Noto Sans SC",
+                          "style": "Regular",
+                          "variationSettings": {
+                            "wght": 400
+                          }
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 22
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "406:7074",
+                    "name": "处理明细 / 活动写入",
+                    "type": "INSTANCE",
+                    "x": 13,
+                    "y": 225,
+                    "width": 332,
+                    "height": 72,
+                    "layoutMode": "HORIZONTAL",
+                    "itemSpacing": 4,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "cornerRadius": 0,
+                    "children": [
+                      {
+                        "id": "I406:7074;31:136",
+                        "name": "内容",
+                        "type": "TEXT",
+                        "x": 0,
+                        "y": 0,
+                        "width": 332,
+                        "height": 44,
+                        "characters": "活动写入\n已结束 · 无未完成写入责任",
+                        "fontSize": 14,
+                        "fontName": {
+                          "family": "Noto Sans SC",
+                          "style": "Regular",
+                          "variationSettings": {
+                            "wght": 400
+                          }
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 22
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "406:7079",
+                    "name": "处理明细 / 剩余占用",
+                    "type": "INSTANCE",
+                    "x": 13,
+                    "y": 297,
+                    "width": 332,
+                    "height": 72,
+                    "layoutMode": "HORIZONTAL",
+                    "itemSpacing": 4,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "cornerRadius": 0,
+                    "children": [
+                      {
+                        "id": "I406:7079;31:136",
+                        "name": "内容",
+                        "type": "TEXT",
+                        "x": 0,
+                        "y": 0,
+                        "width": 332,
+                        "height": 44,
+                        "characters": "剩余占用\n待核对 · 尚未确认的对象大小",
+                        "fontSize": 14,
+                        "fontName": {
+                          "family": "Noto Sans SC",
+                          "style": "Regular",
+                          "variationSettings": {
+                            "wght": 400
+                          }
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 22
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "405:7890",
+        "name": "固定图片处理操作栏",
+        "type": "FRAME",
+        "x": 16,
+        "y": 764,
+        "width": 358,
+        "height": 80,
+        "layoutMode": "HORIZONTAL",
+        "itemSpacing": 12,
+        "paddingLeft": 0,
+        "paddingRight": 0,
+        "paddingTop": 12,
+        "paddingBottom": 20,
+        "cornerRadius": 0,
+        "children": [
+          {
+            "id": "405:7906",
+            "name": "返回回收站",
+            "type": "INSTANCE",
+            "x": 0,
+            "y": 12.5,
+            "width": 174,
+            "height": 48,
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 0,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "id": "I405:7906;3:24",
+                "name": "按钮",
+                "type": "TEXT",
+                "x": 52,
+                "y": 13.5,
+                "width": 70,
+                "height": 21,
+                "characters": "返回回收站",
+                "fontSize": 14,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              }
+            ]
+          },
+          {
+            "id": "405:7908",
+            "name": "刷新状态",
+            "type": "INSTANCE",
+            "x": 186,
+            "y": 12.5,
+            "width": 172,
+            "height": 48,
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 0,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "id": "I405:7908;3:22",
+                "name": "按钮",
+                "type": "TEXT",
+                "x": 58,
+                "y": 13.5,
+                "width": 56,
+                "height": 21,
+                "characters": "刷新状态",
+                "fontSize": 14,
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lineHeight": {
+                  "unit": "PERCENT",
+                  "value": 150
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

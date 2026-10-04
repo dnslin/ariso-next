@@ -1,0 +1,35 @@
+Already up to date
+Done in 61ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-178-trash/ariso
+
+ ❯ |unit| tests/unit/runtime/verify-image.test.ts (0 test)
+{"level":"error","time":"2026-10-04T07:46:54.948Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-178-trash/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-04T07:46:54.983Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-178-trash/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-04T07:46:54.984Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-178-trash/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-04T07:46:54.985Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-178-trash/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-04T07:46:54.988Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-178-trash/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/verify-image.test.ts [ tests/unit/runtime/verify-image.test.ts ]
+Error: Cannot find module '../dist/cli/verify-media.js' imported from /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-image.mjs
+ ❯ scripts/verify-image.mjs:9:1
+      7| import Database from 'better-sqlite3';
+      8| import { execa } from 'execa';
+      9| import { verifyMediaFormats } from '../dist/cli/verify-media.js';
+       | ^
+     10| import {
+     11|   prepareWatermark,
+ ❯ tests/unit/runtime/verify-image.test.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 85 passed (86)
+      Tests  1139 passed (1139)
+   Start at  15:46:49
+   Duration  6.54s (import 53%, tests 32%, transform 13%, worker 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.

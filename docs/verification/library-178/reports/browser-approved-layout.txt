@@ -1,0 +1,13 @@
+ElementResolutionError: page.click timed out after 3000ms: Locator [data-testid="trash-filters"] button[aria-haspopup]:has-text("Issue 178 已停用筛选存储") matched 0 elements
+    at #retryElementAction (file:////[eval1]:18884:27)
+    at async file:////[eval1]:18968:29
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:371:14)
+    at async file:///Users/dnslin/.codex/worktrees/issue-178-trash/ariso/scripts/verify-browser.mjs:516:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-178-trash/ariso/docs/verification/library-178/browser-approved-layout

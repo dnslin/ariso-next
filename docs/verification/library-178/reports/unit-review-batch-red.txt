@@ -1,0 +1,76 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-178-trash/ariso
+
+ ❯ |unit| tests/unit/library/batch-controller.test.ts (18 tests | 3 failed) 41ms
+   × reads an accepted retry as current cleanup facts after another window advances its cycle 4ms
+   × surfaces a per-item failed without cleanup and stops polling until a requested reread 1ms
+   × surfaces a per-item unknown without cleanup and stops polling until a requested reread 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/batch-controller.test.ts > reads an accepted retry as current cleanup facts after another window advances its cycle
+AssertionError: expected { ids: [ 'image' ], …(3) } to match object { mode: 'check', …(1) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "command": {
+-     "type": "delete-permanent",
++     "type": "retry-cleanup",
+    },
+    "mode": "check",
+  }
+
+ ❯ tests/unit/library/batch-controller.test.ts:818:23
+    816|   get().retryTask('image'); await flush();
+    817|   await vi.advanceTimersByTimeAsync(1010);
+    818|   expect(requests[2]).toMatchObject({ mode: 'check', command: { type: …
+       |                       ^
+    819|   expect(get().workspace?.rows[0].cleanup).toMatchObject({ status: 'su…
+    820|   expect(get().progressError).toBe('');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |unit| tests/unit/library/batch-controller.test.ts > surfaces a per-item failed without cleanup and stops polling until a requested reread
+AssertionError: expected '' to contain '清理任务已变化，请重新读取'
+
+- Expected
++ Received
+
+- 清理任务已变化，请重新读取
+
+ ❯ tests/unit/library/batch-controller.test.ts:836:31
+    834|   await flush(); get().submit(); await flush();
+    835|   await vi.advanceTimersByTimeAsync(1010);
+    836|   expect(get().progressError).toContain('清理任务已变化，请重新读取');
+       |                               ^
+    837|   expect(get().workspace?.rows[0].cleanup?.status).toBe('running');
+    838|   await vi.advanceTimersByTimeAsync(3000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |unit| tests/unit/library/batch-controller.test.ts > surfaces a per-item unknown without cleanup and stops polling until a requested reread
+AssertionError: expected '原任务尚未核实，不能再次提交。请稍后重新核对。' to contain '清理任务已变化，请重新读取'
+
+Expected: "清理任务已变化，请重新读取"
+Received: "原任务尚未核实，不能再次提交。请稍后重新核对。"
+
+ ❯ tests/unit/library/batch-controller.test.ts:836:31
+    834|   await flush(); get().submit(); await flush();
+    835|   await vi.advanceTimersByTimeAsync(1010);
+    836|   expect(get().progressError).toContain('清理任务已变化，请重新读取');
+       |                               ^
+    837|   expect(get().workspace?.rows[0].cleanup?.status).toBe('running');
+    838|   await vi.advanceTimersByTimeAsync(3000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 18 passed (21)
+   Start at  21:31:49
+   Duration  169ms (transform 55%, tests 30%, import 13%, worker 3%)

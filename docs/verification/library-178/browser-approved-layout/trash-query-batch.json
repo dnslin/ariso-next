@@ -1,0 +1,69 @@
+{
+  "status": "failed",
+  "taskSpaceId": 25,
+  "checks": [],
+  "layouts": [
+    {
+      "state": "approved-disabled-storage-filter",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "approved-disabled-storage-filter",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-approved-disabled-storage-filter-light-390.png",
+      "state": "approved-disabled-storage-filter",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    {
+      "file": "trash-approved-disabled-storage-filter-dark-1440.png",
+      "state": "approved-disabled-storage-filter",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark"
+    }
+  ],
+  "activeCheck": "approved-query-controls",
+  "error": "ElementResolutionError: page.click timed out after 3000ms: Locator [data-testid=\"trash-filters\"] button[aria-haspopup]:has-text(\"Issue 178 已停用筛选存储\") matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "failureTasks": [],
+  "failureView": "[p1 \"Ariso\" | space \"Issue178 approved UI verification\"(25): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    anchor [ref=111, loc=href:/trash?pageSize=80&page=1&storageId=issue178-filter-storage#main-content, url=http://ariso-56948.localhost:56948/trash?pageSize=80&page=1&storageId=issue178-filter-storage#main-content]\n      text \"跳到主要内容\"\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=112, url=http://ariso-56948.localhost:56948/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=113, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=114, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=115, loc=css:a[aria-label=\"上传\"], url=http://ariso-56948.localhost:56948/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=116, loc=css:a[aria-label=\"图库\"], url=http://ariso-56948.localhost:56948/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=117, loc=css:a[aria-label=\"相册\"], url=http://ariso-56948.localhost:56948/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=118, loc=css:a[aria-label=\"标签\"], url=http://ariso-56948.localhost:56948/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=119, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=120, loc=css:a[aria-label=\"回收站\"], url=http://ariso-56948.localhost:56948/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=121, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        group \"存储管理，尚未开放\" [ref=122, loc=role:group[name=\"存储管理，尚未开放\"]]\n          link \"存储管理，尚未开放\"\n            svg_root\n            text \"存储管理\"\n            text \"尚未开放\"\n        group \"站点设置，尚未开放\" [ref=123, loc=role:group[name=\"站点设置，尚未开放\"]]\n          link \"站点设置，尚未开放\"\n            svg_root\n            text \"站点设置\"\n            text \"尚未开放\"\n      button \"账号菜单\" [ref=124, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=125]\n        container\n          container\n            heading [ref=126]\n              text \"回收站\"\n            button \"刷新回收站\" [ref=127, loc=css:button[aria-label=\"刷新回收站\"]]\n              svg_root\n          paragraph\n            text \"1 条记录 ·\"\n            text \"文件仍占用空间，不会自动清理。\"\n          container\n            group\n              searchbox \"搜索回收图片名称\" [ref=128, loc=css:input[placeholder=\"搜索文件名称\"]]\n                text \"搜索文件名称\"\n            button [ref=129]\n              text \"取消选择\"\n          container \"回收筛选条件\"\n            container\n              text \"存储\"\n              group\n                text \"Issue 178 已停用筛选存储（已停用）\"\n                button \"Issue 178 已停用筛选存储（已停用） 存储\" [ref=130]\n                  svg_root\n              combobox [ref=131]\n                text \"Issue 178 已停用筛选存储（已停用）\"\n            container\n              text \"处理状态\"\n              button \"全部处理状态 处理状态\" [ref=132]\n                text \"全部处理状态\"\n                svg_root\n              combobox [ref=133]\n            container\n              text \"删除状态\"\n              button \"全部删除状态 删除状态\" [ref=134]\n                text \"全部删除状态\"\n                svg_root\n              combobox [ref=135]\n          container\n            checkbox \"全选当前页回收记录\" [ref=136, loc=css:input[aria-label=\"全选当前页回收记录\"]]\n            svg_root\n            text \"全选当前页\"\n          unordered_list\n            list_item\n              container\n                checkbox \"选择回收图片：issue177-filter-disabled.png\" [ref=137, loc=css:input[aria-label=\"选择回收图片：issue177-filter-disabled.png\"]]\n                svg_root\n              button [ref=138]\n                container\n                  container\n                    svg_root\n                    text \"存储已停用\"\n                  text \"issue177-filter-disabled.png\"\n                container\n                  text \"原文件\"\n                  text \"6.5 KiB\"\n                  text \"·\"\n                  text \"Issue 178 已停用筛选存储\"\n                  text \"·\"\n                  text \"私有\"\n                container\n                  text \"已回收 ·\"\n                  text \"已就绪\"\n                  text \"· 存储停用\"\n                  text \"2027/5/22 23:33:20\"\n      container\n        container\n          status\n            text \"共 1 项\"\n          container\n            text \"每页\"\n            container\n              text \"每页条数\"\n              button \"80 每页条数\" [ref=139]\n                text \"80\"\n                svg_root\n              combobox [ref=140]\n                text \"80\"\n            text \"条\"\n        container\n          container\n            text \"1\"\n            text \"/\"\n            text \"1\"\n          button [ref=141]\n            text \"上一页\"\n          button [ref=142]\n            text \"下一页\"\n  alert\n"
+}

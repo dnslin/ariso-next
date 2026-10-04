@@ -128,3 +128,39 @@ it.each(['all', 'compressed', 'thumbnail', 'watermark'] as const)(
     }
   },
 );
+
+it('accepts deletion and retry identities only in trash queries', () => {
+  for (const mode of ['apply', 'check'])
+    for (const command of [
+      { type: 'delete-permanent' },
+      {
+        type: 'retry-cleanup',
+        attempts: { image: { taskId, cycle: 1 } },
+      },
+    ]) {
+      expect(
+        parseLibraryBatch({ ...request, command, query: 'scope=trash', mode })
+          .command,
+      ).toEqual(command);
+      expect(() => parseLibraryBatch({ ...request, command, mode })).toThrow(
+        expect.objectContaining({ code: 'LIBRARY_INVALID_BATCH' }),
+      );
+    }
+});
+
+it.each([
+  {},
+  { other: { taskId, cycle: 1 } },
+  { image: { taskId, cycle: 1 }, other: { taskId, cycle: 1 } },
+  { image: { taskId: '', cycle: 1 } },
+  { image: { taskId, cycle: 0 } },
+  { image: { taskId, cycle: 1.5 } },
+])('rejects missing or invalid per-image retry baseline: %j', (attempts) => {
+  expect(() =>
+    parseLibraryBatch({
+      ...request,
+      query: 'scope=trash',
+      command: { type: 'retry-cleanup', attempts },
+    }),
+  ).toThrow(expect.objectContaining({ code: 'LIBRARY_INVALID_BATCH' }));
+});

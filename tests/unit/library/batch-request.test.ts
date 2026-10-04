@@ -245,3 +245,37 @@ it('checks every read-only chunk and retains only identities still unconfirmed',
   expect(outcome.unknownIds).toEqual(['image-0', 'image-400']);
   expect(outcome.unsentIds).toEqual([]);
 });
+
+it('trims cleanup retry baselines to each explicit chunk without changing cycles', async () => {
+  const command = {
+    type: 'retry-cleanup' as const,
+    attempts: Object.fromEntries(
+      ids.map((id) => [id, { taskId: `task-${id}`, cycle: 2 }]),
+    ),
+  };
+  const calls: { ids: string[]; command: typeof command }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const body = JSON.parse(init.body);
+      calls.push(body);
+      return response(body.ids);
+    }),
+  );
+  for (const mode of ['apply', 'check'] as const)
+    await requestBatch(
+      ids,
+      'scope=trash',
+      command,
+      mode,
+      new AbortController().signal,
+      () => {},
+    );
+  expect(calls.map((call) => call.ids.length)).toEqual([
+    200, 200, 1, 200, 200, 1,
+  ]);
+  for (const call of calls)
+    expect(call.command.attempts).toEqual(
+      Object.fromEntries(call.ids.map((id) => [id, command.attempts[id]])),
+    );
+});

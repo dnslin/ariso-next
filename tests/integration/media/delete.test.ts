@@ -149,6 +149,7 @@ it('accepts only trashed local images and keeps duplicate requests and the delet
   trashImage(connection.db, image.imageId);
   const accepted = requestPermanentDelete(connection.db, image.imageId);
   expect(accepted.status).toBe('queued');
+  expect(accepted).toMatchObject({ waitingForWrites: false });
   expect(requestPermanentDelete(connection.db, image.imageId)).toEqual(
     accepted,
   );
@@ -163,6 +164,7 @@ it('accepts only trashed local images and keeps duplicate requests and the delet
     jobId: accepted.jobId,
     status: 'succeeded',
     remaining: [],
+    waitingForWrites: false,
   });
   expect(retryMediaCleanup(connection.db, image.imageId)).toEqual(
     readMediaCleanup(connection.db, image.imageId),
@@ -374,12 +376,23 @@ it('cancels a running writer and waits for its promise before clearing a late ob
   await vi.waitFor(() => expect(receivedSignal).toBeDefined());
   trashImage(connection.db, image.imageId);
   requestPermanentDelete(connection.db, image.imageId);
-  await vi.waitFor(() => expect(receivedSignal!.aborted).toBe(true));
-  await cleanupPermanentDeletes(runtime(), new Set([image.imageId]));
-  expect(
-    await local.inspectObject(runtime().storageRoot, image.storage, image.key),
-  ).toEqual({ size: 14 });
-  release();
+  try {
+    expect(readMediaCleanup(connection.db, image.imageId)).toMatchObject({
+      status: 'queued',
+      waitingForWrites: true,
+    });
+    await vi.waitFor(() => expect(receivedSignal!.aborted).toBe(true));
+    await cleanupPermanentDeletes(runtime(), new Set([image.imageId]));
+    expect(
+      await local.inspectObject(
+        runtime().storageRoot,
+        image.storage,
+        image.key,
+      ),
+    ).toEqual({ size: 14 });
+  } finally {
+    release();
+  }
   await vi.waitFor(
     () =>
       expect(readMediaCleanup(connection.db, image.imageId).status).toBe(
@@ -387,6 +400,10 @@ it('cancels a running writer and waits for its promise before clearing a late ob
       ),
     { timeout: 5000 },
   );
+  expect(readMediaCleanup(connection.db, image.imageId)).toMatchObject({
+    status: 'succeeded',
+    waitingForWrites: false,
+  });
 });
 
 it('recovery cancels deleting content jobs without resetting processing state or republishing objects', async () => {

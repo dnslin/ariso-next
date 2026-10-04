@@ -170,3 +170,9 @@ PR #239继续草稿：本轮必修闭环不关闭先前完整媒体失败、必�
 所有者在查看本次预览与返修结果后明确回复：“这个UI我认可的 合并PR，然后清理并更新本地分支，关闭这个issue”。当前实现的人工 UI 验收已通过，并授权将 PR #239 合并、关闭 Issue #198 及清理本次分支/worktree；本条替代前文的当前草稿待人工验收状态。
 
 完整媒体集成的 SQLite lock 与 SVG 超时仍是历史未闭环事实，未重新执行或改记通过；既有未实现功能及未执行发布验证也保持原范围。当前 UI 获认可不等于这些能力已实现或所有 DES/RG 组完成。收尾只更新验收记录，没有修改生产代码，不重复构建、单元或浏览器检查。
+
+### 合并前同步 main
+
+收尾期间回收站 PR #240 进入 main（ce5b8ab），使共用浏览器验证脚本的套件列表和阶段分发出现两处冲突。同步 main 后并列保留存储与回收站入口，包括存储 regressions/live/dialogs、回收站 query/cleanup 与原有分阶段筛选；没有修改两边业务实现或人工认可的存储 UI。
+
+Node 24 下实际执行 `node --check scripts/verify-browser.mjs`、`pnpm exec eslint scripts/verify-browser.mjs --max-warnings=0`、六组实际阶段表达式选择检查、`pnpm run format:check` 和 `pnpm run typecheck`，均退出0。验收文档另通过定点 Prettier 与 `node docs/tasks/check.mjs`；提交前差异空白检查通过。未因入口合并重复构建或浏览器业务矩阵。
