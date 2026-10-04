@@ -1,0 +1,66 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-178-trash/ariso
+
+ ❯ |unit| tests/unit/library/cleanup-controller.test.ts (7 tests | 1 failed) 21ms
+   × accepts an explicit retry response after another window advances the failed cycle and keeps polling 4ms
+ ❯ |unit| tests/unit/library/trash-query-controller.test.ts (3 tests | 1 failed) 1139ms
+   × explicit A → B → A filtering reads changed records while Back preserves untouched query history 1132ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/cleanup-controller.test.ts > accepts an explicit retry response after another window advances the failed cycle and keeps polling
+AssertionError: expected { visible: true, …(17) } to match object { unknown: false, error: '', …(1) }
+(19 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": "",
++   "error": "已读取原清理周期，但尚未确认本次重试受理。请稍后核对，不会自动重新提交。",
+    "task": {
+      "cycle": 3,
+      "status": "queued",
+    },
+-   "unknown": false,
++   "unknown": true,
+  }
+
+ ❯ tests/unit/library/cleanup-controller.test.ts:227:17
+    225|   await get().retry();
+    226|   await flush();
+    227|   expect(get()).toMatchObject({
+       |                 ^
+    228|     unknown: false,
+    229|     error: '',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/trash-query-controller.test.ts > explicit A → B → A filtering reads changed records while Back preserves untouched query history
+AssertionError: expected [ 'a-old' ] to deeply equal [ 'a-new' ]
+
+- Expected
++ Received
+
+  [
+-   "a-new",
++   "a-old",
+  ]
+
+ ❯ tests/unit/library/trash-query-controller.test.ts:152:69
+    150|   await mount(queryClient).applyQuery({ q: 'a' });
+    151|   await vi.waitFor(() =>
+    152|     expect(mount(queryClient).data?.items.map((value) => value.id)).to…
+       |                                                                     ^
+    153|       'a-new',
+    154|     ]),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 8 passed (10)
+   Start at  21:35:12
+   Duration  1.32s (tests 88%, transform 6%, import 6%)

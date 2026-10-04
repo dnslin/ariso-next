@@ -59,7 +59,9 @@ assert.ok(
         'confirmation',
         'approved-ui',
         'approved-results',
+        'approved-query',
         'approved-progress',
+        'review-fixes',
       ].includes(only)) ||
     (suite === 'library-batch' &&
       [
@@ -505,7 +507,9 @@ try {
           'confirmation',
           'approved-ui',
           'approved-results',
+          'approved-query',
           'approved-progress',
+          'review-fixes',
         ].includes(only) &&
           script === 'trash-cleanup') ||
           (only === 'cleanup' && script === 'trash-query-batch'))
