@@ -1,5 +1,13 @@
 import { createWriteStream } from 'node:fs';
-import { open, rename, stat, unlink } from 'node:fs/promises';
+import {
+  lstat,
+  open,
+  opendir,
+  rename,
+  rmdir,
+  stat,
+  unlink,
+} from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { finished, pipeline } from 'node:stream/promises';
 import { randomUUID } from 'node:crypto';
@@ -72,6 +80,49 @@ function requireEnabled(storage: LocalStorage) {
 function namespace(root: string, storage: LocalStorage, create: boolean) {
   const directory = controlledPath(root, storage.localPath, create);
   return controlledPath(directory, `ariso/${storage.id}`, create);
+}
+
+/** Configuration aliases are allowed; aliases of the owned namespace are not ownership. */
+function maintenanceNamespace(root: string, storage: LocalStorage) {
+  const directory = controlledPath(root, storage.localPath, false);
+  let path = directory;
+  for (const part of ['ariso', storage.id]) {
+    path = `${path}${sep}${part}`;
+    if (!lstatSync(path).isDirectory())
+      throw Object.assign(
+        new Error(`Owned namespace is not a regular directory: ${path}`),
+        { code: 'ENOTDIR', path },
+      );
+  }
+  return path;
+}
+
+/** Remove only empty owned directories. Unknown entries keep the configuration for diagnosis. */
+export async function removeEmptyNamespace(
+  root: string,
+  storage: LocalStorage,
+) {
+  let path: string | undefined;
+  try {
+    try {
+      path = maintenanceNamespace(root, storage);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return;
+      throw error;
+    }
+    async function remove(directory: string) {
+      for await (const entry of await opendir(directory)) {
+        const child = join(directory, entry.name);
+        if (!(await lstat(child)).isDirectory())
+          throw new Error(`Owned namespace is not empty: ${child}`);
+        await remove(child);
+      }
+      await rmdir(directory);
+    }
+    await remove(path);
+  } catch (cause) {
+    throw operationError(cause, storage, '', 'remove-empty-namespace', path);
+  }
 }
 
 function objectPath(root: string, key: string, createParent = false) {
@@ -247,5 +298,71 @@ export async function deleteObject(
   } catch (cause) {
     if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return;
     throw operationError(cause, storage, key, 'delete', path);
+  }
+}
+
+/** Read-only maintenance enumeration. References and deletion belong to the composition caller. */
+export async function* listObjects(
+  root: string,
+  storage: LocalStorage,
+  options: { signal?: AbortSignal; batchSize?: number } = {},
+): AsyncGenerator<{ key: string; size: number }[]> {
+  const batchSize = options.batchSize ?? 1000;
+  if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 1000)
+    throw new Error(
+      'Object listing batchSize must be an integer from 1 to 1000',
+    );
+  let path: string | undefined;
+  try {
+    options.signal?.throwIfAborted();
+    let directory: string;
+    try {
+      directory = maintenanceNamespace(root, storage);
+    } catch (cause) {
+      // An unused or already cleaned namespace has no objects; do not create it.
+      if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return;
+      throw cause;
+    }
+    async function* walk(parent: string): AsyncGenerator<{
+      key: string;
+      size: number;
+    }> {
+      path = parent;
+      options.signal?.throwIfAborted();
+      const entries = await opendir(parent);
+      // The async iterator closes its directory on completion, error and early return.
+      for await (const entry of entries) {
+        options.signal?.throwIfAborted();
+        path = join(parent, entry.name);
+        const info = await lstat(path);
+        options.signal?.throwIfAborted();
+        if (info.isDirectory()) yield* walk(path);
+        else if (info.isFile())
+          yield {
+            key: relative(directory, path).split(sep).join('/'),
+            size: info.size,
+          };
+        // Ariso writes regular files. Do not follow aliases into another object's tree.
+      }
+    }
+    let batch: { key: string; size: number }[] = [];
+    for await (const object of walk(directory)) {
+      batch.push(object);
+      if (batch.length === batchSize) {
+        yield batch;
+        options.signal?.throwIfAborted();
+        batch = [];
+      }
+    }
+    options.signal?.throwIfAborted();
+    if (batch.length) yield batch;
+  } catch (cause) {
+    throw operationError(
+      cause,
+      storage,
+      '',
+      'list',
+      path ?? (cause as NodeJS.ErrnoException).path,
+    );
   }
 }

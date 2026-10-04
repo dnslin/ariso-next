@@ -52,6 +52,8 @@ export async function storageResponse(
       key?: string;
       serviceCode?: string;
       requestId?: string;
+      references?: Record<string, number>;
+      activeWrites?: number;
     };
     const status =
       detail?.status ??
@@ -91,6 +93,8 @@ export async function storageResponse(
           key: detail.key,
           serviceCode: detail.serviceCode,
           requestId: detail.requestId,
+          references: detail.references,
+          activeWrites: detail.activeWrites,
         },
         { status, headers },
       );

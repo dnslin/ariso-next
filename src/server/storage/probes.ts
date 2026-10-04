@@ -24,6 +24,19 @@ export type ProbeInput = {
   revision: number;
   wholeBucketHasNoLockRules?: boolean;
 };
+export function readProbeObjectReferences(
+  db: BetterSQLite3Database,
+  storageId: string,
+  key: string,
+) {
+  return db
+    .select({ key: storageProbes.key })
+    .from(storageProbes)
+    .where(
+      and(eq(storageProbes.storageId, storageId), eq(storageProbes.key, key)),
+    )
+    .all();
+}
 export function probeError(code: string, message: string, status = 409) {
   return Object.assign(new Error(message), { code, status });
 }

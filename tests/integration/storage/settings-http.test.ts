@@ -106,7 +106,7 @@ it('管理路由拒绝匿名、上传 Token 与跨来源写入', async () => {
   ).toBe(403);
 });
 
-it('真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，受限位置和删除不开放', async () => {
+it('真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，无引用允许位置修改和删除', async () => {
   const create = await request('/api/storages', 'POST', {
     type: 'local',
     name: 'HTTP 本地',
@@ -181,10 +181,16 @@ it('真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，�
         localPath: 'changed',
       })
     ).status,
-  ).toBe(400);
-  expect((await request(`/api/storages/${local.id}`, 'DELETE')).status).toBe(
-    405,
-  );
+  ).toBe(200);
+  const deleted = await request(`/api/storages/${local.id}`, 'DELETE');
+  expect(deleted.status, await deleted.clone().text()).toBe(200);
+  expect(await deleted.json()).toMatchObject({
+    deleted: true,
+    storageId: local.id,
+  });
+  expect(await (await request('/api/settings/storage')).json()).toMatchObject({
+    defaultStorageId: null,
+  });
   expect(
     (
       await request('/api/settings/storage', 'PATCH', {
@@ -281,6 +287,32 @@ it('显式或默认 S3 创建排队会话，接收字节前不创建图片或处
         connection.db.$client.prepare('SELECT * FROM media_jobs').all(),
       ).toEqual(jobs);
     }
+    const blocked = await request(`/api/storages/${storage.id}`, 'PATCH', {
+      bucket: 'other-bucket',
+    });
+    expect(blocked.status).toBe(409);
+    expect(await blocked.json()).toMatchObject({ code: 'STORAGE_IN_USE' });
+    const unchangedPosition = await request(
+      `/api/storages/${storage.id}`,
+      'PATCH',
+      { endpoint: 'https://OBJECTS.example.test:443/', pathPrefix: '/' },
+    );
+    expect(
+      unchangedPosition.status,
+      await unchangedPosition.clone().text(),
+    ).toBe(200);
+    expect(await unchangedPosition.json()).toMatchObject({
+      configRevision: storage.configRevision,
+    });
+    const credential = await request(`/api/storages/${storage.id}`, 'PATCH', {
+      name: '有会话仍可改名和凭据',
+      secretKey: 'replacement-with-active-reference',
+    });
+    expect(credential.status).toBe(200);
+    expect(await credential.json()).toMatchObject({
+      enabled: false,
+      configRevision: storage.configRevision + 1,
+    });
   } finally {
     expect(
       (

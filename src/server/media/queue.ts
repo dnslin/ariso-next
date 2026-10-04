@@ -102,6 +102,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
     string,
     {
       imageId: string | null;
+      storageId: string | null;
       controller: AbortController;
       execution: Promise<void>;
     }
@@ -168,7 +169,13 @@ export function startMediaQueue(runtime: MediaRuntime) {
         while (!signal.aborted && active.size < limit) {
           const job = claimNextMediaWork(runtime);
           if (!job) break;
-
+          const storageId = job.imageId
+            ? runtime.db
+                .select({ storageId: mediaImages.storageId })
+                .from(mediaImages)
+                .where(eq(mediaImages.id, job.imageId))
+                .get()!.storageId
+            : null;
           const jobController = new AbortController();
           const jobSignal = AbortSignal.any([signal, jobController.signal]);
           const execution = (
@@ -191,6 +198,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
             .finally(() => active.delete(job.id));
           active.set(job.id, {
             imageId: job.imageId,
+            storageId,
             controller: jobController,
             execution,
           });
@@ -258,6 +266,11 @@ export function startMediaQueue(runtime: MediaRuntime) {
   }
   const completion = consume();
   return {
+    activeWrites(storageId: string) {
+      return [...active.values()].filter(
+        (operation) => operation.storageId === storageId,
+      ).length;
+    },
     previews,
     async stop() {
       controller.abort(

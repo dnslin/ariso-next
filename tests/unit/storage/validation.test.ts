@@ -89,10 +89,19 @@ it('更新明确区分省略、字符串和 null，不接收脱敏值或危险�
     { accessKey: '' },
     { secretKey: '********' },
     { accessKey: '••••••' },
-    { type: 's3' },
-    { localPath: 'another' },
+    { type: 'other' },
+    { localPath: '/absolute' },
     { connectionStatus: 'passed' },
     { configRevision: 4 },
   ])
     expect(storageUpdateInputSchema.safeParse(input).success).toBe(false);
+  expect(
+    storageUpdateInputSchema.parse({ type: 'local', localPath: 'another' }),
+  ).toEqual({ type: 'local', localPath: 'another' });
+  expect(
+    storageUpdateInputSchema.parse({
+      endpoint: 'https://s3.example.com/',
+      pathPrefix: '/photos/',
+    }),
+  ).toEqual({ endpoint: 'https://s3.example.com', pathPrefix: 'photos' });
 });

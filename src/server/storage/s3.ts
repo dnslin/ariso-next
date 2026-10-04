@@ -13,6 +13,7 @@ import {
   GetObjectCommand,
   type GetObjectCommandOutput,
   HeadObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -248,6 +249,75 @@ export function createS3Storage(config: S3StorageConfig) {
     });
   }
   return {
+    /** Maintenance lists only this configuration's namespace, including while disabled. */
+    async *listObjects(
+      options: RequestOptions & { batchSize?: number } = {},
+    ): AsyncGenerator<{ key: string; size: number }[]> {
+      const batchSize = options.batchSize ?? 1000;
+      if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 1000)
+        throw new Error(
+          'Storage listing batchSize must be an integer from 1 to 1000',
+        );
+      const namespacePrefix = `${prefix ? `${prefix}/` : ''}ariso/${config.id}/`;
+      let continuationToken: string | undefined;
+      do {
+        const page = await run(
+          namespacePrefix,
+          'list',
+          options,
+          async (signal) => {
+            const result = await client.send(
+              new ListObjectsV2Command({
+                Bucket: config.bucket,
+                Prefix: namespacePrefix,
+                MaxKeys: batchSize,
+                ContinuationToken: continuationToken,
+              }),
+              { abortSignal: signal },
+            );
+            signal.throwIfAborted();
+            try {
+              if (typeof result.IsTruncated !== 'boolean')
+                throw new Error('S3 listing is missing IsTruncated');
+              const next = result.IsTruncated
+                ? result.NextContinuationToken
+                : undefined;
+              if (result.IsTruncated && (!next || next === continuationToken))
+                throw new Error(
+                  'S3 listing did not provide a new continuation token',
+                );
+              const batch = (result.Contents ?? []).map((entry) => {
+                if (
+                  typeof entry.Key !== 'string' ||
+                  entry.Size === undefined ||
+                  !Number.isSafeInteger(entry.Size) ||
+                  entry.Size < 0
+                )
+                  throw new Error(
+                    'S3 listing returned an object without a valid key and size',
+                  );
+                const key = entry.Key;
+                if (!key.startsWith(namespacePrefix))
+                  throw new Error(
+                    `S3 listing returned a key outside its namespace: ${key}`,
+                  );
+                return {
+                  key: key.slice(namespacePrefix.length),
+                  size: entry.Size,
+                };
+              });
+              return { batch, next };
+            } catch (cause) {
+              throw Object.assign(cause as Error, {
+                $metadata: result.$metadata,
+              });
+            }
+          },
+        );
+        continuationToken = page.next;
+        if (page.batch.length) yield page.batch;
+      } while (continuationToken);
+    },
     /** R2's lock statement is supplied by the owner for this revision, not inferred from an unsupported API. */
     async checkBucket(
       options: RequestOptions & { r2NoBucketLocksConfirmed?: boolean } = {},

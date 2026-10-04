@@ -8,7 +8,15 @@ import {
   storageSettings,
   type StorageConfig,
 } from './schema.ts';
-import type { StorageCreateInput, StorageUpdateInput } from './validation.ts';
+import {
+  storageCreateInputSchema,
+  type StorageCreateInput,
+  type StorageUpdateInput,
+} from './validation.ts';
+import {
+  requireNoStorageReferences,
+  type ReadStorageReferences,
+} from './references.ts';
 
 type SecretCrypto = ReturnType<typeof createSecretCrypto>;
 export type StorageContext = {
@@ -94,25 +102,110 @@ export function createStorage(
       .get(),
   );
 }
-/** Only name, enabled and secrets are writable until T-STO-06 supplies complete references. */
+/** Position changes and reference registration are serialized in the same SQLite transaction. */
 export function updateStorage(
   db: BetterSQLite3Database,
   id: string,
   input: StorageUpdateInput,
   context: StorageContext,
+  readReferences: ReadStorageReferences,
 ) {
   return db.transaction((tx) => {
     const config = requireStorage(tx, id);
+    const type = input.type ?? config.type;
+    const typeChanged = type !== config.type;
+    const s3Fields = [
+      'endpoint',
+      'region',
+      'bucket',
+      'pathPrefix',
+      'forcePathStyle',
+      'accessKey',
+      'secretKey',
+    ] as const;
     if (
-      config.type === 'local' &&
-      (input.accessKey !== undefined || input.secretKey !== undefined)
+      type === 'local' &&
+      s3Fields.some((field) => input[field] !== undefined)
     )
-      throw storageError('STORAGE_INVALID_INPUT', '本地存储不接受 S3 凭据', id);
+      throw storageError('STORAGE_INVALID_INPUT', '本地存储不接受 S3 字段', id);
+    if (type === 's3' && input.localPath !== undefined)
+      throw storageError('STORAGE_INVALID_INPUT', 'S3 存储不接受本地路径', id);
+    const previousPosition =
+      config.type === 'local'
+        ? { localPath: config.localPath }
+        : {
+            endpoint: config.endpoint,
+            region: config.region,
+            bucket: config.bucket,
+            pathPrefix: config.pathPrefix,
+            forcePathStyle: config.forcePathStyle,
+          };
+    const candidate = storageCreateInputSchema.parse({
+      ...(!typeChanged ? previousPosition : {}),
+      ...input,
+      type,
+      name: input.name ?? config.name,
+      enabled: type === 's3' ? false : (input.enabled ?? config.enabled),
+    });
     const values: Partial<typeof storageConfigs.$inferInsert> = {
       updatedAt: new Date(),
+      name: candidate.name,
     };
-    if (input.name !== undefined) values.name = input.name;
-    let changed = false;
+    let positionChanged = typeChanged;
+    if (candidate.type === 'local') {
+      if (typeChanged || input.localPath !== undefined) {
+        const nextPath = prepareLocalDirectory(
+          context.storageRoot,
+          candidate.localPath,
+        );
+        if (!typeChanged) {
+          requireLocalStorage(config);
+          positionChanged =
+            nextPath !==
+            prepareLocalDirectory(context.storageRoot, config.localPath);
+        }
+        values.localPath = candidate.localPath;
+      }
+      if (typeChanged)
+        Object.assign(values, {
+          type: 'local',
+          endpoint: null,
+          region: null,
+          bucket: null,
+          pathPrefix: null,
+          forcePathStyle: null,
+          accessKeyEncrypted: null,
+          secretKeyEncrypted: null,
+        });
+    } else {
+      const previous = !typeChanged
+        ? storageCreateInputSchema.parse({
+            ...previousPosition,
+            type: 's3',
+            name: config.name,
+          })
+        : null;
+      for (const field of [
+        'endpoint',
+        'region',
+        'bucket',
+        'pathPrefix',
+        'forcePathStyle',
+      ] as const) {
+        if (previous?.type === 's3' && candidate[field] !== previous[field])
+          positionChanged = true;
+      }
+      Object.assign(values, {
+        endpoint: candidate.endpoint,
+        region: candidate.region,
+        bucket: candidate.bucket,
+        pathPrefix: candidate.pathPrefix,
+        forcePathStyle: candidate.forcePathStyle,
+      });
+      if (typeChanged) Object.assign(values, { type: 's3', localPath: null });
+    }
+    if (positionChanged) requireNoStorageReferences(id, readReferences(tx, id));
+    let changed = positionChanged;
     for (const [field, column] of [
       ['accessKey', 'accessKeyEncrypted'],
       ['secretKey', 'secretKeyEncrypted'],
@@ -137,7 +230,8 @@ export function updateStorage(
     if (changed)
       Object.assign(values, {
         configRevision: config.configRevision + 1,
-        enabled: false,
+        enabled:
+          candidate.type === 's3' ? false : (input.enabled ?? config.enabled),
         connectionStatus: 'untested',
         connectionRevision: null,
         connectionTestedAt: null,
@@ -150,7 +244,7 @@ export function updateStorage(
       });
     if (input.enabled === true) {
       if (
-        config.type === 's3' &&
+        candidate.type === 's3' &&
         (changed ||
           !config.accessKeyEncrypted ||
           !config.secretKeyEncrypted ||
@@ -162,10 +256,8 @@ export function updateStorage(
           'S3 当前配置须具备完整凭据并通过连接测试后才能启用',
           id,
         );
-      if (config.type === 'local') {
-        requireLocalStorage(config);
-        prepareLocalDirectory(context.storageRoot, config.localPath);
-      }
+      if (candidate.type === 'local')
+        prepareLocalDirectory(context.storageRoot, candidate.localPath);
       values.enabled = true;
     } else if (input.enabled === false) values.enabled = false;
     return redact(

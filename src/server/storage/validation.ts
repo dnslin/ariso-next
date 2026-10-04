@@ -88,10 +88,41 @@ export const storageCreateInputSchema = z.discriminatedUnion('type', [
 ]);
 export const storageUpdateInputSchema = z
   .strictObject({
+    type: z.enum(['local', 's3']).optional(),
     name: name.optional(),
+    localPath: localPathSchema.optional(),
+    endpoint: s3EndpointSchema.optional(),
+    region: storageCreateInputSchema.options[1].shape.region.optional(),
+    bucket: storageCreateInputSchema.options[1].shape.bucket.optional(),
+    pathPrefix: s3PathPrefixSchema.optional(),
+    forcePathStyle: z.boolean().optional(),
     enabled: z.boolean().optional(),
     accessKey: secret.nullable().optional(),
     secretKey: secret.nullable().optional(),
+  })
+  .superRefine((value, ctx) => {
+    const fields =
+      value.type === 'local'
+        ? ([
+            'endpoint',
+            'region',
+            'bucket',
+            'pathPrefix',
+            'forcePathStyle',
+            'accessKey',
+            'secretKey',
+          ] as const)
+        : value.type === 's3'
+          ? (['localPath'] as const)
+          : [];
+    for (const field of fields) {
+      if (value[field] !== undefined)
+        ctx.addIssue({
+          code: 'custom',
+          path: [field],
+          message: '本地与 S3 存储字段不能混用',
+        });
+    }
   })
   .refine((value) => Object.keys(value).length > 0, '请提供要更新的字段');
 export const storageDefaultInputSchema = z.strictObject({

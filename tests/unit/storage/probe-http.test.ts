@@ -28,3 +28,20 @@ it.each([
     message: 'remote operation failed',
   });
 });
+
+it.each([502, 504, 500])('扫描错误保留真实 HTTP 状态 %s', async (status) => {
+  const response = await storageResponse(
+    new Request('http://localhost/api/storages/id', { method: 'DELETE' }),
+    () => {
+      throw Object.assign(new Error('namespace scan failed'), {
+        code: 'STORAGE_SCAN_FAILED',
+        status,
+      });
+    },
+  );
+  expect(response.status).toBe(status);
+  expect(response.headers.get('cache-control')).toBe('no-store');
+  expect((await response.json()).code).toBe(
+    status === 500 ? 'STORAGE_INTERNAL_ERROR' : 'STORAGE_SCAN_FAILED',
+  );
+});
