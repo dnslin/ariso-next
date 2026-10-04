@@ -28,7 +28,10 @@ import {
   TrashBatchWorkspaceFooter,
 } from '../../components/library/trash-batch-workspace';
 import { useLibraryBatch } from '../../components/library/use-library-batch';
-import { LibrarySelectionMenu } from '../library/library-selection-menu';
+import {
+  LibrarySelectionMenu,
+  type LibraryContextMenu,
+} from '../library/library-selection-menu';
 import { useLibrarySelection } from '../library/use-library-selection';
 import { useSelectionReconciliation } from '../library/use-selection-reconciliation';
 import { useTrashQuery } from './use-trash-query';
@@ -120,6 +123,15 @@ export function TrashScreen({
     [data],
   );
   const selection = useLibrarySelection(trashQuery, currentItems, page);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [contextMenu, setContextMenu] = useState<
+    (LibraryContextMenu & { page: number }) | null
+  >(null);
+  if (
+    contextMenu &&
+    (contextMenu.page !== page || !selection.selected.size || imageId)
+  )
+    setContextMenu(null);
   const clearSelection = selection.clear;
   const expireSession = useCallback(() => {
     clearSelection();
@@ -186,6 +198,7 @@ export function TrashScreen({
   }, [imageId, detail.isSuccess]);
 
   function openRecord(id: string) {
+    setContextMenu(null);
     triggerId.current = id;
     setResult(null);
     const url = new URL(window.location.href);
@@ -213,6 +226,31 @@ export function TrashScreen({
     );
     closeRecord();
     void client.invalidateQueries({ queryKey: ['trash'] });
+  }
+  function openContextMenu(
+    target: EventTarget | null,
+    point?: { x: number; y: number },
+  ) {
+    if (selectionDisabled || !(target instanceof Element)) return false;
+    const row = target.closest<HTMLElement>('[data-trash-image-id]');
+    const item = currentItems.find(
+      (item) => item.id === row?.dataset.trashImageId,
+    );
+    if (!item && !selection.selected.size) return false;
+    if (item && !selection.selected.has(item.id))
+      selection.selectIds([item.id]);
+    const origin =
+      row?.querySelector<HTMLElement>('[data-trash-open]') ?? listRef.current;
+    if (!origin) return false;
+    origin.focus({ preventScroll: true });
+    const rect = origin.getBoundingClientRect();
+    setContextMenu({
+      x: point?.x ?? rect.left + rect.width / 2,
+      y: point?.y ?? rect.top + Math.min(rect.height / 2, 40),
+      target: origin,
+      page,
+    });
+    return true;
   }
   const record =
     !detail.isError && !expired && !missing ? detail.data : undefined;
@@ -417,9 +455,17 @@ export function TrashScreen({
                 selection={selection}
                 loadingMode="pages"
                 disabled={selectionDisabled}
+                contextMenu={contextMenu}
+                onContextMenuClose={() => setContextMenu(null)}
                 onOpen={(id) => openRecord(id)}
-                onBatch={(_action, element) => batch.open('restore', element)}
-                onPermanentDelete={permanentBatch.open}
+                onBatch={(_action, element) => {
+                  setContextMenu(null);
+                  batch.open('restore', element);
+                }}
+                onPermanentDelete={(element) => {
+                  setContextMenu(null);
+                  permanentBatch.open(element);
+                }}
               />
             ) : (
               <Button
@@ -547,10 +593,34 @@ export function TrashScreen({
           {data?.items.length ? (
             <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 dark:bg-surface">
               <Card.Content className="p-0">
-                <ul data-testid="trash-list">
+                <ul
+                  ref={listRef}
+                  tabIndex={-1}
+                  data-testid="trash-list"
+                  onKeyDownCapture={(event) => {
+                    if (
+                      (event.key === 'ContextMenu' ||
+                        (event.shiftKey && event.key === 'F10')) &&
+                      openContextMenu(event.target)
+                    ) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                  }}
+                  onContextMenu={(event) => {
+                    if (
+                      openContextMenu(event.target, {
+                        x: event.clientX,
+                        y: event.clientY,
+                      })
+                    )
+                      event.preventDefault();
+                  }}
+                >
                   {data.items.map((item) => (
                     <li
                       key={item.id}
+                      data-trash-image-id={item.id}
                       data-selected={
                         selection.selected.has(item.id) || undefined
                       }
@@ -583,6 +653,7 @@ export function TrashScreen({
                         variant="ghost"
                         data-testid={`trash-record-${item.id}`}
                         id={`trash-record-${item.id}`}
+                        data-trash-open
                         isDisabled={
                           batch.pending ||
                           batch.unresolved ||

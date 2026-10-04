@@ -1,0 +1,29 @@
+Already up to date
+Done in 100ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso
+
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 55852ms
+   ❯ real SVG image asset (1)
+     × composites the admitted asset at the configured size 7709ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > real SVG image asset > composites the admitted asset at the configured size
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/watermark.test.ts:690:3
+    688|     expect(mark.format).toBe(format);
+    689|   });
+    690|   it('composites the admitted asset at the configured size', async () …
+       |   ^
+    691|     const result = await watermark(
+    692|       await readFile(await image(['-size', '200x100', 'xc:white'])),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 43 passed (44)
+   Start at  15:58:11
+   Duration  92.74s (tests 96%, import 3%, transform 1%)

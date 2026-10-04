@@ -1,0 +1,65 @@
+Already up to date
+Done in 62ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso
+
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 58689ms
+   ❯ real SVG image asset (1)
+     × composites the admitted asset at the configured size 9131ms
+ ❯ |media-tools| tests/integration/media/preview-http.test.ts (6 tests | 1 failed) 18796ms
+   × renders unsaved parameters and original bytes privately without changing settings or the library 5110ms
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 56816ms
+   × keeps old HTTP links readable throughout ready processing and publishes all selected references together 5272ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview-http.test.ts > renders unsaved parameters and original bytes privately without changing settings or the library
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/preview-http.test.ts:208:1
+    206| });
+    207|
+    208| it('renders unsaved parameters and original bytes privately without ch…
+       | ^
+    209|   const saved = requireMediaSettings(connection!.db);
+    210|   const bytes = await readFile(join(fixtures, 'source.png'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > keeps old HTTP links readable throughout ready processing and publishes all selected references together
+SqliteError: database is locked
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ acceptOriginal src/server/media/images.ts:68:6
+     66|       updatedAt: now,
+     67|     })
+     68|     .run();
+       |      ^
+     69|   const objectId = randomUUID();
+     70|   tx.insert(mediaObjects)
+ ❯ sqliteTransaction.<anonymous> tests/integration/media/reprocess-http.test.ts:146:5
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ tests/integration/media/reprocess-http.test.ts:145:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > real SVG image asset > composites the admitted asset at the configured size
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/watermark.test.ts:690:3
+    688|     expect(mark.format).toBe(format);
+    689|   });
+    690|   it('composites the admitted asset at the configured size', async () …
+       |   ^
+    691|     const result = await watermark(
+    692|       await readFile(await image(['-size', '200x100', 'xc:white'])),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed | 12 passed (15)
+      Tests  3 failed | 109 passed (112)
+   Start at  15:53:01
+   Duration  145.36s (tests 97%, import 2%)

@@ -22,7 +22,7 @@ export interface LibraryContextMenu {
   target: HTMLElement;
 }
 
-type SelectionBatchAction = BatchAction | 'reprocess';
+type SelectionBatchAction = BatchAction | 'reprocess' | 'copy';
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
@@ -90,6 +90,7 @@ export function LibrarySelectionMenu({
           'public',
           'private',
           'reprocess',
+          'copy',
           'trash',
         ];
   const pages = Math.max(1, Math.ceil(total / 20));
@@ -234,12 +235,20 @@ export function LibrarySelectionMenu({
                     key={action}
                     id={action}
                     textValue={
-                      action === 'reprocess' ? '重新处理' : batchLabels[action]
+                      action === 'reprocess'
+                        ? '重新处理'
+                        : action === 'copy'
+                          ? '复制链接'
+                          : batchLabels[action]
                     }
                     isDisabled={disabled}
                     className="min-h-11 xl:min-h-9"
                   >
-                    {action === 'reprocess' ? '重新处理' : batchLabels[action]}
+                    {action === 'reprocess'
+                      ? '重新处理'
+                      : action === 'copy'
+                        ? '复制链接'
+                        : batchLabels[action]}
                   </Dropdown.Item>
                 ))
               : null}

@@ -1,0 +1,640 @@
+{
+  "status": "passed",
+  "phase": "feedback",
+  "taskSpaceId": 21,
+  "origin": "http://ariso-51405.localhost:51405",
+  "checks": [
+    "201 selections survive pages; real responses reversed within every chunk merge by full query order including equal keys; native URL pasteboard exact; private/failed remain available, disabled storage excluded, no image GET or count/probe writes.",
+    "Chromium denies the actual native Clipboard write; all 200 HTML lines stay selected and focused; Command+C copies the exact full text, including mobile visual wrapping; result says generated rather than copied.",
+    "All unavailable writes nothing and preserves the pasteboard; real-response HTTP failure retains an actionable error and retries independently of empty results.",
+    "Album copies follow joined_at rather than upload or selection order; 401 clears private copy/selection surfaces and returns to login."
+  ],
+  "layouts": [
+    {
+      "state": "all-unavailable",
+      "theme": "light",
+      "screenshot": "library-copy-all-unavailable-light-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 288,
+        "width": 358,
+        "height": 268,
+        "top": 288,
+        "right": 374,
+        "bottom": 556,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "返回已选清单",
+          "x": 41,
+          "y": 483,
+          "width": 308,
+          "height": 48,
+          "top": 483,
+          "right": 349,
+          "bottom": 531,
+          "left": 41
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "all-unavailable",
+      "theme": "light",
+      "screenshot": "library-copy-all-unavailable-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 480,
+        "y": 406,
+        "width": 480,
+        "height": 268,
+        "top": 406,
+        "right": 960,
+        "bottom": 674,
+        "left": 480
+      },
+      "controls": [
+        {
+          "name": "返回已选清单",
+          "x": 505,
+          "y": 601,
+          "width": 430,
+          "height": 48,
+          "top": 601,
+          "right": 935,
+          "bottom": 649,
+          "left": 505
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "all-unavailable",
+      "theme": "dark",
+      "screenshot": "library-copy-all-unavailable-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 288,
+        "width": 358,
+        "height": 268,
+        "top": 288,
+        "right": 374,
+        "bottom": 556,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "返回已选清单",
+          "x": 41,
+          "y": 483,
+          "width": 308,
+          "height": 48,
+          "top": 483,
+          "right": 349,
+          "bottom": 531,
+          "left": 41
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "all-unavailable",
+      "theme": "dark",
+      "screenshot": "library-copy-all-unavailable-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 480,
+        "y": 406,
+        "width": 480,
+        "height": 268,
+        "top": 406,
+        "right": 960,
+        "bottom": 674,
+        "left": 480
+      },
+      "controls": [
+        {
+          "name": "返回已选清单",
+          "x": 505,
+          "y": 601,
+          "width": 430,
+          "height": 48,
+          "top": 601,
+          "right": 935,
+          "bottom": 649,
+          "left": 505
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "http-error",
+      "theme": "light",
+      "screenshot": "library-copy-http-error-light-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 129.5,
+        "width": 358,
+        "height": 585,
+        "top": 129.5,
+        "right": 374,
+        "bottom": 714.5,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "关闭批量复制",
+          "x": 305,
+          "y": 154.5,
+          "width": 44,
+          "height": 44,
+          "top": 154.5,
+          "right": 349,
+          "bottom": 198.5,
+          "left": 305
+        },
+        {
+          "name": "默认链接",
+          "x": 41,
+          "y": 354.5,
+          "width": 308,
+          "height": 48,
+          "top": 354.5,
+          "right": 349,
+          "bottom": 402.5,
+          "left": 41
+        },
+        {
+          "name": "选择批量复制格式",
+          "x": 41,
+          "y": 522.5,
+          "width": 308,
+          "height": 48,
+          "top": 522.5,
+          "right": 349,
+          "bottom": 570.5,
+          "left": 41
+        },
+        {
+          "name": "返回",
+          "x": 41,
+          "y": 641.5,
+          "width": 308,
+          "height": 48,
+          "top": 641.5,
+          "right": 349,
+          "bottom": 689.5,
+          "left": 41
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "http-error",
+      "theme": "light",
+      "screenshot": "library-copy-http-error-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 480,
+        "y": 257.25,
+        "width": 480,
+        "height": 565.5,
+        "top": 257.25,
+        "right": 960,
+        "bottom": 822.75,
+        "left": 480
+      },
+      "controls": [
+        {
+          "name": "关闭批量复制",
+          "x": 891,
+          "y": 282.25,
+          "width": 44,
+          "height": 44,
+          "top": 282.25,
+          "right": 935,
+          "bottom": 326.25,
+          "left": 891
+        },
+        {
+          "name": "默认链接",
+          "x": 505,
+          "y": 462.75,
+          "width": 430,
+          "height": 48,
+          "top": 462.75,
+          "right": 935,
+          "bottom": 510.75,
+          "left": 505
+        },
+        {
+          "name": "选择批量复制格式",
+          "x": 505,
+          "y": 630.75,
+          "width": 430,
+          "height": 48,
+          "top": 630.75,
+          "right": 935,
+          "bottom": 678.75,
+          "left": 505
+        },
+        {
+          "name": "返回",
+          "x": 505,
+          "y": 749.75,
+          "width": 430,
+          "height": 48,
+          "top": 749.75,
+          "right": 935,
+          "bottom": 797.75,
+          "left": 505
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "http-error",
+      "theme": "dark",
+      "screenshot": "library-copy-http-error-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 129.5,
+        "width": 358,
+        "height": 585,
+        "top": 129.5,
+        "right": 374,
+        "bottom": 714.5,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "关闭批量复制",
+          "x": 305,
+          "y": 154.5,
+          "width": 44,
+          "height": 44,
+          "top": 154.5,
+          "right": 349,
+          "bottom": 198.5,
+          "left": 305
+        },
+        {
+          "name": "默认链接",
+          "x": 41,
+          "y": 354.5,
+          "width": 308,
+          "height": 48,
+          "top": 354.5,
+          "right": 349,
+          "bottom": 402.5,
+          "left": 41
+        },
+        {
+          "name": "选择批量复制格式",
+          "x": 41,
+          "y": 522.5,
+          "width": 308,
+          "height": 48,
+          "top": 522.5,
+          "right": 349,
+          "bottom": 570.5,
+          "left": 41
+        },
+        {
+          "name": "返回",
+          "x": 41,
+          "y": 641.5,
+          "width": 308,
+          "height": 48,
+          "top": 641.5,
+          "right": 349,
+          "bottom": 689.5,
+          "left": 41
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "http-error",
+      "theme": "dark",
+      "screenshot": "library-copy-http-error-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 480,
+        "y": 257.25,
+        "width": 480,
+        "height": 565.5,
+        "top": 257.25,
+        "right": 960,
+        "bottom": 822.75,
+        "left": 480
+      },
+      "controls": [
+        {
+          "name": "关闭批量复制",
+          "x": 891,
+          "y": 282.25,
+          "width": 44,
+          "height": 44,
+          "top": 282.25,
+          "right": 935,
+          "bottom": 326.25,
+          "left": 891
+        },
+        {
+          "name": "默认链接",
+          "x": 505,
+          "y": 462.75,
+          "width": 430,
+          "height": 48,
+          "top": 462.75,
+          "right": 935,
+          "bottom": 510.75,
+          "left": 505
+        },
+        {
+          "name": "选择批量复制格式",
+          "x": 505,
+          "y": 630.75,
+          "width": 430,
+          "height": 48,
+          "top": 630.75,
+          "right": 935,
+          "bottom": 678.75,
+          "left": 505
+        },
+        {
+          "name": "返回",
+          "x": 505,
+          "y": 749.75,
+          "width": 430,
+          "height": 48,
+          "top": 749.75,
+          "right": 935,
+          "bottom": 797.75,
+          "left": 505
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "album-result",
+      "theme": "light",
+      "screenshot": "library-copy-album-result-light-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 88,
+        "width": 358,
+        "height": 398,
+        "top": 88,
+        "right": 374,
+        "bottom": 486,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "返回相册内容",
+          "x": 16,
+          "y": 88,
+          "width": 108,
+          "height": 44,
+          "top": 88,
+          "right": 124,
+          "bottom": 132,
+          "left": 16
+        },
+        {
+          "name": "返回已选清单",
+          "x": 16,
+          "y": 776,
+          "width": 173,
+          "height": 48,
+          "top": 776,
+          "right": 189,
+          "bottom": 824,
+          "left": 16
+        },
+        {
+          "name": "重新复制",
+          "x": 201,
+          "y": 776,
+          "width": 173,
+          "height": 48,
+          "top": 776,
+          "right": 374,
+          "bottom": 824,
+          "left": 201
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "album-result",
+      "theme": "light",
+      "screenshot": "library-copy-album-result-light-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 264,
+        "y": 28,
+        "width": 1144,
+        "height": 445,
+        "top": 28,
+        "right": 1408,
+        "bottom": 473,
+        "left": 264
+      },
+      "controls": [
+        {
+          "name": "返回相册内容",
+          "x": 264,
+          "y": 28,
+          "width": 104,
+          "height": 44,
+          "top": 28,
+          "right": 368,
+          "bottom": 72,
+          "left": 264
+        },
+        {
+          "name": "返回已选清单",
+          "x": 996,
+          "y": 1012,
+          "width": 200,
+          "height": 48,
+          "top": 1012,
+          "right": 1196,
+          "bottom": 1060,
+          "left": 996
+        },
+        {
+          "name": "重新复制",
+          "x": 1208,
+          "y": 1012,
+          "width": 200,
+          "height": 48,
+          "top": 1012,
+          "right": 1408,
+          "bottom": 1060,
+          "left": 1208
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "album-result",
+      "theme": "dark",
+      "screenshot": "library-copy-album-result-dark-390.png",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "surface": {
+        "x": 16,
+        "y": 88,
+        "width": 358,
+        "height": 398,
+        "top": 88,
+        "right": 374,
+        "bottom": 486,
+        "left": 16
+      },
+      "controls": [
+        {
+          "name": "返回相册内容",
+          "x": 16,
+          "y": 88,
+          "width": 108,
+          "height": 44,
+          "top": 88,
+          "right": 124,
+          "bottom": 132,
+          "left": 16
+        },
+        {
+          "name": "返回已选清单",
+          "x": 16,
+          "y": 776,
+          "width": 173,
+          "height": 48,
+          "top": 776,
+          "right": 189,
+          "bottom": 824,
+          "left": 16
+        },
+        {
+          "name": "重新复制",
+          "x": 201,
+          "y": 776,
+          "width": 173,
+          "height": 48,
+          "top": 776,
+          "right": 374,
+          "bottom": 824,
+          "left": 201
+        }
+      ],
+      "focusedWithin": true
+    },
+    {
+      "state": "album-result",
+      "theme": "dark",
+      "screenshot": "library-copy-album-result-dark-1440.png",
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "surface": {
+        "x": 264,
+        "y": 28,
+        "width": 1144,
+        "height": 445,
+        "top": 28,
+        "right": 1408,
+        "bottom": 473,
+        "left": 264
+      },
+      "controls": [
+        {
+          "name": "返回相册内容",
+          "x": 264,
+          "y": 28,
+          "width": 104,
+          "height": 44,
+          "top": 28,
+          "right": 368,
+          "bottom": 72,
+          "left": 264
+        },
+        {
+          "name": "返回已选清单",
+          "x": 996,
+          "y": 1012,
+          "width": 200,
+          "height": 48,
+          "top": 1012,
+          "right": 1196,
+          "bottom": 1060,
+          "left": 996
+        },
+        {
+          "name": "重新复制",
+          "x": 1208,
+          "y": 1012,
+          "width": 200,
+          "height": 48,
+          "top": 1012,
+          "right": 1408,
+          "bottom": 1060,
+          "left": 1208
+        }
+      ],
+      "focusedWithin": true
+    }
+  ],
+  "clipboard": [
+    {
+      "manual": true,
+      "fullSelection": true,
+      "length": 19825,
+      "exactNativeCopy": true
+    }
+  ],
+  "limitations": [
+    "Real Ego Chromium and macOS pasteboard; physical phones, software keyboards and Release containers were not exercised.",
+    "HTTP failure is injected at the browser transport boundary after a real server response; 401 revokes only the disposable database sessions; permission denial uses Chromium native permission enforcement."
+  ],
+  "stage": "complete",
+  "unauthorized": {
+    "status": 401,
+    "code": "UNAUTHORIZED",
+    "cacheControl": "no-store",
+    "writes": 0
+  },
+  "errors": [],
+  "clipboardRestored": true,
+  "finishedAt": "2026-10-04T08:12:26.637Z"
+}

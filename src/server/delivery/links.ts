@@ -57,7 +57,12 @@ export function buildImageUrl(
 }
 
 export function resolveImageVersion(
-  state: NonNullable<ReturnType<typeof getImageAccessState>>,
+  state: {
+    versions: Pick<
+      NonNullable<ReturnType<typeof getImageAccessState>>['versions'][number],
+      'kind' | 'applicable' | 'saved'
+    >[];
+  },
   selectedVersion: VersionKind | undefined,
   defaultVersion: VersionKind,
 ) {
@@ -77,4 +82,39 @@ export function resolveImageVersion(
 /** Management preview never reuses a public image URL. */
 export function buildTrashPreviewPath(imageId: string, version: VersionKind) {
   return `/api/trash/${encodeURIComponent(imageId)}/preview?type=${version}`;
+}
+
+function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"'\r\n]/g,
+    (character) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '\n': '&#10;',
+        '\r': '&#13;',
+      })[character]!,
+  );
+}
+
+/** One escaped line per image, shared by detail and batch copy. */
+export function buildImageLinks(
+  publicUrl: string,
+  imageId: string,
+  displayName: string,
+  selectedVersion?: VersionKind,
+) {
+  const url = buildImageUrl(publicUrl, imageId, selectedVersion);
+  const alt = displayName
+    .replace(/[\\[\]`*_{}()!<>]/g, '\\$&')
+    .replace(/[\r\n]/g, ' ');
+  return {
+    url,
+    markdown: `![${alt}](<${url.replace(/[<>]/g, (character) => encodeURIComponent(character))}>)`,
+    html: `<img src="${escapeHtml(url)}" alt="${escapeHtml(displayName)}">`,
+    downloadUrl: buildImageUrl(publicUrl, imageId, selectedVersion, true),
+  };
 }

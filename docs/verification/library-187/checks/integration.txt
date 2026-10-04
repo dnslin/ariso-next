@@ -1,0 +1,392 @@
+Already up to date
+Done in 42ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso
+
+ ❯ |integration| tests/integration/delivery/local-http.test.ts (5 tests | 5 failed) 638ms
+   × delivers exact bytes and real HEAD, conditions, Range and attachment responses 194ms
+   × reads current default, rejects missing versions and never exposes private state to other credentials 124ms
+   × rechecks lifecycle, storage and actual files before evaluating conditions 108ms
+   × returns explicit no-store method and parameter errors through Next HTTP 104ms
+   × serves authenticated trash previews while public URLs and alternate credentials remain denied 106ms
+ ❯ |integration| tests/integration/identity/setup.test.ts (28 tests | 1 failed) 93183ms
+   × restart preserves changed site/media settings and a deliberately deleted default storage 19241ms
+ ❯ |integration| tests/integration/delivery/s3.test.ts (4 tests | 4 skipped) 117ms
+ ❯ |integration| tests/integration/runtime/logging.test.ts (3 tests | 3 skipped) 4ms
+ ❯ |integration| tests/integration/library/trash.test.ts (5 tests | 1 failed) 15398ms
+   ❯ owner-only trash HTTP (1)
+     × rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 15114ms
+ ❯ |integration| tests/integration/runtime/health.test.ts (4 tests | 4 skipped) 15ms
+ ❯ |integration| tests/integration/collections/tag-http.test.ts (1 test | 1 failed) 15048ms
+   × requires owner sessions and write origins, exposes Unicode CRUD results, and retains real database errors 15047ms
+ ❯ |integration| tests/integration/identity/m1-gate.test.ts (1 test | 1 failed) 15024ms
+   × M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes 15023ms
+ ❯ |integration| tests/integration/library/batch-http.test.ts (1 test | 1 failed) 15028ms
+   × handles real owner-cookie batch HTTP, origin checks, mixed outcomes and read-only recovery after a lost response 15027ms
+{"time":"2026-10-04T07:47:04.277Z","level":"info","module":"identity.setup","event":"setup-code","code":"RpUPLcPfGfirAVmUlZVlehIQyUT8oveX","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-04T07:47:04.384Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-04T07:47:04.982Z","level":"info","module":"identity.setup","event":"setup-code","code":"n3mvIUj6d9Jixd3JaYd6Sim0WvvQIJRl","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-04T07:47:04.989Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-XDqgax/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-04T07:47:04.994Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-04T07:47:05.494Z","level":"info","module":"identity.setup","event":"setup-code","code":"LMX3oUJnhiKcvPiYSBr5Pa0sbBp3lfZN","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-04T07:47:05.556Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/library/copy-http.test.ts (1 test | 1 failed) 15045ms
+   × generates real copy lines only for owner-cookie same-origin requests, preserving per-item failure and no-store errors 15044ms
+ ❯ |integration| tests/integration/runtime/standalone.test.ts (9 tests | 9 failed) 93945ms
+   ❯ isolated production directory (9)
+     × 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码 151ms
+     × 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录 49ms
+     × 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源 15011ms
+     × 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源 15013ms
+     × 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 15004ms
+     × HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 15005ms
+     × 标准 Next 收到 SIGTERM 后停止队列并关闭数据库，以 143 退出 15005ms
+     × 标准 Next 收到 SIGINT 后停止队列并关闭数据库，以 130 退出 15005ms
+     × prestart 配置失败时非零退出且不监听 Web 端口 12ms
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 49997ms
+   ❯ real SVG image asset (1)
+     × composites the admitted asset at the configured size 7953ms
+ ❯ |media-tools| tests/integration/media/preview-http.test.ts (6 tests | 6 skipped) 15040ms
+ ❯ |media-tools| tests/integration/media/metadata-http.test.ts (6 tests | 1 failed) 23338ms
+   × requires the owner Cookie and saved origin before accepting a metadata reread 15025ms
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 32681ms
+   × requires the owner Cookie and saved Origin and creates no job for denied requests 15034ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/delivery/s3.test.ts [ tests/integration/delivery/s3.test.ts ]
+Error: Delivery server did not become healthy: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ launchS3Delivery tests/integration/delivery/s3-fixture.ts:119:15
+    117|           .logs()
+    118|           .replace(/("code"\s*:\s*")[^"]+/g, '$1[redacted]');
+    119|         throw new Error(`Delivery server did not become healthy: ${log…
+       |               ^
+    120|       }
+    121|       try {
+ ❯ launchProtocolDelivery tests/integration/delivery/s3-fixture.ts:325:11
+ ❯ tests/integration/delivery/s3.test.ts:16:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts [ tests/integration/runtime/health.test.ts ]
+Error: ENOENT: no such file or directory, lstat '/Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone'
+ ❯ tests/integration/runtime/health.test.ts:23:3
+     21|   directory = await mkdtemp(join(tmpdir(), 'ariso-health-'));
+     22|   app = join(directory, 'app');
+     23|   await cp(resolve('.next/standalone'), app, {
+       |   ^
+     24|     recursive: true,
+     25|     verbatimSymlinks: true,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/logging.test.ts [ tests/integration/runtime/logging.test.ts ]
+Error: ENOENT: no such file or directory, lstat '/Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone'
+ ❯ tests/integration/runtime/logging.test.ts:15:3
+     13|   directory = await mkdtemp(join(tmpdir(), 'ariso-logging-'));
+     14|   app = join(directory, 'production');
+     15|   await cp(resolve('.next/standalone'), app, {
+       |   ^
+     16|     recursive: true,
+     17|     verbatimSymlinks: true,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  |media-tools| tests/integration/media/preview-http.test.ts [ tests/integration/media/preview-http.test.ts ]
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/media/preview-http.test.ts:73:54
+     71|   await vi.waitFor(
+     72|     async () => {
+     73|       expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                      ^
+     74|       expect((await request('/api/health')).status).toBe(200);
+     75|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 23 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/collections/tag-http.test.ts > requires owner sessions and write origins, exposes Unicode CRUD results, and retains real database errors
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/collections/tag-http.test.ts:21:51
+     19|     await vi.waitFor(
+     20|       async () => {
+     21|         if (server.child.exitCode !== null) throw new Error(server.log…
+       |                                                   ^
+     22|         expect((await fetch(`${origin}/api/health`)).status).toBe(200);
+     23|       },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  |integration| tests/integration/delivery/local-http.test.ts > delivers exact bytes and real HEAD, conditions, Range and attachment responses
+ FAIL  |integration| tests/integration/delivery/local-http.test.ts > reads current default, rejects missing versions and never exposes private state to other credentials
+ FAIL  |integration| tests/integration/delivery/local-http.test.ts > rechecks lifecycle, storage and actual files before evaluating conditions
+ FAIL  |integration| tests/integration/delivery/local-http.test.ts > returns explicit no-store method and parameter errors through Next HTTP
+ FAIL  |integration| tests/integration/delivery/local-http.test.ts > serves authenticated trash previews while public URLs and alternate credentials remain denied
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ launchLocalDelivery tests/integration/delivery/local-fixture.ts:43:15
+     41|     while (true) {
+     42|       if (server.child.exitCode !== null || Date.now() > deadline)
+     43|         throw new Error(server.logs());
+       |               ^
+     44|       try {
+     45|         if (
+ ❯ tests/integration/delivery/local-http.test.ts:20:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  |integration| tests/integration/identity/m1-gate.test.ts > M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/identity/m1-gate.test.ts:48:58
+     46|       await vi.waitFor(
+     47|         async () => {
+     48|           expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                          ^
+     49|           const response = await request('/api/health');
+     50|           expect(response.status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  |integration| tests/integration/identity/setup.test.ts > restart preserves changed site/media settings and a deliberately deleted default storage
+Error: node:internal/modules/cjs/loader:1554
+  const err = new Error(`Cannot find module '${request}'`);
+              ^
+
+Error: Cannot find module '/Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/@swc/helpers/esm/_interop_require_default.js'
+    at createEsmNotFoundErr (node:internal/modules/cjs/loader:1554:15)
+    at finalizeEsmResolution (node:internal/modules/cjs/loader:1543:9)
+    at resolveExports (node:internal/modules/cjs/loader:707:14)
+    at Module._findPath (node:internal/modules/cjs/loader:774:31)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1502:27)
+    at /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/server/require-hook.js:68:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+    at Module._load (node:internal/modules/cjs/loader:1294:5) {
+  code: 'MODULE_NOT_FOUND',
+  path: '/Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/@swc/helpers'
+}
+
+Node.js v24.18.1
+
+ ❯ .next/standalone/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/server/require-hook.js:68:36
+ ❯ vi.waitFor.timeout tests/integration/identity/setup.test.ts:57:49
+     55|   await vi.waitFor(
+     56|     async () => {
+     57|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     58|       expect((await request('/api/health')).status).toBe(200);
+     59|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  |integration| tests/integration/library/batch-http.test.ts > handles real owner-cookie batch HTTP, origin checks, mixed outcomes and read-only recovery after a lost response
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/library/batch-http.test.ts:25:51
+     23|     await vi.waitFor(
+     24|       async () => {
+     25|         if (server.child.exitCode !== null) throw new Error(server.log…
+       |                                                   ^
+     26|         expect((await fetch(`${origin}/api/health`)).status).toBe(200);
+     27|       },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  |integration| tests/integration/library/copy-http.test.ts > generates real copy lines only for owner-cookie same-origin requests, preserving per-item failure and no-store errors
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/library/copy-http.test.ts:29:51
+     27|     await vi.waitFor(
+     28|       async () => {
+     29|         if (server.child.exitCode !== null) throw new Error(server.log…
+       |                                                   ^
+     30|         expect((await fetch(`${origin}/api/health`)).status).toBe(200);
+     31|       },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  |integration| tests/integration/library/trash.test.ts > owner-only trash HTTP > rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/library/trash.test.ts:211:53
+    209|       await vi.waitFor(
+    210|         async () => {
+    211|           if (server.child.exitCode !== null) throw new Error(server.l…
+       |                                                     ^
+    212|           expect((await fetch(`${origin}/api/health`)).status).toBe(20…
+    213|         },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码
+AssertionError: expected [ '.next', 'node_modules', …(5606) ] to include 'entrypoint.sh'
+ ❯ tests/integration/runtime/standalone.test.ts:37:21
+     35|       'verification/fixtures/sample.png',
+     36|     ]) {
+     37|       expect(files).toContain(file);
+       |                     ^
+     38|     }
+     39|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录
+AssertionError: expected 'node:internal/modules/cjs/loader:1520…' to contain 'magick'
+
+- Expected
++ Received
+
+- magick
++ node:internal/modules/cjs/loader:1520
++   throw err;
++   ^
++
++ Error: Cannot find module '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-PfJu49/app/scripts/verify-image.mjs'
++     at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
++     at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
++     at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
++     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
++     at Module._load (node:internal/modules/cjs/loader:1294:5)
++     at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
++     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
++     at node:internal/main/run_main_module:33:47 {
++   code: 'MODULE_NOT_FOUND',
++   requireStack: []
++ }
++
++ Node.js v24.18.1
+
+ ❯ tests/integration/runtime/standalone.test.ts:78:27
+     76|     );
+     77|     expect(result.exitCode).not.toBe(0);
+     78|     expect(result.stderr).toContain('magick');
+       |                           ^
+     79|     expect(result.stderr).toContain('ENOENT');
+     80|     expect(result.stdout).toContain(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源
+Error: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-PfJu49/app/entrypoint.sh: No such file or directory
+
+ ❯ tests/integration/runtime/standalone.test.ts:121:12
+    119|             { timeout: 15000 },
+    120|           )
+    121|           .toBe(200);
+       |            ^
+    122|         const health = await fetch(`${origin}/api/health`);
+    123|         expect(await health.json()).toEqual({ status: 'ok' });
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ tests/integration/runtime/standalone.test.ts:109:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 标准 Next 收到 SIGTERM 后停止队列并关闭数据库，以 143 退出
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > 标准 Next 收到 SIGINT 后停止队列并关闭数据库，以 130 退出
+Error: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-PfJu49/app/entrypoint.sh: No such file or directory
+
+ ❯ tests/integration/runtime/standalone.test.ts:200:12
+    198|             { timeout: 15000 },
+    199|           )
+    200|           .toBe(200);
+       |            ^
+    201|         run.child.kill(requestedSignal);
+    202|         const [code, signal] = await run.closed;
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ tests/integration/runtime/standalone.test.ts:187:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  |integration| tests/integration/runtime/standalone.test.ts > isolated production directory > prestart 配置失败时非零退出且不监听 Web 端口
+AssertionError: sh: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-standalone-PfJu49/app/entrypoint.sh: No such file or directory
+: expected 127 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 127
+
+ ❯ tests/integration/runtime/standalone.test.ts:222:32
+    220|     try {
+    221|       const [code] = await run.closed;
+    222|       expect(code, run.logs()).toBe(1);
+       |                                ^
+    223|       expect(run.logs()).toContain('prestart failed:');
+    224|       expect(run.logs()).toContain('HOST');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata-http.test.ts > requires the owner Cookie and saved origin before accepting a metadata reread
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/media/metadata-http.test.ts:42:49
+     40|   await vi.waitFor(
+     41|     async () => {
+     42|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     43|       const response = await fetch(
+     44|         `http://127.0.0.1:${server.port}/api/health`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/27]⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > requires the owner Cookie and saved Origin and creates no job for denied requests
+Error: sh: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/media/reprocess-http.test.ts:41:49
+     39|   await vi.waitFor(
+     40|     async () => {
+     41|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     42|       expect(
+     43|         (
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/27]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > real SVG image asset > composites the admitted asset at the configured size
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/watermark.test.ts:690:3
+    688|     expect(mark.format).toBe(format);
+    689|   });
+    690|   it('composites the admitted asset at the configured size', async () …
+       |   ^
+    691|     const result = await watermark(
+    692|       await readFile(await image(['-size', '200x100', 'xc:white'])),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/27]⎯
+
+
+ Test Files  15 failed | 123 passed (138)
+      Tests  23 failed | 1296 passed | 17 skipped (1336)
+   Start at  15:44:39
+   Duration  385.68s (tests 95%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.

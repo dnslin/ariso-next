@@ -1,0 +1,14 @@
+ElementResolutionError: page.hover timed out after 3000ms: Selector [data-image-id="issue177-199"] [data-library-open] matched 0 elements
+    at #retryElementAction (file:////[eval1]:18884:27)
+    at async file:////[eval1]:18968:29
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:363:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:494:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/docs/verification/library-187/browser/full-r4

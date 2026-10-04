@@ -1,0 +1,39 @@
+服务端聚焦验证（从本轮已捕获命令输出整理，未重复执行）
+工作目录：/Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso
+Node：v24.18.1
+pnpm：11.19.0
+每条命令使用 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
+
+pnpm exec tsc --noEmit --project tsconfig.runtime.json
+结果：exit 0，无诊断输出（新增 copy/links/detail 后运行）。
+
+pnpm exec vitest run --project integration tests/integration/library/copy.test.ts
+第一次结果：exit 0；Test Files 1 passed (1)，Tests 10 passed (10)，Duration 1.09s。
+提取 imageVersionApplicable 并限定非法ID异常后重跑：exit 0；Test Files 1 passed (1)，Tests 10 passed (10)，Duration 1.01s。
+覆盖：205项跨200请求合并四种排序/同值ID；相册加入顺序；标签和当前查询归属；私有/failed权限说明；停用、缺失、回收、删除、writing版本逐项排除；默认仅不适用回原图；显式不回退；URL/Markdown/HTML ×默认/四版本；名称转义；结构/失效引用；200项固定4次SELECT、零fetch和无写入。
+
+pnpm exec eslint src/server/library/copy.ts src/server/library/copy-types.ts src/server/library/detail.ts src/server/media/images.ts src/server/delivery/links.ts src/app/api/images/copy/route.ts tests/integration/library/copy.test.ts --max-warnings=0
+结果：exit 0，无诊断输出。
+
+pnpm exec eslint tests/integration/library/copy-http.test.ts --max-warnings=0
+结果：exit 0，无诊断输出。
+
+pnpm exec tsc --noEmit --project tsconfig.json
+结果：exit 0，无诊断输出（包括新增copy-http测试类型）。
+
+pnpm exec vitest run --project unit tests/unit/delivery/resolve.test.ts
+结果：exit 0；Test Files 1 passed (1)，Tests 25 passed (25)，Duration 331ms。
+覆盖既有默认/显式版本解析和图片请求参数规则，确保 resolver 接口收窄不改变行为。
+
+HTTP测试：按主agent统一执行完整 integration 的安排，本agent没有执行 copy-http 和 detail HTTP，不标记通过。
+整体检查与构建由主agent执行并保留其他日志。
+
+补充边界修复：显式请求不适用版本，但数据库仍有其已存字节。
+仅修改 copy.ts：显式路径 applicable===false 返回“此图片不适用该版本”；默认仍由既有 delivery resolver 回 original，未改变 delivery 单图行为。
+pnpm exec vitest run --project integration tests/integration/library/copy.test.ts
+修复前：exit 1，10 passed / 1 failed，旧代码输出 animated compressed URL。原输出 server-inapplicable-before.txt。
+修复后：exit 0，11 passed，新增 compressed/watermark 两显式及两默认断言。原输出 server-inapplicable-after.txt。
+pnpm exec eslint src/server/library/copy.ts tests/integration/library/copy.test.ts --max-warnings=0
+pnpm exec tsc --noEmit --project tsconfig.runtime.json
+pnpm exec tsc --noEmit --project tsconfig.json
+以上三条修复后命令均 exit 0，无诊断输出。

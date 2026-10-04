@@ -35,6 +35,7 @@ assert.ok(
     'copy-dropdown',
     'library-batch',
     'library-reprocess',
+    'library-copy',
     'storage-admin',
     'trash',
   ].includes(suite),
@@ -56,6 +57,8 @@ assert.ok(
         'deleted-source',
         'pending-navigation',
       ].includes(only)) ||
+    (suite === 'library-copy' &&
+      ['representative', 'feedback', 'revision'].includes(only)) ||
     (suite === 'trash' &&
       [
         'representative',
@@ -114,6 +117,8 @@ for (const name of [
   'trash-cleanup.json',
   'library-reprocess.json',
   'library-reprocess-failure.png',
+  'library-copy.json',
+  'library-copy-failure.png',
   'library-filters.json',
   'library-scale.json',
   'albums.json',
@@ -247,7 +252,7 @@ async function runBrowser(script, browserConfig, logName) {
     await writeFile(join(output, logName), safeLogs);
   }
 }
-if (only === 'feedback') {
+if (suite === 'storage-admin' && only === 'feedback') {
   try {
     assert.ok(values['preview-config'], 'Feedback requires --preview-config');
     const preview = JSON.parse(
@@ -504,6 +509,7 @@ try {
       phase: suite === 'copy-dropdown' ? 'green' : undefined,
       viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
       viewerCheck: suite === 'viewer' ? only : undefined,
+      libraryCopyPhase: suite === 'library-copy' ? only : undefined,
       storageNavigation: suite === 'storage-admin' && only === undefined,
     };
     if (suite === 'storage-admin' && only === 'live') {
@@ -627,15 +633,17 @@ try {
                     ]
                   : suite === 'library-reprocess'
                     ? [['library-batch-reprocess', 'libraryReprocess']]
-                    : suite === 'upload'
-                      ? [
-                          ['upload-submissions', 'uploadSubmissions'],
-                          ['upload-relations', 'uploadRelations'],
-                        ]
-                      : [
-                          ['upload', 'upload'],
-                          ['upload-polling', 'uploadPolling'],
-                        ];
+                    : suite === 'library-copy'
+                      ? [['library-copy', 'libraryCopy']]
+                      : suite === 'upload'
+                        ? [
+                            ['upload-submissions', 'uploadSubmissions'],
+                            ['upload-relations', 'uploadRelations'],
+                          ]
+                        : [
+                            ['upload', 'upload'],
+                            ['upload-polling', 'uploadPolling'],
+                          ];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -768,6 +776,12 @@ try {
           'library-batch-reprocess.log',
         );
         report.libraryReprocess = 'passed';
+        await runBrowser(
+          '../e2e/library-copy.mjs',
+          identityConfig,
+          'library-copy.log',
+        );
+        report.libraryCopy = 'passed';
         await runBrowser(
           '../e2e/trash-query-batch.mjs',
           identityConfig,

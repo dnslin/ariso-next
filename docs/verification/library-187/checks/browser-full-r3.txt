@@ -1,0 +1,13 @@
+Error: page.waitForFunction timed out after 10000ms on page p1; last URL was "http://ariso-59434.localhost:59434/library?q=issue177-&pageSize=80&page=3"; last title was "Ariso".
+    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)
+    at file:////[eval1]:18564:19
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:363:14)
+    at async file:///Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/scripts/verify-browser.mjs:494:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-187-batch-copy/ariso/docs/verification/library-187/browser/full-r3
