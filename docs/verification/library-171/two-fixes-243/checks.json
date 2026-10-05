@@ -85,14 +85,28 @@
       "command": "git diff --cached --check",
       "exitCode": 0,
       "note": "首轮因证据导出行尾空白退出2；修正报告字符编码与构建日志行尾后通过，不修改用例或断言"
+    },
+    {
+      "command": "EGO_TASK_SPACE=30 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/two-fixes/full-resume pnpm run test:browser",
+      "exitCode": 1,
+      "evidence": "browser-resume/runner.json",
+      "scopeResults": {
+        "storageAdmin": "passed",
+        "storageCors": "passed",
+        "coldFocus": "passed",
+        "confirmation": "passed",
+        "albumConfirmation": "passed",
+        "recovery": "failed at existing aria-busy assertion; later checks not executed"
+      },
+      "note": "使用同一原空间p1及独立数据；p5人工预览保留；两个修复真实通过不能替代默认全量失败。"
     }
   ],
   "verification": {
     "code": "implemented; independent review passed; no unresolved Critical or Required",
     "offline": "above commands passed",
-    "browser": "not rerun; user-owned Ego TaskSpace 30 awaiting explicit resume",
-    "design": "Figma and approved handoff read; new actual-page comparison pending",
-    "manual": "prior focus fix accepted; this new footer change pending"
+    "browser": "two repaired scopes passed in default flow; full stopped at recovery.mjs:88, later checks unexecuted",
+    "design": "final real-page comparison passed for repaired footer and representative UI; 24 current screenshots reviewed independently",
+    "manual": "user viewed updated preview and reported no problem; original two-fix preview feedback accepted; no implied acceptance of later recovery failure"
   },
   "sharingIndependentSessions": "用户取消本次必需测试；未执行，不记通过",
   "preview": {
@@ -107,11 +121,13 @@
   "reviews": {
     "code": "code-audit.txt",
     "design": "design-audit.txt",
-    "designScope": "实际 Figma 与源码核对完成；新真实页面最终对照待完成"
+    "designScope": "原空页脚修复与代表UI的真实页面终审通过；其后恢复失败仍独立记录",
+    "designBrowser": "browser-resume/design-browser-audit.txt"
   },
   "evidenceExports": {
     "unit.xml": "导出时把测试名称里的原始 CR 写为 XML 字符引用 &#13;，未修改用例或统计；原始 JUnit 在 test-results/two-fixes/unit.xml 原样保留",
     "build.log": "导出时仅移除3行的行尾空白，诊断正文保留；原始日志在 test-results/two-fixes/build.log 原样保留",
     "reason": "首次 git diff --cached --check 发现报告中的行尾空白；只修复证据导出格式，不修改测试或检查断言"
-  }
+  },
+  "pendingScopeDecision": "既有确认组件aria-busy被库过滤，实际按钮禁用有效；已询问是否纳入本PR，尚未授权实施。"
 }
