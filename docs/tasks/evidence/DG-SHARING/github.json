@@ -1,0 +1,769 @@
+{
+  "date": "2026-10-05",
+  "issues": [
+    {
+      "body": "任务 ID：`DG-SHARING`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-03、DES-06-SHARING、RG-02/08；核对解锁前隐私、设置未知结果、公开占位、连续大图及授权失效。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 134,
+      "state": "OPEN",
+      "title": "[DG-SHARING] 解锁前隐私设计适用核对",
+      "url": "https://github.com/dnslin/ariso-next/issues/134",
+      "blocked_by": [],
+      "blocking": [
+        {
+          "number": 191,
+          "title": "[T-SHR-02] 分享管理与独立设置保存",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/191"
+        },
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        },
+        {
+          "number": 193,
+          "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/193"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-SHR-02`\n\n- 任务组：`SHARING`\n- 里程碑：M4\n- 需求：`R-17.1-01`、`R-17.1-02`、`R-17.4-01`、`A-26.10-01`、`A-26.10-02`、`A-26.10-06`\n- 范围：[sharing 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-sharing.md) §3/4/8；src/app/shares/ 及相册分享入口，创建/复制/密码/期限/启停/重生成/布局名称。\n- 直接前置：`T-SHR-01`、`T-COL-02`、`T-UI-01`、`DG-SHARING`\n- 验收条件：每次仅保存明确变更字段；过期重新启用同时延期/清除期限；改时区不改变已存到期时刻。响应不明先读当前配置，rotate不自动重发；复制失败提供完整可选地址；设置密码不声称保护公开图片独立地址。\n- 验证方法：真实浏览器独立编辑与刷新持久化、两个标签并发保存、未知响应、长地址与Clipboard拒绝，桌面手机均能完成所有操作。\n- 界面：所有者 /shares 与 /albums/{albumId} 分享入口；/api/shares 与 /api/albums/{id}/share。桌面[30:849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-849)、手机[101:1463](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1463)、桌面状态[431:3753](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3753)、手机状态[431:8415](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8415)。HeroUI：[Table](https://heroui.com/en/docs/react/components/table)、[Modal](https://heroui.com/en/docs/react/components/modal)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Switch](https://heroui.com/en/docs/react/components/switch)、[Select](https://heroui.com/en/docs/react/components/select)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Alert](https://heroui.com/en/docs/react/components/alert)。保存失败 [431:3989](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3989) / [431:8493](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8493)；DG-SHARING 核对DES-06-SHARING/RG-08，手机日期显示站点时区；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 创建/编辑/复制/启停两端闭环：字段独立保存。\n  - [ ] 2. 密码/期限/rotate未知响应：回读核对不自动重复写。\n\n## 执行与依赖\n\n直接前置：#190、#175、#57、#134。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 191,
+      "state": "OPEN",
+      "title": "[T-SHR-02] 分享管理与独立设置保存",
+      "url": "https://github.com/dnslin/ariso-next/issues/191",
+      "blocked_by": [
+        {
+          "number": 190,
+          "title": "[T-SHR-01] 分享配置、期限与密码授权协议",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/190"
+        },
+        {
+          "number": 175,
+          "title": "[T-COL-02] 相册列表与创建编辑删除",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/175"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 134,
+          "title": "[DG-SHARING] 解锁前隐私设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/134"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 193,
+          "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/193"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-SHR-03`\n\n- 任务组：`SHARING`\n- 里程碑：M4\n- 需求：`R-17.2-01`、`R-17.2-02`、`R-17.3-01`、`R-17.4-01`、`R-17.4-02`、`R-13.4-01`、`A-26.6-03`、`A-26.10-04`、`A-26.10-05`\n- 范围：[sharing 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-sharing.md) §6–8；src/app/s/[token]/、items/refresh，与公开DTO字段裁剪。\n- 直接前置：`T-SHR-01`、`T-COL-04`、`T-DEL-01`、`T-LIB-04`、`DG-SHARING`\n- 验收条件：未授权HTML/RSC/元信息无相册数据；只返回公开成员，private/回收/移出在查询分页计数前排除。有所有者Cookie仍按访客集合。40张每批，公开ID锚点；pending/processing/failed/存储停用保留原位占位，处理完成或重新启用后在原位置显示；showName关闭时响应、alt、title、aria-label均无名称。可见每5秒检查≤80ID分批，隐藏停/恢复立即查，授权失效清全量，旧响应不填回；private/no-store/noindex。\n- 验证方法：匿名/所有者双上下文HTTP与DOM字段检查、空相册/私有/处理中/失败/停用、锚点移除、80+ID、后台恢复、撤权竞态和名称关闭迟到响应；格式内容经delivery校验。\n- 界面：匿名 /s/{token}；仅sharing裁剪数据，不调用后台详情/元数据。桌面[433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610)、手机[433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)、桌面状态[432:3573](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-3573)、手机状态[432:7913](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-7913)。HeroUI：[Card](https://heroui.com/en/docs/react/components/card)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Spinner](https://heroui.com/en/docs/react/components/spinner)。异常占位 [433:4042](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-4042) / [433:8715](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8715)；DG-SHARING 对应 DES-03，复用有界图库布局但只接匿名字段；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 匿名密码页和裁剪列表：未授权不泄露相册数据。\n  - [ ] 2. 40张加载与状态刷新：私有/回收排除，迟到响应不能回填撤销数据。\n\n## 执行与依赖\n\n直接前置：#190、#180、#69、#173、#134。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 192,
+      "state": "OPEN",
+      "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+      "url": "https://github.com/dnslin/ariso-next/issues/192",
+      "blocked_by": [
+        {
+          "number": 190,
+          "title": "[T-SHR-01] 分享配置、期限与密码授权协议",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/190"
+        },
+        {
+          "number": 180,
+          "title": "[T-COL-04] 固定相册内容与手动自动封面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/180"
+        },
+        {
+          "number": 69,
+          "title": "[T-DEL-01] 本地稳定图片访问与下载",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/69"
+        },
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/173"
+        },
+        {
+          "number": 134,
+          "title": "[DG-SHARING] 解锁前隐私设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/134"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 193,
+          "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/193"
+        },
+        {
+          "number": 196,
+          "title": "[T-SITE-04] 品牌设置及登录分享跨页联动",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/196"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-SHR-04`\n\n- 任务组：`SHARING`\n- 里程碑：M4\n- 需求：`R-16.3-01`、`R-17.2-01`、`R-17.2-02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03`、`A-26.10-05`\n- 范围：[sharing 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-sharing.md) §7；匿名精简大图、公开邻居与授权/成员变化联验，闭合删除相册和封面规则。\n- 直接前置：`T-SHR-03`、`T-SHR-02`、`T-LIB-07`、`T-DEL-02`、`DG-SHARING`\n- 验收条件：匿名只前后/缩放/平移/关闭/支持时全屏，最多预载前后各一张；无后台选版/技术信息/下载/幻灯片。当前图移除返回列表、授权失效清数据。删除相册级联分享/授权，旧Cookie不放行；图片独立公开地址遵守其状态，S3剩余有效期说明准确。\n- 验证方法：两上下文+真实本地/S3覆盖开着大图时关闭/改密/到期/rotate/删册/私有/回收/停用；触摸键盘、名称显示返回和焦点，HTTP新请求立即拒绝而旧已下载内容不冒充可撤回。\n- 界面：匿名 /s/{token} 精简大图；sharing公开邻居与delivery内容。桌面[434:4003](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-4003)、手机[434:8782](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-8782)、桌面状态[432:3744](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-3744)、手机状态[432:8084](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-8084)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。复用T-LIB-07查看组件但不接管理DTO；DG-SHARING 对应DES-03/RG-02，手机双指平移与返回来源；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 匿名精简大图：复用查看器，不提供后台字段和选版。\n  - [ ] 2. 删除相册/撤权/成员变化联验：本地与S3新请求失效。\n\n## 执行与依赖\n\n直接前置：#192、#191、#185、#161、#134。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 193,
+      "state": "OPEN",
+      "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+      "url": "https://github.com/dnslin/ariso-next/issues/193",
+      "blocked_by": [
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        },
+        {
+          "number": 191,
+          "title": "[T-SHR-02] 分享管理与独立设置保存",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/191"
+        },
+        {
+          "number": 185,
+          "title": "[T-LIB-07] 大图查看、同图选版与上下文恢复",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/185"
+        },
+        {
+          "number": 161,
+          "title": "[T-DEL-02] S3 内容访问、特殊格式和附件联验",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/161"
+        },
+        {
+          "number": 134,
+          "title": "[DG-SHARING] 解锁前隐私设计适用核对",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/134"
+        }
+      ],
+      "blocking": []
+    },
+    {
+      "body": "任务 ID：`T-SHR-01`\n\n- 任务组：`SHARING`\n- 里程碑：M4\n- 需求：`R-17.1-01`、`R-17.1-02`、`R-17.3-01`、`R-5.5-02`、`A-26.10-01`、`A-26.10-02`、`A-26.10-03`、`A-26.10-06`\n- 范围：[sharing 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-sharing.md) §3–5/8；sharing模型迁移、管理接口、unlock、授权校验与过期清理。\n- 直接前置：`T-COL-01`、`T-ID-01`、`T-SITE-01`、`EV-SHARING-01`\n- 验收条件：每册一条分享，重复创建不覆盖；地址Token稳定，rotate改Token保留配置。密码keep/set/clear明确；UTC期限按站点时区/DST转换。24小时固定授权、各相册Cookie路径隔离；改密/关闭/到期后续期/rotate撤销，哈希验证期间变化不得发旧授权。真错误、429和日志脱敏有诊断。\n- 验证方法：真实哈希+SQLite+HTTP竞争/重启/恰好到期/多相册并发/同相册多标签，验证授权只存摘要、原密码不回显、无会话与上传Token不可管理；压测执行已验证限流/并发边界。\n- 界面：无界面：共享管理/匿名入口协议；管理和密码表单分别由 T-SHR-02/03 集成。\n- 实施步骤：\n  - [ ] 1. 每册分享配置/Token/期限：重复创建及rotate语义正确。\n  - [ ] 2. 密码授权及撤销：24小时、Cookie路径、多标签与竞争验证。\n\n## 执行与依赖\n\n直接前置：#66、#53、#47、#148。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 190,
+      "state": "OPEN",
+      "title": "[T-SHR-01] 分享配置、期限与密码授权协议",
+      "url": "https://github.com/dnslin/ariso-next/issues/190",
+      "blocked_by": [
+        {
+          "number": 66,
+          "title": "[T-COL-01] 相册标签模型与上传关联事务",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/66"
+        },
+        {
+          "number": 53,
+          "title": "[T-ID-01] 认证库与所有者权限入口",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/53"
+        },
+        {
+          "number": 47,
+          "title": "[T-SITE-01] 公开地址与时区数据契约",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/47"
+        },
+        {
+          "number": 148,
+          "title": "[EV-SHARING-01] 分享授权与浏览器失效实验",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/148"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 191,
+          "title": "[T-SHR-02] 分享管理与独立设置保存",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/191"
+        },
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-COL-02`\n\n- 任务组：`COLLECTIONS-BASE`\n- 里程碑：M3\n- 需求：`R-16.1-01`、`R-16.3-01`\n- 范围：[collections 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-collections.md) §3/7/8；src/server/collections/ 管理入口和 src/app/albums/。相册名称/描述、搜索分页、正常成员计数、同名识别、删除关系。\n- 直接前置：`T-COL-01`、`T-ID-03`、`T-UI-01`、`DG-ALBUMS`\n- 验收条件：名称 1–100、描述≤2000 码点；20/40/80 分页稳定，搜索将 %/_ 当字面。删除立即清关系但不删图/任务/其他相册，错误不报成功；包含回收关系。分享失效完整联验交给 T-SHR-04，不使模型反向依赖 sharing。\n- 验证方法：SQLite 测删除影响、同名和计数；浏览器连续创建/改名/删除、空列表、保存失败、未知结果核对、手机触摸。\n- 界面：所有者 /albums；读取真实相册和成员数量，写入复用身份/来源检查。桌面[30:473](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-473)、手机[101:1155](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1155)、桌面状态[279:1561](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-1561)、手机状态[279:3816](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=279-3816)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[TextField](https://heroui.com/en/docs/react/components/text-field)、[Modal](https://heroui.com/en/docs/react/components/modal)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[Alert](https://heroui.com/en/docs/react/components/alert)。同名项显示数量和短 ID；手机列表按可用宽度排列；DG-ALBUMS 对应 DES-04；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 相册列表、搜索分页及创建：同名 ID 可区分。\n  - [ ] 2. 编辑和删除：真实关系清除但图片保留，未知结果核对。\n\n## 执行与依赖\n\n直接前置：#66、#60、#57、#128。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 175,
+      "state": "CLOSED",
+      "title": "[T-COL-02] 相册列表与创建编辑删除",
+      "url": "https://github.com/dnslin/ariso-next/issues/175",
+      "blocked_by": [
+        {
+          "number": 66,
+          "title": "[T-COL-01] 相册标签模型与上传关联事务",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/66"
+        },
+        {
+          "number": 60,
+          "title": "[T-ID-03] 两端初始化与登录闭环",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/60"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 128,
+          "title": "[DG-ALBUMS] 同名识别设计适用核对",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/128"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 177,
+          "title": "[T-LIB-08] 批量关系、可见性和回收恢复",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/177"
+        },
+        {
+          "number": 180,
+          "title": "[T-COL-04] 固定相册内容与手动自动封面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/180"
+        },
+        {
+          "number": 191,
+          "title": "[T-SHR-02] 分享管理与独立设置保存",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/191"
+        }
+      ]
+    },
+    {
+      "body": "模块：`SITE-THEME` · 阶段：M1\n\n直接前置：#55（`EV-UI-01`）、#56（`DG-SHELL`）、#47（`T-SITE-01`）。\n\n需求：R-22.1-01、R-22.3-01、R-22.4-01\n\n依据：[交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md)、[site §2/6](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md)\n\n## 范围\n\n随首页和M1路由引入HeroUI/Tailwind/查询与表单所需依赖，公共背景/返回首页、后台侧栏/手机全屏导航、设置分类与固定底栏；不一次挂未实现入口。\n\n修改边界：src/app/{layout,page}.tsx、src/components/shell/、应用样式、package.json/pnpm-lock.yaml；相应模块测试及必要的 `drizzle/` 迁移。\n\n## 验收条件\n\n- [ ] 首页及后台布局使用中文与Ariso颜色字体。\n- [ ] <768全屏导航、768–1199顶部菜单、≥1200侧栏。\n- [ ] 至少44px点击目标、焦点返回，减少动态效果。\n- [ ] 主题完整行为由T-SITE-05交付。\n\n## 验证\n\n新增M1浏览器外壳场景并接入现有test:browser运行器；360/390/430/768/1440截图+键盘操作，核对实际安装类型与构建。\n\n运行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration`。schema 变化增加 `pnpm run db:generate` 并审查迁移。 界面场景新增到现有运行器后执行 `pnpm run test:browser`。\n\n记录实际环境、命令、结果及证据；未执行或缺少真实环境的验收保持未完成。测试文件按本任务新增，前置有交付与验收证据后再实施。\n\n## 界面与组件\n\n首页/所有后台M1入口；权限由路由任务接入，配置来自T-SITE-01。[桌面 2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10) / [手机 102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)；背景状态[桌面 192:799](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-799) / [手机 192:1836](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=192-1836)；手机导航[106:1494](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=106-1494)，桌面后台[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)。HeroUI Button、Link、Modal、Select、Tabs、Toast；用Modal组合全屏导航，非侧边抽屉。通用控件差异仅按HeroUI统一，布局无差异。\n\n两端验收 360/390/430/768 及桌面宽度、浅深色和适用的加载/空/错误/成功/禁用状态；至少 44px 的点击目标、焦点返回及减少动态效果。通用控件优先复用 HeroUI v3；业务布局组合现成组件，必要差异须说明原因。\n\n组件文档：[Button](https://heroui.com/en/docs/react/components/button)、[Link](https://heroui.com/en/docs/react/components/link)、[Select](https://heroui.com/en/docs/react/components/select)、[Tabs](https://heroui.com/en/docs/react/components/tabs)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Toast](https://heroui.com/en/docs/react/components/toast)。\n",
+      "comments": [
+        {
+          "id": "IC_kwDOUbQu3c8AAAABV_C61w",
+          "author": {
+            "login": "dnslin"
+          },
+          "authorAssociation": "OWNER",
+          "body": "按项目所有者 2026-09-22 的明确决定：#57 正常完成，不存在待处理验收或前置缺口，不再要求补充校验。历史设备测试记录保持原样，这一验收决定不代表新增测试已执行。下游可以消费本任务交付。",
+          "createdAt": "2026-09-22T02:28:55Z",
+          "includesCreatedEdit": false,
+          "isMinimized": false,
+          "minimizedReason": "",
+          "reactionGroups": [],
+          "url": "https://github.com/dnslin/ariso-next/issues/57#issuecomment-5770361559",
+          "viewerDidAuthor": true
+        }
+      ],
+      "number": 57,
+      "state": "CLOSED",
+      "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+      "url": "https://github.com/dnslin/ariso-next/issues/57",
+      "blocked_by": [
+        {
+          "number": 56,
+          "title": "[DG-SHELL] 公共返回设计适用核对",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/56"
+        },
+        {
+          "number": 47,
+          "title": "[T-SITE-01] 公开地址与时区数据契约",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/47"
+        },
+        {
+          "number": 55,
+          "title": "[EV-UI-01] 前端固定版本组合",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/55"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 60,
+          "title": "[T-ID-03] 两端初始化与登录闭环",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/60"
+        },
+        {
+          "number": 76,
+          "title": "[T-LIB-01] 基础图库读取与手机网格",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/76"
+        },
+        {
+          "number": 81,
+          "title": "[T-UP-02] 手动上传单图与结果界面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/81"
+        },
+        {
+          "number": 158,
+          "title": "[T-STO-05] 真实浏览器 CORS 检测与 origin 失效",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/158"
+        },
+        {
+          "number": 165,
+          "title": "[T-ID-04] 邮箱与密码管理",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/165"
+        },
+        {
+          "number": 166,
+          "title": "[T-ID-08] 上传 Token 生命周期与一次明文界面",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/166"
+        },
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/173"
+        },
+        {
+          "number": 175,
+          "title": "[T-COL-02] 相册列表与创建编辑删除",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/175"
+        },
+        {
+          "number": 179,
+          "title": "[T-ANA-05] 工作台、统计图表与详情统计联动",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/179"
+        },
+        {
+          "number": 182,
+          "title": "[T-ID-06] SMTP 配置、真实发送与诊断",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/182"
+        },
+        {
+          "number": 189,
+          "title": "[T-MED-12] 处理设置、水印和真实预览界面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/189"
+        },
+        {
+          "number": 191,
+          "title": "[T-SHR-02] 分享管理与独立设置保存",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/191"
+        },
+        {
+          "number": 194,
+          "title": "[T-SITE-02] 站点地址时区与基础设置组合",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/194"
+        },
+        {
+          "number": 196,
+          "title": "[T-SITE-04] 品牌设置及登录分享跨页联动",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/196"
+        },
+        {
+          "number": 197,
+          "title": "[T-SITE-05] 浅深系统主题与浏览器偏好",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/197"
+        },
+        {
+          "number": 198,
+          "title": "[T-STO-07] 完整存储管理两端界面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/198"
+        },
+        {
+          "number": 199,
+          "title": "[T-UP-06] OpenAPI、curl 示例与上传用法页",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/199"
+        },
+        {
+          "number": 200,
+          "title": "[T-UP-08] 上传限制独立设置界面",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/200"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-COL-04`\n\n- 任务组：`COLLECTIONS-COVER`\n- 里程碑：M3\n- 需求：`R-16.1-02`、`R-16.1-04`\n- 范围：[collections 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-collections.md) §5–8；collections 封面身份解析与 albums 内容页。接入 library 的固定顺序内容与封面选择，不生成副本。\n- 直接前置：`T-COL-02`、`T-LIB-04`、`T-MED-05`、`T-DEL-01`、`DG-ALBUMS`\n- 验收条件：全相册先过滤资格再按 joined_at 降序/ID 升序选第一公开图；手动封面变私有/回收临时回退，恢复重现，移出后清空。选中图处理中/停用时占位，不偷偷换下一张；无公开图占位。\n- 验证方法：真实关系数据覆盖跨页第一公开图、加入同值、临时回退/恢复、移出再加入、文件丢失；浏览器触摸选择/切回自动、内容筛选固定顺序。\n- 界面：所有者 /albums/{albumId}；成员与封面身份来自 collections，thumbnail 经 delivery。桌面[38:378](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=38-378)、手机[102:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4002)、桌面状态[282:1724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1724)、手机状态[282:4070](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4070)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Card](https://heroui.com/en/docs/react/components/card)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Checkbox](https://heroui.com/en/docs/react/components/checkbox)、[Alert](https://heroui.com/en/docs/react/components/alert)。封面异常另见 [282:1979](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-1979) / [282:4244](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=282-4244)；DG-ALBUMS 核对 DES-04，手机选择器保留图片名称/状态；用户已明确取消新增相册名称/短 ID；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [x] 1. 相册固定内容顺序与自动封面：先过滤资格再跨页选图。\n  - [x] 2. 手动封面及恢复：私有/回收临时回退，移出清空，停用占位。\n\n## 执行与依赖\n\n直接前置：#175、#173、#67、#69、#128。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。\n\n## 交付结果\n\n已合并 PR #223。实施结果、实际验证命令、独立代码审计及设计复核统一见[交付记录](https://github.com/dnslin/ariso-next/blob/main/docs/verification/collections-180/README.md)。用户于 2026-10-01 明确授权合并、清理本地分支并关闭本 Issue。\n",
+      "comments": [],
+      "number": 180,
+      "state": "CLOSED",
+      "title": "[T-COL-04] 固定相册内容与手动自动封面",
+      "url": "https://github.com/dnslin/ariso-next/issues/180",
+      "blocked_by": [
+        {
+          "number": 175,
+          "title": "[T-COL-02] 相册列表与创建编辑删除",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/175"
+        },
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/173"
+        },
+        {
+          "number": 67,
+          "title": "[T-MED-05] 回收与恢复服务契约",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/67"
+        },
+        {
+          "number": 69,
+          "title": "[T-DEL-01] 本地稳定图片访问与下载",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/69"
+        },
+        {
+          "number": 128,
+          "title": "[DG-ALBUMS] 同名识别设计适用核对",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/128"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        }
+      ]
+    },
+    {
+      "body": "模块：`DELIVERY-CORE` · 阶段：M2\n\n直接前置：#47（`T-SITE-01`）、#53（`T-ID-01`）、#49（`T-STO-01`）、#64（`T-MED-04`）、#67（`T-MED-05`）、#68（`EV-DELIVERY-01`）。\n\n需求：R-14.2-01、R-14.3-01、R-14.5-01、R-14.6-01、R-14.6-02、R-14.7-01、R-14.8-01、R-14.10-01、R-14.10-02、R-14.9-01、A-26.6-01、A-26.6-02\n\n依据：[delivery §3–10](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-delivery.md)\n\n## 范围\n\nGET/HEAD /i/{id}，默认与显式版本解析、权限/状态/流响应、附件文件名和计数事件契约；S3由T-DEL-02。\n\n修改边界：src/server/delivery/{links,access,response}.ts、src/app/i/[imageId]/route.ts；相应模块测试及必要的 `drizzle/` 迁移。\n\n## 验收条件\n\n- [ ] 私有只Cookie所有者可读，回收/删除/停用都拒绝。\n- [ ] 默认仅格式不适用回原图，显式缺版本不回退。\n- [ ] 异步后复核权限/版本，流背压/关闭正确。\n- [ ] 所有响应no-store，HEAD/304/Range按规格且不计数。\n\n## 验证\n\n新增 tests/unit/delivery/resolve.test.ts 与 tests/integration/delivery/local.test.ts；真实流、取消/首字节失败、条件请求、权限变化/版本切换、中文附件与SVG响应头。\n\n运行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration`。schema 变化增加 `pnpm run db:generate` 并审查迁移。\n\n记录实际环境、命令、结果及证据；未执行或缺少真实环境的验收保持未完成。测试文件按本任务新增，前置有交付与验收证据后再实施。\n",
+      "comments": [],
+      "number": 69,
+      "state": "CLOSED",
+      "title": "[T-DEL-01] 本地稳定图片访问与下载",
+      "url": "https://github.com/dnslin/ariso-next/issues/69",
+      "blocked_by": [
+        {
+          "number": 49,
+          "title": "[T-STO-01] 默认本地存储与流式对象操作",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/49"
+        },
+        {
+          "number": 64,
+          "title": "[T-MED-04] 任务重启恢复与按需资源",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/64"
+        },
+        {
+          "number": 68,
+          "title": "[EV-DELIVERY-01] Next 本地流与条件请求验证",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/68"
+        },
+        {
+          "number": 53,
+          "title": "[T-ID-01] 认证库与所有者权限入口",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/53"
+        },
+        {
+          "number": 67,
+          "title": "[T-MED-05] 回收与恢复服务契约",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/67"
+        },
+        {
+          "number": 47,
+          "title": "[T-SITE-01] 公开地址与时区数据契约",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/47"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 73,
+          "title": "[T-UP-01] 本地单文件接收与原子交接",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/73"
+        },
+        {
+          "number": 76,
+          "title": "[T-LIB-01] 基础图库读取与手机网格",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/76"
+        },
+        {
+          "number": 83,
+          "title": "[T-ANA-01] 本地公开访问内存聚合",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/83"
+        },
+        {
+          "number": 153,
+          "title": "[T-MED-10] 重处理范围与候选版本原子发布",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/153"
+        },
+        {
+          "number": 161,
+          "title": "[T-DEL-02] S3 内容访问、特殊格式和附件联验",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/161"
+        },
+        {
+          "number": 180,
+          "title": "[T-COL-04] 固定相册内容与手动自动封面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/180"
+        },
+        {
+          "number": 187,
+          "title": "[T-LIB-10] 跨页批量复制与剪贴板降级",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/187"
+        },
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-04`\n\n- 任务组：`LIBRARY-QUERY`\n- 里程碑：M3\n- 需求：`R-15.1-01`、`R-15.1-02`、`R-15.2-01`、`R-15.3-01`、`R-15.3-02`、`A-26.9-01`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §3/4；src/app/library/、相册内容及共享列表。接 Query/nuqs、浏览器偏好、所有筛选、分页与加载更多、有界渲染。\n- 直接前置：`T-LIB-03`、`T-UI-01`、`DG-LIBRARY`\n- 验收条件：默认网格+加载更多，20/40/80；切布局无新增列表请求且保留查询，切加载方式/筛选/排序回首批。已应用查询写 URL 与历史；加载旧数据时禁用旧图操作；迟到响应不覆盖新查询；外部变化、无效 cursor 有刷新恢复。\n- 验证方法：真实浏览器四组合×三数量，网络次数、前进后退/复制链接、DST 日期、localStorage 不可用；持续加载测 DOM/内存并查键盘顺序。\n- 界面：所有者 /library、/albums/{albumId}；T-LIB-03 API 与 collections/storage 筛选项。桌面[30:285](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-285)、手机[98:748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=98-748)、桌面状态[43:428](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=43-428)、手机状态[102:4306](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-4306)。HeroUI：[SearchField](https://heroui.com/en/docs/react/components/search-field)、[Select](https://heroui.com/en/docs/react/components/select)、[DatePicker](https://heroui.com/en/docs/react/components/date-picker)、[Pagination](https://heroui.com/en/docs/react/components/pagination)、[ToggleButtonGroup](https://heroui.com/en/docs/react/components/toggle-button-group)、[Alert](https://heroui.com/en/docs/react/components/alert)。瀑布流/分段渲染无通用控件对应，采用专用业务布局；手机双列与固定分页栏；DG-LIBRARY 对应 DES-06-LIBRARY/RG-02；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 网格查询/分页/历史：URL回放和迟到响应隔离。\n  - [ ] 2. 瀑布流及加载更多组合：布局切换无请求，有界渲染与返回位置。\n\n## 执行与依赖\n\n直接前置：#172、#57、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 173,
+      "state": "CLOSED",
+      "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+      "url": "https://github.com/dnslin/ariso-next/issues/173",
+      "blocked_by": [
+        {
+          "number": 172,
+          "title": "[T-LIB-03] 完整查询、分页与邻居接口",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/172"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/131"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 174,
+          "title": "[T-LIB-05] 跨页显式选择与已选清单",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/174"
+        },
+        {
+          "number": 176,
+          "title": "[T-COL-03] 标签创建重命名删除与图库入口",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/176"
+        },
+        {
+          "number": 180,
+          "title": "[T-COL-04] 固定相册内容与手动自动封面",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/180"
+        },
+        {
+          "number": 185,
+          "title": "[T-LIB-07] 大图查看、同图选版与上下文恢复",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/185"
+        },
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/192"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-LIB-07`\n\n- 任务组：`LIBRARY-QUERY`\n- 里程碑：M3\n- 需求：`R-15.5-01`\n- 范围：[library 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-library.md) §6；共用 YARL 查看组件和管理版入口，接相邻图片 API。\n- 直接前置：`T-LIB-04`、`T-LIB-06`、`EV-LIBRARY-01`、`DG-LIBRARY`\n- 验收条件：默认预览独立外链；动画原图、SVG既有预览，明确选版不回退。按当前查询跨页、首尾不循环，只预载相邻各一张，不改列表页码/选择；直达详情无列表上下文仅看当前。缩放平移全屏/能力降级有效；下载留详情，无分享/幻灯片；关闭恢复焦点滚动。\n- 验证方法：真实格式/解码与多页查询、同图四版本、移动双指/平移手势、键盘与全屏支持；删除当前图/邻居失败/迟到响应，断言不通过图片优化代理绕 delivery。\n- 界面：所有者图库/相册详情的大图入口；T-LIB-03 neighbors 与 delivery 内容地址。桌面[390:6943](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6943)、手机[390:6996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=390-6996)、桌面状态[391:6787](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6787)、手机状态[391:6800](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=391-6800)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Select](https://heroui.com/en/docs/react/components/select)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。HeroUI 无专用图片缩放平移查看器，复用已选 YARL 及 Zoom/Fullscreen；DG-LIBRARY 对应 RG-02/06，手机紧凑版本选择器；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 同图选版与缩放全屏：真实格式，明确选版不回退。\n  - [ ] 2. 当前查询跨页邻居：仅预载两张、删除恢复和关闭归焦。\n\n## 执行与依赖\n\n直接前置：#173、#171、#75、#131。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 185,
+      "state": "CLOSED",
+      "title": "[T-LIB-07] 大图查看、同图选版与上下文恢复",
+      "url": "https://github.com/dnslin/ariso-next/issues/185",
+      "blocked_by": [
+        {
+          "number": 173,
+          "title": "[T-LIB-04] 四种布局加载组合与筛选历史",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/173"
+        },
+        {
+          "number": 171,
+          "title": "[T-LIB-06] 完整详情、元数据与单图编辑",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/171"
+        },
+        {
+          "number": 75,
+          "title": "[EV-LIBRARY-01] 查询与查看器接入验证",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/75"
+        },
+        {
+          "number": 131,
+          "title": "[DG-LIBRARY] 完整元数据树设计适用核对",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/131"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 193,
+          "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/193"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-DEL-02`\n\n- 任务组：`DELIVERY-S3`\n- 里程碑：M4\n- 范围：在稳定图片入口接入S3 GET/HEAD方法签名、300秒302、实际附件/缓存参数；完成全部特殊格式原文件与原子重处理访问联验。\n- 规格与预计文件：SPEC-delivery §6–9、DL-02/08–17；`src/server/delivery/`、`src/app/i/[imageId]/route.ts`、delivery真实服务测试。\n- 直接前置：`T-DEL-01`、`T-ANA-01`、`T-STO-02`、`T-MED-06`、`T-MED-10`、`EV-STORAGE-01`\n- 验收条件：匿名/所有者四版本权限一致；签发前复核会话/可见性/回收/存储及版本变化，有限重选；接入T-ANA-01真实内存聚合及刷库，一次Ariso GET最多一次计数，签名失败/HEAD不计。SVG远端octet-stream附件、原字节/.svg保留，Ariso302带nosniff；不要求远端任意头。所有最终缓存参数实测；当前默认不适用返回原文件，适用但缺版本拒绝；旧签名剩余最多300秒边界如实。\n- 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 `tests/integration/delivery/s3.test.ts` 三服务真实HTTP、中文/点段下载名、HEAD方法、过期、权限竞态、动画与多页摘要；`pnpm run test:browser` 验证SVG附件、外站嵌入及Cookie差异。\n- 界面：无独立界面：交付 `/i/{imageId}` 响应与内容协议；详情/上传/分享页面复用结果，组件和状态由各界面任务验收。\n- 需求：`R-12.5-02`、`R-14.2-01`、`R-14.3-01`、`R-14.5-01`、`R-14.6-01`、`R-14.6-02`、`R-14.7-02`、`R-14.8-01`、`R-14.9-01`、`R-14.10-01`、`R-19.2-01`、`R-19.2-02`、`R-19.2-03`、`A-26.4-06`、`A-26.4-07`、`A-26.6-04`、`A-26.8-03`、`A-26.8-04`、`A-26.8-05`、`A-26.8-06`\n- 实施步骤：\n  - [ ] 1. 真实 S3 GET/HEAD/下载：鉴权、签名和附件属性正确。\n  - [ ] 2. 本地及 S3 特殊格式访问：SVG/动画/缺版/停用矩阵。\n\n## 执行与依赖\n\n直接前置：#69、#83、#155、#150、#153、#70。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 161,
+      "state": "CLOSED",
+      "title": "[T-DEL-02] S3 内容访问、特殊格式和附件联验",
+      "url": "https://github.com/dnslin/ariso-next/issues/161",
+      "blocked_by": [
+        {
+          "number": 69,
+          "title": "[T-DEL-01] 本地稳定图片访问与下载",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/69"
+        },
+        {
+          "number": 83,
+          "title": "[T-ANA-01] 本地公开访问内存聚合",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/83"
+        },
+        {
+          "number": 155,
+          "title": "[T-STO-02] S3 对象操作、条件固定与方法签名",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/155"
+        },
+        {
+          "number": 150,
+          "title": "[T-MED-06] 全格式分类与派生处理",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/150"
+        },
+        {
+          "number": 153,
+          "title": "[T-MED-10] 重处理范围与候选版本原子发布",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/153"
+        },
+        {
+          "number": 70,
+          "title": "[EV-STORAGE-01] 三服务对象与私有性协议验证",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/70"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 162,
+          "title": "[T-UP-04] S3 直传、中转、条件交接与最终清理",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/162"
+        },
+        {
+          "number": 164,
+          "title": "[T-STO-06] 完整引用约束、位置修改与配置删除",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/164"
+        },
+        {
+          "number": 169,
+          "title": "[T-ANA-04] 周期趋势、历史排行与单图统计",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/169"
+        },
+        {
+          "number": 193,
+          "title": "[T-SHR-04] 匿名大图与删除相册后失效联验",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/193"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`EV-SHARING-01`\n\n- 任务组：工程前置\n- 里程碑：按消费任务提前执行\n- 规格：[sharing §5–8](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-sharing.md)\n- 直接前置：`EV-IDENTITY-01`\n- 范围：最小真实Cookie/HTTP实验验证分享单独授权、密码/期限/启停/token修订与多标签页/缓存。\n- 验收条件：授权只用于分享且24小时内仍受当前配置限制；密码/期限/启停/重生token使旧授权按SPEC失效；无所有者权限、无私有图特权。\n- 验证方法：两个独立浏览器上下文、冻结时钟、5秒状态检查/可见ID上限/隐藏恢复及迟到响应实验。\n- 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-SHARING-01/` 报告；不预建业务模块。\n- 界面：无产品界面交付；浏览器实验只用于验证实际库/协议，不关闭 DES/RG 或业务界面任务。\n\n## 设计适用范围核对\n\nDG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原编号。只使用已有节点与交付规则，不要求补齐所有数据排列，也不在本轮修改 Figma。真实输入/请求/焦点/播放器尚未验证的责任留在关联实施任务及 T-QA-02。M2通过独立DG-LIBRARY-BASE、DG-UPLOAD-BASE、DG-TRASH-BASE核对基础状态，M3/M4扩展使用原DG家族。某个已有规则不足时仅该状态保持阻塞，明确缺口和承接任务；不能借整组 DG 阻塞无关后端。\n\n## 执行与依赖\n\n直接前置：#52。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 148,
+      "state": "CLOSED",
+      "title": "[EV-SHARING-01] 分享授权与浏览器失效实验",
+      "url": "https://github.com/dnslin/ariso-next/issues/148",
+      "blocked_by": [
+        {
+          "number": 52,
+          "title": "[EV-IDENTITY-01] 认证、初始化及地址切换接入验证",
+          "state": "closed",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/52"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 190,
+          "title": "[T-SHR-01] 分享配置、期限与密码授权协议",
+          "state": "open",
+          "html_url": "https://github.com/dnslin/ariso-next/issues/190"
+        }
+      ]
+    }
+  ]
+}
