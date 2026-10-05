@@ -16,12 +16,12 @@ export async function verifyDetail171Consumers({ page, config, sql, report }) {
     ['上传', '/upload'],
     ['图库', '/library'],
     ['相册', '/albums'],
-    ['标签', null],
+    ['标签', '/tags'],
     ['分享管理', null],
     ['回收站', '/trash'],
     ['访问统计', null],
-    ['存储管理', null],
-    ['站点设置', null],
+    ['存储管理', '/settings/storage'],
+    ['站点设置', '/settings/processing'],
   ];
   let branding;
   const screenshot = async (state, width, theme, current) => {

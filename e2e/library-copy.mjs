@@ -641,12 +641,12 @@ try {
             beforeSuccess,
           );
           await page.waitForSelector(
-            '[data-slot="toast-title"]:has-text("已复制 3 条链接")',
+            '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-title"]:has-text("已复制 3 条链接")',
           );
           const toast = await page.evaluate(() => {
-            const node = [
-              ...document.querySelectorAll('[data-slot="toast-title"]'),
-            ].find((n) => n.textContent === '已复制 3 条链接');
+            const node = document.querySelector(
+              '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-title"]',
+            );
             const surface = node.closest('[data-slot="toast"]');
             const rect = surface.getBoundingClientRect();
             return {

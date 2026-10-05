@@ -232,6 +232,8 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
         const pendingDownload = page.waitForEvent('download', {
           timeout: 30000,
         });
+        await page.click(button('关闭通知'));
+        await page.waitForSelector('[data-slot="toast"]', { state: 'hidden' });
         await page.click(button('下载原图'));
         const download = await pendingDownload;
         const downloadPath = join(
@@ -272,6 +274,21 @@ export async function verifyM2Core({ task, page, config, sql, report }) {
             `m2-${config.width}-${visibility}-${format}-detail.png`,
           ),
         });
+        if (
+          await page.evaluate(
+            () =>
+              !!document.querySelector(
+                '[data-slot="toast"][data-frontmost="true"]',
+              ),
+          )
+        ) {
+          await page.click(
+            '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+          );
+          await page.waitForSelector('[data-slot="toast"]', {
+            state: 'hidden',
+          });
+        }
         await page.click(button('删除图片'));
         await page.waitForSelector('[data-testid="trash-confirm"]');
         await page.click(button('确认删除图片'));

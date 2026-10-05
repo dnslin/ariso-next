@@ -23,6 +23,9 @@ const secretFields = [
   'clientSecret',
   'oauthSecret',
   'sharePassword',
+  'passwordHash',
+  'grantSecret',
+  'grantSecretHash',
   'betterAuthSecret',
   'encryptionKey',
   'BETTER_AUTH_SECRET',
@@ -55,20 +58,22 @@ const sensitiveQueryParameters = new Set([
   'signature',
 ]);
 
-/** 只替换显式查询参数的值，不重写 URL，保留原始路径、参数顺序和编码。 */
+/** 分享能力路径与显式查询凭据脱敏，保留端点、普通参数及其编码。 */
 export function redactUrlCredentials(text: string): string {
-  return text.replace(
-    /([?&])([^\s?&#="'<>]+)=([^\s&#"'<>]*)/g,
-    (match: string, separator: string, name: string) => {
-      // 参数名中的 ASCII 百分号编码也是同一查询键；无效编码保持原样。
-      const key = name
-        .replace(/%([0-9a-f]{2})/gi, (_, hex: string) =>
-          String.fromCharCode(Number.parseInt(hex, 16)),
-        )
-        .toLowerCase();
-      return sensitiveQueryParameters.has(key)
-        ? `${separator}${name}=[Redacted]`
-        : match;
-    },
-  );
+  return text
+    .replace(/(\/s\/)[^/\s?#"'<>]+/g, '$1[Redacted]')
+    .replace(
+      /([?&])([^\s?&#="'<>]+)=([^\s&#"'<>]*)/g,
+      (match: string, separator: string, name: string) => {
+        // 参数名中的 ASCII 百分号编码也是同一查询键；无效编码保持原样。
+        const key = name
+          .replace(/%([0-9a-f]{2})/gi, (_, hex: string) =>
+            String.fromCharCode(Number.parseInt(hex, 16)),
+          )
+          .toLowerCase();
+        return sensitiveQueryParameters.has(key)
+          ? `${separator}${name}=[Redacted]`
+          : match;
+      },
+    );
 }

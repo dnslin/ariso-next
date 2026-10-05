@@ -58,7 +58,7 @@ async function verifyConfirmedChunk(context) {
     report,
     settle,
   } = context;
-  await page.click('loc=role:button[name="图片加载方式"]');
+  await page.click('loc=role:button[name*="图片加载方式"]');
   await page.click('loc=role:option[name="加载更多"]');
   await loaded(80);
   for (const count of [160, 201]) {
@@ -170,6 +170,10 @@ export async function verifyBatchCache(context) {
   await page.click(submit);
   await done();
   await selected(0);
+  await page.click(
+    '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+  );
+  await page.waitForSelector('[data-slot="toast"]', { state: 'hidden' });
   await page.click('nav[aria-label="图库分页"] button:has-text("上一页")');
   await loaded(20);
   await page.waitForFunction(
@@ -182,7 +186,7 @@ export async function verifyBatchCache(context) {
   await shot('cache-old-page-current-visibility', 1440, 'light');
 
   // Use the existing loading-mode control; history and selections stay in the real app.
-  await page.click('loc=role:button[name="图片加载方式"]');
+  await page.click('loc=role:button[name*="图片加载方式"]');
   await page.click('loc=role:option[name="加载更多"]');
   await loaded(20);
   await page.click('[data-testid="library-load-more"]');

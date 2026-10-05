@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { copyFile, mkdir, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { readBrowserErrors } from './browser-errors.mjs';
-import { testId, quote } from './processing-helpers.mjs';
+import { testId, quote, field } from './processing-helpers.mjs';
 
 export async function verifyProcessingPreview(page, config, tools, report) {
   const {
@@ -26,6 +26,13 @@ export async function verifyProcessingPreview(page, config, tools, report) {
     evidence,
     scrollDetails,
   } = tools;
+  const fillNumber = async (name, number) => {
+    await page.focus(field(name));
+    await page.keyboard.press('ControlOrMeta+A');
+    await page.keyboard.type(String(number));
+    await page.keyboard.press('Tab');
+    assert.equal(await value(name), String(number));
+  };
   const terminalControls = async () => {
     const controls = await previewControls();
     assert.equal(controls.fileDisabled, false);
@@ -69,8 +76,8 @@ export async function verifyProcessingPreview(page, config, tools, report) {
   await switchTo('启用水印', true);
   await page.click('[data-watermark-mode="text"]');
   await fill('watermarkText', 'Ariso 未保存');
-  await fill('quality', 61);
-  await fill('watermarkOpacity', 64);
+  await fillNumber('quality', 61);
+  await fillNumber('watermarkOpacity', 64);
   const savedBefore = editable(await settings());
   assert.equal(savedBefore.defaultVisibility, 'public');
   const businessBefore = await businessState();
@@ -161,7 +168,7 @@ export async function verifyProcessingPreview(page, config, tools, report) {
   await page.click(testId('preview-return'));
   await page.waitForSelector(`${testId('editor')}[data-state="ready"]`);
   assert.equal(await value('quality'), '61');
-  await fill('quality', 59);
+  await fillNumber('quality', 59);
   await page.click(testId('preview-open'));
   await page.waitForFunction(
     () =>

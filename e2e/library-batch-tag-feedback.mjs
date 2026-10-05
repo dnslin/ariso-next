@@ -8,9 +8,10 @@ export async function tagCompletion(
   unchanged,
   sourceUrl,
 ) {
-  const { page, selected } = context;
+  const { page, selected, report } = context;
   const title = type === 'add-tags' ? '添加标签完成' : '移除标签完成';
   const description = `${changed}张已修改 · ${unchanged}张无需修改`;
+  report.tagCompletionStep = 'notification';
   await page.waitForFunction(
     ({ title, description }) => {
       const toast = document.querySelector(
@@ -28,9 +29,11 @@ export async function tagCompletion(
   );
   await selected(0);
   assert.equal(await page.url(), sourceUrl);
+  report.tagCompletionStep = 'source-focus';
   await page.waitForFunction(() =>
     document.activeElement?.matches('[data-testid="library-toolbar"] input'),
   );
+  report.tagCompletionStep = 'complete';
   return { title, description, sourceUrl };
 }
 

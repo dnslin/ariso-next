@@ -1,0 +1,88 @@
+Already up to date
+Done in 208ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-runner.test.ts (92 tests | 2 failed | 90 skipped) 1233ms
+   ❯ browser runner argument boundaries (92)
+     × rejects non-primary page labels in suite full before runtime startup 666ms
+     × rejects non-primary page labels in suite m2-mobile before runtime startup 566ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite full before runtime startup
+AssertionError: expected 'node:internal/modules/run_main:107\n …' to contain 'Browser suite full requires EGO_PAGE_…'
+
+- Expected
++ Received
+
+- Browser suite full requires EGO_PAGE_LABEL=p1
++ node:internal/modules/run_main:107
++     triggerUncaughtException(
++     ^
++
++ AssertionError [ERR_ASSERTION]: Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL
++     at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:120:8
++     at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
++     at async node:internal/modules/esm/loader:643:26
++     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
++   generatedMessage: false,
++   code: 'ERR_ASSERTION',
++   actual: false,
++   expected: true,
++   operator: '==',
++   diff: 'simple'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:138:29
+    136|       });
+    137|       expect(result.status).not.toBe(0);
+    138|       expect(result.stderr).toContain(
+       |                             ^
+    139|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    140|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite m2-mobile before runtime startup
+AssertionError: expected 'node:internal/fs/promises:916\n  retu…' to contain 'Browser suite m2-mobile requires EGO_…'
+
+- Expected
++ Received
+
+- Browser suite m2-mobile requires EGO_PAGE_LABEL=p1
++ node:internal/fs/promises:916
++   return await PromisePrototypeThen(
++          ^
++
++ Error: ENOTDIR: not a directory, mkdir '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++     at async mkdir (node:internal/fs/promises:916:10)
++     at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:129:1 {
++   errno: -20,
++   code: 'ENOTDIR',
++   syscall: 'mkdir',
++   path: '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:138:29
+    136|       });
+    137|       expect(result.status).not.toBe(0);
+    138|       expect(result.stderr).toContain(
+       |                             ^
+    139|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    140|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 90 skipped (92)
+   Start at  23:03:19
+   Duration  1.33s (tests 98%, transform 1%, import 1%)
+

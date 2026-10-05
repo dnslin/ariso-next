@@ -1,0 +1,111 @@
+{
+  "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser-retry-1 pnpm run test:browser",
+  "exitCode": 1,
+  "startedAt": "2026-10-05T11:00:16.255Z",
+  "finishedAt": "2026-10-05T11:17:03.901Z",
+  "counts": {
+    "passed": 32,
+    "failed": 15,
+    "blocked": 1
+  },
+  "blocked": [
+    {
+      "stage": "m2-390-after",
+      "status": "blocked",
+      "blockedBy": ["m2-390-before"]
+    }
+  ],
+  "failures": [
+    {
+      "stage": "processing",
+      "sourceReport": "processing.json",
+      "error": "Error: JavaScript evaluation failed at line 24, column 28: Error: Missing screenshot detail: [data-slot=\"card\"]:has([data-field=\"watermarkWidth\"]) > p:last-child\n    at <anonymous>:24:28\n    at Array.map (<anonymous>)\n    at <anonymous>:22:35\n    at __egoPageEvaluate (<anonymous>:34:7)\n    at <anonymous>:35:9; expression: (selectors) => {\\n      const main = document.querySelector('.shell-content');\\n      const first = document.querySelector(selectors[0]);\\n      if (!first) ...\n    at runtimeValue (file:////[eval1]:9139:15)\n    at evaluateInSession (file:////[eval1]:19186:12)\n    at async file:////[eval1]:18809:24\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "settings",
+      "lastCompletedCheck": "Disabling the default compressed version requires confirmation; Escape preserves compression, confirmation changes only the draft until explicit save."
+    },
+    {
+      "stage": "library",
+      "sourceReport": "library.json",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    [\n      '总览',\n      null\n    ],\n...\n      '标签',\n+     '/tags'\n-     null\n    ],\n    [\n      '分享管理',\n      null\n    ],\n...\n      '存储管理',\n+     '/settings/storage'\n-     null\n    ],\n    [\n      '站点设置',\n+     '/settings/processing'\n-     null\n    ]\n  ]\n\n    at screenshot (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171-consumers.mjs:56:12)\n    at async verifyDetail171Consumers (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171-consumers.mjs:112:7)\n    at async verifyLibraryDetail171 (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171.mjs:47:3)\n    at async file:////[eval2]:509:3",
+      "lastCompletedCheck": "Real public source order locates the card at 5; 44 items are loaded and actual virtual windows are traversed. Card keyboard opening → version workspace → detail retains watermark preview; closing preserves visibility/sort URL, masonry layout, source scroll and exact trigger focus."
+    },
+    {
+      "stage": "library-selection-reconciliation",
+      "sourceReport": "library-selection-reconciliation.json",
+      "error": "AssertionError [ERR_ASSERTION]: Response contains only the selection projection, no full image records\n    at verifyLibrarySelectionReconciliation (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-selection-reconciliation.mjs:882:16)\n    at async file:////[eval2]:269:5",
+      "lastCompletedCheck": "Pending reconciliation disables selection actions; changing the search aborts its old request, and deliberately releasing that late successful response never recreates the old selection."
+    },
+    {
+      "stage": "library-batch",
+      "sourceReport": "library-batch.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/library?q=issue177-&pageSize=80&page=1\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "compact-tag-selection-search-create-submit",
+      "lastCompletedCheck": "201 cross-page explicit IDs split into 200+1; real multi-target transaction returns 199 changed, one unchanged and one failed; the failed image has neither relation, remains selected across pages, and retry submits only its ID."
+    },
+    {
+      "stage": "library-copy",
+      "sourceReport": "library-copy.json",
+      "error": "ElementResolutionError: page.focus failed: element is not focusable (button, contenteditable=false, tabIndex=0, active=button)\n    at focusInPage (file:////[eval1]:14412:19)\n    at async #retryElementAction (file:////[eval1]:18867:24)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "default-markdown",
+      "lastCompletedCheck": "201 selections survive pages; real responses reversed within every chunk merge by full query order including equal keys; native URL pasteboard exact; private/failed remain available, disabled storage excluded, no image GET or count/probe writes."
+    },
+    {
+      "stage": "trash-query-batch",
+      "sourceReport": "trash-query-batch.json",
+      "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"trash-empty\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "approved-unknown-and-unsent",
+      "lastCompletedCheck": "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除"
+    },
+    {
+      "stage": "shell-navigation",
+      "sourceReport": "shell-navigation.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    {
+      "stage": "albums",
+      "sourceReport": "albums.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/albums\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "empty"
+    },
+    {
+      "stage": "album-cover",
+      "sourceReport": "album-cover.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/albums/issue180-main\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "automatic full album and picker",
+      "lastCompletedCheck": "Search input upper/lower edges focus with native pointer events"
+    },
+    {
+      "stage": "tags",
+      "sourceReport": "tags.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/tags\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "activeCheck": "write result reconciliation"
+    },
+    {
+      "stage": "upload",
+      "sourceReport": "upload.json",
+      "error": "Error: page.waitForSelector timed out after 10000ms: #email\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28"
+    },
+    {
+      "stage": "upload-input",
+      "sourceReport": "upload-input.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    {
+      "stage": "upload-submissions",
+      "sourceReport": "upload-submissions.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "lastCompletedCheck": "Owner settings API rejects illegal ranges without changing the persisted valid settings."
+    },
+    {
+      "stage": "upload-relations",
+      "sourceReport": "upload-relations.json",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-57132.localhost:57132/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    {
+      "stage": "m2-390-before",
+      "sourceReport": "m2-390.json",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: Locator loc=role:button[name=\"下载原图\"] matched 1 elements, but none can receive input; <div role=\"alertdialog\"> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28"
+    }
+  ],
+  "rawEvidence": "test-results/sharing-browser-retry-1"
+}

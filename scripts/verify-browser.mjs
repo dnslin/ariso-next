@@ -12,6 +12,9 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
 import { startUploadEndpoint } from '../tests/integration/upload/s3-endpoint.ts';
 import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture.ts';
+import { runBrowserStage } from './browser-stages.mjs';
+import { selectBrowserPlan } from './browser-plan.mjs';
+import { runM2Restart } from './browser-m2.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -25,90 +28,14 @@ const { values } = parseArgs({
 });
 const suite = values.suite;
 const only = values.only;
-assert.ok(
-  [
-    'full',
-    'viewer',
-    'upload',
-    'upload-regression',
-    'upload-s3',
-    'copy-dropdown',
-    'library-batch',
-    'library-reprocess',
-    'library-copy',
-    'storage-admin',
-    'processing',
-    'account',
-    'trash',
-    'sharing-experiment',
-  ].includes(suite),
-  'Unknown browser suite',
-);
-assert.ok(
-  only === undefined ||
-    (suite === 'processing' &&
-      [
-        'representative',
-        'settings',
-        'preview',
-        'recovery',
-        'consumers',
-      ].includes(only)) ||
-    (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
-    (suite === 'upload-s3' && only === 'cleanup') ||
-    (suite === 'storage-admin' &&
-      ['live', 'dialogs', 'feedback', 'regressions'].includes(only)) ||
-    (suite === 'viewer' &&
-      [
-        'representative',
-        'behavior',
-        'recovery',
-        'refresh',
-        'consumers',
-        'deleted-source',
-        'pending-navigation',
-      ].includes(only)) ||
-    (suite === 'library-copy' &&
-      ['representative', 'feedback', 'revision'].includes(only)) ||
-    (suite === 'trash' &&
-      [
-        'representative',
-        'cleanup',
-        'query-error',
-        'confirmation',
-        'approved-ui',
-        'approved-results',
-        'approved-query',
-        'approved-progress',
-        'review-fixes',
-      ].includes(only)) ||
-    (suite === 'library-batch' &&
-      [
-        'representative',
-        'visibility',
-        'feedback',
-        'tag-states',
-        'lifecycle',
-        'cache',
-        'review-fixes',
-      ].includes(only)),
-  '--only requires an applicable targeted suite',
-);
-assert.ok(
-  !values['preview-config'] ||
-    (suite === 'storage-admin' && only === 'feedback'),
-  '--preview-config applies only to storage-admin feedback',
-);
-assert.ok(
-  !values['storage-config'] || (suite === 'storage-admin' && only === 'live'),
-  '--storage-config applies only to storage-admin live',
-);
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
-assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
-assert.ok(
-  suite !== 'full' || pageLabel === 'p1',
-  'Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL',
-);
+const plan = selectBrowserPlan({
+  suite,
+  only,
+  pageLabel,
+  storageConfig: values['storage-config'],
+  previewConfig: values['preview-config'],
+});
 
 const output = resolve(
   process.env.BROWSER_REPORT_DIR ??
@@ -167,6 +94,7 @@ for (const name of [
   'account-390.json',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
+  'sharing-protocol.json',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -197,7 +125,7 @@ let browser;
 let shellServer;
 let corsFixture;
 let deliveryFixture;
-let sharingFixture;
+const sharingFixtures = new Set();
 const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
@@ -247,6 +175,7 @@ process.once('SIGINT', interrupt);
 process.once('SIGTERM', interrupt);
 async function runBrowser(script, browserConfig, logName) {
   const source = await readFile(new URL(script, import.meta.url), 'utf8');
+  controller.signal.throwIfAborted();
   browser = spawn('ego-browser', ['nodejs'], {
     detached: true,
     stdio: ['pipe', 'pipe', 'pipe'],
@@ -258,7 +187,10 @@ async function runBrowser(script, browserConfig, logName) {
   browser.stderr.on('data', (chunk) => {
     browserLogs += chunk;
   });
-  const closed = once(browser, 'close', { signal: controller.signal });
+  const child = browser;
+  const closed = once(child, 'close', {
+    signal: AbortSignal.any([controller.signal, AbortSignal.timeout(600000)]),
+  });
   browser.stdin.on('error', () => {
     /* Process close/error below reports a failed CLI. */
   });
@@ -266,12 +198,11 @@ async function runBrowser(script, browserConfig, logName) {
     `const config = ${JSON.stringify(browserConfig)};\n${source}`,
   );
   // Full screenshot matrices can exceed five minutes; behavior waits stay bounded.
-  const timeout = setTimeout(interrupt, 600000);
   try {
     const [code] = await closed;
     assert.equal(code, 0, `Ego browser verification failed (${logName})`);
   } finally {
-    clearTimeout(timeout);
+    await stop(child);
     const safeLogs = redact(browserLogs);
     process.stdout.write(safeLogs);
     await writeFile(join(output, logName), safeLogs);
@@ -280,24 +211,97 @@ async function runBrowser(script, browserConfig, logName) {
 async function runSharingExperiment(spaceId) {
   const { launchSharing } =
     await import('../tests/experiments/sharing/harness.ts');
-  sharingFixture = await launchSharing(controller.signal);
-  secrets.push('sharing-password', 'sharing-experiment-password');
-  report.sharingOrigin = sharingFixture.origin;
-  await runBrowser(
-    '../tests/experiments/sharing/browser.mjs',
-    { origin: sharingFixture.origin, spaceId, pageLabel, output },
-    'sharing-experiment.log',
-  );
-  report.sharingExperiment = 'passed';
-  report.sharingBrowserContexts = 'unverified';
-  await writeFile(
-    join(output, 'sharing-server.log'),
-    redact(sharingFixture.logs()),
-  );
-  await sharingFixture.stop();
-  sharingFixture = undefined;
+  const sharingFixture = await launchSharing(controller.signal);
+  sharingFixtures.add(sharingFixture);
+  try {
+    secrets.push('sharing-password', 'sharing-experiment-password');
+    report.sharingOrigin = sharingFixture.origin;
+    await runBrowser(
+      '../tests/experiments/sharing/browser.mjs',
+      { origin: sharingFixture.origin, spaceId, pageLabel, output },
+      'sharing-experiment.log',
+    );
+    report.sharingExperiment = 'passed';
+    report.sharingBrowserContexts = 'unverified';
+  } finally {
+    try {
+      await writeFile(
+        join(output, 'sharing-server.log'),
+        redact(sharingFixture.logs()),
+      );
+    } finally {
+      await sharingFixture.stop();
+      sharingFixtures.delete(sharingFixture);
+    }
+  }
 }
-if (suite === 'sharing-experiment') {
+async function runSharingProtocol(spaceId) {
+  const { launchSharingProtocol } =
+    await import('../e2e/sharing-protocol-fixture.ts');
+  const sharingFixture = await launchSharingProtocol(controller.signal);
+  sharingFixtures.add(sharingFixture);
+  try {
+    secrets.push(
+      'sharing-protocol-password',
+      ...sharingFixture.browserInput.tokens,
+      ...setupCodes(sharingFixture.logs()),
+    );
+    await runBrowser(
+      '../e2e/sharing-protocol.mjs',
+      { ...sharingFixture.browserInput, spaceId, pageLabel, output },
+      'sharing-protocol.log',
+    );
+    await sharingFixture.verify();
+    report.sharingProtocol = 'passed';
+  } finally {
+    try {
+      await writeFile(
+        join(output, 'sharing-protocol-server.log'),
+        redact(sharingFixture.logs()),
+      );
+    } finally {
+      await sharingFixture.stop();
+      sharingFixtures.delete(sharingFixture);
+    }
+  }
+}
+if (suite === 'full') {
+  report.stages = {};
+  report.taskSpaceId = process.env.EGO_TASK_SPACE
+    ? Number(process.env.EGO_TASK_SPACE)
+    : undefined;
+}
+const check = (name, operation, dependencies = []) => {
+  controller.signal.throwIfAborted();
+  return runBrowserStage(
+    report.stages,
+    name,
+    operation,
+    async (error) => {
+      console.error(
+        redact(`Browser stage failed (${name}): ${error.stack ?? error}`),
+      );
+      controller.signal.throwIfAborted();
+      if (!report.taskSpaceId) {
+        const runtimeReport = JSON.parse(
+          await readFile(join(output, 'browser.json'), 'utf8'),
+        );
+        report.taskSpaceId = runtimeReport.taskSpaceId;
+      }
+      await runBrowser(
+        '../e2e/browser-failure-state.mjs',
+        {
+          spaceId: report.taskSpaceId,
+          pageLabel,
+        },
+        `${name}-failure-state.log`,
+      );
+    },
+    dependencies,
+  );
+};
+
+if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -305,7 +309,8 @@ if (suite === 'sharing-experiment') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    await runSharingExperiment(spaceId);
+    if (suite === 'sharing-protocol') await runSharingProtocol(spaceId);
+    else await runSharingExperiment(spaceId);
     report.status = 'passed';
   } catch (error) {
     report.error = redact(error.stack ?? String(error));
@@ -313,17 +318,11 @@ if (suite === 'sharing-experiment') {
     console.error(report.error);
   } finally {
     await stop(browser);
-    if (sharingFixture) {
-      await writeFile(
-        join(output, 'sharing-server.log'),
-        redact(sharingFixture.logs()),
-      );
-      await sharingFixture.stop();
-    }
+    for (const fixture of sharingFixtures) await fixture.stop();
     report.finishedAt = new Date().toISOString();
     await writeFile(
       join(output, 'runner.json'),
-      `${JSON.stringify(report, null, 2)}\n`,
+      `${redact(JSON.stringify(report, null, 2))}\n`,
     );
     process.removeListener('SIGINT', interrupt);
     process.removeListener('SIGTERM', interrupt);
@@ -370,7 +369,7 @@ if (suite === 'storage-admin' && only === 'feedback') {
     report.finishedAt = new Date().toISOString();
     await writeFile(
       join(output, 'runner.json'),
-      `${JSON.stringify(report, null, 2)}\n`,
+      `${redact(JSON.stringify(report, null, 2))}\n`,
     );
     process.removeListener('SIGINT', interrupt);
     process.removeListener('SIGTERM', interrupt);
@@ -466,63 +465,77 @@ try {
     }
     return setupCodes(logs.slice(logStart));
   }
-  const codes = await startProduction(join(temporary, 'data'));
+  async function restartProduction(dataDirectory) {
+    await stop(server);
+    return startProduction(dataDirectory);
+  }
+  let codes;
+  if (suite === 'full')
+    await check('runtime-start', () =>
+      startProduction(join(temporary, 'data')),
+    );
+  else codes = await startProduction(join(temporary, 'data'));
   let shellOrigin;
   if (suite === 'full') {
-    const shellSocket = createServer();
-    shellSocket.listen(0, '127.0.0.1');
-    await once(shellSocket, 'listening');
-    const shellPort = shellSocket.address().port;
-    await new Promise((resolve, reject) =>
-      shellSocket.close((error) => (error ? reject(error) : resolve())),
-    );
-    shellOrigin = `http://127.0.0.1:${shellPort}`;
-    shellServer = spawn(
-      process.execPath,
-      [
-        resolve('node_modules/next/dist/bin/next'),
-        'start',
-        resolve('tests/experiments/shell'),
-        '--hostname',
-        '127.0.0.1',
-        '--port',
-        String(shellPort),
-      ],
-      { detached: true, stdio: ['ignore', 'pipe', 'pipe'] },
-    );
-    shellServer.stdout.on('data', (chunk) => {
-      shellLogs += chunk;
-    });
-    shellServer.stderr.on('data', (chunk) => {
-      shellLogs += chunk;
-    });
-    shellServer.on('error', (error) => {
-      spawnError = error;
-    });
-    const shellDeadline = Date.now() + 30000;
-    while (true) {
-      controller.signal.throwIfAborted();
-      if (spawnError) throw spawnError;
-      assert.equal(
-        shellServer.exitCode,
-        null,
-        `Shell fixture exited: ${shellLogs}`,
+    await check('shell-start', async () => {
+      const shellSocket = createServer();
+      shellSocket.listen(0, '127.0.0.1');
+      await once(shellSocket, 'listening');
+      const shellPort = shellSocket.address().port;
+      await new Promise((resolve, reject) =>
+        shellSocket.close((error) => (error ? reject(error) : resolve())),
       );
-      try {
-        if (
-          (
-            await fetch(`${shellOrigin}/dashboard`, {
-              signal: AbortSignal.timeout(1000),
-            })
-          ).status === 200
-        )
-          break;
-      } catch (error) {
-        if (Date.now() >= shellDeadline) throw error;
+      shellOrigin = `http://127.0.0.1:${shellPort}`;
+      shellServer = spawn(
+        process.execPath,
+        [
+          resolve('node_modules/next/dist/bin/next'),
+          'start',
+          resolve('tests/experiments/shell'),
+          '--hostname',
+          '127.0.0.1',
+          '--port',
+          String(shellPort),
+        ],
+        { detached: true, stdio: ['ignore', 'pipe', 'pipe'] },
+      );
+      shellServer.stdout.on('data', (chunk) => {
+        shellLogs += chunk;
+      });
+      shellServer.stderr.on('data', (chunk) => {
+        shellLogs += chunk;
+      });
+      shellServer.on('error', (error) => {
+        spawnError = error;
+      });
+      const shellDeadline = Date.now() + 30000;
+      while (true) {
+        controller.signal.throwIfAborted();
+        if (spawnError) throw spawnError;
+        assert.equal(
+          shellServer.exitCode,
+          null,
+          `Shell fixture exited: ${shellLogs}`,
+        );
+        try {
+          if (
+            (
+              await fetch(`${shellOrigin}/dashboard`, {
+                signal: AbortSignal.timeout(1000),
+              })
+            ).status === 200
+          )
+            break;
+        } catch (error) {
+          if (Date.now() >= shellDeadline) throw error;
+        }
+        assert.ok(
+          Date.now() < shellDeadline,
+          'Shell fixture startup timed out',
+        );
+        await delay(100, undefined, { signal: controller.signal });
       }
-      assert.ok(Date.now() < shellDeadline, 'Shell fixture startup timed out');
-      await delay(100, undefined, { signal: controller.signal });
-    }
+    });
   }
   const config = {
     nodeExecutable: process.execPath,
@@ -584,15 +597,7 @@ try {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
-      onlyCleanup: suite === 'upload-s3' && only === 'cleanup',
-      phase: suite === 'copy-dropdown' ? 'green' : undefined,
-      viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
-      viewerCheck: suite === 'viewer' ? only : undefined,
-      libraryCopyPhase: suite === 'library-copy' ? only : undefined,
-      storageNavigation: suite === 'storage-admin' && only === undefined,
-      processingPhase: suite === 'processing' ? only : undefined,
-      processingNavigationFixtures:
-        suite === 'processing' && (only === undefined || only === 'consumers'),
+      ...plan.config,
     };
     if (suite === 'storage-admin' && only === 'live') {
       assert.ok(
@@ -688,105 +693,43 @@ try {
       }
       focusedConfig.uploadS3 = targets;
     }
-    let stages =
-      suite === 'processing'
-        ? only === undefined || only === 'consumers'
-          ? [
-              ['processing', 'processing'],
-              ['shell-navigation', 'shellNavigation'],
-            ]
-          : [['processing', 'processing']]
-        : suite === 'storage-admin'
-          ? only === 'live'
-            ? [['storage-admin-live', 'storageAdmin']]
-            : only === 'dialogs'
-              ? [['storage-admin-dialogs', 'storageAdmin']]
-              : only === 'regressions'
-                ? [['storage-admin-regressions', 'storageAdminRegressions']]
-                : [
-                    ['storage-admin', 'storageAdmin'],
-                    ['shell-navigation', 'shellNavigation'],
-                  ]
-          : suite === 'copy-dropdown'
-            ? [['library-copy-dropdown', 'copyDropdown']]
-            : suite === 'upload-s3'
-              ? [['upload-s3', 'uploadS3']]
-              : suite === 'viewer'
-                ? [['library-viewer-run', 'libraryViewer']]
-                : suite === 'library-batch'
-                  ? [['library-batch', 'libraryBatch']]
-                  : suite === 'trash'
-                    ? [
-                        ['trash-query-batch', 'trashQueryBatch'],
-                        ['trash-cleanup', 'trashCleanup'],
-                      ]
-                    : suite === 'library-reprocess'
-                      ? [['library-batch-reprocess', 'libraryReprocess']]
-                      : suite === 'library-copy'
-                        ? [['library-copy', 'libraryCopy']]
-                        : suite === 'upload'
-                          ? [
-                              ['upload-submissions', 'uploadSubmissions'],
-                              ['upload-relations', 'uploadRelations'],
-                            ]
-                          : [
-                              ['upload', 'upload'],
-                              ['upload-polling', 'uploadPolling'],
-                            ];
-    if (suite === 'account') stages = [['account', 'account']];
     report.taskSpaceId = config.spaceId;
-    for (const [script, result] of stages) {
-      if (
-        suite === 'trash' &&
-        (([
-          'representative',
-          'query-error',
-          'confirmation',
-          'approved-ui',
-          'approved-results',
-          'approved-query',
-          'approved-progress',
-          'review-fixes',
-        ].includes(only) &&
-          script === 'trash-cleanup') ||
-          (only === 'cleanup' && script === 'trash-query-batch'))
-      )
-        continue;
-      if (
-        suite === 'upload' &&
-        only !== undefined &&
-        script !== `upload-${only}`
-      )
-        continue;
-      await runBrowser(
-        `../e2e/${script}.mjs`,
-        {
-          ...focusedConfig,
-          libraryBatchPhase: suite === 'library-batch' ? only : undefined,
-          trashPhase: suite === 'trash' ? only : undefined,
-        },
-        `${script}.log`,
-      );
-      report[result] = 'passed';
+    report.stages = {};
+    if (suite === 'm2-mobile') {
+      await runM2Restart({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: { ...focusedConfig, width: 390 },
+      });
+    } else {
+      for (const [script, result] of plan.stages) {
+        const passed = await check(script, () =>
+          runBrowser(`../e2e/${script}.mjs`, focusedConfig, `${script}.log`),
+        );
+        if (passed) report[result] = 'passed';
+      }
     }
-  } else {
-    await runBrowser('../e2e/runtime.mjs', config, 'ego.log');
-    const runtimeReport = JSON.parse(
-      await readFile(join(output, 'browser.json'), 'utf8'),
+    assert.ok(
+      Object.values(report.stages).every((stage) => stage.status === 'passed'),
+      'Focused browser stages failed',
     );
-    report.taskSpaceId = runtimeReport.taskSpaceId;
-    report.identity = [];
+  } else {
+    await check(
+      'runtime',
+      () => runBrowser('../e2e/runtime.mjs', config, 'ego.log'),
+      ['runtime-start', 'shell-start'],
+    );
+    if (!report.taskSpaceId) {
+      const runtimeReport = JSON.parse(
+        await readFile(join(output, 'browser.json'), 'utf8'),
+      );
+      report.taskSpaceId = runtimeReport.taskSpaceId;
+    }
     await stop(server);
     await stop(shellServer);
     for (const width of [1440, 390]) {
       const dataDirectory = join(temporary, `identity-${width}`);
-      const codes = await startProduction(dataDirectory);
-      assert.equal(
-        codes.length,
-        1,
-        'Empty directory must issue one setup code',
-      );
-      secrets.push(codes[0]);
       const credentials = {
         email: `owner-${width}@example.test`,
         password: randomBytes(18).toString('hex'),
@@ -796,55 +739,103 @@ try {
         ...config,
         spaceId: report.taskSpaceId,
         width,
-        code: codes[0],
         credentials,
         databasePath: join(dataDirectory, 'ariso.db'),
         dataDirectory,
       };
-      await runBrowser(
-        '../e2e/identity.mjs',
-        { ...identityConfig, phase: 'setup' },
-        `identity-${width}-setup.log`,
-      );
-      await stop(server);
-      assert.deepEqual(
-        await startProduction(dataDirectory),
-        [],
-        'Initialized restart must not issue another code',
-      );
-      await runBrowser(
-        '../e2e/identity.mjs',
-        {
-          ...identityConfig,
-          phase: 'restart',
-          keepSpace: true,
-        },
-        `identity-${width}-restart.log`,
-      );
-      report.identity.push({ width, setup: 'passed', restart: 'passed' });
+      const setupName = `identity-${width}-setup`;
+      const restartName = `identity-${width}-restart`;
+      const startName = `identity-${width}-start`;
+      const ownerName = `owner-runtime-${width}`;
+      await check(startName, async () => {
+        const codes = await startProduction(dataDirectory);
+        assert.equal(
+          codes.length,
+          1,
+          'Empty directory must issue one setup code',
+        );
+        secrets.push(codes[0]);
+        identityConfig.code = codes[0];
+      });
+      await check(setupName, async () => {
+        await runBrowser(
+          '../e2e/identity.mjs',
+          { ...identityConfig, phase: 'setup' },
+          `${setupName}.log`,
+        );
+      }, [startName]);
+      await check(ownerName, async () => {
+        await stop(server);
+        assert.deepEqual(
+          await startProduction(dataDirectory),
+          [],
+          'Initialized restart must not issue another code',
+        );
+        const owner = await fetch(`${origin}/api/auth/get-session`, {
+          signal: AbortSignal.any([
+            controller.signal,
+            AbortSignal.timeout(10000),
+          ]),
+        });
+        assert.equal(
+          owner.status,
+          200,
+          'Business fixtures require an initialized owner and a ready auth service',
+        );
+      }, [startName]);
+      await check(restartName, async () => {
+        await runBrowser(
+          '../e2e/identity.mjs',
+          { ...identityConfig, phase: 'restart', keepSpace: true },
+          `${restartName}.log`,
+        );
+      }, [setupName, ownerName]);
+      const business = (name, script, extra = {}) =>
+        check(
+          name,
+          () =>
+            runBrowser(
+              `../e2e/${script}.mjs`,
+              { ...identityConfig, ...extra },
+              `${name}.log`,
+            ),
+          [ownerName],
+        );
       if (width === 390) {
-        await runBrowser(
-          '../e2e/processing.mjs',
-          identityConfig,
-          'processing.log',
-        );
-        report.processing = 'passed';
-        corsFixture = await startCorsFixture(origin);
-        await runBrowser(
-          '../e2e/storage-admin.mjs',
-          { ...identityConfig, corsFixture: corsFixture.endpoint },
-          'storage-admin.log',
-        );
-        report.storageAdmin = 'passed';
-        await runBrowser(
-          '../e2e/storage-cors.mjs',
-          { ...identityConfig, corsFixture: corsFixture.endpoint },
-          'storage-cors.log',
-        );
-        report.storageCors = 'passed';
-        await corsFixture.close();
-        corsFixture = undefined;
-        await runBrowser('../e2e/library.mjs', identityConfig, 'library.log');
+        await business('processing', 'processing');
+        try {
+          await check(
+            'storage-admin',
+            async () => {
+              corsFixture = await startCorsFixture(origin);
+              await runBrowser(
+                '../e2e/storage-admin.mjs',
+                { ...identityConfig, corsFixture: corsFixture.endpoint },
+                'storage-admin.log',
+              );
+            },
+            [ownerName],
+          );
+          await check(
+            'storage-cors',
+            async () => {
+              corsFixture ??= await startCorsFixture(origin);
+              await runBrowser(
+                '../e2e/storage-cors.mjs',
+                { ...identityConfig, corsFixture: corsFixture.endpoint },
+                'storage-cors.log',
+              );
+            },
+            [ownerName],
+          );
+        } finally {
+          if (corsFixture)
+            await check('storage-cors-close', async () => {
+              await corsFixture.close();
+              corsFixture = undefined;
+            });
+        }
+        await business('library', 'library');
         for (const phase of [
           'feedback',
           'selection',
@@ -853,153 +844,98 @@ try {
           'filters',
           'scale',
         ]) {
-          await runBrowser(
-            '../e2e/library-query.mjs',
-            { ...identityConfig, libraryQueryPhase: phase },
-            `library-${phase}.log`,
-          );
+          await business(`library-${phase}`, 'library-query', {
+            libraryQueryPhase: phase,
+          });
         }
-        report.libraryQuery = 'passed';
-        await runBrowser(
-          '../e2e/library-batch.mjs',
-          identityConfig,
-          'library-batch.log',
-        );
-        report.libraryBatch = 'passed';
-        await runBrowser(
-          '../e2e/library-batch-reprocess.mjs',
-          identityConfig,
-          'library-batch-reprocess.log',
-        );
-        report.libraryReprocess = 'passed';
-        await runBrowser(
-          '../e2e/library-copy.mjs',
-          identityConfig,
-          'library-copy.log',
-        );
-        report.libraryCopy = 'passed';
-        await runBrowser(
-          '../e2e/trash-query-batch.mjs',
-          identityConfig,
-          'trash-query-batch.log',
-        );
-        report.trashQueryBatch = 'passed';
-        await runBrowser(
-          '../e2e/trash-cleanup.mjs',
-          identityConfig,
-          'trash-cleanup.log',
-        );
-        report.trashCleanup = 'passed';
-        await runBrowser(
-          '../e2e/shell-navigation.mjs',
-          identityConfig,
-          'shell-navigation.log',
-        );
-        report.shellNavigation = 'passed';
-        await runBrowser('../e2e/albums.mjs', identityConfig, 'albums.log');
-        report.albums = 'passed';
-        await runBrowser(
-          '../e2e/album-cover.mjs',
-          identityConfig,
-          'album-cover.log',
-        );
-        report.albumCover = 'passed';
-        await runBrowser('../e2e/tags.mjs', identityConfig, 'tags.log');
-        report.tags = 'passed';
-        await runBrowser('../e2e/upload.mjs', identityConfig, 'upload.log');
-        await runBrowser(
-          '../e2e/upload-polling.mjs',
-          identityConfig,
-          'upload-polling.log',
-        );
-        report.uploadPolling = 'passed';
-        await runBrowser(
-          '../e2e/upload-input.mjs',
-          identityConfig,
-          'upload-input.log',
-        );
-        report.uploadInput = 'passed';
-        await runBrowser(
-          '../e2e/upload-submissions.mjs',
-          identityConfig,
-          'upload-submissions.log',
-        );
-        report.uploadSubmissions = 'passed';
-        await runBrowser(
-          '../e2e/upload-relations.mjs',
-          identityConfig,
-          'upload-relations.log',
-        );
-        report.uploadRelations = 'passed';
-        report.upload = 'passed';
-        report.library = 'passed';
+        for (const [name, script] of [
+          ['library-batch', 'library-batch'],
+          ['library-reprocess', 'library-batch-reprocess'],
+          ['library-copy', 'library-copy'],
+          ['trash-query-batch', 'trash-query-batch'],
+          ['trash-cleanup', 'trash-cleanup'],
+          ['shell-navigation', 'shell-navigation'],
+          ['albums', 'albums'],
+          ['album-cover', 'album-cover'],
+          ['tags', 'tags'],
+          ['upload', 'upload'],
+          ['upload-polling', 'upload-polling'],
+          ['upload-input', 'upload-input'],
+          ['upload-submissions', 'upload-submissions'],
+          ['upload-relations', 'upload-relations'],
+        ])
+          await business(name, script);
       }
-      await runBrowser(
-        '../e2e/m2.mjs',
-        { ...identityConfig, phase: 'before' },
-        `m2-${width}-before.log`,
-      );
-      await stop(server);
-      assert.deepEqual(await startProduction(dataDirectory), []);
-      await runBrowser(
-        '../e2e/m2.mjs',
-        { ...identityConfig, phase: 'after' },
-        `m2-${width}-after.log`,
-      );
-      report[`m2-${width}`] = 'passed';
-      await runBrowser(
-        '../e2e/interaction-polish.mjs',
-        identityConfig,
-        `interaction-polish-${width}.log`,
-      );
-      report[`interaction-polish-${width}`] = 'passed';
-      await runBrowser(
-        '../e2e/workspace-continuity.mjs',
-        identityConfig,
-        `workspace-continuity-${width}.log`,
-      );
-      report[`workspace-continuity-${width}`] = 'passed';
-      // Account changes consume these credentials, so run them only after the
-      // existing suites have finished using this isolated data directory.
-      await runBrowser(
-        '../e2e/account.mjs',
-        identityConfig,
-        `account-${width}.log`,
-      );
-      report[`account-${width}`] = 'passed';
+      await runM2Restart({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: identityConfig,
+        dependencies: [ownerName],
+      });
+      await business(`interaction-polish-${width}`, 'interaction-polish');
+      await business(`workspace-continuity-${width}`, 'workspace-continuity');
+      // Account changes consume these credentials, so keep this last for the data directory.
+      if (await business(`account-${width}`, 'account'))
+        report[`account-${width}`] = 'passed';
       await stop(server);
     }
-    deliveryFixture = await launchProtocolDelivery();
-    secrets.push(deliveryFixture.browserInput.credentials.password);
-    await runBrowser(
-      '../e2e/delivery-s3.mjs',
-      {
-        ...deliveryFixture.browserInput,
-        spaceId: report.taskSpaceId,
-        output,
-      },
-      'delivery-s3.log',
+    await check('delivery-s3', async () => {
+      try {
+        deliveryFixture = await launchProtocolDelivery();
+        secrets.push(deliveryFixture.browserInput.credentials.password);
+        await runBrowser(
+          '../e2e/delivery-s3.mjs',
+          {
+            ...deliveryFixture.browserInput,
+            spaceId: report.taskSpaceId,
+            output,
+          },
+          'delivery-s3.log',
+        );
+      } finally {
+        await deliveryFixture?.close();
+        deliveryFixture = undefined;
+      }
+    });
+    await check('sharing-protocol', () =>
+      runSharingProtocol(report.taskSpaceId),
     );
-    report.deliveryS3 = 'passed';
-    await deliveryFixture.close();
-    deliveryFixture = undefined;
-    await runSharingExperiment(report.taskSpaceId);
-    // Reuse the same Ego space for isolated UI/library checks and let its runner
-    // close it after the final successful suite (unless the caller keeps it).
-    browser = spawn(process.execPath, ['run-browser.mjs'], {
-      cwd: resolve('tests/experiments/ui'),
-      detached: true,
-      stdio: ['ignore', 'inherit', 'inherit'],
-      env: {
-        ...process.env,
-        EGO_TASK_SPACE: String(report.taskSpaceId),
-        BROWSER_REPORT_DIR: join(output, 'ui'),
-      },
+    await check('sharing-experiment', () =>
+      runSharingExperiment(report.taskSpaceId),
+    );
+    await check('isolated-ui', async () => {
+      browser = spawn(process.execPath, ['run-browser.mjs'], {
+        cwd: resolve('tests/experiments/ui'),
+        detached: true,
+        stdio: ['ignore', 'inherit', 'inherit'],
+        env: {
+          ...process.env,
+          EGO_TASK_SPACE: String(report.taskSpaceId),
+          EGO_KEEP_SPACE: Object.values(report.stages).every(
+            (stage) => stage.status === 'passed',
+          )
+            ? process.env.EGO_KEEP_SPACE
+            : '1',
+          BROWSER_REPORT_DIR: join(output, 'ui'),
+        },
+      });
+      const [uiCode] = await once(browser, 'close', {
+        signal: controller.signal,
+      });
+      assert.equal(
+        uiCode,
+        0,
+        'Isolated UI/library browser verification failed',
+      );
     });
-    const [uiCode] = await once(browser, 'close', {
-      signal: controller.signal,
-    });
-    assert.equal(uiCode, 0, 'Isolated UI/library browser verification failed');
+    assert.ok(
+      Object.values(report.stages).every((stage) => stage.status === 'passed'),
+      `Browser stages failed or blocked: ${Object.entries(report.stages)
+        .filter(([, stage]) => stage.status !== 'passed')
+        .map(([name]) => name)
+        .join(', ')}`,
+    );
   }
   report.status = 'passed';
 } catch (error) {
@@ -1007,27 +943,41 @@ try {
   process.exitCode = 1;
   console.error(report.error);
 } finally {
-  await stop(browser);
-  await stop(server);
-  await stop(shellServer);
-  await corsFixture?.close();
-  await deliveryFixture?.close();
-  if (sharingFixture) {
-    await writeFile(
-      join(output, 'sharing-server.log'),
-      redact(sharingFixture.logs()),
-    );
-    await sharingFixture.stop();
+  const cleanup = await Promise.allSettled([
+    stop(browser),
+    stop(server),
+    stop(shellServer),
+    corsFixture?.close(),
+    deliveryFixture?.close(),
+    ...[...sharingFixtures].map((fixture) => fixture.stop()),
+    ...uploadFixtures.map((endpoint) => endpoint.close()),
+  ]);
+  const cleanupErrors = cleanup
+    .filter((result) => result.status === 'rejected')
+    .map((result) => redact(result.reason.stack ?? String(result.reason)));
+  const artifacts = await Promise.allSettled([
+    writeFile(join(output, 'shell-server.log'), shellLogs),
+    writeFile(join(output, 'server.log'), redact(logs)),
+    ...(cleanupErrors.length
+      ? []
+      : [rm(temporary, { recursive: true, force: true, maxRetries: 3 })]),
+  ]);
+  cleanupErrors.push(
+    ...artifacts
+      .filter((result) => result.status === 'rejected')
+      .map((result) => redact(result.reason.stack ?? String(result.reason))),
+  );
+  if (cleanupErrors.length) {
+    report.cleanupErrors = cleanupErrors;
+    report.status = 'failed';
+    process.exitCode = 1;
+    console.error(cleanupErrors.join('\n'));
   }
-  for (const endpoint of uploadFixtures) await endpoint.close();
-  await writeFile(join(output, 'shell-server.log'), shellLogs);
-  await writeFile(join(output, 'server.log'), redact(logs));
-  await rm(temporary, { recursive: true, force: true, maxRetries: 3 });
   report.finishedAt = new Date().toISOString();
-  report.temporaryDirectoryRemoved = true;
+  report.temporaryDirectoryRemoved = cleanupErrors.length === 0;
   await writeFile(
     join(output, 'runner.json'),
-    `${JSON.stringify(report, null, 2)}\n`,
+    `${redact(JSON.stringify(report, null, 2))}\n`,
   );
   process.removeListener('SIGINT', interrupt);
   process.removeListener('SIGTERM', interrupt);

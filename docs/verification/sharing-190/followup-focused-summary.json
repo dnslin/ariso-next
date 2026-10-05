@@ -1,0 +1,856 @@
+[
+  {
+    "directory": "sharing-viewer-touch-final",
+    "runner": {
+      "startedAt": "2026-10-05T14:53:08.122Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "viewer",
+      "only": "behavior",
+      "pageLabel": "p1",
+      "origin": "http://ariso-57062.localhost:57062",
+      "taskSpaceId": 32,
+      "stages": {
+        "library-viewer-run": {
+          "status": "passed"
+        }
+      },
+      "libraryViewer": "passed",
+      "finishedAt": "2026-10-05T14:54:38.371Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "library-viewer.json",
+        "status": "passed",
+        "phase": "behavior",
+        "stage": "completed",
+        "checks": [
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated."
+        ],
+        "layoutCount": 15,
+        "touchGeometry": {
+          "base": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 1,
+            "translateX": 0,
+            "translateY": 0,
+            "paintedWidth": 390,
+            "paintedHeight": 292.5,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          },
+          "pinchDistances": [30, 40, 50, 65, 80, 100, 130, 180],
+          "pinched": {
+            "x": -670.6392211914062,
+            "y": -1158.1959228515625,
+            "width": 1460.37060546875,
+            "height": 3160.391845703125,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 3.74454,
+            "translateX": -135.454,
+            "translateY": 0,
+            "paintedWidth": 1460.37060546875,
+            "paintedHeight": 1095.2779541015625,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          },
+          "panned": {
+            "x": -610.6392211914062,
+            "y": -1128.1959228515625,
+            "width": 1460.37060546875,
+            "height": 3160.391845703125,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 3.74454,
+            "translateX": -75.4539,
+            "translateY": 30,
+            "paintedWidth": 1460.37060546875,
+            "paintedHeight": 1095.2779541015625,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "directory": "sharing-processing-settings-final",
+    "runner": {
+      "startedAt": "2026-10-05T14:55:30.273Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "processing",
+      "only": "settings",
+      "pageLabel": "p1",
+      "origin": "http://ariso-57294.localhost:57294",
+      "taskSpaceId": 32,
+      "stages": {
+        "processing": {
+          "status": "passed"
+        }
+      },
+      "processing": "passed",
+      "finishedAt": "2026-10-05T14:56:51.994Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "processing.json",
+        "status": "passed",
+        "phase": "settings",
+        "stage": "settings",
+        "checks": [
+          "Same-document client navigation retains the root cache owner while a separate Node client changes server settings from quality 82 to 68. The real entry GET 200 is held: the existing reading state has no cached editor or footer. Release initializes all 20 actual controls from the fresh server result, and explicit save sends those exact 20 fields without overwriting the new server value.",
+          "A second warm client re-entry after a separate real server change blocks the actual settings GET. It shows this entry read error with no cached form, preview or save footer, and makes no mutation. Only explicit retry performs the next real GET and initializes all 20 controls from server quality 64 while document/window identity remains unchanged.",
+          "Real GET fills the form; keyboard save persists quality, visibility and concurrency. Its live neutral Toast sits 100 px above the viewport bottom without intercepting save; real client navigation to Upload keeps that same notification and restores ordinary desktop/mobile offsets 28/24. Returning through the actual sidebar reads saved values without a success page.",
+          "Out-of-range quality stays entered, receives its field error and keyboard focus, and sends no invalid PATCH.",
+          "Real HTTP 500 preserves input; a lost real successful PATCH is explicitly reconciled through GET without repeating the mutation.",
+          "A real concurrent update makes reconciliation different; preserve keeps local input without saving it, and only the next explicit save submits again.",
+          "Disabling the default compressed version requires confirmation; Escape preserves compression, confirmation changes only the draft until explicit save.",
+          "Actual file upload creates an expiring asset without saving settings; explicit save adopts it; re-entry reads persisted ID, format and dimensions through the real owner metadata endpoint.",
+          "A blocked actual saved-asset metadata request retains its persisted ID and exposes a retry; successful retry reads the actual row without uploading a replacement.",
+          "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+          "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+          "Text/image mode changes share one opacity value and retain text input.",
+          "All nine position buttons are keyboard-selectable. Invalid #AB survives blur and field validation without a PATCH; exact margin 2.125, font size 3.5 and width 12.25 persist through real save and re-entry.",
+          "Clearing the actual longest-edge numeric control turns the optional limit off and explicitly saves null; required numeric fields retain validation behavior.",
+          "A real temporary asset expiry timestamp is advanced only in the disposable database. Actual metadata GET returns available=false, adoption PATCH returns 409, and the draft asset ID and decimal width remain entered while the adopted server ID stays unchanged.",
+          "Keyboard clear of a real expired image draft changes only its asset ID: other live field values, mode, selected test file, page and scroll are retained. Focus moves to save without a scroll jump; image-empty save is a field error with zero PATCH. Explicit off save sends all 20 exact fields with null, GET/SQLite release the setting reference, and the retained real test file generates bytes matching the original without being selected again.",
+          "The shared clear entry remains operable in off with a real saved selected ID. Mode change alone keeps the ID; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "The shared clear entry remains operable in text with a real saved selected ID. Mode change alone keeps the ID; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "The shared clear entry remains operable in off with a real expired selected ID. Mode change alone keeps the ID and actual save returns 409; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "The shared clear entry remains operable in text with a real expired selected ID. Mode change alone keeps the ID and actual save returns 409; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "A real blocked saved-asset metadata request exposes the same public clear entry. Explicit clear dismisses stale ID/read error locally; text save explicitly nulls the persisted setting reference without uploading a replacement.",
+          "Holding actual successful save and actual upload 201 responses separately proves the shared clear entry is disabled while save or asset upload is pending, preserves the old selected ID, and re-enables after each real response is released.",
+          "After a real successful save response is lost, explicit clear preserves unknown state and the original submitted request while moving keyboard focus to the existing enabled reconcile action. Enter performs only actual GET: it confirms the original pending save, retains the locally cleared ID, and enables a later explicit null save without an automatic repeat."
+        ],
+        "layoutCount": 39,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "directory": "sharing-processing-preview-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:00:58.183Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "failed",
+      "suite": "processing",
+      "only": "preview",
+      "pageLabel": "p1",
+      "origin": "http://ariso-57909.localhost:57909",
+      "taskSpaceId": 32,
+      "stages": {
+        "processing": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (processing.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:282:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:858:22"
+        }
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:899:12",
+      "finishedAt": "2026-10-05T15:02:06.078Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "processing.json",
+        "status": "failed",
+        "phase": "preview",
+        "stage": "preview",
+        "error": "Error: page.waitForFunction timed out after 60000ms on page p1; last URL was \"http://ariso-57909.localhost:57909/settings/processing\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+        "checks": [],
+        "layoutCount": 1,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "directory": "sharing-processing-recovery-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:02:55.806Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "processing",
+      "only": "recovery",
+      "pageLabel": "p1",
+      "origin": "http://ariso-58209.localhost:58209",
+      "taskSpaceId": 32,
+      "stages": {
+        "processing": {
+          "status": "passed"
+        }
+      },
+      "processing": "passed",
+      "finishedAt": "2026-10-05T15:03:22.069Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "processing.json",
+        "status": "passed",
+        "phase": "recovery",
+        "stage": "recovery",
+        "checks": [
+          "A fresh real initial settings GET returns 200 at the existing Fetch response boundary. Holding it exposes a single neutral desktop/mobile reading card with the actual title and explanation, no editable settings or save footer; releasing it fills quality 82 without an invented loading state.",
+          "Blocking the real settings read exposes an initial read error; unblocking and explicit retry fills actual saved values.",
+          "A real 5 MiB + 1 byte file exceeds the actual independently configured 5 MiB upload limit. POST returns 413 with a real previewId; GET reads its failed/cleaned record, input stays visible, and exactly one status refresh reads the same ID without repeating POST.",
+          "The real accepted POST response is lost entirely: no ID is invented, no list request or automatic resubmission occurs. Escape preserves unknown state; only explicit confirmed recreation creates a new task.",
+          "A real preview clock is advanced in the disposable database. GET reports expired, bytes return 410, and explicit retry creates a fresh successful ID.",
+          "An actual malformed local file is rejected by the real image inspector. The UI shows the addressable failed task and its exact server diagnostic without a partial result.",
+          "A real 4096 × 3072 JPEG generated from the CC0 source with the existing seeded ImageMagick noise remains within the actual upload byte limit. Real GET reports running and renders that state on both viewports; only its later real successful terminal GET is held for the existing late-response cancellation regression.",
+          "The actual DELETE 200 response is received and held independently of the older GET. The same-ID cancelling view shows the real wait-for-settlement interaction on both viewports; releasing only DELETE then preserves the existing lost-cancel-response and late-GET recovery assertions.",
+          "Actual DELETE settles cancellation, but its complete response is lost while older real GET responses are held. Unknown UI keeps the task ID and says result needs verification without declaring cached queued/running facts. Known-ID GET then reads the real cancelled/failed cleanup status and exact disposable trigger diagnostic.",
+          "Explicit cleanup retry runs real DELETE once. When its response is lost, known-ID GET verifies cancelled/deleted without repeated mutation; historical cleanupError does not turn deleted into a failed cleanup.",
+          "CDP holds an actual same-ID DELETE before sending and the cancelling UI commits. A visibility event reaches window; three observed animation frames and drained CDP events confirm zero new same-ID GETs. DELETE 200 reaches the hook and settles cancelled/deleted before releasing its older actual successful GET; canonical cancellation does not regress.",
+          "The real owner session expires in the disposable database. Save returns 401, then the shared window-focus check GET returns 200/null. After browser frames process that actual response, the same processing route/form retains quality 66 and disables editing/save/preview until explicit login; fixture restoration signs in again and captures new cookies.",
+          "A real Upload settings read initializes its live controller; client navigation keeps that provider alive while editing processing quality 66. The real successful settings PATCH is held after reception, the session then expires, and releasing that response invalidates the actual active Upload settings query, which returns 401. Processing retains its route/input and disables editing/save/preview until explicit login."
+        ],
+        "layoutCount": 19,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "directory": "sharing-batch-cache-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:03:39.874Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "library-batch",
+      "only": "cache",
+      "pageLabel": "p1",
+      "origin": "http://ariso-58362.localhost:58362",
+      "taskSpaceId": 32,
+      "stages": {
+        "library-batch": {
+          "status": "passed"
+        }
+      },
+      "libraryBatch": "passed",
+      "finishedAt": "2026-10-05T15:04:01.980Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "library-batch.json",
+        "status": "passed",
+        "phase": "cache",
+        "checks": [
+          "Batch visibility is current when returning to a previously cached page; loaded 60-image window retains its 58 surviving cards and continues after the unchanged original cursor of a removed anchor, without reloading page one."
+        ],
+        "layoutCount": 0,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "directory": "sharing-copy-revision-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:04:37.503Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "library-copy",
+      "only": "revision",
+      "pageLabel": "p1",
+      "origin": "http://ariso-58545.localhost:58545",
+      "taskSpaceId": 32,
+      "stages": {
+        "library-copy": {
+          "status": "passed"
+        }
+      },
+      "libraryCopy": "passed",
+      "finishedAt": "2026-10-05T15:05:22.936Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "library-copy.json",
+        "status": "passed",
+        "phase": "revision",
+        "stage": "complete",
+        "checks": [
+          "Actual public-original metadata warning is present for original/default and absent for fixed compressed output, with complete native Clipboard text for both.",
+          "201 selections survive pages; real responses reversed within every chunk merge by full query order including equal keys; native URL pasteboard exact; private/failed remain available, disabled storage excluded, no image GET or count/probe writes.",
+          "Chromium denies the actual native Clipboard write; all 200 HTML lines stay selected and focused; Command+C copies the exact full text, including mobile visual wrapping; the same modal presents manual text without claiming an automatic copy succeeded.",
+          "All unavailable writes nothing and preserves the pasteboard; real-response HTTP failure retains an actionable error and retries independently of empty results.",
+          "Trash native right-click and Shift+F10 use the shared restore and permanent-delete menu; Escape returns focus to the actual record, with no copy, reprocess or move-to-trash action.",
+          "Every implemented shared-provider consumer route mounts its real page with no horizontal overflow; actual bottom-toast placement and dismissability are checked separately in the short copy-success viewport.",
+          "Upload empty picker preserves approved desktop geometry and uses equal 48px mobile buttons, 12px gap, 32px icon, 20px heading and 24px padding; the real native image and folder choosers still scan independent sample PNGs into the queue without uploading.",
+          "Album mouse context and toolbar share the same copy modal on both responsive themes; full native clipboard success closes it, returns focus, preserves list, route, scroll and selection, and shows only the neutral bottom toast.",
+          "Album copies follow joined_at rather than upload or selection order; 401 clears private copy/selection surfaces and returns to login."
+        ],
+        "layoutCount": 85,
+        "errors": [],
+        "clipboardRestored": true
+      }
+    ]
+  },
+  {
+    "directory": "sharing-trash-review-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:05:51.609Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "trash",
+      "only": "review-fixes",
+      "pageLabel": "p1",
+      "origin": "http://ariso-58790.localhost:58790",
+      "taskSpaceId": 32,
+      "stages": {
+        "trash-query-batch": {
+          "status": "passed"
+        }
+      },
+      "trashQueryBatch": "passed",
+      "finishedAt": "2026-10-05T15:06:13.322Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "trash-query-batch.json",
+        "status": "passed",
+        "phase": "review-fixes",
+        "checks": [
+          "另一真实窗口恢复A；本页搜索A→B→A主动重新查询得到空结果，后退恢复B，清空查询显示实际200条。",
+          "单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动完成且不误报未知。",
+          "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。"
+        ],
+        "layoutCount": 6,
+        "errors": [],
+        "restoredTheme": null
+      }
+    ]
+  },
+  {
+    "directory": "sharing-upload-main-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:06:34.791Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "failed",
+      "suite": "upload-regression",
+      "only": "main",
+      "pageLabel": "p1",
+      "origin": "http://ariso-58914.localhost:58914",
+      "taskSpaceId": 32,
+      "stages": {
+        "upload": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:282:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:858:22"
+        }
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:899:12",
+      "finishedAt": "2026-10-05T15:07:04.306Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "owner-shell.json",
+        "status": "failed",
+        "stage": "short phone navigation",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    32,\n+   32.00001525878906\n-   32\n  ]\n\n    at verifyUIRefinement (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/ui-refinement.mjs:501:20)\n    at async verifyOwnerShell (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/owner-shell.mjs:484:5)\n    at async file:////[eval2]:244:3",
+        "checks": [
+          "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+          "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+          "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional."
+        ]
+      },
+      {
+        "file": "upload.json",
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    32,\n+   32.00001525878906\n-   32\n  ]\n\n    at verifyUIRefinement (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/ui-refinement.mjs:501:20)\n    at async verifyOwnerShell (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/owner-shell.mjs:484:5)\n    at async file:////[eval2]:244:3",
+        "checks": [
+          "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required."
+        ],
+        "layoutCount": 0
+      }
+    ]
+  },
+  {
+    "directory": "sharing-m2-mobile-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:07:20.735Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "m2-mobile",
+      "pageLabel": "p1",
+      "origin": "http://ariso-59057.localhost:59057",
+      "taskSpaceId": 32,
+      "stages": {
+        "m2-390-before": {
+          "status": "passed"
+        },
+        "m2-390-after": {
+          "status": "passed"
+        }
+      },
+      "finishedAt": "2026-10-05T15:08:08.484Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "m2-390.json",
+        "status": "passed",
+        "checks": [
+          "390px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+          "390px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+          "390px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+          "390px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+          "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+          "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+          "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+          "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded.",
+          "Actual production stop/start restores the same job, image, original object and processing snapshot; each expected version exists once and browser queue stays empty."
+        ]
+      }
+    ]
+  },
+  {
+    "directory": "sharing-library-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:08:44.504Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "failed",
+      "suite": "library",
+      "pageLabel": "p1",
+      "origin": "http://ariso-59304.localhost:59304",
+      "taskSpaceId": 32,
+      "stages": {
+        "library": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:282:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:858:22"
+        }
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:899:12",
+      "finishedAt": "2026-10-05T15:12:31.538Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "library-viewer.json",
+        "status": "passed",
+        "phase": "full",
+        "stage": "completed",
+        "checks": [
+          "The immersive picture stage occupies five real viewport widths in both themes, uses maximum proportional contain, and exposes only a reachable 44px close icon. 390/1440×400 preserve these properties. Screenshots require independent review and user acceptance.",
+          "Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Selecting each saved version in detail is inherited by the immersive viewer, whose actual delivery MIME and byte length match the saved metadata. Selection never changes the default; the viewer has no version/download/share/slideshow controls.",
+          "Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original. Three Tab and three Shift+Tab operations keep actual focus inside the direct viewer; Escape closes it and returns to the detail entry. Resizing the focused entry closes its tooltip without viewport expansion or moving focus.",
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated."
+        ],
+        "layoutCount": 27,
+        "touchGeometry": {
+          "base": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 1,
+            "translateX": 0,
+            "translateY": 0,
+            "paintedWidth": 390,
+            "paintedHeight": 292.5,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          },
+          "pinchDistances": [30, 40, 50, 65, 80, 100, 130, 180],
+          "pinched": {
+            "x": -670.6392211914062,
+            "y": -1158.1959228515625,
+            "width": 1460.37060546875,
+            "height": 3160.391845703125,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 3.74454,
+            "translateX": -135.454,
+            "translateY": 0,
+            "paintedWidth": 1460.37060546875,
+            "paintedHeight": 1095.2779541015625,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          },
+          "panned": {
+            "x": -610.6392211914062,
+            "y": -1128.1959228515625,
+            "width": 1460.37060546875,
+            "height": 3160.391845703125,
+            "centerX": 195,
+            "centerY": 422,
+            "scale": 3.74454,
+            "translateX": -75.4539,
+            "translateY": 30,
+            "paintedWidth": 1460.37060546875,
+            "paintedHeight": 1095.2779541015625,
+            "stage": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844
+            }
+          }
+        }
+      },
+      {
+        "file": "library.json",
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Pending real detail read disables stale copy actions\n\nfalse !== true\n\n    at verifyLibraryTrashRace (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-trash-race.mjs:86:14)\n    at async verifyLibraryTrash (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-trash.mjs:63:3)\n    at async file:////[eval2]:511:3",
+        "checks": [
+          "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+          "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+          "Actual missing thumbnail file renders explicit failure without original fallback; leaving an open refresh tooltip and opening the mobile menu lets the first Escape close the menu and restore trigger focus.",
+          "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+          "The single water-green access capsule preserves hover and visible keyboard focus; the explanation opens by pointer and keyboard, fits the viewport, and Escape restores its trigger.",
+          "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+          "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+          "Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.",
+          "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position.",
+          "Desktop action Toolbar moves Copy → Download → Delete by keyboard; Escape cancels deletion and returns focus to its direct trigger.",
+          "Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.",
+          "Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.",
+          "Changing the real default setting is reflected when copy reopens while the compressed preview stays selected; default URLs omit type; unsaved explicit watermark returns 404.",
+          "Missing thumbnail download HEAD returns 404 and displays the explicit download error without requesting another version.",
+          "After a real thumbnail file read failure, restoring the fixture file and manually refreshing decodes that same thumbnail without an original fallback.",
+          "Mobile details keep Copy, current-version Download and Delete directly in the fixed footer; cancelling deletion returns focus to Delete.",
+          "Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport copy action opens the real copy dialog.",
+          "Real owner-cookie PATCH trims Unicode displayName and changes visibility without rewriting originalName, ID, object Key or stored state; empty/control-character edits reject without changing data. Edit UI remains design-blocked.",
+          "Single-image final-set relations use real collection provider transactions; omitted album selection retains its join timestamp while an empty tag set clears tags.",
+          "Metadata GET distinguishes unread null; existing POST queues real ExifTool read, returns complete grouped JSON and timestamps, and leaves process state unchanged. Tree/search UI remains design-blocked.",
+          "Version workspace uses one owner shell, shows four actual states across five widths/light-dark, preserves the explicit compressed preview on keyboard return, and closes subview directly to the source list.",
+          "Version explanation defaults closed; pointer and Enter open its real dialog, Escape restores trigger focus, popup fits desktop/phone viewport, and the icon return control keeps transparent hover and keyboard focus.",
+          null,
+          null,
+          null,
+          null,
+          "Single-version selection opens a small real AlertDialog with saved-version update/retain rows and cancel autofocus; cancel/Escape preserve scope, restore its input focus, make no POST, and the retained-scope footer reopens confirmation. Desktop/phone light-dark dialog fits its viewport, hides the shell footer, and short-view content scrolls inside the dialog while both 48px actions stay reachable.",
+          "Album reprocess uses the same footer boundary: desktop/phone in both themes remove the whole footer during confirmation, and Escape restores its actions, selected scope, focus and album route.",
+          "Confirmed successful receipt resets when reopening the version-page reprocess action on the same image; a second real thumbnail-only job completes without closing/reloading and preserves all unselected versions.",
+          "Real all-scope retry from a selected failed-filter card runs ImageMagick, creates compressed/thumbnail/text-watermark versions and succeeds in UI; original stays fixed, derived object IDs change, submission occurs once, status batches remain ≤80 and current-ID polling stops. Completion marks list refresh available, reconciliation removes the no-longer-failed selection, and manual refresh excludes the image from the real failed query.",
+          "A real accepted thumbnail-only response and its follow-up detail read are disconnected at fetch transport; pending dialog actions and Escape cannot cancel, the retained popup shows the GET error with cancel/explicit keyboard verification, and cancel exposes cached scope plus parent retry with choices disabled. Successful detail verification claims the new matching terminal receipt and displays its actual success without another POST. The browser submits once and the DB gains one real job; actual worker success replaces only thumbnail while original/compressed/watermark object IDs remain unchanged.",
+          "A POST disconnected before reaching the server creates no job. Failed detail verification cannot resume or submit; a real successful GET with unchanged latest job keeps unknown and exposes explicit range recovery. That keyboard action resets to all without another POST, job or object change.",
+          "All four version tabs download actual stored bytes and production Content-Disposition filenames; public original download toast explicitly discloses GPS/photography risk.",
+          "Saved compression/watermark remain downloadable after settings turn off; disabled scope reasons render, stopped storage forbids submit, and a persisted first-processing failure offers only all-scope retry.",
+          "Controlled persisted job (not queued to worker) renders single-thumbnail queued, then all-scope running with a real stored compressed fixture candidate: generated/not-yet-replaced and remaining thumbnail/watermark rows render separately while published object IDs stay fixed. This is rendering evidence, not real worker generation. Failed state keeps old versions, retry returns to current settings; losing a real current-ID status response stops polling and keyboard retry reads the real endpoint again.",
+          "Real public source order locates the card at 5; 44 items are loaded and actual virtual windows are traversed. Card keyboard opening → version workspace → detail retains watermark preview; closing preserves visibility/sort URL, masonry layout, source scroll and exact trigger focus.",
+          "Manual File upload runs the real receiver and worker to ready (b03aeda3-0124-4828-99d2-b706688263c2); upload detail selects thumbnail and routes to version information with that selection. Browser Back at desktop/phone in both themes preserves the same document, queue ID, image ID and ready state.",
+          "Real album POST and final-set collections PATCH place the uploaded image in 82264374-9ea2-42a4-811f-4664f901a2cf; keyboard card → detail → versions → detail → close preserves album route, selected thumbnail, one selected image, source scroll and trigger focus on desktop/phone in both themes. Shared shell brand, account, ten navigation entries and current route remain consistent.",
+          "The immersive picture stage occupies five real viewport widths in both themes, uses maximum proportional contain, and exposes only a reachable 44px close icon. 390/1440×400 preserve these properties. Screenshots require independent review and user acceptance.",
+          "Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Selecting each saved version in detail is inherited by the immersive viewer, whose actual delivery MIME and byte length match the saved metadata. Selection never changes the default; the viewer has no version/download/share/slideshow controls.",
+          "Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original. Three Tab and three Shift+Tab operations keep actual focus inside the direct viewer; Escape closes it and returns to the detail entry. Resizing the focused entry closes its tooltip without viewport expansion or moving focus.",
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated.",
+          "A rejected write reconciles the real renamed record into the visible detail cache while later background reads remain held."
+        ],
+        "layoutCount": 227
+      }
+    ]
+  },
+  {
+    "directory": "sharing-processing-preview-keyboard-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:13:17.291Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "processing",
+      "only": "preview",
+      "pageLabel": "p1",
+      "origin": "http://ariso-59916.localhost:59916",
+      "taskSpaceId": 32,
+      "stages": {
+        "processing": {
+          "status": "passed"
+        }
+      },
+      "processing": "passed",
+      "finishedAt": "2026-10-05T15:13:47.448Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "processing.json",
+        "status": "passed",
+        "phase": "preview",
+        "stage": "preview",
+        "checks": [
+          "All four targets generate actual owner-only image bytes from the complete unsaved 17-field rendering form, even when saved visibility is public. Natural image size and Content-Type/Length agree with real result metadata. Settings and business media/upload rows remain unchanged.",
+          "Choosing different actual bytes under the same file name marks the previous result stale without changing its task ID.",
+          "Returning retains unsaved form values. Editing parameters or selecting another file/target only marks the old result stale. SVG keeps its original result identity and attachment behavior after selecting compressed.",
+          "Actual animated GIF compressed result is explicitly unavailable; no thumbnail or static image is substituted.",
+          "Actual animated GIF watermark result is explicitly unavailable; no thumbnail or static image is substituted.",
+          "Actual HEIC original succeeds with its real ID and format/dimensions/byte size. Authenticated result bytes have the original file SHA-256; the real browser decoder failure is recorded explicitly and the page offers its same-ID original-file read instead of substituting a thumbnail.",
+          "Real image-watermark preview uses its temporary asset without adoption, expiry extension or leaked preview reference."
+        ],
+        "layoutCount": 11,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "directory": "sharing-upload-main-icon-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:15:06.326Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "failed",
+      "suite": "upload-regression",
+      "only": "main",
+      "pageLabel": "p1",
+      "origin": "http://ariso-60158.localhost:60158",
+      "taskSpaceId": 32,
+      "stages": {
+        "upload": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:282:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:858:22"
+        }
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:899:12",
+      "finishedAt": "2026-10-05T15:16:06.712Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "owner-shell.json",
+        "status": "passed",
+        "checks": [
+          "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+          "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+          "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.",
+          "Idle upload cloud moves continuously without hover; reduced motion disables the animation.",
+          "All real owner routes remove the workspace breadcrumb, paint the footer to workspace edges with responsive inner padding, and preserve keyboard focus without a pointer-triggered trash heading ring.",
+          "Upload/library/trash/albums share all ten design menu entries; the six implemented routes are links, and the remaining four explain that they are not yet available.",
+          "Computed navigation text decoration is none, including hover; heading origins match across all four routes at desktop, phone and tablet widths.",
+          "Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.",
+          "Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu."
+        ]
+      },
+      {
+        "file": "upload.json",
+        "status": "failed",
+        "error": "ElementResolutionError: page.click timed out after 3000ms: Locator loc=role:button[name=\"清空已完成\"] matched 1 elements, but none can receive input; <div role=\"alertdialog\"> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+        "checks": [
+          "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.",
+          "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image.",
+          "Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.",
+          "Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.",
+          "Native File selection is manual; remove and terminal completion release File/blob references; real upload reaches ready; detail return preserves result; clear retains persisted image.",
+          "Real empty, oversized sparse and unsupported files show distinct input reasons without creating queue items or retaining File references.",
+          "Real invalid image bytes fail server inspection without imageId or detail action.",
+          "Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.",
+          "Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure."
+        ],
+        "layoutCount": 50
+      }
+    ]
+  },
+  {
+    "directory": "sharing-upload-clear-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:17:52.796Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "upload-regression",
+      "only": "main",
+      "pageLabel": "p1",
+      "origin": "http://ariso-60529.localhost:60529",
+      "taskSpaceId": 32,
+      "stages": {
+        "upload": {
+          "status": "passed"
+        }
+      },
+      "upload": "passed",
+      "finishedAt": "2026-10-05T15:19:06.748Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "owner-shell.json",
+        "status": "passed",
+        "checks": [
+          "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+          "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+          "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.",
+          "Idle upload cloud moves continuously without hover; reduced motion disables the animation.",
+          "All real owner routes remove the workspace breadcrumb, paint the footer to workspace edges with responsive inner padding, and preserve keyboard focus without a pointer-triggered trash heading ring.",
+          "Upload/library/trash/albums share all ten design menu entries; the six implemented routes are links, and the remaining four explain that they are not yet available.",
+          "Computed navigation text decoration is none, including hover; heading origins match across all four routes at desktop, phone and tablet widths.",
+          "Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.",
+          "Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu."
+        ]
+      },
+      {
+        "file": "upload.json",
+        "status": "passed",
+        "checks": [
+          "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.",
+          "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image.",
+          "Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.",
+          "Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.",
+          "Native File selection is manual; remove and terminal completion release File/blob references; real upload reaches ready; detail return preserves result; clear retains persisted image.",
+          "Real empty, oversized sparse and unsupported files show distinct input reasons without creating queue items or retaining File references.",
+          "Real invalid image bytes fail server inspection without imageId or detail action.",
+          "Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.",
+          "Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure.",
+          "Lost real creation response is reconciled through original idempotent submission rather than an automatic second content upload.",
+          "Held real XHR dispatch exposes uploading: only the title icon pulses, reduced motion disables the pulse, and no success icon appears early.",
+          "Real content reaches 100% but held XHR acknowledgement remains saving; cancellation after server acceptance returns 409 and reconciles the same image instead of reporting cancellation.",
+          "Hard document navigation and reopening upload does not restore browser queue; previously accepted server image persists.",
+          "Hard document navigation from an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.",
+          "Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.",
+          "Real missing default and disabled storage prevent manual start without silently choosing another target; lost real settings response displays retry and recovers."
+        ],
+        "layoutCount": 130
+      }
+    ]
+  },
+  {
+    "directory": "sharing-library-recovery-final",
+    "runner": {
+      "startedAt": "2026-10-05T15:20:28.371Z",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v24.19.0",
+      "status": "passed",
+      "suite": "library",
+      "only": "recovery",
+      "pageLabel": "p1",
+      "origin": "http://ariso-60771.localhost:60771",
+      "taskSpaceId": 32,
+      "stages": {
+        "library": {
+          "status": "passed"
+        }
+      },
+      "library": "passed",
+      "finishedAt": "2026-10-05T15:21:06.463Z",
+      "temporaryDirectoryRemoved": true
+    },
+    "children": [
+      {
+        "file": "library.json",
+        "status": "passed",
+        "phase": "recovery",
+        "checks": [
+          "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+          "A rejected write reconciles the real renamed record into the visible detail cache while later background reads remain held.",
+          "Pre-write GET race (normal): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+          "Pre-write GET race (lost-write): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST after explicit unknown-result reconciliation.",
+          "Pre-write GET race (late-success): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+          "Trash cancellation and Escape restore trigger focus without writes; held real POST disables duplicate submission; successful trash removes detail/card and every saved version rejects owner and anonymous reads.",
+          "A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.",
+          "Opening a trash record and using its top return control restores focus to the original record.",
+          "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+          "Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.",
+          "Disabled storage permits record trash/restore; success explicitly says the storage remains disabled; real content remains unreadable and storage is not enabled.",
+          "A real concurrent deleting transition returns HTTP 409 and triggers a current-record read; the trashed record remains and reopening disables restore.",
+          "Losing the real successful restore response and its real reconciliation read preserves an unknown-result state; manual reconciliation discovers the committed result without repeating the write.",
+          "Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record; reopening the original record resumes a real read and shows its already-restored state without another write.",
+          "A record really deleted after confirmation opens produces HTTP 404 and a definite missing-record result, not an indefinitely unknown mutation.",
+          "A real expired owner session during restore/reconciliation redirects to login with the exact trash record return target; signing in returns to that record.",
+          "A real zero-record query renders empty; losing the real refresh response renders an error rather than an empty state; retry reads the real endpoint.",
+          "The 390×400 shortened viewport keeps the real record restore action reachable; this is not a physical keyboard or safe-area device test.",
+          "Expired real SQLite session makes the next library API read return to login."
+        ],
+        "layoutCount": 100
+      }
+    ]
+  }
+]

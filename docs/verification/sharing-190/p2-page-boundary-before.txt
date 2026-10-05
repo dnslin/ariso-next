@@ -1,0 +1,152 @@
+Already up to date
+Done in 155ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-runner.test.ts (116 tests | 4 failed | 110 skipped) 1982ms
+   ❯ browser runner argument boundaries (116)
+     × rejects non-primary page labels in suite albums before runtime startup 317ms
+     × rejects non-primary page labels in suite album-cover before runtime startup 316ms
+     × rejects non-primary page labels in suite tags before runtime startup 315ms
+     × rejects non-primary page labels in suite upload-input before runtime startup 318ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite albums before runtime startup
+AssertionError: expected 'node:internal/fs/promises:916\n  retu…' to contain 'Browser suite albums requires EGO_PAG…'
+
+- Expected
++ Received
+
+- Browser suite albums requires EGO_PAGE_LABEL=p1
++ node:internal/fs/promises:916
++   return await PromisePrototypeThen(
++          ^
++
++ Error: ENOTDIR: not a directory, mkdir '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++     at async mkdir (node:internal/fs/promises:916:10)
++     at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:130:1 {
++   errno: -20,
++   code: 'ENOTDIR',
++   syscall: 'mkdir',
++   path: '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:139:29
+    137|       });
+    138|       expect(result.status).not.toBe(0);
+    139|       expect(result.stderr).toContain(
+       |                             ^
+    140|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    141|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite album-cover before runtime startup
+AssertionError: expected 'node:internal/fs/promises:916\n  retu…' to contain 'Browser suite album-cover requires EG…'
+
+- Expected
++ Received
+
+- Browser suite album-cover requires EGO_PAGE_LABEL=p1
++ node:internal/fs/promises:916
++   return await PromisePrototypeThen(
++          ^
++
++ Error: ENOTDIR: not a directory, mkdir '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++     at async mkdir (node:internal/fs/promises:916:10)
++     at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:130:1 {
++   errno: -20,
++   code: 'ENOTDIR',
++   syscall: 'mkdir',
++   path: '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:139:29
+    137|       });
+    138|       expect(result.status).not.toBe(0);
+    139|       expect(result.stderr).toContain(
+       |                             ^
+    140|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    141|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite tags before runtime startup
+AssertionError: expected 'node:internal/fs/promises:916\n  retu…' to contain 'Browser suite tags requires EGO_PAGE_…'
+
+- Expected
++ Received
+
+- Browser suite tags requires EGO_PAGE_LABEL=p1
++ node:internal/fs/promises:916
++   return await PromisePrototypeThen(
++          ^
++
++ Error: ENOTDIR: not a directory, mkdir '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++     at async mkdir (node:internal/fs/promises:916:10)
++     at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:130:1 {
++   errno: -20,
++   code: 'ENOTDIR',
++   syscall: 'mkdir',
++   path: '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:139:29
+    137|       });
+    138|       expect(result.status).not.toBe(0);
+    139|       expect(result.stderr).toContain(
+       |                             ^
+    140|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    141|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > rejects non-primary page labels in suite upload-input before runtime startup
+AssertionError: expected 'node:internal/fs/promises:916\n  retu…' to contain 'Browser suite upload-input requires E…'
+
+- Expected
++ Received
+
+- Browser suite upload-input requires EGO_PAGE_LABEL=p1
++ node:internal/fs/promises:916
++   return await PromisePrototypeThen(
++          ^
++
++ Error: ENOTDIR: not a directory, mkdir '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++     at async mkdir (node:internal/fs/promises:916:10)
++     at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:130:1 {
++   errno: -20,
++   code: 'ENOTDIR',
++   syscall: 'mkdir',
++   path: '/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs/invalid-output'
++ }
++
++ Node.js v24.19.0
++
+
+ ❯ tests/unit/runtime/browser-runner.test.ts:139:29
+    137|       });
+    138|       expect(result.status).not.toBe(0);
+    139|       expect(result.stderr).toContain(
+       |                             ^
+    140|         `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+    141|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed | 110 skipped (116)
+   Start at  00:19:38
+   Duration  2.06s (tests 99%, transform 1%)
+

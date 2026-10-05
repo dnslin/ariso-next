@@ -154,11 +154,12 @@ export function useLibraryBatch({
       const target = source.current;
       if (target?.isConnected) target.focus({ preventScroll: true });
       else
-        document
-          .querySelector<HTMLElement>(
-            '[data-testid="library-toolbar"] input, #trash-title, #library-title',
-          )
-          ?.focus({ preventScroll: true });
+        (
+          document.querySelector<HTMLElement>(
+            '[data-testid="library-toolbar"] input',
+          ) ??
+          document.querySelector<HTMLElement>('#trash-title, #library-title')
+        )?.focus({ preventScroll: true });
     });
   }
   function close() {

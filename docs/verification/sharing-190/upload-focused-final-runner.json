@@ -1,0 +1,24 @@
+{
+  "startedAt": "2026-10-05T11:39:38.238Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.19.0",
+  "status": "failed",
+  "suite": "upload-regression",
+  "pageLabel": "p1",
+  "origin": "http://ariso-62021.localhost:62021",
+  "taskSpaceId": 32,
+  "stages": {
+    "upload": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+    },
+    "upload-polling": {
+      "status": "passed"
+    }
+  },
+  "uploadPolling": "passed",
+  "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:861:12",
+  "finishedAt": "2026-10-05T11:40:21.808Z",
+  "temporaryDirectoryRemoved": true
+}

@@ -60,7 +60,28 @@ export function createCopyHelpers(context) {
   async function selectFormat(value, keyboard = false) {
     const selector = `[data-copy-format="${value}"]`;
     if (keyboard) {
-      await page.focus(selector);
+      // React Aria restores the last focused item when entering the group.
+      // Enter with Tab, then use its supported horizontal arrow navigation.
+      await page.focus('[data-testid="library-copy-version"]');
+      await page.keyboard.press('Tab');
+      const formats = ['url', 'markdown', 'html'];
+      const activeFormat = await page.evaluate(() =>
+        document.activeElement?.getAttribute('data-copy-format'),
+      );
+      assert.ok(
+        formats.includes(activeFormat),
+        'Tab from the version selector enters the format group',
+      );
+      const distance = formats.indexOf(value) - formats.indexOf(activeFormat);
+      for (let step = 0; step < Math.abs(distance); step++)
+        await page.keyboard.press(distance > 0 ? 'ArrowRight' : 'ArrowLeft');
+      assert.equal(
+        await page.evaluate(() =>
+          document.activeElement?.getAttribute('data-copy-format'),
+        ),
+        value,
+        'Arrow navigation focuses the requested format',
+      );
       await page.keyboard.press('Space');
     } else await page.click(selector);
     assert.equal(

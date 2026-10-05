@@ -125,12 +125,67 @@ async function layouts(state, widths = [390, 1440]) {
     await setTheme(page, theme);
     for (const width of widths) {
       await resizeViewport(page, width);
-      const geometry = await readGeometry(page);
-      assertGeometry(geometry, `${state}/${theme}/${width}`);
-      geometry.tags = await tagStyles(page, theme, width);
-      geometry.toast = await verifyToastTextLayout(page);
-      await shot(`${state}-${theme}-${width}`);
-      report.layouts.push({ state, theme, ...geometry });
+      const toastPoint = await page.evaluate(() => {
+        const front = document.querySelector(
+          '[data-slot="toast"][data-frontmost="true"]:not([data-exiting="true"])',
+        );
+        if (!front) return null;
+        const rect = front.getBoundingClientRect();
+        return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+      });
+      try {
+        if (toastPoint) {
+          // Real pointer movement expands HeroUI's stack. Coordinates also
+          // allow a transient notification to expire before this action.
+          await page.mouse.move(toastPoint.x, toastPoint.y);
+          await page.waitForFunction(() => {
+            const toasts = [
+              ...document.querySelectorAll(
+                '[data-slot="toast"]:not([data-hidden="true"]):not([data-exiting="true"])',
+              ),
+            ];
+            return toasts.every(
+              (toast) =>
+                (toasts.length === 1 || toast.hasAttribute('data-expanded')) &&
+                !toast.hasAttribute('data-entering') &&
+                toast
+                  .getAnimations({ subtree: true })
+                  .every((animation) => animation.playState !== 'running'),
+            );
+          });
+        }
+        const geometry = await readGeometry(page);
+        assertGeometry(geometry, `${state}/${theme}/${width}`);
+        geometry.tags = await tagStyles(page, theme, width);
+        geometry.toast = await verifyToastTextLayout(page);
+        geometry.toastTargets = await page.evaluate(() =>
+          [
+            ...document.querySelectorAll(
+              '[data-slot="toast"]:not([data-hidden="true"]):not([data-exiting="true"]) [data-slot="toast-close"]',
+            ),
+          ].map((close) => {
+            const rect = close.getBoundingClientRect();
+            return {
+              width: rect.width,
+              height: rect.height,
+              hit: close.contains(
+                document.elementFromPoint(
+                  rect.x + rect.width / 2,
+                  rect.y + rect.height / 2,
+                ),
+              ),
+            };
+          }),
+        );
+        for (const target of geometry.toastTargets) {
+          assert.ok(target.width >= 44 && target.height >= 44);
+          assert.equal(target.hit, true);
+        }
+        await shot(`${state}-${theme}-${width}`);
+        report.layouts.push({ state, theme, ...geometry });
+      } finally {
+        if (toastPoint) await page.mouse.move(5, 5);
+      }
     }
   }
 }

@@ -12,9 +12,10 @@ const { verifyLibraryTrash } = await import(
 const { verifyLibraryDetail171 } = await import(config.libraryDetail171Script);
 const { verifyLibraryViewer } = await import(config.libraryViewerScript);
 const task = await taskSpace(config.spaceId);
-const page = task.page('p1');
+const page = task.page(config.pageLabel ?? 'p1');
 const report = {
   status: 'failed',
+  phase: config.libraryPhase,
   checks: [],
   layouts: [],
   limitations: [
@@ -226,7 +227,7 @@ try {
   }
   await page.waitForURL(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-empty"]');
-  await layouts('empty');
+  if (config.libraryPhase !== 'recovery') await layouts('empty');
   report.checks.push(
     'Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.',
   );
@@ -308,205 +309,220 @@ try {
     `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,trashed_at,created_at,updated_at) VALUES ('library-trashed','${storage.id}','trashed.png','不应出现的回收图片','private','png','image/png',1,'ready',${created},${created + 1},${created})`,
   );
   await seedLibraryDetail(config, sql, directory, storage.id);
-  await intercept('hold');
-  await page.click('loc=role:button[name="刷新图库"]');
-  await page.waitForSelector('[data-testid="library-loading"]');
-  await layouts('loading');
-  await page.waitForFunction(
-    () => typeof window.__libraryRelease === 'function',
-  );
-  assert.equal(await page.evaluate(() => window.__libraryRequests.length), 1);
-  await page.evaluate(() => window.__libraryRelease());
-  await count(40);
-  const expected = Array.from(
-    { length: 85 },
-    (_, i) => `library-${String(i).padStart(3, '0')}`,
-  );
-  assert.deepEqual(await ids(), expected.slice(0, 40));
-  assert.match(
-    await page.evaluate(
-      () => document.querySelector('[data-testid="library-count"]').textContent,
-    ),
-    /85.*40/,
-  );
-  assert.equal(
-    await page.evaluate(
-      () => !!document.querySelector('[data-image-id="library-trashed"]'),
-    ),
-    false,
-  );
-  await layouts('populated');
-  for (const id of ['library-002', 'library-003']) {
-    try {
-      await page.waitForFunction((id) => {
-        const img = document.querySelector(`[data-image-id="${id}"] img`);
-        return img?.complete && img.naturalWidth > 0;
-      }, id);
-    } catch (error) {
-      const response = await page.fetch(`/i/${id}?type=thumbnail`);
-      report.thumbnailFailure = {
-        id,
-        status: response.status,
-        body: response.ok ? 'readable bytes' : response.body,
-      };
-      throw error;
+  if (config.libraryPhase !== 'recovery') {
+    await intercept('hold');
+    await page.click('loc=role:button[name="刷新图库"]');
+    await page.waitForSelector('[data-testid="library-loading"]');
+    await layouts('loading');
+    await page.waitForFunction(
+      () => typeof window.__libraryRelease === 'function',
+    );
+    assert.equal(await page.evaluate(() => window.__libraryRequests.length), 1);
+    await page.evaluate(() => window.__libraryRelease());
+    await count(40);
+    const expected = Array.from(
+      { length: 85 },
+      (_, i) => `library-${String(i).padStart(3, '0')}`,
+    );
+    assert.deepEqual(await ids(), expected.slice(0, 40));
+    assert.match(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="library-count"]').textContent,
+      ),
+      /85.*40/,
+    );
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-image-id="library-trashed"]'),
+      ),
+      false,
+    );
+    await layouts('populated');
+    for (const id of ['library-002', 'library-003']) {
+      try {
+        await page.waitForFunction((id) => {
+          const img = document.querySelector(`[data-image-id="${id}"] img`);
+          return img?.complete && img.naturalWidth > 0;
+        }, id);
+      } catch (error) {
+        const response = await page.fetch(`/i/${id}?type=thumbnail`);
+        report.thumbnailFailure = {
+          id,
+          status: response.status,
+          body: response.ok ? 'readable bytes' : response.body,
+        };
+        throw error;
+      }
     }
-  }
-  assert.equal(
-    await page.evaluate(() => {
-      const text = document.querySelector(
-        '[data-image-id="library-002"]',
-      ).textContent;
-      return (
-        text.includes('处理中') &&
-        text.includes('当前任务：执行中 · 生成缩略图') &&
-        text.includes('最近任务失败 · 生成缩略图')
-      );
-    }),
-    true,
-  );
-  assert.equal(
-    await page.evaluate(() =>
-      document
-        .querySelector('[data-image-id="library-003"]')
-        .textContent.includes('处理失败'),
-    ),
-    true,
-  );
-  assert.equal(
-    await page.evaluate(() => {
-      const card = document.querySelector('[data-image-id="library-006"]');
-      return (
-        card.textContent.includes('存储已停用') && !card.querySelector('img')
-      );
-    }),
-    true,
-  );
-  report.checks.push(
-    'Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.',
-  );
-  await page.waitForFunction(() =>
-    document
-      .querySelector('[data-image-id="library-000"]')
-      ?.textContent.includes('缩略图读取失败'),
-  );
-  assert.equal(
-    await page.evaluate(() =>
-      [...performance.getEntriesByType('resource')].some((entry) => {
-        const url = new URL(entry.name);
+    assert.equal(
+      await page.evaluate(() => {
+        const text = document.querySelector(
+          '[data-image-id="library-002"]',
+        ).textContent;
         return (
-          url.pathname.startsWith('/i/') &&
-          url.searchParams.get('type') !== 'thumbnail'
+          text.includes('处理中') &&
+          text.includes('当前任务：执行中 · 生成缩略图') &&
+          text.includes('最近任务失败 · 生成缩略图')
         );
       }),
-    ),
-    false,
-    'Thumbnail failure never requests original',
-  );
-  await resize(390);
-  await page.hover('loc=role:button[name="刷新图库"]');
-  await page.waitForFunction(() => {
-    const id = document
-      .querySelector('button[aria-label="刷新图库"]')
-      ?.getAttribute('aria-describedby');
-    const tooltip = id ? document.getElementById(id) : null;
-    return (
-      tooltip?.getAttribute('role') === 'tooltip' &&
-      tooltip.textContent.includes('刷新')
+      true,
     );
-  });
-  await page.click('loc=role:button[name="菜单"]');
-  await page.waitForSelector('loc=role:dialog[name="导航菜单"]');
-  await page.keyboard.press('Escape');
-  await page.waitForSelector('loc=role:dialog[name="导航菜单"]', {
-    state: 'hidden',
-  });
-  await page.waitForFunction(
-    () => document.activeElement?.getAttribute('aria-label') === '菜单',
-  );
-  report.checks.push(
-    'Actual missing thumbnail file renders explicit failure without original fallback; leaving an open refresh tooltip and opening the mobile menu lets the first Escape close the menu and restore trigger focus.',
-  );
-  assert.ok(
-    await page.evaluate(() =>
-      [...document.querySelectorAll('[data-testid="library-card"] img')].some(
-        (img) => img.complete && img.naturalWidth > 0,
+    assert.equal(
+      await page.evaluate(() =>
+        document
+          .querySelector('[data-image-id="library-003"]')
+          .textContent.includes('处理失败'),
       ),
-    ),
-    'Real thumbnail bytes decode',
-  );
-  await intercept('fail');
-  await page.click('[data-testid="library-load-more"]');
-  await page.waitForSelector('loc=role:button[name="重试加载更多"]');
-  const failedCursor = await page.evaluate(() => window.__libraryRequests[0]);
-  assert.deepEqual(await ids(), expected.slice(0, 40));
-  await intercept('hold');
-  await page.focus('loc=role:button[name="重试加载更多"]');
-  await page.keyboard.press('Enter');
-  await page.waitForFunction(
-    () => typeof window.__libraryRelease === 'function',
-  );
-  await page.keyboard.press('Enter');
-  assert.deepEqual(await page.evaluate(() => window.__libraryRequests), [
-    failedCursor,
-  ]);
-  await page.evaluate(() => window.__libraryRelease());
-  await count(80);
-  assert.deepEqual(await ids(), expected.slice(0, 80));
-  await page.focus('[data-testid="library-load-more"]');
-  await page.keyboard.press('Enter');
-  await count(85);
-  assert.deepEqual(await ids(), expected);
-  await page.waitForFunction(
-    () => document.activeElement?.textContent === '已加载全部图片',
-  );
-  assert.equal(
-    await page.evaluate(
-      () => !!document.querySelector('[data-testid="library-load-more"]'),
-    ),
-    false,
-  );
-  report.checks.push(
-    'Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.',
-  );
-  await resize(390, 400);
-  await page.evaluate(() => {
-    const content = document.querySelector('.shell-content');
-    content.scrollTo(0, content.scrollHeight);
-  });
-  assert.equal(
-    await page.evaluate(() => {
-      const rect = document
-        .querySelector('[data-testid="library-count"]')
-        .getBoundingClientRect();
-      const footer = document
-        .querySelector('.shell-footer')
-        .getBoundingClientRect();
-      const end = [...document.querySelectorAll('p')]
-        .find((node) => node.textContent === '已加载全部图片')
-        .getBoundingClientRect();
+      true,
+    );
+    assert.equal(
+      await page.evaluate(() => {
+        const card = document.querySelector('[data-image-id="library-006"]');
+        return (
+          card.textContent.includes('存储已停用') && !card.querySelector('img')
+        );
+      }),
+      true,
+    );
+    report.checks.push(
+      'Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.',
+    );
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-image-id="library-000"]')
+        ?.textContent.includes('缩略图读取失败'),
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        [...performance.getEntriesByType('resource')].some((entry) => {
+          const url = new URL(entry.name);
+          return (
+            url.pathname.startsWith('/i/') &&
+            url.searchParams.get('type') !== 'thumbnail'
+          );
+        }),
+      ),
+      false,
+      'Thumbnail failure never requests original',
+    );
+    await resize(390);
+    await page.hover('loc=role:button[name="刷新图库"]');
+    await page.waitForFunction(() => {
+      const id = document
+        .querySelector('button[aria-label="刷新图库"]')
+        ?.getAttribute('aria-describedby');
+      const tooltip = id ? document.getElementById(id) : null;
       return (
-        rect.top >= 0 &&
-        rect.bottom <= innerHeight &&
-        end.top >= 0 &&
-        end.bottom <= footer.top
+        tooltip?.getAttribute('role') === 'tooltip' &&
+        tooltip.textContent.includes('刷新')
       );
-    }),
-    true,
-    'Actual content scroll reaches the end above the visible short-viewport count bar',
-  );
-  await page.screenshot({
-    path: join(config.output, 'library-short-viewport.png'),
-  });
-  await intercept('fail');
-  await page.click('loc=role:button[name="刷新图库"]');
-  await page.waitForSelector('[data-testid="library-error"]');
-  await layouts('error');
-  await page.click('loc=role:button[name="重试加载"]');
-  await count(40);
-  await verifyLibraryDetail({ page, task, config, sql, report });
-  await verifyLibraryDetail171({ page, config, sql, report });
-  await verifyLibraryViewer({ page, config, sql, report });
+    });
+    await page.click('loc=role:button[name="菜单"]');
+    await page.waitForSelector('loc=role:dialog[name="导航菜单"]');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('loc=role:dialog[name="导航菜单"]', {
+      state: 'hidden',
+    });
+    await page.waitForFunction(
+      () => document.activeElement?.getAttribute('aria-label') === '菜单',
+    );
+    report.checks.push(
+      'Actual missing thumbnail file renders explicit failure without original fallback; leaving an open refresh tooltip and opening the mobile menu lets the first Escape close the menu and restore trigger focus.',
+    );
+    assert.ok(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('[data-testid="library-card"] img')].some(
+          (img) => img.complete && img.naturalWidth > 0,
+        ),
+      ),
+      'Real thumbnail bytes decode',
+    );
+    await intercept('fail');
+    await page.click('[data-testid="library-load-more"]');
+    await page.waitForSelector('loc=role:button[name="重试加载更多"]');
+    const failedCursor = await page.evaluate(() => window.__libraryRequests[0]);
+    assert.deepEqual(await ids(), expected.slice(0, 40));
+    await intercept('hold');
+    await page.focus('loc=role:button[name="重试加载更多"]');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () => typeof window.__libraryRelease === 'function',
+    );
+    await page.keyboard.press('Enter');
+    assert.deepEqual(await page.evaluate(() => window.__libraryRequests), [
+      failedCursor,
+    ]);
+    await page.evaluate(() => window.__libraryRelease());
+    await count(80);
+    assert.deepEqual(await ids(), expected.slice(0, 80));
+    await page.focus('[data-testid="library-load-more"]');
+    await page.keyboard.press('Enter');
+    await count(85);
+    assert.deepEqual(await ids(), expected);
+    await page.waitForFunction(
+      () => document.activeElement?.textContent === '已加载全部图片',
+    );
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="library-load-more"]'),
+      ),
+      false,
+    );
+    report.checks.push(
+      'Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.',
+    );
+    await resize(390, 400);
+    await page.evaluate(() => {
+      const content = document.querySelector('.shell-content');
+      content.scrollTo(0, content.scrollHeight);
+    });
+    assert.equal(
+      await page.evaluate(() => {
+        const rect = document
+          .querySelector('[data-testid="library-count"]')
+          .getBoundingClientRect();
+        const footer = document
+          .querySelector('.shell-footer')
+          .getBoundingClientRect();
+        const end = [...document.querySelectorAll('p')]
+          .find((node) => node.textContent === '已加载全部图片')
+          .getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.bottom <= innerHeight &&
+          end.top >= 0 &&
+          end.bottom <= footer.top
+        );
+      }),
+      true,
+      'Actual content scroll reaches the end above the visible short-viewport count bar',
+    );
+    await page.screenshot({
+      path: join(config.output, 'library-short-viewport.png'),
+    });
+    await intercept('fail');
+    await page.click('loc=role:button[name="刷新图库"]');
+    await page.waitForSelector('[data-testid="library-error"]');
+    await layouts('error');
+    await page.click('loc=role:button[name="重试加载"]');
+    await count(40);
+    report.checks.push(
+      'Initial reload transport failure is explicit and retries the real endpoint.',
+    );
+    await verifyLibraryDetail({ page, task, config, sql, report });
+    await verifyLibraryDetail171({ page, config, sql, report });
+    await verifyLibraryViewer({ page, config, sql, report });
+  }
+  if (config.libraryPhase === 'recovery') {
+    await page.cdp('Emulation.setEmulatedMedia', {
+      features: [
+        { name: 'prefers-color-scheme', value: 'light' },
+        { name: 'prefers-reduced-motion', value: 'reduce' },
+      ],
+    });
+    await resize(1440);
+  }
   await verifyLibraryTrash({ page, config, sql, report });
   await sql(`UPDATE session SET expires_at = ${Date.now() - 1}`);
   try {
@@ -522,16 +538,23 @@ try {
   assert.equal(new URL(await page.url()).pathname, '/login');
   assert.equal(new URL(await page.url()).searchParams.get('reason'), 'expired');
   report.checks.push(
-    'Initial reload transport failure is explicit and retries real endpoint; expired real SQLite session makes the next library API read return to login.',
+    'Expired real SQLite session makes the next library API read return to login.',
   );
   report.status = 'passed';
 } catch (error) {
   report.error = String(error.stack ?? error);
   throw error;
 } finally {
-  await writeFile(
-    join(config.output, 'library.json'),
-    `${JSON.stringify(report, null, 2)}\n`,
-  );
+  try {
+    const cleaned = await sql(
+      "DELETE FROM media_images WHERE id = 'library-trashed'",
+    );
+    report.trashedFixtureCleanupChanges = cleaned.changes;
+  } finally {
+    await writeFile(
+      join(config.output, 'library.json'),
+      `${JSON.stringify(report, null, 2)}\n`,
+    );
+  }
 }
 console.log(report);

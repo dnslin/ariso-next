@@ -1,0 +1,79 @@
+Already up to date
+Done in 175ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+tests/integration/sharing/authorization.test.ts(67,5): error TS2322: Type '{ info: Mock<Procedure | Constructable>; error: Mock<Procedure | Constructable>; debug: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "error" | "info" | "debug">'.
+  Types of property 'error' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+tests/integration/sharing/authorization.test.ts(162,18): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(168,25): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(175,58): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(176,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(178,64): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(194,38): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(197,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(204,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(215,18): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(215,47): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(218,34): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(219,34): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(224,32): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(225,32): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(227,32): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(246,34): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(262,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(264,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(292,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(294,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(310,38): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(315,38): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(329,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(334,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(340,37): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(354,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(370,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(374,38): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(380,38): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(461,53): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(470,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(488,47): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(491,32): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+tests/integration/sharing/authorization.test.ts(592,36): error TS2339: Property 'grantSecret' does not exist on type '{ grantSecret: string; expiresAt: Date; } | { expiresAt: null; }'.
+  Property 'grantSecret' does not exist on type '{ expiresAt: null; }'.
+[ELIFECYCLE] Command failed with exit code 2.
