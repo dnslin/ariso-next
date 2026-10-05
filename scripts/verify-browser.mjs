@@ -13,6 +13,8 @@ import { startCorsFixture } from '../e2e/storage-cors-fixture.mjs';
 import { startUploadEndpoint } from '../tests/integration/upload/s3-endpoint.ts';
 import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture.ts';
 import { runBrowserStage } from './browser-stages.mjs';
+import { selectBrowserPlan } from './browser-plan.mjs';
+import { runM2Restart } from './browser-m2.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -26,102 +28,14 @@ const { values } = parseArgs({
 });
 const suite = values.suite;
 const only = values.only;
-const singleSuites = {
-  library: 'library',
-  'shell-navigation': 'shellNavigation',
-  albums: 'albums',
-  'album-cover': 'albumCover',
-  tags: 'tags',
-  'upload-input': 'uploadInput',
-};
-assert.ok(
-  [
-    'full',
-    'viewer',
-    'upload',
-    'upload-regression',
-    'm2-mobile',
-    'upload-s3',
-    'copy-dropdown',
-    'library-batch',
-    'library-reprocess',
-    'library-copy',
-    'storage-admin',
-    'processing',
-    'trash',
-    'sharing-experiment',
-    'sharing-protocol',
-    ...Object.keys(singleSuites),
-  ].includes(suite),
-  'Unknown browser suite',
-);
-assert.ok(
-  only === undefined ||
-    (suite === 'processing' &&
-      [
-        'representative',
-        'settings',
-        'preview',
-        'recovery',
-        'consumers',
-      ].includes(only)) ||
-    (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
-    (suite === 'upload-regression' && only === 'main') ||
-    (suite === 'library' && only === 'recovery') ||
-    (suite === 'upload-s3' && only === 'cleanup') ||
-    (suite === 'storage-admin' &&
-      ['live', 'dialogs', 'feedback', 'regressions'].includes(only)) ||
-    (suite === 'viewer' &&
-      [
-        'representative',
-        'behavior',
-        'recovery',
-        'refresh',
-        'consumers',
-        'deleted-source',
-        'pending-navigation',
-      ].includes(only)) ||
-    (suite === 'library-copy' &&
-      ['representative', 'feedback', 'revision'].includes(only)) ||
-    (suite === 'trash' &&
-      [
-        'representative',
-        'cleanup',
-        'query-error',
-        'confirmation',
-        'approved-ui',
-        'approved-results',
-        'approved-query',
-        'approved-progress',
-        'review-fixes',
-      ].includes(only)) ||
-    (suite === 'library-batch' &&
-      [
-        'representative',
-        'visibility',
-        'feedback',
-        'tag-states',
-        'lifecycle',
-        'cache',
-        'review-fixes',
-      ].includes(only)),
-  '--only requires an applicable targeted suite',
-);
-assert.ok(
-  !values['preview-config'] ||
-    (suite === 'storage-admin' && only === 'feedback'),
-  '--preview-config applies only to storage-admin feedback',
-);
-assert.ok(
-  !values['storage-config'] || (suite === 'storage-admin' && only === 'live'),
-  '--storage-config applies only to storage-admin live',
-);
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
-assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
-assert.ok(
-  !['full', 'm2-mobile'].includes(suite) || pageLabel === 'p1',
-  `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
-);
+const plan = selectBrowserPlan({
+  suite,
+  only,
+  pageLabel,
+  storageConfig: values['storage-config'],
+  previewConfig: values['preview-config'],
+});
 
 const output = resolve(
   process.env.BROWSER_REPORT_DIR ??
@@ -545,6 +459,10 @@ try {
     }
     return setupCodes(logs.slice(logStart));
   }
+  async function restartProduction(dataDirectory) {
+    await stop(server);
+    return startProduction(dataDirectory);
+  }
   let codes;
   if (suite === 'full')
     await check('runtime-start', () =>
@@ -673,16 +591,7 @@ try {
       ...config,
       credentials,
       dataDirectory: join(temporary, 'data'),
-      onlyCleanup: suite === 'upload-s3' && only === 'cleanup',
-      phase: suite === 'copy-dropdown' ? 'green' : undefined,
-      viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
-      viewerCheck: suite === 'viewer' ? only : undefined,
-      libraryCopyPhase: suite === 'library-copy' ? only : undefined,
-      libraryPhase: suite === 'library' ? only : undefined,
-      storageNavigation: suite === 'storage-admin' && only === undefined,
-      processingPhase: suite === 'processing' ? only : undefined,
-      processingNavigationFixtures:
-        suite === 'processing' && (only === undefined || only === 'consumers'),
+      ...plan.config,
     };
     if (suite === 'storage-admin' && only === 'live') {
       assert.ok(
@@ -778,125 +687,22 @@ try {
       }
       focusedConfig.uploadS3 = targets;
     }
-    const stages = singleSuites[suite]
-      ? [[suite, singleSuites[suite]]]
-      : suite === 'processing'
-        ? only === undefined || only === 'consumers'
-          ? [
-              ['processing', 'processing'],
-              ['shell-navigation', 'shellNavigation'],
-            ]
-          : [['processing', 'processing']]
-        : suite === 'storage-admin'
-          ? only === 'live'
-            ? [['storage-admin-live', 'storageAdmin']]
-            : only === 'dialogs'
-              ? [['storage-admin-dialogs', 'storageAdmin']]
-              : only === 'regressions'
-                ? [['storage-admin-regressions', 'storageAdminRegressions']]
-                : [
-                    ['storage-admin', 'storageAdmin'],
-                    ['shell-navigation', 'shellNavigation'],
-                  ]
-          : suite === 'copy-dropdown'
-            ? [['library-copy-dropdown', 'copyDropdown']]
-            : suite === 'upload-s3'
-              ? [['upload-s3', 'uploadS3']]
-              : suite === 'viewer'
-                ? [['library-viewer-run', 'libraryViewer']]
-                : suite === 'library-batch'
-                  ? [['library-batch', 'libraryBatch']]
-                  : suite === 'trash'
-                    ? [
-                        ['trash-query-batch', 'trashQueryBatch'],
-                        ['trash-cleanup', 'trashCleanup'],
-                      ]
-                    : suite === 'library-reprocess'
-                      ? [['library-batch-reprocess', 'libraryReprocess']]
-                      : suite === 'library-copy'
-                        ? [['library-copy', 'libraryCopy']]
-                        : suite === 'upload'
-                          ? [
-                              ['upload-submissions', 'uploadSubmissions'],
-                              ['upload-relations', 'uploadRelations'],
-                            ]
-                          : suite === 'm2-mobile'
-                            ? []
-                            : [
-                                ['upload', 'upload'],
-                                ['upload-polling', 'uploadPolling'],
-                              ];
     report.taskSpaceId = config.spaceId;
     report.stages = {};
-    for (const [script, result] of stages) {
-      if (
-        suite === 'trash' &&
-        (([
-          'representative',
-          'query-error',
-          'confirmation',
-          'approved-ui',
-          'approved-results',
-          'approved-query',
-          'approved-progress',
-          'review-fixes',
-        ].includes(only) &&
-          script === 'trash-cleanup') ||
-          (only === 'cleanup' && script === 'trash-query-batch'))
-      )
-        continue;
-      if (
-        suite === 'upload' &&
-        only !== undefined &&
-        script !== `upload-${only}`
-      )
-        continue;
-      if (
-        suite === 'upload-regression' &&
-        only === 'main' &&
-        script !== 'upload'
-      )
-        continue;
-      const passed = await check(script, () =>
-        runBrowser(
-          `../e2e/${script}.mjs`,
-          {
-            ...focusedConfig,
-            libraryBatchPhase: suite === 'library-batch' ? only : undefined,
-            trashPhase: suite === 'trash' ? only : undefined,
-          },
-          `${script}.log`,
-        ),
-      );
-      if (passed) report[result] = 'passed';
-    }
     if (suite === 'm2-mobile') {
-      const mobileConfig = { ...focusedConfig, width: 390 };
-      const beforeName = 'm2-390-before';
-      await check(beforeName, () =>
-        runBrowser(
-          '../e2e/m2.mjs',
-          { ...mobileConfig, phase: 'before' },
-          `${beforeName}.log`,
-        ),
-      );
-      await check(
-        'm2-390-after',
-        async () => {
-          await stop(server);
-          assert.deepEqual(
-            await startProduction(focusedConfig.dataDirectory),
-            [],
-            'Initialized restart must not issue another code',
-          );
-          await runBrowser(
-            '../e2e/m2.mjs',
-            { ...mobileConfig, phase: 'after' },
-            'm2-390-after.log',
-          );
-        },
-        [beforeName],
-      );
+      await runM2Restart({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: { ...focusedConfig, width: 390 },
+      });
+    } else {
+      for (const [script, result] of plan.stages) {
+        const passed = await check(script, () =>
+          runBrowser(`../e2e/${script}.mjs`, focusedConfig, `${script}.log`),
+        );
+        if (passed) report[result] = 'passed';
+      }
     }
     assert.ok(
       Object.values(report.stages).every((stage) => stage.status === 'passed'),
@@ -1054,21 +860,13 @@ try {
         ])
           await business(name, script);
       }
-      const beforeName = `m2-${width}-before`;
-      await business(beforeName, 'm2', { phase: 'before' });
-      await check(
-        `m2-${width}-after`,
-        async () => {
-          await stop(server);
-          assert.deepEqual(await startProduction(dataDirectory), []);
-          await runBrowser(
-            '../e2e/m2.mjs',
-            { ...identityConfig, phase: 'after' },
-            `m2-${width}-after.log`,
-          );
-        },
-        [beforeName],
-      );
+      await runM2Restart({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: identityConfig,
+        dependencies: [ownerName],
+      });
       await business(`interaction-polish-${width}`, 'interaction-polish');
       await business(`workspace-continuity-${width}`, 'workspace-continuity');
       await stop(server);

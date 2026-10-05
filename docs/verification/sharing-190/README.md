@@ -255,3 +255,36 @@ node scripts/verify-browser.mjs --suite library --only recovery
 本轮实现与证据提交`e62bbb4`已推送至`codex/issue-190-sharing`，[PR #247](https://github.com/dnslin/ariso-next/pull/247)继续OPEN/draft。推送后[实际核对](./github-after-followup.json)未列出任何远端检查，不能记作CI通过，也没有等待不存在的工作流。
 
 远端main并发合入账号任务#165，到达`d3cf7456`；运行器及其参数测试与本分支重叠，PR显示CONFLICTING。当前交付与人工预览保持实际已验证版本，没有混入未验证的账号/public-shell改动。按用户指定边界，收到明确合并指令后再读重叠调用链、保留双方能力并处理冲突，只重验受影响部分及必要复审；本轮没有合并PR、关闭Issue或清理预览/分支/worktree。
+
+## 三项 P2 的规划、修复与复审（2026-10-06）
+
+用户要求先规划再修复，并只执行关键检查。本轮仅改变测试工程，没有修改产品 UI、分享协议、迁移、依赖或构建输入。继续使用同一分支/worktree，不处理尚未获合并指令的 main 冲突。按 using-agent-skills 选择 code-simplification 与 test-driven-development；两位原评审者分别按 code-review-and-quality 和 thermo-nuclear-code-quality-review 复审。上传提取的实现者不评审自己的修改，该部分由功能评审者独立核对。
+
+| 原 P2                          | 实际修复与关闭依据                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 四个入口接受 p2 却操作 p1      | albums、album-cover、tags、upload-input 的脚本与 primaryPage 限制在同一 suite 定义内维护；选择函数在 mkdir/服务/浏览器资源启动前拒绝非 p1。新增四项回归先失败，full/m2-mobile 原有两项通过；修复后六项一起通过。                                                                                                                                     |
+| 运行器分发规则散落             | browser-plan.mjs 集中允许 only、页面约束、实际脚本顺序及所属 config；删除长 ternary 与循环 continue 过滤。M2 共用 runM2Restart 和 restartProduction，full 仍有 owner 前置，after 仍依赖 before；同 DATA_DIR 的 stop/start、没有新初始化码、报告和日志名保留。主运行器 1178→976 行；plan 182 行，M2 44 行，目标是减少交织的分支，没有声称总行数下降。 |
+| 上传场景跨过 1k 且混合布局职责 | upload.mjs 1026→915 行，专门 upload-layouts.mjs 128 行。五宽×两主题、短视口 resize、完整几何/summary/44px 断言、截图路径、报告字段与业务调用顺序保留。依照已有绝对 file URL 的 Ego 注入约定导入，不新增截图框架。                                                                                                                                    |
+
+实际环境沿用 Node 24.19.0 / pnpm 11.19.0 / macOS arm64。此轮没有依赖、构建或生产输入变化，按用户最新要求不重跑冻结安装、应用构建、分享单元/集成、全量静态命令、完整浏览器或旧 UI 矩阵。原 TaskSpace 已交还用户，本轮没有接管、创建浏览器空间或操作人工预览。
+
+```sh
+# 修复前：仅六个页面边界用例，取得四个新增失败
+pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts -t 'rejects non-primary page labels'
+# 修复后：仅运行参数、实际计划、M2 与失败依赖的四个相关文件
+pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-m2.test.ts tests/unit/runtime/browser-stages.test.ts
+pnpm exec eslint scripts/browser-plan.mjs scripts/browser-m2.mjs scripts/verify-browser.mjs tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-m2.test.ts tests/unit/runtime/browser-runner.test.ts e2e/upload.mjs e2e/upload-layouts.mjs --max-warnings=0
+pnpm exec tsc --noEmit --project tsconfig.json
+# 修正空数组推断的 JSDoc / 测试回调类型后，只重查这两项类型相关文件
+pnpm exec eslint scripts/browser-m2.mjs tests/unit/runtime/browser-m2.test.ts --max-warnings=0
+```
+
+| 本轮实际检查     | 结果与证据                                                                                                                                                                                                                                                                                                                                      |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 页面参数失败回归 | 4 失败 / 2 通过 / 110 未选；所有四项都先通过错误页面参数，再被普通文件输出父路径的 ENOTDIR 挡住，没有启动资源。[修复前](./p2-page-boundary-before.txt)。                                                                                                                                                                                        |
+| 受影响单元       | **4 文件 / 162 项通过，退出 0**。新计划测试直接验证默认/定向脚本序列与精确所属配置；M2 验证同目录、顺序、真实依赖、新初始化码拒绝及独立工作继续。[结果](./p2-unit.txt)。                                                                                                                                                                        |
+| 静态与类型       | 8 个受影响文件 eslint 退出 0。[静态](./p2-lint.txt)。首次类型检查因 JS 默认空数组被推断为 never[] 失败；补明确 JSDoc 契约与测试回调类型后 tsc 退出 0，运行逻辑不变。[原失败](./p2-typecheck-before.txt)、[最终类型](./p2-typecheck.txt)、[受影响两文件静态](./p2-lint-types.txt)。                                                              |
+| 上传提取等价     | 实现者对两个脚本执行 Node 24 --check 退出 0。最终另用已有 TypeScript parser 比对抽出函数完整语法树，以及除替换声明外的每个业务语句，均相同；实际绝对模块 URL 可导入并返回两个操作。[最终机械比对](./p2-upload-equivalence.txt)。一次性比对脚本前两次因格式/模板扫描和还原范围错误退出 1；修正比对方法后通过，没有为通过比对而修改产品或测试源。 |
+| 独立复审         | 功能/测试有效性复审通过，四入口 P2 关闭，布局提取与所有原 suite/only/default/M2 契约保持。[功能报告](./p2-correctness-review.md)。运行器独立结构复审通过，分散规则 P2 关闭。[结构报告](./p2-structure-review.md)。两位评审者均未机械重跑已通过检查。                                                                                            |
+
+本轮三个 P2 已关闭。最终受影响格式检查另见 [格式结果](./p2-format-check.txt)。本轮没有新浏览器运行证据：历史默认 full 仍为 40 通过 / 7 失败 / 1 阻塞，后续定向恢复和人工 UI 验收分别保持原状态。PR 继续草稿，通知遮挡、人工验收未完成及 main 冲突仍是既有交付限制。人工预览保持可用；凭证不写入代码、PR 或公开证据。

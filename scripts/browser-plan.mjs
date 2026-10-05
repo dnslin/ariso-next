@@ -1,0 +1,182 @@
+import assert from 'node:assert/strict';
+
+// A focused suite owns its accepted phases, page boundary and execution plan.
+const suites = {
+  full: { primaryPage: true },
+  'sharing-experiment': {},
+  'sharing-protocol': {},
+  library: {
+    only: ['recovery'],
+    stages: [['library', 'library']],
+    config: (only) => ({ libraryPhase: only }),
+  },
+  'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
+  albums: { primaryPage: true, stages: [['albums', 'albums']] },
+  'album-cover': { primaryPage: true, stages: [['album-cover', 'albumCover']] },
+  tags: { primaryPage: true, stages: [['tags', 'tags']] },
+  'upload-input': {
+    primaryPage: true,
+    stages: [['upload-input', 'uploadInput']],
+  },
+  viewer: {
+    only: [
+      'representative',
+      'behavior',
+      'recovery',
+      'refresh',
+      'consumers',
+      'deleted-source',
+      'pending-navigation',
+    ],
+    stages: [['library-viewer-run', 'libraryViewer']],
+    config: (only) => ({
+      viewerRepresentativeOnly: only === 'representative',
+      viewerCheck: only,
+    }),
+  },
+  upload: {
+    only: ['relations', 'submissions'],
+    stages: (only) =>
+      only === undefined
+        ? [
+            ['upload-submissions', 'uploadSubmissions'],
+            ['upload-relations', 'uploadRelations'],
+          ]
+        : [
+            [
+              `upload-${only}`,
+              only === 'relations' ? 'uploadRelations' : 'uploadSubmissions',
+            ],
+          ],
+  },
+  'upload-regression': {
+    only: ['main'],
+    stages: (only) =>
+      only === 'main'
+        ? [['upload', 'upload']]
+        : [
+            ['upload', 'upload'],
+            ['upload-polling', 'uploadPolling'],
+          ],
+  },
+  'm2-mobile': { primaryPage: true },
+  'upload-s3': {
+    only: ['cleanup'],
+    stages: [['upload-s3', 'uploadS3']],
+    config: (only) => ({ onlyCleanup: only === 'cleanup' }),
+  },
+  'copy-dropdown': {
+    stages: [['library-copy-dropdown', 'copyDropdown']],
+    config: () => ({ phase: 'green' }),
+  },
+  'library-batch': {
+    only: [
+      'representative',
+      'visibility',
+      'feedback',
+      'tag-states',
+      'lifecycle',
+      'cache',
+      'review-fixes',
+    ],
+    stages: [['library-batch', 'libraryBatch']],
+    config: (only) => ({ libraryBatchPhase: only }),
+  },
+  'library-reprocess': {
+    stages: [['library-batch-reprocess', 'libraryReprocess']],
+  },
+  'library-copy': {
+    only: ['representative', 'feedback', 'revision'],
+    stages: [['library-copy', 'libraryCopy']],
+    config: (only) => ({ libraryCopyPhase: only }),
+  },
+  'storage-admin': {
+    only: ['live', 'dialogs', 'feedback', 'regressions'],
+    stages: (only) => {
+      if (only === 'live') return [['storage-admin-live', 'storageAdmin']];
+      if (only === 'dialogs')
+        return [['storage-admin-dialogs', 'storageAdmin']];
+      if (only === 'feedback')
+        return [['storage-admin-feedback', 'storageAdminFeedback']];
+      if (only === 'regressions')
+        return [['storage-admin-regressions', 'storageAdminRegressions']];
+      return [
+        ['storage-admin', 'storageAdmin'],
+        ['shell-navigation', 'shellNavigation'],
+      ];
+    },
+    config: (only) => ({ storageNavigation: only === undefined }),
+  },
+  processing: {
+    only: ['representative', 'settings', 'preview', 'recovery', 'consumers'],
+    stages: (only) =>
+      only === undefined || only === 'consumers'
+        ? [
+            ['processing', 'processing'],
+            ['shell-navigation', 'shellNavigation'],
+          ]
+        : [['processing', 'processing']],
+    config: (only) => ({
+      processingPhase: only,
+      processingNavigationFixtures: only === undefined || only === 'consumers',
+    }),
+  },
+  trash: {
+    only: [
+      'representative',
+      'cleanup',
+      'query-error',
+      'confirmation',
+      'approved-ui',
+      'approved-results',
+      'approved-query',
+      'approved-progress',
+      'review-fixes',
+    ],
+    stages: (only) => {
+      if (only === 'cleanup') return [['trash-cleanup', 'trashCleanup']];
+      if (only !== undefined) return [['trash-query-batch', 'trashQueryBatch']];
+      return [
+        ['trash-query-batch', 'trashQueryBatch'],
+        ['trash-cleanup', 'trashCleanup'],
+      ];
+    },
+    config: (only) => ({ trashPhase: only }),
+  },
+};
+
+/** @param {{ suite: string, only?: string, pageLabel: string, storageConfig?: string, previewConfig?: string }} options */
+export function selectBrowserPlan({
+  suite,
+  only,
+  pageLabel,
+  storageConfig,
+  previewConfig,
+}) {
+  const definition = Object.hasOwn(suites, suite) ? suites[suite] : undefined;
+  assert.ok(definition, 'Unknown browser suite');
+  assert.ok(
+    only === undefined || definition.only?.includes(only),
+    '--only requires an applicable targeted suite',
+  );
+  assert.ok(
+    !previewConfig || (suite === 'storage-admin' && only === 'feedback'),
+    '--preview-config applies only to storage-admin feedback',
+  );
+  assert.ok(
+    !storageConfig || (suite === 'storage-admin' && only === 'live'),
+    '--storage-config applies only to storage-admin live',
+  );
+  assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
+  assert.ok(
+    !definition.primaryPage || pageLabel === 'p1',
+    `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+  );
+  return {
+    stages:
+      typeof definition.stages === 'function'
+        ? definition.stages(only)
+        : (definition.stages ?? []),
+    config: definition.config?.(only) ?? {},
+  };
+}

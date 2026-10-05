@@ -121,7 +121,14 @@ describe('browser runner argument boundaries', () => {
     },
   );
 
-  it.each(['full', 'm2-mobile'])(
+  it.each([
+    'full',
+    'm2-mobile',
+    'albums',
+    'album-cover',
+    'tags',
+    'upload-input',
+  ])(
     'rejects non-primary page labels in suite %s before runtime startup',
     (suite) => {
       const result = spawnSync(process.execPath, [runner, '--suite', suite], {

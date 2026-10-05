@@ -1,0 +1,6 @@
+Node v24.19.0
+PASS: extracted resize/layouts complete syntax trees unchanged
+PASS: every other top-level business statement unchanged
+PASS: actual absolute module URL resolves and factory exports both operations
+No application, server or browser started.
+Two earlier comparison attempts exited 1 because the one-off checker compared formatting/source text and used an incorrect restoration range. The corrected comparison uses parser nodes/literal values and excludes exactly the two extracted functions and two replacement statements. Product/test sources were not changed to make this comparison pass.
