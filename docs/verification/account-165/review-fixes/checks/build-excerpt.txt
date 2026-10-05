@@ -1,0 +1,167 @@
+pnpm run build — exit 0
+Actual output excerpt; repetitive optional-platform dependency trace stacks omitted. Full local output: test-results/review-248/fix-build.txt
+
+Already up to date
+Done in 39ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 69ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.1s
+  Running TypeScript ...
+  Finished TypeScript in 8.7s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/19) ...
+  Generating static pages using 9 workers (4/19)
+  Generating static pages using 9 workers (9/19)
+  Generating static pages using 9 workers (14/19)
+✓ Generating static pages using 9 workers (19/19) in 416ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /albums
+├ ƒ /albums/[albumId]
+├ ƒ /api/account
+├ ƒ /api/account/email
+├ ƒ /api/account/password
+├ ƒ /api/albums
+├ ƒ /api/albums/[id]
+├ ƒ /api/albums/[id]/cover
+├ ƒ /api/auth/[...all]
+├ ƒ /api/health
+├ ƒ /api/images
+├ ƒ /api/images/[id]
+├ ƒ /api/images/[id]/cleanup
+├ ƒ /api/images/[id]/cleanup/retry
+├ ƒ /api/images/[id]/collections
+├ ƒ /api/images/[id]/metadata
+├ ƒ /api/images/[id]/metadata/read
+├ ƒ /api/images/[id]/neighbors
+├ ƒ /api/images/[id]/reprocess
+├ ƒ /api/images/[id]/restore
+├ ƒ /api/images/[id]/trash
+├ ƒ /api/images/batch
+├ ƒ /api/images/copy
+├ ƒ /api/images/filter-options
+├ ƒ /api/images/selection
+├ ƒ /api/images/status
+├ ƒ /api/media/previews
+├ ƒ /api/media/previews/[id]
+├ ƒ /api/media/previews/[id]/result
+├ ƒ /api/media/watermark-assets
+├ ƒ /api/media/watermark-assets/[id]
+├ ƒ /api/settings/media
+├ ƒ /api/settings/storage
+├ ƒ /api/settings/upload
+├ ƒ /api/setup
+├ ƒ /api/storages
+├ ƒ /api/storages/[id]
+├ ƒ /api/storages/[id]/cors-tests
+├ ƒ /api/storages/[id]/cors-tests/[probeId]/complete
+├ ƒ /api/storages/[id]/probes/[probeId]/retry-cleanup
+├ ƒ /api/storages/[id]/scan
+├ ƒ /api/storages/[id]/test
+├ ƒ /api/tags
+├ ƒ /api/tags/[id]
+├ ƒ /api/trash/[id]/preview
+├ ƒ /api/uploads/cleanup
+├ ƒ /api/uploads/sessions/[id]
+├ ƒ /api/uploads/sessions/[id]/begin
+├ ƒ /api/uploads/sessions/[id]/complete
+├ ƒ /api/uploads/sessions/[id]/content
+├ ƒ /api/uploads/sessions/[id]/resubmit
+├ ƒ /api/uploads/submissions
+├ ƒ /api/uploads/submissions/[id]
+├ ƒ /i/[imageId]
+├ ƒ /library
+├ ƒ /login
+├ ƒ /settings/account
+├ ƒ /settings/processing
+├ ƒ /settings/storage
+├ ƒ /settings/storage/[id]
+├ ƒ /settings/storage/[id]/cors
+├ ƒ /settings/storage/new
+├ ƒ /setup
+├ ƒ /tags
+├ ƒ /trash
+├ ƒ /upload
+└ ƒ /upload/settings
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Error: Failed to resolve dependency "./resvgjs.android-arm64.node":
+Error: Failed to resolve dependency "./resvgjs.win32-x64-msvc.node":
+Error: Failed to resolve dependency "./resvgjs.win32-ia32-msvc.node":
+Error: Failed to resolve dependency "./resvgjs.darwin-x64.node":
+Error: Failed to resolve dependency "./resvgjs.android-arm-eabi.node":
+Error: Failed to resolve dependency "./resvgjs.win32-arm64-msvc.node":
+Error: Failed to resolve dependency "./resvgjs.darwin-arm64.node":
+Error: Failed to resolve dependency "./resvgjs.darwin-universal.node":
+Error: Failed to resolve dependency "./resvgjs.freebsd-x64.node":
+Error: Failed to resolve dependency "./resvgjs.linux-x64-musl.node":
+Error: Failed to resolve dependency "./resvgjs.linux-arm64-musl.node":
+Error: Failed to resolve dependency "./resvgjs.linux-x64-gnu.node":
+Error: Failed to resolve dependency "./resvgjs.linux-arm64-gnu.node":
+Error: Failed to resolve dependency "./resvgjs.linux-arm-gnueabihf.node":
+Error: Failed to resolve dependency "./resvgjs.linux-riscv64-gnu.node":
+Error: Failed to resolve dependency "./resvgjs.linux-s390x-gnu.node":
+Error: Failed to resolve dependency "./resvgjs.linux-riscv64-musl.node":
+Error: Failed to resolve dependency "@opentelemetry/api":
+Error: Failed to resolve dependency "/server/":
+Error: Failed to resolve dependency "/Users/dnslin/.codex/worktrees/issue-165-account/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/build/Debug/better_sqlite3.node":
+Error: Failed to resolve dependency "@resvg/resvg-js-android-arm64":
+Error: Failed to resolve dependency "@resvg/resvg-js-win32-ia32-msvc":
+Error: Failed to resolve dependency "@resvg/resvg-js-win32-x64-msvc":
+Error: Failed to resolve dependency "@resvg/resvg-js-darwin-x64":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-x64-musl":
+Error: Failed to resolve dependency "@resvg/resvg-js-freebsd-x64":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-arm64-gnu":
+Error: Failed to resolve dependency "@resvg/resvg-js-win32-arm64-msvc":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-x64-gnu":
+Error: Failed to resolve dependency "@resvg/resvg-js-android-arm-eabi":
+Error: Failed to resolve dependency "@resvg/resvg-js-darwin-universal":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-arm64-musl":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-arm-gnueabihf":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-riscv64-musl":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-s390x-gnu":
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-riscv64-gnu":
+Error: Failed to resolve dependency "critters":
+Error: Failed to resolve dependency "/server/middleware.js":
+Error: Failed to resolve dependency "react-server-dom-webpack/server":
+Error: Failed to resolve dependency "react-server-dom-webpack/static":
+Error: Failed to resolve dependency "react-server-dom-webpack/client":
+Error: Failed to resolve dependency "react-server-dom-webpack/server.node":
+Error: Failed to resolve dependency "react-server-dom-turbopack/client":
+Error: Failed to resolve dependency "react-server-dom-turbopack/server":
+Error: Failed to resolve dependency "react-server-dom-turbopack/static":
+Error: Failed to resolve dependency "@img/sharp-libvips-dev/include":
+Error: Failed to resolve dependency "@img/sharp-libvips-dev/cplusplus":
+Error: Failed to resolve dependency "@img/sharp-wasm32/versions":
+Error: Failed to resolve dependency "@img/sharp-wasm32/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-arm/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-darwin-x64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-ppc64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-x64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-riscv64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-s390x/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linuxmusl-arm64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linux-arm64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-linuxmusl-x64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-win32-ia32/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-win32-arm64/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-freebsd-wasm32/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-libvips-/package":
+Error: Failed to resolve dependency "@img/sharp-webcontainers-wasm32/sharp.node":
+Error: Failed to resolve dependency "@img/sharp-win32-x64/sharp.node":
+Error: Failed to resolve dependency "@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts":
+Error: Failed to resolve dependency "@next/swc/native/next-swc..node":
+Error: Failed to resolve dependency "/package.json":

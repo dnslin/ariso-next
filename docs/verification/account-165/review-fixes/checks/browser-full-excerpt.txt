@@ -1,0 +1,8 @@
+EGO_TASK_SPACE=33 KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/review-248/browser-full pnpm run test:browser — exit 1
+Actual command/error excerpts; repetitive optional dependency trace omitted. Full local output: test-results/review-248/fix-browser-full.txt
+
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs
+$ next build tests/experiments/shell --webpack
+$ next build
+Error: page.waitForFunction timed out after 30000ms on page p1; last URL was "http://ariso-49231.localhost:49231/upload"; last title was "Ariso".
+[ELIFECYCLE] Command failed with exit code 1.

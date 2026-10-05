@@ -15,7 +15,11 @@ import {
   Trash2,
 } from 'lucide-react';
 import { AdminShell } from './admin-shell';
-import { SessionControls, useOwnerSession } from '../identity/session-controls';
+import {
+  OwnerSessionContext,
+  SessionControls,
+  useOwnerSession,
+} from '../identity/session-controls';
 
 // 菜单顺序来自 Figma；只开放已交付页面，未来模块不提供虚假链接。
 const navigation = [
@@ -75,20 +79,22 @@ export function OwnerShell({
   const pathname = usePathname();
   const session = useOwnerSession(returnTo ?? pathname, onSessionExpire);
   return (
-    <AdminShell
-      name={name}
-      description={description}
-      navigation={navigation}
-      initialSidebarCollapsed={initialSidebarCollapsed}
-      user={
-        <SessionControls
-          session={session}
-          account={{ name: ownerName, email }}
-        />
-      }
-      footer={footer}
-    >
-      {children}
-    </AdminShell>
+    <OwnerSessionContext value={session}>
+      <AdminShell
+        name={name}
+        description={description}
+        navigation={navigation}
+        initialSidebarCollapsed={initialSidebarCollapsed}
+        user={
+          <SessionControls
+            session={session}
+            account={{ name: ownerName, email }}
+          />
+        }
+        footer={footer}
+      >
+        {children}
+      </AdminShell>
+    </OwnerSessionContext>
   );
 }

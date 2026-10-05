@@ -1,0 +1,36 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-165-account/ariso
+
+ ❯ |integration| tests/integration/identity/login-race.test.ts (4 tests | 2 failed) 876ms
+   × rejects old-password login when a password change commits after password verified and before response delivery 266ms
+   × rejects old-password login when a password change commits after session created and before response delivery 230ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/login-race.test.ts > rejects old-password login when a password change commits after password verified and before response delivery
+ FAIL  |integration| tests/integration/identity/login-race.test.ts > rejects old-password login when a password change commits after session created and before response delivery
+AssertionError: expected 200 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 200
+
+ ❯ tests/integration/identity/login-race.test.ts:118:29
+    116|     context.internalAdapter.createSession = createSession;
+    117|
+    118|     expect(rejected.status).toBe(401);
+       |                             ^
+    119|     expect(await rejected.json()).toMatchObject({
+    120|       code: 'INVALID_EMAIL_OR_PASSWORD',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  21:58:13
+   Duration  1.84s (tests 49%, import 32%, transform 18%)

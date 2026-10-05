@@ -2,17 +2,76 @@
 
 2026-10-05，任务 `T-ID-04 / IDENTITY-ACCOUNT`，需求 `R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`。产品依据为[任务卡](../../tasks/m3-m4-platform.md#t-id-04-邮箱与密码管理)、[identity 规格 §6](../../specs/SPEC-identity.md#6-邮箱密码与本地-cli)、[设计交接](../../design/handoff.md)与[执行约定](../../tasks/execution.md)。未改写冻结 PRD，本记录不新增产品规则。
 
-## 交付状态
+## PR #248 双角度评审修复计划（2026-10-05）
 
-| 阶段         | 实际状态                                                                                                                  |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| 代码         | 真实账号页、邮箱/密码管理接口及图标弹窗已实现                                                                             |
-| 本地检查     | 安装、格式/静态/类型、构建、单元和账号定向集成已执行；全量集成仍有失败，详见下方                                          |
-| 浏览器       | 账号桌面/手机定向通过；公共消费者定向通过；默认全量首次中途失败，未记为全量通过                                           |
-| 设计         | 用户已批准图标原型；Figma 两端两主题 56 个状态已同步，独立设计对照完成已取证状态，手机会话失效截图缺口保留                |
-| 独立代码审计 | 完整产品、验证入口及末轮修正复审通过，未发现未处理必修问题，见[代码审计](code-review.md)                                  |
-| 人工验收     | 尚未执行；独立真实预览保持可用                                                                                            |
-| Git / PR     | 分支 `codex/issue-165-account` 已提交并推送；[PR #248](https://github.com/dnslin/ariso-next/pull/248) OPEN / 草稿，未合并 |
+用户要求先规划再修复本轮全部 P1/P2。前置 #60、#57、#127 已完成，沿用 `codex/issue-165-account` 的独立工作区，不改变已批准的视觉和交互方案，不扩展 GitHub、SMTP 或其他模块。下方首次交付检查保留其原始时点；本轮完成前不以旧审计结论替代新问题的修复和复审。
+
+- [x] P1 登录并发：使用 Better Auth 原生 before/after hooks，在新 session 已创建、成功响应交付前同步复核本次登录使用的 credential。变更时撤销本次 session 并拒绝登录，不交付成功 Cookie。真实库测试控制旧密码验证跨越改密事务，先记录失败，再验证仅当前会话保留且新密码可登录。
+- [x] P2 退出生命周期：OwnerShell 的同一个会话控制器同时负责后台核对、显式退出和账号恢复退出；编辑器删除独立请求、清理和跳转，仅保留阶段与失败反馈。先取得后台 null 抢先于退出响应的失败证据，桌面/手机验证仍完成 signed-out 和账号目的页跳转；失败保留恢复弹窗。
+- [x] P2 浏览器结构：按页面操作、认证请求、传输故障及邮箱/密码/读取场景拆分，凭据显式输入/返回，焦点和滚动快照限定本次操作，width 显式传递。故障注入提供本次 release/dispose 并由 finally 释放，不引入通用测试框架，不删除既有断言。
+- [x] 验证及复审：核对默认 full 与 account 共用入口，使用 Node 24/pnpm 完成安装、格式、静态、类型、单元、构建、适用集成和真实 Ego 浏览器验证；公共会话控制器涉及既有消费页面与身份退出场景。失败保留实际结果，修复后只重跑受影响部分。两个原独立评审者分别复审正确性和结构。
+- [ ] 交付：将实际命令、结果、截图与复审记录追加在本证据入口，提交推送同一 PR，核对远端状态。人工验收未完成时保持草稿，现有预览保持可用；不合并、发布、关闭 Issue 或清理其他任务。
+
+## 本轮修复与实际结果
+
+本轮全部 P1/P2 已按上方计划修复。P1 在 Better Auth 新会话形成后、成功响应交付前复核本次凭据；凭据变化会撤销刚创建的会话并返回 401。P2 让账号恢复退出和外壳共享同一个会话控制器，后台真实 null 不再提前卸载正在退出的弹窗。账号浏览器脚本按真实职责拆分，凭据、视口及本次焦点/滚动状态显式传递，故障按场景在 finally 释放。
+
+[正确性原审计](review-fixes/correctness.md) / [修复复审](review-fixes/correctness-fix-review.md) 与[结构原审计](review-fixes/structure.md) / [修复复审](review-fixes/structure-fix-review.md)分别保留。两个独立角度已关闭全部 P1/P2，未发现新增必改问题。[补充独立设计评审](review-fixes/design-fix-review.md)实际读取当前八个 Figma 节点并逐张查看最新两端浅深 12 张整页图，未发现本轮必修视觉或状态缺陷。功能与设计结论分开记录。
+
+### 本轮验证（Node 24.18.1 / pnpm 11.19.0 / macOS arm64）
+
+本轮继续使用同一 worktree/分支，远端 `main@8c9fd49d`。此前 TaskSpace 31 已结束并保留人工页；新评审修复使用 Ego TaskSpace 33，最终仅调用一次 `finish({keep:['p4']})` 保留新的人工页，没有接管已交还用户的空间。
+
+| 实际命令                                                                                                                                                                                                                             | 结果与证据                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                     | 退出 0，[安装](review-fixes/checks/install.txt)                                                                                                                                                                                                                                                                                                                                     |
+| `pnpm run format:check` / `pnpm run lint` / `pnpm run typecheck`                                                                                                                                                                     | 均退出 0，[格式](review-fixes/checks/format.txt)、[静态](review-fixes/checks/lint.txt)、[类型](review-fixes/checks/typecheck.txt)；末轮测试助手的改动另外通过[语法](review-fixes/checks/e2e-origin-syntax.txt)、[ESLint](review-fixes/checks/e2e-origin-lint.txt)、[Prettier](review-fixes/checks/e2e-origin-format.txt)定向检查                                                    |
+| `pnpm run test:unit --maxWorkers=4`                                                                                                                                                                                                  | 退出 0，98 文件、1289/1289，[单元](review-fixes/checks/unit.txt)                                                                                                                                                                                                                                                                                                                    |
+| `pnpm run build`                                                                                                                                                                                                                     | 退出 0，含运行时/Next 类型检查和 standalone 打包，[构建摘录](review-fixes/checks/build-excerpt.txt)；修复前类型失败保留在[原始失败](review-fixes/checks/red-build.txt)                                                                                                                                                                                                              |
+| `pnpm exec vitest run --project integration tests/integration/identity/login-race.test.ts`                                                                                                                                           | 修复前两处旧密码登录实际返回 200，[RED](review-fixes/checks/auth-red.txt)；修复后真实认证库、迁移和 SQLite 4/4，[GREEN](review-fixes/checks/auth-green-final.txt)                                                                                                                                                                                                                   |
+| 独立生产数据库的旧代码退出竞态                                                                                                                                                                                                       | 真实 sign-out 200 后后台返回 null，旧弹窗实际被卸载，[RED](review-fixes/browser/logout-race-red-logout-race.json)、[截图](review-fixes/browser/logout-race-failure.png)、[命令结果](review-fixes/checks/logout-race-red.txt)                                                                                                                                                        |
+| `pnpm run test:integration --maxWorkers=4`                                                                                                                                                                                           | **退出 1**：147 文件中 143 通过/4 失败，1429 项中 1424 通过/5 失败，[真实失败/栈/总结摘录](review-fixes/checks/integration-excerpt.txt)                                                                                                                                                                                                                                             |
+| `pnpm exec vitest run --project media-tools tests/integration/delivery/reprocess.test.ts tests/integration/media/preview.test.ts tests/integration/media/reprocess.test.ts tests/integration/media/watermark.test.ts --maxWorkers=1` | 四个失败文件按原断言、原超时复查，退出 0，90/90，[复查](review-fixes/checks/integration-recheck.txt)；不能替代全量通过                                                                                                                                                                                                                                                              |
+| `EGO_TASK_SPACE=33 KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/review-248/browser-full pnpm run test:browser`                                                                                                                       | **退出 1**：M2 真实重启后的任务 ready 等待超时，未进入本轮 account；[命令摘录](review-fixes/checks/browser-full-excerpt.txt)、[runner](review-fixes/browser/browser-full-runner.json)、[M2](review-fixes/browser/browser-full-m2-1440.json)。已完成的[identity-1440-restart](review-fixes/browser/browser-full-identity-1440-restart.json)保留真实退出失败/重试与菜单背景 null 场景 |
+| `EGO_TASK_SPACE=33 KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/review-248/browser-account-origin-fixed node scripts/verify-browser.mjs --suite account`                                                                             | **退出 0**，1440/390 业务完整通过，99 布局/真实截图、14 检查记录、41 真实请求，浏览器错误为空，[命令](review-fixes/checks/browser-account-origin-fixed.txt)、[account](review-fixes/browser/browser-account-origin-fixed-account.json)、[runner](review-fixes/browser/browser-account-origin-fixed-runner.json)                                                                     |
+| `EGO_TASK_SPACE=33 KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/review-248/browser-consumers node scripts/verify-browser.mjs --suite processing --only consumers`                                                                    | 退出 0，13 个已实现路由两端两主题及菜单断点共 62 布局，[命令摘录](review-fixes/checks/browser-consumers-excerpt.txt)、[公共导航](review-fixes/browser/consumers-shell-navigation.json)、[处理消费者](review-fixes/browser/consumers-processing.json)、[runner](review-fixes/browser/consumers-runner.json)                                                                          |
+
+全量集成的五项失败为 delivery/reprocess、SVG preview 超时及 media/reprocess、watermark 的真实 `ps` 进程检查 1000ms 超时。默认浏览器 M2 重启后的服务日志也记录 `Cannot inspect media tool processes`。本轮没有修改媒体工具或削弱其检查；四文件复查通过不等于已通过 main 基线排除回归，全量仍保持失败。构建的其他平台可选原生包和可选 OpenTelemetry 依赖追踪警告仍保留，实际构建退出 0。
+
+两次本轮账号助手失败保持原记录：[未能序列化 undefined 参数](review-fixes/checks/browser-account.txt) / [报告](review-fixes/browser/browser-account-account.json)；[留在已关闭旧测试服务](review-fixes/checks/browser-account-json-fixed.txt) / [报告](review-fixes/browser/browser-account-json-fixed-account.json)。后者配置 origin 51403、实际页面 origin 50940，路径相同不足以跳过导航；仅加入当前 origin 核对。前者只将无参初始化的 JSON 参数改为 null。没有重复提交产品请求、关闭限流或弱化断言。修复后才取得上述完整账号通过结果。
+
+账号新退出竞态已默认在 1440/390 场景执行：真实 sign-out 200、后台真实 get-session null、成功响应暂缓交付时，账号页仍 ready、弹窗仍 signing-out。释放后退出到 `reason=signed-out&returnTo=/settings/account`，用实际新密码登录并回读当前邮箱。故障与 SQLite 触发器由各场景 finally 释放。默认 full → 同一 account.mjs → auth/page/transport/reads/email/password 模块；未另建只供定向通过的入口或改共用 runner 参数分发。
+
+以下是本轮交付的代表截图；99 张完整原图保留在本地忽略目录 `test-results/review-248/browser-account-origin-fixed`，公开报告中的其余截图名称属于该原始目录，不声称全部已复制。逐项对照见补充设计评审；本轮未改样式、结构、图标或获批交互，因此没有新增 Figma 写入。
+
+| 状态                 | 桌面 1440×1080                                                                                                                                                   | 手机 390×844                                                                                                                                                   |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 账号主页面           | [浅](review-fixes/browser/account-1440-page-light-1440.png) / [深](review-fixes/browser/account-1440-page-dark-1440.png)                                         | [浅](review-fixes/browser/account-390-page-light-390.png) / [深](review-fixes/browser/account-390-page-dark-390.png)                                           |
+| 密码结果未知         | [浅](review-fixes/browser/account-1440-password-unknown-light.png) / [深](review-fixes/browser/account-1440-password-unknown-dark.png)                           | [浅](review-fixes/browser/account-390-password-unknown-light.png) / [深](review-fixes/browser/account-390-password-unknown-dark.png)                           |
+| 后台 null 后正在退出 | [浅](review-fixes/browser/account-1440-password-check-logout-pending-light.png) / [深](review-fixes/browser/account-1440-password-check-logout-pending-dark.png) | [浅](review-fixes/browser/account-390-password-check-logout-pending-light.png) / [深](review-fixes/browser/account-390-password-check-logout-pending-dark.png) |
+| 公共区域账号消费者   | [浅](review-fixes/browser/shell-navigation-account-settings-light-1440.png) / [深](review-fixes/browser/shell-navigation-account-settings-dark-1440.png)         | [浅](review-fixes/browser/shell-navigation-account-settings-light-390.png) / [深](review-fixes/browser/shell-navigation-account-settings-dark-390.png)         |
+
+本轮 `node docs/tasks/check.mjs` 实际退出 0，120 个任务、298 个需求通过，见[文档检查](review-fixes/checks/docs.txt)。最终证据与改动文件的定向 Prettier 检查见[交付格式](review-fixes/checks/delivery-format.txt)。应用检查输入未变，没有机械重复构建或浏览器。
+
+本轮全量日志与失败原图完整保留在本地 `test-results/review-248`。公开大日志只摘录实际命令、失败、栈与总结，省去重复可选依赖栈、临时初始化秘密和其他应用完整进程列表；没有改写失败结果。小日志仅整理终端行尾空白。
+
+## 当前交付状态
+
+| 阶段         | 实际状态                                                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 代码         | 全部 P1/P2 已修复；既有邮箱/密码功能和获批图标方案保持                                                                                                                               |
+| 本地检查     | 格式、静态、类型、单元、构建与登录竞争定向通过；全量集成失败，四文件复查通过                                                                                                         |
+| 浏览器       | 本轮账号和全部公共消费者定向通过；默认 full 在 M2 中途失败，后续保持未验证                                                                                                           |
+| 设计         | 本轮独立设计对照完成，八个当前节点与 12 张最新两端浅深代表图无本轮必修差异；手机会话失效独立图仍缺失                                                                                 |
+| 独立代码审计 | 正确性、结构两个独立复审已关闭 P1/P2，未发现新增必改问题                                                                                                                             |
+| 人工验收     | 尚未完成；[新的独立真实预览](http://account-248.localhost:3167/settings/account)真实登录通过、健康 200，见[健康记录](review-fixes/browser/human-preview-health.json)；凭证仅私下交付 |
+| Git / PR     | 沿用 `codex/issue-165-account` 与 [PR #248](https://github.com/dnslin/ariso-next/pull/248)，保持 OPEN / 草稿；本轮修复与证据一起提交推送                                             |
+
+新的预览包含本轮最终生产构建，Cookie 与旧 127.0.0.1 预览隔离。人工请检查账号主区域、修改邮箱和修改密码弹窗图标、显示密码、字段错误、成功后的原页通知，以及手机/深色呈现。原型 3165、旧人工预览 3166 和新预览 3167 均保留；自动化仅修改独立一次性数据库。两可导航浏览器上下文、手机会话失效独立截图和人工验收仍未完成，不由其他检查替代。凭证未写入本证据或 PR。
+
+## 首次交付历史记录
+
+下面保留首轮实现、检查、设计与 Git 交付时点，不作为本轮修复后的最新验证结果。
 
 已用 `gh issue view` 与 `gh api` 读取 Issue、评论和原生 `blocked_by` / `blocking`。前置 #60、#57、#127 均 CLOSED；后续 #166、#181 均 OPEN。本 Issue 未提前开放后续能力，也未关闭 Issue 或勾选任务完成。
 
@@ -40,7 +99,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`；主页面[桌面 34:462](https://www.fig
 
 [Figma 同步记录](figma-sync.md)记录两端、两主题及全部状态的实际节点、写入、截图和差异处理。[独立设计评审](design-review.md)按相同视口先核对整页与公共区域，再核对业务与控件，分别记录功能证据与设计结论。
 
-最后账号真实报告为 [account-spinner-final.json](browser/account-spinner-final.json)，95 个布局记录和真实截图。代表图：
+首轮最后账号真实报告为 [account-spinner-final.json](browser/account-spinner-final.json)，95 个布局记录和真实截图。代表图：
 
 | 页面/状态     | 桌面 1440×1080                                                                                                         | 手机 390×844                                                                                                         |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |

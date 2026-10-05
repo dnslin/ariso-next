@@ -5,7 +5,7 @@ import {
   accountEmailInputSchema,
   accountPasswordInputSchema,
 } from '../../server/identity/validation';
-import { useResetUpload } from '../upload/provider';
+import { useOwnerSessionControls } from './session-controls';
 import {
   accountRequest,
   AccountRequestError,
@@ -47,7 +47,7 @@ export function useAccountEditor({
   );
   const inFlight = useRef(false);
   const mounted = useRef(true);
-  const resetUpload = useResetUpload();
+  const session = useOwnerSessionControls();
   const busy = ['saving', 'checking', 'signing-out'].includes(phase);
 
   useEffect(() => {
@@ -188,28 +188,12 @@ export function useAccountEditor({
     inFlight.current = true;
     setPhase('signing-out');
     setFeedback('');
-    try {
-      const result = await accountRequest<{ success?: unknown }>(
-        '/api/auth/sign-out',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: '{}',
-        },
-      );
-      if (!result || result.success !== true)
-        throw new Error('尚未确认会话已退出');
-      if (!mounted.current) return;
-      resetUpload();
-      window.location.replace(
-        '/login?reason=signed-out&returnTo=%2Fsettings%2Faccount',
-      );
-    } catch (error) {
-      if (!mounted.current) return;
+    const error = await session.signOut(
+      '/login?reason=signed-out&returnTo=%2Fsettings%2Faccount',
+    );
+    if (error && mounted.current) {
       setPhase('unknown');
-      setFeedback(
-        `${error instanceof Error ? error.message : '退出失败'}，请重试。`,
-      );
+      setFeedback(error);
       inFlight.current = false;
     }
   }
