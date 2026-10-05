@@ -40,6 +40,7 @@ assert.ok(
     'viewer',
     'upload',
     'upload-regression',
+    'm2-mobile',
     'upload-s3',
     'copy-dropdown',
     'library-batch',
@@ -65,6 +66,8 @@ assert.ok(
         'consumers',
       ].includes(only)) ||
     (suite === 'upload' && ['relations', 'submissions'].includes(only)) ||
+    (suite === 'upload-regression' && only === 'main') ||
+    (suite === 'library' && only === 'recovery') ||
     (suite === 'upload-s3' && only === 'cleanup') ||
     (suite === 'storage-admin' &&
       ['live', 'dialogs', 'feedback', 'regressions'].includes(only)) ||
@@ -116,8 +119,8 @@ assert.ok(
 const pageLabel = process.env.EGO_PAGE_LABEL ?? 'p1';
 assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
 assert.ok(
-  suite !== 'full' || pageLabel === 'p1',
-  'Full suite requires p1; focused suites support an isolated EGO_PAGE_LABEL',
+  !['full', 'm2-mobile'].includes(suite) || pageLabel === 'p1',
+  `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
 );
 
 const output = resolve(
@@ -675,6 +678,7 @@ try {
       viewerRepresentativeOnly: suite === 'viewer' && only === 'representative',
       viewerCheck: suite === 'viewer' ? only : undefined,
       libraryCopyPhase: suite === 'library-copy' ? only : undefined,
+      libraryPhase: suite === 'library' ? only : undefined,
       storageNavigation: suite === 'storage-admin' && only === undefined,
       processingPhase: suite === 'processing' ? only : undefined,
       processingNavigationFixtures:
@@ -816,10 +820,12 @@ try {
                               ['upload-submissions', 'uploadSubmissions'],
                               ['upload-relations', 'uploadRelations'],
                             ]
-                          : [
-                              ['upload', 'upload'],
-                              ['upload-polling', 'uploadPolling'],
-                            ];
+                          : suite === 'm2-mobile'
+                            ? []
+                            : [
+                                ['upload', 'upload'],
+                                ['upload-polling', 'uploadPolling'],
+                              ];
     report.taskSpaceId = config.spaceId;
     report.stages = {};
     for (const [script, result] of stages) {
@@ -845,6 +851,12 @@ try {
         script !== `upload-${only}`
       )
         continue;
+      if (
+        suite === 'upload-regression' &&
+        only === 'main' &&
+        script !== 'upload'
+      )
+        continue;
       const passed = await check(script, () =>
         runBrowser(
           `../e2e/${script}.mjs`,
@@ -857,6 +869,34 @@ try {
         ),
       );
       if (passed) report[result] = 'passed';
+    }
+    if (suite === 'm2-mobile') {
+      const mobileConfig = { ...focusedConfig, width: 390 };
+      const beforeName = 'm2-390-before';
+      await check(beforeName, () =>
+        runBrowser(
+          '../e2e/m2.mjs',
+          { ...mobileConfig, phase: 'before' },
+          `${beforeName}.log`,
+        ),
+      );
+      await check(
+        'm2-390-after',
+        async () => {
+          await stop(server);
+          assert.deepEqual(
+            await startProduction(focusedConfig.dataDirectory),
+            [],
+            'Initialized restart must not issue another code',
+          );
+          await runBrowser(
+            '../e2e/m2.mjs',
+            { ...mobileConfig, phase: 'after' },
+            'm2-390-after.log',
+          );
+        },
+        [beforeName],
+      );
     }
     assert.ok(
       Object.values(report.stages).every((stage) => stage.status === 'passed'),

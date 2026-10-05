@@ -189,6 +189,17 @@ async function select(file = source) {
   await state('queued');
 }
 async function clear() {
+  if (
+    await page.evaluate(
+      () =>
+        !!document.querySelector('[data-slot="toast"][data-frontmost="true"]'),
+    )
+  ) {
+    await page.click(
+      '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+    );
+    await page.waitForSelector('[data-slot="toast"]', { state: 'hidden' });
+  }
   await page.click(button('清空已完成'));
   await page.waitForFunction(
     () => !document.querySelector('[data-testid="upload-item"]'),

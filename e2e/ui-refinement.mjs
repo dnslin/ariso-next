@@ -404,9 +404,16 @@ export async function verifyUIRefinement({ page, config, report }) {
             const composition = document.querySelector(
               '[data-testid="upload-composition"]',
             );
-            const picker = document
-              .querySelector('[data-testid="upload-picker"]')
-              .getBoundingClientRect();
+            const pickerNode = document.querySelector(
+              '[data-testid="upload-picker"]',
+            );
+            const picker = pickerNode.getBoundingClientRect();
+            const pickerStyle = getComputedStyle(pickerNode);
+            const target = (node) => {
+              const { width, height, top, left, bottom } =
+                node.getBoundingClientRect();
+              return { width, height, top, left, bottom };
+            };
             const settings = document
               .querySelector('[data-testid="upload-settings"]')
               .getBoundingClientRect();
@@ -428,6 +435,32 @@ export async function verifyUIRefinement({ page, config, report }) {
                 height: picker.height,
                 top: picker.top,
                 bottom: picker.bottom,
+                padding: [
+                  'paddingTop',
+                  'paddingRight',
+                  'paddingBottom',
+                  'paddingLeft',
+                ].map((key) => parseFloat(pickerStyle[key])),
+                gap: parseFloat(pickerStyle.rowGap),
+                icon: target(
+                  pickerNode.querySelector(
+                    '[data-testid="upload-idle-motion"]',
+                  ),
+                ),
+                iconSize: (() => {
+                  const style = getComputedStyle(
+                    pickerNode.querySelector(
+                      '[data-testid="upload-idle-motion"]',
+                    ),
+                  );
+                  return [style.width, style.height];
+                })(),
+                headingSize: getComputedStyle(pickerNode.querySelector('h2'))
+                  .fontSize,
+                buttons: [...pickerNode.querySelectorAll('button')].map(
+                  (node) => ({ name: node.textContent, ...target(node) }),
+                ),
+                limit: target(pickerNode.querySelector('p:last-child')),
               },
               settings: {
                 width: settings.width,
@@ -458,15 +491,45 @@ export async function verifyUIRefinement({ page, config, report }) {
               ) <= 1,
             );
             assert.ok(Math.abs(upload.picker.top - upload.settings.top) <= 1);
-            assert.ok(
-              upload.picker.height >= 360 && upload.settings.height >= 360,
-            );
+            assert.ok(upload.settings.height >= 360);
           } else {
             assert.ok(upload.settings.top >= upload.picker.bottom);
             assert.ok(
               Math.abs(upload.picker.width - upload.settings.width) <= 1,
             );
-            assert.ok(upload.picker.height >= 280);
+          }
+          if (width >= 1200) {
+            assert.ok(upload.picker.height >= 360);
+          } else {
+            // The 2026-10-04 approved mobile/tablet input replaces the old
+            // minimum-height layout with compact, equal actions and spacing.
+            assert.deepEqual(upload.picker.padding, [24, 24, 24, 24]);
+            assert.equal(upload.picker.gap, 16);
+            assert.equal(upload.picker.headingSize, '20px');
+            assert.deepEqual(upload.picker.iconSize, ['32px', '32px']);
+            // A translated rect can differ by floating-point rounding even
+            // when the actual layout size is exactly 32px (32.000015px).
+            for (const size of [
+              upload.picker.icon.width,
+              upload.picker.icon.height,
+            ])
+              assert.ok(Math.abs(size - 32) < 0.001);
+            assert.deepEqual(
+              upload.picker.buttons.map((target) => target.name),
+              ['选择图片', '选择文件夹'],
+            );
+            const [choose, folder] = upload.picker.buttons;
+            assert.deepEqual(
+              [folder.width, folder.height, folder.top],
+              [choose.width, 48, choose.top],
+              'Approved mobile/tablet picker actions are equal and share a row',
+            );
+            assert.equal(choose.height, 48);
+            assert.equal(folder.left - choose.left - choose.width, 12);
+            assert.ok(
+              upload.picker.limit.top >= choose.bottom + 16,
+              'The actual file limit occupies its own line below the actions',
+            );
           }
           if (width === 1440) {
             const reduced = await page.evaluate(

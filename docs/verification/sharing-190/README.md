@@ -10,7 +10,7 @@
 
 管理列表及密码页是 #191/#192 的后置界面，不在本次开放；/s/{token} HTML、公开成员裁剪、邻居与刷新也由 #192 接入。共享校验必须与匿名查询置于同一同步读事务，不把成功返回的服务端 ShareRecord 直接发给客户端。现有私有文件与管理权限不接受分享 Cookie。
 
-这是无产品 UI 的任务。Figma、桌面/手机设计对照、主题、焦点、人工页面验收及长期 UI 预览不适用。浏览器只验证生产解锁协议与 Cookie，不把探针页面当获批 UI；后置任务的 DES/RG 保持原状态。
+分享任务本身没有产品 UI，浏览器协议探针不代表 #191/#192 的界面已开放。用户在全量重试失败后另行批准修复和验证已确认的问题；本轮增加共享批量成功焦点、筛选名称读取的两处 UI 修复及测试修正。其设计复审、人工验收和独立预览见[本轮补充](#获授权的失败修复与验证2026-10-05)，后置任务的 DES/RG 保持原状态。
 
 ## 实施与行为覆盖
 
@@ -67,9 +67,9 @@ node docs/tasks/check.mjs
 
 ## 交付状态与结果
 
-生产代码完成；分享配置、真实授权和 HTTP 行为已验证；真实浏览器 Cookie 协议已验证。独立代码评审关闭两项 Required 后批准，见[审计记录](./audit.md)。没有产品 UI，设计评审和人工界面验收不适用。
+分享生产代码完成；分享配置、真实授权、HTTP 与浏览器 Cookie 协议已验证。独立代码评审关闭两项 Required 后批准，见[审计记录](./audit.md)。后续获授权的共享 UI 修复已有独立代码和设计评审，人工验收仍待完成；PR 保留草稿。
 
-默认全量检查尚未全部通过，因此 PR 保留草稿。定向通过只证明对应场景，不替代全量状态。`pnpm run format:check` 退出 0，见[格式结果](./format-check.txt)；`node docs/tasks/check.mjs` 退出 0，120 个任务、298 项需求没有缺失 ID 或环，见[文档结果](./docs-check.txt)。
+以下是首次实施的检查记录，保留其实际失败；后续恢复结果见文末。定向通过只证明对应场景，不替代全量状态。首次 `pnpm run format:check` 退出 0，见[格式结果](./format-check.txt)；`node docs/tasks/check.mjs` 退出 0，120 个任务、298 项需求没有缺失 ID 或环，见[文档结果](./docs-check.txt)。
 
 | 实际检查        | 结果与证据                                                                                                                                                                                                                                                                                                                                                                                                |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,7 +84,7 @@ node docs/tasks/check.mjs
 | 生产浏览器协议  | 审计后定向退出 0，Node 24.19.0 / Ego TaskSpace 32，见[命令输出](./browser-after-review.txt)、[协议报告](./sharing-protocol.json)、[运行器报告](./sharing-protocol-runner.json)。两相册 Path、HttpOnly/Lax/24 小时持久 Cookie、跨册保留、同册两标签以及管理路径拒绝均通过；真实 DB 核对四个独立授权摘要。                                                                                                  |
 | 默认全量浏览器  | `pnpm run test:browser` 实际执行后退出 1，见[原输出](./browser-full.txt)、[运行器报告](./browser-full-runner.json)。停于既有 M2 的媒体重启恢复等待 30 秒超时，尚未到达默认 full 后面的分享场景及其他后续场景。生产日志确认恢复作业的媒体进程检查 `ps` 在 1000ms 后超时，见[必要诊断](./browser-failure-diagnosis.json)。未修改原媒体模块或停止其他任务进程；单一 TaskSpace 沿用，未通过新建空间绕过失败。 |
 
-默认浏览器调用链已检查，新增分享能力确实在 full 入口内；本次 full 的实际运行没有到达该场景，不能记作默认全量已覆盖成功。浏览器所有测试使用独立数据，夹具结束时按现有测试生命周期停止服务并删除临时目录。本任务没有人工验收用产品预览；失败空间保留，未调用 finish 清理错误现场。
+首次浏览器调用链已检查，新增分享能力确实在 full 入口内；当次 full 没有到达该场景，不能记作当次默认全量已覆盖成功。浏览器所有测试使用独立数据，夹具结束时按现有测试生命周期停止服务并删除临时目录。首次实施阶段没有人工验收用产品预览；失败空间保留，未调用 finish 清理错误现场。后续完整重试和独立人工预览另见文末。
 
 ## 本次发现、修复与历史失败
 
@@ -154,3 +154,98 @@ node scripts/verify-browser.mjs --suite upload-regression
 首次重试、期间发现和最后重验结果分别保留。没有再次运行输入未变的已通过分享协议/实验、delivery 或 UI 夹具；没有重跑整个 shared full，因此完整流程仍是 32/15/1 的失败记录。剩余旧断言、未知焦点/批量错误、通知目标/遮挡及旧 UI 高度问题不在 #190 产品范围内，没有改动其断言、超时或产品界面。PR 继续保留草稿，不声称全量通过；人工界面验收与 Figma 仍不适用于本次没有产品 UI 的交付。
 
 本轮最后全仓库格式检查和任务定义检查均退出 0，见[格式](./retry-format.txt)、[文档检查](./retry-docs.txt)。补充这两条证据链接后，再定向检查本 README 格式通过，没有重复执行已通过的应用或浏览器检查。
+
+## 获授权的失败修复与验证（2026-10-05）
+
+用户在了解失败原因后批准继续修复和验证，并要求不重复输入未变的无用检查。本轮仅处理实际失败暴露的问题，不修改冻结 PRD、分享后置 UI、公共通知位置或其他架构。初次记录中“不修改断言或产品界面”描述当时的范围，本轮按新增授权更新为以下实际结果。
+
+### 根因和最小修复
+
+| 失败                         | 实际原因与修复                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 标签批量成功等待超时         | 原逗号选择器按 DOM 顺序选中了标题，实际失败记录停在 `source-focus`，不是请求仍在运行。优先选共享工具栏搜索输入，再回退到标题，继续保留 `preventScroll`；不新增成功页。                                                                                                                                                                                                                           |
+| 筛选 ResizeObserver 错误     | 选中标签及 Escape 清除搜索产生新查询，已知名称被 ID 加载文字替换，触发器宽度 195/256px、位置 y464/y516 交替；定位回调把弹层高度 264px 改为306px。使用现有 TanStack `keepPreviousData`，只按当前选中 ID 读取已知名称；候选、缺失标记、加载、重读及分页仍使用当前查询。未加名称快照、修改 Gallery observer 或过滤错误；无效的 `maxHeight` 试验已撤回。[实际回调证据](./filter-resize-cause.json)。 |
+| 回收站缩略图资源错误         | 测试还展示延迟加载的回收图片，就直接恢复或删除其数据库记录。真实 trash-preview 接口拒绝不在回收站的图片。消费者恢复及 finally 清理之前先离开这些列表；保留全局资源错误断言。修正后原定向场景 `errors=[]`。此前逐个请求的 HTTP 状态未被捕获，不声称原24条请求都有独立时间证明。                                                                                                                   |
+| 复制格式键盘等待失败         | React Aria Toolbar 进入组时恢复上次焦点；直接 focus 某个 radio 并不等于选中它。通过真实 Tab 进入，水平箭头移动，再 Space 选择；严格核对焦点及 `aria-checked`。                                                                                                                                                                                                                                   |
+| 处理设置、公共导航、选择投影 | 更新三项已过时断言：水印卡说明是直接子段落；已实现导航是 `/tags`、`/settings/storage`、`/settings/processing`；选择投影真实返回六个字段，新增核对 ready、byteSize 和精确 storage 子投影。未改产品契约或删除检查。                                                                                                                                                                                |
+| 批量缓存入口                 | 选择控件 accessible name 含当前值，使用原有名称前缀定位；201 项、200+1 请求、缓存 ID、cursor 和撤销断言保留。                                                                                                                                                                                                                                                                                    |
+| 标签通知目标41.8px           | HeroUI 折叠旧层按0.95缩放且被遮挡；真实指针进入堆栈，待展开及动画结束后核对所有活跃关闭按钮44px、实际命中和通知文字。没有按尺寸过滤目标或削弱公共几何断言。                                                                                                                                                                                                                                      |
+| 上传旧高度断言               | 依据 handoff 2026-10-04 已批准小于1200px的紧凑输入：24px内距、16px间距、32px图标、20px标题、等宽48px按钮/12px间隔和独立上限行；桌面360px要求保留。                                                                                                                                                                                                                                               |
+| 手机 M2 下载被通知遮挡       | 通过真实关闭按钮消除通知后下载，原文件名与实际字节检查保留。通知存在时不能立即点击被遮住的下载按钮仍是限制，未修改已批准底部位置。                                                                                                                                                                                                                                                               |
+
+完整重试继续执行后又取得以下后段失败证据，逐项修正，不将所有超时归为同一问题：
+
+| 后段失败                       | 实际原因与修复                                                                                                                                                                                                                                                                       |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 处理设置模式按钮不可点击       | 填写靠下的不透明度后，上方模式按钮不在视口，Ego自动滚动未使其可操作。仅测试把该真实按钮滚至中央再普通点击；67共享不透明度、九个位置、精确小数与保存断言全部保留。                                                                                                                    |
+| 大图平移改变缩放               | YARL 3.32.2 默认300ms双击窗口内连续发起触摸手势，将平移起点识别为双击，3.74454变为最大9.23077。测试在真实时钟越过该窗口后发起下一手势，不改产品配置；重验平移前后均为3.74454且双轴移动60/30px。                                                                                      |
+| 分页、删除与清空被通知遮挡     | 真实Toast拦截后续点击，既有底部位置与控件相交。测试使用真实关闭按钮后继续分页/下载/删除/清空；上传的复制与回收通知均在现成clear操作处理。已批准通知位置未改，遮挡仍是限制。                                                                                                          |
+| 复制通知定位不唯一             | 同标题旧通知仍在堆栈，广泛标题选择器匹配两项。只读取实际frontmost通知，保留原剪贴板、计数、选择、URL、滚动及焦点断言。                                                                                                                                                               |
+| 回收站另一窗口失去请求来源     | 早期清理修正将peer导航到about:blank，后续相对fetch失去实际origin。两个窗口清理前均离开图片列表并留在同源处理设置页；资源生命周期和后续真实请求同时保留。                                                                                                                             |
+| 预览等待60秒                   | [真实失败截图](./processing-preview-input-failure.png)可见不透明度5164，表单拒绝大于100，报告没有预览POST；并非预览服务已开始但超时。该模块三个数字输入使用真实全选、键盘替换和Tab提交，并立即严格核对目标值。旧初始51没有独立DOM记录，Ego内部选择丢失点未证实；不归为产品拼接缺陷。 |
+| 上传32px图标尺寸浮点           | 实际rect高度32.00001525878906。新增严格计算样式32px，同时要求显示尺寸误差小于0.001px；保留实际rect、原按钮/间距/点击目标/动画断言，不以整数取整掩盖布局问题。                                                                                                                        |
+| 回收并发核对等待旧三个复制按钮 | 单图复制已按handoff 2026-10-02获批使用Dropdown。更新为精确核对提示、唯一禁用的菜单入口、实际点击仍不展开；原并发GET/POST及恰好一次写入断言保留。                                                                                                                                     |
+
+诊断、修复过程和最后原场景结果见[增量报告](./followup-diagnosis-summary.json)。首次新增延迟响应回归把 RAC 空态的 `role=option` 误计为候选；实际读取库源码后改为 HeroUI 业务项 `data-slot=list-box-item`，仍严格要求旧候选为0且加载文字可见，没有降低断言。
+
+### 实际检查与复用边界
+
+沿用 Node 24.19.0 / pnpm 11.19.0 / macOS arm64 / 单一 Ego TaskSpace 32。产品修改后构建、类型和受影响静态检查通过；筛选根因修复再次改变产品输入，才重跑构建、类型及三个相关文件的静态检查。此前已通过的分享单元、生产集成、Cookie、运行器参数/阶段检查和安装输入未变，结果复用，不机械重跑。浏览器完整流程前的实验外壳及 UI 构建输入未变，直接使用同一个默认运行器 full 入口，所有阶段仍执行。
+
+```sh
+pnpm run build
+pnpm run typecheck
+pnpm exec eslint e2e/library-batch-cache.mjs e2e/library-batch-tag-feedback.mjs e2e/library-batch.mjs e2e/library-copy-helpers.mjs e2e/library-detail-171-consumers.mjs e2e/library-selection-reconciliation.mjs e2e/m2-core.mjs e2e/processing-settings.mjs e2e/tags.mjs e2e/trash-query-batch.mjs e2e/ui-refinement.mjs src/app/library/library-filter-options.tsx src/components/library/use-library-batch.ts --max-warnings=0
+pnpm exec eslint src/app/library/library-filter-options.tsx e2e/trash-filter-consumers.mjs e2e/trash-query-batch.mjs --max-warnings=0
+EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-filter-final-2 node scripts/verify-browser.mjs --suite trash --only approved-results
+EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser-final node scripts/verify-browser.mjs
+```
+
+[构建](./followup-build.txt)、[类型](./followup-typecheck.txt)、[首批受影响静态](./followup-lint.txt)和[筛选受影响静态](./followup-filter-lint.txt)退出0。构建保留既有可选原生平台追踪输出，没有隐藏它或新增依赖。原场景定向退出0，桌面1440/手机390的图库与相册真实筛选、201项分批及结果状态、短视口360/430/768、主题和44px检查通过；新增延迟 selectedId 请求真实证明已知名称不退回 ID、当前候选为空且显示读取状态。全局运行期/资源错误为空，theme 实际恢复 null。
+
+默认完整重试于14:27:09–14:51:36 UTC实际执行，退出1，记录[原运行器](./followup-browser-full-runner.json)与[摘要](./followup-browser-full-summary.json)：**48阶段，40通过、7失败、1阻塞**。独立场景未因失败跳过，sharing-protocol、分享实验、delivery-S3、独立UI及手机/桌面交互延续均到达并通过；仅m2-390-after因before失败被真实依赖阻塞。临时目录删除成功。该历史full不改写为通过。
+
+随后只重验失败部分和此前未到达的后段，[定向报告](./followup-focused-summary.json)保留每次命令的实际阶段、时间、清理、业务检查及错误；失败尝试也保留。处理设置23项、恢复13项、预览7项分别完成；大图行为17项、批量缓存、复制revision、回收站剩余三周期、手机M2前后重启已通过。图库回收后段19项及上传主流程16项也通过，所有最终定向服务和临时目录回收成功。图库后段复用原真实种子定向运行，避免重跑已通过的浏览/详情/大图；上传主流程复用同一脚本，未重复已通过轮询。汇总项数量只帮助定位，不替代设计对照或逐个业务断言。
+
+以下命令均实际执行，沿用`EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1`，每次指定独立报告目录；预览和上传失败后仅修改受影响测试再运行同一模块，没有重新运行默认full：
+
+```sh
+node scripts/verify-browser.mjs --suite viewer --only behavior
+node scripts/verify-browser.mjs --suite processing --only settings
+node scripts/verify-browser.mjs --suite processing --only preview
+node scripts/verify-browser.mjs --suite processing --only recovery
+node scripts/verify-browser.mjs --suite library-batch --only cache
+node scripts/verify-browser.mjs --suite library-copy --only revision
+node scripts/verify-browser.mjs --suite trash --only review-fixes
+node scripts/verify-browser.mjs --suite upload-regression --only main
+node scripts/verify-browser.mjs --suite m2-mobile
+node scripts/verify-browser.mjs --suite library
+node scripts/verify-browser.mjs --suite library --only recovery
+```
+
+为缩短必要重跑，新增`upload-regression --only main`、`m2-mobile`及图库`recovery`定向入口；默认full保持原完整列表。M2真实stop/start使用同一DATA_DIR，并断言没有新的setup code；before失败时after为blocked。独立评审发现M2原脚本固定p1，运行器在任何资源启动前显式限制full/m2-mobile为p1，其余定向模式保留原隔离页面支持。[新增模式参数90项](./followup-runner-unit.txt)与最后[页面边界2项](./followup-runner-page-label.txt)分次实际通过，不写成一次92项全量；[边界修改前失败](./followup-runner-page-label-before.txt)保留。图库后段新增[20项参数检查](./followup-library-recovery-unit.txt)只执行受影响项，不能写为全量112项。[运行器静态](./followup-runner-lint.txt)、[定向类型](./followup-runner-typecheck.txt)、[预览输入静态](./followup-processing-input-lint.txt)、[图标静态](./followup-upload-icon-lint.txt)、[图库后段静态](./followup-library-recovery-lint.txt)、[参数测试定向类型](./followup-library-recovery-typecheck.txt)和[上传清空静态](./followup-upload-clear-lint.txt)均退出0。后续测试修正未改变产品构建输入，没有重复分享单元、集成、Cookie、应用构建或已通过的40阶段。
+
+### 设计对照与人工验收
+
+实际应用 `frontend-ui-engineering` 保持既定公共组件/响应式/焦点，`vercel-react-best-practices` 控制数据与渲染，`figma-design-to-code` / `figma-use` 读取实际节点，`ego-browser` 使用现有 Ego Lite。未改写设计规范或 Figma；本轮恢复既定行为，没有引入新页面结构、交互或视觉方案。
+
+独立设计评审者实际读取整页图库 `30:285/98:748`、相册 `38:378/102:4002`、旧筛选 `43:428/102:4306`、批量标签 `523:11832/523:12435`、最新复制 `642:6011/642:6738`、成功通知 `642:6914`、上传 `101:1014` 和详情 `102:3228` 的 context 与截图。旧整页筛选、标签成功页和上传高度按 handoff 已明确批准的后续反馈处理，不以旧画板覆盖当前行为。
+
+| 真实页面                                                            | 视口/主题      | 对照结论                                                                                       |
+| ------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------- |
+| [图库](./trash-approved-consumer-library-light-1440.png)            | 1440×1080/浅色 | 先核公共侧栏、品牌、账号和内容区域，再核共享工具栏、条件44px控件和查询；结构保持当前获批方案。 |
+| [图库](./trash-approved-consumer-library-dark-390.png)              | 390×844/深色   | 公共手机品牌与菜单保持；条件按空间排列，菜单真实锚定控件，选中名称已确认，不再重复退回ID。     |
+| [相册](./trash-approved-consumer-albums-light-1440.png)             | 1440×1080/浅色 | 相册身份、公共区域和工具栏复用保持，固定相册条件与存储/标签查询可用。                          |
+| [相册](./trash-approved-consumer-albums-dark-390.png)               | 390×844/深色   | 标题、按钮、手机工具栏层级及菜单保持；未改变高度或定位方案。                                   |
+| [成功返回图库](./library-batch-public-success-toast-light-1440.png) | 1440×1080/浅色 | 原公共区域和列表保持；搜索输入真实回焦，中性Toast显示实际计数。                                |
+| [成功返回图库](./library-batch-public-success-toast-dark-390.png)   | 390×844/深色   | 手机层级与搜索焦点保持；没有成功结果页，通知仍可能遮住底部操作。                               |
+
+独立代码评审按 `code-review-and-quality` 首先检查14文件差异，再复审本轮后续各项修改及定向入口，核对模块职责、真实库能力、请求与夹具生命周期、错误保留及断言有效性；M2页面边界Required已修复，没有未解决Critical/Required。设计复审分别批准焦点及名称保留修复。作者参与的测试不由同一作者自称独立通过；详细结论追加到[统一审计](./audit.md)。
+
+人工验收尚未完成。独立生产预览`http://127.0.0.1:53521`已就绪，使用独立DATA_DIR、独立所有者账号、相册/标签和三张经真实上传与处理完成的图片，保留到用户明确要求停止。凭证仅私下交付，不写入本文件、PR或提交。需检查：图库/相册添加标签筛选、输入搜索/选择/清除搜索时的名称与弹层；批量添加/移除标签成功后的原列表和焦点；批量复制三格式的键盘操作、选择与滚动保持；手机单图复制后关闭通知再下载。已知限制：通知存在时可能遮挡手机详情/队列底栏或桌面分页，测试证明先正常关闭通知的可用路径，未修改或冒充修复底部布局。分享后置管理和匿名页面仍未开放；此次预览不能代替#191/#192。
+
+预览健康接口实际返回200，Ego真实登录并确认三张已加载；[1440×1080浅色](./human-preview-library-light-1440.png)与[390×844深色](./human-preview-library-dark-390.png)已查看。这两张仅证明待人工验收环境可用，不冒充独立设计结论；设计复审依据仍是上表实际业务状态及Figma。最后浏览器结果页保留，独立测试服务已回收，人工预览继续运行。
+
+代码完成、本地检查、浏览器结果、独立设计复审与人工验收分别记录。PR 保留草稿；没有发布、部署或合并，未关闭 Issue、删除分支/worktree；发布镜像和容器仍遵守既有 Release 流程。
+
+最终[文档检查](./followup-docs-check.txt)通过，120任务/298需求无缺失或环；[其它受影响静态命令](./followup-extra-lint.txt)均退出0。完整`pnpm run format:check`实际发现仅新复制的原始运行器JSON未按格式化规则排版，[失败原记录](./followup-format-check-before.txt)保留；格式化该JSON后仅检查它与补充证据链接的本README，[受影响格式检查](./followup-format-check.txt)通过，其他已通过文件没有重复全仓检查。没有修改报告值或隐藏浏览器失败。

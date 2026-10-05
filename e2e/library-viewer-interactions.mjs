@@ -106,6 +106,20 @@ async function panMouse(page, base, id) {
   );
 }
 
+let nextTouchGestureAt = 0;
+async function startTouchGesture(page, touchPoints) {
+  // YARL 3.32.2 treats touch starts within 300 ms as a double tap.
+  await page.waitForFunction(
+    (deadline) => performance.now() >= deadline,
+    nextTouchGestureAt,
+  );
+  await page.cdp('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints,
+  });
+  nextTouchGestureAt = await page.evaluate(() => performance.now() + 300);
+}
+
 async function pinch(page, center, distances) {
   const points = (distance) => [
     {
@@ -125,10 +139,7 @@ async function pinch(page, center, distances) {
       id: 2,
     },
   ];
-  await page.cdp('Input.dispatchTouchEvent', {
-    type: 'touchStart',
-    touchPoints: points(distances[0]),
-  });
+  await startTouchGesture(page, points(distances[0]));
   for (const distance of distances.slice(1))
     await page.cdp('Input.dispatchTouchEvent', {
       type: 'touchMove',
@@ -154,10 +165,7 @@ async function swipe(page, center, direction) {
       id: 1,
     },
   ];
-  await page.cdp('Input.dispatchTouchEvent', {
-    type: 'touchStart',
-    touchPoints: finger(offsets[0]),
-  });
+  await startTouchGesture(page, finger(offsets[0]));
   for (const offset of offsets.slice(1))
     await page.cdp('Input.dispatchTouchEvent', {
       type: 'touchMove',
@@ -337,10 +345,7 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
         id: 1,
       },
     ];
-    await page.cdp('Input.dispatchTouchEvent', {
-      type: 'touchStart',
-      touchPoints: finger(0),
-    });
+    await startTouchGesture(page, finger(0));
     for (const offset of [20, 40, 60])
       await page.cdp('Input.dispatchTouchEvent', {
         type: 'touchMove',

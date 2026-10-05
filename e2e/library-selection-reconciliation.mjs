@@ -883,10 +883,22 @@ export async function verifyLibrarySelectionReconciliation({
           request.items.every(
             (item) =>
               Object.keys(item).sort().join(',') ===
-              'displayName,id,storage,thumbnailUrl',
+              'byteSize,displayName,id,processingStatus,storage,thumbnailUrl',
           ),
           'Response contains only the selection projection, no full image records',
         );
+        for (const item of request.items) {
+          assert.deepEqual(Object.keys(item.storage).sort(), [
+            'enabled',
+            'id',
+            'name',
+          ]);
+          assert.equal(item.processingStatus, 'ready');
+          assert.equal(
+            item.byteSize,
+            1000 + Number(item.id.slice(prefix.length)),
+          );
+        }
       }
     }
     assert.ok(

@@ -1,0 +1,311 @@
+[
+  {
+    "status": "failed",
+    "startedAt": "2026-10-05T13:53:47.776Z",
+    "finishedAt": "2026-10-05T13:54:06.639Z",
+    "suite": "library-batch",
+    "only": "tag-states",
+    "taskSpaceId": 32,
+    "stages": {
+      "library-batch": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+      }
+    },
+    "cleanup": null,
+    "name": "batch-focus-before",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-diagnosis-tags",
+    "scenario": {
+      "status": "failed",
+      "activeCheck": "add-tags-known-failure-and-explicit-retry",
+      "phase": "tag-states",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-59627.localhost:59627/library?q=issue177-&pageSize=80&page=1\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "tagCompletionStep": "source-focus",
+      "failureFocus": {
+        "tag": "H1",
+        "label": null,
+        "testId": null,
+        "connected": true
+      },
+      "checks": []
+    }
+  },
+  {
+    "status": "failed",
+    "startedAt": "2026-10-05T13:57:02.075Z",
+    "finishedAt": "2026-10-05T13:57:22.428Z",
+    "suite": "library-copy",
+    "only": null,
+    "taskSpaceId": 32,
+    "stages": {
+      "library-copy": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+      }
+    },
+    "cleanup": null,
+    "name": "copy-keyboard-before",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-diagnosis-copy",
+    "scenario": {
+      "status": "failed",
+      "phase": "full",
+      "error": "ElementResolutionError: page.focus failed: element is not focusable (button, contenteditable=false, tabIndex=0, active=button)\n    at focusInPage (file:////[eval1]:14412:19)\n    at async #retryElementAction (file:////[eval1]:18867:24)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+      "checks": [
+        "Actual public-original metadata warning is present for original/default and absent for fixed compressed output, with complete native Clipboard text for both.",
+        "201 selections survive pages; real responses reversed within every chunk merge by full query order including equal keys; native URL pasteboard exact; private/failed remain available, disabled storage excluded, no image GET or count/probe writes."
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "startedAt": "2026-10-05T14:06:11.327Z",
+    "finishedAt": "2026-10-05T14:07:31.740Z",
+    "suite": "trash",
+    "only": "approved-results",
+    "taskSpaceId": 32,
+    "stages": {
+      "trash-query-batch": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+      }
+    },
+    "cleanup": null,
+    "name": "filter-height-trial",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-filter-height-after",
+    "scenario": {
+      "status": "failed",
+      "activeCheck": "approved-filter-consumers",
+      "phase": "approved-results",
+      "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-006/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-007/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-008/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-004/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-010/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-009/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-011/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-012/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-005/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-013/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-014/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-015/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-016/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-017/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-018/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-023/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-019/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-020/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-021/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-022/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-024/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-025/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-026/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-027/preview?type=thumbnail',\n+     url: 'http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'ResizeObserver loop completed with undelivered notifications.',\n+     url: 'http://ariso-49178.localhost:49178/albums/issue177-album-a?storageId=39241eec-972e-4061-8086-d1164001b0da&pageSize=40&tagId=issue177-tag-a'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/browser-errors.mjs:44:10)\n    at async file:////[eval2]:150:19",
+      "checks": [
+        "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+        "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+        "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+        "图库及相册详情实际回归：桌面/手机默认condition控件仍44px，存储/标签菜单真实查询与选择正常，公共当前导航正确。"
+      ],
+      "restoredTheme": null,
+      "errors": [
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-006/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-007/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-008/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-004/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-010/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-009/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-011/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-012/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-005/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-013/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-014/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-015/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-016/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-017/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-018/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-023/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-019/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-020/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-021/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-022/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-024/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-025/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-026/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/trash?q=issue177-&pageSize=80&page=1",
+          "kind": "error",
+          "message": "Resource failed: http://ariso-49178.localhost:49178/api/trash/issue177-027/preview?type=thumbnail"
+        },
+        {
+          "url": "http://ariso-49178.localhost:49178/albums/issue177-album-a?storageId=39241eec-972e-4061-8086-d1164001b0da&pageSize=40&tagId=issue177-tag-a",
+          "kind": "error",
+          "message": "ResizeObserver loop completed with undelivered notifications."
+        }
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "startedAt": "2026-10-05T14:18:31.356Z",
+    "finishedAt": "2026-10-05T14:19:34.211Z",
+    "suite": "trash",
+    "only": "approved-results",
+    "taskSpaceId": 32,
+    "stages": {
+      "trash-query-batch": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+      }
+    },
+    "cleanup": null,
+    "name": "filter-identity-diagnosis",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-filter-identity-diagnosis",
+    "scenario": {
+      "status": "failed",
+      "activeCheck": "approved-filter-consumers",
+      "phase": "approved-results",
+      "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'resize-diagnostic',\n+     message: '[{\"id\":9,\"at\":819.6000000238419,\"before\":[{\"slot\":\"autocomplete-popover\",\"text\":\"正在读取：8811d950-37ad-4616-a465-32074c7a5fb5清除存储位置筛选\",\"x\":74.98572540283203,\"y\":516,\"width\":252.028564453125,\"height\":175.23858642578125,\"offsetWidth\":256,\"offsetHeight\":178,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 148px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}],\"after\":[{\"slot\":\"autocomplete-popover\",\"text\":\"正在读取：8811d950-37ad-4616-a465-32074c7a5fb5清除存储位置筛选\",\"x\":74.98572540283203,\"y\":516,\"width\":252.028564453125,\"height\":175.23858642578125,\"offsetWidth\":256,\"offsetHeight\":178,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 148px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}]},{\"id\":10,\"at\":819.7000000476837,\"before\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5\",\"x\":17,\"y\":516,\"width\":288,\"height\":44,\"offsetWidth\":288,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":334,\"height\":46,\"text\":\"存储位置存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5 正在读取：8811d950-37ad-4616-a465-32074c7a5fb5\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5 正在读取：8811d950-37ad-4616-a465-32074c7a5fb5相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}],\"after\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5\",\"x\":17,\"y\":516,\"width\":288,\"height\":44,\"offsetWidth\":288,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":334,\"height\":46,\"text\":\"存储位置存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5 正在读取：8811d950-37ad-4616-a465-32074c7a5fb5\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置正在读取：8811d950-37ad-4616-a465-32074c7a5fb5 正在读取：8811d950-37ad-4616-a465-32074c7a5fb5相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}]},{\"id\":9,\"at\":831,\"before\":[{\"slot\":\"autocomplete-popover\",\"text\":\"正在读取：8811d950-37ad-4616-a465-32074c7a5fb5清除存储位置筛选\",\"x\":76.70853424072266,\"y\":516,\"width\":279.6557922363281,\"height\":172.84283447265625,\"offsetWidth\":288,\"offsetHeight\":178,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 288px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}],\"after\":[{\"slot\":\"autocomplete-popover\",\"text\":\"正在读取：8811d950-37ad-4616-a465-32074c7a5fb5清除存储位置筛选\",\"x\":76.70853424072266,\"y\":516,\"width\":279.6557922363281,\"height\":172.84283447265625,\"offsetWidth\":288,\"offsetHeight\":178,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 288px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}]},{\"id\":7,\"at\":870.2000000476837,\"before\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}],\"after\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}]},{\"id\":8,\"at\":870.2000000476837,\"before\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}],\"after\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}]},{\"id\":9,\"at\":870.2000000476837,\"before\":[{\"slot\":\"autocomplete-popover\",\"text\":\"默认本地存储清除存储位置筛选\",\"x\":78.94197845458984,\"y\":516,\"width\":274.63055419921875,\"height\":162.10833740234375,\"offsetWidth\":288,\"offsetHeight\":170,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 288px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}],\"after\":[{\"slot\":\"autocomplete-popover\",\"text\":\"默认本地存储清除存储位置筛选\",\"x\":78.94197845458984,\"y\":516,\"width\":274.63055419921875,\"height\":162.10833740234375,\"offsetWidth\":288,\"offsetHeight\":170,\"style\":\"position: absolute; z-index: 100000; max-height: 316px; --trigger-width: 288px; --trigger-anchor-point: 128px 0px; left: 73px; top: 516px;\",\"flexBasis\":\"auto\",\"ancestors\":[]}]},{\"id\":10,\"at\":870.2000000476837,\"before\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}],\"after\":[{\"slot\":\"autocomplete-trigger\",\"category\":\"storages\",\"text\":\"存储位置默认本地存储\",\"x\":17,\"y\":516,\"width\":204,\"height\":44,\"offsetWidth\":204,\"offsetHeight\":44,\"style\":null,\"flexBasis\":\"auto\",\"ancestors\":[{\"x\":16,\"y\":515,\"width\":250,\"height\":46,\"text\":\"存储位置存储位置默认本地存储 默认本地存储\"},{\"testId\":\"library-filters-bar\",\"x\":16,\"y\":463,\"width\":358,\"height\":152,\"text\":\"添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 12Issue 177 分页相册 13Issue 177 分页相册 14Issue 177 分页相册 15Issue 177 分页相册 16Issue 177 分页相册 17Issue 177 分页相册 18Issue 177 分页相册 19Issue 177 分页相册 20Issue 177 并发删除相册Issue 177 相册 B清除筛选条件\"}]}]},{\"id\":11,\"at\":870.2000000476837,\"before\":[{\"text\":\"issue177-000.png公开0.0 MiB · 已就绪\",\"x\":16,\"y\":699,\"width\":358,\"height\":194.5,\"offsetWidth\":358,\"offsetHeight\":195,\"style\":\"height: 194.5px;\",\"flexBasis\":\"auto\",\"ancestors\":[]},{\"text\":\"返回相册列表Issue 177 相册 A1 张图片 · 1 张公开 · 相册 #issue177批量真实验证编辑相册设置封面更多加入时间 ↓添加条件存储位置存储位置默认本地存储 默认本地存储相册相册Issue 177 相册 A Issue 177 相册 AIssue 177 分页相册 00Issue 177 分页相册 01Issue 177 分页相册 02Issue 177 分页相册 03Issue 177 分页相册 04Issue 177 分页相册 05Issue 177 分页相册 06Issue 177 分页相册 07Issue 177 分页相册 08Issue 177 分页相册 09Issue 177 分页相册 10Issue 177 分页相册 11Issue 177 分页相册 1'... 43058 more characters,\n+     url: 'http://ariso-51949.localhost:51949/albums/issue177-album-a?storageId=8811d950-37ad-4616-a465-32074c7a5fb5&pageSize=40&tagId=issue177-tag-a'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'ResizeObserver loop completed with undelivered notifications.',\n+     url: 'http://ariso-51949.localhost:51949/albums/issue177-album-a?storageId=8811d950-37ad-4616-a465-32074c7a5fb5&pageSize=40&tagId=issue177-tag-a'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/browser-errors.mjs:74:10)\n    at async file:////[eval2]:152:19",
+      "checks": [
+        "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+        "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+        "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+        "图库及相册详情实际回归：桌面/手机默认condition控件仍44px，存储/标签菜单真实查询与选择正常，公共当前导航正确。"
+      ],
+      "restoredTheme": null,
+      "errors": [
+        {
+          "url": "http://ariso-51949.localhost:51949/albums/issue177-album-a?storageId=8811d950-37ad-4616-a465-32074c7a5fb5&pageSize=40&tagId=issue177-tag-a",
+          "kind": "error",
+          "message": "ResizeObserver loop completed with undelivered notifications."
+        }
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "startedAt": "2026-10-05T14:23:47.652Z",
+    "finishedAt": "2026-10-05T14:24:41.411Z",
+    "suite": "trash",
+    "only": "approved-results",
+    "taskSpaceId": 32,
+    "stages": {
+      "trash-query-batch": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+      }
+    },
+    "cleanup": null,
+    "name": "filter-loading-regression-first",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-filter-final",
+    "scenario": {
+      "status": "failed",
+      "activeCheck": "approved-filter-consumers",
+      "phase": "approved-results",
+      "error": "AssertionError [ERR_ASSERTION]: Previous search results are not choices in the current query\n\n1 !== 0\n\n    at verifyFilterConsumers (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/trash-filter-consumers.mjs:105:20)\n    at async file:////[eval2]:134:7",
+      "checks": [
+        "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+        "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+        "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除"
+      ],
+      "restoredTheme": null
+    }
+  },
+  {
+    "status": "passed",
+    "startedAt": "2026-10-05T14:25:40.111Z",
+    "finishedAt": "2026-10-05T14:26:39.854Z",
+    "suite": "trash",
+    "only": "approved-results",
+    "taskSpaceId": 32,
+    "stages": {
+      "trash-query-batch": {
+        "status": "passed"
+      }
+    },
+    "cleanup": null,
+    "name": "filter-final",
+    "localEvidence": "/Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/test-results/sharing-filter-final-2",
+    "scenario": {
+      "status": "passed",
+      "activeCheck": "approved-filter-consumers",
+      "phase": "approved-results",
+      "checks": [
+        "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+        "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+        "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+        "图库及相册详情实际回归：桌面/手机默认condition控件仍44px，存储/标签菜单真实查询与选择正常，公共当前导航正确。"
+      ],
+      "restoredTheme": null,
+      "errors": []
+    }
+  }
+]

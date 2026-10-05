@@ -22,6 +22,16 @@ export async function verifyProcessingSettings(page, config, tools, report) {
     evidence: baseEvidence,
     scrollDetails,
   } = tools;
+  const chooseWatermarkMode = async (mode) => {
+    const selector = `[data-watermark-mode="${mode}"]`;
+    await page.evaluate((selector) => {
+      document.querySelector(selector).scrollIntoView({
+        block: 'center',
+        behavior: 'instant',
+      });
+    }, selector);
+    await page.click(selector);
+  };
   const evidence = async (state, width = 1440, theme = 'light', height) => {
     await resizeViewport(page, width, height);
     await setTheme(page, theme);
@@ -131,11 +141,17 @@ export async function verifyProcessingSettings(page, config, tools, report) {
         [
           '[data-field="watermarkWidth"]',
           '[data-field="watermarkOpacity"]',
-          '[data-slot="card"]:has([data-field="watermarkWidth"]) > p:last-child',
+          '[data-slot="card"]:has([data-field="watermarkWidth"]) > p',
         ],
       ],
     ]) {
       const details = await scrollDetails(selectors);
+      if (segment === 'controls')
+        assert.match(
+          details.visibleDetails.at(-1).text,
+          /修改设置只影响新任务/,
+          'The screenshot includes the watermark settings explanation',
+        );
       await evidence(`${state}-${segment}`, 390, 'dark');
       Object.assign(report.layouts.at(-1), details);
     }
@@ -429,7 +445,7 @@ export async function verifyProcessingSettings(page, config, tools, report) {
   });
 
   await switchTo('启用水印', true);
-  await page.click('[data-watermark-mode="image"]');
+  await chooseWatermarkMode('image');
   await page.setInputFiles(testId('asset-file'), [
     new URL('../tests/fixtures/media-formats/alpha.png', import.meta.url)
       .pathname,
@@ -594,12 +610,12 @@ export async function verifyProcessingSettings(page, config, tools, report) {
     });
   }
 
-  await page.click('[data-watermark-mode="text"]');
+  await chooseWatermarkMode('text');
   await fill('watermarkText', 'Ariso 验证');
   await fill('watermarkOpacity', 67);
-  await page.click('[data-watermark-mode="image"]');
+  await chooseWatermarkMode('image');
   assert.equal(await value('watermarkOpacity'), '67');
-  await page.click('[data-watermark-mode="text"]');
+  await chooseWatermarkMode('text');
   assert.equal(await value('watermarkOpacity'), '67');
   assert.equal(await value('watermarkText'), 'Ariso 验证');
   report.checks.push({
@@ -609,9 +625,9 @@ export async function verifyProcessingSettings(page, config, tools, report) {
 
   await fill('watermarkMargin', 2.125);
   await fill('watermarkFontSize', 3.5);
-  await page.click('[data-watermark-mode="image"]');
+  await chooseWatermarkMode('image');
   await fill('watermarkWidth', 12.25);
-  await page.click('[data-watermark-mode="text"]');
+  await chooseWatermarkMode('text');
   await monitor();
   const positions = [
     'top-left',
@@ -695,7 +711,7 @@ export async function verifyProcessingSettings(page, config, tools, report) {
   await open();
   assert.equal(await value('watermarkMargin'), '2.125');
   assert.equal(await value('watermarkFontSize'), '3.5');
-  await page.click('[data-watermark-mode="image"]');
+  await chooseWatermarkMode('image');
   assert.equal(await value('watermarkWidth'), '12.25');
   report.checks.push({
     check:

@@ -137,6 +137,8 @@ try {
     } finally {
       await helpers.restoreBatchTraffic();
       await restoreReviewTraffic(page);
+      await page.goto(`${config.origin}/settings/processing`);
+      if (peer) await peer.goto(`${config.origin}/settings/processing`);
       await sql('DROP TRIGGER IF EXISTS issue178_cleanup_failure');
       await sql(`DELETE FROM media_jobs WHERE id='${progressJobId}'`);
       await sql(
@@ -150,6 +152,8 @@ try {
   if (peer) report.peerErrors = await assertNoBrowserErrors(peer);
   report.status = 'passed';
 } catch (error) {
+  if (Array.isArray(error.actual) && error.actual.every((entry) => entry.kind))
+    report.errors = error.actual;
   if (!report.error) await captureFailure(error);
   throw error;
 } finally {

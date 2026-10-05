@@ -212,6 +212,12 @@ try {
 } catch (error) {
   report.error = error.stack ?? String(error);
   try {
+    report.failureFocus = await page.evaluate(() => ({
+      tag: document.activeElement?.tagName,
+      label: document.activeElement?.getAttribute('aria-label'),
+      testId: document.activeElement?.getAttribute('data-testid'),
+      connected: document.activeElement?.isConnected,
+    }));
     await page.screenshot({
       path: join(config.output, 'library-batch-failure.png'),
     });

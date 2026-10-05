@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 export async function verifyFilterConsumers(context) {
   const { page, sql, config, report, resize, button, screenshot } = context;
   report.activeCheck = 'approved-filter-consumers';
+  // Leave lazy trash previews before restoring their fixture records.
+  await page.goto('about:blank');
   await sql(
     "UPDATE media_images SET trashed_at=NULL WHERE id LIKE 'issue177-%'",
   );
@@ -63,7 +65,59 @@ export async function verifyFilterConsumers(context) {
         await page.click(trigger);
         await page.fill('input[placeholder="输入名称搜索"]', search);
         await page.waitForSelector(`loc=role:option[name="${option}"]`);
-        await page.click(`loc=role:option[name="${option}"]`);
+        if (category === 'tags') {
+          await page.evaluate(() => {
+            const original = window.fetch;
+            window.__filterNameRead = { held: false, release: null, original };
+            window.fetch = (...args) => {
+              const url = new URL(String(args[0]), location.href);
+              if (
+                url.pathname === '/api/images/filter-options' &&
+                url.searchParams.get('kind') === 'tags' &&
+                url.searchParams.has('selectedId')
+              ) {
+                window.__filterNameRead.held = true;
+                return new Promise((resolve) => {
+                  window.__filterNameRead.release = () =>
+                    resolve(original(...args));
+                });
+              }
+              return original(...args);
+            };
+          });
+        }
+        try {
+          await page.click(`loc=role:option[name="${option}"]`);
+          if (category === 'tags') {
+            await page.waitForFunction(() => window.__filterNameRead.held);
+            const pending = await page.evaluate(() => ({
+              label: document.querySelector('[data-filter-category="tags"]')
+                ?.textContent,
+              options: document.querySelectorAll(
+                '[role="dialog"] [data-slot="list-box-item"]',
+              ).length,
+              loading: document
+                .querySelector('[role="dialog"]')
+                ?.textContent.includes('正在读取选项'),
+            }));
+            assert.ok(pending.label.includes(option));
+            assert.equal(pending.label.includes('正在读取：'), false);
+            assert.equal(
+              pending.options,
+              0,
+              'Previous search results are not choices in the current query',
+            );
+            assert.equal(pending.loading, true);
+          }
+        } finally {
+          if (category === 'tags') {
+            await page.evaluate(() => {
+              window.fetch = window.__filterNameRead.original;
+              window.__filterNameRead.release?.();
+              delete window.__filterNameRead;
+            });
+          }
+        }
         if (category === 'tags') await page.keyboard.press('Escape');
         await page.waitForFunction(
           ({ queryKey, value }) =>

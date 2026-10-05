@@ -1,7 +1,11 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useInfiniteQuery, type QueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  type QueryClient,
+} from '@tanstack/react-query';
 import { Autocomplete } from '@heroui/react/autocomplete';
 import { Button } from '@heroui/react/button';
 import { Label } from '@heroui/react/label';
@@ -73,10 +77,13 @@ export function LibraryFilterOptionsField({
       retry: false,
       networkMode: 'always',
       refetchOnWindowFocus: false,
+      placeholderData: keepPreviousData,
     },
     client,
   );
-  const pages = query.data?.pages ?? [];
+  const knownPages = query.data?.pages ?? [];
+  const pages = query.isPlaceholderData ? [] : knownPages;
+  const pending = query.isPending || query.isPlaceholderData;
   const selected = pages[0]?.selected ?? [];
   const missing = new Set(pages[0]?.missingIds ?? []);
   const items = [
@@ -98,7 +105,13 @@ export function LibraryFilterOptionsField({
   const optionName = (item: LibraryFilterOption) =>
     `${item.name}${item.enabled === false ? '（已停用）' : ''}`;
   const names = selectedIds.map((id) =>
-    optionName(items.find((item) => item.id === id)!),
+    optionName(
+      (query.isPlaceholderData
+        ? knownPages
+            .flatMap((page) => [...page.selected, ...page.items])
+            .find((item) => item.id === id)
+        : undefined) ?? items.find((item) => item.id === id)!,
+    ),
   );
   return (
     <Autocomplete<LibraryFilterOption, 'single' | 'multiple'>
@@ -157,10 +170,10 @@ export function LibraryFilterOptionsField({
             </SearchField.Group>
           </SearchField>
           <ListBox
-            items={items}
+            items={pending ? [] : items}
             className="max-h-48 overflow-y-auto"
             renderEmptyState={() =>
-              query.isPending
+              pending
                 ? '正在读取选项…'
                 : query.isError
                   ? '选项读取失败'
@@ -189,7 +202,7 @@ export function LibraryFilterOptionsField({
             {query.error.message}
           </p>
         ) : null}
-        {query.hasNextPage ? (
+        {!pending && query.hasNextPage ? (
           <Button
             variant="ghost"
             className="min-h-11 w-full"
@@ -200,7 +213,7 @@ export function LibraryFilterOptionsField({
           </Button>
         ) : null}
         {query.isError ||
-        (!query.isPending && !pages.some((page) => page.items.length)) ? (
+        (!pending && !pages.some((page) => page.items.length)) ? (
           <Button
             variant="ghost"
             className="min-h-11 w-full"

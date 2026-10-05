@@ -30,6 +30,8 @@ describe('browser runner argument boundaries', () => {
     ['upload'],
     ['upload', 'submissions'],
     ['upload-regression'],
+    ['upload-regression', 'main'],
+    ['m2-mobile'],
     ['upload-s3', 'cleanup'],
     ['upload-s3'],
     ['copy-dropdown'],
@@ -71,6 +73,7 @@ describe('browser runner argument boundaries', () => {
     ['sharing-protocol'],
     ['shell-navigation'],
     ['library'],
+    ['library', 'recovery'],
     ['albums'],
     ['album-cover'],
     ['tags'],
@@ -80,6 +83,83 @@ describe('browser runner argument boundaries', () => {
     const result = parse(['--suite', suite, ...(only ? ['--only', only] : [])]);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain('Invalid EGO_PAGE_LABEL');
+  });
+
+  it.each(
+    [...new Set(combinations.map(([suite]) => suite))].filter(
+      (suite) => suite !== 'upload-regression',
+    ),
+  )('rejects upload-regression main in suite %s', (suite) => {
+    const result = parse(['--suite', suite, '--only', 'main']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
+  });
+
+  it('rejects an unrelated phase in upload-regression', () => {
+    const result = parse([
+      '--suite',
+      'upload-regression',
+      '--only',
+      'relations',
+    ]);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
+  });
+
+  it.each(['before', 'after', 'representative'])(
+    'rejects a partial m2-mobile phase %s',
+    (only) => {
+      const result = parse(['--suite', 'm2-mobile', '--only', only]);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(
+        '--only requires an applicable targeted suite',
+      );
+    },
+  );
+
+  it.each(['full', 'm2-mobile'])(
+    'rejects non-primary page labels in suite %s before runtime startup',
+    (suite) => {
+      const result = spawnSync(process.execPath, [runner, '--suite', suite], {
+        env: {
+          ...process.env,
+          EGO_PAGE_LABEL: 'p2',
+          // A regular file as the parent prevents runtime/browser startup even
+          // if the page-label boundary accidentally regresses.
+          BROWSER_REPORT_DIR: join(runner, 'invalid-output'),
+        },
+        encoding: 'utf8',
+        timeout: 10000,
+      });
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(
+        `Browser suite ${suite} requires EGO_PAGE_LABEL=p1`,
+      );
+    },
+  );
+
+  it.each(
+    [...new Set(combinations.map(([suite]) => suite))].filter(
+      (suite) => !['library', 'viewer', 'processing'].includes(suite),
+    ),
+  )('rejects library recovery in suite %s', (suite) => {
+    const result = parse(['--suite', suite, '--only', 'recovery']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
+  });
+
+  it('rejects an unrelated phase in library', () => {
+    const result = parse(['--suite', 'library', '--only', 'representative']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
   });
 
   it.each([

@@ -83,25 +83,62 @@ export async function verifyLibraryTrashRace({ page, config, sql, report }) {
       await page.waitForFunction(
         () => typeof window.__trashRace.releaseOld === 'function',
       );
+      const pendingCopy = await page.evaluate(() => {
+        const copy = document.querySelector(
+          '[role="dialog"][aria-label="复制图片链接"]',
+        );
+        const triggers = [
+          ...copy.querySelectorAll('button[aria-haspopup="true"]'),
+        ];
+        return {
+          message: copy.querySelector('[role="status"]')?.textContent.trim(),
+          triggers: triggers.map((node) => {
+            const rect = node.getBoundingClientRect();
+            return {
+              label: node.getAttribute('aria-label'),
+              text: node.textContent.trim(),
+              disabled: node.disabled,
+              expanded: node.getAttribute('aria-expanded'),
+              x: rect.x + rect.width / 2,
+              y: rect.y + rect.height / 2,
+            };
+          }),
+        };
+      });
+      assert.equal(pendingCopy.message, '正在核对当前版本与访问状态…');
+      assert.equal(pendingCopy.triggers.length, 1);
+      const { x, y, ...trigger } = pendingCopy.triggers[0];
+      assert.deepEqual(
+        trigger,
+        {
+          label: '选择复制格式',
+          text: '复制链接',
+          disabled: true,
+          expanded: 'false',
+        },
+        'Pending real detail read disables the single copy-format entry',
+      );
+      await page.mouse.click(x, y);
+      await page.evaluate(
+        () =>
+          new Promise((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+          ),
+      );
       assert.equal(
         await page.evaluate(() => {
           const copy = document.querySelector(
             '[role="dialog"][aria-label="复制图片链接"]',
           );
-          const buttons = [...copy.querySelectorAll('button')].filter((node) =>
-            /^复制 (URL|Markdown|HTML)$/.test(node.textContent.trim()),
-          );
           return (
-            copy.textContent.includes('正在核对当前版本与访问状态') &&
-            buttons.length === 3 &&
-            buttons.every(
-              (node) =>
-                node.disabled || node.getAttribute('aria-disabled') === 'true',
-            )
+            copy
+              .querySelector('button[aria-label="选择复制格式"]')
+              ?.getAttribute('aria-expanded') === 'false' &&
+            !document.querySelector('[role="menu"][aria-label="复制格式"]')
           );
         }),
         true,
-        'Pending real detail read disables stale copy actions',
+        'Real pointer activation cannot open the disabled copy-format menu',
       );
       await page.click(button('关闭复制链接'));
       await page.waitForSelector('loc=role:dialog[name="复制图片链接"]', {
