@@ -4,7 +4,7 @@
 
 ## 当前结论
 
-**待新增行为验证完成。** 用户已明确批准 R1 的补充原型并要求实施，清空素材操作已写入产品；独立源码复审符合 ID／保存／资源边界，新测试已补齐非空预览身份并进入默认流程，但新增浏览器验证尚未执行，因此 R1 未关闭。未知保存时清空后的焦点候选已交验证者取得真实证据，未仅凭源码推断修改产品。R2／R4／R5／R6／R7／R8／R9 功能发现均有源码复审和真实回归。R9 的真实 RED、最小修正和严格 GREEN 已分别保留。默认 full 中 processing 的四组场景实际通过，两种视口的原有身份过期／退出场景也已通过。指定独立页 p8 的公共消费者矩阵实际通过，原 p1 的预览、输入显示及滚动位置保持。默认 full 在现有图库重处理的冷加载焦点断言失败后终止；独立源码核对发现既有缺口，未发现由本次公共组件修改引起的因果。full 内后续公共导航未执行，独立消费者通过不能将默认总流程改成通过。瞬态界面与 R9 修正后的 recovery、preview 最终受影响回归均实际通过并已独立实读。设计评审和用户人工 UI 验收继续独立维护。
+**Request changes：本轮两个独立 agent 复审发现三项 P2 必修，均尚未修复，见末尾 R10–R12。** 用户已明确批准 R1 的补充原型并要求实施，清空素材操作已写入产品；独立源码复审符合 ID／保存／资源边界，新测试已补齐非空预览身份并进入默认流程，但新增浏览器验证尚未执行，因此 R1 未关闭。未知保存时清空后的错误焦点目标现已取得离线生产回调失败证据（R11），但尚未实际浏览器复现。R2／R4／R5／R6／R7／R8／R9 功能发现均有源码复审和真实回归。R9 的真实 RED、最小修正和严格 GREEN 已分别保留。默认 full 中 processing 的四组场景实际通过，两种视口的原有身份过期／退出场景也已通过。指定独立页 p8 的公共消费者矩阵实际通过，原 p1 的预览、输入显示及滚动位置保持。默认 full 在现有图库重处理的冷加载焦点断言失败后终止；独立源码核对发现既有缺口，未发现由本次公共组件修改引起的因果。full 内后续公共导航未执行，独立消费者通过不能将默认总流程改成通过。瞬态界面与 R9 修正后的 recovery、preview 最终受影响回归均实际通过并已独立实读。设计评审和用户人工 UI 验收继续独立维护。
 
 ## 必须处理的发现
 
@@ -171,3 +171,50 @@ R9 的 hook 输入再次改变后，已独立实读 [最终 preview 报告](./br
 按用户的范围约束，本评审只报告该范围外缺口，不改图库代码，不删除／放宽焦点断言，不为绕过它追加虚假等待。默认全量结果继续为失败；处理模块已通过与 full 内后续消费者未执行分别保留。另行执行的独立 p8 公共消费者已经通过，证据见 R8；此结果不改变默认全量的实际失败状态。
 
 修复与受影响验证完成后复审；真实设计评审和用户人工 UI 验收仍分别开放，不能由本代码评审替代。
+
+## 双 agent 全 PR 复审（2026-10-05）
+
+用户明确要求分别使用 `code-review-and-quality` 和 `thermo-nuclear-code-quality-review`。本轮新建两个独立 agent，使用全新上下文，分别评审正确性与严格结构；未参与此前实现。冻结产品 head 为 `df317a0de1fc4b5ea86ec4bcb62e81ee181a39ef`，main 为 `7fed1d412c7c9ef327cc605f750f5f92f82e68a2`，真实 merge-base 为 `569e34d7d2e628bba290734fba707b4c5756a557`。二者均审查完整三点变更而非最后32行。以下更新当前结论，前面形成时的 R1–R9／未确认候选保留为历史。
+
+正确性 agent（`pr244_correctness_review`，GPT-6.1-Sol）实际读取项目依据、React skill、全 processing 产品、真实接口／服务／类型、共享身份／上传／外壳、新增单元／集成与浏览器场景、默认和定向 runner 调用链。结论 **Request changes**，发现 R10、R11；其余已审范围未发现高置信新问题。
+
+结构 agent（`pr244_structural_review`，GPT-6-Astra）实际读取严格结构 skill、React skill 和项目依据，并核对完整源码、测试、运行器、依赖类型与实现、原型及逐文件体量。结论 **Request changes**，发现 R12 和一项可选建议；未发现需要全面重构生产状态模型的理由。提交快照、未知结果、同名文件版本、取消读取暂停和资源所有权均有真实契约，不因严格评审而删除必要行为。
+
+### R10：暖缓存站内重入仍使用旧设置（P2，必修）
+
+- 位置：`src/components/processing/processing-page.tsx:41`，关联 `use-processing-settings.ts:17–18`；由本 PR 引入。
+- 触发：访问处理页后站内导航离开，另一个标签页／客户端保存新设置，再站内返回。根 QueryClient 留存旧数据，页面立即用缓存初始化编辑器。后续 GET 读取新值，但 hook 只在首次挂载读取 initial；再次保存仍发送旧的完整20字段，可能覆盖已经取得的服务器新设置。初次刷新失败也会继续显示缓存编辑器，未显示本次读取错误。
+- 离线失败：[探针源码](./review-probes/cached-settings-probe.mjs)、[实际输出](./review-probes/cached-settings-probe.txt)。安装版本的真实 TanStack QueryObserver 先提供缓存质量82，再完成新 GET 值68。当前生产 hook 转译执行后 input 仍82，实际 save 函数提交20字段／质量82；断言 `82 !== 68`，退出1。hook 的持久槽和 fetch 为隔离接口；未执行实际 React DOM、浏览器导航或真实网络。
+- 最小修复：本次入页 GET 成功后再初始化编辑器，读取失败显示错误。不要用持续同步或 updatedAt key 覆盖正在编辑的草稿／预览，也不新增并发锁协议。补服务器值变化后暖缓存站内返回的行为测试。现有 `page.goto` 会新建文档；原站内导航场景没有在离开期间改变服务器值，均不能覆盖此缺口。
+
+### R11：未知保存后清空选错焦点目标（P2，必修）
+
+- 位置：`src/components/processing/processing-page.tsx:386–389`；保存禁用条件在203行，清空禁用条件在 `watermark-fields.tsx:279`。由本 PR 的新增清空回调引入；把此前源码候选升级为已确认的回调目标缺陷。
+- 触发：真实成功保存响应丢失后 `unknown=true`，保存禁用、清空仍可用。清空令自己的按钮卸载，却无条件选择禁用保存按钮进行 focus。核对入口仍启用，新增 E2E 已明确要求它承接焦点。
+- 离线失败：[探针源码](./review-probes/clear-focus-probe.mjs)、[实际输出](./review-probes/clear-focus-probe.txt)。执行实际生产 JSX 分支与 onAssetClear，取得 saveDisabled=true、reconcileDisabled=false，但回调选择 processing-save；预期 processing-settings-reconcile 断言失败、退出1。隔离了 hook／JSX／document 接口，仅证明实际分支和回调目标，不宣称浏览器 activeElement 实测或已取得浏览器 RED。
+- 最小修复：未知保存下清空后聚焦现有可用核对入口，正常清空仍聚焦保存并 preventScroll；保留原待核对提交和当前编辑输入。保留严格回归断言，实际浏览器仍待验证。
+
+### R12：恢复测试混合三个资源生命周期（P2，必修）
+
+- 位置：`e2e/processing-recovery.mjs:811–814`，函数入口10行。本 PR 新增文件1029行，单函数1020行；生产最大文件481行，runner 923→954行，并未越千行。
+- 结构问题：设置读取拦截、预览文件／创建／取消竞态、会话与后台上传401共用一个长作用域。811行开始的会话场景直接消费前面遗留的预览视图，901行的 quality=82 也来自前面的设置前置。前组修改需要推导数百行后的场景要求，不能只把函数压到999行。
+- 最小修复：保持全部断言、默认入口和执行顺序，recovery 只编排设置读取恢复、预览生命周期恢复、会话保持恢复三个专用模块；每组建立自身前置并管理实际 CDP／文件／会话清理。取消竞态保持同组。复用现有 tools，不新增框架或 only 参数。
+- 收益：1个1020行函数／共享作用域变为约30行编排和3个局部资源作用域，最大模块约650–700行，去掉跨领域的隐式前后置依赖。这是测试结构必修，不是生产功能缺陷；总断言行数不要求大幅减少。
+
+### 可选：并行刷新独立缓存（P3）
+
+`use-processing-settings.ts:61–65` 先等待 upload-settings，再刷新 watermark-asset，两者没有数据依赖。可以沿用 `storage-editor.tsx` 的 Promise.all 模式，两段串行等待变一段，查询数和状态不变。结构 agent 实读已安装 TanStack 的 invalidateQueries/refetchQueries 实现，未把默认读取失败误判为保存未知。此建议不单独阻止合并。
+
+### 本轮实际执行及限制
+
+环境：Node24.18.1、pnpm11.19.0、macOS ARM64。探针只用隔离 fixture／接口，未触碰人工预览。
+
+- `node test-results/pr244-correctness-review/clear-focus-probe.mjs`：退出1；输出从原工具回执保留，未为制作日志重跑。
+- `node test-results/pr244-correctness-review/cached-settings-probe.mjs`：退出1；第一次已失败，第二次只修正临时诊断在保存前捕获 GET=68，仍失败。上述源码／输出副本用于保留审计证据，不作为默认业务测试。
+- 正确性 agent 对10个变更 runner/e2e 的 `node --check`：均退出0；结构 agent 对包含两份原型在内的12个变更 JS/MJS 语法检查：均退出0。
+- 结构 agent 执行 `pnpm exec vitest run --project unit tests/unit/media/processing-form.test.ts tests/unit/media/watermark-read-route.test.ts`：退出0，2文件／8项通过；不替代缺失的缓存重入／浏览器焦点行为验证。
+- `gh pr view`／`gh issue view`、三点 diff、merge-base、逐文件统计和工作区检查成功。562文件中，生产19文件 +2517/-24，测试／runner13文件 +4150/-44；523份验证证据含427图片，约42.56MB。未把证据体量误记为生产膨胀，也未要求无意义拆PR。
+
+本轮只评审并维护证据，未改产品／业务测试／人工预览进程或数据。未操作浏览器、恢复／新建空间、发布 GitHub 评审评论、合并或关闭 Issue；没有重跑构建、全量单元／集成或默认浏览器。R10–R12尚未修复，R1新行为仍未完成真实浏览器、生产设计对照和人工验收；旧默认全量失败和后续未执行项保留。两个评审结论不能替代这些完成条件，PR继续草稿。
+
+证据维护检查：新增探针副本第一次 scoped ESLint 发现一处未用绑定，以及隔离 hook 在模块顶层调用被 React 规则拒绝。副本改为从转译模块的导出对象调用并删除未用绑定，未修改 fixture、保存路径或断言；没有禁用 lint 规则。随后两个副本的 scoped ESLint 退出0，语法检查退出0。`node docs/verification/media-189/review-probes/cached-settings-probe.mjs` 再次确认相同失败（退出1、GET=68、完整PATCH=82），其实际输出已覆盖保存；原始忽略目录探针及回执保留。证据格式检查通过，`node docs/tasks/check.mjs` 通过120任务／298需求；产品／业务测试／运行器 diff 为空。

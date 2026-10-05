@@ -1,0 +1,16 @@
+Captured from existing tool receipt 387af4; command not rerun to create this log.
+Command: PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node test-results/pr244-correctness-review/clear-focus-probe.mjs
+Exit code: 1
+Node.js v24.18.1
+{
+  "probe": "actual production JSX/callback with isolated hook and document seams; no browser",
+  "unknown": true,
+  "saveDisabled": true,
+  "reconcileDisabled": false,
+  "requestedFocusSelectors": ["[data-testid=\"processing-save\"]"]
+}
+AssertionError [ERR_ASSERTION]: Unknown-save clear must target the enabled reconciliation action
+actual: ['[data-testid="processing-save"]']
+expected: ['[data-testid="processing-settings-reconcile"]']
+at clear-focus-probe.mjs:52:8
+This execution verifies the actual production callback target and JSX disabled branches with isolated seams. It does not verify native DOM focus or browser activeElement.
