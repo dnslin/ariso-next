@@ -77,4 +77,8 @@ macOS 26.6.2 / arm64，Node 24.19.0，pnpm 11.19.0，Better Auth / Drizzle adapt
 
 第二轮失败另作只读审计：身份实验与媒体测试分别使用不同临时数据库，身份实验不启动媒体队列；本次未改媒体/运行时生产实现。媒体夹具默认事务先读取设置再插入图片，而同一媒体测试生产实例的队列会取得写锁，存在竞争窗口。这是可能原因，没有锁追踪证据，不声称已确证根因。未发现本次变更导致该锁的路径；保留失败与定向复跑结果，范围外问题不修改。
 
-本地 HTTP 不等于真实 TLS 部署。Linux/AMD64/ARM64 镜像只在既有 Release 流程验证；本次没有创建 Release、发布镜像或部署。远端 PR 状态及实际检查在创建后补记；不存在的 PR Actions 不能记为 CI 通过。
+最终独立证据复审通过：两轮全量失败、各自定向通过、TaskSpace 39 交接与 incomplete 状态一致，无新增必改项。
+
+本地 HTTP 不等于真实 TLS 部署。Linux/AMD64/ARM64 镜像只在既有 Release 流程验证；本次没有创建 Release、发布镜像或部署。
+
+已提交并推送分支 `codex/issue-145-github-binding`，创建 [PR #249](https://github.com/dnslin/ariso-next/pull/249)。实际 `gh pr view 249 --json state,isDraft,headRefName,statusCheckRollup,mergeStateStatus` 返回 OPEN、isDraft=true、statusCheckRollup=[]、mergeStateStatus=CLEAN；`gh pr checks 249` 返回 no checks reported。这是没有远端检查，不是 CI 通过。未合并、关闭 Issue 或清理分支/worktree。GitHub 登录补验仍待用户处理，PR 保持草稿。
