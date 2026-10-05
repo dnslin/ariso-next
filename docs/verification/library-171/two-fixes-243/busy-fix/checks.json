@@ -57,7 +57,7 @@
   "defaultEntry": "package.json test:unit → vitest unit project → tests/unit/**/*.test.ts → detail-help.test.ts，两态回归保留在默认单元入口。浏览器原aria-busy断言未删改。",
   "notRepeated": "没有重新安装依赖、运行全量单元/集成或浏览器、接管Ego、读取Figma或重复设计/人工验收。锁文件、后端、视觉、交互及公共外壳未变。",
   "limits": "SSR检查证明真实HeroUI输出的标记、按钮与文案；不冒称客户端pending切换、Escape或完整恢复浏览器流程已重测。原预览继续运行，仍为先前已验收构建。",
-  "evidenceExport": "仅清除报告行尾空白以符合git diff检查；原始输出保留在忽略目录test-results/two-fixes/busy-fix。",
+  "evidenceExport": "仅清除报告行尾空白及末尾多余空行以符合git diff检查；首次暂存检查因两份Vitest输出末尾空行失败，修正报告导出，不更改测试或诊断。原始输出保留在忽略目录test-results/two-fixes/busy-fix。",
   "review": {
     "result": "passed; no Critical or Required",
     "evidence": "code-audit.txt",
