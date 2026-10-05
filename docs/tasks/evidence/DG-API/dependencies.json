@@ -1,0 +1,53 @@
+{
+  "readDate": "2026-10-05",
+  "source": "gh api repos/dnslin/ariso-next/issues/{number}/dependencies/{blocked_by|blocking}",
+  "issue130": {
+    "blockedBy": [],
+    "blocking": [166, 199]
+  },
+  "consumers": [
+    {
+      "number": 166,
+      "task": "T-ID-08",
+      "blockedBy": [
+        {
+          "number": 165,
+          "state": "open"
+        },
+        {
+          "number": 57,
+          "state": "closed",
+          "state_reason": "completed"
+        },
+        {
+          "number": 144,
+          "state": "closed",
+          "state_reason": "completed"
+        },
+        {
+          "number": 130,
+          "state": "open"
+        }
+      ]
+    },
+    {
+      "number": 199,
+      "task": "T-UP-06",
+      "blockedBy": [
+        {
+          "number": 167,
+          "state": "open"
+        },
+        {
+          "number": 57,
+          "state": "closed",
+          "state_reason": "completed"
+        },
+        {
+          "number": 130,
+          "state": "open"
+        }
+      ]
+    }
+  ]
+}
