@@ -1,5 +1,7 @@
 # Issue #192 / T-SHR-03 实施与验证
 
+[草稿PR #251](https://github.com/dnslin/ariso-next/pull/251)，分支 `codex/issue-192-sharing`；产品实现提交 `0e1d4ab6`。GitHub实际回读为OPEN、draft、可合并，statusCheckRollup为空；没有远端检查，不记作CI通过。Issue #192仍OPEN，未合并或关闭。
+
 本记录维护本次匿名分享密码页、公开列表及状态检查的实际交付证据；设计规则沿用 [handoff](../../design/handoff.md)，执行及完成条件沿用 [execution](../../tasks/execution.md)。产品需求归 [SPEC-sharing](../../specs/SPEC-sharing.md)，不改写冻结 PRD。
 
 ## 范围与前置
@@ -61,8 +63,8 @@ DOM断言核对实际 `main` 及全部名称属性；锁定HTML/RSC响应仍核�
 | 静态检查           | `pnpm run lint`                                                                                     | 全量通过；后续实际 `pnpm exec eslint e2e/sharing-public.mjs --max-warnings=0` 及 `pnpm exec eslint src/components/sharing/gate.tsx e2e/sharing-public.mjs --max-warnings=0` 均通过（exit0） |
 | 构建               | `pnpm run build`                                                                                    | 最新故障按钮满宽修正后通过；普通本地构建，未创建Release                                                                                                                                     |
 | 独立UI夹具         | `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`run build`、`run typecheck`           | 均通过；默认入口首次因夹具缺依赖停止，冻结补齐，锁文件未变                                                                                                                                  |
-| 格式               | `pnpm run format:check`                                                                             | 全量通过；后续修改的浏览器场景及证据只重查对应文件                                                                                                                                          |
-| 任务定义           | `node docs/tasks/check.mjs`                                                                         | 120任务、298需求通过，无缺失编号或依赖环                                                                                                                                                    |
+| 格式               | `pnpm run format:check`                                                                             | 全量通过；后续65个受影响源码/文档/JSON已格式写入并检查通过，最终3个证据/任务文档另检查通过                                                                                                  |
+| 任务定义           | `node docs/tasks/check.mjs`                                                                         | 最终再次通过：120任务、298需求，无缺失编号或依赖环；暂存内容 diff --check 通过，独立预览凭证扫描无泄漏                                                                                      |
 | 浏览器             | `pnpm run test:browser`，夹具补齐后 `node scripts/verify-browser.mjs`                               | 默认全量已完成且失败，复用Space37；未筛选suite/only。40个阶段通过、11个阶段失败；本卡初次观察问题修正后，各功能段定向验证完成，10个范围外失败保留                                           |
 
 最后受影响运行器定向检查实际执行 `pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-plan.test.ts -t 'recovery|owning scene fields'`：37项通过，140项未选中，不记为重跑全量。此前同入口135项中134通过、1项旧分类失败；新增合法恢复模式的case仍保留并改为正确接受边界，协议suite继续拒绝所有分享phase。最新定向ESLint、本地build与完整typecheck均exit0，原全量结果分别保留。
