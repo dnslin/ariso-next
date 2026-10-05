@@ -4,15 +4,15 @@
 
 ## 交付状态
 
-| 阶段         | 实际状态                                                                                                   |
-| ------------ | ---------------------------------------------------------------------------------------------------------- |
-| 代码         | 真实账号页、邮箱/密码管理接口及图标弹窗已实现                                                              |
-| 本地检查     | 安装、格式/静态/类型、构建、单元和账号定向集成已执行；全量集成仍有失败，详见下方                           |
-| 浏览器       | 账号桌面/手机定向通过；公共消费者定向通过；默认全量首次中途失败，未记为全量通过                            |
-| 设计         | 用户已批准图标原型；Figma 两端两主题 56 个状态已同步，独立设计对照完成已取证状态，手机会话失效截图缺口保留 |
-| 独立代码审计 | 完整产品、验证入口及末轮修正复审通过，未发现未处理必修问题，见[代码审计](code-review.md)                   |
-| 人工验收     | 尚未执行；独立真实预览保持可用                                                                             |
-| Git / PR     | 隔离分支 `codex/issue-165-account`；待本轮证据收齐后提交、推送并创建草稿 PR                                |
+| 阶段         | 实际状态                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| 代码         | 真实账号页、邮箱/密码管理接口及图标弹窗已实现                                                                             |
+| 本地检查     | 安装、格式/静态/类型、构建、单元和账号定向集成已执行；全量集成仍有失败，详见下方                                          |
+| 浏览器       | 账号桌面/手机定向通过；公共消费者定向通过；默认全量首次中途失败，未记为全量通过                                           |
+| 设计         | 用户已批准图标原型；Figma 两端两主题 56 个状态已同步，独立设计对照完成已取证状态，手机会话失效截图缺口保留                |
+| 独立代码审计 | 完整产品、验证入口及末轮修正复审通过，未发现未处理必修问题，见[代码审计](code-review.md)                                  |
+| 人工验收     | 尚未执行；独立真实预览保持可用                                                                                            |
+| Git / PR     | 分支 `codex/issue-165-account` 已提交并推送；[PR #248](https://github.com/dnslin/ariso-next/pull/248) OPEN / 草稿，未合并 |
 
 已用 `gh issue view` 与 `gh api` 读取 Issue、评论和原生 `blocked_by` / `blocking`。前置 #60、#57、#127 均 CLOSED；后续 #166、#181 均 OPEN。本 Issue 未提前开放后续能力，也未关闭 Issue 或勾选任务完成。
 
@@ -62,7 +62,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`；主页面[桌面 34:462](https://www.fig
 | `pnpm install --frozen-lockfile`                                                                                                  | 退出 0，[安装](checks/install.txt)                                                                                                                          |
 | `pnpm --dir tests/experiments/ui install --frozen-lockfile`、`pnpm --dir tests/experiments/ui run typecheck`                      | 退出 0；全量浏览器入口也实际构建该夹具，[类型](checks/ui-typecheck.txt)                                                                                     |
 | `pnpm run lint`                                                                                                                   | 退出 0，[全量静态](checks/lint.txt)；后续布局/背景/焦点改动的定向 ESLint 退出 0，[末轮静态](checks/ui-design-final-lint.txt)                                |
-| `pnpm run typecheck`                                                                                                              | 退出 0；最终产品输入复查退出 0，[末轮类型](checks/ui-delivery-typecheck.txt)                                                                                |
+| `pnpm run typecheck`                                                                                                              | 退出 0；焦点/背景版本独立复查退出 0，[末轮类型](checks/ui-delivery-typecheck.txt)                                                                           |
 | `pnpm run test:unit`                                                                                                              | 98 文件、1284/1284，[全量单元](checks/unit.txt)；后续 helper/账号回跳改动定向 32/32，[追加单元](checks/ui-unit.txt)，未把两次数量相加冒充最终全量           |
 | `pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts`                                                   | 新入口先有 4 项失败，修正后 61/61；各次脚本语法/静态/格式检查退出 0，[验证入口](checks/browser-runner.txt)                                                  |
 | `pnpm run build`                                                                                                                  | 初次新增类型错误退出 1，[失败](checks/backend-build.txt)；修正后通过，最终焦点/背景/Spinner 输入的构建退出 0，[最终构建](checks/ui-build-spinner-final.txt) |
@@ -73,7 +73,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`；主页面[桌面 34:462](https://www.fig
 | `EGO_TASK_SPACE=31 node scripts/verify-browser.mjs --suite processing --only consumers`                                           | 退出 0；[命令](checks/browser-consumers.txt)、[公共导航](browser/shell-navigation.json)、[处理消费者](browser/processing-consumers.json)                    |
 | `EGO_TASK_SPACE=31 BROWSER_REPORT_DIR=test-results/browser-account-spinner-final node scripts/verify-browser.mjs --suite account` | **退出 0**，1440/390 两端业务完整通过，[最终命令](checks/browser-account-spinner-final.txt)、[真实报告](browser/account-spinner-final.json)                 |
 
-最终文档检查 `node docs/tasks/check.mjs` 使用 Node 24 退出 0：120 个任务、298 个需求，无缺失 ID 或循环，见[输出](checks/docs-delivery.txt)。最终全量 `pnpm run format:check` 使用 Node 24 退出 0，见[输出](checks/format-delivery.txt)。首次格式警告及修正过程保留在 [format.txt](checks/format.txt) / [format-fixed.txt](checks/format-fixed.txt)；helper 异常响应曾有 2 项失败，修正后通过，见 [RED](checks/account-request-red.txt) / [GREEN](checks/account-request-green.txt)。日志仅遮罩临时初始化秘密、规范化终端进度行尾空白与末尾空行；命令结果、失败和诊断均保留。
+最终文档检查 `node docs/tasks/check.mjs` 使用 Node 24 退出 0：120 个任务、298 个需求，无缺失 ID 或循环，见[输出](checks/docs-pr-delivery.txt)。最终全量 `pnpm run format:check` 使用 Node 24 退出 0，见[输出](checks/format-delivery.txt)。首次格式警告及修正过程保留在 [format.txt](checks/format.txt) / [format-fixed.txt](checks/format-fixed.txt)；helper 异常响应曾有 2 项失败，修正后通过，见 [RED](checks/account-request-red.txt) / [GREEN](checks/account-request-green.txt)。日志仅遮罩临时初始化秘密、规范化终端进度行尾空白与末尾空行；命令结果、失败和诊断均保留。
 
 构建有其他平台可选原生包与可选 OpenTelemetry 的依赖追踪警告，实际退出 0。全量集成失败场景涉及 analytics、prestart、secret-preflight、watermark 的超时和 trash-http 夹具 SQLite 锁冲突。本次没有修改对应测试或业务；静态未改不等于已通过基线运行排除回归，不将部分复查通过替代全量通过。
 
@@ -89,7 +89,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`；主页面[桌面 34:462](https://www.fig
 
 此前定向失败保留原输出：[取消定位](checks/browser-full.txt)、[旧通知同标题定位](checks/browser-account.txt)、[真实登录 429](checks/browser-account-final.txt)、[上次通知堆叠影响点击目标测量](checks/browser-account-complete.txt)。修正仅限测试准确定位、识别本次新通知 ID、按真实库限流响应有界等待，以及下一操作开始前用真实键盘关闭已验证的旧通知。未跳过场景、弱化 44px 或业务断言，也未关闭产品限流。
 
-末轮设计对照发现 busy Spinner 默认 accent 与黄色按钮同色。实际读取 HeroUI 类型和 CSS 后，两处 Spinner 使用已有 `color="current"` 属性。[修正前真实图](browser/spinner-before-password-390-light.png)保留失败证据，最后报告的 12 个真实忙碌状态记录覆盖邮箱提交/核对、密码提交 × 两端 × 两主题，Spinner 与按钮前景色相同且异于背景；禁用断言保持。修正后的定向 ESLint 和生产构建退出 0，Figma 同步使用实际 HeroUI SSR SVG，未手绘替代。
+末轮设计对照发现 busy Spinner 默认 accent 与黄色按钮同色。实际读取 HeroUI 类型和 CSS 后，两处 Spinner 使用已有 `color="current"` 属性。[修正前真实图](browser/spinner-before-password-390-light.png)保留失败证据，最后报告的 12 个真实忙碌状态记录覆盖邮箱提交/核对、密码提交 × 两端 × 两主题，Spinner 与按钮前景色相同且异于背景；禁用断言保持。修正后的定向 ESLint 和生产构建（含 TypeScript 检查）退出 0，Figma 同步使用实际 HeroUI SSR SVG，未手绘替代。
 
 ## 剩余限制与人工验收
 
@@ -98,5 +98,11 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`；主页面[桌面 34:462](https://www.fig
 - 既有图片处理页会话失效后的 `returnTo=/settings/processing` 不被既有登录目的页允许，因此会回 `/admin`。范围外问题已报告，未修改；本次账号回跳已有实际验证。
 - 手机会话失效没有单独真实截图；独立设计评审不以桌面失效图替代该手机状态。已完成手机读取失败与其它业务状态，不据此声称此项通过。
 - 人工验收尚未完成。真实[账号预览](http://127.0.0.1:3166/settings/account)已更新到最终构建，实际 HTTP 健康检查 200、独立凭证的真实浏览器登录通过。Ego 本轮只完成一次 `finish({keep:['p2']})`，保留人工预览页，服务与原型继续运行；独立账号凭证仅私下交付用户。请检查账号区及两种弹窗的图标、显示密码、字段错误、保存后的原页通知，以及手机/深色呈现。对应设计与未知结果真实证据见上方链接。
+
+已提交并推送实现 `fd98c371`，创建关联 Issue #165 的[草稿 PR #248](https://github.com/dnslin/ariso-next/pull/248)，并附着到本任务。创建时用 `gh pr view` 实际回读：OPEN、`isDraft=true`、`mergeable=MERGEABLE`、base 为 `main@8c9fd49d`；该远端并发变化仅是已有设计文档，未在本 PR 中删除或覆盖。状态快照见 [github-pr.json](github-pr.json)，记录的是实现首次推送与 PR 创建时的 head，后续交付文档提交不冒充该快照时间。
+
+`gh pr checks 248 --repo dnslin/ariso-next` 退出 1，输出明确是“no checks reported”，`statusCheckRollup=[]`，见[输出](checks/github-pr-checks.txt)。当前工作流只在 Release 流程运行，未将无远端检查记为 CI 通过，也未等待不存在的检查。
+
+PR 交付状态补记后的定向格式检查退出 0，见[输出](checks/github-delivery-format.txt)；任务文档检查仍为 120 个任务、298 个需求通过，见[输出](checks/docs-pr-delivery.txt)。这次只更新交付证据，没有重跑输入未变的应用检查。
 
 PR 在人工验收与上述检查限制未解除前保持草稿。未经另行授权，不合并、关闭 Issue、发布、部署或清理分支/worktree/预览。
