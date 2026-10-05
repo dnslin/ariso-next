@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="16.266002709">
+    <testsuite name="tests/integration/media/reprocess-http.test.ts" timestamp="2026-10-05T18:55:52.525Z" hostname="dnslins-Mac-mini.local" tests="8" failures="0" errors="0" skipped="0" time="16.266002709">
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="requires the owner Cookie and saved Origin and creates no job for denied requests" time="1.8354325">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="rejects malformed JSON, unsupported scopes and client processing parameters" time="1.563807">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="reports lifecycle, switch, failed-scope and queued-job conflicts" time="1.611120709">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="keeps old HTTP links readable throughout ready processing and publishes all selected references together" time="2.096237458">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="preserves old HTTP bytes when atomic publication fails and records the readable failure" time="1.971448375">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="returns a logged persistence failure without mutating existing content or jobs" time="1.935114416">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="rejects final HTTP-worker publication after disabled occurs with all candidates saved" time="2.650975541">
+        </testcase>
+        <testcase classname="tests/integration/media/reprocess-http.test.ts" name="rejects final HTTP-worker publication after deleting occurs with all candidates saved" time="2.600918083">
+        </testcase>
+    </testsuite>
+</testsuites>

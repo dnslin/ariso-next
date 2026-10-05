@@ -1,0 +1,131 @@
+{
+  "status": "incomplete",
+  "startedAt": "2026-10-05T18:35:26.837Z",
+  "taskSpaceId": 38,
+  "app": "Ariso EV-IDENTITY-03 20261006",
+  "callbacks": [
+    "http://127.0.0.1:3145/api/auth/callback/github",
+    "http://localhost:3145/api/auth/callback/github"
+  ],
+  "checks": [
+    {
+      "name": "anonymous-link",
+      "status": 401
+    },
+    {
+      "name": "local-registration-disabled",
+      "status": 400
+    },
+    {
+      "name": "missing-state-cookie",
+      "error": "state_mismatch"
+    },
+    {
+      "name": "missing-state",
+      "error": "state_not_found"
+    },
+    {
+      "name": "real-unbound-same-email",
+      "error": "account_not_linked",
+      "users": 1,
+      "githubAccounts": 0
+    },
+    {
+      "name": "real-explicit-registration-different-email",
+      "error": "signup_disabled"
+    },
+    {
+      "name": "real-active-binding-different-email",
+      "localEmailPreserved": true,
+      "originRefresh": "A-B-A",
+      "savedSecret": "invalid-new",
+      "effectiveSecret": "original",
+      "foreignCookieRejected": true,
+      "replayRejected": true
+    },
+    {
+      "name": "real-provider-create-persistence",
+      "githubAccountId": "204472150",
+      "credentialUnchanged": true,
+      "accessToken": null,
+      "refreshToken": null,
+      "idToken": null,
+      "accessTokenExpiresAt": null,
+      "refreshTokenExpiresAt": null
+    },
+    {
+      "name": "real-bound-login-different-email",
+      "localOwnerRetained": true
+    },
+    {
+      "name": "real-secret-applied-after-restart",
+      "intentionallyInvalidSavedSecret": true,
+      "error": "invalid_code",
+      "sessionCreated": false,
+      "previousServerSIGTERMExit": 0,
+      "portReused": true
+    },
+    {
+      "name": "real-disabled-saved-but-not-effective",
+      "savedEnabled": false,
+      "effectiveEnabled": true,
+      "immediateOrigin": "http://localhost:3145",
+      "validSecretRestored": true,
+      "previousServerSIGINTExit": 0,
+      "portReused": true
+    },
+    {
+      "name": "real-disabled-after-restart",
+      "loginStatus": 404,
+      "linkStatus": 404,
+      "credentialLoginStatus": 200
+    },
+    {
+      "name": "real-provider-update-and-disable-persistence",
+      "githubAccountId": "204472150",
+      "credentialUnchanged": true,
+      "providerTokensAbsent": true,
+      "bindingRetainedWhileDisabled": true
+    },
+    {
+      "name": "real-reenable-and-unlink",
+      "reenabledBindingWorks": true,
+      "unlinkStatus": 200,
+      "credentialLoginStatus": 200,
+      "clientCredentialIdIgnored": true,
+      "unlinkedGithubLoginError": "signup_disabled"
+    },
+    {
+      "name": "real-active-binding-same-email",
+      "explicitUnboundSignupError": "account_not_linked",
+      "localEmailPreserved": true,
+      "bindingPersisted": true,
+      "responseEvidence": "serial browser assertions completed before the final follow-up login timed out",
+      "persistenceEvidence": "SQLite inspection confirmed the bound stable GitHub id and unchanged owner/credential after the timeout"
+    },
+    {
+      "name": "real-final-invariants",
+      "users": 1,
+      "githubAccounts": 1,
+      "credentialUnchanged": true,
+      "stableGithubAccountId": true,
+      "providerTokensAbsent": true
+    },
+    {
+      "name": "same-email-bound-login-followup",
+      "status": "unverified",
+      "reason": "TaskSpace 38 timed out and was closed prematurely; user authorized TaskSpace 39, which is now handed off because GitHub requires reauthorization and the Authorize button is disabled",
+      "followup": {
+        "taskSpaceId": 39,
+        "userAuthorizedNewSpace": true,
+        "sameEmailConfirmed": true,
+        "githubAccounts": 1,
+        "reauthorizationRequired": true,
+        "authorizeButtonDisabled": true,
+        "sessionNotVerified": true,
+        "handedOff": true
+      }
+    }
+  ],
+  "followupTaskSpaceId": 39
+}

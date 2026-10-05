@@ -47,6 +47,8 @@
 
 ### EV-IDENTITY-03 GitHub 主动绑定验证
 
+独立实验、真实 GitHub 回调及未完成检查见[实验报告](./evidence/EV-IDENTITY-03/README.md)。当前浏览器补验尚未完成，不以替身测试解锁业务任务。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[identity §7/13](../specs/SPEC-identity.md)

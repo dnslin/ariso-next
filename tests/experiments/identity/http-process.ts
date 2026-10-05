@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { stop, unusedPort } from '../../integration/runtime/process-helpers.ts';
 
@@ -8,6 +9,7 @@ export async function launchIdentity(
   config: string,
   secret: string,
   port?: number,
+  githubConfig?: string,
 ) {
   port ??= await unusedPort();
   const child = spawn(
@@ -28,6 +30,10 @@ export async function launchIdentity(
         NODE_ENV: 'development',
         IDENTITY_DATABASE: database,
         IDENTITY_CONFIG: config,
+        // Capture before spawning Next; saving the file cannot affect this process.
+        IDENTITY_GITHUB_SETTINGS: githubConfig
+          ? readFileSync(githubConfig, 'utf8')
+          : undefined,
         BETTER_AUTH_SECRET: secret,
         NEXT_TELEMETRY_DISABLED: '1',
       },

@@ -341,3 +341,117 @@ it('new process and Secret reject old signed Cookie without deleting users/crede
     ).user.email,
   ).toBe(email);
 }, 60000);
+
+it('GitHub credentials and enablement change only on restart while origin refreshes immediately over real Next HTTP', async () => {
+  await server.stop();
+  const githubConfig = join(directory, 'github.json');
+  const save = (enabled: boolean, clientId = 'client-before') =>
+    writeFileSync(
+      githubConfig,
+      JSON.stringify({ enabled, clientId, clientSecret: 'fixture-secret' }),
+    );
+  const restart = async () => {
+    server = await launchIdentity(
+      join(directory, 'auth.db'),
+      config,
+      secret,
+      server.port,
+      githubConfig,
+    );
+    await ready();
+  };
+  save(true);
+  await restart();
+  const a = `http://127.0.0.1:${server.port}`;
+  const b = `http://localhost:${server.port}`;
+  setOrigin(a);
+  const cookie = cookies(await signIn());
+  expect((await post('/probe/github', {})).status).toBe(401);
+  expect(
+    (
+      await post(
+        '/probe/github',
+        {},
+        { cookie, origin: 'https://foreign.example' },
+      )
+    ).status,
+  ).toBe(403);
+  expect(
+    (
+      await post(
+        '/api/auth/unlink-account',
+        { accountId: 'credential' },
+        { cookie },
+      )
+    ).status,
+  ).toBe(404);
+  expect((await request('/api/auth/get-access-token')).status).toBe(404);
+  const active = await post('/probe/github', {}, { cookie });
+  expect(active.status, await active.clone().text()).toBe(200);
+  const stateCookie = cookies(active);
+  const activeURL = new URL((await active.json()).url);
+  expect(activeURL.searchParams.get('client_id')).toBe('client-before');
+  save(true, 'client-after');
+  for (const current of [b, a]) {
+    setOrigin(current);
+    const login = await post('/api/auth/sign-in/social', {
+      provider: 'github',
+      callbackURL: `${current}/`,
+      disableRedirect: true,
+    });
+    expect(login.status).toBe(200);
+    const url = new URL((await login.json()).url);
+    expect(url.searchParams.get('redirect_uri')).toBe(
+      `${current}/api/auth/callback/github`,
+    );
+    expect(url.searchParams.get('client_id')).toBe('client-before');
+  }
+  const denied = await request(
+    `/api/auth/callback/github?state=${activeURL.searchParams.get('state')}&error=access_denied`,
+    { headers: { cookie: stateCookie } },
+  );
+  expect(denied.headers.get('location')).toContain('error=access_denied');
+  await server.stop();
+  await restart();
+  const changed = await post('/api/auth/sign-in/social', {
+    provider: 'github',
+    callbackURL: `${a}/`,
+    disableRedirect: true,
+  });
+  expect(
+    new URL((await changed.json()).url).searchParams.get('client_id'),
+  ).toBe('client-after');
+  save(false);
+  setOrigin(b);
+  expect(
+    (
+      await post('/api/auth/sign-in/social', {
+        provider: 'github',
+        callbackURL: `${b}/`,
+        disableRedirect: true,
+      })
+    ).status,
+  ).toBe(200);
+  await server.stop();
+  await restart();
+  const disabled = await post('/api/auth/sign-in/social', {
+    provider: 'github',
+    callbackURL: `${b}/`,
+    disableRedirect: true,
+  });
+  expect(disabled.status).toBe(404);
+  expect(await disabled.json()).toMatchObject({ code: 'PROVIDER_NOT_FOUND' });
+  expect((await signIn()).status).toBe(200);
+  save(true, 'client-after');
+  await server.stop();
+  await restart();
+  expect(
+    (
+      await post('/api/auth/sign-in/social', {
+        provider: 'github',
+        callbackURL: `${b}/`,
+        disableRedirect: true,
+      })
+    ).status,
+  ).toBe(200);
+}, 120000);
