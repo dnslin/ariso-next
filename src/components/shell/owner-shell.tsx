@@ -44,10 +44,9 @@ const navigation = [
     icon: <HardDrive />,
   },
   {
-    href: '/settings',
+    href: '/settings/processing',
     label: '站点设置',
     icon: <SlidersHorizontal />,
-    unavailable: true,
   },
 ];
 
@@ -60,6 +59,7 @@ export function OwnerShell({
   footer,
   returnTo,
   initialSidebarCollapsed,
+  onSessionExpire,
 }: {
   name: string;
   description: string;
@@ -69,9 +69,10 @@ export function OwnerShell({
   footer?: ReactNode;
   returnTo?: string;
   initialSidebarCollapsed?: boolean;
+  onSessionExpire?: () => void;
 }) {
   const pathname = usePathname();
-  const session = useOwnerSession(returnTo ?? pathname);
+  const session = useOwnerSession(returnTo ?? pathname, onSessionExpire);
   return (
     <AdminShell
       name={name}

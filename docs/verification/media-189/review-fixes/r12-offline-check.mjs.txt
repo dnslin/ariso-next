@@ -1,0 +1,130 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { readFile, writeFile } from 'node:fs/promises';
+import ts from 'typescript';
+
+const original = execFileSync(
+  'git',
+  ['show', '104e504:e2e/processing-recovery.mjs'],
+  { encoding: 'utf8' },
+);
+const files = [
+  'e2e/processing-recovery.mjs',
+  'e2e/processing-settings-recovery.mjs',
+  'e2e/processing-preview-recovery.mjs',
+  'e2e/processing-session-recovery.mjs',
+];
+const sources = await Promise.all(files.map((file) => readFile(file, 'utf8')));
+const parse = (name, source) =>
+  ts.createSourceFile(name, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
+const before = parse('before.mjs', original);
+const after = sources.map((source, index) => parse(files[index], source));
+const printer = ts.createPrinter({ removeComments: true });
+const normalize = (node, source) =>
+  printer.printNode(ts.EmitHint.Unspecified, node, source);
+const body = (source) =>
+  source.statements.find(ts.isFunctionDeclaration).body.statements;
+const oldBody = body(before);
+const oldText = oldBody.map((node) => node.getText(before));
+const baseline = oldText.findIndex((text) =>
+  text.startsWith("await request('/api/settings/media', 'PATCH'"),
+);
+const previewStart = oldText.findIndex((text) =>
+  text === "await page.click(testId('preview-open'));",
+);
+const sessionReturn = oldText.findIndex((text, index) =>
+  index > previewStart &&
+  text === "await page.click(testId('preview-return'));" &&
+  oldText[index + 1] === "await fill('quality', 66);",
+);
+assert.ok(baseline > 1 && previewStart > baseline && sessionReturn > previewStart);
+const segments = [
+  oldBody.slice(baseline, previewStart),
+  [oldBody[1], ...oldBody.slice(previewStart, sessionReturn)],
+  oldBody.slice(sessionReturn + 1),
+];
+const actual = [
+  body(after[1]).slice(1),
+  [body(after[2])[1], ...body(after[2]).slice(4)],
+  body(after[3]).slice(4),
+];
+const names = ['settings', 'preview', 'session'];
+const walk = (nodes, source, predicate) => {
+  const matches = [];
+  const visit = (node) => {
+    if (predicate(node)) matches.push(normalize(node, source));
+    ts.forEachChild(node, visit);
+  };
+  for (const node of nodes) visit(node);
+  return matches;
+};
+const counts = [];
+for (let index = 0; index < names.length; index++) {
+  assert.deepEqual(
+    actual[index].map((node) => normalize(node, after[index + 1])),
+    segments[index].map((node) => normalize(node, before)),
+    `${names[index]} preserves every original scenario statement in order`,
+  );
+  const assertions = (node) =>
+    ts.isCallExpression(node) &&
+    ts.isPropertyAccessExpression(node.expression) &&
+    node.expression.expression.getText() === 'assert';
+  const finalizers = (node) => ts.isTryStatement(node) && node.finallyBlock;
+  const reportWrites = (node) =>
+    (ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      node.left.getText().startsWith('report.')) ||
+    (ts.isCallExpression(node) &&
+      (node.expression.getText().startsWith('report.') ||
+        (node.expression.getText() === 'Object.assign' &&
+          node.arguments[0]?.getText().startsWith('report.'))));
+  const assertionsBefore = walk(segments[index], before, assertions);
+  const finalizersBefore = walk(segments[index], before, finalizers);
+  const reportBefore = walk(segments[index], before, reportWrites);
+  assert.deepEqual(walk(actual[index], after[index + 1], assertions), assertionsBefore);
+  assert.deepEqual(walk(actual[index], after[index + 1], finalizers), finalizersBefore);
+  assert.deepEqual(walk(actual[index], after[index + 1], reportWrites), reportBefore);
+  counts.push({
+    group: names[index],
+    originalScenarioStatements: segments[index].length,
+    originalAssertions: assertionsBefore.length,
+    originalFinallyBlocks: finalizersBefore.length,
+    originalReportWrites: reportBefore.length,
+  });
+}
+assert.equal(normalize(body(after[2])[2], after[2]), normalize(oldBody[baseline], before));
+assert.equal(body(after[2])[3].getText(after[2]), 'await open();');
+assert.equal(body(after[3])[1].getText(after[3]), "await request('/api/settings/media', 'PATCH', { quality: 82 });");
+assert.equal(body(after[3])[2].getText(after[3]), 'await open();');
+assert.equal(body(after[3])[3].getText(after[3]), "await page.cdp('Network.enable');");
+assert.deepEqual(
+  body(after[0]).map((node) => node.getText(after[0])),
+  [
+    'await verifyProcessingSettingsRecovery(page, config, tools, report);',
+    'await verifyProcessingPreviewRecovery(page, config, tools, report);',
+    'await verifyProcessingSessionRecovery(page, config, tools, report);',
+  ],
+);
+const runner = await readFile('scripts/verify-browser.mjs', 'utf8');
+const processing = await readFile('e2e/processing.mjs', 'utf8');
+assert.equal(runner, execFileSync('git', ['show', '104e504:scripts/verify-browser.mjs'], { encoding: 'utf8' }));
+assert.equal(processing, execFileSync('git', ['show', '104e504:e2e/processing.mjs'], { encoding: 'utf8' }));
+const imports = after[0].statements.filter(ts.isImportDeclaration);
+assert.deepEqual(
+  imports.map((node) => node.moduleSpecifier.text),
+  files.slice(1).map((file) => `./${file.split('/').at(-1)}`),
+);
+const result = {
+  status: 'passed',
+  baseline: '104e504',
+  files: files.map((file, index) => ({ file, lines: sources[index].trimEnd().split('\n').length })),
+  counts,
+  defaultEntryUnchanged: true,
+  sequentialSettingsPreviewSession: true,
+  previewOwnSavedSettingsAndRoute: true,
+  sessionOwnQualityRouteAndNetworkEvents: true,
+  browserExecuted: false,
+  limitation: 'This checks source equivalence, retained assertions, report mutations, nested finalizers, and the existing default call path. It does not execute browser interactions, real CDP, or HTTP requests.',
+};
+await writeFile('test-results/issue-189-review-fixes/r12-offline-check.json', `${JSON.stringify(result, null, 2)}\n`);
+console.log(JSON.stringify(result, null, 2));

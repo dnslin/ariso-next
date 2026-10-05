@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ariso #189 · 处理设置设计补齐</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f4f4f7;
+      color: #272343;
+      font:
+        14px/1.5 system-ui,
+        'PingFang SC',
+        sans-serif;
+    }
+    header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #dedee5;
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 6px;
+    }
+    p {
+      margin: 6px 0 12px;
+    }
+    .tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    button,
+    select {
+      font: inherit;
+      color: inherit;
+      border: 1px solid #d3d4dd;
+      background: white;
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 8px 12px;
+    }
+    button[aria-pressed='true'] {
+      background: #ffd807;
+      border-color: #ffd807;
+    }
+    label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .stage {
+      padding: 24px 12px;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+    }
+    .viewport {
+      flex: none;
+      width: 390px;
+      height: 844px;
+      border: 1px solid #d9d9e3;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+    .viewport.desktop {
+      width: 1440px;
+      height: 1080px;
+    }
+    .viewport.short {
+      height: 500px;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .caption {
+      padding: 0 24px 24px;
+      max-width: 1000px;
+      margin: auto;
+    }
+  </style>
+  <header>
+    <h1>Ariso #189 · 设计缺口补齐提案</h1>
+    <p>
+      可点击原型。数据与反馈为演示，不连接后端、不保存设置、不执行图片处理。产品页面尚未修改。
+    </p>
+    <div class="tools">
+      <button id="phone" aria-pressed="true">手机 390</button>
+      <button id="desktop" aria-pressed="false">桌面 1440</button>
+      <button id="dark" aria-pressed="false">深色</button>
+      <button id="short" aria-pressed="false">短视口</button>
+      <label
+        >查看状态
+        <select id="scenario">
+          <option value="normal">设置 / 正常</option>
+          <option value="text">设置 / 文字水印</option>
+          <option value="asset">设置 / 图片素材未保存</option>
+          <option value="asset-saved">设置 / 已保存素材</option>
+          <option value="asset-read-error">设置 / 素材信息读取失败</option>
+          <option value="save-different">设置 / 核对发现值不同</option>
+          <option value="asset-expired">设置 / 素材过期</option>
+          <option value="read-error">设置 / 初次读取失败</option>
+          <option value="save-error">设置 / 已知保存失败</option>
+          <option value="save-unknown">设置 / 保存结果待核对</option>
+          <option value="preview">预览 / 未选测试图</option>
+          <option value="queued">预览 / 排队中</option>
+          <option value="running">预览 / 生成中</option>
+          <option value="succeeded">预览 / 成功</option>
+          <option value="stale">预览 / 参数已变更</option>
+          <option value="unavailable">预览 / 格式不适用</option>
+          <option value="original">预览 / 原图附件</option>
+          <option value="cancelled">预览 / 已取消</option>
+          <option value="expired">预览 / 已到期</option>
+          <option value="cleanup">预览 / 清理失败</option>
+          <option value="create-unknown">预览 / 创建结果待核对</option>
+          <option value="cancel-unknown">预览 / 取消结果待核对</option>
+          <option value="session">预览 / 会话失效</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <div class="stage">
+    <div id="viewport" class="viewport">
+      <iframe
+        id="surface"
+        title="Ariso 处理设置待审原型"
+        src="surface.html"
+      ></iframe>
+    </div>
+  </div>
+  <div class="caption">
+    <p>
+      补充待确认：有图片素材时，水印分组底部提供「清空素材选择」。切换模式或关闭水印仍保留选择；只有明确清空并保存后解除引用。图片模式为空仍须先选素材，文字/关闭可保存为空。
+    </p>
+    <p>
+      补齐范围：① 顶部「默认与任务」分组；②
+      真实测试图选择、四种目标和旧结果身份；③ 读取失败及响应未知时的核对；④
+      当前素材展示真实 ID、格式、尺寸和状态。
+    </p>
+    <p>
+      推荐接口：仅新增所有者素材属性读取 GET
+      /api/media/watermark-assets/{id}，不新增素材列表、读图或文件名字段。原型中的状态选择器只供审阅，产品不包含该控件。
+    </p>
+    <p>
+      保持现有分组表单、公共外壳、文字/图片水印九宫格和固定底栏。正式实现复用
+      HeroUI，提示遵循本次简洁、中性反馈要求。
+    </p>
+  </div>
+  <script>
+    const frame = document.getElementById('surface');
+    const viewport = document.getElementById('viewport');
+    let desktop = false,
+      dark = false,
+      short = false;
+    function render() {
+      viewport.className = `viewport${desktop ? ' desktop' : ''}${short ? ' short' : ''}`;
+      frame.src = `surface.html?scenario=${document.getElementById('scenario').value}&dark=${dark ? 1 : 0}`;
+      for (const [id, selected] of [
+        ['phone', !desktop],
+        ['desktop', desktop],
+        ['dark', dark],
+        ['short', short],
+      ])
+        document
+          .getElementById(id)
+          .setAttribute('aria-pressed', String(selected));
+    }
+    document.getElementById('phone').onclick = () => {
+      desktop = false;
+      render();
+    };
+    document.getElementById('desktop').onclick = () => {
+      desktop = true;
+      render();
+    };
+    document.getElementById('dark').onclick = () => {
+      dark = !dark;
+      render();
+    };
+    document.getElementById('short').onclick = () => {
+      short = !short;
+      render();
+    };
+    document.getElementById('scenario').onchange = render;
+  </script>
+</html>

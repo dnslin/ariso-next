@@ -27,7 +27,7 @@ export async function verifyOwnerShell(page, config) {
     { label: '回收站', href: '/trash' },
     { label: '访问统计', href: null },
     { label: '存储管理', href: '/settings/storage' },
-    { label: '站点设置', href: null },
+    { label: '站点设置', href: '/settings/processing' },
   ];
   const routes = ['/upload', '/library', '/trash', '/albums'];
   const button = (name) => `loc=role:button[name="${name}"]`;
@@ -431,12 +431,12 @@ export async function verifyOwnerShell(page, config) {
     await page.click(button('菜单'));
     await page.waitForSelector(navigationDialog);
     await page.hover(
-      `${navigationDialog} .shell-nav-link[aria-label="站点设置，尚未开放"]`,
+      `${navigationDialog} .shell-nav-link[aria-label="站点设置"]`,
     );
     const shortMenu = await page.evaluate((selector) => {
       const root = document.querySelector(selector);
       const last = root
-        .querySelector('.shell-nav-link[aria-label="站点设置，尚未开放"]')
+        .querySelector('.shell-nav-link[aria-label="站点设置"]')
         .getBoundingClientRect();
       const account = root
         .querySelector('button[aria-label="账号菜单"]')
@@ -456,7 +456,7 @@ export async function verifyOwnerShell(page, config) {
     assert.equal(
       shortMenu.lastVisible,
       true,
-      'Last unavailable entry remains readable',
+      'Last site-settings entry remains readable',
     );
     assert.equal(
       shortMenu.accountVisible,

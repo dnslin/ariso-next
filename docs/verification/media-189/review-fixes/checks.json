@@ -1,0 +1,45 @@
+{
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "platform": "macOS ARM64",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "output": "install.txt"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "output": "typecheck.txt"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "output": "lint.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "output": "build.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "output": "docs.txt"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "output": "format.txt"
+    }
+  ],
+  "recordSource": "Actual exec_command/write_stdin completion receipts; each command executed once for this product input.",
+  "logCopy": "Only line endings, trailing spaces and final blank lines normalized; original output remains in ignored test-results.",
+  "browserExecuted": false,
+  "limitations": [
+    "Ego remains stopped; new and affected browser behavior, production design comparison and new-operation manual acceptance remain unverified.",
+    "Unchanged backend/schema/model unit and integration results are retained from prior input; not rerun.",
+    "Release/container/multi-architecture verification was not executed."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "status": "failed",
+  "taskSpaceId": 29,
+  "origin": "http://ariso-57960.localhost:57960",
+  "phase": "all",
+  "checks": [],
+  "layouts": [],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: {\"message\":\"Too many requests. Please try again later.\"}\n\n429 !== 200\n\n    at processingTools (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-helpers.mjs:27:12)\n    at async file:////[eval2]:45:11",
+  "finishedAt": "2026-10-04T17:55:10.835Z"
+}

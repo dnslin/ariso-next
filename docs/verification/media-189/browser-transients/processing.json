@@ -1,0 +1,2191 @@
+{
+  "status": "passed",
+  "taskSpaceId": 29,
+  "origin": "http://ariso-53748.localhost:53748",
+  "phase": "recovery",
+  "checks": [
+    {
+      "check": "A fresh real initial settings GET returns 200 at the existing Fetch response boundary. Holding that response exposes the actual desktop/mobile loading skeleton; releasing it fills quality 82 without an invented loading state.",
+      "responses": [
+        {
+          "path": "/api/settings/media",
+          "requestId": "interception-job-250.0",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "check": "Blocking the real settings read exposes an initial read error; unblocking and explicit retry fills actual saved values."
+    },
+    {
+      "check": "A real 5 MiB + 1 byte file exceeds the actual independently configured 5 MiB upload limit. POST returns 413 with a real previewId; GET reads its failed/cleaned record, input stays visible, and exactly one status refresh reads the same ID without repeating POST.",
+      "previewId": "0368edec-5483-4edd-8441-30f62b12b730",
+      "byteSize": 5242881,
+      "code": "MEDIA_PREVIEW_FILE_TOO_LARGE",
+      "status": 413
+    },
+    {
+      "check": "The real accepted POST response is lost entirely: no ID is invented, no list request or automatic resubmission occurs. Escape preserves unknown state; only explicit confirmed recreation creates a new task.",
+      "unknownTaskId": "8c932bf4-92c1-4fbd-b97c-c03c2347b2a0",
+      "recreatedTaskId": "2e5cb04b-e91a-46b7-82bf-fba9426bd127"
+    },
+    {
+      "check": "A real preview clock is advanced in the disposable database. GET reports expired, bytes return 410, and explicit retry creates a fresh successful ID.",
+      "expiredId": "f1e2795c-7f32-489b-b167-1a21a08f8ec7",
+      "retriedId": "455d890e-0170-447b-a31b-282c3d61ccb3"
+    },
+    {
+      "check": "An actual malformed local file is rejected by the real image inspector. The UI shows the addressable failed task and its exact server diagnostic without a partial result.",
+      "previewId": "d8768f7e-03b4-4990-a3ab-1baa857500e4",
+      "error": "identify: MEDIA_FORMAT_UNSUPPORTED: Unsupported image format: TXT"
+    },
+    {
+      "check": "A real 4096 × 3072 JPEG generated from the CC0 source with the existing seeded ImageMagick noise remains within the actual upload byte limit. Real GET reports running and renders that state on both viewports; only its later real successful terminal GET is held for the existing late-response cancellation regression.",
+      "previewId": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+      "sourceByteSize": 7970281,
+      "runningResponse": {
+        "path": "/api/media/previews/307c0650-63f5-49db-942d-afdc3d6b2b77",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+          "target": "compressed",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T19:40:24.038Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T19:40:24.097Z",
+          "resultUrl": null
+        }
+      },
+      "terminalResponse": {
+        "path": "/api/media/previews/307c0650-63f5-49db-942d-afdc3d6b2b77",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+          "target": "compressed",
+          "status": "succeeded",
+          "result": {
+            "format": "AVIF",
+            "mime": "image/avif",
+            "width": 4096,
+            "height": 3072,
+            "byteSize": 8744168
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T19:40:24.038Z",
+          "finishedAt": "2026-10-04T19:40:25.550Z",
+          "expiresAt": "2026-10-04T20:10:25.550Z",
+          "updatedAt": "2026-10-04T19:40:25.550Z",
+          "resultUrl": "/api/media/previews/307c0650-63f5-49db-942d-afdc3d6b2b77/result"
+        },
+        "held": true
+      }
+    },
+    {
+      "check": "The actual DELETE 200 response is received and held independently of the older GET. The same-ID cancelling view shows the real wait-for-settlement interaction on both viewports; releasing only DELETE then preserves the existing lost-cancel-response and late-GET recovery assertions.",
+      "previewId": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+      "heldDelete": {
+        "path": "/api/media/previews/307c0650-63f5-49db-942d-afdc3d6b2b77",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+          "target": "compressed",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "failed",
+          "cleanupError": "MEDIA_PROCESS_FAILED: processing browser cleanup persistence failure",
+          "createdAt": "2026-10-04T19:40:24.038Z",
+          "finishedAt": "2026-10-04T19:40:25.550Z",
+          "expiresAt": "2026-10-04T20:10:25.550Z",
+          "updatedAt": "2026-10-04T19:40:26.279Z",
+          "resultUrl": null
+        },
+        "held": true
+      }
+    },
+    {
+      "check": "Actual DELETE settles cancellation, but its complete response is lost while older real GET responses are held. Unknown UI keeps the task ID and says result needs verification without declaring cached queued/running facts. Known-ID GET then reads the real cancelled/failed cleanup status and exact disposable trigger diagnostic.",
+      "previewId": "307c0650-63f5-49db-942d-afdc3d6b2b77",
+      "cleanupStatus": "failed",
+      "cleanupError": "MEDIA_PROCESS_FAILED: processing browser cleanup persistence failure"
+    },
+    {
+      "check": "Explicit cleanup retry runs real DELETE once. When its response is lost, known-ID GET verifies cancelled/deleted without repeated mutation; historical cleanupError does not turn deleted into a failed cleanup."
+    },
+    {
+      "check": "The real owner session expires in the disposable database. Save returns 401, then the shared window-focus check GET returns 200/null. After browser frames process that actual response, the same processing route/form retains quality 66 and disables editing/save/preview until explicit login; fixture restoration signs in again and captures new cookies."
+    },
+    {
+      "check": "A real Upload settings read initializes its live controller; client navigation keeps that provider alive while editing processing quality 66. The real successful settings PATCH is held after reception, the session then expires, and releasing that response invalidates the actual active Upload settings query, which returns 401. Processing retains its route/input and disables editing/save/preview until explicit login."
+    }
+  ],
+  "layouts": [
+    {
+      "state": "settings-loading",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-loading-light-1440.png"
+    },
+    {
+      "state": "settings-loading",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-loading-dark-390.png"
+    },
+    {
+      "state": "read-failure",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-read-failure-dark-390.png"
+    },
+    {
+      "state": "preview-receive-failed",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-receive-failed-dark-390.png"
+    },
+    {
+      "state": "preview-create-unknown",
+      "theme": "light",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新创建预览",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-create-unknown-light-390.png"
+    },
+    {
+      "state": "preview-recreate-confirmation",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭确认",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 149,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认重新创建",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-recreate-confirmation-dark-390.png"
+    },
+    {
+      "state": "preview-expired",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-expired-dark-390.png"
+    },
+    {
+      "state": "preview-failed",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-failed-dark-390.png"
+    },
+    {
+      "state": "preview-running",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-running-light-1440x1080.png",
+      "scrollTop": 0,
+      "detailFrame": {
+        "top": 0,
+        "bottom": 999
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [data-slot=\"card\"]:last-child",
+          "top": 483.5,
+          "bottom": 740.5,
+          "text": "预览状态生成中processing-running.jpg · 压缩图307c0650-63f5-49db-942d-afdc3d6b2b77服务端正在处理。取消生成"
+        }
+      ]
+    },
+    {
+      "state": "preview-running",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-running-dark-390x844.png",
+      "scrollTop": 146,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [data-slot=\"card\"]:last-child",
+          "top": 462,
+          "bottom": 699,
+          "text": "预览状态生成中processing-running.jpg · 压缩图307c0650-63f5-49db-942d-afdc3d6b2b77服务端正在处理。取消生成"
+        }
+      ]
+    },
+    {
+      "state": "preview-cancelling",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-cancelling-light-1440x1080.png",
+      "scrollTop": 0,
+      "detailFrame": {
+        "top": 0,
+        "bottom": 999
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [data-slot=\"card\"]:last-child",
+          "top": 483.5,
+          "bottom": 740.5,
+          "text": "预览状态正在取消processing-running.jpg · 压缩图307c0650-63f5-49db-942d-afdc3d6b2b77等待接收、处理与写入结束后清理。取消生成"
+        }
+      ]
+    },
+    {
+      "state": "preview-cancelling",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-cancelling-dark-390x844.png",
+      "scrollTop": 146,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [data-slot=\"card\"]:last-child",
+          "top": 462,
+          "bottom": 699,
+          "text": "预览状态正在取消processing-running.jpg · 压缩图307c0650-63f5-49db-942d-afdc3d6b2b77等待接收、处理与写入结束后清理。取消生成"
+        }
+      ]
+    },
+    {
+      "state": "preview-cancel-unknown",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-cancel-unknown-dark-390.png"
+    },
+    {
+      "state": "preview-cleanup-failed",
+      "theme": "dark",
+      "height": 500,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-cleanup-failed-dark-390x500.png"
+    },
+    {
+      "state": "preview-cleanup-failed-action",
+      "theme": "dark",
+      "height": 500,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-cleanup-failed-action-dark-390x500.png",
+      "scrollTop": 606,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 419
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [role=\"alert\"]",
+          "top": 174,
+          "bottom": 214,
+          "text": "临时文件清理失败：MEDIA_PROCESS_FAILED: processing browser cleanup persistence failure"
+        },
+        {
+          "selector": "[data-testid=\"processing-preview\"] [role=\"alert\"] + button",
+          "top": 226,
+          "bottom": 270,
+          "text": "重试清理"
+        }
+      ]
+    },
+    {
+      "state": "session-expired",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "AVIF",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-session-expired-dark-390.png"
+    },
+    {
+      "state": "session-expired-after-focus",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "AVIF",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-session-expired-after-focus-dark-390.png"
+    },
+    {
+      "state": "session-expired-login-entry",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "AVIF",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-session-expired-login-entry-dark-390.png",
+      "scrollTop": 8,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[role=\"alert\"]:has(a[href^=\"/login?\"])",
+          "top": 80,
+          "bottom": 210,
+          "text": "会话已失效，当前输入仍保留。请重新登录后继续操作。重新登录"
+        },
+        {
+          "selector": "a[href=\"/login?reason=expired&returnTo=%2Fsettings%2Fprocessing\"]",
+          "top": 149,
+          "bottom": 193,
+          "text": "重新登录"
+        }
+      ]
+    },
+    {
+      "state": "session-expired-upload-lifetime",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "公开",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-session-expired-upload-lifetime-dark-390.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "recovery",
+  "settingsLoading": {
+    "responses": [
+      {
+        "path": "/api/settings/media",
+        "requestId": "interception-job-250.0",
+        "status": 200
+      }
+    ]
+  },
+  "sessionFocusResponses": [
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "status": 200,
+      "sessionNull": true
+    }
+  ],
+  "sessionAfterFocus": {
+    "path": "/settings/processing",
+    "editorState": "session",
+    "quality": "66",
+    "qualityDisabled": true,
+    "saveDisabled": true,
+    "previewDisabled": true
+  },
+  "sessionReauthentications": 2,
+  "uploadLifetimeExpiry": {
+    "responses": [
+      {
+        "path": "/upload/settings",
+        "status": 200
+      },
+      {
+        "path": "/upload/settings",
+        "status": 401
+      }
+    ],
+    "path": "/settings/processing",
+    "monitored": [
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/upload/settings",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "maxFileBytes": 52428800,
+          "batchSize": 20,
+          "queueLimit": 500,
+          "defaultVisibility": "public",
+          "defaultStorageId": "b7de5c13-febf-4e08-9db4-7a28fa338161",
+          "albums": [],
+          "tags": [],
+          "storages": [
+            {
+              "id": "b7de5c13-febf-4e08-9db4-7a28fa338161",
+              "name": "默认本地存储",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/upload/settings",
+        "method": "GET",
+        "status": 401,
+        "response": {
+          "code": "UNAUTHORIZED",
+          "message": "请先登录",
+          "imageId": null,
+          "requestId": "0554d498-d3b2-4d6b-aabb-3b51cbec0b86"
+        }
+      }
+    ],
+    "retained": {
+      "path": "/settings/processing",
+      "editorState": "session",
+      "quality": "66",
+      "qualityDisabled": true,
+      "saveDisabled": true,
+      "previewDisabled": true
+    }
+  },
+  "originalSettingsRestored": true,
+  "browserRequests": null,
+  "finishedAt": "2026-10-04T19:40:29.649Z"
+}

@@ -1,0 +1,5 @@
+{
+  "stage": "settings",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 'quality'\n\n    at verifyProcessingSettings (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-settings.mjs:75:10)\n    at async file:////[eval2]:58:5",
+  "explanation": "The test checked immediately after the field error rendered, before the existing requestAnimationFrame focus. Subsequent actual DOM inspection showed the quality textbox focused. The test now waits for the observable editable-field focus."
+}

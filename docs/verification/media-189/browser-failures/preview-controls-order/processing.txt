@@ -1,0 +1,16 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    'original',
++   'thumbnail',
+    'compressed',
+-   'thumbnail',
+    'watermark'
+  ]
+
+    at terminalControls (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-preview.mjs:34:12)
+    at async verifyProcessingPreview (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-preview.mjs:111:5)
+    at async file:////[eval2]:59:5
+
+ego's nodejs process exited with code 1.

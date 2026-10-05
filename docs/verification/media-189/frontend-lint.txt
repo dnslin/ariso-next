@@ -1,0 +1,42 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+/Users/dnslin/.codex/worktrees/issue-189-processing/ariso/src/components/processing/preview-image.tsx
+   40:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/dnslin/.codex/worktrees/issue-189-processing/ariso/src/components/processing/preview-image.tsx:40:5
+  38 |     if (!query.data) return;
+  39 |     const objectUrl = URL.createObjectURL(query.data);
+> 40 |     setSource(objectUrl);
+     |     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  41 |     setUnsupported(false);
+  42 |     return () => URL.revokeObjectURL(objectUrl);
+  43 |   }, [query.data]);  react-hooks/set-state-in-effect
+   99:3  warning  Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element')
+  101:5  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @next/next/no-img-element
+
+/Users/dnslin/.codex/worktrees/issue-189-processing/ariso/src/components/processing/use-preview.ts
+  170:6  warning  React Hook useCallback has a missing dependency: 'query'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/dnslin/.codex/worktrees/issue-189-processing/ariso/src/components/processing/watermark-asset.tsx
+  88:56  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/dnslin/.codex/worktrees/issue-189-processing/ariso/src/components/processing/watermark-asset.tsx:88:56
+  86 |   const asset = query.data;
+  87 |   const timedOut = Boolean(
+> 88 |     asset?.expiresAt && Date.parse(asset.expiresAt) <= Date.now(),
+     |                                                        ^^^^^^^^^^ Cannot call impure function
+  89 |   );
+  90 |   const available =
+  91 |     asset?.status === 'ready' && !timedOut && asset.available !== false;  react-hooks/purity
+
+✖ 5 problems (2 errors, 3 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.

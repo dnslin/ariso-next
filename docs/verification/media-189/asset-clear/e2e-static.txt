@@ -1,0 +1,37 @@
+Issue #189 — explicit watermark selection clear: E2E source verification
+
+Environment: Node v24.18.1; pnpm v11.19.0.
+PATH prefix: /Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
+Worktree: /Users/dnslin/.codex/worktrees/issue-189-processing/ariso
+
+Executed after adding the real asset-clear scene and its default settings call:
+pnpm exec prettier --write e2e/processing-asset-clear.mjs e2e/processing-settings.mjs e2e/processing-helpers.mjs
+node --check e2e/processing-asset-clear.mjs
+node --check e2e/processing-settings.mjs
+node --check e2e/processing-helpers.mjs
+pnpm exec eslint e2e/processing-asset-clear.mjs e2e/processing-settings.mjs e2e/processing-helpers.mjs
+
+Tool receipt d5b867: command sequence exit 0. Prettier formatted the new
+scene and settings import/call; helpers was unchanged by formatting. Node
+syntax checks and scoped ESLint emitted no diagnostics.
+
+After adding actual Tab/Shift+Tab focus visibility and the post-clear Save
+focus screenshot to the new scene, only the changed file was checked:
+pnpm exec prettier --write e2e/processing-asset-clear.mjs
+node --check e2e/processing-asset-clear.mjs
+pnpm exec eslint e2e/processing-asset-clear.mjs
+
+Tool receipt 0d0576: command sequence exit 0; no syntax/ESLint diagnostics.
+The unchanged settings/helper checks were not repeated.
+
+Independent review identified a missing nonempty preview-identity proof.
+After adding a real original-preview success before an off-mode clear,
+and preserving its exact ID, target, state, result Blob source and correct
+stale flag, the same three commands above were rerun only for the changed
+processing-asset-clear.mjs. Tool receipt 3ccc63: sequence exit 0; no syntax
+or ESLint diagnostics. Existing four-target preview checks were not repeated.
+
+This record captures the actual command receipts; commands were not rerun
+solely to recreate logs. No browser was operated by the implementing agent.
+Actual browser behavior, design comparison, and the unknown-save clear
+focus regression remain unverified at this source-freeze boundary.

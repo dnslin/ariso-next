@@ -5,11 +5,12 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
 import { Popover } from '@heroui/react/popover';
-import { useResetUpload } from '../upload/provider';
+import { useResetUpload, useUploadSessionExpiry } from '../upload/provider';
 
 /** 服务端已鉴权；浏览器会话请求负责接收续期 Cookie，并观察失效。 */
-export function useOwnerSession(returnTo: string) {
+export function useOwnerSession(returnTo: string, onExpire?: () => void) {
   const resetUpload = useResetUpload();
+  useUploadSessionExpiry(onExpire);
   const [sessionError, setSessionError] = useState('');
   const [signOutError, setSignOutError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -31,9 +32,11 @@ export function useOwnerSession(returnTo: string) {
         if (disposed || inFlight.current) return;
         if (!session) {
           resetUpload();
-          window.location.replace(
-            `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
-          );
+          if (onExpire) onExpire();
+          else
+            window.location.replace(
+              `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
+            );
         } else setSessionError('');
       } catch (error) {
         if (!disposed && !inFlight.current)
@@ -55,7 +58,7 @@ export function useOwnerSession(returnTo: string) {
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onFocus);
     };
-  }, [returnTo, resetUpload]);
+  }, [returnTo, resetUpload, onExpire]);
 
   async function signOut() {
     if (inFlight.current) return;

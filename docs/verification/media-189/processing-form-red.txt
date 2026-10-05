@@ -1,0 +1,26 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-189-processing/ariso
+
+ ❯ |unit| tests/unit/media/processing-form.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/media/processing-form.test.ts [ tests/unit/media/processing-form.test.ts ]
+Error: Cannot find module '../../../src/components/processing/model' imported from /Users/dnslin/.codex/worktrees/issue-189-processing/ariso/tests/unit/media/processing-form.test.ts
+ ❯ tests/unit/media/processing-form.test.ts:3:1
+      1| import { describe, expect, it } from 'vitest';
+      2| import { initialMediaSettings } from '../../../src/server/media/valida…
+      3| import {
+       | ^
+      4|   renderingParameters,
+      5|   settingsMatch,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  01:06:46
+   Duration  112ms (worker 96%, environment 4%)

@@ -1,0 +1,16 @@
+Error: JavaScript evaluation failed at line 2, column 34: TypeError: Cannot read properties of undefined (reading 'requests')
+    at <anonymous>:2:34
+    at __egoWaitForFunction (<anonymous>:7:9)
+    at <anonymous>:7:61; expression: (async function __egoWaitForFunction() { return { matched: Boolean(await (() =>\n      window.__processingBrowser.requests.some(\n        (row) =>\n         ...
+    at runtimeValue (file:////[eval1]:9139:15)
+    at file:////[eval1]:18532:39
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (processing.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/scripts/verify-browser.mjs:262:12)
+    at async file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/scripts/verify-browser.mjs:696:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-189-processing/ariso/docs/verification/media-189/browser-failures/session-focus-redirect

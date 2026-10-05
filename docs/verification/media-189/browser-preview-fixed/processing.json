@@ -1,0 +1,2461 @@
+{
+  "status": "passed",
+  "taskSpaceId": 29,
+  "origin": "http://ariso-55584.localhost:55584",
+  "phase": "preview",
+  "checks": [
+    {
+      "check": "All four targets generate actual owner-only image bytes from the complete unsaved 17-field rendering form, even when saved visibility is public. Natural image size and Content-Type/Length agree with real result metadata. Settings and business media/upload rows remain unchanged.",
+      "results": [
+        {
+          "id": "134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+          "target": "original",
+          "format": "PNG",
+          "mime": "image/png",
+          "width": 64,
+          "height": 48,
+          "byteSize": 420,
+          "bytesRead": 420
+        },
+        {
+          "id": "079b527f-0a4a-405e-a69f-022bedd49bb7",
+          "target": "compressed",
+          "format": "WEBP",
+          "mime": "image/webp",
+          "width": 64,
+          "height": 48,
+          "byteSize": 142,
+          "bytesRead": 142
+        },
+        {
+          "id": "3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+          "target": "thumbnail",
+          "format": "WEBP",
+          "mime": "image/webp",
+          "width": 64,
+          "height": 48,
+          "byteSize": 150,
+          "bytesRead": 150
+        },
+        {
+          "id": "11494c33-8a4e-423a-ab61-08cdbe11ac99",
+          "target": "watermark",
+          "format": "WEBP",
+          "mime": "image/webp",
+          "width": 64,
+          "height": 48,
+          "byteSize": 210,
+          "bytesRead": 210
+        }
+      ]
+    },
+    {
+      "check": "Choosing different actual bytes under the same file name marks the previous result stale without changing its task ID."
+    },
+    {
+      "check": "Returning retains unsaved form values. Editing parameters or selecting another file/target only marks the old result stale. SVG keeps its original result identity and attachment behavior after selecting compressed."
+    },
+    {
+      "check": "Actual animated GIF compressed result is explicitly unavailable; no thumbnail or static image is substituted.",
+      "id": "fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+      "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印"
+    },
+    {
+      "check": "Actual animated GIF watermark result is explicitly unavailable; no thumbnail or static image is substituted.",
+      "id": "2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+      "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印"
+    },
+    {
+      "check": "Actual HEIC original succeeds with its real ID and format/dimensions/byte size. Authenticated result bytes have the original file SHA-256; the real browser decoder failure is recorded explicitly and the page offers its same-ID original-file read instead of substituting a thumbnail.",
+      "previewId": "5eeac81a-e93b-45b1-80d5-e98a16004d87",
+      "result": {
+        "format": "HEIC",
+        "mime": "image/heic",
+        "width": 64,
+        "height": 48,
+        "byteSize": 1417
+      },
+      "originalSha256": "896cb17984d9a5675257cde425b4e47a07c348568e07622a88f3dfe76832296a",
+      "expectedResourceErrors": [
+        {
+          "url": "http://ariso-55584.localhost:55584/settings/processing",
+          "kind": "error",
+          "message": "Resource failed: blob:http://ariso-55584.localhost:55584/3e874419-2d29-402e-ad28-0820aaf9338e"
+        }
+      ]
+    },
+    {
+      "check": "Real image-watermark preview uses its temporary asset without adoption, expiry extension or leaked preview reference.",
+      "assetId": "1c73f800-8efd-44fc-82a1-6a95cd816ae7",
+      "expiresAt": "2026-10-04T21:02:56.680Z"
+    }
+  ],
+  "layouts": [
+    {
+      "state": "preview-empty",
+      "theme": "light",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "选择测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-empty-light-390.png"
+    },
+    {
+      "state": "preview-success",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 267.5,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-success-light-1440.png"
+    },
+    {
+      "state": "preview-stale",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-stale-dark-390.png"
+    },
+    {
+      "state": "preview-svg-stale",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "读取 SVG 原文件",
+          "width": 136.7421875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-svg-stale-dark-390.png"
+    },
+    {
+      "state": "preview-svg-stale-result",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "读取 SVG 原文件",
+          "width": 136.7421875,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-svg-stale-result-dark-390.png",
+      "scrollTop": 518,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] code",
+          "top": 182.5,
+          "bottom": 202,
+          "text": "bf6662fd-1748-40e9-87e9-af62678bc587"
+        },
+        {
+          "selector": "[data-testid=\"processing-preview-result\"]",
+          "top": 281,
+          "bottom": 614.140625,
+          "text": "SVG 原文件按附件提供，不在页面中执行。可读取原文件，或明确选择缩略图重新预览。读取 SVG 原文件实际编码SVG · image/svg+xml尺寸64 × 48大小224 B有效期至 2026/10/5 04:32:46"
+        }
+      ]
+    },
+    {
+      "state": "preview-gif-unavailable",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-gif-unavailable-dark-390.png"
+    },
+    {
+      "state": "preview-gif-unavailable-status",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-gif-unavailable-status-dark-390.png",
+      "scrollTop": 166,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] [data-slot=\"card\"]:last-child",
+          "top": 442,
+          "bottom": 699,
+          "text": "预览状态已完成animated.gif · 压缩图fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794此目标不适用：该格式为动画或仅支持预览，不适用压缩和水印核对预览状态"
+        }
+      ]
+    },
+    {
+      "state": "preview-gif-thumbnail",
+      "theme": "light",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-gif-thumbnail-light-390.png"
+    },
+    {
+      "state": "preview-gif-thumbnail-result",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-gif-thumbnail-result-dark-390.png",
+      "scrollTop": 459,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] code",
+          "top": 241.5,
+          "bottom": 261,
+          "text": "80e6c293-b84c-4dd8-ae04-c6f6345105d2"
+        },
+        {
+          "selector": "[data-testid=\"processing-preview-result\"]",
+          "top": 281,
+          "bottom": 614.140625,
+          "text": "实际编码WEBP · image/webp尺寸64 × 48大小150 B有效期至 2026/10/5 04:32:53"
+        }
+      ]
+    },
+    {
+      "state": "preview-original-heic-undecodable",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "读取原文件",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-original-heic-undecodable-dark-390.png"
+    },
+    {
+      "state": "preview-original-heic-undecodable-result",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回图片处理",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "更换测试图",
+          "width": 116,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "缩略图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "水印图",
+          "width": 158,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "读取原文件",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对预览状态",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回设置",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "生成预览",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-preview-original-heic-undecodable-result-dark-390.png",
+      "scrollTop": 459,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-preview\"] code",
+          "top": 241.5,
+          "bottom": 261,
+          "text": "5eeac81a-e93b-45b1-80d5-e98a16004d87"
+        },
+        {
+          "selector": "[data-testid=\"processing-preview-result\"]",
+          "top": 281,
+          "bottom": 614.140625,
+          "text": "当前浏览器无法直接显示这个原图格式。可读取原文件，或明确选择缩略图重新预览。读取原文件实际编码HEIC · image/heic尺寸64 × 48大小1.4 KiB有效期至 2026/10/5 04:32:55"
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "preview",
+  "expectedResourceErrors": [
+    {
+      "url": "http://ariso-55584.localhost:55584/settings/processing",
+      "kind": "error",
+      "message": "Resource failed: blob:http://ariso-55584.localhost:55584/3e874419-2d29-402e-ad28-0820aaf9338e",
+      "scenario": "original-heic-undecodable",
+      "previewId": "5eeac81a-e93b-45b1-80d5-e98a16004d87"
+    }
+  ],
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "original",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 61,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:37.287Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:37.297Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+          "target": "original",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:37.287Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:37.303Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+          "target": "original",
+          "status": "succeeded",
+          "result": {
+            "format": "PNG",
+            "mime": "image/png",
+            "width": 64,
+            "height": 48,
+            "byteSize": 420
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:37.287Z",
+          "finishedAt": "2026-10-04T20:02:37.418Z",
+          "expiresAt": "2026-10-04T20:32:37.418Z",
+          "updatedAt": "2026-10-04T20:02:37.418Z",
+          "resultUrl": "/api/media/previews/134a8822-1cde-40b1-9a7a-9b4ea51105ef/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/134a8822-1cde-40b1-9a7a-9b4ea51105ef/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "134a8822-1cde-40b1-9a7a-9b4ea51105ef",
+          "target": "original",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:37.287Z",
+          "finishedAt": "2026-10-04T20:02:37.418Z",
+          "expiresAt": "2026-10-04T20:32:37.418Z",
+          "updatedAt": "2026-10-04T20:02:38.723Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "compressed",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 61,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "079b527f-0a4a-405e-a69f-022bedd49bb7",
+          "target": "compressed",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:38.728Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:38.730Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/079b527f-0a4a-405e-a69f-022bedd49bb7",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "079b527f-0a4a-405e-a69f-022bedd49bb7",
+          "target": "compressed",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:38.728Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:38.730Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/079b527f-0a4a-405e-a69f-022bedd49bb7",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "079b527f-0a4a-405e-a69f-022bedd49bb7",
+          "target": "compressed",
+          "status": "succeeded",
+          "result": {
+            "format": "WEBP",
+            "mime": "image/webp",
+            "width": 64,
+            "height": 48,
+            "byteSize": 142
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:38.728Z",
+          "finishedAt": "2026-10-04T20:02:39.002Z",
+          "expiresAt": "2026-10-04T20:32:39.002Z",
+          "updatedAt": "2026-10-04T20:02:39.002Z",
+          "resultUrl": "/api/media/previews/079b527f-0a4a-405e-a69f-022bedd49bb7/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/079b527f-0a4a-405e-a69f-022bedd49bb7/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/079b527f-0a4a-405e-a69f-022bedd49bb7",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "079b527f-0a4a-405e-a69f-022bedd49bb7",
+          "target": "compressed",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:38.728Z",
+          "finishedAt": "2026-10-04T20:02:39.002Z",
+          "expiresAt": "2026-10-04T20:32:39.002Z",
+          "updatedAt": "2026-10-04T20:02:40.203Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "thumbnail",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 61,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+          "target": "thumbnail",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:40.209Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:40.210Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+          "target": "thumbnail",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:40.209Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:40.210Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+          "target": "thumbnail",
+          "status": "succeeded",
+          "result": {
+            "format": "WEBP",
+            "mime": "image/webp",
+            "width": 64,
+            "height": 48,
+            "byteSize": 150
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:40.209Z",
+          "finishedAt": "2026-10-04T20:02:40.465Z",
+          "expiresAt": "2026-10-04T20:32:40.465Z",
+          "updatedAt": "2026-10-04T20:02:40.465Z",
+          "resultUrl": "/api/media/previews/3c9edf45-15c2-426c-9c92-cf1240f7a49e/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/3c9edf45-15c2-426c-9c92-cf1240f7a49e/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "3c9edf45-15c2-426c-9c92-cf1240f7a49e",
+          "target": "thumbnail",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:40.209Z",
+          "finishedAt": "2026-10-04T20:02:40.465Z",
+          "expiresAt": "2026-10-04T20:32:40.465Z",
+          "updatedAt": "2026-10-04T20:02:41.661Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "watermark",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 61,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "11494c33-8a4e-423a-ab61-08cdbe11ac99",
+          "target": "watermark",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:41.669Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:41.670Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/11494c33-8a4e-423a-ab61-08cdbe11ac99",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "11494c33-8a4e-423a-ab61-08cdbe11ac99",
+          "target": "watermark",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:41.669Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:41.678Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/11494c33-8a4e-423a-ab61-08cdbe11ac99",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "11494c33-8a4e-423a-ab61-08cdbe11ac99",
+          "target": "watermark",
+          "status": "succeeded",
+          "result": {
+            "format": "WEBP",
+            "mime": "image/webp",
+            "width": 64,
+            "height": 48,
+            "byteSize": 210
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:41.669Z",
+          "finishedAt": "2026-10-04T20:02:42.082Z",
+          "expiresAt": "2026-10-04T20:32:42.082Z",
+          "updatedAt": "2026-10-04T20:02:42.082Z",
+          "resultUrl": "/api/media/previews/11494c33-8a4e-423a-ab61-08cdbe11ac99/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/11494c33-8a4e-423a-ab61-08cdbe11ac99/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/11494c33-8a4e-423a-ab61-08cdbe11ac99",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "11494c33-8a4e-423a-ab61-08cdbe11ac99",
+          "target": "watermark",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:41.669Z",
+          "finishedAt": "2026-10-04T20:02:42.082Z",
+          "expiresAt": "2026-10-04T20:32:42.082Z",
+          "updatedAt": "2026-10-04T20:02:44.701Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "original",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "static.svg",
+        "status": 202,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:44.708Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:44.708Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:44.742Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:44.742Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "succeeded",
+          "result": {
+            "format": "SVG",
+            "mime": "image/svg+xml",
+            "width": 64,
+            "height": 48,
+            "byteSize": 224
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": "2026-10-04T20:02:46.892Z",
+          "expiresAt": "2026-10-04T20:32:46.892Z",
+          "updatedAt": "2026-10-04T20:02:46.892Z",
+          "resultUrl": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/bf6662fd-1748-40e9-87e9-af62678bc587",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "bf6662fd-1748-40e9-87e9-af62678bc587",
+          "target": "original",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:44.706Z",
+          "finishedAt": "2026-10-04T20:02:46.892Z",
+          "expiresAt": "2026-10-04T20:32:46.892Z",
+          "updatedAt": "2026-10-04T20:02:48.487Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "compressed",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "animated.gif",
+        "status": 202,
+        "response": {
+          "id": "fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+          "target": "compressed",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:48.492Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:48.494Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+          "target": "compressed",
+          "status": "running",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:48.492Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:48.504Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+          "target": "compressed",
+          "status": "succeeded",
+          "result": null,
+          "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印",
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:48.492Z",
+          "finishedAt": "2026-10-04T20:02:48.644Z",
+          "expiresAt": "2026-10-04T20:32:48.644Z",
+          "updatedAt": "2026-10-04T20:02:48.644Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "fb7e1d4f-0ca2-4dc3-b5c5-0e49f55e4794",
+          "target": "compressed",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印",
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:48.492Z",
+          "finishedAt": "2026-10-04T20:02:48.644Z",
+          "expiresAt": "2026-10-04T20:32:48.644Z",
+          "updatedAt": "2026-10-04T20:02:50.116Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "watermark",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "animated.gif",
+        "status": 202,
+        "response": {
+          "id": "2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+          "target": "watermark",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:50.121Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:50.123Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+          "target": "watermark",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:50.121Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:50.123Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+          "target": "watermark",
+          "status": "succeeded",
+          "result": null,
+          "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印",
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:50.121Z",
+          "finishedAt": "2026-10-04T20:02:50.262Z",
+          "expiresAt": "2026-10-04T20:32:50.262Z",
+          "updatedAt": "2026-10-04T20:02:50.262Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "2ba321f2-eb10-4e32-aa52-62aed1aaacfd",
+          "target": "watermark",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": "该格式为动画或仅支持预览，不适用压缩和水印",
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:50.121Z",
+          "finishedAt": "2026-10-04T20:02:50.262Z",
+          "expiresAt": "2026-10-04T20:32:50.262Z",
+          "updatedAt": "2026-10-04T20:02:51.602Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "original",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "animated.gif",
+        "status": 202,
+        "response": {
+          "id": "1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:51.607Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:51.608Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:51.607Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:51.608Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+          "target": "original",
+          "status": "succeeded",
+          "result": {
+            "format": "GIF",
+            "mime": "image/gif",
+            "width": 64,
+            "height": 48,
+            "byteSize": 344
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:51.607Z",
+          "finishedAt": "2026-10-04T20:02:51.753Z",
+          "expiresAt": "2026-10-04T20:32:51.753Z",
+          "updatedAt": "2026-10-04T20:02:51.753Z",
+          "resultUrl": "/api/media/previews/1bc93b2c-25e2-4c7b-aaf4-511a7a32c767/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/1bc93b2c-25e2-4c7b-aaf4-511a7a32c767/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "1bc93b2c-25e2-4c7b-aaf4-511a7a32c767",
+          "target": "original",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:51.607Z",
+          "finishedAt": "2026-10-04T20:02:51.753Z",
+          "expiresAt": "2026-10-04T20:32:51.753Z",
+          "updatedAt": "2026-10-04T20:02:53.056Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "thumbnail",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "animated.gif",
+        "status": 202,
+        "response": {
+          "id": "80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+          "target": "thumbnail",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:53.061Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:53.063Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+          "target": "thumbnail",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:53.061Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:53.063Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+          "target": "thumbnail",
+          "status": "succeeded",
+          "result": {
+            "format": "WEBP",
+            "mime": "image/webp",
+            "width": 64,
+            "height": 48,
+            "byteSize": 150
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:53.061Z",
+          "finishedAt": "2026-10-04T20:02:53.345Z",
+          "expiresAt": "2026-10-04T20:32:53.345Z",
+          "updatedAt": "2026-10-04T20:02:53.345Z",
+          "resultUrl": "/api/media/previews/80e6c293-b84c-4dd8-ae04-c6f6345105d2/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/80e6c293-b84c-4dd8-ae04-c6f6345105d2/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "80e6c293-b84c-4dd8-ae04-c6f6345105d2",
+          "target": "thumbnail",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:53.061Z",
+          "finishedAt": "2026-10-04T20:02:53.345Z",
+          "expiresAt": "2026-10-04T20:32:53.345Z",
+          "updatedAt": "2026-10-04T20:02:54.904Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "original",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "alpha.heic",
+        "status": 202,
+        "response": {
+          "id": "5eeac81a-e93b-45b1-80d5-e98a16004d87",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:54.909Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:54.911Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "5eeac81a-e93b-45b1-80d5-e98a16004d87",
+          "target": "original",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:54.909Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:54.911Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "5eeac81a-e93b-45b1-80d5-e98a16004d87",
+          "target": "original",
+          "status": "succeeded",
+          "result": {
+            "format": "HEIC",
+            "mime": "image/heic",
+            "width": 64,
+            "height": 48,
+            "byteSize": 1417
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:54.909Z",
+          "finishedAt": "2026-10-04T20:02:55.125Z",
+          "expiresAt": "2026-10-04T20:32:55.125Z",
+          "updatedAt": "2026-10-04T20:02:55.125Z",
+          "resultUrl": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87/result",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/media/watermark-assets",
+        "method": "POST",
+        "status": 201,
+        "response": {
+          "id": "1c73f800-8efd-44fc-82a1-6a95cd816ae7",
+          "path": "1c73f800-8efd-44fc-82a1-6a95cd816ae7/source",
+          "format": "PNG",
+          "mime": "image/png",
+          "width": 64,
+          "height": 48,
+          "byteSize": 423,
+          "status": "ready",
+          "expiresAt": "2026-10-04T21:02:56.680Z",
+          "error": null,
+          "createdAt": "2026-10-04T20:02:56.680Z",
+          "updatedAt": "2026-10-04T20:02:56.680Z"
+        }
+      },
+      {
+        "path": "/api/media/watermark-assets/1c73f800-8efd-44fc-82a1-6a95cd816ae7",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "1c73f800-8efd-44fc-82a1-6a95cd816ae7",
+          "path": "1c73f800-8efd-44fc-82a1-6a95cd816ae7/source",
+          "format": "PNG",
+          "mime": "image/png",
+          "width": 64,
+          "height": 48,
+          "byteSize": 423,
+          "status": "ready",
+          "expiresAt": "2026-10-04T21:02:56.680Z",
+          "error": null,
+          "createdAt": "2026-10-04T20:02:56.680Z",
+          "updatedAt": "2026-10-04T20:02:56.680Z",
+          "available": true
+        }
+      },
+      {
+        "path": "/api/media/previews/5eeac81a-e93b-45b1-80d5-e98a16004d87",
+        "method": "DELETE",
+        "status": 200,
+        "response": {
+          "id": "5eeac81a-e93b-45b1-80d5-e98a16004d87",
+          "target": "original",
+          "status": "cancelled",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:54.909Z",
+          "finishedAt": "2026-10-04T20:02:55.125Z",
+          "expiresAt": "2026-10-04T20:32:55.125Z",
+          "updatedAt": "2026-10-04T20:02:57.296Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "watermark",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 59,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "image",
+            "watermarkAssetId": "1c73f800-8efd-44fc-82a1-6a95cd816ae7",
+            "watermarkText": "Ariso 未保存",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 64,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "source.png",
+        "status": 202,
+        "response": {
+          "id": "f9b615c7-b01a-4775-b9bd-3e89ee51d0ff",
+          "target": "watermark",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:57.303Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:57.305Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/f9b615c7-b01a-4775-b9bd-3e89ee51d0ff",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "f9b615c7-b01a-4775-b9bd-3e89ee51d0ff",
+          "target": "watermark",
+          "status": "queued",
+          "result": null,
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "pending",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:57.303Z",
+          "finishedAt": null,
+          "expiresAt": null,
+          "updatedAt": "2026-10-04T20:02:57.305Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/media/previews/f9b615c7-b01a-4775-b9bd-3e89ee51d0ff",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "f9b615c7-b01a-4775-b9bd-3e89ee51d0ff",
+          "target": "watermark",
+          "status": "succeeded",
+          "result": {
+            "format": "WEBP",
+            "mime": "image/webp",
+            "width": 64,
+            "height": 48,
+            "byteSize": 230
+          },
+          "unavailableReason": null,
+          "error": null,
+          "cleanupStatus": "retained",
+          "cleanupError": null,
+          "createdAt": "2026-10-04T20:02:57.303Z",
+          "finishedAt": "2026-10-04T20:02:57.704Z",
+          "expiresAt": "2026-10-04T20:32:57.704Z",
+          "updatedAt": "2026-10-04T20:02:57.704Z",
+          "resultUrl": "/api/media/previews/f9b615c7-b01a-4775-b9bd-3e89ee51d0ff/result"
+        }
+      },
+      {
+        "path": "/api/media/previews/f9b615c7-b01a-4775-b9bd-3e89ee51d0ff/result",
+        "method": "GET",
+        "status": 200
+      }
+    ],
+    "faultUsed": false,
+    "fault": null
+  },
+  "finishedAt": "2026-10-04T20:02:58.475Z"
+}

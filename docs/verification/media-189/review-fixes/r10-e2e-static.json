@@ -1,0 +1,32 @@
+{
+  "scope": ["e2e/processing-settings.mjs", "e2e/processing-settings-entry.mjs"],
+  "browserExecuted": false,
+  "format": {
+    "command": "pnpm exec prettier --write e2e/processing-settings.mjs e2e/processing-settings-entry.mjs",
+    "exitCode": 0,
+    "output": "Already up to date\nDone in 35ms using pnpm v11.19.0\ne2e/processing-settings.mjs 49ms (unchanged)\ne2e/processing-settings-entry.mjs 16ms\n"
+  },
+  "checks": [
+    {
+      "name": "settings-syntax",
+      "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/processing-settings.mjs",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "entry-syntax",
+      "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/processing-settings-entry.mjs",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "scoped-eslint",
+      "command": "PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/processing-settings.mjs e2e/processing-settings-entry.mjs",
+      "exitCode": 0,
+      "output": "Already up to date\nDone in 36ms using pnpm v11.19.0\n"
+    }
+  ],
+  "limitations": [
+    "No browser, TaskSpace restoration, manual preview, unit/integration suite, or product build was run for this E2E-source change."
+  ]
+}

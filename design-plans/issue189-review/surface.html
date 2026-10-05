@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ariso · 图片处理原型</title>
+  <link rel="stylesheet" href="surface.css" />
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand-row">
+          <span class="brand">Ariso</span
+          ><button
+            class="icon"
+            id="collapse"
+            aria-label="收起侧栏"
+            data-icon="ChevronsLeft"
+          ></button>
+        </div>
+        <p class="tagline">图片，自在收纳。</p>
+        <nav aria-label="主导航"></nav>
+        <div class="account">
+          <span class="avatar">D</span>
+          <div>测试所有者<small>站点所有者</small></div>
+        </div>
+      </aside>
+      <div class="workspace">
+        <div class="mobile-header">
+          <span class="brand">Ariso</span
+          ><button
+            id="menu"
+            class="icon"
+            aria-label="打开菜单"
+            data-icon="Menu"
+          ></button>
+        </div>
+        <main id="content" class="content"></main>
+        <footer id="footer"></footer>
+      </div>
+    </div>
+    <dialog id="confirmation" aria-labelledby="dialog-title"></dialog>
+    <div id="toast" role="status" hidden></div>
+    <script src="icons.js"></script>
+    <script src="surface.js"></script>
+  </body>
+</html>
