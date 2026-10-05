@@ -23,6 +23,7 @@ const report = {
   screenshots: [],
 };
 let errorScript;
+let savedTheme;
 let peer;
 let peerErrorScript;
 const { createTrashHelpers, disabledStorageId, progressJobId } = await import(
@@ -113,6 +114,7 @@ try {
   );
   if (new URL(await page.url()).pathname === '/login')
     await signInToLibrary(page, config, report);
+  savedTheme = await page.evaluate(() => localStorage.getItem('theme'));
   errorScript = await installBrowserErrors(page);
   if (scenarios.some((verify) => reviewFixes.includes(verify))) {
     peer = await task.newPage();
@@ -151,6 +153,15 @@ try {
   if (!report.error) await captureFailure(error);
   throw error;
 } finally {
+  if (savedTheme !== undefined) {
+    const restored = await page.evaluate((saved) => {
+      if (saved === null) localStorage.removeItem('theme');
+      else localStorage.setItem('theme', saved);
+      return localStorage.getItem('theme');
+    }, savedTheme);
+    assert.equal(restored, savedTheme);
+    report.restoredTheme = restored;
+  }
   await helpers.restoreBatchTraffic();
   await restoreReviewTraffic(page);
   if (peer) {

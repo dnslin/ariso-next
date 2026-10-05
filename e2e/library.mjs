@@ -529,9 +529,16 @@ try {
   report.error = String(error.stack ?? error);
   throw error;
 } finally {
-  await writeFile(
-    join(config.output, 'library.json'),
-    `${JSON.stringify(report, null, 2)}\n`,
-  );
+  try {
+    const cleaned = await sql(
+      "DELETE FROM media_images WHERE id = 'library-trashed'",
+    );
+    report.trashedFixtureCleanupChanges = cleaned.changes;
+  } finally {
+    await writeFile(
+      join(config.output, 'library.json'),
+      `${JSON.stringify(report, null, 2)}\n`,
+    );
+  }
 }
 console.log(report);

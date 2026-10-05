@@ -98,3 +98,59 @@ node docs/tasks/check.mjs
 - 浏览器运行器导出新生产夹具日志前，将该夹具初始化码纳入既有脱敏列表；最终服务器日志已检查初始化码为 `[redacted]`。原始服务器日志只保留在忽略的本地 test-results，没有提交凭证或全机器进程列表。
 
 没有发布Release、镜像或容器；发布验证仍按现有Release流程执行。生产匿名页面与完整 Local/S3 分享流程不在本卡交付；后置 #191/#192/#193 不由本任务代码或Cookie探针替代。
+
+## 全量浏览器继续执行重试
+
+用户要求重试默认全量，并明确一个失败不能跳过所有后续场景。本轮修复此前整个 full 共用一个失败出口的问题：每个场景分别记录通过、失败或真实前置阻塞；普通失败后重新读取 TaskSpace 32 的当前所有权并观察页面，继续独立场景。身份恢复依赖初始化报告和实际所有者运行时，M2 重启恢复依赖同视口的重启前记录；其他业务不会因这些整套断言失败而被阻塞。基础 UI 夹具与其图库检查也独立执行。
+
+失败不会被后面的通过覆盖，存在失败或阻塞时完整命令仍退出 1。单场景超时只终止该场景子进程；取消、接管、空间失活或无法观察时仍停止全局浏览器。分享夹具逐个停止并保存日志，最终回收逐项记录错误；失败空间保留，没有新建空间绕过错误。未改动产品页面、业务实现、超时阈值或既有断言。
+
+同一 Node 24.19.0 / pnpm 11.19.0 环境执行：
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --dir tests/experiments/ui install --frozen-lockfile
+pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-stages.test.ts
+pnpm run lint
+pnpm run typecheck
+pnpm --dir tests/experiments/ui run typecheck
+EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser-retry-1 pnpm run test:browser
+```
+
+两次冻结安装、全仓库 lint 和两个项目 typecheck 均退出 0；新增继续执行行为 5 项与既有参数边界 58 项，共 63 项通过。新增六个实际模块的定向入口后，CLI 参数边界再定向 64 项通过，见[最终参数检查](./retry-runner-final-unit.txt)；阶段行为 5 项的输入未变，没有机械重跑。最后运行器改动的[静态检查](./retry-final-lint.txt)与[类型检查](./retry-final-typecheck.txt)退出 0，导航夹具后来修改的[受影响静态检查](./retry-navigation-lint.txt)也退出 0。运行器独立复审见[追加审计](./audit.md#全量浏览器重试运行器复审)。应用生产构建输入未变，未机械重跑应用构建或全量集成；完整浏览器入口实际重新构建两类实验夹具。
+
+完整重试于 11:00:16–11:17:03 UTC 执行，退出 1。[运行器原报告](./browser-retry-runner.json)记录 **48 个阶段：32 通过、15 失败、1 前置阻塞**。阶段包含服务准备和关闭，不是测试断言数量。除了 `m2-390-after` 因同视口 before 没有完成而阻塞，其他阶段均已实际尝试；末尾 delivery-s3、生产 sharing-protocol、分享实验、独立 UI 全部通过，UI 内基础与图库两个阶段也通过。首次中断于桌面 M2 恢复的失败保留；本次桌面 M2 before/after 都通过。所有已启动服务完成回收，临时目录删除成功；因整体失败保留 TaskSpace 32，没有 finish。
+
+[本轮失败诊断](./browser-retry-summary.json)保留 15 处实际错误和最后完成节点，没有把超时推断为同一种产品故障。已确认的旧断言偏差为：处理设置要求说明是卡片最后一个子元素，但素材清空区域在它后面；图库消费者仍将已开放的三个导航入口预期为 null；选择同步仍只接受四字段，当前接口还返回 byteSize / processingStatus。这些断言和产品契约没有在本 Issue 修改。手机 M2 复制后的通知遮挡下载按钮，其重启前场景没有完成，后面的恢复仍未验证。
+
+继续执行暴露了三项验证前置/资源归属问题，本轮修复测试准备与清理，不改产品：上传主流程现在自己通过真实登录、注销及 get-session=null 确认匿名前置；回收站查询保存并在 finally 恢复单个 theme key；图库在 finally 删除本脚本的 `library-trashed`，即使前段断言失败也不污染后续回收站空列表。主题未恢复的机制和后续 dark 等待失败相符，但原报告没有直接保存最终主题值，不能预先将所有后续超时定性为同一原因。导航定向入口复用已有 disabled S3 配置模式，经实际生产 POST 创建供 CORS 页布局读取，不冒充真实 S3 服务验收。
+
+仅重跑受影响的模块，保持同一空间和独立数据库；已有 full 的末尾通过项未重复。每个定向命令失败后观察当前控制权和页面，继续下一独立模块；接管/失活会停止。多场景定向入口也复用相同阶段运行器，不再因首个脚本失败而跳过后续独立脚本；原 suite/only 过滤及共享参数所属场景保持不变。最后修改的[静态检查](./retry-focused-lint.txt)和[类型检查](./retry-focused-typecheck.txt)退出 0。
+
+所有实际定向命令、时间、阶段结果、清理结果和具体错误见[定向证据](./focused-retry-summary.json)。从同一 Node 24 / TaskSpace 32 运行以下命令，每条使用独立 `BROWSER_REPORT_DIR`：
+
+```sh
+node scripts/verify-browser.mjs --suite library
+node scripts/verify-browser.mjs --suite trash
+node scripts/verify-browser.mjs --suite shell-navigation
+node scripts/verify-browser.mjs --suite albums
+node scripts/verify-browser.mjs --suite album-cover
+node scripts/verify-browser.mjs --suite tags
+node scripts/verify-browser.mjs --suite upload-input
+node scripts/verify-browser.mjs --suite upload --only submissions
+node scripts/verify-browser.mjs --suite upload --only relations
+node scripts/verify-browser.mjs --suite upload-regression
+```
+
+| 受影响场景                                 | 实际重验结果                                                                                                                                                                                                |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 公共导航、相册、封面、上传输入、提交、关联 | 六个模块各自退出 0。先前等待暗色的节点均已越过，不把独立重验替代完整 shared full 结果。                                                                                                                     |
+| 图库                                       | 同一旧导航预期仍失败；finally 实际删除自有回收夹具，`trashedFixtureCleanupChanges=1`。                                                                                                                      |
+| 回收站查询                                 | 201 项清理成功、十项流程检查完成，原空列表等待已越过；最终资源错误 / ResizeObserver 错误检查失败。finally 实际恢复 `theme=null`。                                                                           |
+| 标签                                       | green 同步子场景通过，主场景改在 `same-key-unchanged/light/390` 的关闭通知目标约 41.8px 小于 44px 断言失败。                                                                                                |
+| 上传主流程                                 | 真实登录→注销→匿名确认及原匿名登录已通过；后续原 `upload.picker.height >= 280` UI 断言失败。                                                                                                                |
+| 多场景继续链                               | 最后[回收站命令](./trash-focused-final-runner.json)在查询失败后仍执行清理并通过；[上传命令](./upload-focused-final-runner.json)在主流程失败后仍执行轮询并通过。两命令均退出 1，全部服务和临时目录回收成功。 |
+
+首次重试、期间发现和最后重验结果分别保留。没有再次运行输入未变的已通过分享协议/实验、delivery 或 UI 夹具；没有重跑整个 shared full，因此完整流程仍是 32/15/1 的失败记录。剩余旧断言、未知焦点/批量错误、通知目标/遮挡及旧 UI 高度问题不在 #190 产品范围内，没有改动其断言、超时或产品界面。PR 继续保留草稿，不声称全量通过；人工界面验收与 Figma 仍不适用于本次没有产品 UI 的交付。
+
+本轮最后全仓库格式检查和任务定义检查均退出 0，见[格式](./retry-format.txt)、[文档检查](./retry-docs.txt)。补充这两条证据链接后，再定向检查本 README 格式通过，没有重复执行已通过的应用或浏览器检查。

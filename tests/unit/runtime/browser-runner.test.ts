@@ -69,6 +69,12 @@ describe('browser runner argument boundaries', () => {
     ['library-batch', 'review-fixes'],
     ['sharing-experiment'],
     ['sharing-protocol'],
+    ['shell-navigation'],
+    ['library'],
+    ['albums'],
+    ['album-cover'],
+    ['tags'],
+    ['upload-input'],
   ];
   it.each(combinations)('accepts suite %s and its only %s', (suite, only) => {
     const result = parse(['--suite', suite, ...(only ? ['--only', only] : [])]);

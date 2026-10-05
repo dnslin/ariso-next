@@ -1,0 +1,274 @@
+{
+  "environment": {
+    "node": "24.19.0",
+    "pnpm": "11.19.0",
+    "taskSpaceId": 32
+  },
+  "runs": [
+    {
+      "name": "library",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-library node scripts/verify-browser.mjs --suite library",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:27:05.528Z",
+      "finishedAt": "2026-10-05T11:28:55.700Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "library.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    [\n      '总览',\n      null\n    ],\n...\n      '标签',\n+     '/tags'\n-     null\n    ],\n    [\n      '分享管理',\n      null\n    ],\n...\n      '存储管理',\n+     '/settings/storage'\n-     null\n    ],\n    [\n      '站点设置',\n+     '/settings/processing'\n-     null\n    ]\n  ]\n\n    at screenshot (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171-consumers.mjs:56:12)\n    at async verifyDetail171Consumers (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171-consumers.mjs:112:7)\n    at async verifyLibraryDetail171 (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/library-detail-171.mjs:47:3)\n    at async file:////[eval2]:509:3",
+          "completedChecks": 36,
+          "lastCompletedCheck": "Real public source order locates the card at 5; 44 items are loaded and actual virtual windows are traversed. Card keyboard opening → version workspace → detail retains watermark preview; closing preserves visibility/sort URL, masonry layout, source scroll and exact trigger focus.",
+          "firstCompletedCheck": "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+          "trashedFixtureCleanupChanges": 1
+        }
+      ]
+    },
+    {
+      "name": "trash",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-trash node scripts/verify-browser.mjs --suite trash",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:28:56.450Z",
+      "finishedAt": "2026-10-05T11:30:40.030Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "trash-query-batch.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-60150.localhost:60150/api/trash/issue177-025/preview?type=thumbnail',\n+     url: 'http://ariso-60150.localhost:60150/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-60150.localhost:60150/api/trash/issue177-026/preview?type=thumbnail',\n+     url: 'http://ariso-60150.localhost:60150/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-60150.localhost:60150/api/trash/issue177-027/preview?type=thumbnail',\n+     url: 'http://ariso-60150.localhost:60150/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-60150.localhost:60150/api/trash/issue177-023/preview?type=thumbnail',\n+     url: 'http://ariso-60150.localhost:60150/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-60150.localhost:60150/api/trash/issue177-024/preview?type=thumbnail',\n+     url: 'http://ariso-60150.localhost:60150/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'ResizeObserver loop completed with undelivered notifications.',\n+     url: 'http://ariso-60150.localhost:60150/albums/issue177-album-a?storageId=9c637c16-8d44-44e6-9764-9839651617cb&pageSize=40&tagId=issue177-tag-a'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/browser-errors.mjs:44:10)\n    at async file:////[eval2]:150:19",
+          "stage": "review-batch-cleanup-cycles",
+          "completedChecks": 10,
+          "lastCompletedCheck": "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。",
+          "firstCompletedCheck": "三个真实HeroUI筛选改变URL并重置页1、清选择，已停用存储可筛选；搜索与存储显式清除；20/40/80实际条数、分页和记录返回保留完整查询。",
+          "restoredTheme": null
+        }
+      ]
+    },
+    {
+      "name": "shell-navigation",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-shell-navigation node scripts/verify-browser.mjs --suite shell-navigation",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:30:40.753Z",
+      "finishedAt": "2026-10-05T11:31:25.056Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "shell-navigation.json",
+          "status": "passed",
+          "completedChecks": 2,
+          "lastCompletedCheck": "Menu and close are accessible icon-only 44px targets; real hover adds no background or transform, keyboard focus remains visible and close/Escape restore trigger focus at 360/430/768/987 and short 390×560.",
+          "firstCompletedCheck": "All implemented owner-shell entries, including storage list/new/edit/CORS and processing settings, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes."
+        }
+      ]
+    },
+    {
+      "name": "albums",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-albums node scripts/verify-browser.mjs --suite albums",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:31:25.744Z",
+      "finishedAt": "2026-10-05T11:31:52.564Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "albums.json",
+          "status": "passed",
+          "completedChecks": 9,
+          "lastCompletedCheck": "A final real logout restores the anonymous session expected by the following upload suite; /upload presents its sign-in form.",
+          "firstCompletedCheck": "Blank names, 101 code points and 2001 description characters do not write; 100 astral Unicode code points and 2000 description characters persist through the actual form."
+        }
+      ]
+    },
+    {
+      "name": "album-cover",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-album-cover node scripts/verify-browser.mjs --suite album-cover",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:31:53.131Z",
+      "finishedAt": "2026-10-05T11:32:44.420Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "album-cover.json",
+          "status": "passed",
+          "stage": "picker session expiry preserves filtered return destination",
+          "completedChecks": 60,
+          "lastCompletedCheck": "Deleting the isolated database session and triggering the real OwnerShell focus check redirects from the cover picker with the complete original album query; the following upload suite remains anonymous.",
+          "firstCompletedCheck": "Search input upper/lower edges focus with native pointer events"
+        }
+      ]
+    },
+    {
+      "name": "tags",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-tags node scripts/verify-browser.mjs --suite tags",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:32:45.041Z",
+      "finishedAt": "2026-10-05T11:33:13.783Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "tag-reconciliation-green.json",
+          "status": "passed"
+        },
+        {
+          "file": "tags.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: same-key-unchanged/light/390: 关闭通知 has a usable target (41.79998779296875×41.79998779296875)\n    at assertGeometry (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/browser-geometry.mjs:94:12)\n    at layouts (file:////[eval2]:130:7)\n    at async file:////[eval2]:411:3",
+          "stage": "conflict and rename",
+          "completedChecks": 6,
+          "lastCompletedCheck": "The real create form reuses Go; real HTTP creation preserves first spelling/ID for Straße, final sigma, NFC accents and non-BMP case pairs.",
+          "firstCompletedCheck": "Committed HTML 502 responses after POST/PATCH/DELETE reconcile through real GETs with one write; failed reads keep unknown without falsely claiming unchanged relationships."
+        }
+      ]
+    },
+    {
+      "name": "upload-input",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-upload-input node scripts/verify-browser.mjs --suite upload-input",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:33:14.467Z",
+      "finishedAt": "2026-10-05T11:33:46.558Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "upload-input.json",
+          "status": "passed",
+          "completedChecks": 11,
+          "lastCompletedCheck": "Controlled missing webkitdirectory capability shows explicit browser guidance while native ordinary selection remains usable.",
+          "firstCompletedCheck": "Real multiple selection preserves same-name files and repeated explicit selection as independent queued IDs; no automatic upload or scan dialog."
+        }
+      ]
+    },
+    {
+      "name": "upload-submissions",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-upload-submissions node scripts/verify-browser.mjs --suite upload --only submissions",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:33:47.205Z",
+      "finishedAt": "2026-10-05T11:34:36.949Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "upload-submissions.json",
+          "status": "passed",
+          "completedChecks": 4,
+          "lastCompletedCheck": "45 real files split into 20/20/5; changed settings apply to a second submission only; two submissions share three transfer slots and create 47 real images. Terminal File/Blob references are released and clearing keeps persisted images.",
+          "firstCompletedCheck": "Owner settings API rejects illegal ranges without changing the persisted valid settings."
+        }
+      ]
+    },
+    {
+      "name": "upload-relations",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-upload-relations node scripts/verify-browser.mjs --suite upload --only relations",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-10-05T11:34:37.578Z",
+      "finishedAt": "2026-10-05T11:35:22.399Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "upload-relations.json",
+          "status": "passed",
+          "completedChecks": 12,
+          "lastCompletedCheck": "Deleting old album/tag IDs and recreating their names leaves the accepted original image intact, fails the other two old files with COLLECTION_TARGET_REMOVED, attaches no image to replacements, and allows both unrelated second-submission files to reach ready.",
+          "firstCompletedCheck": "Holding the real successful relation-settings response displays loading on desktop and mobile; releasing it settles to the actual list without a fixed delay."
+        }
+      ]
+    },
+    {
+      "name": "upload-entry-before-focused-continuation",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-upload-entry-retry node scripts/verify-browser.mjs --suite upload-regression",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:20:26.706Z",
+      "finishedAt": "2026-10-05T11:20:54.681Z",
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "upload.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(upload.picker.height >= 280)\n\n    at verifyUIRefinement (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/ui-refinement.mjs:469:20)\n    at async verifyOwnerShell (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/owner-shell.mjs:484:5)\n    at async file:////[eval2]:244:3",
+          "completedChecks": 1,
+          "lastCompletedCheck": "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.",
+          "firstCompletedCheck": "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required."
+        }
+      ]
+    },
+    {
+      "name": "trash-after-focused-continuation",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-final-trash node scripts/verify-browser.mjs --suite trash",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:37:30.510Z",
+      "finishedAt": "2026-10-05T11:39:37.656Z",
+      "stages": {
+        "trash-query-batch": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (trash-query-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+        },
+        "trash-cleanup": {
+          "status": "passed"
+        }
+      },
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "trash-query-batch.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'error',\n+     message: 'ResizeObserver loop completed with undelivered notifications.',\n+     url: 'http://ariso-61549.localhost:61549/albums/issue177-album-a?storageId=91c95cae-1e32-45de-bcfe-d47a2c1f429c&pageSize=40&tagId=issue177-tag-a'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/browser-errors.mjs:44:10)\n    at async file:////[eval2]:150:19",
+          "stage": "review-batch-cleanup-cycles",
+          "completedChecks": 10,
+          "lastCompletedCheck": "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。",
+          "firstCompletedCheck": "三个真实HeroUI筛选改变URL并重置页1、清选择，已停用存储可筛选；搜索与存储显式清除；20/40/80实际条数、分页和记录返回保留完整查询。",
+          "restoredTheme": null
+        },
+        {
+          "file": "trash-cleanup.json",
+          "status": "passed",
+          "stage": "disabled-storage-two-step-confirmation",
+          "completedChecks": 8,
+          "lastCompletedCheck": "Disabled Local storage opens its dedicated warning before a separate permanent-delete confirmation; continuing the warning does not send DELETE, and Escape cancels the second step.",
+          "firstCompletedCheck": "Escape cancels confirmation, restores focus to the exact permanent-delete trigger and creates no cleanup task. Desktop/mobile light/dark and short viewports retain 44px targets.",
+          "browserErrors": []
+        }
+      ]
+    },
+    {
+      "name": "upload-regression-after-focused-continuation",
+      "command": "EGO_TASK_SPACE=32 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-focused-final-upload-regression node scripts/verify-browser.mjs --suite upload-regression",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-10-05T11:39:38.238Z",
+      "finishedAt": "2026-10-05T11:40:21.808Z",
+      "stages": {
+        "upload": {
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:280:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/scripts/verify-browser.mjs:848:22"
+        },
+        "upload-polling": {
+          "status": "passed"
+        }
+      },
+      "temporaryDirectoryRemoved": true,
+      "reports": [
+        {
+          "file": "upload.json",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(upload.picker.height >= 280)\n\n    at verifyUIRefinement (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/ui-refinement.mjs:469:20)\n    at async verifyOwnerShell (file:///Users/dnslin/.codex/worktrees/issue-190-sharing/ariso/e2e/owner-shell.mjs:484:5)\n    at async file:////[eval2]:244:3",
+          "completedChecks": 1,
+          "lastCompletedCheck": "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.",
+          "firstCompletedCheck": "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required."
+        },
+        {
+          "file": "upload-polling.json",
+          "status": "passed",
+          "completedChecks": 4
+        }
+      ]
+    }
+  ]
+}

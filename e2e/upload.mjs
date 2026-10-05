@@ -201,6 +201,34 @@ async function imageId() {
 }
 let transportScript;
 try {
+  // Reproduce a preceding suite's authenticated state, then own this prerequisite.
+  await page.goto(`${config.origin}/api/health`);
+  const signedIn = await page.fetch('/api/auth/sign-in/email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(config.credentials),
+  });
+  assert.equal(
+    signedIn.status,
+    200,
+    'Upload entry fixture creates its own session',
+  );
+  const signedOut = await page.fetch('/api/auth/sign-out', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: '{}',
+  });
+  assert.equal(
+    signedOut.status,
+    200,
+    'Upload entry fixture signs out its session',
+  );
+  const anonymous = await page.fetch('/api/auth/get-session');
+  assert.equal(anonymous.status, 200);
+  assert.equal(JSON.parse(anonymous.body), null);
+  report.checks.push(
+    'Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.',
+  );
   await page.goto(`${config.origin}/upload`);
   await page.waitForSelector('#email');
   await page.fill('#email', config.credentials.email);

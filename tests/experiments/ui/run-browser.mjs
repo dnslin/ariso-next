@@ -80,6 +80,10 @@ try {
   }
   const config = {
     libraryScript: new URL('./library-browser.mjs', import.meta.url).href,
+    stagesScript: new URL(
+      '../../../scripts/browser-stages.mjs',
+      import.meta.url,
+    ).href,
     origin,
     output,
     spaceId: process.env.EGO_TASK_SPACE

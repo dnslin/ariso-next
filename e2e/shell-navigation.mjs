@@ -141,7 +141,23 @@ try {
   assert.equal(storageResponse.status, 200);
   const storages = JSON.parse(storageResponse.body);
   const storage = storages.find((item) => item.type === 'local');
-  const corsStorage = storages.find((item) => item.type === 's3');
+  let corsStorage = storages.find((item) => item.type === 's3');
+  if (!corsStorage) {
+    const created = await page.fetch('/api/storages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 's3',
+        name: 'Navigation S3',
+        endpoint: 'http://127.0.0.1:1',
+        region: 'test',
+        bucket: 'navigation',
+        enabled: false,
+      }),
+    });
+    assert.equal(created.status, 201);
+    corsStorage = JSON.parse(created.body);
+  }
   assert.ok(storage);
   assert.ok(corsStorage);
   for (const theme of ['light', 'dark']) {
