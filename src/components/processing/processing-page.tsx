@@ -6,6 +6,7 @@ import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { Card } from '@heroui/react/card';
 import { AlertDialog } from '@heroui/react/alert-dialog';
+import { toast } from '@heroui/react/toast';
 import { OwnerShell } from '../shell/owner-shell';
 import { SettingsCategories } from '../shell/settings-categories';
 import {
@@ -368,6 +369,7 @@ function ProcessingEditor({
             input={settings.input}
             mode={mode}
             busy={busy}
+            assetBusy={assetBusy}
             errors={settings.errors}
             change={settings.change}
             onSave={() => void settings.save()}
@@ -378,6 +380,15 @@ function ProcessingEditor({
               settings.change('watermarkMode', value);
             }}
             onAssetBusy={setAssetBusy}
+            onAssetClear={() => {
+              settings.change('watermarkAssetId', null);
+              toast('选择已清空，保存后生效', { variant: 'default' });
+              requestAnimationFrame(() =>
+                document
+                  .querySelector<HTMLElement>('[data-testid="processing-save"]')
+                  ?.focus({ preventScroll: true }),
+              );
+            }}
             onExpire={settings.expire}
           />
         </SettingsCategories>

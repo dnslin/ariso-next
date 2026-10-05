@@ -272,6 +272,7 @@ upload 必须闭合实际传输大小、各写入路径的空间检查及在途�
 - `GET /api/media/watermark-assets/{id}` 仅所有者 Cookie 可读，返回与 POST 相同的真实素材属性、生命周期 `status`、`expiresAt`、诊断 `error`、创建/更新时间及 `available`，响应 `private, no-store`。`available` 仅在 `status=ready` 且临时期限未到时为 true；采用后 `expiresAt=null` 不再受原临时期限限制。已到期或写入/清理/已删除记录仍保留真实状态和属性，`available=false`；不存在返回 404。读取不采用、不延长到期、不建立引用；不提供列表、文件名或素材字节。
 - 原文件放在 `${DATA_DIR}/assets/watermarks/<id>/source`，每次上传分配新 ID。`path` 相对 watermarks 目录，仅是内部素材路径，不是公开 URL。数据库在写入前登记所属目录，校验成功才进入 `ready`；SVG 校验预览位于同一所属目录。
 - `updateMediaSettings(tx, input)` 的完整输入增加可空 `watermarkAssetId`。图片模式必须选择素材；切为关闭/文字模式可以保留已选素材，设置本身仍持有引用。采用与设置更新同事务，采用清空一小时到期时间；清空选择后才释放该设置引用。
+- 处理设置页有选中素材 ID 时，在水印公共说明下提供“清空素材选择”，关闭/文字/图片模式均可用。点击只清空当前输入，保留其他参数、测试图与页面位置，以中性通知说明“选择已清空，保存后生效”，焦点回到固定保存操作；明确保存 `watermarkAssetId=null` 后才解除设置引用。图片模式无素材仍须重新上传或切换模式，不能自动关闭水印。此交互于2026-10-05由用户批准补充原型，不改变素材临时期限或任务引用清理规则。
 - `createProcessingSnapshot(tx)` 仅在图片模式写入 `watermarkAsset` 的不可变 ID、路径与实际属性，其他模式为 null。历史任务保留这些属性，但只有 queued/running 内容任务阻止清理；自动重试仍为 queued。
 - upload 导出 `hasUploadWatermarkReference(tx, assetId)`，查询提交快照及 queued/receiving/validating/finalizing 会话；由启动组合入口注入 media 清理器。现有交接在同一事务建立 media 任务并结束 upload 引用。完整批次联验归 T-UP-03。
 - 预览调用方在创建预览事务中调用 `retainPreviewWatermark(tx, previewId, assetId)`，在工作已结束后调用 `releasePreviewWatermark(tx, previewId)`；失败、取消、到期与恢复均由预览所有者接入释放。引用持久化且不随素材自身到期消失；本任务不提供预览执行器，实际接入归 T-MED-09。

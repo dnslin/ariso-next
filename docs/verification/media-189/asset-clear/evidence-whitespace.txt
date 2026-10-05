@@ -1,0 +1,6 @@
+First staged evidence whitespace check: git diff --cached --check exited 2.
+build.txt:14,15,16: progress lines contained trailing spaces and CR.
+integration-read.txt:11, integration-tools.txt:11, unit.txt:11: extra blank line at EOF.
+Original command output remains in the ignored test-results/issue-189-clear-*.txt files.
+Only line-end whitespace/CR and surplus final blank lines in committed text logs were normalized.
+No command result, diagnostic content, assertion or browser result was changed.

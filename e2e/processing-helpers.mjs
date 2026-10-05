@@ -200,7 +200,11 @@ export async function processingTools(page, config, report) {
           (fault?.holdSettingsSaveResponse &&
             method === 'PATCH' &&
             path === '/api/settings/media' &&
-            response.status === 200)
+            response.status === 200) ||
+          (fault?.holdWatermarkUploadResponse &&
+            method === 'POST' &&
+            path === '/api/media/watermark-assets' &&
+            response.status === 201)
         ) {
           record.held = true;
           await readGate;

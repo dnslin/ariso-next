@@ -39,21 +39,25 @@ export function WatermarkFields({
   input,
   mode,
   busy,
+  assetBusy,
   errors,
   change,
   onToggle,
   onMode,
   onAssetBusy,
+  onAssetClear,
   onExpire,
 }: {
   input: MediaSettingsInput;
   mode: 'text' | 'image';
   busy: boolean;
+  assetBusy: boolean;
   errors: Record<string, string>;
   change: ProcessingChange;
   onToggle: (value: boolean) => void;
   onMode: (value: 'text' | 'image') => void;
   onAssetBusy: (value: boolean) => void;
+  onAssetClear: () => void;
   onExpire: () => void;
 }) {
   const disabled = busy || input.watermarkMode === 'off';
@@ -263,6 +267,23 @@ export function WatermarkFields({
           : '只应用当前水印模式；切换模式保留另一模式输入。'}{' '}
         修改设置只影响新任务。
       </p>
+      {input.watermarkAssetId ? (
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-[13px] leading-normal text-muted">
+            保留的图片素材仅在保存后解除引用。
+          </p>
+          <Button
+            data-testid="processing-asset-clear"
+            type="button"
+            variant="outline"
+            isDisabled={busy || assetBusy}
+            onPress={onAssetClear}
+            className="min-h-11 rounded-xl text-sm font-normal"
+          >
+            清空素材选择
+          </Button>
+        </div>
+      ) : null}
     </Card>
   );
 }

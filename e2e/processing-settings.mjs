@@ -3,6 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { testId, field, quote } from './processing-helpers.mjs';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
+import { verifyProcessingAssetClear } from './processing-asset-clear.mjs';
 
 export async function verifyProcessingSettings(page, config, tools, report) {
   const {
@@ -807,4 +808,10 @@ export async function verifyProcessingSettings(page, config, tools, report) {
     temporaryAssetId: expiringId,
     retainedSavedAssetId: assetId,
   });
+  await verifyProcessingAssetClear(
+    page,
+    config,
+    { ...tools, evidence },
+    report,
+  );
 }
