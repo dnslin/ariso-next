@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict';
+import { setTimeout as delay } from 'node:timers/promises';
+import { startCorsFixture } from './e2e/storage-cors-fixture.mjs';
+const fixture = await startCorsFixture('http://127.0.0.1:47070');
+const target = '/cors-test/ariso/fixture/orphans/target';
+const neighbor = '/cors-test/ariso/neighbor/orphans/other';
+const object = (path, method, signal) => fetch(`${fixture.endpoint}${path}`, {
+  method,
+  headers: { authorization: 'isolated-fixture-check' },
+  ...(method === 'PUT' ? { body: 'orphan bytes' } : {}),
+  signal: signal ?? AbortSignal.timeout(5000),
+});
+const control = async (mode) => (await fetch(`${fixture.endpoint}/_control`, {
+  ...(mode ? { method: 'POST', body: JSON.stringify({ mode, deletePath: target }) } : {}),
+  signal: AbortSignal.timeout(5000),
+})).json();
+async function held(expected) {
+  const deadline = Date.now() + 3000;
+  while ((await control()).heldDeletes.includes(target) !== expected) {
+    assert.ok(Date.now() < deadline, 'Held DELETE state reaches the expected value');
+    await delay(10);
+  }
+}
+let closed = false;
+try {
+  assert.equal((await object(target, 'PUT')).status, 200);
+  assert.equal((await object(neighbor, 'PUT')).status, 200);
+  await control('hold-delete');
+  let settled = false;
+  const pending = object(target, 'DELETE').then((response) => { settled = true; return response; });
+  await held(true);
+  assert.equal(settled, false);
+  assert.ok((await control()).objects.includes(target));
+  assert.equal((await object(neighbor, 'DELETE')).status, 204);
+  assert.ok(!(await control()).objects.includes(neighbor));
+  await control('normal');
+  assert.equal((await pending).status, 204);
+  assert.deepEqual((await control()).objects, []);
+  assert.deepEqual((await control()).heldDeletes, []);
+
+  assert.equal((await object(target, 'PUT')).status, 200);
+  await control('hold-delete');
+  const abort = new AbortController();
+  const cancelled = object(target, 'DELETE', abort.signal).catch((error) => error);
+  await held(true);
+  abort.abort();
+  assert.ok((await cancelled) instanceof Error);
+  await held(false);
+  assert.ok((await control()).objects.includes(target));
+
+  const closing = object(target, 'DELETE').catch((error) => error);
+  await held(true);
+  await fixture.close();
+  closed = true;
+  assert.ok((await closing) instanceof Error);
+  console.log('Fixture HTTP checks passed: exact-path hold/release, unrelated DELETE, client cancellation, fixture close.');
+} finally {
+  if (!closed) await fixture.close();
+}

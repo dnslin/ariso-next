@@ -218,7 +218,9 @@ export function LibraryScreen(props: {
         ) : batch.visible && batch.workspace?.phase !== 'confirm' ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : detail.view === 'reprocess' ? (
-          <DetailReprocessFooter actions={reprocess.footerActions} />
+          reprocess.footerActions ? (
+            <DetailReprocessFooter actions={reprocess.footerActions} />
+          ) : null
         ) : detail.view ? (
           <DetailVersionsFooter
             detail={detailQuery.data}

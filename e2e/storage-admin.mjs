@@ -74,9 +74,11 @@ async function savedByName(name) {
   }, name);
   return (await request('/api/storages')).find((item) => item.name === name);
 }
-async function control(mode) {
+async function control(mode, deletePath) {
   const response = await fetch(`${config.corsFixture}/_control`, {
-    ...(mode ? { method: 'POST', body: JSON.stringify({ mode }) } : {}),
+    ...(mode
+      ? { method: 'POST', body: JSON.stringify({ mode, deletePath }) }
+      : {}),
   });
   assert.equal(response.status, 200);
   return response.json();
@@ -143,8 +145,6 @@ async function runConnection(id, expected, preserveInput = false) {
   );
   return value;
 }
-let heldRead;
-let rejectedRead;
 try {
   await page.goto(config.origin);
   const signIn = () =>
@@ -175,7 +175,7 @@ try {
     '[data-testid="storage-list"][data-state="ready"]',
   );
   await storageLayouts(page, config, report, 'list');
-  heldRead = await storageReadFault(page, '/api/storages', 'hold');
+  const heldRead = await storageReadFault(page, '/api/storages', 'hold');
   await page.reload();
   await page.waitForSelector('[role="status"]');
   await page.waitForFunction(
@@ -188,8 +188,7 @@ try {
   });
   await page.waitForSelector('[data-testid="storage-list"]');
   await page.cdp('Page.removeScriptToEvaluateOnNewDocument', heldRead);
-  heldRead = undefined;
-  rejectedRead = await storageReadFault(page, '/api/storages', 'fail');
+  const rejectedRead = await storageReadFault(page, '/api/storages', 'fail');
   await page.reload();
   await page.waitForSelector('[role="alert"]');
   await storageLayouts(page, config, report, 'list-error', [1440, 390]);
@@ -200,7 +199,6 @@ try {
   await page.keyboard.press('Enter');
   await page.waitForSelector('[data-testid="storage-list"]');
   await page.cdp('Page.removeScriptToEvaluateOnNewDocument', rejectedRead);
-  rejectedRead = undefined;
   report.checks.push(
     'Actual list reads expose loading/error and keyboard retry recovers the real stored rows.',
   );
@@ -601,7 +599,11 @@ try {
     'HTTP 2xx failed connection report displays failed; actual remote DELETE failure retains probe and UI retry removes its exact object while storage remains disabled.',
   );
 
-  const orphanPath = `/cors-test/storage-admin-198/ariso/${s3.id}/orphans/browser-198`;
+  const history = await request(`/api/storages/${s3.id}/scan`, 'POST');
+  assert.equal(history.status, 'passed');
+  assert.equal(history.failedCount, 0);
+  const orphanKey = 'orphans/browser-198';
+  const orphanPath = `/cors-test/storage-admin-198/ariso/${s3.id}/${orphanKey}`;
   await control('delete-failure');
   const orphanWrite = await fetch(`${config.corsFixture}${orphanPath}`, {
     method: 'PUT',
@@ -610,48 +612,189 @@ try {
   });
   assert.equal(orphanWrite.status, 200);
   await openCleanup(s3.id);
-  assert.equal((await storage(s3.id)).scan, null);
-  await page.click(button('扫描并清理受管孤儿对象'));
-  await page.waitForFunction(
-    async (id) =>
-      (await (await fetch(`/api/storages/${id}`)).json()).scan?.status ===
-      'failed',
-    s3.id,
-    { timeout: 90000 },
-  );
-  assert.equal((await storage(s3.id)).scan.status, 'failed');
-  assert.ok(
-    await page.evaluate(() =>
+  await page.evaluate((id) => {
+    const original = window.fetch;
+    window.fetch = async (...args) => {
+      const scanRequest =
+        new URL(String(args[0]), location.href).pathname ===
+          `/api/storages/${id}/scan` && args[1]?.method === 'POST';
+      if (scanRequest) window.__storageScanRequested = true;
+      const response = await original(...args);
+      if (scanRequest) {
+        const body = await response.clone().json();
+        window.__storageScanResult = {
+          httpStatus: response.status,
+          code: body.code,
+          ...(response.ok
+            ? {
+                scan: {
+                  status: body.status,
+                  startedAt: body.startedAt,
+                  deletedCount: body.deletedCount,
+                  failedCount: body.failedCount,
+                },
+              }
+            : {}),
+        };
+      }
+      return response;
+    };
+  }, s3.id);
+  const scanFromUi = async (recover = false) => {
+    const preparationDeadline = Date.now() + 90000;
+    const deleteCount = (await control()).requests.filter(
+      (value) => value.method === 'DELETE' && value.path === orphanPath,
+    ).length;
+    const remaining = () => {
+      const timeout = preparationDeadline - Date.now();
+      assert.ok(
+        timeout > 0,
+        'Storage scan preparation reaches a ready UI before its deadline',
+      );
+      return timeout;
+    };
+    let before;
+    while (true) {
+      await page.waitForFunction(
+        async (id) => {
+          const { scan } = await (await fetch(`/api/storages/${id}`)).json();
+          if (scan.status === 'running') return false;
+          window.__storageScanBefore = scan.startedAt;
+          return true;
+        },
+        s3.id,
+        { timeout: remaining() },
+      );
+      before = await page.evaluate(() => window.__storageScanBefore);
+      await page.click(button('刷新状态'), { timeout: remaining() });
+      await page.waitForFunction(
+        () =>
+          [...document.querySelectorAll('button')].some(
+            (node) => node.textContent.trim() === '刷新状态' && !node.disabled,
+          ),
+        undefined,
+        { timeout: remaining() },
+      );
+      const state = await page.evaluate(() => {
+        const section = document.querySelector(
+          'section[aria-label="受管孤儿对象扫描"]',
+        );
+        return {
+          ready: !section.querySelector('button').disabled,
+          running: section.textContent
+            .replace(/\s+/g, '')
+            .includes('扫描状态：扫描中'),
+        };
+      });
+      if (state.ready) break;
+      assert.equal(
+        state.running,
+        true,
+        'A disabled scan is explained by the displayed running state',
+      );
+    }
+    await page.evaluate(() => {
+      window.__storageScanResult = undefined;
+      window.__storageScanRequested = false;
+    });
+    if (recover) {
+      await control('hold-delete', orphanPath);
+      while (!(await control()).heldDeletes.includes(orphanPath)) {
+        remaining();
+        if ((await storage(s3.id)).scan.status !== 'running') break;
+        await delay(50);
+      }
+    }
+    await page.click(button('扫描并清理受管孤儿对象'));
+    if (recover) {
+      await page.waitForFunction(
+        () => window.__storageScanRequested,
+        undefined,
+        { timeout: 90000 },
+      );
+      const deadline = Date.now() + 90000;
+      while (!(await control()).heldDeletes.includes(orphanPath)) {
+        assert.ok(
+          Date.now() < deadline,
+          'The exact orphan DELETE reaches the fixture',
+        );
+        await delay(50);
+      }
+      assert.ok((await control()).objects.includes(orphanPath));
+      await control('normal');
+    }
+    await page.waitForFunction(
+      () => window.__storageScanResult !== undefined,
+      undefined,
+      { timeout: 90000 },
+    );
+    const response = await page.evaluate(() => window.__storageScanResult);
+    if (!response.scan)
+      await page.waitForFunction(
+        async ({ id, before }) => {
+          const value = await (await fetch(`/api/storages/${id}`)).json();
+          return (
+            value.scan.status === 'failed' && value.scan.startedAt !== before
+          );
+        },
+        { id: s3.id, before },
+        { timeout: 90000 },
+      );
+    const scan = response.scan ?? (await storage(s3.id)).scan;
+    assert.notEqual(
+      scan.startedAt,
+      before,
+      'UI POST starts or joins a scan after the terminal baseline',
+    );
+    assert.ok(
+      (await control()).requests.filter(
+        (value) => value.method === 'DELETE' && value.path === orphanPath,
+      ).length > deleteCount,
+      'An actual DELETE of the exact orphan is observed during this operation',
+    );
+    return {
+      httpStatus: response.httpStatus,
+      code: response.code,
+      status: scan.status,
+      discoveredCount: scan.discoveredCount,
+      deletedCount: scan.deletedCount,
+      failedCount: scan.failedCount,
+      errorKey: scan.error?.key,
+      serviceCode: scan.error?.serviceCode,
+      errorStatus: scan.error?.httpStatusCode,
+    };
+  };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const failedScan = await scanFromUi();
+    assert.equal(failedScan.httpStatus, 502);
+    assert.equal(failedScan.code, 'STORAGE_SCAN_FAILED');
+    assert.equal(failedScan.status, 'failed');
+    assert.equal(failedScan.discoveredCount, 1);
+    assert.equal(failedScan.deletedCount, 0);
+    assert.equal(failedScan.failedCount, 1);
+    assert.equal(failedScan.errorKey, orphanKey);
+    assert.equal(failedScan.serviceCode, 'AccessDenied');
+    assert.equal(failedScan.errorStatus, 403);
+    assert.equal((await storage(s3.id)).scan.status, 'failed');
+    assert.ok((await control()).objects.includes(orphanPath));
+    await page.waitForFunction(() =>
       document
         .querySelector('[data-testid="storage-cleanup-view"]')
         .textContent.includes('AccessDenied'),
-    ),
-  );
-  await storageLayouts(page, config, report, 'scan-failed', [1440, 390]);
-  const failedStarted = (await storage(s3.id)).scan.startedAt;
-  await page.click(button('扫描并清理受管孤儿对象'));
-  await page.waitForFunction(
-    async ({ id, before }) => {
-      const value = await (await fetch(`/api/storages/${id}`)).json();
-      return value.scan.status === 'failed' && value.scan.startedAt !== before;
-    },
-    { id: s3.id, before: failedStarted },
-    { timeout: 90000 },
-  );
-  assert.ok((await control()).objects.includes(orphanPath));
-  await control('normal');
-  await page.click(button('扫描并清理受管孤儿对象'));
-  await page.waitForFunction(
-    async (id) =>
-      (await (await fetch(`/api/storages/${id}`)).json()).scan.status ===
-      'passed',
-    s3.id,
-    { timeout: 90000 },
-  );
+    );
+    if (attempt === 0)
+      await storageLayouts(page, config, report, 'scan-failed', [1440, 390]);
+  }
+  const recovered = await scanFromUi(true);
+  assert.equal(recovered.httpStatus, 200);
+  assert.equal(recovered.status, 'passed');
+  assert.equal(recovered.deletedCount, 1);
+  assert.equal(recovered.failedCount, 0);
+  assert.equal((await storage(s3.id)).scan.status, 'passed');
   assert.deepEqual((await control()).objects, []);
   await storageLayouts(page, config, report, 'scan-recovered', [1440, 390]);
   report.checks.push(
-    'Real namespace scan records exact orphan DELETE AccessDenied; UI retry fails again retaining object, then a fresh successful retry removes it and reports passed.',
+    'With an existing passed scan history, each real UI POST starts or joins a new round with an observed exact-orphan DELETE; two AccessDenied failures retain the object, then a fresh successful retry removes it and reports passed.',
   );
 
   await open(local.id);
@@ -812,15 +955,8 @@ try {
   report.status = 'passed';
 } catch (error) {
   report.error = error.stack ?? String(error);
-  await page.screenshot({
-    path: join(config.output, 'storage-admin-failure.png'),
-  });
   throw error;
 } finally {
-  if (heldRead)
-    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', heldRead);
-  if (rejectedRead)
-    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', rejectedRead);
   await control('normal');
   await writeFile(
     join(config.output, 'storage-admin.json'),

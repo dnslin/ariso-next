@@ -1,0 +1,196 @@
+Already up to date
+Done in 184ms using pnpm v11.19.0
+$ vitest run --project unit --reporter=default --reporter=junit --outputFile=test-results/two-fixes/unit.xml
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso
+
+ ✓ |unit| tests/unit/library/batch-controller.test.ts (18 tests) 109ms
+ ✓ |unit| tests/unit/library/query-cache.test.ts (3 tests) 141ms
+ ✓ |unit| tests/unit/library/card.test.ts (11 tests) 44ms
+ ✓ |unit| tests/unit/upload/input.test.ts (27 tests) 80ms
+ ✓ |unit| tests/unit/upload/transport.test.ts (9 tests) 145ms
+ ✓ |unit| tests/unit/library/trash-changes.test.ts (5 tests) 389ms
+ ✓ |unit| tests/unit/media/preview-route.test.ts (44 tests) 405ms
+ ✓ |unit| tests/unit/library/batch-summary.test.ts (20 tests) 45ms
+ ✓ |unit| tests/unit/library/batch-reprocess.test.ts (22 tests) 158ms
+ ✓ |unit| tests/unit/library/viewer-neighbors.test.ts (8 tests) 178ms
+ ✓ |unit| tests/unit/library/batch-request.test.ts (9 tests) 73ms
+ ✓ |unit| tests/unit/library/gallery.test.ts (20 tests) 83ms
+ ✓ |unit| tests/unit/library/trash-query-controller.test.ts (3 tests) 186ms
+ ✓ |unit| tests/unit/storage/storage-reconciliation.test.ts (10 tests) 30ms
+ ✓ |unit| tests/unit/storage/storage-references-panel.test.ts (6 tests) 38ms
+ ✓ |unit| tests/unit/library/detail-help.test.ts (9 tests) 51ms
+ ✓ |unit| tests/unit/library/changes.test.ts (2 tests) 172ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts (13 tests) 32ms
+ ✓ |unit| tests/unit/media/resources.test.ts (15 tests) 60ms
+ ✓ |unit| tests/unit/library/reprocess-result.test.ts (6 tests) 24ms
+ ✓ |unit| tests/unit/library/query.test.ts (30 tests) 34ms
+ ✓ |unit| tests/unit/library/batch-targets.test.ts (6 tests) 63ms
+ ✓ |unit| tests/unit/library/cleanup-controller.test.ts (7 tests) 49ms
+ ✓ |unit| tests/unit/analytics/collector.test.ts (16 tests) 328ms
+ ✓ |unit| tests/unit/library/query-state.test.ts (20 tests) 19ms
+ ✓ |unit| tests/unit/library/detail-status.test.ts (6 tests) 23ms
+ ✓ |unit| tests/unit/runtime/logger.test.ts (13 tests) 124ms
+ ✓ |unit| tests/unit/library/copy-request.test.ts (13 tests) 39ms
+ ✓ |unit| tests/unit/library/detail-scope.test.ts (2 tests) 20ms
+ ✓ |unit| tests/unit/library/cleanup-request.test.ts (5 tests) 28ms
+ ✓ |unit| tests/unit/library/viewer-model.test.ts (17 tests) 8ms
+ ✓ |unit| tests/unit/library/cleanup-workspace.test.ts (4 tests) 30ms
+ ✓ |unit| tests/unit/library/batch-route.test.ts (10 tests) 31ms
+ ✓ |unit| tests/unit/media/settings.test.ts (52 tests) 15ms
+ ✓ |unit| tests/unit/media/watermark-route.test.ts (16 tests) 31ms
+ ✓ |unit| tests/unit/upload/controller.test.ts (36 tests) 1625ms
+ ✓ |unit| tests/unit/upload/queue.test.ts (9 tests) 1668ms
+   ✓ freezes relation IDs per submission and preserves groups of 20/20/5 across setting edits 839ms
+ ✓ |unit| tests/unit/runtime/crypto.test.ts (15 tests) 13ms
+ ✓ |unit| tests/unit/storage/s3-protocol.test.ts (10 tests) 77ms
+ ✓ |unit| tests/unit/delivery/headers.test.ts (35 tests) 46ms
+ ✓ |unit| tests/unit/runtime/env.test.ts (55 tests) 37ms
+ ✓ |unit| tests/unit/library/batch-feedback.test.ts (46 tests) 6ms
+ ✓ |unit| tests/unit/storage/cors-browser.test.ts (5 tests) 35ms
+ ✓ |unit| tests/unit/media/watermark-validation.test.ts (9 tests) 19ms
+stderr | tests/unit/storage/connection-report.test.ts > does not describe skipped deletion as an object that was deleted
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > preserves service diagnostics and real probe identity in the running report views
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+ ✓ |unit| tests/unit/delivery/resolve.test.ts (25 tests) 16ms
+stderr | tests/unit/storage/connection-report.test.ts > keeps failed test status after cleanup succeeds and hides obsolete cleanup errors
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > does not offer enable from a stale passed report
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > keeps pending cleanup visible independently of other stages
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > does not describe a failed or unconfirmed anonymous read as passing
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+ ✓ |unit| tests/unit/storage/connection-report.test.ts (6 tests) 215ms
+ ✓ |unit| tests/unit/upload/settings-route.test.ts (7 tests) 26ms
+ ✓ |unit| tests/unit/collections/tags-route.test.ts (6 tests) 36ms
+ ✓ |unit| tests/unit/library/batch.test.ts (41 tests) 11ms
+ ✓ |unit| tests/unit/storage/storage-form.test.ts (7 tests) 3ms
+ ✓ |unit| tests/unit/library/selection-reconciliation.test.ts (3 tests) 76ms
+ ✓ |unit| tests/unit/site/settings.test.ts (43 tests) 29ms
+ ✓ |unit| tests/unit/storage/s3.test.ts (10 tests) 50ms
+ ✓ |unit| tests/unit/scripts/browser-errors.test.ts (2 tests) 12ms
+ ✓ |unit| tests/unit/shell/navigation.test.ts (12 tests) 131ms
+ ✓ |unit| tests/unit/library/request-reprocess.test.ts (3 tests) 17ms
+ ✓ |unit| tests/unit/storage/validation.test.ts (5 tests) 7ms
+ ✓ |unit| tests/unit/sharing/client.test.ts (2 tests) 27ms
+ ✓ |unit| tests/unit/library/trash-query-state.test.ts (17 tests) 18ms
+ ✓ |unit| tests/unit/library/drag-selection.test.ts (2 tests) 7ms
+ ✓ |unit| tests/unit/library/reprocess-recovery.test.ts (31 tests) 7ms
+ ✓ |unit| tests/unit/library/selection.test.ts (12 tests) 100ms
+ ✓ |unit| tests/unit/media/reprocess-route.test.ts (7 tests) 29ms
+ ✓ |unit| tests/unit/library/trash-batch-state.test.ts (4 tests) 8ms
+ ✓ |unit| tests/unit/library/filter-options.test.ts (2 tests) 26ms
+ ✓ |unit| tests/unit/collections/validation.test.ts (29 tests) 12ms
+ ✓ |unit| tests/unit/media/errors.test.ts (25 tests) 3ms
+ ✓ |unit| tests/unit/media/svg-policy.test.ts (42 tests) 29ms
+ ✓ |unit| tests/unit/runtime/console-bridge.test.ts (6 tests) 978ms
+ ✓ |unit| tests/unit/upload/page-settings-route.test.ts (3 tests) 17ms
+ ✓ |unit| tests/unit/identity/owner-page.test.ts (8 tests) 30ms
+ ✓ |unit| tests/unit/identity/return-to.test.ts (20 tests) 7ms
+ ✓ |unit| tests/unit/library/detail-preview.test.ts (5 tests) 9ms
+ ✓ |unit| tests/unit/storage/s3-probes.test.ts (8 tests) 63ms
+ ✓ |unit| tests/unit/media/format-experiment.test.ts (5 tests) 18ms
+ ✓ |unit| tests/unit/media/metadata.test.ts (8 tests) 10ms
+ ✓ |unit| tests/unit/scripts/container.test.ts (9 tests) 22ms
+ ✓ |unit| tests/unit/upload/validation.test.ts (8 tests) 13ms
+ ✓ |unit| tests/unit/identity/validation.test.ts (9 tests) 29ms
+{"level":"error","time":"2026-10-05T05:27:09.453Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-05T05:27:09.461Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-05T05:27:09.463Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-05T05:27:09.464Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-05T05:27:09.466Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+ ✓ |unit| tests/unit/storage/probe-http.test.ts (5 tests) 42ms
+ ✓ |unit| tests/unit/delivery/stream.test.ts (1 test) 45ms
+ ✓ |unit| tests/unit/library/filter-dates.test.ts (4 tests) 8ms
+ ✓ |unit| tests/unit/runtime/log-redaction.test.ts (15 tests) 2ms
+ ✓ |unit| tests/unit/storage/cors-http.test.ts (7 tests) 43ms
+ ✓ |unit| tests/unit/storage/cors-report.test.ts (1 test) 66ms
+ ✓ |unit| tests/unit/collections/tag-query.test.ts (1 test) 5ms
+ ✓ |unit| tests/unit/media/processing.test.ts (1 test) 5ms
+ ✓ |unit| tests/unit/media/watermark.test.ts (2 tests) 3ms
+ ✓ |unit| tests/unit/identity/cookie-attributes.test.ts (7 tests) 4ms
+ ✓ |unit| tests/unit/media/reprocess.test.ts (3 tests) 3ms
+ ✓ |unit| tests/unit/delivery/errors.test.ts (10 tests) 19ms
+ ✓ |unit| tests/unit/collections/album-query.test.ts (1 test) 3ms
+ ✓ |unit| tests/unit/collections/unicode-experiment.test.ts (12 tests) 437ms
+   ✓ EV-COLLECTIONS-01 Unicode experiment (12)
+     ✓ matches the complete pinned default full-fold data and explicit name samples 429ms
+ ✓ |unit| tests/unit/runtime/verify-image.test.ts (5 tests) 5ms
+ ✓ |unit| tests/unit/runtime/browser-runner.test.ts (49 tests) 18537ms
+   ✓ browser runner argument boundaries (49)
+     ✓ accepts suite full and its only undefined 735ms
+     ✓ accepts suite viewer and its only undefined 891ms
+     ✓ accepts suite viewer and its only representative 543ms
+     ✓ accepts suite viewer and its only behavior 379ms
+     ✓ accepts suite viewer and its only recovery 355ms
+     ✓ accepts suite viewer and its only refresh 370ms
+     ✓ accepts suite viewer and its only consumers 363ms
+     ✓ accepts suite viewer and its only deleted-source 355ms
+     ✓ accepts suite viewer and its only pending-navigation 352ms
+     ✓ accepts suite upload and its only relations 362ms
+     ✓ accepts suite upload and its only undefined 346ms
+     ✓ accepts suite upload and its only submissions 356ms
+     ✓ accepts suite upload-regression and its only undefined 344ms
+     ✓ accepts suite upload-s3 and its only cleanup 356ms
+     ✓ accepts suite upload-s3 and its only undefined 347ms
+     ✓ accepts suite copy-dropdown and its only undefined 348ms
+     ✓ accepts suite library-reprocess and its only undefined 362ms
+     ✓ accepts suite library-copy and its only representative 368ms
+     ✓ accepts suite library-copy and its only undefined 353ms
+     ✓ accepts suite library-copy and its only feedback 360ms
+     ✓ accepts suite library-copy and its only revision 339ms
+     ✓ accepts suite storage-admin and its only live 352ms
+     ✓ accepts suite storage-admin and its only undefined 364ms
+     ✓ accepts suite storage-admin and its only dialogs 349ms
+     ✓ accepts suite storage-admin and its only feedback 353ms
+     ✓ accepts suite storage-admin and its only regressions 361ms
+     ✓ accepts suite trash and its only representative 337ms
+     ✓ accepts suite trash and its only undefined 352ms
+     ✓ accepts suite trash and its only cleanup 362ms
+     ✓ accepts suite trash and its only query-error 360ms
+     ✓ accepts suite trash and its only confirmation 366ms
+     ✓ accepts suite trash and its only approved-ui 346ms
+     ✓ accepts suite trash and its only approved-results 343ms
+     ✓ accepts suite trash and its only approved-query 368ms
+     ✓ accepts suite trash and its only approved-progress 355ms
+     ✓ accepts suite trash and its only review-fixes 350ms
+     ✓ accepts suite library-batch and its only representative 354ms
+     ✓ accepts suite library-batch and its only undefined 336ms
+     ✓ accepts suite library-batch and its only visibility 353ms
+     ✓ accepts suite library-batch and its only feedback 355ms
+     ✓ accepts suite library-batch and its only tag-states 346ms
+     ✓ accepts suite library-batch and its only lifecycle 349ms
+     ✓ accepts suite library-batch and its only cache 350ms
+     ✓ accepts suite library-batch and its only review-fixes 330ms
+     ✓ accepts suite sharing-experiment and its only undefined 345ms
+     ✓ rejects unrelated sharing parameter --only 364ms
+     ✓ rejects unrelated sharing parameter --storage-config 379ms
+     ✓ rejects unrelated sharing parameter --preview-config 403ms
+     ✓ requires an existing space without starting unrelated production fixtures 366ms
+
+ Test Files  95 passed (95)
+      Tests  1253 passed (1253)
+   Start at  13:27:05
+   Duration  21.06s (tests 60%, import 29%, transform 10%, worker 1%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/test-results/two-fixes/unit.xml

@@ -1,0 +1,750 @@
+Already up to date
+Done in 171ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/two-fixes/integration.xml
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: signature:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: signature:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: replay-after-delete:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: cancel-mid-body:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: replay-after-delete:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: cancel-mid-body:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+ ✓ |integration| tests/integration/identity/auth.test.ts (18 tests) 39307ms
+   ✓ uninitialized production auth requests return setup-required without creating an owner 2847ms
+   ✓ initialized production auth (17)
+     ✓ renders the login form when the return destination is malformed 1713ms
+     ✓ bypasses the login form only for a current owner session using the existing successful-login destination 1605ms
+     ✓ protects the real admin page independently of navigation, including expired and revoked Cookie replay 1587ms
+     ✓ production constraints reject invalid owners and duplicate providers; incomplete identity is explicit 2670ms
+     ✓ real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false 4607ms
+     ✓ login body { is a client error 1188ms
+     ✓ login body undefined is a client error 1242ms
+     ✓ login body null is a client error 1150ms
+     ✓ login body [] is a client error 1117ms
+     ✓ only a signed session cookie grants ownership; bearer, share cookie and claimed userId do not 4546ms
+     ✓ only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged 1582ms
+     ✓ real sessions renew after one day, expire after seven days, and logout revokes only its own cookie 2638ms
+     ✓ logout read failure preserves the cookie and reports failure until a successful retry 1332ms
+     ✓ logout delete failure preserves the cookie and reports failure until a successful retry 1306ms
+     ✓ saved origin A→B→A changes secure-cookie behavior and rejects foreign or missing write origins 3426ms
+     ✓ production login limiting survives saved-origin instance refresh 1397ms
+     ✓ a new process with rotated Secret rejects old cookies while retaining persisted identity and session rows 3353ms
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: late-put:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: late-put:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: expired-url:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: expired-url:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/browser.svg
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=false）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-b33228d1-7596-4414-af0f-6c337c000c93/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: signature:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: signature:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: replay-after-delete:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: cancel-mid-body:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: replay-after-delete:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: cancel-mid-body:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+ ✓ |integration| tests/integration/identity/setup.test.ts (28 tests) 50132ms
+   ✓ empty production startup prepares storage and prints exactly one code even with fatal logging; HTTP never returns it 2073ms
+   ✓ missing code returns a field error and writes nothing 1439ms
+   ✓ missing email returns a field error and writes nothing 1437ms
+   ✓ missing password returns a field error and writes nothing 1215ms
+   ✓ missing publicUrl returns a field error and writes nothing 1202ms
+   ✓ missing timeZone returns a field error and writes nothing 1247ms
+   ✓ concurrent setup commits one complete owner, creates no session, and supports a real password login 1571ms
+   ✓ a failed site_settings insert rolls back every business row and the same code can retry 1285ms
+   ✓ a failed media_settings insert rolls back every business row and the same code can retry 1342ms
+   ✓ a failed user insert rolls back every business row and the same code can retry 1331ms
+   ✓ a failed account insert rolls back every business row and the same code can retry 1323ms
+   ✓ ignoring the committed response then retrying directs to login; restart issues no code or reset 5383ms
+   ✓ a real uninitialized restart replaces the code and rejects the old one 2612ms
+   ✓ an owner missing site_settings fails startup with the database path instead of reopening setup 1580ms
+   ✓ an owner missing account fails startup with the database path instead of reopening setup 1709ms
+   ✓ an owner missing media_settings fails startup with the database path instead of reopening setup 1655ms
+   ✓ an owner missing storage_settings fails startup with the database path instead of reopening setup 1594ms
+   ✓ a cleared default storage is preserved on initialized restart 2361ms
+   ✓ a disabled default storage is preserved on initialized restart 2490ms
+   ✓ malformed or non-object JSON { is a client error with no business writes 1152ms
+   ✓ malformed or non-object JSON null is a client error with no business writes 1149ms
+   ✓ malformed or non-object JSON [] is a client error with no business writes 1315ms
+   ✓ invalid email uses the field validation contract 1384ms
+   ✓ invalid password uses the field validation contract 1347ms
+   ✓ invalid publicUrl uses the field validation contract 1336ms
+   ✓ invalid timeZone uses the field validation contract 1171ms
+   ✓ a credential write failure logs its diagnostic without passwords, hashes or repeated setup codes 2999ms
+   ✓ restart preserves changed site/media settings and a deliberately deleted default storage 3431ms
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: late-put:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: late-put:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: expired-url:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: expired-url:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/browser.svg
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/upload.bin
+
+stdout | tests/integration/storage/late-put-live.test.ts > 跨期并发保存、等待发送结束和保留删除错误（注入失败=true）
+seaweedfs: controlled-experiment-cleanup:ariso/upload-v01/live-d5f5bcfe-98fa-414f-9321-084d568d80e4/probe.bin
+
+ ✓ |integration| tests/integration/storage/late-put-live.test.ts (2 tests) 80071ms
+   ✓ 跨期并发保存、等待发送结束和保留删除错误（注入失败=false） 40050ms
+   ✓ 跨期并发保存、等待发送结束和保留删除错误（注入失败=true） 40020ms
+ ✓ |integration| tests/integration/runtime/startup.test.ts (13 tests) 39021ms
+   ✓ 完整生产入口的失败与恢复 (13)
+     ✓ BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动 5515ms
+     ✓ BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动 3845ms
+     ✓ ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动 2136ms
+     ✓ ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动 1693ms
+     ✓ PORT=0：拒绝配置且不监听，修复后同目录启动 1663ms
+     ✓ PORT=65536：拒绝配置且不监听，修复后同目录启动 1630ms
+     ✓ PORT=3.5：拒绝配置且不监听，修复后同目录启动 1575ms
+     ✓ PORT=abc：拒绝配置且不监听，修复后同目录启动 1580ms
+     ✓ LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动 1574ms
+     ✓ 真实不可写目录保留权限、路径和文件，恢复写权限后启动 2606ms
+     ✓ 占用生产端口时退出而不换端口，释放后原端口可启动 1903ms
+     ✓ 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 4603ms
+     ✓ 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件 2965ms
+ ✓ |integration| tests/integration/runtime/build.test.ts (1 test) 93766ms
+   ✓ 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 93765ms
+ ✓ |integration| tests/integration/analytics/lifecycle.test.ts (1 test) 19392ms
+   ✓ real Next standalone waits for delayed SIGTERM/SIGINT before first bytes and drains before final SQLite flush; crash and write-failure losses are bounded and reported 19391ms
+ ✓ |integration| tests/integration/identity/setup-dev.test.ts (1 test) 66562ms
+   ✓ real Next dev recompilation retains the startup code and the original code creates a login-capable owner 66561ms
+ ✓ |integration| tests/integration/delivery/http.test.ts (12 tests) 14693ms
+   ✓ real owner Cookie permits private access, revoked Cookie is rechecked and public access then counts 523ms
+   ✓ an already started stream finishes after permission changes; the next request is rejected 1648ms
+   ✓ HTTP filename and cache matrix uses the supplied format metadata and UTF-8 names 368ms
+ ✓ |integration| tests/integration/storage/late-put-suite.test.ts (2 tests) 19159ms
+   ✓ records late PUT evidence without false acceptance: accept 12532ms
+   ✓ records late PUT evidence without false acceptance: early-reject-delayed-body 6626ms
+ ✓ |integration| tests/integration/identity/http.test.ts (6 tests) 9779ms
+   ✓ direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it 1786ms
+   ✓ A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses 353ms
+   ✓ A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute 555ms
+   ✓ OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub 520ms
+   ✓ new process and Secret reject old signed Cookie without deleting users/credentials/sessions 4114ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests) 20008ms
+   ✓ 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 3622ms
+   ✓ wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 3720ms
+   ✓ invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4535ms
+   ✓ tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4202ms
+{"time":"2026-10-05T05:29:35.707Z","level":"info","module":"identity.setup","event":"setup-code","code":"fOQP8e87JzjgFReum8jd77OZEDgAXvF6","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-05T05:29:35.786Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ✓ |integration| tests/integration/media/tools.test.ts (11 tests) 14476ms
+   ✓ media tool lifecycle (10)
+     ✓ kills magick after cancellation even when it ignores SIGTERM 1697ms
+     ✓ kills exiftool after cancellation even when it ignores SIGTERM 1541ms
+     ✓ kills ffmpeg after cancellation even when it ignores SIGTERM 1469ms
+     ✓ kills ffprobe after cancellation even when it ignores SIGTERM 1422ms
+     ✓ waits for descendants that ignore SIGTERM after the leader has exited 1540ms
+     ✓ terminates a timed-out process and preserves the timeout diagnostic 2796ms
+     ✓ recovers tools left by a parent receiving SIGTERM 1621ms
+     ✓ recovers tools left by a parent receiving SIGKILL 1569ms
+     ✓ does not terminate a process whose workspace only shares the same prefix 424ms
+{"time":"2026-10-05T05:29:36.328Z","level":"info","module":"identity.setup","event":"setup-code","code":"uF4b5JZ3uIdn-WKShEiWeI5AwdKcf7gB","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-05T05:29:36.336Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-oyXLKC/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-05T05:29:36.346Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-05T05:29:36.916Z","level":"info","module":"identity.setup","event":"setup-code","code":"KFspS1gLdg6xBVWlUVSNzkIJ49tMvdeg","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-05T05:29:36.980Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ✓ |integration| tests/integration/analytics/count.test.ts (13 tests) 17823ms
+   ✓ counts each original GET and download once without database writes 1878ms
+   ✓ counts each compressed GET and download once without database writes 1966ms
+   ✓ counts each watermark GET and download once without database writes 2186ms
+   ✓ counts the actual original when the default version is inapplicable 1173ms
+   ✓ excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 3154ms
+   ✓ reads committed timezone after response preparation and keeps already archived dates unchanged 2288ms
+   ✓ does not retry or duplicate a repeated delivery callback within one request 2330ms
+   ✓ logs aggregation failure with event context and still returns complete legal content 1222ms
+   ✓ logs capacity loss without truncating content 1362ms
+ ✓ |integration| tests/integration/sharing/http.test.ts (15 tests) 15790ms
+   ✓ real password validation preserves spaces and case, accepts NFKC equivalents, and issues a scoped opaque Cookie 358ms
+   ✓ editing an already expired share revokes its grant even without a request at expiration 508ms
+   ✓ setting, replacing and clearing a password keep the address and revoke every earlier grant 456ms
+   ✓ a real process restart preserves owner sessions and the share grant without renewing either Cookie 561ms
+   ✓ password verification races with password changes, close, expiry, Token rotation and deletion without issuing any stale grant 913ms
+ ✓ |integration| tests/integration/media/trash-http.test.ts (5 tests) 12061ms
+   ✓ requires a real owner Cookie and saved origin for both metadata endpoints 1951ms
+   ✓ keeps old trash timestamps and original bytes across a real restart and restores disabled storage records 2907ms
+   ✓ reports deletion conflicts and real database faults without changing the asset 1824ms
+   ✓ authenticates permanent delete, status and retry routes before touching storage 1933ms
+   ✓ returns 202 acceptance and durable status across restart, then retains a deleted terminal result 3445ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts (11 tests) 17810ms
+   ✓ setup process lifecycle (2)
+     ✓ imports without deployment secrets neither open a database nor issue a code 652ms
+     ✓ prestart prepares storage without issuing a code; real module reloads share one startup code 2065ms
+   ✓ setup hash await boundary (controlled hash, real SQLite) (3)
+     ✓ hashes outside the transaction and rechecks a code invalidated while awaiting 611ms
+     ✓ a hash failure leaves setup open and a later request can retry 558ms
+     ✓ a second completed request prevents the awaiting request from creating another owner 633ms
+   ✓ setup real SIGKILL crash recovery (6)
+     ✓ recovers after process death at hash and can use real credential login 2085ms
+     ✓ recovers after process death at site_settings and can use real credential login 2136ms
+     ✓ recovers after process death at media_settings and can use real credential login 2491ms
+     ✓ recovers after process death at user and can use real credential login 2287ms
+     ✓ recovers after process death at account and can use real credential login 2180ms
+     ✓ recovers after process death at committed and can use real credential login 2109ms
+ ✓ |integration| tests/integration/runtime/standalone.test.ts (9 tests) 15038ms
+   ✓ isolated production directory (9)
+     ✓ 包含编译 CLI、迁移、原生驱动及静态资源，不携带开发工具或源码 329ms
+     ✓ 镜像验证脚本脱离开发依赖运行，工具缺失时非零退出并清理临时目录 956ms
+     ✓ 默认 HOST：完整入口迁移后提供健康、页面与两类静态资源 1907ms
+     ✓ 显式 HOST：完整入口迁移后提供健康、页面与两类静态资源 1817ms
+     ✓ 容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 1690ms
+     ✓ HOST 覆盖容器 HOSTNAME：完整入口迁移后提供健康、页面与两类静态资源 1700ms
+     ✓ 标准 Next 收到 SIGTERM 后停止队列并关闭数据库，以 143 退出 1436ms
+     ✓ 标准 Next 收到 SIGINT 后停止队列并关闭数据库，以 130 退出 1251ms
+     ✓ prestart 配置失败时非零退出且不监听 Web 端口 462ms
+ ✓ |integration| tests/integration/runtime/server-start.test.ts (12 tests) 8784ms
+   ✓ Web startup and real health handler (7)
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{"NEXT_RUNTIME":"edge"} 646ms
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{} 668ms
+     ✓ 导入和非 Web 初始化不读密钥或建立数据库：{"NEXT_RUNTIME":"nodejs","NEXT_PHASE":"phase-production-build"} 795ms
+     ✓ 初始化缺失时健康接口返回 503，不按请求偷偷打开数据库 823ms
+     ✓ Node 初始化在已迁移无所有者的磁盘库执行 SELECT 1；重复调用及模块重载复用连接 904ms
+     ✓ 真实连接关闭后返回 503，保留错误日志，响应没有秘密或路径且不会自动重连 1031ms
+     ✓ 初始化失败向上传播，不保存失败状态，修复配置后可以重试 699ms
+   ✓ Web shutdown ownership (5)
+     ✓ 停止幂等，队列完成前保留连接，停止后健康接口拒绝新访问 620ms
+     ✓ Next close hook waits for framework cleanup, preserves this, and stops the application once 671ms
+     ✓ 框架与应用同时清理失败时仍记录框架原因 716ms
+     ✓ 队列停止失败仍清理统计和数据库，并保留原始错误 559ms
+     ✓ 统计刷写失败仍关闭数据库，不报告成功 652ms
+ ✓ |integration| tests/integration/runtime/shutdown.test.ts (4 tests) 11037ms
+   ✓ SIGTERM drains an in-flight production HTTP stream before queues, analytics and SQLite close 1876ms
+   ✓ SIGINT drains an in-flight production HTTP stream before queues, analytics and SQLite close 1862ms
+   ✓ SIGKILL preserves the committed prefix without claiming the pending event was flushed 5932ms
+   ✓ SIGTERM reports retained increments when the final transaction fails and does not claim a complete flush 1366ms
+ ✓ |integration| tests/integration/runtime/health.test.ts (4 tests) 11684ms
+   ✓ 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接 2056ms
+   ✓ close-database：实际 HTTP 故障可诊断或及时取消，并清理子进程 877ms
+   ✓ stall-headers：实际 HTTP 故障可诊断或及时取消，并清理子进程 2794ms
+   ✓ stall-body：实际 HTTP 故障可诊断或及时取消，并清理子进程 2689ms
+ ✓ |integration| tests/integration/delivery/local-http.test.ts (5 tests) 7711ms
+   ✓ delivers exact bytes and real HEAD, conditions, Range and attachment responses 1811ms
+   ✓ reads current default, rejects missing versions and never exposes private state to other credentials 1560ms
+   ✓ rechecks lifecycle, storage and actual files before evaluating conditions 1436ms
+   ✓ returns explicit no-store method and parameter errors through Next HTTP 1407ms
+   ✓ serves authenticated trash previews while public URLs and alternate credentials remain denied 1496ms
+ ✓ |integration| tests/integration/runtime/logging.test.ts (3 tests) 6559ms
+   ✓ 隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用 1458ms
+   ✓ 最终产物的启动失败为 JSON，保留配置位置且不泄露非法输入 410ms
+   ✓ 真实 Next URL 错误及正常事件隐藏指定秘密，保留错误原因、路径和业务上下文 2898ms
+ ✓ |integration| tests/integration/runtime/database.test.ts (9 tests) 5825ms
+   ✓ runtime disk database (9)
+     ✓ 锁冲突在驱动超时后保留 SQLITE_BUSY，释放锁后可继续写入 5188ms
+     ✓ 一个进程写入并退出后，另一个进程通过 Drizzle 读到同一记录 622ms
+ ✓ |integration| tests/integration/identity/browser-runner.test.ts (1 test) 6788ms
+   ✓ browser runner cancels on SIGINT and SIGTERM, stops real Next, removes its database and can restart 6787ms
+ ✓ |integration| tests/integration/analytics/usage-remote.test.ts (5 tests) 6353ms
+   ✓ exercises the remote runner against a local protocol model without claiming provider validation 6309ms
+ ✓ |integration| tests/integration/media/queue.test.ts (16 tests) 3305ms
+   ✓ persistent media queue (11)
+     ✓ stop is repeatable, wakes idle polling and prevents further claims 318ms
+     ✓ stops after the database closes without repeatedly accessing a closed connection 314ms
+   ✓ remote maintenance scheduling (3)
+     ✓ claims unrelated Local work and interrupts deletion while remote DELETE is still pending 1282ms
+ ✓ |integration| tests/integration/runtime/prestart.test.ts (9 tests) 4902ms
+   ✓ compiled prestart CLI (9)
+     ✓ 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接 778ms
+     ✓ 重启保留清空默认和删除配置，不重新创建默认目录 746ms
+     ✓ 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值 343ms
+     ✓ 无效配置先于目录操作失败，诊断不泄露密钥 321ms
+     ✓ 目录故障保留原文件、错误码和路径，非零退出 338ms
+     ✓ 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放 1353ms
+     ✓ 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接 661ms
+     ✓ preflight 返回或抛错前已关闭真实连接（故障=true） 343ms
+ ✓ |integration| tests/integration/media/settings-http.test.ts (3 tests) 4166ms
+   ✓ restricts settings to an owner cookie and saved origin, including GET 1442ms
+   ✓ validates the complete merged save, preserves mode parameters and returns field errors 1361ms
+   ✓ rejects NUL text before saving any part of the settings patch 1363ms
+ ✓ |integration| tests/integration/upload/s3.test.ts (36 tests) 4430ms
+ ✓ |integration| tests/integration/upload/transport.test.ts (12 tests) 3112ms
+   ✓ 50 MiB 等号接受且磁盘字节一致；未知长度超过一字节拒绝并清理 1941ms
+   ✓ 代理传输进展刷新 idle，但总接收预算独立到期并清理 658ms
+ ✓ |integration| tests/integration/storage/late-put-faults.test.ts (2 tests) 2862ms
+   ✓ records lost PUT/Copy responses and a killed owner without losing exact-key cleanup responsibility 2848ms
+ ✓ |integration| tests/integration/runtime/crypto.test.ts (5 tests) 3120ms
+   ✓ persisted secret crypto (5)
+     ✓ 空磁盘数据库接受不同的有效部署密钥，始终不创建密钥校验表或记录 633ms
+     ✓ 写入进程退出后另一进程解密原记录，认证密钥变更不影响解密且 null 保持未配置 527ms
+     ✓ 读取 wrong key 明确失败，重开数据库后所有原记录和表不变 795ms
+     ✓ 读取 tampered ciphertext 明确失败，重开数据库后所有原记录和表不变 586ms
+     ✓ 读取 invalid ciphertext 明确失败，重开数据库后所有原记录和表不变 578ms
+ ✓ |integration| tests/integration/identity/m1-gate.test.ts (1 test) 2867ms
+   ✓ M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes 2866ms
+ ✓ |integration| tests/integration/media/process-experiment.test.ts (1 test) 2638ms
+   ✓ 真实子进程取消、强杀和超时均回收进程；Linux 挂起验证缺失不能填通过 2637ms
+ ✓ |integration| tests/integration/storage/settings-http.test.ts (7 tests) 2299ms
+   ✓ 停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变 714ms
+ ✓ |integration| tests/integration/media/delete.test.ts (13 tests) 2210ms
+   ✓ cancels a running writer and waits for its promise before clearing a late object 1103ms
+   ✓ resumes a real SIGKILL after durable intent without resetting the budget 415ms
+   ✓ resumes a real SIGKILL after durable deleted without resetting the budget 442ms
+ ✓ |integration| tests/integration/storage/restart.test.ts (1 test) 2371ms
+   ✓ 实际Web进程重启扫描停用存储中的迟到对象，保留相邻命名空间并在SIGTERM前停止维护 2370ms
+ ✓ |integration| tests/integration/collections/tag-http.test.ts (1 test) 1656ms
+   ✓ requires owner sessions and write origins, exposes Unicode CRUD results, and retains real database errors 1655ms
+ ✓ |integration| tests/integration/library/detail.test.ts (8 tests) 1828ms
+   ✓ owner-only detail HTTP (1)
+     ✓ rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 1661ms
+ ✓ |integration| tests/integration/sharing/delivery.test.ts (2 tests) 1598ms
+ ✓ |integration| tests/integration/delivery/s3.test.ts (4 tests) 2058ms
+   ✓ uses the same owner and anonymous permission boundary for all four versions 341ms
+ ✓ |integration| tests/integration/library/trash.test.ts (6 tests) 1543ms
+   ✓ owner-only trash HTTP (1)
+     ✓ rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 1401ms
+ ✓ |integration| tests/integration/library/base.test.ts (5 tests) 1633ms
+   ✓ owner-only list HTTP (1)
+     ✓ rejects anonymous and bearer reads, returns real owner data, and rejects invalid queries 1496ms
+ ✓ |integration| tests/integration/storage/late-put-multipart.test.ts (5 tests) 1700ms
+   ✓ CLI exits nonzero when creating a session fails even if final object cleanup succeeds 1268ms
+ ✓ |integration| tests/integration/collections/album-http.test.ts (1 test) 1624ms
+   ✓ authenticates every album operation, checks write origins, and returns real CRUD results and errors 1624ms
+ ✓ |integration| tests/integration/library/batch-http.test.ts (1 test) 1546ms
+   ✓ handles real owner-cookie batch HTTP, origin checks, mixed outcomes and read-only recovery after a lost response 1545ms
+ ✓ |integration| tests/integration/upload/settings-http.test.ts (1 test) 1555ms
+   ✓ protects upload settings and quick tag creation with real owner and origin checks, and preserves database errors 1554ms
+stderr | tests/integration/delivery/s3-fixture-cancel.test.ts > cancels a genuinely stalled fixture PUT and cleans its recorded key using an independent signal
+An error was encountered in a non-retryable streaming request.
+
+ ✓ |integration| tests/integration/delivery/s3-fixture-cancel.test.ts (1 test) 1396ms
+   ✓ cancels a genuinely stalled fixture PUT and cleans its recorded key using an independent signal 1395ms
+ ✓ |integration| tests/integration/storage/late-put-multipart-completion.test.ts (7 tests) 2249ms
+   ✓ journals recovery and cleans exact keys (normal) 315ms
+   ✓ journals recovery and cleans exact keys (cleanup-fails) 312ms
+   ✓ journals recovery and cleans exact keys (corrupt-object) 311ms
+   ✓ journals recovery and cleans exact keys (completed-object-missing) 486ms
+   ✓ journals recovery and cleans exact keys (aborted-object-exists) 398ms
+ ✓ |integration| tests/integration/collections/unicode-experiment.test.ts (1 test) 1339ms
+   ✓ EV-COLLECTIONS-01: real SQLite preserves names and relationships across duplicate creation and competing renames 1338ms
+ ✓ |integration| tests/integration/library/copy-http.test.ts (1 test) 1647ms
+   ✓ generates real copy lines only for owner-cookie same-origin requests, preserving per-item failure and no-store errors 1646ms
+ ✓ |integration| tests/integration/shell/home.test.ts (3 tests) 1550ms
+   ✓ 生产首页与公共壳层 (3)
+     ✓ 未初始化显示默认品牌和开放状态，不虚构可用入口 315ms
+stderr | tests/integration/storage/probes.test.ts > 取消在途 PUT 后先结束本地请求，再删除确切 Key，释放探测引用
+An error was encountered in a non-retryable streaming request.
+
+ ✓ |integration| tests/integration/runtime/ui-browser-runner.test.ts (3 tests) 1320ms
+   ✓ UI runner records failed browser failure and stops its server 554ms
+   ✓ UI runner records cancelled browser failure and stops its server 582ms
+ ✓ |integration| tests/integration/library/filter-options-http.test.ts (1 test) 1434ms
+   ✓ requires owner cookies and returns real filter options and explicit bad-query errors without caching 1433ms
+ ✓ |integration| tests/integration/storage/probes.test.ts (16 tests) 1213ms
+   ✓ 真实子进程 SIGKILL 后新 runtime 恢复确切 Key，不把未完成的测试判通过 494ms
+ ✓ |integration| tests/integration/library/selection-http.test.ts (1 test) 1386ms
+   ✓ rechecks real selected records through owner-cookie HTTP with explicit validation and no caching 1385ms
+ ✓ |integration| tests/integration/library/batch-reprocess.test.ts (16 tests) 633ms
+   ✓ takes current settings independently for each image and later 200-item HTTP chunks 331ms
+ ✓ |integration| tests/integration/site/settings.test.ts (9 tests) 813ms
+   ✓ site 真实磁盘 SQLite (9)
+     ✓ 独立进程写入退出后，另一个进程通过公开读取函数得到持久化配置 686ms
+ ✓ |integration| tests/integration/storage/scans.test.ts (17 tests) 568ms
+ ✓ |integration| tests/integration/library/query.test.ts (32 tests) 706ms
+ ✓ |integration| tests/integration/delivery/local.test.ts (34 tests) 869ms
+ ✓ |integration| tests/integration/media/defaults.test.ts (9 tests) 581ms
+   ✓ T-MED-02 real SQLite defaults (7)
+     ✓ another process reruns migration and initialization without overwriting user settings 431ms
+stderr | tests/integration/storage/s3.test.ts > PUT 源流失败关闭输入并保留错误，后续请求不受影响
+An error was encountered in a non-retryable streaming request.
+
+stderr | tests/integration/storage/s3.test.ts > PUT 源流无错误提前关闭时立即拒绝并释放连接，之后仍能请求
+An error was encountered in a non-retryable streaming request.
+
+stderr | tests/integration/storage/s3.test.ts > PUT 传输中取消释放源流与在途 HTTP 连接，之后仍能请求
+An error was encountered in a non-retryable streaming request.
+
+stderr | tests/integration/storage/s3.test.ts > PUT 远端提前拒绝时关闭仍未结束的输入流，保留服务错误
+An error was encountered in a non-retryable streaming request.
+
+ ✓ |integration| tests/integration/identity/database.test.ts (5 tests) 671ms
+   ✓ two processes race owner creation: one complete credential and no partial loser 503ms
+ ✓ |integration| tests/integration/storage/s3.test.ts (20 tests) 589ms
+ ✓ |integration| tests/integration/library/copy.test.ts (11 tests) 521ms
+ ✓ |integration| tests/integration/storage/late-put-recovery.test.ts (1 test) 683ms
+   ✓ a fresh process retains exact-key responsibility after DELETE/HEAD404, including a later reappearance 682ms
+ ✓ |integration| tests/integration/storage/cors.test.ts (19 tests) 614ms
+ ✓ |integration| tests/integration/storage/settings.test.ts (26 tests) 553ms
+ ✓ |integration| tests/integration/delivery/s3-races.test.ts (19 tests) 426ms
+ ✓ |integration| tests/integration/upload/sessions.test.ts (20 tests) 562ms
+ ✓ |integration| tests/integration/storage/s3-probe-protocol.test.ts (39 tests) 401ms
+ ✓ |integration| tests/integration/collections/concurrency.test.ts (1 test) 507ms
+   ✓ T-COL-01: competing production upload preparations keep one tag ID and the first successful display name 506ms
+ ✓ |integration| tests/integration/library/batch-cleanup.test.ts (7 tests) 602ms
+   ✓ accepts explicit 201-image selections in independent 200-item and final requests 423ms
+ ✓ |integration| tests/integration/media/s3-delete.test.ts (11 tests) 538ms
+ ✓ |integration| tests/integration/storage/late-put-transport.test.ts (8 tests) 366ms
+ ✓ |integration| tests/integration/media/model.test.ts (16 tests) 360ms
+ ✓ |integration| tests/integration/library/filter-options.test.ts (11 tests) 206ms
+ ✓ |integration| tests/integration/storage/s3-runner.test.ts (1 test) 328ms
+   ✓ preserves cleanup evidence across repeated runs using the same output root 328ms
+ ✓ |integration| tests/integration/storage/late-put-runner.test.ts (1 test) 331ms
+   ✓ keeps three missing real services incomplete, preserves previous runs, and never invents cleanup proof 331ms
+ ✓ |integration| tests/integration/upload/multipart.test.ts (39 tests) 396ms
+ ✓ |integration| tests/integration/upload/settings.test.ts (19 tests) 341ms
+ ✓ |integration| tests/integration/library/batch.test.ts (11 tests) 205ms
+ ✓ |integration| tests/integration/storage/references.test.ts (9 tests) 280ms
+ ✓ |integration| tests/integration/upload/storage-history.test.ts (13 tests) 280ms
+ ✓ |integration| tests/integration/analytics/persistence.test.ts (4 tests) 252ms
+ ✓ |integration| tests/integration/storage/late-put-multipart-creation.test.ts (7 tests) 246ms
+ ✓ |integration| tests/integration/media/resource-measurement.test.ts (1 test) 234ms
+ ✓ |integration| tests/integration/media/usage.test.ts (11 tests) 214ms
+ ✓ |integration| tests/integration/media/recovery.test.ts (12 tests) 246ms
+ ✓ |integration| tests/integration/collections/cover.test.ts (10 tests) 246ms
+ ✓ |integration| tests/integration/storage/local.test.ts (17 tests) 213ms
+ ✓ |integration| tests/integration/library/selection.test.ts (11 tests) 271ms
+ ✓ |integration| tests/integration/collections/model.test.ts (8 tests) 249ms
+ ✓ |integration| tests/integration/storage/s3-protocol.test.ts (19 tests) 133ms
+ ✓ |integration| tests/integration/library/sqlite-query.test.ts (9 tests) 247ms
+ ✓ |integration| tests/integration/media/trash.test.ts (8 tests) 173ms
+ ✓ |integration| tests/integration/library/image-edit.test.ts (5 tests) 134ms
+ ✓ |integration| tests/integration/analytics/retention.test.ts (8 tests) 115ms
+ ✓ |integration| tests/integration/storage/s3-listing.test.ts (13 tests) 116ms
+ ✓ |integration| tests/integration/media/candidate-cleanup.test.ts (1 test) 130ms
+ ✓ |integration| tests/integration/analytics/usage.test.ts (3 tests) 80ms
+ ✓ |integration| tests/integration/collections/upload.test.ts (4 tests) 107ms
+ ✓ |integration| tests/integration/runtime/migrations.test.ts (14 tests) 117ms
+ ✓ |integration| tests/integration/analytics/scale.test.ts (1 test) 116ms
+ ✓ |integration| tests/integration/storage/defaults.test.ts (6 tests) 124ms
+ ✓ |integration| tests/integration/upload/page-settings.test.ts (7 tests) 133ms
+ ✓ |integration| tests/integration/storage/local-experiment.test.ts (1 test) 76ms
+ ✓ |integration| tests/integration/collections/album-management.test.ts (2 tests) 76ms
+ ✓ |integration| tests/integration/media/references.test.ts (2 tests) 55ms
+ ✓ |integration| tests/integration/collections/tag-management.test.ts (3 tests) 86ms
+ ✓ |integration| tests/integration/upload/s3-endpoint-control.test.ts (1 test) 40ms
+ ✓ |integration| tests/integration/storage/local-listing.test.ts (15 tests) 35ms
+ ✓ |integration| tests/integration/storage/overview.test.ts (2 tests) 48ms
+ ✓ |integration| tests/integration/upload/session-http.test.ts (8 tests) 20ms
+ ✓ |integration| tests/integration/upload/s3-resubmit-http.test.ts (7 tests) 19ms
+ ✓ |integration| tests/integration/upload/http.test.ts (11 tests) 16ms
+ ✓ |integration| tests/integration/storage/browser-evidence.test.ts (1 test) 5ms
+ ✓ |integration| tests/integration/collections/cover-presentation.test.ts (1 test) 45ms
+ ✓ |media-tools| tests/integration/media/recovery-tools.test.ts (14 tests) 22158ms
+   ✓ T-MED-04 actual processing recovery (14)
+     ✓ preserves healthy concurrent work for recovery after a queue claim failure 1585ms
+     ✓ preserves healthy concurrent work for recovery after a queue settlement failure 2369ms
+     ✓ jpg survives a real worker SIGKILL after compressed publication 2171ms
+     ✓ png survives a real worker SIGKILL after compressed publication 2239ms
+     ✓ png survives a real worker SIGTERM after compressed publication 1884ms
+     ✓ cleans unfinished objects for an already stored step without replacing its published versions 979ms
+     ✓ recovery validates complete-final bytes before claiming a writing object 683ms
+     ✓ recovery validates truncated-final bytes before claiming a writing object 825ms
+     ✓ recovery validates partial-only bytes before claiming a writing object 760ms
+     ✓ runs actual tools with concurrency 1, and lowering to one preserves active work 1964ms
+     ✓ runs actual tools with concurrency 2, and lowering to one preserves active work 2000ms
+     ✓ runs actual tools with concurrency 3, and lowering to one preserves active work 2357ms
+     ✓ runs actual tools with concurrency 4, and lowering to one preserves active work 2188ms
+ ✓ |media-tools| tests/integration/media/preview.test.ts (27 tests) 24559ms
+   ✓ temporary previews use the real formal encoding pipeline (15)
+     ✓ original SVG with viewBox-only matches actual formal properties and preserves source bytes 3983ms
+     ✓ original SVG with physical units matches actual formal properties and preserves source bytes 3305ms
+     ✓ original with {} matches actual formal bytes and leaves every business table unchanged 749ms
+     ✓ thumbnail with { outputFormat: 'jpeg', …(2) } matches actual formal bytes and leaves every business table unchanged 926ms
+     ✓ compressed with { outputFormat: 'jpeg', …(3) } matches actual formal bytes and leaves every business table unchanged 965ms
+     ✓ compressed with { outputFormat: 'webp', …(3) } matches actual formal bytes and leaves every business table unchanged 912ms
+     ✓ compressed with { outputFormat: 'avif', …(3) } matches actual formal bytes and leaves every business table unchanged 944ms
+     ✓ watermark with { compressionEnabled: false, …(6) } matches actual formal bytes and leaves every business table unchanged 1063ms
+     ✓ watermark with { compressionEnabled: true, …(6) } matches actual formal bytes and leaves every business table unchanged 1400ms
+     ✓ image watermark (compression=false) matches actual formal bytes and releases its temporary reference 1260ms
+     ✓ image watermark (compression=true) matches actual formal bytes and releases its temporary reference 1606ms
+   ✓ preview lifetime and owned resources (8)
+     ✓ awaits original SVG preparation settlement on cancellation before deleting files or releasing its disk budget 1791ms
+     ✓ retains a private result until exactly 30 minutes and removes it at expiry 302ms
+     ✓ awaits encoding settlement on cancellation before deleting files or releasing the image watermark 726ms
+     ✓ restarts with exact registered directories only and holds watermark references until recovery cleanup settles 585ms
+     ✓ shares the single queue slot when preview starts first 944ms
+     ✓ shares the single queue slot when media starts first 1064ms
+   ✓ waits for a pending source write before completing cancellation or releasing its disk reservation 334ms
+ ✓ |media-tools| tests/integration/media/watermark.test.ts (30 tests) 29480ms
+   ✓ T-MED-08 real watermark pipeline (4)
+     ✓ creates exactly the selected versions (compression=false, watermark=off) 582ms
+     ✓ creates exactly the selected versions (compression=true, watermark=off) 679ms
+     ✓ creates exactly the selected versions (compression=false, watermark=text) 1034ms
+     ✓ creates exactly the selected versions (compression=true, watermark=text) 1304ms
+   ✓ places an image watermark at top-left with short-edge margins 1024ms
+   ✓ places an image watermark at top-center with short-edge margins 1079ms
+   ✓ places an image watermark at top-right with short-edge margins 971ms
+   ✓ places an image watermark at center-left with short-edge margins 1092ms
+   ✓ places an image watermark at center with short-edge margins 894ms
+   ✓ places an image watermark at center-right with short-edge margins 968ms
+   ✓ places an image watermark at bottom-left with short-edge margins 916ms
+   ✓ places an image watermark at bottom-center with short-edge margins 887ms
+   ✓ places an image watermark at bottom-right with short-edge margins 853ms
+   ✓ multiplies source alpha by configured opacity and preserves immutable image assets 893ms
+   ✓ fits a tall image within both margins while keeping its aspect ratio 905ms
+   ✓ renders multiline chinese text using the queued color, stroke, font size and opacity 779ms
+   ✓ renders multiline latin text using the queued color, stroke, font size and opacity 777ms
+   ✓ fails oversized text explicitly while preserving originals and already published versions 787ms
+   ✓ orients and resizes the canvas, strips private metadata and emits actual JPEG (compression=false) 963ms
+   ✓ orients and resizes the canvas, strips private metadata and emits actual JPEG (compression=true) 1323ms
+   ✓ flattens transparent source pixels onto the configured JPEG background before compositing 912ms
+   ✓ uses the actual newly encoded compressed pixels for the watermark input 1121ms
+   ✓ renders percent expressions, readable file paths, backslashes and newlines as literal text 549ms
+   ✓ renders CR and CRLF line breaks with the same pixels as LF 511ms
+   ✓ real WEBP image asset (1)
+     ✓ composites the admitted asset at the configured size 933ms
+   ✓ real SVG image asset (1)
+     ✓ composites the admitted asset at the configured size 4510ms
+   ✓ keeps GIF watermark and compression not applicable even when both settings are enabled 458ms
+   ✓ fits a tall image when the exact width rounds up past the available height 862ms
+   ✓ encodes a real AVIF watermark version without upscaling 776ms
+ ✓ |media-tools| tests/integration/media/reprocess.test.ts (28 tests) 37547ms
+   ✓ reprocesses all using a new snapshot while preserving identity, original and unselected versions 1669ms
+   ✓ reprocesses compressed using a new snapshot while preserving identity, original and unselected versions 1638ms
+   ✓ reprocesses thumbnail using a new snapshot while preserving identity, original and unselected versions 1096ms
+   ✓ reprocesses watermark using a new snapshot while preserving identity, original and unselected versions 1584ms
+   ✓ defaults to all and retains old disabled compressed and watermark versions 1498ms
+   ✓ rejects inapplicable ranges for animated images and accepts thumbnail and all 1442ms
+   ✓ only accepts all for a failed image and never reuses old-snapshot outputs 1274ms
+   ✓ serializes acceptance and rejects lifecycle, storage and conflicting active tasks 1014ms
+   ✓ retains every ready version when compressed output fails 1157ms
+   ✓ retains every ready version when thumbnail output fails 1352ms
+   ✓ retains every ready version when watermark output fails 1614ms
+   ✓ rolls back all selected versions when final publication fails and accounts for every candidate 1246ms
+   ✓ rechecks disabled during asynchronous generation 870ms
+   ✓ rechecks deleting during asynchronous generation 1056ms
+   ✓ rechecks cancelled during asynchronous generation 1106ms
+   ✓ rechecks trashed during asynchronous generation 1347ms
+   ✓ recovers a stored unpublished candidate without exposing it early or regenerating the saved step 1517ms
+   ✓ keeps new versions when old-object cleanup fails and retries known keys after reopening 1367ms
+   ✓ retains all old references when compressed stored-result registration fails 1535ms
+   ✓ retains all old references when thumbnail stored-result registration fails 1692ms
+   ✓ retains all old references when watermark stored-result registration fails 1609ms
+   ✓ keeps watermark-only compressed intermediate unpublished and cleanable (failure=false) 1191ms
+   ✓ keeps watermark-only compressed intermediate unpublished and cleanable (failure=true) 1208ms
+   ✓ rechecks disabled after every candidate is stored and before final publication 1070ms
+   ✓ rechecks deleting after every candidate is stored and before final publication 1261ms
+   ✓ preserves saved unpublished candidates and the original snapshot through one transient retry 1389ms
+   ✓ marks a stored unpublished candidate for exact cleanup when repeated no-progress recovery is exhausted 1145ms
+   ✓ resets the no-progress budget when watermark-only intermediate compression commits 1598ms
+ ✓ |media-tools| tests/integration/media/process.test.ts (25 tests) 15614ms
+   ✓ T-MED-03 real JPEG/PNG processing (23)
+     ✓ propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=false) 406ms
+     ✓ propagates injected tool-cleanup failure after real processing and preserves its workspace (shutdown=true) 386ms
+     ✓ preserves original jpg bytes, fixes supplied type and saves both actual WebP versions 891ms
+     ✓ preserves original png bytes, fixes supplied type and saves both actual WebP versions 689ms
+     ✓ applies jpg orientation 6 before resizing and strips metadata 913ms
+     ✓ applies png orientation 6 before resizing and strips metadata 888ms
+     ✓ applies jpg orientation 2 before resizing and strips metadata 889ms
+     ✓ retains alpha, uses the queued quality/maxEdge snapshot, and does not use later settings 629ms
+     ✓ compression off creates only a thumbnail 419ms
+     ✓ thumbnail publication failure retains the original and published compressed version, and records candidate responsibility 536ms
+     ✓ rolls back failed job and image settlement when candidate cleanup registration fails, then recovers after reopening 1140ms
+     ✓ does not start the next step after storage is disabled 422ms
+     ✓ rechecks disabled after asynchronous I/O and before publishing 301ms
+     ✓ rechecks deleting after asynchronous I/O and before publishing 332ms
+     ✓ rechecks cancelled after asynchronous I/O and before publishing 321ms
+     ✓ executes the selected processing scope: compressed 396ms
+     ✓ executes the selected processing scope: thumbnail 496ms
+     ✓ executes the selected processing scope: watermark 742ms
+     ✓ failed full decode retains the accepted truncated original and no incomplete version is published 313ms
+     ✓ actual storage write failure is bounded, retains bytes, and records the failed step 308ms
+     ✓ does not impose a fixed input dimension limit on a real 32769-pixel PNG 436ms
+   ✓ T-UP-04 S3 media handoff (2)
+     ✓ publishes real derived S3 objects with retained input=true and supports reprocessing 1664ms
+     ✓ publishes real derived S3 objects with retained input=false and supports reprocessing 1956ms
+ ✓ |media-tools| tests/integration/media/metadata.test.ts (10 tests) 14443ms
+   ✓ T-MED-07 complete metadata with real ExifTool and ImageMagick (10)
+     ✓ persists all groups and duplicate tags without converting strings, arrays, or nested XMP 1321ms
+     ✓ rereads the accepted original without changing image state, versions, objects, or bytes 1379ms
+     ✓ an initial complete-read timeout failure does not invalidate reliable classification or ready versions 1220ms
+     ✓ an initial complete-read output failure does not invalidate reliable classification or ready versions 1340ms
+     ✓ a reread timeout failure retains the last successful result and timestamp as history 1335ms
+     ✓ a reread output failure retains the last successful result and timestamp as history 1326ms
+     ✓ does not report ready when persisting a successful initial extraction fails 1012ms
+     ✓ retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result 1835ms
+     ✓ rechecks storage disabled during workspace preparation before accessing the original 1575ms
+     ✓ atomically retains the previous metadata if marking a reread job succeeded fails and later recovers 2101ms
+ ✓ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests) 21947ms
+   ✓ requires the owner Cookie and saved Origin and creates no job for denied requests 2795ms
+   ✓ rejects malformed JSON, unsupported scopes and client processing parameters 2455ms
+   ✓ reports lifecycle, switch, failed-scope and queued-job conflicts 2204ms
+   ✓ keeps old HTTP links readable throughout ready processing and publishes all selected references together 2754ms
+   ✓ preserves old HTTP bytes when atomic publication fails and records the readable failure 2704ms
+   ✓ returns a logged persistence failure without mutating existing content or jobs 2073ms
+   ✓ rejects final HTTP-worker publication after disabled occurs with all candidates saved 3545ms
+   ✓ rejects final HTTP-worker publication after deleting occurs with all candidates saved 3416ms
+ ✓ |media-tools| tests/integration/media/metadata-http.test.ts (6 tests) 9723ms
+   ✓ requires the owner Cookie and saved origin before accepting a metadata reread 1575ms
+   ✓ rejects every nonempty request body without passing client tool options to the queue 1517ms
+   ✓ reports image lifecycle, active processing, and disabled storage conflicts without adding jobs 1448ms
+   ✓ returns the same already queued metadata job on repeated HTTP requests 1297ms
+   ✓ reads metadata through the real HTTP worker without changing original bytes or image versions 1696ms
+   ✓ returns a logged server error when persistence fails without changing the asset 2190ms
+ ✓ |media-tools| tests/integration/media/watermark-http.test.ts (8 tests) 15039ms
+   ✓ requires the owner Cookie and the saved origin before accepting watermark bytes 1533ms
+   ✓ accepts real source.png content and retains the original bytes 1736ms
+   ✓ accepts real static.webp content and retains the original bytes 1612ms
+   ✓ accepts real static.svg content and retains the original bytes 3745ms
+   ✓ rejects animation and invalid image bytes without exposing a ready asset 1968ms
+   ✓ reports production cache exhaustion as 422 and retains its cleanup diagnostic without a ready asset 1613ms
+   ✓ rejects a file one byte over 5 MiB without creating an asset 1419ms
+   ✓ requires exactly one file field and rejects additional fields or files 1411ms
+ ✓ |media-tools| tests/integration/delivery/formats.test.ts (27 tests) 21711ms
+   ✓ T-DEL-02 real local original format delivery (27)
+     ✓ source-png delivers the complete original and uses actual encoding in HTTP metadata 1298ms
+     ✓ static-jpg delivers the complete original and uses actual encoding in HTTP metadata 811ms
+     ✓ static-webp delivers the complete original and uses actual encoding in HTTP metadata 867ms
+     ✓ static-avif delivers the complete original and uses actual encoding in HTTP metadata 1092ms
+     ✓ static-bmp delivers the complete original and uses actual encoding in HTTP metadata 1047ms
+     ✓ static-tiff delivers the complete original and uses actual encoding in HTTP metadata 958ms
+     ✓ alpha-heic delivers the complete original and uses actual encoding in HTTP metadata 822ms
+     ✓ multiple-heic delivers the complete original and uses actual encoding in HTTP metadata 634ms
+     ✓ multiple-avif delivers the complete original and uses actual encoding in HTTP metadata 729ms
+     ✓ animated-avif delivers the complete original and uses actual encoding in HTTP metadata 880ms
+     ✓ animated-gif delivers the complete original and uses actual encoding in HTTP metadata 553ms
+     ✓ animated-webp delivers the complete original and uses actual encoding in HTTP metadata 650ms
+     ✓ multiple-tiff delivers the complete original and uses actual encoding in HTTP metadata 615ms
+     ✓ multiple-ico delivers the complete original and uses actual encoding in HTTP metadata 625ms
+     ✓ animated-png delivers the complete original and uses actual encoding in HTTP metadata 587ms
+     ✓ poster-png delivers the complete original and uses actual encoding in HTTP metadata 571ms
+     ✓ static-svg delivers the complete original and uses actual encoding in HTTP metadata 2446ms
+     ✓ static-gif delivers the complete original and uses actual encoding in HTTP metadata 572ms
+     ✓ alpha-avif delivers the complete original and uses actual encoding in HTTP metadata 837ms
+     ✓ oriented-heic delivers the complete original and uses actual encoding in HTTP metadata 991ms
+     ✓ mirrored-heic delivers the complete original and uses actual encoding in HTTP metadata 764ms
+     ✓ offset-gif delivers the complete original and uses actual encoding in HTTP metadata 565ms
+     ✓ primary-second-heic delivers the complete original and uses actual encoding in HTTP metadata 603ms
+     ✓ primary-second-avif delivers the complete original and uses actual encoding in HTTP metadata 614ms
+     ✓ depth-heic delivers the complete original and uses actual encoding in HTTP metadata 763ms
+     ✓ thumbnail-heic delivers the complete original and uses actual encoding in HTTP metadata 772ms
+ ✓ |media-tools| tests/integration/upload/local.test.ts (14 tests) 5108ms
+   ✓ real local upload reception and ownership (14)
+     ✓ retains actual image watermark A for all 45 frozen files while new submissions use B, then releases A after the last pending group terminates 2274ms
+     ✓ keeps accepted work after the request disconnects during actual inspection and processes it to ready 670ms
+     ✓ retains a recognized PNG original when decoding its damaged IDAT fails after acceptance 410ms
+ ✓ |media-tools| tests/integration/media/formats.test.ts (29 tests) 19203ms
+   ✓ T-MED-06 full-format persistent processing (26)
+     ✓ source-png preserves original bytes and publishes applicable versions 895ms
+     ✓ static-jpg preserves original bytes and publishes applicable versions 783ms
+     ✓ static-webp preserves original bytes and publishes applicable versions 821ms
+     ✓ static-avif preserves original bytes and publishes applicable versions 682ms
+     ✓ static-bmp preserves original bytes and publishes applicable versions 695ms
+     ✓ static-tiff preserves original bytes and publishes applicable versions 704ms
+     ✓ alpha-heic preserves original bytes and publishes applicable versions 812ms
+     ✓ multiple-heic preserves original bytes and publishes applicable versions 511ms
+     ✓ multiple-avif preserves original bytes and publishes applicable versions 508ms
+     ✓ animated-avif preserves original bytes and publishes applicable versions 613ms
+     ✓ animated-gif preserves original bytes and publishes applicable versions 467ms
+     ✓ animated-webp preserves original bytes and publishes applicable versions 467ms
+     ✓ multiple-tiff preserves original bytes and publishes applicable versions 505ms
+     ✓ multiple-ico preserves original bytes and publishes applicable versions 482ms
+     ✓ animated-png preserves original bytes and publishes applicable versions 498ms
+     ✓ poster-png preserves original bytes and publishes applicable versions 575ms
+     ✓ static-svg preserves original bytes and publishes applicable versions 1696ms
+     ✓ static-gif preserves original bytes and publishes applicable versions 456ms
+     ✓ alpha-avif preserves original bytes and publishes applicable versions 702ms
+     ✓ oriented-heic preserves original bytes and publishes applicable versions 852ms
+     ✓ mirrored-heic preserves original bytes and publishes applicable versions 764ms
+     ✓ offset-gif preserves original bytes and publishes applicable versions 451ms
+     ✓ primary-second-heic preserves original bytes and publishes applicable versions 520ms
+     ✓ primary-second-avif preserves original bytes and publishes applicable versions 491ms
+     ✓ depth-heic preserves original bytes and publishes applicable versions 663ms
+     ✓ thumbnail-heic preserves original bytes and publishes applicable versions 662ms
+   ✓ encodes actual jpeg with the snapshot, shrinks without upscaling, and keeps thumbnails WebP 576ms
+   ✓ encodes actual webp with the snapshot, shrinks without upscaling, and keeps thumbnails WebP 613ms
+   ✓ encodes actual avif with the snapshot, shrinks without upscaling, and keeps thumbnails WebP 738ms
+ ✓ |media-tools| tests/integration/media/preview-http.test.ts (6 tests) 5420ms
+   ✓ renders unsaved parameters and original bytes privately without changing settings or the library 2524ms
+   ✓ deletes a settled preview idempotently after its exact temporary directory is cleaned 353ms
+   ✓ rejects malformed multipart/JSON/settings and counts actual bytes against current upload settings 317ms
+ ✓ |media-tools| tests/integration/media/svg.test.ts (8 tests) 7492ms
+   ✓ isolated static SVG preview (8)
+     ✓ renders SVG text using trusted installed fonts 1785ms
+     ✓ persists failed preview state while retaining the accepted dangerous original 440ms
+     ✓ renders solid and preserves original bytes 1234ms
+     ✓ renders internal use and preserves original bytes 1843ms
+     ✓ renders internal gradient and preserves original bytes 421ms
+     ✓ scales a large canvas before raster allocation and retains original dimensions 656ms
+     ✓ rejects network, local, entity and active resources without producing preview or fetching 1071ms
+ ✓ |media-tools| tests/integration/upload/local-http.test.ts (4 tests) 7873ms
+   ✓ requires the owner Cookie on every endpoint and checks mutation origins before accepting bytes 1801ms
+   ✓ accepts exact PNG bytes once and recovers an unread acceptance response by querying the submission 2039ms
+   ✓ cancels before acceptance and rejects later content without creating media 2311ms
+   ✓ rejects unknown binary content as an unsupported image and retains the cleaned failure result 1721ms
+ ✓ |media-tools| tests/integration/delivery/reprocess.test.ts (5 tests) 8085ms
+   ✓ T-DEL-02 local media reprocessing and stable delivery links (5)
+     ✓ keeps published bytes throughout real candidate generation (success) 2413ms
+     ✓ keeps published bytes throughout real candidate generation (write-failure) 1707ms
+     ✓ keeps published bytes throughout real candidate generation (publish-failure) 2099ms
+     ✓ continues serving saved disabled versions after an all-scope reprocess 1333ms
+     ✓ rejects an applicable missing version when compression was disabled at upload 533ms
+ ✓ |media-tools| tests/integration/media/watermark-validation.test.ts (22 tests) 4421ms
+   ✓ real watermark asset validation (22)
+     ✓ accepts static.svg by content and preserves its original bytes 414ms
+     ✓ gets SVG dimensions from viewBox through the existing renderer 404ms
+     ✓ preserves SVG preview file errors as operational failures 493ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts (14 tests) 2728ms
+   ✓ preserves unique immutable bytes and expires exactly after one hour 405ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts (4 tests) 2860ms
+   ✓ full-format upload to persistent media processing (4)
+     ✓ alpha-heic is identified from bytes, accepted and processed to ready 796ms
+     ✓ animated-png is identified from bytes, accepted and processed to ready 668ms
+     ✓ static-svg is identified from bytes, accepted and processed to ready 936ms
+     ✓ accepts dangerous SVG original then records preview failure without losing original bytes 460ms
+ ✓ |media-tools| tests/integration/media/file-formats.test.ts (32 tests) 4703ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts (6 tests) 389ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts (5 tests) 1177ms
+   ✓ native container identification through tool stdin (4)
+     ✓ jpeg dimensions come from raster headers rather than contradictory EXIF tags 308ms
+ ✓ |media-tools| tests/integration/media/delete-tools.test.ts (2 tests) 2190ms
+   ✓ cancels actual reprocessing at encoding, settles tools and deletes current and in-flight objects 1097ms
+   ✓ cancels actual reprocessing at stored-output, settles tools and deletes current and in-flight objects 1092ms
+ ✓ |media-tools| tests/integration/media/format-recovery.test.ts (4 tests) 3070ms
+   ✓ T-MED-06 compressed-format interruption recovery (4)
+     ✓ jpeg validates a complete writing candidate and continues the thumbnail 774ms
+     ✓ jpeg validates a wrong-format writing candidate and continues the thumbnail 826ms
+     ✓ avif validates a complete writing candidate and continues the thumbnail 700ms
+     ✓ avif validates a wrong-format writing candidate and continues the thumbnail 768ms
+
+ Test Files  142 passed (142)
+      Tests  1364 passed (1364)
+   Start at  13:27:31
+   Duration  259.73s (tests 96%, import 4%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/test-results/two-fixes/integration.xml
