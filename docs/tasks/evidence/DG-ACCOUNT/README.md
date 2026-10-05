@@ -72,3 +72,13 @@
 本次不合并、不关闭 Issue、不发布/部署、不删除分支或 worktree。管理型 worktree 与分支保留。#165/#181 的真实产品预览、独立测试凭证及用户人工验收仍由消费任务交付，不能用本轮设计资料代替。
 
 2026-10-05 更正交付状态判断：本 Issue 是纯文档设计适用核对，适用检查及独立审计均已完成。#165/#181 后续真实界面及人工验收不属于本 Issue 的完成条件，不应因此保留草稿。实际执行 `gh pr ready 241 --repo dnslin/ariso-next` 成功，PR 已进入正式评审，并同步移除 PR 描述中“保留草稿”的表述。没有合并或关闭 Issue。
+
+## 后续授权与合并前核对
+
+2026-10-05 用户随后授权关闭 Issue、合并 PR、清理本任务并更新本地分支。`gh issue close 127 --reason completed` 已成功，回读为 CLOSED。以上交付阶段的未合并/保留记录是当时状态，按本轮新授权推进。
+
+合并前更新远端，最新 main 为 `7fed1d4`（#242）。并发改动新增 API Key 实验与证据，只在 `gates.md` 的另一小节与本次同文件；`git merge --no-edit origin/main` 无冲突，保留两处记录。当前生产账号/OAuth现状仍成立，没有把 #242 的试验当成生产能力。
+
+Node 24.18.1 / pnpm 11.19.0 下仅重跑受影响项：锁文件变化后的 `pnpm install --frozen-lockfile` 通过（新增1个已有缓存依赖）；`node docs/tasks/check.mjs` 通过（120任务、298需求）；`pnpm exec prettier --check docs/tasks/gates.md` 通过；`python3` 对 gates 的112个本地链接/锚点检查通过；`git diff --check origin/main...HEAD` 通过。未重复输入不变的自检、应用或浏览器检查。
+
+独立文档审计者只读复审通过，无必改项：确认两处 gates 入口、两消费卡及账号/OAuth现状均保留，生产与实验边界未混淆。未编辑文件或机械重跑检查。合并与清理实际结果由 GitHub PR/Issue状态及本聊天最终记录确认；管理型 worktree按新授权归档，只有可重装的 node_modules被忽略，无需另外保存的本地数据。
