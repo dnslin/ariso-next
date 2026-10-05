@@ -1,0 +1,17 @@
+Error: AssertionError [ERR_ASSERTION]: Old password cannot create a session
+
+429 !== 401
+
+    at passwordChanges (file:////[eval2]:839:10)
+    at async file:////[eval2]:926:3
+    at file:////[eval2]:960:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:272:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/browser-account-final

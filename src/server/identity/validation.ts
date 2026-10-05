@@ -22,3 +22,19 @@ export const setupAccountSchema = accountInputSchema
     path: ['confirmPassword'],
     message: '两次输入的密码不一致',
   });
+
+export const accountEmailInputSchema = z.object({
+  email: accountInputSchema.shape.email,
+  currentPassword: z.string().min(1, '请输入当前密码'),
+});
+
+export const accountPasswordInputSchema = z
+  .object({
+    currentPassword: z.string().min(1, '请输入当前密码'),
+    newPassword: accountInputSchema.shape.password,
+    confirmPassword: z.string(),
+  })
+  .refine((input) => input.newPassword === input.confirmPassword, {
+    path: ['confirmPassword'],
+    message: '两次输入的密码不一致',
+  });

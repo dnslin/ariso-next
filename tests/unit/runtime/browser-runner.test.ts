@@ -49,6 +49,7 @@ describe('browser runner argument boundaries', () => {
     ['processing', 'preview'],
     ['processing', 'recovery'],
     ['processing', 'consumers'],
+    ['account'],
     ['trash', 'representative'],
     ['trash'],
     ['trash', 'cleanup'],
@@ -105,6 +106,28 @@ describe('browser runner argument boundaries', () => {
     ],
   ])('rejects storage-only processing parameter %s', (option, error) => {
     const result = parse(['--suite', 'processing', option, 'unused.json']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(error);
+  });
+
+  it.each([
+    [
+      '--only',
+      'representative',
+      '--only requires an applicable targeted suite',
+    ],
+    [
+      '--storage-config',
+      'unused.json',
+      '--storage-config applies only to storage-admin live',
+    ],
+    [
+      '--preview-config',
+      'unused.json',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])('rejects unrelated account parameter %s', (option, value, error) => {
+    const result = parse(['--suite', 'account', option, value]);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(error);
   });

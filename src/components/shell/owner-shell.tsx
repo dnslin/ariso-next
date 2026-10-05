@@ -45,6 +45,7 @@ const navigation = [
   },
   {
     href: '/settings/processing',
+    activePaths: ['/settings/account'],
     label: '站点设置',
     icon: <SlidersHorizontal />,
   },

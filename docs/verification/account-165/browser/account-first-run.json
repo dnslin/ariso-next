@@ -1,0 +1,167 @@
+{
+  "status": "failed",
+  "taskSpaceId": 31,
+  "origin": "http://ariso-62978.localhost:62978",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "page-light-1440",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 192,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 192,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-light-1440",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 424,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "account-1440-page-light-1440.png",
+    "account-1440-email-light-1440.png",
+    "account-1440-failure.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "secondBrowserContext": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "Held/lost responses come from real writes. Transport injection does not invent successful server results.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification.",
+    "Separate HTTP Cookie sessions verify revocation; they do not constitute two browser contexts.",
+    "The current Ego capability probe can create an empty BrowserContext but rejects Target.createTarget; two navigable browser contexts remain unverified."
+  ],
+  "stage": "responsive",
+  "error": "ElementResolutionError: Locator loc=role:button[name=\"取消\"] matched 2 elements. Use a current snapshot ref or a more specific role, text, or CSS selector.\n    at ambiguityError (file:////[eval1]:10631:12)\n    at findUniqueRoleMatch (file:////[eval1]:10483:15)\n    at async resolveLocatorObjectId (file:////[eval1]:10300:23)\n    at async focusInPage (file:////[eval1]:14333:22)\n    at async #retryElementAction (file:////[eval1]:18867:24)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-05T11:46:46.203Z"
+}

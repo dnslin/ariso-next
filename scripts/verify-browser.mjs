@@ -38,6 +38,7 @@ assert.ok(
     'library-copy',
     'storage-admin',
     'processing',
+    'account',
     'trash',
     'sharing-experiment',
   ].includes(suite),
@@ -158,6 +159,12 @@ for (const name of [
   'storage-admin-regressions-failure.png',
   'processing.json',
   'processing-failure.png',
+  'account.json',
+  'account-all-failure.png',
+  'account-1440-failure.png',
+  'account-390-failure.png',
+  'account-1440.json',
+  'account-390.json',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'm2-1440.json',
@@ -681,7 +688,7 @@ try {
       }
       focusedConfig.uploadS3 = targets;
     }
-    const stages =
+    let stages =
       suite === 'processing'
         ? only === undefined || only === 'consumers'
           ? [
@@ -726,6 +733,7 @@ try {
                               ['upload', 'upload'],
                               ['upload-polling', 'uploadPolling'],
                             ];
+    if (suite === 'account') stages = [['account', 'account']];
     report.taskSpaceId = config.spaceId;
     for (const [script, result] of stages) {
       if (
@@ -951,6 +959,14 @@ try {
         `workspace-continuity-${width}.log`,
       );
       report[`workspace-continuity-${width}`] = 'passed';
+      // Account changes consume these credentials, so run them only after the
+      // existing suites have finished using this isolated data directory.
+      await runBrowser(
+        '../e2e/account.mjs',
+        identityConfig,
+        `account-${width}.log`,
+      );
+      report[`account-${width}`] = 'passed';
       await stop(server);
     }
     deliveryFixture = await launchProtocolDelivery();

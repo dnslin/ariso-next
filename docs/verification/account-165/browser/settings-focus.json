@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "route": "/settings/processing",
+  "source": "Ego TaskSpace 31 p2, real keyboard Tab; no processing writes",
+  "checks": [
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "rootOutline": "none",
+      "active": {
+        "slot": "select-trigger",
+        "focusVisible": true,
+        "outlineStyle": "none",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "parentOutline": "rgb(40, 126, 121) solid 2px"
+      },
+      "screenshot": "processing-focus-light-1440.png"
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "rootOutline": "none",
+      "active": {
+        "slot": "select-trigger",
+        "focusVisible": true,
+        "outlineStyle": "none",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "parentOutline": "rgb(130, 219, 211) solid 2px"
+      },
+      "screenshot": "processing-focus-dark-1440.png"
+    }
+  ],
+  "initialProbe": "Initial diagnostics used nonexistent processing-page selector, required outline instead of the actual Select box-shadow focus ring, then measured mid-transition. Read current DOM and control styles; final probe waits for the actual 4px focus ring."
+}

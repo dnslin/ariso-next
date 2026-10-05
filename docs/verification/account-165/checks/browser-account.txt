@@ -1,0 +1,17 @@
+Error: ElementResolutionError: Locator [data-slot="toast-title"]:has-text("密码已更新") matched 2 elements (2 visible, 0 hidden). Candidates: 1. span "密码已更新" (visible); 2. span "密码已更新" (visible). Use a current snapshot ref or a more specific role, text, or CSS selector.
+    at ambiguityError (file:////[eval1]:10631:12)
+    at locatorCountError (file:////[eval1]:10594:12)
+    at async findUniqueLocatorContext (file:////[eval1]:10387:15)
+    at async resolveLocatorObjectId (file:////[eval1]:10322:19)
+    at async waitForSelectorInPage (file:////[eval1]:16110:24)
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:944:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:272:12)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/browser-account

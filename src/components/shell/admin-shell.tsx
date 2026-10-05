@@ -22,6 +22,7 @@ export type ShellNavigationItem = {
   icon?: ReactNode;
   unavailable?: boolean;
   section?: string;
+  activePaths?: readonly string[];
 };
 
 /** 未开放入口不提供链接；真实入口的鉴权仍在服务端执行。 */
@@ -49,9 +50,10 @@ export function AdminShell({
   const mainRef = useRef<HTMLElement>(null);
   const current = navigation
     .filter(
-      ({ href, unavailable }) =>
+      ({ href, unavailable, activePaths }) =>
         !unavailable &&
         (pathname === href ||
+          activePaths?.includes(pathname) ||
           (href !== '/' && pathname.startsWith(`${href}/`))),
     )
     .sort((a, b) => b.href.length - a.href.length)[0]?.href;
