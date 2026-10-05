@@ -35,7 +35,9 @@ export function DetailReprocessConfirmation({
   return (
     <AlertDialog.Dialog
       data-testid="reprocess-confirmation"
-      aria-busy={controls.pending}
+      render={(domProps) => (
+        <section {...domProps} aria-busy={controls.pending} />
+      )}
       className="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-5 overflow-hidden rounded-xl border border-border bg-surface p-5 sm:p-6"
     >
       <AlertDialog.Header className="shrink-0">

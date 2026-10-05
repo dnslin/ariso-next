@@ -1,0 +1,29 @@
+独立代码审计：确认弹窗的处理中标记修复
+
+日期：2026-10-05
+工作区：/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso
+范围：src/components/library/detail-reprocess-confirmation.tsx 的 render 映射，以及 tests/unit/library/detail-help.test.ts 两态 SSR 回归；本次补丁为两文件 25 行新增、1 行删除。
+方法：沿用已读取的 code-review-and-quality、vercel-react-best-practices、AGENTS.md 和共用交付约定，实际读取当前 diff、完整相关测试、已安装 HeroUI/RAC 类型及实现、已有失败和通过日志。审计者没有修改产品或测试源码，没有运行任何测试，没有操作浏览器。
+
+结论
+- 代码评审通过，无未解决的 Critical 或 Required 问题。
+- 修复命中既有属性过滤原因，使用现成的受支持 render 接口，保留所有原有行为断言。
+- 功能证据限于真实依赖的 SSR 输出与静态生命周期审查。按照用户明确指令，真实浏览器不再重跑；先前默认全量的 recovery:88 失败保留为实际失败，不能改记为修复后浏览器实测通过。
+
+DOM、属性与资源生命周期
+1. DetailReprocessConfirmation:36–41 使用 render={(domProps) => <section {...domProps} aria-busy={controls.pending} />}。原 RAC 根也是 section；没有新增 wrapper、替换元素种类或改变弹窗结构。
+2. HeroUI 3.2.6 的 node_modules/@heroui/react/dist/components/alert-dialog/alert-dialog.js:141–157 把 render、className、data-* 和 role=alertdialog 交给 RAC。对应 alert-dialog.d.ts:41–43 继承 RAC DialogProps；RAC 1.21.1 dist/types/src/Dialog.d.ts:12 明确继承 DOMRenderProps<'section',undefined>，属于公开类型支持的接口。
+3. 实际安装的 RAC 文件：node_modules/.pnpm/react-aria-components@1.21.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria-components/dist/private/Dialog.mjs:110–127。它先计算样式/children、合并 DOMProps 与 dialogProps，再把 render、内部 ref 与 provider 子树交给 dom.section。
+4. 同一依赖的 dist/private/utils.mjs:156–177 将 otherProps、children 与合并后的 ref 一起放进 domProps，再执行 render。补丁的完整展开保留 role、tabIndex、aria-labelledby/describedby、className/style、data-slot/testid、事件、children 和内部 ref，符合 dist/types/src/utils.d.ts:193–208 的单根、同元素类型、props/ref 透传要求。
+5. aria-busy 在最终原生 section 上声明，不再进入 RAC 顶层 filterDOMProps。布尔值正常由 React 输出为 true/false，符合已有 recovery 断言的契约。
+6. 回调捕获本次渲染的 controls.pending，没有缓存旧值的依赖数组。pending 改变时重新渲染相同 section 类型并更新属性；没有 key、动态组件类型、回调 ref 副作用或 effect，未引入额外重挂载、资源持有或清理逻辑。按钮禁用、Escape 防关闭、控制器提交/核对流程均未修改。
+
+测试有效性与已有证据
+1. detail-help.test.ts:215–235 直接用 react-dom/server 的 renderToStaticMarkup 渲染实际 DetailReprocessConfirmation，沿真实 HeroUI/RAC 路径，没有模拟 Dialog、过滤器或属性结果。测试检查根 section 的 role 与 aria-busy 两态，还核对对应按钮文案和 0/2 个真实 disabled 属性。
+2. before.log 中 pending=false 与 pending=true 都在 aria-busy 断言失败；输出包含实际 section、alertdialog、标题/描述关联及类名，却没有 busy。这与真实浏览器的 null 属性和已读过滤器实现一致，失败证据确实捕获了原缺陷。
+3. unit.log 中同一文件 11 项全部通过。既有替换范围、未知提交、核对失败等断言仍在，没有删除、减弱或跳过失败测试。before.log 的 9 skipped 来自缺陷取证时的定向名称筛选；修复后的所属文件完整执行了全部 11 项。
+4. package.json 的 test:unit 指向 vitest unit project；vitest.config.ts:8–10 默认包含 tests/unit/**/*.test.ts，新测试位于既有默认入口内，没有新增遗漏或旁路入口。
+5. 两态 SSR 检查证明各次渲染的实际 HTML 输出，不声称验证客户端原位更新、焦点、Escape、被挂起 GET 放行后恢复或后续完整浏览器流程。原位更新的判断来自相同 DOM 类型与正常渲染路径的源码审查。用户要求不再运行真实浏览器，应在交付状态中保留该边界。
+
+质量与范围
+实现仅修补原根元素的处理中辅助语义，无依赖升级、公共组件改动、控制器重构、fallback、包装层或额外防御机制。当前没有需要扩大范围的必要问题。原 #148 普通/无痕独立授权检查仍未执行，也不由本次 SSR 或代码审计替代。

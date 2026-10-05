@@ -385,3 +385,15 @@ Ego TaskSpace 30 先前已 handOff 给用户，本轮未操作浏览器。[ego-b
 新全量失败的直接诊断见 [pending-diagnosis.json](./two-fixes-243/browser-resume/pending-diagnosis.json)：同一个真实详情GET仍挂起时，取消、提交及核对按钮的原生disabled均为true，正在提交文案可见，但对话框 `aria-busy=null`。原断言同时要求 `aria-busy='true'`，因此其“按钮禁用”错误标签不能解释为按钮仍可点击。HeroUI将属性交给React Aria Dialog，但已安装React Aria的DOM属性过滤器不保留aria-busy；这是既有确认组件的辅助状态映射缺口及旧测试契约问题。独立诊断读取源码、类型及真实DOM，确认新footer条件和临时相册没有改变该过滤路径；没有只因文件未改就断言无关。
 
 本轮只诊断上述新增失败，未删除或削弱断言，未修改范围外组件。已请求用户决定是否把该既有标记问题纳入PR。两个原修复分别为代码完成、本地检查通过、真实浏览器通过、独立代码与设计审查通过、人工预览反馈通过；默认全量仍失败且后续未执行，PR继续草稿。此前普通窗口/无痕窗口必需测试取消、无远端PR检查及Release验证边界均保持。
+
+### 处理中标记修复与本次验证范围调整（2026-10-05）
+
+用户随后要求直接修复，并明确不再继续不必要的重复验证，包括真实浏览器测试。本次只修复已查明的 aria-busy 属性映射：通过已安装 HeroUI/React Aria 的公开 render 接口，在原生 section 上声明当前 pending；完整透传原 props/ref。没有增加包装层、状态、effect、依赖或修改布局、交互、公共外壳与后端。
+
+新增两态回归使用现有 renderToStaticMarkup 和实际 HeroUI组件，没有模拟组件或绕过库。修复前 pending=false/true 两项均因根缺少aria-busy失败；修复后所属文件11项全部通过，同时保留alertdialog角色、提交文案与两按钮原生禁用断言。回归通过 package.json 的默认 test:unit → Vitest unit → tests/unit/**/*.test.ts 执行；原浏览器恢复断言没有删改。
+
+Node24.19.0 / pnpm11.19.0 的实际命令、失败/通过原始输出及限制见 [本次检查](./two-fixes-243/busy-fix/checks.json)：定向单元11项、完整typecheck、两文件ESLint/Prettier和生产standalone构建均通过。构建保留既有跨平台可选依赖追踪诊断，退出0；后端、锁文件与依赖未变，不重复全量单元、集成或安装。
+
+本次按用户指令未接管浏览器、未重跑浏览器流程，也不重复Figma读取、设计对照或人工验收。元数据修复不改变已验收的视觉与操作；已有设计/人工验收结论限于其原覆盖范围。SSR两态证明库实际输出，但不冒称客户端pending切换、Escape及完整恢复流程已重测。上一节全量失败与后续未执行事实保留；本次取消重复浏览器要求，不再因此阻塞交付。原私人预览继续使用先前已验收构建、地址与独立数据，未停止或清理。
+
+独立 [代码复审](./two-fixes-243/busy-fix/code-audit.txt)通过，无Critical或Required，未机械重复测试。本次授权范围与必要检查已完成；按最新验证范围交付PR待评审，不合并、关闭Issue、发布或清理。
