@@ -7,22 +7,39 @@ export async function startCorsFixture(origin) {
   const objects = new Map();
   const requests = [];
   let mode = 'normal';
+  let heldDeletePath;
   const heldPuts = new Set();
+  const heldDeletes = new Set();
   const server = createServer(async (request, response) => {
     const url = new URL(request.url, 'http://localhost');
     if (url.pathname === '/_control') {
       if (request.method === 'POST') {
         let body = '';
         for await (const chunk of request) body += chunk;
-        mode = JSON.parse(body).mode;
+        const input = JSON.parse(body);
+        mode = input.mode;
+        heldDeletePath = input.deletePath;
         if (!['hold-put', 'hold-connection-put'].includes(mode)) {
           for (const held of heldPuts) held.end();
           heldPuts.clear();
         }
+        if (mode === 'normal') {
+          for (const held of heldDeletes) {
+            objects.delete(held.path);
+            held.response.writeHead(204);
+            held.response.end();
+          }
+          heldDeletes.clear();
+        }
       }
       response.setHeader('content-type', 'application/json');
       response.end(
-        JSON.stringify({ mode, objects: [...objects.keys()], requests }),
+        JSON.stringify({
+          mode,
+          objects: [...objects.keys()],
+          requests,
+          heldDeletes: [...heldDeletes].map((held) => held.path),
+        }),
       );
       return;
     }
@@ -99,6 +116,12 @@ export async function startCorsFixture(origin) {
       response.end();
     } else if (request.method === 'DELETE') {
       if (mode === 'delete-failure') return error(403, 'AccessDenied');
+      if (mode === 'hold-delete' && url.pathname === heldDeletePath) {
+        const held = { path: url.pathname, response };
+        heldDeletes.add(held);
+        response.once('close', () => heldDeletes.delete(held));
+        return;
+      }
       objects.delete(url.pathname);
       response.writeHead(204);
       response.end();

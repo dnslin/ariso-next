@@ -39,6 +39,7 @@ assert.ok(
     'storage-admin',
     'processing',
     'trash',
+    'sharing-experiment',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -158,6 +159,7 @@ for (const name of [
   'processing.json',
   'processing-failure.png',
   'delivery-s3/browser.json',
+  'sharing-experiment.json',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -188,6 +190,7 @@ let browser;
 let shellServer;
 let corsFixture;
 let deliveryFixture;
+let sharingFixture;
 const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
@@ -266,6 +269,60 @@ async function runBrowser(script, browserConfig, logName) {
     process.stdout.write(safeLogs);
     await writeFile(join(output, logName), safeLogs);
   }
+}
+async function runSharingExperiment(spaceId) {
+  const { launchSharing } =
+    await import('../tests/experiments/sharing/harness.ts');
+  sharingFixture = await launchSharing(controller.signal);
+  secrets.push('sharing-password', 'sharing-experiment-password');
+  report.sharingOrigin = sharingFixture.origin;
+  await runBrowser(
+    '../tests/experiments/sharing/browser.mjs',
+    { origin: sharingFixture.origin, spaceId, pageLabel, output },
+    'sharing-experiment.log',
+  );
+  report.sharingExperiment = 'passed';
+  report.sharingBrowserContexts = 'unverified';
+  await writeFile(
+    join(output, 'sharing-server.log'),
+    redact(sharingFixture.logs()),
+  );
+  await sharingFixture.stop();
+  sharingFixture = undefined;
+}
+if (suite === 'sharing-experiment') {
+  try {
+    const spaceId = Number(process.env.EGO_TASK_SPACE);
+    assert.ok(
+      Number.isInteger(spaceId) && spaceId > 0,
+      'Existing Ego space required',
+    );
+    report.taskSpaceId = spaceId;
+    await runSharingExperiment(spaceId);
+    report.status = 'passed';
+  } catch (error) {
+    report.error = redact(error.stack ?? String(error));
+    process.exitCode = 1;
+    console.error(report.error);
+  } finally {
+    await stop(browser);
+    if (sharingFixture) {
+      await writeFile(
+        join(output, 'sharing-server.log'),
+        redact(sharingFixture.logs()),
+      );
+      await sharingFixture.stop();
+    }
+    report.finishedAt = new Date().toISOString();
+    await writeFile(
+      join(output, 'runner.json'),
+      `${JSON.stringify(report, null, 2)}\n`,
+    );
+    process.removeListener('SIGINT', interrupt);
+    process.removeListener('SIGTERM', interrupt);
+    console.log(`Browser report: ${output}`);
+  }
+  process.exit(process.exitCode ?? 0);
 }
 if (suite === 'storage-admin' && only === 'feedback') {
   try {
@@ -910,6 +967,7 @@ try {
     report.deliveryS3 = 'passed';
     await deliveryFixture.close();
     deliveryFixture = undefined;
+    await runSharingExperiment(report.taskSpaceId);
     // Reuse the same Ego space for isolated UI/library checks and let its runner
     // close it after the final successful suite (unless the caller keeps it).
     browser = spawn(process.execPath, ['run-browser.mjs'], {
@@ -938,6 +996,13 @@ try {
   await stop(shellServer);
   await corsFixture?.close();
   await deliveryFixture?.close();
+  if (sharingFixture) {
+    await writeFile(
+      join(output, 'sharing-server.log'),
+      redact(sharingFixture.logs()),
+    );
+    await sharingFixture.stop();
+  }
   for (const endpoint of uploadFixtures) await endpoint.close();
   await writeFile(join(output, 'shell-server.log'), shellLogs);
   await writeFile(join(output, 'server.log'), redact(logs));

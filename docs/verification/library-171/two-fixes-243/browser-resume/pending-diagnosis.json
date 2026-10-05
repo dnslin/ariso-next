@@ -1,0 +1,33 @@
+{
+  "source": "默认全量在 recovery.mjs:88 失败后，在原 p1 同一个挂起详情 GET 尚未放行时直接读取真实 DOM；不修改数据或重试操作。",
+  "url": "http://ariso-54209.localhost:54209/library?image=library-007&detailView=reprocess",
+  "busy": null,
+  "alert": ["连接中断或响应无法读取，提交结果待核对。不会自动重新提交。"],
+  "buttons": [
+    {
+      "text": "核对详情",
+      "disabled": true,
+      "ariaDisabled": null,
+      "pending": null,
+      "disabledAttr": ""
+    },
+    {
+      "text": "取消",
+      "disabled": true,
+      "ariaDisabled": null,
+      "pending": null,
+      "disabledAttr": ""
+    },
+    {
+      "text": "正在提交…",
+      "disabled": true,
+      "ariaDisabled": null,
+      "pending": null,
+      "disabledAttr": ""
+    }
+  ],
+  "heldRead": "function",
+  "posts": 1,
+  "readCount": 1,
+  "limits": "这是失败后的状态读取，不是原 assert 内采样；原 GET 未放行，不能据此声称尚未执行的 Escape 或恢复已通过。"
+}

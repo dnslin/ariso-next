@@ -1,0 +1,13 @@
+{
+  "startedAt": "2026-10-04T16:43:48.627Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.19.0",
+  "status": "failed",
+  "suite": "sharing-experiment",
+  "pageLabel": "p1",
+  "taskSpaceId": 30,
+  "sharingOrigin": "http://127.0.0.1:62589",
+  "error": "AbortError: The operation was aborted\n    at AbortSignal.abortListener (node:events:1025:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:789:26)\n    at runAbort (node:internal/abort_controller:547:10)\n    at abortSignal (node:internal/abort_controller:518:3)\n    at AbortController.abort (node:internal/abort_controller:566:5)\n    at process.interrupt (file:///Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/scripts/verify-browser.mjs:227:14)\n    at Object.onceWrapper (node:events:631:26)\n    at process.emit (node:events:509:28)",
+  "finishedAt": "2026-10-04T16:43:58.069Z"
+}

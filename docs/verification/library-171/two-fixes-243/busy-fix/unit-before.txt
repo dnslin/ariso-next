@@ -1,0 +1,48 @@
+Already up to date
+Done in 189ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso
+
+ ❯ |unit| tests/unit/library/detail-help.test.ts (11 tests | 2 failed | 9 skipped) 14ms
+   × exposes submission busy state on the confirmation dialog when pending=false 12ms
+   × exposes submission busy state on the confirmation dialog when pending=true 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > exposes submission busy state on the confirmation dialog when pending=false
+AssertionError: expected '<section data-slot="alert-dialog-dial…' to contain 'aria-busy="false"'
+
+Expected: "aria-busy="false""
+Received: "<section data-slot="alert-dialog-dialog" data-testid="reprocess-confirmation" class="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-5 overflow-hidden rounded-xl border border-border bg-surface p-5 sm:p-6" data-rac="" aria-labelledby="react-aria-_R_0_" role="alertdialog" tabindex="-1" aria-describedby="react-aria-_R_0H1_">"
+
+ ❯ tests/unit/library/detail-help.test.ts:229:20
+    227|     const dialog = html.match(/<section\b[^>]*>/)?.[0];
+    228|     expect(dialog).toContain('role="alertdialog"');
+    229|     expect(dialog).toContain(`aria-busy="${pending}"`);
+       |                    ^
+    230|     expect(html).toContain(pending ? '正在提交…' : '提交仅缩略图');
+    231|     expect(html.match(/<button\b[^>]*disabled=""/g) ?? []).toHaveLengt…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/library/detail-help.test.ts > exposes submission busy state on the confirmation dialog when pending=true
+AssertionError: expected '<section data-slot="alert-dialog-dial…' to contain 'aria-busy="true"'
+
+Expected: "aria-busy="true""
+Received: "<section data-slot="alert-dialog-dialog" data-testid="reprocess-confirmation" class="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-5 overflow-hidden rounded-xl border border-border bg-surface p-5 sm:p-6" data-rac="" aria-labelledby="react-aria-_R_0_" role="alertdialog" tabindex="-1" aria-describedby="react-aria-_R_0H1_">"
+
+ ❯ tests/unit/library/detail-help.test.ts:229:20
+    227|     const dialog = html.match(/<section\b[^>]*>/)?.[0];
+    228|     expect(dialog).toContain('role="alertdialog"');
+    229|     expect(dialog).toContain(`aria-busy="${pending}"`);
+       |                    ^
+    230|     expect(html).toContain(pending ? '正在提交…' : '提交仅缩略图');
+    231|     expect(html.match(/<button\b[^>]*disabled=""/g) ?? []).toHaveLengt…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 skipped (11)
+   Start at  15:38:05
+   Duration  441ms (import 75%, transform 20%, tests 4%)

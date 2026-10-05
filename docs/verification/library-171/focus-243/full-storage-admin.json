@@ -1,0 +1,15 @@
+{
+  "status": "failed",
+  "taskSpaceId": 30,
+  "source": "test-results/focus-fix/full/storage-admin.json (full local report retained; excerpt contains failure and completed checks only)",
+  "checks": [
+    "Actual list reads expose loading/error and keyboard retry recovers the real stored rows.",
+    "Local create writes a real independent directory; invalid path retains input without updating storage; a lost successful PATCH is read back without duplicate creation or revision change.",
+    "Unsaved credential/position edits are excluded from connection tests and enable PATCH contains only enabled:true; returning during a held real retest preserves both unsaved inputs while server cleanup finishes.",
+    "Migrated CORS route runs a real browser sample and its passed result links back to the actual storage editor.",
+    "S3 is saved disabled, real write/read/anonymous-denial/delete stages pass, separate enable/default actions persist, rename preserves test/revision, credential change invalidates tests and disables while preserving default.",
+    "Actual missing capability permission and enabled Bucket versioning produce distinct failed configuration stages; anonymous-readable enabled retest fails and stops storage while preserving the default pointer.",
+    "HTTP 2xx failed connection report displays failed; actual remote DELETE failure retains probe and UI retry removes its exact object while storage remains disabled."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   configRevision: 1,\n+   deletedCount: 0,\n+   discoveredCount: 0,\n+   error: null,\n+   failedCount: 0,\n+   finishedAt: '2026-10-04T18:50:53.787Z',\n+   protectedCount: 0,\n+   scope: {\n+     bucket: 'cors-test',\n+     endpoint: 'http://127.0.0.1:65416',\n+     localPath: null,\n+     namespace: 'storage-admin-198/ariso/fc8d34dc-1911-4db1-9dcb-971a04d7f971/',\n+     pathPrefix: 'storage-admin-198',\n+     type: 's3'\n+   },\n+   startedAt: '2026-10-04T18:50:53.782Z',\n+   status: 'passed',\n+   storageId: 'fc8d34dc-1911-4db1-9dcb-971a04d7f971'\n+ }\n- null\n\n    at file:////[eval2]:614:10"
+}

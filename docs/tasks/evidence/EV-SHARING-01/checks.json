@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-05",
+  "base": "569e34d",
+  "branch": "codex/issue-148-sharing-experiment",
+  "environment": {
+    "node": "v24.19.0",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "dependencies": {
+      "next": "16.3.5",
+      "better-auth": "1.7.5",
+      "better-sqlite3": "13.0.3",
+      "drizzle-orm": "0.45.2"
+    }
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm --dir tests/experiments/ui install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "diagnostics": [
+        "Existing SQLite Debug binary tracing diagnostic",
+        "Existing optional @opentelemetry/api tracing diagnostic"
+      ]
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "testsPassed": 1202,
+      "note": "Before the 51 new focused unit cases were added"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/sharing/client.test.ts",
+      "exitCode": 0,
+      "testsPassed": 2
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts",
+      "exitCode": 0,
+      "testsPassed": 49
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/sharing-all-integration.xml",
+      "exitCode": 1,
+      "filesPassed": 140,
+      "testsPassed": 1347,
+      "testsNotExecuted": 14,
+      "note": "Sharing beforeAll first readiness fetch ECONNREFUSED; fixed by waiting for actual HTTP 200"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/sharing --reporter=default --reporter=junit --outputFile=test-results/sharing-integration.xml",
+      "exitCode": 0,
+      "filesPassed": 2,
+      "testsPassed": 17,
+      "note": "Final affected suite after readiness correction and production boundary additions"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "EGO_TASK_SPACE=30 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser-full pnpm run test:browser",
+      "exitCode": 1,
+      "note": "Existing library confirmation focus failed; sharing and subsequent suites not reached",
+      "evidence": "browser-full.json"
+    },
+    {
+      "command": "SIGINT lifecycle experiment with real sharing Next server and blocking CLI fixture",
+      "exitCode": 0,
+      "note": "Runner exit 1 is the expected interruption; endpoint, child and temporary database removed",
+      "evidence": "cancellation.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=30 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser pnpm run test:browser -- --suite sharing-experiment",
+      "exitCode": 1,
+      "note": "First four cookie/authorization checks passed; hidden observation activated its own page and timed out; observer corrected to non-activating events",
+      "evidence": "browser-before.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=30 EGO_PAGE_LABEL=p5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-browser-final node scripts/verify-browser.mjs --suite sharing-experiment",
+      "exitCode": 0,
+      "note": "Final affected script using existing p5 after explicit DOM listener and protocol observer cleanup. A subsequently removed extra exception observation was unnecessary; required assertions and cleanup are unchanged. Default full outcome remains failed.",
+      "evidence": "browser.json"
+    },
+    {
+      "command": "pnpm exec eslint tests/experiments/sharing/browser.mjs --max-warnings=0",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec prettier tests/experiments/sharing/browser.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node --check tests/experiments/sharing/browser.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec prettier docs/tasks/evidence/EV-SHARING-01 tests/experiments/sharing/browser.mjs --check",
+      "exitCode": 0
+    },
+    {
+      "command": "gh pr view 243 --repo dnslin/ariso-next --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup",
+      "exitCode": 0,
+      "note": "OPEN / Draft; statusCheckRollup empty"
+    },
+    {
+      "command": "gh pr checks 243 --repo dnslin/ariso-next",
+      "exitCode": 1,
+      "note": "no checks reported; not a CI failure or success"
+    }
+  ],
+  "browser": {
+    "sharing": "passed",
+    "defaultFull": "failed",
+    "twoBrowserContexts": "unverified",
+    "taskSpace": 30
+  },
+  "independentReview": {
+    "codeQuality": "approved",
+    "scopeBehavior": "passed",
+    "overallGate": "incomplete",
+    "unresolvedCriticalOrRequired": 0,
+    "evidence": "audit.md"
+  },
+  "twoBrowserContexts": "unverified",
+  "productUi": "not applicable",
+  "releaseValidation": "not run; Release only",
+  "pullRequest": {
+    "url": "https://github.com/dnslin/ariso-next/pull/243",
+    "state": "OPEN",
+    "isDraft": true,
+    "baseRefName": "main",
+    "headRefName": "codex/issue-148-sharing-experiment",
+    "checksReported": 0,
+    "ci": "No checks reported; this is not a passing CI result"
+  }
+}

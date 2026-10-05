@@ -1,0 +1,62 @@
+{
+  "status": "failed",
+  "checks": [
+    {
+      "theme": "light",
+      "width": 1440,
+      "reloadFocus": true,
+      "tab": "查看处理说明",
+      "outline": {
+        "visible": true,
+        "heroVisible": "true",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "spaceConfirmationFocus": "取消",
+      "escapeRestoresSelection": true
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "reloadFocus": true,
+      "tab": "查看处理说明",
+      "outline": {
+        "visible": true,
+        "heroVisible": "true",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "spaceConfirmationFocus": "取消",
+      "escapeRestoresSelection": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "reloadFocus": true,
+      "tab": "查看处理说明",
+      "outline": {
+        "visible": true,
+        "heroVisible": "true",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "spaceConfirmationFocus": "取消",
+      "escapeRestoresSelection": true
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "reloadFocus": true,
+      "tab": "查看处理说明",
+      "outline": {
+        "visible": true,
+        "heroVisible": "true",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "spaceConfirmationFocus": "取消",
+      "escapeRestoresSelection": true
+    }
+  ],
+  "layouts": [],
+  "limitations": [
+    "Default confirmation verifier still fails because an empty shell-footer remains mounted; this focused run does not mark that assertion passed."
+  ],
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"reprocess-confirmation\"]"
+}

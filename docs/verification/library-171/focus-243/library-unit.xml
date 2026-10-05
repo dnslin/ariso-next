@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="439" failures="0" errors="0" time="3.167769295">
+    <testsuite name="tests/unit/library/batch-controller.test.ts" timestamp="2026-10-04T18:43:54.742Z" hostname="dnslins-Mac-mini.local" tests="18" failures="0" errors="0" skipped="0" time="0.1390805">
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="retains a terminal list-refresh failure after polling cleanup and retries the list itself" time="0.047299">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="keeps failed task attempts in their own scopes after another item explicitly retries all derived files" time="0.007730417">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="checks a lost first chunk by its original task IDs and continues only the 201st unsent item after an explicit click" time="0.014305666">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="preserves the last known running task on a progress-read failure and only rereads on request" time="0.007235291">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="aborts a live progress read on close without resubmitting or cancelling server work" time="0.004714833">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="aborts a live progress read on unmount without resubmitting or cancelling server work" time="0.00473725">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="keeps trash acceptance distinct from actual cleanup, including existing tasks" time="0.006525041">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="checks lost cleanup responses without replay and waits for an explicit continuation" time="0.005389916">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="does not mistake the old failed cycle for a retry result and preserves its retry baseline during checks" time="0.004006375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="closing a submitting trash snapshot stops unsent requests and preserves sent identities for checking" time="0.008408334">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="retains the last cleanup progress and a recoverable refresh failure" time="0.00185475">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="closing between chunks retains received tasks and leaves only the later chunk unsent" time="0.001513334">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="checks only the requested unknown item and does not submit unsent items until all unknown results are resolved" time="0.002142875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="retries only the chosen failed cleanup task with its own cycle and refuses tasks outside the frozen query" time="0.006693">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="resubmits only a retained rejected item and refuses one that left the query" time="0.004574458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="reads an accepted retry as current cleanup facts after another window advances its cycle" time="0.002628959">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="surfaces a per-item failed without cleanup and stops polling until a requested reread" time="0.003827583">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-controller.test.ts" name="surfaces a per-item unknown without cleanup and stops polling until a requested reread" time="0.004008542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-feedback.test.ts" timestamp="2026-10-04T18:43:54.743Z" hostname="dnslins-Mac-mini.local" tests="46" failures="0" errors="0" skipped="0" time="0.006783209">
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; uses the confirmed changed and unchanged counts" time="0.002244334">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; reports zero changes when all submitted items were unchanged" time="0.000131667">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; counts only the retry snapshot, excluding earlier confirmed results" time="0.000092">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; counts only the final snapshot after 200 previously confirmed items" time="0.000129167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback with unknown" time="0.000084458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback with unsent" time="0.000048709">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback with valid-failure" time="0.000044292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback with invalid-failure" time="0.000046541">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback with missing-result" time="0.000058208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="public success feedback &gt; returns no success feedback for an empty selection" time="0.000089959">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; uses the confirmed changed and unchanged counts" time="0.000255416">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; reports zero changes when all submitted items were unchanged" time="0.000170042">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; counts only the retry snapshot, excluding earlier confirmed results" time="0.000071167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; counts only the final snapshot after 200 previously confirmed items" time="0.000132292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback with unknown" time="0.000049875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback with unsent" time="0.000040791">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback with valid-failure" time="0.000042">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback with invalid-failure" time="0.000042625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback with missing-result" time="0.0000405">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="private success feedback &gt; returns no success feedback for an empty selection" time="0.000035458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; uses the confirmed changed and unchanged counts" time="0.000059209">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; reports zero changes when all submitted items were unchanged" time="0.000500458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; counts only the retry snapshot, excluding earlier confirmed results" time="0.0000545">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; counts only the final snapshot after 200 previously confirmed items" time="0.000076667">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback with unknown" time="0.00002325">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback with unsent" time="0.00001775">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback with valid-failure" time="0.000018291">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback with invalid-failure" time="0.0000175">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback with missing-result" time="0.000018375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="add-tags success feedback &gt; returns no success feedback for an empty selection" time="0.000041167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; uses the confirmed changed and unchanged counts" time="0.000055208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; reports zero changes when all submitted items were unchanged" time="0.000033542">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; counts only the retry snapshot, excluding earlier confirmed results" time="0.000024792">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; counts only the final snapshot after 200 previously confirmed items" time="0.000045083">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback with unknown" time="0.000019417">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback with unsent" time="0.000029125">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback with valid-failure" time="0.000019">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback with invalid-failure" time="0.000015125">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback with missing-result" time="0.000014334">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="remove-tags success feedback &gt; returns no success feedback for an empty selection" time="0.000014542">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="matches confirmed results to snapshot IDs regardless of response order" time="0.000046125">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="returns no success feedback for no command" time="0.000032708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="returns no success feedback for restore" time="0.000023292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="returns no success feedback for trash" time="0.000014042">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="returns no success feedback for add-albums" time="0.000017417">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-feedback.test.ts" name="returns no success feedback for remove-albums" time="0.000013292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-reprocess.test.ts" timestamp="2026-10-04T18:43:54.744Z" hostname="dnslins-Mac-mini.local" tests="22" failures="0" errors="0" skipped="0" time="0.46908825">
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="shows all four scopes while disabling partial work for failed-only selection" time="0.049787">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="allows partial ranges in mixed ready and failed selection without silently changing failed scope" time="0.00741">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="renders queued as accepted work with exact task identity rather than completion" time="0.019735459">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="renders running as accepted work with exact task identity rather than completion" time="0.008905334">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="retains exact task state on progress read error and offers a read retry" time="0.007335">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="keeps unconfirmed outcomes separate from rejected and execution failures and only offers a check" time="0.010619959">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="offers explicit execution failure retry without requiring or claiming a retained selection" time="0.027782208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="offers an explicitly broader all-derived retry for retained partial-scope rejection" time="0.004632042">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="labels the real task terminal status failed" time="0.0092835">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="labels the real task terminal status cancelled" time="0.031473708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="labels the real task terminal status succeeded" time="0.02034875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="preserves each execution failure scope after an explicit all-derived retry of initial conflicts" time="0.008010875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="uses text and a semantic chip for the real task state queued" time="0.008580541">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="uses text and a semantic chip for the real task state running" time="0.007377667">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="uses text and a semantic chip for the real task state succeeded" time="0.015670583">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="uses text and a semantic chip for the real task state failed" time="0.062439708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="uses text and a semantic chip for the real task state cancelled" time="0.013053625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="distinguishes unaccepted, unknown and unsent status chips while retaining their reasons" time="0.092487958">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="shows terminal list refresh errors separately with an actual list retry action" time="0.008136166">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="counts cancelled and failed jobs together while keeping their row labels distinct" time="0.015929208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="hides retained unknown work until the user explicitly reopens it" time="0.008252625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-reprocess.test.ts" name="preserves the warning color for waiting acceptance separately from neutral queued tasks" time="0.028544">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-request.test.ts" timestamp="2026-10-04T18:43:54.745Z" hostname="dnslins-Mac-mini.local" tests="9" failures="0" errors="0" skipped="0" time="0.076373667">
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="bounded batch client &gt; uses one fixed explicit query and snapshot in serial 200-item requests" time="0.032045167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="bounded batch client &gt; stops after a lost response, preserving unknown and unsent identities without replay" time="0.003736834">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="bounded batch client &gt; checks actual state with a read-only command after an unknown response" time="0.001968875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="bounded batch client &gt; keeps server rejection distinct from an unknown response" time="0.000638458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="bounded batch client &gt; cancellation prevents the next request while retaining already received results" time="0.001941167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="trims exact task identities to each 200-item request and keeps them unchanged for checks" time="0.01273225">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="does not submit the next chunk when the server cannot confirm an exact reprocess task" time="0.000832083">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="checks every read-only chunk and retains only identities still unconfirmed" time="0.005629583">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-request.test.ts" name="trims cleanup retry baselines to each explicit chunk without changing cycles" time="0.015824375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-route.test.ts" timestamp="2026-10-04T18:43:54.746Z" hostname="dnslins-Mac-mini.local" tests="10" failures="0" errors="0" skipped="0" time="0.05519375">
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="requires UNAUTHORIZED before reading batch input or touching runtime" time="0.0291615">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="requires INVALID_ORIGIN before reading batch input or touching runtime" time="0.001040625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="rejects invalid batch before any image write: {" time="0.002162708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="rejects invalid batch before any image write: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;}}" time="0.005121542">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="rejects invalid batch before any image write: {&quot;ids&quot;:[&quot;image-0&quot;,&quot;image-1&quot;,&quot;image-2&quot;,&quot;image-3&quot;,&quot;image-4&quot;,&quot;image-5&quot;,&quot;image-6&quot;,&quot;image-7&quot;,&quot;image-8&quot;,&quot;image-9&quot;,&quot;image-10&quot;,&quot;image-11&quot;,&quot;image-12&quot;,&quot;image-13&quot;,&quot;image-14&quot;,&quot;image-15&quot;,&quot;image-16&quot;,&quot;image-17&quot;,&quot;image-18&quot;,&quot;image-19&quot;,&quot;image-20&quot;,&quot;image-21&quot;,&quot;image-22&quot;,&quot;image-23&quot;,&quot;image-24&quot;,&quot;image-25&quot;,&quot;image-26&quot;,&quot;image-27&quot;,&quot;image-28&quot;,&quot;image-29&quot;,&quot;image-30&quot;,&quot;image-31&quot;,&quot;image-32&quot;,&quot;image-33&quot;,&quot;image-34&quot;,&quot;image-35&quot;,&quot;image-36&quot;,&quot;image-37&quot;,&quot;image-38&quot;,&quot;image-39&quot;,&quot;image-40&quot;,&quot;image-41&quot;,&quot;image-42&quot;,&quot;image-43&quot;,&quot;image-44&quot;,&quot;image-45&quot;,&quot;image-46&quot;,&quot;image-47&quot;,&quot;image-48&quot;,&quot;image-49&quot;,&quot;image-50&quot;,&quot;image-51&quot;,&quot;image-52&quot;,&quot;image-53&quot;,&quot;image-54&quot;,&quot;image-55&quot;,&quot;image-56&quot;,&quot;image-57&quot;,&quot;image-58&quot;,&quot;image-59&quot;,&quot;image-60&quot;,&quot;image-61&quot;,&quot;image-62&quot;,&quot;image-63&quot;,&quot;image-64&quot;,&quot;image-65&quot;,&quot;image-66&quot;,&quot;image-67&quot;,&quot;image-68&quot;,&quot;image-69&quot;,&quot;image-70&quot;,&quot;image-71&quot;,&quot;image-72&quot;,&quot;image-73&quot;,&quot;image-74&quot;,&quot;image-75&quot;,&quot;image-76&quot;,&quot;image-77&quot;,&quot;image-78&quot;,&quot;image-79&quot;,&quot;image-80&quot;,&quot;image-81&quot;,&quot;image-82&quot;,&quot;image-83&quot;,&quot;image-84&quot;,&quot;image-85&quot;,&quot;image-86&quot;,&quot;image-87&quot;,&quot;image-88&quot;,&quot;image-89&quot;,&quot;image-90&quot;,&quot;image-91&quot;,&quot;image-92&quot;,&quot;image-93&quot;,&quot;image-94&quot;,&quot;image-95&quot;,&quot;image-96&quot;,&quot;image-97&quot;,&quot;image-98&quot;,&quot;image-99&quot;,&quot;image-100&quot;,&quot;image-101&quot;,&quot;image-102&quot;,&quot;image-103&quot;,&quot;image-104&quot;,&quot;image-105&quot;,&quot;image-106&quot;,&quot;image-107&quot;,&quot;image-108&quot;,&quot;image-109&quot;,&quot;image-110&quot;,&quot;image-111&quot;,&quot;image-112&quot;,&quot;image-113&quot;,&quot;image-114&quot;,&quot;image-115&quot;,&quot;image-116&quot;,&quot;image-117&quot;,&quot;image-118&quot;,&quot;image-119&quot;,&quot;image-120&quot;,&quot;image-121&quot;,&quot;image-122&quot;,&quot;image-123&quot;,&quot;image-124&quot;,&quot;image-125&quot;,&quot;image-126&quot;,&quot;image-127&quot;,&quot;image-128&quot;,&quot;image-129&quot;,&quot;image-130&quot;,&quot;image-131&quot;,&quot;image-132&quot;,&quot;image-133&quot;,&quot;image-134&quot;,&quot;image-135&quot;,&quot;image-136&quot;,&quot;image-137&quot;,&quot;image-138&quot;,&quot;image-139&quot;,&quot;image-140&quot;,&quot;image-141&quot;,&quot;image-142&quot;,&quot;image-143&quot;,&quot;image-144&quot;,&quot;image-145&quot;,&quot;image-146&quot;,&quot;image-147&quot;,&quot;image-148&quot;,&quot;image-149&quot;,&quot;image-150&quot;,&quot;image-151&quot;,&quot;image-152&quot;,&quot;image-153&quot;,&quot;image-154&quot;,&quot;image-155&quot;,&quot;image-156&quot;,&quot;image-157&quot;,&quot;image-158&quot;,&quot;image-159&quot;,&quot;image-160&quot;,&quot;image-161&quot;,&quot;image-162&quot;,&quot;image-163&quot;,&quot;image-164&quot;,&quot;image-165&quot;,&quot;image-166&quot;,&quot;image-167&quot;,&quot;image-168&quot;,&quot;image-169&quot;,&quot;image-170&quot;,&quot;image-171&quot;,&quot;image-172&quot;,&quot;image-173&quot;,&quot;image-174&quot;,&quot;image-175&quot;,&quot;image-176&quot;,&quot;image-177&quot;,&quot;image-178&quot;,&quot;image-179&quot;,&quot;image-180&quot;,&quot;image-181&quot;,&quot;image-182&quot;,&quot;image-183&quot;,&quot;image-184&quot;,&quot;image-185&quot;,&quot;image-186&quot;,&quot;image-187&quot;,&quot;image-188&quot;,&quot;image-189&quot;,&quot;image-190&quot;,&quot;image-191&quot;,&quot;image-192&quot;,&quot;image-193&quot;,&quot;image-194&quot;,&quot;image-195&quot;,&quot;image-196&quot;,&quot;image-197&quot;,&quot;image-198&quot;,&quot;image-199&quot;,&quot;image-200&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.001708916">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="rejects invalid batch before any image write: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;add-albums&quot;,&quot;albumIds&quot;:[]},&quot;mode&quot;:&quot;apply&quot;}" time="0.001732917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="returns actual per-image mixed results rather than treating HTTP 200 as every item succeeding" time="0.006614916">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="logs each database failure with command, mode and image context, and retains unknown outcomes on a failed response" time="0.001041917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="returns reprocessing acceptance and exact-task uncertainty as independent HTTP 200 item outcomes" time="0.002372709">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-route.test.ts" name="returns cleanup acceptance, an already requested task and unconfirmed retry separately" time="0.002523375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-summary.test.ts" timestamp="2026-10-04T18:43:54.746Z" hostname="dnslins-Mac-mini.local" tests="20" failures="0" errors="0" skipped="0" time="0.0957355">
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="keeps an enabled continue action after checking 200 successful items with one item still unsubmitted" time="0.0246965">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="uses the valid failed thumbnail instead of a successful recycled image whose content URL has closed" time="0.001837375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="shows failed names, IDs, source pages and real reasons without retaining invalid failures in selection" time="0.00278175">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="disables remaining-item submission during another active request" time="0.004198041">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="requires viewing retained relation failures before offering a write retry" time="0.003311292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="keeps return to the library enabled even if the retained failure list is now empty" time="0.002781208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="shows a failed retry as still selected and returns to its read-only retained list" time="0.005218834">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="shows public retained failures as a separate page with valid page counts and the original retry command" time="0.0018715">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="shows private retained failures as a separate page with valid page counts and the original retry command" time="0.001263875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="keeps invalid failure reasons visible while disabling failure-only retry" time="0.001533708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="never renders a separate success dialog after public failure-only retry" time="0.008869875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="never renders a separate success dialog after private failure-only retry" time="0.018552292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="does not add a success dialog for initial or continued visibility work (retrying=false)" time="0.002301416">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="does not add a success dialog for initial or continued visibility work (retrying=true)" time="0.003110875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="keeps a completed failure retry in summary when unsubmitted selected items remain" time="0.006005792">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="never shows failure retry success while the outcome is pending" time="0.0010895">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="never shows failure retry success while the outcome is unknown" time="0.000754875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="never shows failure retry success while the outcome is failed" time="0.000930625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="uses the real album source in the original result overview and retained failure footer" time="0.00237375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-summary.test.ts" name="keeps the known thumbnail of an invalid failure that only left the filter" time="0.000680375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch-targets.test.ts" timestamp="2026-10-04T18:43:54.747Z" hostname="dnslins-Mac-mini.local" tests="6" failures="0" errors="0" skipped="0" time="0.154191334">
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="keeps cached album identities out of real add-tags target controls" time="0.084355125">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="keeps cached album identities out of real remove-tags target controls" time="0.021911666">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="does not show an unrelated cached current-album error in add-tags target selection" time="0.012467834">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="does not show an unrelated cached current-album error in remove-tags target selection" time="0.008438833">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="keeps the actual current album selectable for removal even when absent from the target page" time="0.009163667">
+        </testcase>
+        <testcase classname="tests/unit/library/batch-targets.test.ts" name="uses one focusable Button as the tag tips trigger without duplicating its DOM ID" time="0.016263">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/batch.test.ts" timestamp="2026-10-04T18:43:54.747Z" hostname="dnslins-Mac-mini.local" tests="41" failures="0" errors="0" skipped="0" time="0.011516459">
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts 200 explicit image IDs, normalizes filters and deduplicates actual IDs and relationship targets" time="0.003699292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000487084">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000112167">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image-0&quot;,&quot;image-1&quot;,&quot;image-2&quot;,&quot;image-3&quot;,&quot;image-4&quot;,&quot;image-5&quot;,&quot;image-6&quot;,&quot;image-7&quot;,&quot;image-8&quot;,&quot;image-9&quot;,&quot;image-10&quot;,&quot;image-11&quot;,&quot;image-12&quot;,&quot;image-13&quot;,&quot;image-14&quot;,&quot;image-15&quot;,&quot;image-16&quot;,&quot;image-17&quot;,&quot;image-18&quot;,&quot;image-19&quot;,&quot;image-20&quot;,&quot;image-21&quot;,&quot;image-22&quot;,&quot;image-23&quot;,&quot;image-24&quot;,&quot;image-25&quot;,&quot;image-26&quot;,&quot;image-27&quot;,&quot;image-28&quot;,&quot;image-29&quot;,&quot;image-30&quot;,&quot;image-31&quot;,&quot;image-32&quot;,&quot;image-33&quot;,&quot;image-34&quot;,&quot;image-35&quot;,&quot;image-36&quot;,&quot;image-37&quot;,&quot;image-38&quot;,&quot;image-39&quot;,&quot;image-40&quot;,&quot;image-41&quot;,&quot;image-42&quot;,&quot;image-43&quot;,&quot;image-44&quot;,&quot;image-45&quot;,&quot;image-46&quot;,&quot;image-47&quot;,&quot;image-48&quot;,&quot;image-49&quot;,&quot;image-50&quot;,&quot;image-51&quot;,&quot;image-52&quot;,&quot;image-53&quot;,&quot;image-54&quot;,&quot;image-55&quot;,&quot;image-56&quot;,&quot;image-57&quot;,&quot;image-58&quot;,&quot;image-59&quot;,&quot;image-60&quot;,&quot;image-61&quot;,&quot;image-62&quot;,&quot;image-63&quot;,&quot;image-64&quot;,&quot;image-65&quot;,&quot;image-66&quot;,&quot;image-67&quot;,&quot;image-68&quot;,&quot;image-69&quot;,&quot;image-70&quot;,&quot;image-71&quot;,&quot;image-72&quot;,&quot;image-73&quot;,&quot;image-74&quot;,&quot;image-75&quot;,&quot;image-76&quot;,&quot;image-77&quot;,&quot;image-78&quot;,&quot;image-79&quot;,&quot;image-80&quot;,&quot;image-81&quot;,&quot;image-82&quot;,&quot;image-83&quot;,&quot;image-84&quot;,&quot;image-85&quot;,&quot;image-86&quot;,&quot;image-87&quot;,&quot;image-88&quot;,&quot;image-89&quot;,&quot;image-90&quot;,&quot;image-91&quot;,&quot;image-92&quot;,&quot;image-93&quot;,&quot;image-94&quot;,&quot;image-95&quot;,&quot;image-96&quot;,&quot;image-97&quot;,&quot;image-98&quot;,&quot;image-99&quot;,&quot;image-100&quot;,&quot;image-101&quot;,&quot;image-102&quot;,&quot;image-103&quot;,&quot;image-104&quot;,&quot;image-105&quot;,&quot;image-106&quot;,&quot;image-107&quot;,&quot;image-108&quot;,&quot;image-109&quot;,&quot;image-110&quot;,&quot;image-111&quot;,&quot;image-112&quot;,&quot;image-113&quot;,&quot;image-114&quot;,&quot;image-115&quot;,&quot;image-116&quot;,&quot;image-117&quot;,&quot;image-118&quot;,&quot;image-119&quot;,&quot;image-120&quot;,&quot;image-121&quot;,&quot;image-122&quot;,&quot;image-123&quot;,&quot;image-124&quot;,&quot;image-125&quot;,&quot;image-126&quot;,&quot;image-127&quot;,&quot;image-128&quot;,&quot;image-129&quot;,&quot;image-130&quot;,&quot;image-131&quot;,&quot;image-132&quot;,&quot;image-133&quot;,&quot;image-134&quot;,&quot;image-135&quot;,&quot;image-136&quot;,&quot;image-137&quot;,&quot;image-138&quot;,&quot;image-139&quot;,&quot;image-140&quot;,&quot;image-141&quot;,&quot;image-142&quot;,&quot;image-143&quot;,&quot;image-144&quot;,&quot;image-145&quot;,&quot;image-146&quot;,&quot;image-147&quot;,&quot;image-148&quot;,&quot;image-149&quot;,&quot;image-150&quot;,&quot;image-151&quot;,&quot;image-152&quot;,&quot;image-153&quot;,&quot;image-154&quot;,&quot;image-155&quot;,&quot;image-156&quot;,&quot;image-157&quot;,&quot;image-158&quot;,&quot;image-159&quot;,&quot;image-160&quot;,&quot;image-161&quot;,&quot;image-162&quot;,&quot;image-163&quot;,&quot;image-164&quot;,&quot;image-165&quot;,&quot;image-166&quot;,&quot;image-167&quot;,&quot;image-168&quot;,&quot;image-169&quot;,&quot;image-170&quot;,&quot;image-171&quot;,&quot;image-172&quot;,&quot;image-173&quot;,&quot;image-174&quot;,&quot;image-175&quot;,&quot;image-176&quot;,&quot;image-177&quot;,&quot;image-178&quot;,&quot;image-179&quot;,&quot;image-180&quot;,&quot;image-181&quot;,&quot;image-182&quot;,&quot;image-183&quot;,&quot;image-184&quot;,&quot;image-185&quot;,&quot;image-186&quot;,&quot;image-187&quot;,&quot;image-188&quot;,&quot;image-189&quot;,&quot;image-190&quot;,&quot;image-191&quot;,&quot;image-192&quot;,&quot;image-193&quot;,&quot;image-194&quot;,&quot;image-195&quot;,&quot;image-196&quot;,&quot;image-197&quot;,&quot;image-198&quot;,&quot;image-199&quot;,&quot;image-200&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000165292">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;page=1&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000210459">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;cursor=abc&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000156416">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;scope=trash&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000086542">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;scope=album&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000139208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;pageSize=200&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000212375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;unknown=1&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000142458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;q=a&amp;q=b&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.00006525">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;restore&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000163042">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;add-albums&quot;,&quot;albumIds&quot;:[]},&quot;mode&quot;:&quot;apply&quot;}" time="0.000063917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;remove-albums&quot;,&quot;albumIds&quot;:[]},&quot;mode&quot;:&quot;apply&quot;}" time="0.000142458">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;add-tags&quot;,&quot;tagIds&quot;:[]},&quot;mode&quot;:&quot;apply&quot;}" time="0.000117708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;remove-tags&quot;,&quot;tagIds&quot;:[]},&quot;mode&quot;:&quot;apply&quot;}" time="0.000111417">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;remove-tags&quot;,&quot;tagIds&quot;:[&quot;&quot;]},&quot;mode&quot;:&quot;apply&quot;}" time="0.0000485">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;visibility&quot;,&quot;visibility&quot;:&quot;hidden&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000121208">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;,&quot;permanent&quot;:true},&quot;mode&quot;:&quot;apply&quot;}" time="0.00005">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000304417">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;,&quot;scope&quot;:&quot;all&quot;,&quot;taskIds&quot;:{}},&quot;mode&quot;:&quot;apply&quot;}" time="0.000050333">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;,&quot;scope&quot;:&quot;all&quot;,&quot;taskIds&quot;:{&quot;other&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;}},&quot;mode&quot;:&quot;apply&quot;}" time="0.000139708">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;,&quot;scope&quot;:&quot;all&quot;,&quot;taskIds&quot;:{&quot;image&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;other&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;}},&quot;mode&quot;:&quot;apply&quot;}" time="0.000116584">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;,&quot;scope&quot;:&quot;all&quot;,&quot;taskIds&quot;:{&quot;image&quot;:&quot;invalid&quot;}},&quot;mode&quot;:&quot;apply&quot;}" time="0.000076916">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;,&quot;other&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;reprocess&quot;,&quot;scope&quot;:&quot;all&quot;,&quot;taskIds&quot;:{&quot;image&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;other&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;}},&quot;mode&quot;:&quot;apply&quot;}" time="0.000037542">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;,&quot;allMatching&quot;:true}" time="0.000033875">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;}}" time="0.000030583">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;query&quot;:&quot;&quot;,&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;retry&quot;}" time="0.000025083">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects invalid structure, empty goals or unsupported commands before execution: {&quot;ids&quot;:[&quot;image&quot;],&quot;command&quot;:{&quot;type&quot;:&quot;trash&quot;},&quot;mode&quot;:&quot;apply&quot;}" time="0.000029625">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts both explicit modes and the existing trash scope for restore, without page-dependent input" time="0.000729917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts explicit all task identities in apply and check without selecting extra images" time="0.000418833">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts explicit compressed task identities in apply and check without selecting extra images" time="0.000073209">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts explicit thumbnail task identities in apply and check without selecting extra images" time="0.000054083">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts explicit watermark task identities in apply and check without selecting extra images" time="0.00005225">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="accepts deletion and retry identities only in trash queries" time="0.001186375">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {}" time="0.000238584">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {&quot;other&quot;:{&quot;taskId&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;cycle&quot;:1}}" time="0.000135917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {&quot;image&quot;:{&quot;taskId&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;cycle&quot;:1},&quot;other&quot;:{&quot;taskId&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;cycle&quot;:1}}" time="0.00011175">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {&quot;image&quot;:{&quot;taskId&quot;:&quot;&quot;,&quot;cycle&quot;:1}}" time="0.000325917">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {&quot;image&quot;:{&quot;taskId&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;cycle&quot;:0}}" time="0.00015275">
+        </testcase>
+        <testcase classname="tests/unit/library/batch.test.ts" name="rejects missing or invalid per-image retry baseline: {&quot;image&quot;:{&quot;taskId&quot;:&quot;9b621900-d4c6-4306-9185-7768fba66eb4&quot;,&quot;cycle&quot;:1.5}}" time="0.000080375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/card.test.ts" timestamp="2026-10-04T18:43:54.749Z" hostname="dnslins-Mac-mini.local" tests="11" failures="0" errors="0" skipped="0" time="0.107847042">
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step identify for active and failed jobs" time="0.01825525">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step original for active and failed jobs" time="0.002136416">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step compressed for active and failed jobs" time="0.00246975">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step thumbnail for active and failed jobs" time="0.002312375">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step watermark for active and failed jobs" time="0.003752084">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="renders readable task step complete for active and failed jobs" time="0.00623075">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="keeps an unrecognized stored step visible for diagnosis" time="0.002758958">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="offers one named full-card action while retaining readable image diagnostics" time="0.005789291">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="keeps ready cards compact while retaining abnormal format and storage diagnostics" time="0.044958375">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="disables old query cards and reserves their supplied image height" time="0.01359075">
+        </testcase>
+        <testcase classname="tests/unit/library/card.test.ts" name="exposes a named selected checkbox independently of the detail button" time="0.0045615">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/changes.test.ts" timestamp="2026-10-04T18:43:54.749Z" hostname="dnslins-Mac-mini.local" tests="2" failures="0" errors="0" skipped="0" time="0.1565585">
+        <testcase classname="tests/unit/library/changes.test.ts" name="delivers same-document changes and releases the subscription on cleanup" time="0.104570583">
+        </testcase>
+        <testcase classname="tests/unit/library/changes.test.ts" name="receives a change published by an independent JavaScript context" time="0.05104825">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/cleanup-controller.test.ts" timestamp="2026-10-04T18:43:54.749Z" hostname="dnslins-Mac-mini.local" tests="7" failures="0" errors="0" skipped="0" time="0.045024042">
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="reads a lost delete response, preserves the 404 uncertainty and never repeats DELETE" time="0.033038958">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="does not confirm a lost retry using the same already failed cycle" time="0.002687">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="accepts an explicit retry response after another window advances the failed cycle and keeps polling" time="0.002188333">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="keeps queued acceptance visible and waits for actual success before showing completion" time="0.001058667">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="stops a live cleanup read on close without cancelling or replaying server work" time="0.002397833">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="stops a live cleanup read on unmount without cancelling or replaying server work" time="0.000914625">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-controller.test.ts" name="preserves cleanup task facts when a poll fails and exposes a manual read" time="0.002008">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/cleanup-request.test.ts" timestamp="2026-10-04T18:43:54.750Z" hostname="dnslins-Mac-mini.local" tests="5" failures="0" errors="0" skipped="0" time="0.01905775">
+        <testcase classname="tests/unit/library/cleanup-request.test.ts" name="keeps a failed retry unresolved until a newer cycle of the frozen job is observed" time="0.002321209">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-request.test.ts" name="uses the existing media endpoint for read" time="0.01444725">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-request.test.ts" name="uses the existing media endpoint for delete" time="0.000240458">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-request.test.ts" name="uses the existing media endpoint for retry" time="0.00018225">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-request.test.ts" name="preserves actual HTTP errors and never considers missing cleanup a successful delete" time="0.000481125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/cleanup-workspace.test.ts" timestamp="2026-10-04T18:43:54.750Z" hostname="dnslins-Mac-mini.local" tests="4" failures="0" errors="0" skipped="0" time="0.037601916">
+        <testcase classname="tests/unit/library/cleanup-workspace.test.ts" name="shows the waiting dialog only for an accepted task with active write responsibility" time="0.023309333">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-workspace.test.ts" name="retains the ordinary accepted queue dialog when no active writer remains" time="0.002221167">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-workspace.test.ts" name="shows actual active write responsibility in progress when waitingForWrites=true" time="0.009672083">
+        </testcase>
+        <testcase classname="tests/unit/library/cleanup-workspace.test.ts" name="shows actual active write responsibility in progress when waitingForWrites=false" time="0.001192416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/copy-request.test.ts" timestamp="2026-10-04T18:43:54.750Z" hostname="dnslins-Mac-mini.local" tests="13" failures="0" errors="0" skipped="0" time="0.029722541">
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="splits 201 explicit items and merges shuffled equal-key rows by query order" time="0.025832167">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="keeps unavailable records distinct from an HTTP error after an earlier chunk" time="0.000941834">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="preserves public-original and owner-only facts when merging multiple chunks" time="0.000578083">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="does not replace an existing clipboard when all records are unavailable" time="0.000232792">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="returns manual mode with complete text after a browser rejection" time="0.000179083">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="only reports copied after the browser finishes writing" time="0.000092167">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="uses uploaded_asc primary order with a BINARY ID tie-break across Unicode" time="0.000198292">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="uses uploaded_desc primary order with a BINARY ID tie-break across Unicode" time="0.000145">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="uses size_asc primary order with a BINARY ID tie-break across Unicode" time="0.000155209">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="uses size_desc primary order with a BINARY ID tie-break across Unicode" time="0.000197208">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="uses joined_desc primary order with a BINARY ID tie-break across Unicode" time="0.000134542">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="preserves HTTP 401 from a null response for session cleanup" time="0.000152041">
+        </testcase>
+        <testcase classname="tests/unit/library/copy-request.test.ts" name="stops before another chunk or clipboard write when the request is aborted" time="0.000280916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/detail-help.test.ts" timestamp="2026-10-04T18:43:54.751Z" hostname="dnslins-Mac-mini.local" tests="9" failures="0" errors="0" skipped="0" time="0.168608792">
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="keeps version policy behind a named, initially closed help trigger" time="0.04595775">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="collapses process policy while retaining selected outputs and disabled reasons" time="0.021880375">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="keeps storage unavailability visible once when all scopes share the reason" time="0.010073959">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="keeps the replacement contract visible before submitting a single scope" time="0.007070708">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="keeps uncertain submission errors visible and disables duplicate submission in the dialog" time="0.005006667">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="keeps detail reconciliation failures visible and blocks submission while cancellation remains available" time="0.003093542">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="retains the chosen scope on cancel and reopens confirmation without creating a receipt" time="0.0164725">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="never collapses actionable submission errors into help" time="0.010882416">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-help.test.ts" name="offers manual range recovery only when the controller confirms it is available" time="0.042633166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/detail-preview.test.ts" timestamp="2026-10-04T18:43:54.751Z" hostname="dnslins-Mac-mini.local" tests="5" failures="0" errors="0" skipped="0" time="0.002273667">
+        <testcase classname="tests/unit/library/detail-preview.test.ts" name="initial detail preview is independent of the default link &gt; prefers a saved compressed version for static images" time="0.001326792">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-preview.test.ts" name="initial detail preview is independent of the default link &gt; preserves animation with the saved original" time="0.000105833">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-preview.test.ts" name="initial detail preview is independent of the default link &gt; uses the saved original after initial processing fails" time="0.000078541">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-preview.test.ts" name="initial detail preview is independent of the default link &gt; shows only the thumbnail preview for an SVG attachment" time="0.000069208">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-preview.test.ts" name="initial detail preview is independent of the default link &gt; keeps an explicit original placeholder when no version can be viewed" time="0.000063625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/detail-scope.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="2" failures="0" errors="0" skipped="0" time="0.01545525">
+        <testcase classname="tests/unit/library/detail-scope.test.ts" name="rejects an image outside the fixed album instead of opening unrelated content" time="0.01400425">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-scope.test.ts" name="allows a direct album detail link only while membership still exists" time="0.000849541">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/detail-status.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="6" failures="0" errors="0" skipped="0" time="0.031635375">
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="uses the bounded status endpoint for the active detail rather than rereading content" time="0.029236167">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="retains unauthorized status for session expiry instead of returning stale success" time="0.00081175">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="refreshes actual detail only after observable task, lifecycle or version changes" time="0.000199583">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="keeps polling independent metadata tasks and stops at their actual terminal status" time="0.000164166">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="refreshes on actual accepted process outcomes even when existing image remains ready" time="0.000100292">
+        </testcase>
+        <testcase classname="tests/unit/library/detail-status.test.ts" name="refreshes when a candidate is stored without a processing step change" time="0.00006625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/drag-selection.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="2" failures="0" errors="0" skipped="0" time="0.00712075">
+        <testcase classname="tests/unit/library/drag-selection.test.ts" name="gallery mouse selection &gt; keeps a previously checked current-page image and other pages without modifier keys" time="0.005452583">
+        </testcase>
+        <testcase classname="tests/unit/library/drag-selection.test.ts" name="gallery mouse selection &gt; shrinks only new drag hits and keeps the complete pre-drag selection on mouseup" time="0.000424084">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/filter-dates.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="4" failures="0" errors="0" skipped="0" time="0.004709292">
+        <testcase classname="tests/unit/library/filter-dates.test.ts" name="preserves both absolute instants when the site time zone changes without editing dates" time="0.001140208">
+        </testcase>
+        <testcase classname="tests/unit/library/filter-dates.test.ts" name="recalculates only the edited calendar edge across DST and keeps the opposite precise instant" time="0.002455375">
+        </testcase>
+        <testcase classname="tests/unit/library/filter-dates.test.ts" name="clears either edge independently rather than reconstructing the other from its display date" time="0.000123875">
+        </testcase>
+        <testcase classname="tests/unit/library/filter-dates.test.ts" name="rejects an edited boundary that crosses the preserved opposite instant" time="0.000426167">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/filter-options.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="2" failures="0" errors="0" skipped="0" time="0.016095792">
+        <testcase classname="tests/unit/library/filter-options.test.ts" name="clears cached private filter choices and invokes the owning screen session expiry on 401" time="0.015049875">
+        </testcase>
+        <testcase classname="tests/unit/library/filter-options.test.ts" name="keeps recoverable errors distinct from session expiry" time="0.000563166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/gallery.test.ts" timestamp="2026-10-04T18:43:54.752Z" hostname="dnslins-Mac-mini.local" tests="20" failures="0" errors="0" skipped="0" time="0.095788834">
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 360 without changing server order" time="0.002906">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 390 without changing server order" time="0.000226875">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 430 without changing server order" time="0.000199667">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 768 without changing server order" time="0.00020025">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 1199 without changing server order" time="0.000152375">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 1200 without changing server order" time="0.000103166">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; places grid cards at viewport 1440 without changing server order" time="0.000086625">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; uses album card geometry at 390" time="0.00018825">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; uses album card geometry at 1440" time="0.000252875">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; reserves a complete row for diagnostics without overlapping the next grid row" time="0.000367958">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; uses thumbnail aspect ratios even before it loads and stacks in the shortest lane" time="0.000359875">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery layout &gt; uses the design placeholder dimensions when dimensions have not been identified" time="0.000196083">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery render window &gt; bounds mounted cards after loading 100,000 grid records and retains focus and adjacent Tab targets" time="0.052285083">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery render window &gt; bounds mounted cards after loading 100,000 masonry records and retains focus and adjacent Tab targets" time="0.032212167">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery render window &gt; includes very tall visible masonry cards even when their start is above the window" time="0.000559">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="gallery render window &gt; does not retain an accumulating trail of prior focused cards" time="0.000155333">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="retains the data boundaries for Tab entry from the toolbar and reverse Tab from load-more" time="0.000148208">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="box-selects loaded grid cards outside the rendered window without selecting gaps" time="0.002288208">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="box-selects loaded masonry cards outside the rendered window without selecting gaps" time="0.001297958">
+        </testcase>
+        <testcase classname="tests/unit/library/gallery.test.ts" name="uses the saved thumbnail ratio after orientation without changing the grid height" time="0.000117375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/query-cache.test.ts" timestamp="2026-10-04T18:43:54.753Z" hostname="dnslins-Mac-mini.local" tests="3" failures="0" errors="0" skipped="0" time="0.195587334">
+        <testcase classname="tests/unit/library/query-cache.test.ts" name="a late response from the previous query cannot replace the current page" time="0.190151">
+        </testcase>
+        <testcase classname="tests/unit/library/query-cache.test.ts" name="keeps expired-reference and cursor failures explicit for recovery" time="0.002089542">
+        </testcase>
+        <testcase classname="tests/unit/library/query-cache.test.ts" name="retains request context on network failure and consumes cancellation" time="0.000837584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/query-hook.test.ts" timestamp="2026-10-04T18:43:54.753Z" hostname="dnslins-Mac-mini.local" tests="13" failures="0" errors="0" skipped="0" time="0.050416916">
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="restores explicit page 1 with the default more preference" time="0.011224875">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="restores explicit page 3 with the default more preference" time="0.001743541">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="removing an item preserves all loaded batches and the server cursor values" time="0.031199792">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="removing an item in pages mode refetches the same page and invalidates earlier cached pages" time="0.000890708">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="more mode applies a filter without a page parameter and mode switching removes page one" time="0.00109275">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="Back and Forward resolve the entry mode rather than the latest preference" time="0.000391458">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors" time="0.000484083">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="keeps other tag combinations in pages history when selection is invalidated" time="0.000493625">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="keeps other tag combinations in more history when selection is invalidated" time="0.000323167">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="batch completion refreshes the current page and invalidates previously cached pages" time="0.000651917">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="batch completion preserves loaded pages and continues after the original deleted cursor anchor" time="0.00069125">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="batch visibility updates cached loaded cards while leaving valid failed cards unchanged" time="0.000263166">
+        </testcase>
+        <testcase classname="tests/unit/library/query-hook.test.ts" name="rechecking an already removed item does not decrement loaded totals again" time="0.000292333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/query-state.test.ts" timestamp="2026-10-04T18:43:54.754Z" hostname="dnslins-Mac-mini.local" tests="20" failures="0" errors="0" skipped="0" time="0.036722208">
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; shares normalization with HTTP and keeps repeated tags as IDs" time="0.013423917">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; keeps image identity out of the list key" time="0.002407333">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; keeps detail workspace and preview state out of the applied query and selection identity" time="0.002408834">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL __proto__=ignored" time="0.003695416">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL page=1.5" time="0.00122175">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL page=0" time="0.000386792">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL pageSize=41" time="0.00063325">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL sort=oops" time="0.003271708">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL q=a&amp;q=b" time="0.0003915">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL tagId=" time="0.000593791">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL unknown=value" time="0.001959208">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL scope=trash" time="0.00049375">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL scope=album" time="0.000995791">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL cursor=abc" time="0.000106834">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; does not silently default invalid URL uploadedFrom=2026-02-30T00:00:00Z" time="0.000330792">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; binds album queries to the path and preserves the fixed ordering" time="0.000380167">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="applied library URL &gt; serializes all filters to the existing HTTP contract" time="0.001109791">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="presentation preferences &gt; defaults to grid + more and reads all four combinations" time="0.000150208">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="presentation preferences &gt; surfaces malformed or inaccessible storage to the session preference handler" time="0.000142333">
+        </testcase>
+        <testcase classname="tests/unit/library/query-state.test.ts" name="retains preference updates for the session when localStorage is blocked" time="0.000858291">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/query.test.ts" timestamp="2026-10-04T18:43:54.755Z" hostname="dnslins-Mac-mini.local" tests="30" failures="0" errors="0" skipped="0" time="0.050359083">
+        <testcase classname="tests/unit/library/query.test.ts" name="normalizes equivalent queries before binding cursors" time="0.021629458">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query q=%00not-present" time="0.000188959">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query __proto__=ignored" time="0.000955083">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query page=0" time="0.000230209">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query page=1.5" time="0.00014425">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query page=9007199254740991" time="0.000101583">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query page=1&amp;cursor=abc" time="0.000093417">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query pageSize=81" time="0.0001715">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query pageSize=0" time="0.000103">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query pageSize=20&amp;pageSize=40" time="0.000102625">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query q=a&amp;q=b" time="0.000061459">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query tagId=" time="0.000127791">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query format=unknown" time="0.000077375">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query sort=oops" time="0.000076917">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query scope=album" time="0.00012">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query scope=album&amp;albumId=a&amp;sort=uploaded_desc" time="0.000070334">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query deletionStatus=none" time="0.000061708">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query scope=trash&amp;tagId=a" time="0.000089375">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query scope=trash&amp;visibility=private" time="0.000070709">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query scope=trash&amp;uploadedFrom=2026-01-01T00:00:00Z" time="0.000069417">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query unknown=a" time="0.000410042">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query cursor=" time="0.000268583">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query cursor=abc" time="0.00017025">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query uploadedFrom=2026-02-30T00:00:00Z" time="0.0000765">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query uploadedFrom=2026-01-01" time="0.000049083">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="rejects invalid query uploadedFrom=2026-01-02T00:00:00Z&amp;uploadedBefore=2026-01-02T00:00:00Z" time="0.000068125">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="limits raw status requests to 80 and deduplicates valid IDs" time="0.002152792">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="site calendar boundaries &gt; uses calendar days across DST 2026-03-08" time="0.015841542">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="site calendar boundaries &gt; uses calendar days across DST 2026-11-01" time="0.000851875">
+        </testcase>
+        <testcase classname="tests/unit/library/query.test.ts" name="site calendar boundaries &gt; handles one-sided ranges and rejects invalid dates, ranges and zones" time="0.000640875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/reprocess-recovery.test.ts" timestamp="2026-10-04T18:43:54.756Z" hostname="dnslins-Mac-mini.local" tests="31" failures="0" errors="0" skipped="0" time="0.005036833">
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recognizes a newly observed matching queued task after a lost response" time="0.001490208">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recognizes a newly observed matching running task after a lost response" time="0.000242292">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recognizes a newly observed matching succeeded task after a lost response" time="0.0001575">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recognizes a newly observed matching failed task after a lost response" time="0.000116292">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recognizes a newly observed matching cancelled task after a lost response" time="0.000115375">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recovers the all-scope first-failure retry while image status is processing and task is queued" time="0.000103834">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="recovers the all-scope first-failure retry while image status is processing and task is running" time="0.000070083">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="keeps an unaccepted submission unknown until an explicit, available resume resets the range" time="0.000212583">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="does not treat unverified data as acceptance or permission to resume" time="0.000116209">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="does not let the previous task impersonate a lost submission with the same scope" time="0.000115458">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="retains the submitted scope when the currently selected scope changes" time="0.000089">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="does not offer explicit resume while an unrelated process task is active" time="0.000064541">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="does not offer explicit resume while an unrelated metadata task is active" time="0.000039125">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="does not offer explicit resume while an unrelated image-status task is active" time="0.000033416">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="blocks submission, choices, and explicit recovery during pending" time="0.000078458">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="blocks submission, choices, and explicit recovery during checking" time="0.000050292">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="blocks submission, choices, and explicit recovery during fetching" time="0.00003675">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="blocks submission, choices, and explicit recovery during query-error" time="0.00003825">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="blocks submission, choices, and explicit recovery during read-error" time="0.000039125">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="requires the currently displayed detail to be the successful check before explicit resume" time="0.00003525">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="exposes unavailable detail as disabled controls without clearing the unknown receipt state" time="0.0000405">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="keeps a scope-specific server rejection in the common submit guard" time="0.000054084">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="never replaces a known accepted receipt with another observed task" time="0.000082791">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the all/queued phase using the exact accepted task" time="0.000615958">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the all/running phase using the exact accepted task" time="0.000044958">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the all/succeeded phase using the exact accepted task" time="0.000037833">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the thumbnail/queued phase using the exact accepted task" time="0.000043625">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the thumbnail/failed phase using the exact accepted task" time="0.000045458">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="selects the thumbnail/cancelled phase using the exact accepted task" time="0.000033875">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="shows the all-queued receipt until its exact task is available" time="0.000031833">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-recovery.test.ts" name="keeps first upload processing distinct from a reprocess receipt and respects dismissed jobs" time="0.000050333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/reprocess-result.test.ts" timestamp="2026-10-04T18:43:54.757Z" hostname="dnslins-Mac-mini.local" tests="6" failures="0" errors="0" skipped="0" time="0.053594">
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="uses the accepted job ID and never treats an unrelated successful task as this result" time="0.032949667">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="keeps real process failures distinct from the usable old image" time="0.01007975">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="renders success only for the selected versions from the accepted snapshot" time="0.001541583">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="retains cancellation as an actual non-success outcome" time="0.001180834">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="shows generated candidates separately from published versions using actual stored output" time="0.001923125">
+        </testcase>
+        <testcase classname="tests/unit/library/reprocess-result.test.ts" name="does not infer a generated candidate from the processing step" time="0.003809792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/request-reprocess.test.ts" timestamp="2026-10-04T18:43:54.757Z" hostname="dnslins-Mac-mini.local" tests="3" failures="0" errors="0" skipped="0" time="0.024945875">
+        <testcase classname="tests/unit/library/request-reprocess.test.ts" name="uses the accepted job snapshot, including the real selected derived versions" time="0.022712083">
+        </testcase>
+        <testcase classname="tests/unit/library/request-reprocess.test.ts" name="keeps server errors and session expiry available to the caller" time="0.000894958">
+        </testcase>
+        <testcase classname="tests/unit/library/request-reprocess.test.ts" name="does not retry a submission when its response cannot be observed" time="0.000430875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/selection-reconciliation.test.ts" timestamp="2026-10-04T18:43:54.757Z" hostname="dnslins-Mac-mini.local" tests="3" failures="0" errors="0" skipped="0" time="0.03204175">
+        <testcase classname="tests/unit/library/selection-reconciliation.test.ts" name="selection membership reads &gt; splits 241 explicit IDs into sequential bounded reads of the same query" time="0.026054041">
+        </testcase>
+        <testcase classname="tests/unit/library/selection-reconciliation.test.ts" name="selection membership reads &gt; fails the entire read if a later batch fails instead of applying partial membership" time="0.002436417">
+        </testcase>
+        <testcase classname="tests/unit/library/selection-reconciliation.test.ts" name="selection membership reads &gt; retains authentication and network errors and stops batches on cancellation" time="0.001934333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/selection.test.ts" timestamp="2026-10-04T18:43:54.758Z" hostname="dnslins-Mac-mini.local" tests="12" failures="0" errors="0" skipped="0" time="0.026352542">
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; retains the source page and updates presentation after server reconciliation" time="0.003402">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; keeps a valid failure reason when current selection is extended by select-all or drag" time="0.000519083">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; adds and removes only the current page while retaining other pages" time="0.000373042">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; does not select newly loaded items or remove IDs merely absent from the current page" time="0.000172958">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; clears on query identity changes without resurrecting earlier selection" time="0.000186958">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; replaces a drag snapshot using current records and explicitly retained other-page IDs" time="0.000198792">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; keeps 200+ explicit selections lightweight and allows arbitrary removal and clearing" time="0.000395458">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; handles consecutive checkbox updates without dropping an earlier update" time="0.000459791">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; reconciles only the checked snapshot, retaining moved and newly selected IDs" time="0.000295">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; ignores a late reconciliation after clearing, reselecting or changing query" time="0.000284625">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; renders no selection actions until an explicit selection exists" time="0.00053675">
+        </testcase>
+        <testcase classname="tests/unit/library/selection.test.ts" name="explicit library selection &gt; reports current and other page selections and disables actions during a query transition" time="0.0187605">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/trash-batch-state.test.ts" timestamp="2026-10-04T18:43:54.758Z" hostname="dnslins-Mac-mini.local" tests="4" failures="0" errors="0" skipped="0" time="0.002955417">
+        <testcase classname="tests/unit/library/trash-batch-state.test.ts" name="observes an already accepted cleanup task rather than reporting no change as completion" time="0.000948208">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-batch-state.test.ts" name="starts an explicit retry from the failed cycle and removes its old terminal outcome" time="0.00095625">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-batch-state.test.ts" name="keeps a missing task unconfirmed and preserves unrelated prior outcomes" time="0.00024975">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-batch-state.test.ts" name="replaces a known task with its actual rejection without retaining an old cleanup snapshot" time="0.0002135">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/trash-changes.test.ts" timestamp="2026-10-04T18:43:54.758Z" hostname="dnslins-Mac-mini.local" tests="5" failures="0" errors="0" skipped="0" time="0.421011166">
+        <testcase classname="tests/unit/library/trash-changes.test.ts" name="publishes trash only after the real action reconciles its resulting record" time="0.149715334">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-changes.test.ts" name="publishes restore only after the real action reconciles its resulting record" time="0.105802542">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-changes.test.ts" name="publishes when a lost write response is subsequently confirmed successful" time="0.055496042">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-changes.test.ts" name="does not publish a rejected operation whose verified record is unchanged" time="0.053022291">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-changes.test.ts" name="does not publish before the resulting record can be verified" time="0.055293417">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/trash-query-controller.test.ts" timestamp="2026-10-04T18:43:54.758Z" hostname="dnslins-Mac-mini.local" tests="3" failures="0" errors="0" skipped="0" time="0.245501667">
+        <testcase classname="tests/unit/library/trash-query-controller.test.ts" name="explicit A → B → A filtering reads changed records while Back preserves untouched query history" time="0.237839666">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-controller.test.ts" name="applying an empty search clears detail identity, resets page and retains the selected page size" time="0.005288125">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-controller.test.ts" name="keeps invalid URL filters visible without requesting a replacement query or clearing other cache" time="0.001235042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/trash-query-state.test.ts" timestamp="2026-10-04T18:43:54.759Z" hostname="dnslins-Mac-mini.local" tests="17" failures="0" errors="0" skipped="0" time="0.015338458">
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; normalizes the complete trash query with the HTTP schema" time="0.005218084">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; keeps detail identity and paging out of selection identity" time="0.000282375">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; shows a Chinese recovery instruction while retaining validation diagnostics" time="0.000485917">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for scope=normal" time="0.000344667">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for scope=trash&amp;scope=trash" time="0.002160333">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for sort=uploaded_desc" time="0.000453084">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for albumId=a" time="0.000439292">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for tagId=t" time="0.000788958">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for format=png" time="0.00189875">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for visibility=private" time="0.000573041">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for uploadedFrom=2026-01-01T00:00:00Z" time="0.000937083">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for cursor=abc" time="0.000086458">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for pageSize=41" time="0.000195458">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for page=0" time="0.000098375">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for q=a&amp;q=b" time="0.000057084">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for unknown=value" time="0.0000795">
+        </testcase>
+        <testcase classname="tests/unit/library/trash-query-state.test.ts" name="trash URL query &gt; retains invalid query errors for deletionStatus=failed" time="0.00006475">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/viewer-model.test.ts" timestamp="2026-10-04T18:43:54.759Z" hostname="dnslins-Mac-mini.local" tests="17" failures="0" errors="0" skipped="0" time="0.013545">
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses saved browser previews independently of the default delivery link" time="0.002180042">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; preserves animation and identifies a manually chosen static preview" time="0.000418542">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses only the existing thumbnail for svg" time="0.000226541">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses only the existing thumbnail for ico" time="0.000158375">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses only the existing thumbnail for tiff" time="0.000153917">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses only the existing thumbnail for heic" time="0.000117083">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; uses only the existing thumbnail for heif" time="0.000103083">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; honors the media classification and excludes undecodable MIME types" time="0.000354">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; keeps an explicitly missing or attachment version unavailable" time="0.0002405">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; removes content after lifecycle changes" time="0.000199209">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; removes content after lifecycle changes" time="0.000086542">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; removes content after lifecycle changes" time="0.000068625">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="viewer version selection &gt; removes content after lifecycle changes" time="0.000055542">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="waits for the actual delivery image and successful decode before navigation" time="0.001328917">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="reports real image loading and decoding errors without choosing another version" time="0.002123833">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="cancels content loading and ignores a late decoder completion" time="0.004341">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-model.test.ts" name="allows an unavailable target as an explicit placeholder without loading bytes" time="0.000223417">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/library/viewer-neighbors.test.ts" timestamp="2026-10-04T18:43:54.760Z" hostname="dnslins-Mac-mini.local" tests="8" failures="0" errors="0" skipped="0" time="0.248898834">
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="reads adjacent IDs in the normalized context without page or cursor" time="0.074277583">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="preserves first and last boundaries without looping" time="0.001142125">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="retains HTTP 401 for explicit recovery" time="0.001816708">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="retains HTTP 404 for explicit recovery" time="0.001033834">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="retains HTTP 409 for explicit recovery" time="0.000590167">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="keeps network failures observable and retains cancellation" time="0.000422292">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="isolates canceled and late neighbor responses by current image identity" time="0.113885083">
+        </testcase>
+        <testcase classname="tests/unit/library/viewer-neighbors.test.ts" name="keeps a known adjacent window when refreshing the deleted current fails" time="0.054373958">
+        </testcase>
+    </testsuite>
+</testsuites>

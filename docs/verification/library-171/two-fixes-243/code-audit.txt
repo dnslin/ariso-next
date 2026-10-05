@@ -1,0 +1,38 @@
+独立代码审计：存储扫描检查与重处理确认空页脚
+
+日期：2026-10-05
+范围：a387b73 之后的 LibraryScreen、library-detail-171-confirmation、storage-admin、storage-cors-fixture 增量。
+方法：实际读取 code-review-and-quality、AGENTS.md、docs/design/handoff.md、docs/tasks/execution.md；结合既有 vercel-react-best-practices 规则，核对调用路径、类型、真实 HTTP/扫描契约和已保存证据。没有编辑产品或测试源码，没有运行应用检查，也没有操作浏览器。
+
+结论
+- 代码评审通过。当前没有未解决的 Critical 或 Required 问题。
+- 功能结论：源码与获批行为一致，新增检查具备有效的外部行为断言；本轮真实浏览器流程仍未执行，不能宣称两项失败已在真实页面复测通过。
+- 代码质量：产品修复仅在所属页面创建 React 元素前判空；没有修改公共 Shell、生产后台扫描、接口、数据结构、依赖或共用运行器。新增等待和控制仅服务真实的后台/手动扫描并发，没有关闭后台或伪造响应。
+
+空页脚与相册消费者
+- LibraryScreen 在 footerActions=null 时向 OwnerShell 传 null；AdminShell 因而不创建 shell-footer。正常选择、排队和结果仍生成原动作，其他 footer 分支优先级不变。
+- 实际消费者为图库 /library 与相册内容 /albums/*。新增相册回归使用真实接口创建相册和关联，检查确认期间整个页脚消失；Escape 后同时检查 thumbnail.checked、重新生成缩略图按钮文案、输入焦点和相册路由。
+- 关联 PATCH 保留先前详情中所有 albumIds，未传 tagIds。updateImageCollections 对未传标签保留原集合，已有 joins 使用 onConflictDoNothing，保留加入时间。
+- 清理 SQL 只删除真实创建返回的本次 albumId；album_images 的 albumId 外键为 cascade，已核对已安装 better-sqlite3 的 SQLITE_DEFAULT_FOREIGN_KEYS=1 编译配置。不会删除图片、既有相册、旧关联或标签。
+- 确认 fetch 观察器只在成功路径恢复并移除临时变量；finally 只执行离线相册删除和设置恢复，接管或失败后不再操作浏览器。
+
+存储契约、并发与测试有效性
+- storageResponse 的错误 body 不包含 scan。失败 UI POST 完成后从真实 GET 读取持久扫描信息；成功 POST 消费实际扫描响应的必要字段。没有补假字段或更改生产接口。
+- maintenance.scan 对同一存储复用正在运行的 Promise；后台启动即扫描全部配置，之后每60秒执行。测试允许真实 UI POST 启动或加入前一终态基准之后的新轮次。
+- 审计发现并修正：终态等待后再次 GET 可能把正在运行的新轮次误作旧基准；一次 UI 刷新可能读到 running 后永远等旧界面；过晚读取 DELETE 计数会漏掉合法共用轮次的请求；恢复 gate 切换前已收到403的旧轮次可能仍被 UI POST 加入。
+- 终稿只保存终态 GET 的 startedAt 字符串；准备循环有整体90秒截止，只有页面明确显示扫描中而按钮禁用时才等待真实终态并再次真实刷新；其他禁用原因直接失败。
+- exact orphanPath 的 DELETE 计数在准备开始前取值。恢复时先 arm 精确 hold，再等待该 DELETE 已挂起或旧扫描已经终态，随后才点击真实 UI；不会刷新到挂起状态后禁用按钮，也不会重试或吞掉真正 UI POST 的失败。
+- 保留真实 POST 状态/错误码、新 startedAt、精确 DELETE、错误 key/AccessDenied/HTTP403、计数及对象保留/删除的断言。历史记录或定向夹具成功不能代替新增真实流程。
+
+夹具影响与资源生命周期
+- hold-delete 只匹配本次精确路径，其他 DELETE、PUT、CORS 和现有模式保持原行为。其他消费者不对 control 的完整响应做相等断言，新增 heldDeletes 字段未改变它们消费的字段。
+- 客户端关闭时移除 held entry，保留未完成删除的对象；normal 放行实际204删除；fixture.close 使用 closeAllConnections 终止挂起连接。
+- 已阅读实际 Node 24 夹具驱动和结果：精确路径挂起/放行、邻近 DELETE、客户端取消和 fixture 关闭四项通过。没有机械重跑，未将其记作生产扫描或浏览器验证。
+- storage-admin catch/finally 已不调用截图或 cdp；早期脚本移除位于各自成功路径。失败/接管后的清理只访问独立 loopback 夹具并保存离线报告，runner 负责进程与连接回收。真实 Ego 接管/中断在本轮未实测。
+
+证据核对与未完成项
+- 已核对 two-fixes-243/checks.json、构建/类型/静态日志及 JUnit：95文件1253单元、142文件1364集成均0失败，集成日志包含 media-tools；构建、类型、静态和冻结安装按实施者实际记录退出0。后续仅测试脚本变更的格式、语法和 ESLint 由实现者定向执行通过，本审计未重复这些命令。
+- README 最后一节保持历史失败、本轮浏览器未执行、实际页面设计对照未完成及新修复人工验收未完成的事实。设计审计已读 Figma 与获批交接，仅作源码设计核对；不能记作新页面终审通过。
+- 预览 HTTP 健康/页面及29个脚本200只是资源可达，不代表 UI 通过。旧焦点修复的人工验收不覆盖本次新页脚修复。
+- 普通窗口/无痕独立授权测试已由用户取消本次必需要求；保持未执行，不记通过，不再作为阻塞。
+- 默认浏览器、存储失败→失败→恢复、完整确认及相册回归仍待明确恢复同一 Ego 空间后实际执行；新页面设计终审和人工验收仍待完成。PR 应继续草稿，不据本次静态审计转为已完成交付。

@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "node": "v24.19.0"
+  },
+  "source": "tests/experiments/sharing/client.js after hidden restoration fix",
+  "limitation": "Deterministic VM state-machine verification, not browser verification.",
+  "status": "passed",
+  "checks": [
+    "Restoring visibility immediately sends a second request",
+    "Old request was aborted and old response was ignored",
+    "Old finally does not clear newer active refresh",
+    "Current response applies once"
+  ]
+}

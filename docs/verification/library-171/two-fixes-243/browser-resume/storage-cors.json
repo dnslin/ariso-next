@@ -1,0 +1,3246 @@
+{
+  "status": "passed",
+  "taskSpaceId": 30,
+  "checks": [
+    "Actual missing, controlled deleted and existing Local storage routes expose their real 404/400 errors without runnable CORS controls or probe creation; CORS boundary remains separate from the management editor",
+    "local-http-fixture: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "local-http-fixture: real UI activation invokes production browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "CORS example matches the current origin and methods; keyboard dialog focus/Escape restoration, short viewport, real clipboard success and Permissions-Policy denial with complete selected text verified; actual alternate-origin access shows configured-address guidance",
+    "Audit regression: refreshing a cached passed result into a real read failure removes passed title/state; retry restores the actual persisted result",
+    "A 180-character saved name remains usable at desktop/mobile widths; a connected disabled storage can be tested before enabling",
+    "Held/rejected real reads expose loading/error; no runnable detection while data is unavailable; retry recovers without navigation",
+    "A real transactional site-origin update invalidates CORS; a long valid origin remains complete in selectable/copyable JSON and usable at 390×480; no request is made to the synthetic domain",
+    "Restoring the original origin remains invalidated until a fresh real UI test passes",
+    "Production UI reports CORS failure and exact-key cleanup failure; real retry removes object and updates cleanup dialog",
+    "Real credential revision invalidates CORS and disables detection until the new connection test passes",
+    "Actual UI navigation during a held PUT with an undeliverable completion report leaves server cleanup responsibility; controlled persisted expiry is recovered by the production maintenance loop and reopened page shows failed"
+  ],
+  "services": [
+    {
+      "service": "local-http-fixture",
+      "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+      "probes": [
+        {
+          "key": "probes/7f16046e-367f-480e-861b-50bb075b393c",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "7f16046e-367f-480e-861b-50bb075b393c",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 1,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-10-05T06:13:00.495Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+          "report": {
+            "probeId": "83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 1,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-10-05T06:13:26.934Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/82b68963-ab94-4372-8951-e5376a8955b4",
+          "report": {
+            "probeId": "82b68963-ab94-4372-8951-e5376a8955b4",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 1,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-10-05T06:13:27.372Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "请检查 CORS 与浏览器网络；可能是跨域规则、DNS 或连接失败"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "failed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "前一步未通过，本步未执行"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "failed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 0,
+                  "responseType": "error"
+                },
+                "error": {
+                  "code": "STORAGE_CORS_BROWSER_FAILED",
+                  "message": "前一步未通过，本步未执行"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "failed",
+                "error": {
+                  "message": "Storage read failed: fba21f2d-c0d3-4776-a9b7-5ef27bda4112, probes/82b68963-ab94-4372-8951-e5376a8955b4: NoSuchKey",
+                  "code": "STORAGE_OBJECT_MISSING",
+                  "serviceCode": "NoSuchKey",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 404
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+          "report": {
+            "probeId": "defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 1,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-10-05T06:13:28.085Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "failed",
+                "error": {
+                  "message": "Storage delete failed: fba21f2d-c0d3-4776-a9b7-5ef27bda4112, probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22: AccessDenied",
+                  "code": "STORAGE_OPERATION_FAILED",
+                  "serviceCode": "AccessDenied",
+                  "requestId": "cors-browser-fixture",
+                  "httpStatusCode": 403
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "probes/ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+          "report": {
+            "probeId": "ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 2,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-10-05T06:14:31.286Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "failed",
+                "error": {
+                  "code": "STORAGE_CORS_EXPIRED",
+                  "message": "浏览器未在签名到期前完成直传检测"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "skipped"
+              },
+              {
+                "stage": "browser-head",
+                "status": "skipped"
+              },
+              {
+                "stage": "verify",
+                "status": "skipped"
+              },
+              {
+                "stage": "delete",
+                "status": "skipped"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+        "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "http://127.0.0.1:54617/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "cors-browser-fixture",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "cors-browser-fixture",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-10-05T06:12:59.670Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      },
+      "fixture": {
+        "mode": "normal",
+        "objects": [],
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/2f8e1d78-197e-4691-91c4-681d54b06705",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/2f8e1d78-197e-4691-91c4-681d54b06705",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/2f8e1d78-197e-4691-91c4-681d54b06705",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/2f8e1d78-197e-4691-91c4-681d54b06705",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/b3399b7b-2e6b-4091-b166-fc328defc85f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/b3399b7b-2e6b-4091-b166-fc328defc85f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/b3399b7b-2e6b-4091-b166-fc328defc85f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/b3399b7b-2e6b-4091-b166-fc328defc85f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/e25aa850-2394-46eb-a589-b02a1ebb979f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/e25aa850-2394-46eb-a589-b02a1ebb979f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/e25aa850-2394-46eb-a589-b02a1ebb979f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/e25aa850-2394-46eb-a589-b02a1ebb979f",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/0e082d31-5765-47e0-90ad-e8fde2780846",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/0e082d31-5765-47e0-90ad-e8fde2780846",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/0e082d31-5765-47e0-90ad-e8fde2780846",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/0e082d31-5765-47e0-90ad-e8fde2780846",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/157cc166-c1c6-44a1-960e-2f2dada3677c",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/cb1eaa23-dbec-4a6e-b195-33a44128928e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/cb1eaa23-dbec-4a6e-b195-33a44128928e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/cb1eaa23-dbec-4a6e-b195-33a44128928e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/cb1eaa23-dbec-4a6e-b195-33a44128928e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/f9bca607-88c6-42e3-a182-638fbf8d903a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/f9bca607-88c6-42e3-a182-638fbf8d903a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/f9bca607-88c6-42e3-a182-638fbf8d903a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/f9bca607-88c6-42e3-a182-638fbf8d903a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/probes/f9bca607-88c6-42e3-a182-638fbf8d903a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/orphans/browser-198",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/orphans/browser-198",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/orphans/browser-198",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/storage-admin-198/ariso/0c02e28a-d169-4e3d-901f-82ebfe5084c0/orphans/browser-198",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/637f2352-ef6b-4f7a-b0fa-2b50b88a434e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/7f16046e-367f-480e-861b-50bb075b393c",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/83d7d5a4-5118-4c87-80b3-702568c4a706",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/82b68963-ab94-4372-8951-e5376a8955b4",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/82b68963-ab94-4372-8951-e5376a8955b4",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/82b68963-ab94-4372-8951-e5376a8955b4",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "HEAD",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/defb93de-2f40-41cb-a02b-dcdaef9c2f22",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/611061b4-6fa9-4e4a-90f2-75ed659c068a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/611061b4-6fa9-4e4a-90f2-75ed659c068a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/611061b4-6fa9-4e4a-90f2-75ed659c068a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/611061b4-6fa9-4e4a-90f2-75ed659c068a",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "PUT",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+            "origin": "http://ariso-54209.localhost:54209",
+            "signed": true
+          },
+          {
+            "method": "DELETE",
+            "path": "/cors-test/ariso/fba21f2d-c0d3-4776-a9b7-5ef27bda4112/probes/ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+            "origin": null,
+            "signed": false
+          },
+          {
+            "method": "GET",
+            "path": "/cors-test/",
+            "origin": null,
+            "signed": false
+          }
+        ],
+        "heldDeletes": []
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "missing-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-light-1440.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-light-390.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-dark-1440.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-dark-390.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-light-1440.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-light-390.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-dark-1440.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-dark-390.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-light-1440.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-light-390.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-dark-1440.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-dark-390.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-light-1440.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-light-390.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-dark-1440.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-dark-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 159,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 157,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-360.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 194,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 192,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-430.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 363,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 361,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-768.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-1440.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 159,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 157,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-360.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 194,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 192,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-430.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 363,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 361,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-768.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-light-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-light-390.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-dark-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-dark-390.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-light-1440.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-light-390.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-dark-1440.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-dark-390.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-light-1440.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-light-390.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-dark-1440.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-dark-390.png"
+    },
+    {
+      "state": "failed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-failed-light-1440.png"
+    },
+    {
+      "state": "failed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-failed-light-390.png"
+    },
+    {
+      "state": "failed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-failed-dark-1440.png"
+    },
+    {
+      "state": "failed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-failed-dark-390.png"
+    },
+    {
+      "state": "invalidated",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看失效原因",
+          "width": 118,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-light-1440.png"
+    },
+    {
+      "state": "invalidated",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看失效原因",
+          "width": 118,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-light-390.png"
+    },
+    {
+      "state": "invalidated",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看失效原因",
+          "width": 118,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dark-1440.png"
+    },
+    {
+      "state": "invalidated",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看失效原因",
+          "width": 118,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dark-390.png"
+    },
+    {
+      "state": "running",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "查看检测结果",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-running-light-1440.png"
+    },
+    {
+      "state": "running",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "查看检测结果",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-running-light-390.png"
+    },
+    {
+      "state": "running",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "查看检测结果",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-running-dark-1440.png"
+    },
+    {
+      "state": "running",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "查看检测结果",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-running-dark-390.png"
+    }
+  ],
+  "dialogLayouts": [
+    {
+      "state": "example",
+      "theme": "light",
+      "width": 1440,
+      "top": 331,
+      "bottom": 749,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-light-1440.png"
+    },
+    {
+      "state": "example",
+      "theme": "light",
+      "width": 390,
+      "top": 193.5,
+      "bottom": 650.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-light-390.png"
+    },
+    {
+      "state": "example",
+      "theme": "dark",
+      "width": 1440,
+      "top": 331,
+      "bottom": 749,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-dark-1440.png"
+    },
+    {
+      "state": "example",
+      "theme": "dark",
+      "width": 390,
+      "top": 193.5,
+      "bottom": 650.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-dark-390.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "light",
+      "width": 1440,
+      "top": 360.25,
+      "bottom": 719.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-light-1440.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "light",
+      "width": 390,
+      "top": 232.5,
+      "bottom": 611.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-light-390.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "dark",
+      "width": 1440,
+      "top": 360.25,
+      "bottom": 719.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-dark-1440.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "dark",
+      "width": 390,
+      "top": 232.5,
+      "bottom": 611.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-dark-390.png"
+    },
+    {
+      "state": "long-origin-example",
+      "theme": "light",
+      "width": 1440,
+      "top": 290.5,
+      "bottom": 789.5,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-origin-example-light-1440.png"
+    },
+    {
+      "state": "long-origin-example",
+      "theme": "light",
+      "width": 390,
+      "top": 142.5,
+      "bottom": 701.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-origin-example-light-390.png"
+    },
+    {
+      "state": "long-origin-example",
+      "theme": "dark",
+      "width": 1440,
+      "top": 290.5,
+      "bottom": 789.5,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-origin-example-dark-1440.png"
+    },
+    {
+      "state": "long-origin-example",
+      "theme": "dark",
+      "width": 390,
+      "top": 142.5,
+      "bottom": 701.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-origin-example-dark-390.png"
+    },
+    {
+      "state": "cleanup-pending",
+      "theme": "light",
+      "width": 1440,
+      "top": 299.25,
+      "bottom": 780.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-pending-light-1440.png"
+    },
+    {
+      "state": "cleanup-pending",
+      "theme": "light",
+      "width": 390,
+      "top": 144.25,
+      "bottom": 699.75,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-pending-light-390.png"
+    },
+    {
+      "state": "cleanup-pending",
+      "theme": "dark",
+      "width": 1440,
+      "top": 299.25,
+      "bottom": 780.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-pending-dark-1440.png"
+    },
+    {
+      "state": "cleanup-pending",
+      "theme": "dark",
+      "width": 390,
+      "top": 144.25,
+      "bottom": 699.75,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "重试清理",
+          "width": 90,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-pending-dark-390.png"
+    },
+    {
+      "state": "cleanup-complete",
+      "theme": "light",
+      "width": 1440,
+      "top": 378,
+      "bottom": 702,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-complete-light-1440.png"
+    },
+    {
+      "state": "cleanup-complete",
+      "theme": "light",
+      "width": 390,
+      "top": 260,
+      "bottom": 584,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-complete-light-390.png"
+    },
+    {
+      "state": "cleanup-complete",
+      "theme": "dark",
+      "width": 1440,
+      "top": 378,
+      "bottom": 702,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-complete-dark-1440.png"
+    },
+    {
+      "state": "cleanup-complete",
+      "theme": "dark",
+      "width": 390,
+      "top": 260,
+      "bottom": 584,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "刷新清理状态",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-cleanup-complete-dark-390.png"
+    },
+    {
+      "state": "invalidated-dialog",
+      "theme": "light",
+      "width": 1440,
+      "top": 368.25,
+      "bottom": 711.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "重新检测",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dialog-light-1440.png"
+    },
+    {
+      "state": "invalidated-dialog",
+      "theme": "light",
+      "width": 390,
+      "top": 339,
+      "bottom": 741,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "重新检测",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dialog-light-390.png"
+    },
+    {
+      "state": "invalidated-dialog",
+      "theme": "dark",
+      "width": 1440,
+      "top": 368.25,
+      "bottom": 711.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 430
+        },
+        {
+          "name": "重新检测",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dialog-dark-1440.png"
+    },
+    {
+      "state": "invalidated-dialog",
+      "theme": "dark",
+      "width": 390,
+      "top": 221,
+      "bottom": 623,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "返回直传设置",
+          "width": 308
+        },
+        {
+          "name": "重新检测",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-invalidated-dialog-dark-390.png"
+    }
+  ],
+  "clipboardChecks": [
+    {
+      "mechanism": "macOS pbpaste immediately after application copy",
+      "completeJsonEqual": true
+    },
+    {
+      "mechanism": "macOS pbpaste immediately after application copy",
+      "completeJsonEqual": true
+    }
+  ],
+  "longOriginGeometry": {
+    "scrollWidth": 390,
+    "top": 16,
+    "bottom": 464,
+    "fieldBottom": 355,
+    "footerTop": 327,
+    "fieldHeight": 156,
+    "fieldScrollHeight": 156,
+    "body": {
+      "top": 87,
+      "bottom": 311,
+      "left": 41,
+      "width": 308,
+      "height": 224,
+      "overflowY": "auto",
+      "clientHeight": 224,
+      "scrollHeight": 335
+    }
+  },
+  "longOriginScroll": {
+    "scrollTop": 111,
+    "clientHeight": 224,
+    "scrollHeight": 335
+  },
+  "cleanupFocus": {
+    "withinDialog": true,
+    "tag": "BUTTON",
+    "name": "刷新清理状态"
+  },
+  "navigationInterruption": {
+    "route": "/library",
+    "completionFault": "Reject the production POST /complete fetch before network dispatch; all other requests stay real",
+    "attempts": [
+      {
+        "results": [
+          {
+            "method": "PUT",
+            "status": 0,
+            "responseType": "error",
+            "error": "浏览器检测已中断或超时，服务器将继续清理测试对象"
+          },
+          {
+            "method": "GET",
+            "status": 0,
+            "responseType": "error",
+            "error": "前一步未通过，本步未执行"
+          },
+          {
+            "method": "HEAD",
+            "status": 0,
+            "responseType": "error",
+            "error": "前一步未通过，本步未执行"
+          }
+        ]
+      }
+    ],
+    "persistedAfterNavigation": {
+      "origin": "http://ariso-54209.localhost:54209",
+      "example": [
+        {
+          "AllowedOrigins": ["http://ariso-54209.localhost:54209"],
+          "AllowedMethods": ["PUT", "GET", "HEAD"],
+          "AllowedHeaders": ["content-type"]
+        }
+      ],
+      "status": "invalidated",
+      "report": null,
+      "probes": [
+        {
+          "probeId": "ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+          "state": "running",
+          "stage": "browser",
+          "key": "probes/ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+          "invalidated": false,
+          "expiresAt": "2026-10-05T06:18:32.000Z",
+          "error": null,
+          "report": {
+            "probeId": "ecb60286-3fb4-4e8a-855c-b9b30e355f4e",
+            "storageId": "fba21f2d-c0d3-4776-a9b7-5ef27bda4112",
+            "revision": 2,
+            "origin": "http://ariso-54209.localhost:54209",
+            "passed": false,
+            "stale": false,
+            "cleanupPending": true,
+            "testedAt": "2026-10-05T06:13:32.623Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-get",
+                "status": "pending"
+              },
+              {
+                "stage": "browser-head",
+                "status": "pending"
+              },
+              {
+                "stage": "verify",
+                "status": "pending"
+              },
+              {
+                "stage": "delete",
+                "status": "pending"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

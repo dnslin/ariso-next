@@ -39,4 +39,18 @@ EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 pnpm run test:browser
 
 `e2e/m2.mjs` / `e2e/m2-core.mjs` 在两个空目录初始化环境分别执行桌面和手机的 JPEG/PNG × 公私有上传矩阵，使用真实文件选择、复制、下载、回收和恢复。匿名页使用同一 TaskSpace 的独立主机隔离 Cookie；这不是第二浏览器引擎。原图核对磁盘和下载字节，三张统计表在实际周期刷库和生产 stop/start 后精确复核。重启夹具仅持有实际上传任务的调度，恢复后要求同一任务、快照和原图对象，且每个版本只存在一次。输出 `m2-1440.json`、`m2-390.json` 及前后阶段日志；本切片范围和独立双浏览器证据见 [M2 报告](../docs/verification/m2-85/README.md)。
 
+`tests/experiments/sharing/browser.mjs` 验证 EV-SHARING-01 的隔离协议页面。默认 `test:browser` 在 delivery 实验后、最终 UI 实验关闭空间前执行同一脚本。定向重跑仅启动分享实验的独立 Next HTTP 服务和 SQLite，不启动业务 Standalone 或其他浏览器场景：
+
+```sh
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite sharing-experiment
+```
+
+沿用本任务的实际空间 ID；`EGO_PAGE_LABEL` 可选择既有隔离测试页，`BROWSER_REPORT_DIR` 可选择报告目录。此 suite 不接受 `--only`、`--storage-config` 或 `--preview-config`。浏览器脚本不创建或结束 TaskSpace；默认完整入口仍由最后 UI 实验结束空间，连续任务由调用方统一结束。失败或用户接管后保留空间用于诊断，不能新建空间或切换接口绕过停止边界。
+
+实验检查真实响应 Cookie 的 HttpOnly、SameSite=Lax、无 Domain、分享路径、24 小时持久期及本地 HTTP 的 Secure=false；同 origin 的两个标签分别并发解锁不同相册、同时解锁同一相册，检查两次独立授权都有效。浏览器按 Cookie 路径访问 owner 仍是匿名，真实所有者 Cookie 也不能绕过分享密码；显式转发分享 Cookie 的 owner 拒绝与真实私有图片内容拒绝另由 HTTP 集成测试验证。使用同一 Ego profile 的不同主机证明 Cookie 不跨主机，但该检查不是两个独立浏览器上下文；报告固定保留 `twoBrowserContexts: unverified`，不得据此关闭该验收项。
+
+真实标签页切换验证五秒自动检查、161 个公开 ID 的 80/80/1 顺序分批、挂起期间不重叠、隐藏停止及显示立即恢复。另将真实 HTTP 响应完整解析后暂缓交给客户端，再撤销授权、通过真实响应隐藏名称或显式切换实验批次；放行同一已解析响应后，items/neighbors/refresh 的旧结果均不得填回。此方法沿用已有选中项核对实验的真实 Response 延迟，不伪造成功 DTO。立即隐藏再显示时，旧已解析刷新仍未返回也必须开始新的检查。批次切换是探针显式操作，不声称已交付对应产品交互。
+
+输出 `sharing-experiment.json`、`sharing-experiment.log` 和 `sharing-server.log`。报告不保存 Cookie 值、密码或完整分享 Token。范围是库与 HTTP/浏览器协议实验，不交付匿名相册界面、不替代 Figma 对照、生产 sharing 业务验收或双独立浏览器上下文证据；完成状态见 [EV-SHARING-01 报告](../docs/tasks/evidence/EV-SHARING-01/README.md)。
+
 设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。

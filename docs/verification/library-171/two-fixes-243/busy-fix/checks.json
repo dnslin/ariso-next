@@ -1,0 +1,66 @@
+{
+  "environment": {
+    "os": "macOS arm64",
+    "node": "24.19.0",
+    "pnpm": "11.19.0"
+  },
+  "scope": "仅修复 DetailReprocessConfirmation 的 aria-busy 映射；使用已安装 HeroUI/React Aria 公开 render API，原 section 完整透传 props/ref。",
+  "checks": [
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/detail-help.test.ts -t 'exposes submission busy state'",
+      "exitCode": 1,
+      "tests": 2,
+      "result": "修复前两个实际SSR状态均缺少aria-busy，取得失败证据；-t只用于本次缺陷重现，不修改或跳过原用例。",
+      "evidence": "unit-before.txt"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/detail-help.test.ts",
+      "exitCode": 0,
+      "tests": 11,
+      "evidence": "unit-after.txt"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "evidence": "typecheck.txt"
+    },
+    {
+      "command": "pnpm exec eslint src/components/library/detail-reprocess-confirmation.tsx tests/unit/library/detail-help.test.ts --max-warnings=0",
+      "exitCode": 0,
+      "evidence": "lint.txt"
+    },
+    {
+      "command": "pnpm exec prettier src/components/library/detail-reprocess-confirmation.tsx tests/unit/library/detail-help.test.ts --check",
+      "exitCode": 0,
+      "evidence": "format-source.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "evidence": "build.txt",
+      "note": "生产与standalone构建完成；既有resvg跨平台可选依赖及opentelemetry追踪诊断保留。"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298,
+      "evidence": "docs-check.txt"
+    },
+    {
+      "command": "pnpm exec prettier docs/verification/library-171/README.md docs/verification/library-171/two-fixes-243/checks.json docs/verification/library-171/two-fixes-243/busy-fix/checks.json docs/tasks/evidence/EV-SHARING-01/README.md docs/tasks/evidence/EV-SHARING-01/audit.md docs/tasks/gates.md --write",
+      "exitCode": 0,
+      "evidence": "format-docs.txt",
+      "note": "实际输出全为unchanged；格式未改变文档正文。"
+    }
+  ],
+  "defaultEntry": "package.json test:unit → vitest unit project → tests/unit/**/*.test.ts → detail-help.test.ts，两态回归保留在默认单元入口。浏览器原aria-busy断言未删改。",
+  "notRepeated": "没有重新安装依赖、运行全量单元/集成或浏览器、接管Ego、读取Figma或重复设计/人工验收。锁文件、后端、视觉、交互及公共外壳未变。",
+  "limits": "SSR检查证明真实HeroUI输出的标记、按钮与文案；不冒称客户端pending切换、Escape或完整恢复浏览器流程已重测。原预览继续运行，仍为先前已验收构建。",
+  "evidenceExport": "仅清除报告行尾空白及末尾多余空行以符合git diff检查；首次暂存检查因两份Vitest输出末尾空行失败，修正报告导出，不更改测试或诊断。原始输出保留在忽略目录test-results/two-fixes/busy-fix。",
+  "review": {
+    "result": "passed; no Critical or Required",
+    "evidence": "code-audit.txt",
+    "method": "独立只读评审，没有重复测试或操作浏览器。"
+  }
+}

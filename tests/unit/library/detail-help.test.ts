@@ -212,6 +212,28 @@ it('keeps uncertain submission errors visible and disables duplicate submission 
   expect(html.match(/disabled=""/g)).toHaveLength(1);
 });
 
+it.each([false, true])(
+  'exposes submission busy state on the confirmation dialog when pending=%s',
+  (pending) => {
+    const html = renderToStaticMarkup(
+      jsx(DetailReprocessConfirmation, {
+        detail,
+        scope: 'thumbnail',
+        controls: { ...state, pending, canSubmit: !pending },
+        onCancel: () => {},
+        onResume: () => {},
+      }),
+    );
+    const dialog = html.match(/<section\b[^>]*>/)?.[0];
+    expect(dialog).toContain('role="alertdialog"');
+    expect(dialog).toContain(`aria-busy="${pending}"`);
+    expect(html).toContain(pending ? '正在提交…' : '提交仅缩略图');
+    expect(html.match(/<button\b[^>]*disabled=""/g) ?? []).toHaveLength(
+      pending ? 2 : 0,
+    );
+  },
+);
+
 it('keeps detail reconciliation failures visible and blocks submission while cancellation remains available', () => {
   const html = renderToStaticMarkup(
     jsx(DetailReprocessConfirmation, {

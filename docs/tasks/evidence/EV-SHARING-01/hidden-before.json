@@ -1,0 +1,20 @@
+{
+  "source": "tests/experiments/sharing/client.js before hidden restoration fix",
+  "environment": {
+    "node": "v26.10.0"
+  },
+  "limitation": "Deterministic VM state-machine proof, not browser verification.",
+  "expectation": "Restore visibility must start a fresh check immediately.",
+  "checks": [
+    {
+      "phase": "restored-before-old-response-settled",
+      "requestCount": 1
+    },
+    {
+      "phase": "old-response-settled",
+      "requestCount": 1,
+      "ignored": 1
+    }
+  ],
+  "status": "failed"
+}

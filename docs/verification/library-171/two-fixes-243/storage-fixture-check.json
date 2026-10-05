@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "scope": "Pure Node loopback HTTP check of the storage CORS fixture; no browser or production scan handler was executed.",
+  "recording": "Saved the actual previously executed stdin driver and existing successful tool output; the check was not rerun when saving these files.",
+  "environment": {
+    "node": "v24.19.0",
+    "cwd": "/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso"
+  },
+  "execution": {
+    "command": "node --input-type=module (driver supplied through stdin)",
+    "exitCode": 0,
+    "output": "Fixture HTTP checks passed: exact-path hold/release, unrelated DELETE, client cancellation, fixture close.\n"
+  },
+  "reproduce": {
+    "cwd": "/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso",
+    "command": "node --input-type=module < test-results/two-fixes/storage-fixture-check.mjs",
+    "note": "The saved source is the exact executed stdin source. Run it through stdin from the repository root so its ./e2e import resolves identically."
+  },
+  "checks": [
+    {
+      "name": "exact-path hold and release",
+      "result": "passed",
+      "observed": "The target DELETE remains pending and its object remains present until normal mode releases it; the response is 204 and the object and held entry disappear."
+    },
+    {
+      "name": "unrelated DELETE",
+      "result": "passed",
+      "observed": "A neighboring object's DELETE returns 204 and removes only that object while the target remains held."
+    },
+    {
+      "name": "client cancellation",
+      "result": "passed",
+      "observed": "Aborting the held request rejects the client operation, removes its held entry, and preserves the target object."
+    },
+    {
+      "name": "fixture close",
+      "result": "passed",
+      "observed": "Closing the fixture terminates the held HTTP connection and rejects the pending client request."
+    }
+  ],
+  "unverified": [
+    "The actual storage UI's failed, failed, successful manual scan sequence.",
+    "Joining a background scan through the production Next scan endpoint and observing the held DELETE release through the real UI POST.",
+    "Persisted scan values and rendered AccessDenied diagnostics in the real browser."
+  ]
+}

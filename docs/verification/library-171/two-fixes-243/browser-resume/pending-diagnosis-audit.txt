@@ -1,0 +1,59 @@
+独立诊断审计：重处理确认的 pending 标记
+
+日期：2026-10-05
+审查工作区：/Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso
+方法：遵循已读取的 code-review-and-quality、AGENTS.md、设计交付和任务执行约定，仅读取实现、实际安装的依赖、类型与已有真实浏览器证据。没有修改产品或测试源码，没有运行应用测试或操作浏览器。此文件为诊断记录，不是新修复的验证结果。
+
+结论
+默认浏览器流程在 e2e/library-detail-171-recovery.mjs:88 的组合断言失败。失效项是确认根元素的 aria-busy 标记，没有证据表明两颗操作按钮实际可点击。原因是当前安装的 React Aria Dialog 过滤掉了直接传入的 aria-busy。该路径不依赖本轮 LibraryScreen 空页脚条件，也不依赖临时相册场景。
+
+实际证据与未执行项
+1. 实际读取 test-results/two-fixes/full-resume/library.log 和 library.json。报告为 failed，栈指向 recovery:88。报告 checks 已记录三种单项取消/重开、短视口、相册四个主题/视口，以及随后真实单项与全量重处理的通过结果。不能将这些已通过项抹掉，也不能将整个流程记为通过。
+2. 主实现者在同一 TaskSpace 的原 p1 上只读取得 DOM：仍挂起原来的详情 GET；posts=1、readCount=1；确认根 aria-busy=null；“核对详情”“取消”“正在提交…”三颗 button.disabled 均为 true，disabled 属性均存在。本审计引用该实际观察，没有由审计者另行操作页面。
+3. recovery:88–104 同时检查 aria-busy==='true'、cancel.disabled 和 submit.disabled。直接 DOM 证据将失败限定到第一项。
+4. recovery:105–115 的提交中 Escape 检查未执行；recovery:133–164 放行 GET 后的 busy=false、核对失败、取消/核对可用和重复提交禁用检查也未执行。后续恢复、版本保留与回焦场景不得记为通过。
+5. helpers:50–56 的 restoreDetail171Fetch 只恢复 fetch 函数，不调用已有 __detail171LostRelease。恢复 fetch 不会放行已经进入闭包并挂起的请求。因此上述 DOM 是原 pending 状态的观察，不是释放后的猜测。
+
+控制器与组件路径
+- src/components/library/use-detail-reprocess.ts:190–203 在真实提交前设置 pending=true。
+- 同文件:223–241 在实际已接受响应丢失后保留未知提交状态并 await reconcile()；reconcile:146–187 等待真实详情 refetch；原 GET 尚未放行时该等待未返回。
+- 同文件:242–250 只有 submit 的等待结束才设置 pending=false。三按钮禁用和“正在提交…”与此状态一致。
+- src/components/library/detail-reprocess-confirmation.tsx:36–39 直接向 AlertDialog.Dialog 传 aria-busy={controls.pending}；:76 根据 checking 禁用核对；:100 根据 pending 禁用取消；:108 根据 canSubmit 禁用提交；:113 使用 pending 文案。
+- src/components/library/detail-reprocess.tsx:252–267 将同一 controls 交给确认组件，pending 时 isKeyboardDismissDisabled=true，onOpenChange 同样不关闭。use-detail-reprocess.ts:272–274 也在 pending 时忽略 cancelConfirmation。源码具有这些限制，但本轮 Escape 的实际行为仍未验证。
+
+实际安装的依赖、过滤器与类型
+安装版本：HeroUI 3.2.6、react-aria-components 1.21.1、react-aria 3.52.1、React 19.3.0、@react-types/shared 3.36.1。以下文件均从本工作区 node_modules 实际读取。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/@heroui/react/dist/components/alert-dialog/alert-dialog.js:141–157
+  AlertDialogDialog 将未解构的 ...props 交给 RAC Dialog；role=alertdialog、data-slot 等也传入。HeroUI 在这里没有自己过滤 aria-busy。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria-components@1.21.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria-components/dist/private/Dialog.mjs:94–102、119–126
+  RAC 将 props 交给 useDialog；随后 filterDOMProps(props,{global:true})，与 renderProps/dialogProps 合并，生成 dom.section。只有这些合并结果进入原生根元素，原 props 不直接展开到 section。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria@3.52.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria/dist/private/dialog/useDialog.mjs:81–89
+  useDialog 的 dialogProps 也只使用 filterDOMProps(props,{labelable:true})，另加 role/tabIndex/aria-labelledby/aria-describedby，没有补回 aria-busy。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria@3.52.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria/dist/private/utils/filterDOMProps.mjs:11–19、30–36、73–78
+  普通属性名单仅 id；labelable 为 aria-label/labelledby/describedby/details；global 为 dir/lang/hidden/inert/translate；通用模式仅允许 data-*。aria-busy 不在任何已启用的名单中，所以被两个入口过滤。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/@heroui/react/dist/components/alert-dialog/alert-dialog.d.ts:41–43
+  HeroUI AlertDialogDialogProps 仅继承 RAC DialogPrimitiveProps。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria-components@1.21.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria-components/dist/types/src/Dialog.d.ts:12、32
+  DialogProps 继承 AriaDialogProps、StyleProps、SlotProps、DOMRenderProps<'section',undefined>、GlobalDOMAttributes；RAC 组件自身额外声明 React.RefAttributes<HTMLElement>，但 HeroUI DialogProps 没有继承这部分。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria@3.52.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria/dist/types/src/dialog/useDialog.d.ts:1–8
+  AriaDialogProps 继承 DOMProps、AriaLabelingProps，另有 role。
+- /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/@react-types+shared@3.36.1_react@19.3.0/node_modules/@react-types/shared/src/dom.d.ts:37–58、70–76、298–304
+  这些实际类型与上述属性名单一致，不含 aria-busy。
+
+为什么本轮 footer/album 没有因果路径
+1. LibraryScreen:220–223 本轮只在 footerActions=null 时不创建 DetailReprocessFooter 元素，向 OwnerShell 传 null。它不改变确认组件、controls、Dialog 属性或依赖过滤器。
+2. use-detail-reprocess.ts:291–293 在 selection 且 confirmation 打开时已经返回 null；确认刚打开及提交后 pending 状态都属于此分支。pending 变化不会再引起新增的 footer 分支切换，也不卸载 DetailReprocessConfirmation。
+3. library-detail-171-confirmation.mjs:208–212 成功路径恢复原 fetch 并删除观察器全局变量；临时相册:228–236 保留全部既有 album IDs，只新增本轮 ID；:288–292 离线删除该相册 ID。这里没有写 pending 状态或 aria 属性。
+4. library-detail-171.mjs:39–41 先完成 confirmation，再执行 processing，最后才执行 recovery。recovery:24 使用 helpers:18–27 的真实 page.goto 进入 /library 新文档；旧页面的 fetch 闭包及 React 控制器不跨文档保留。recovery:31–39 又初始化本轮专用观察器和计数。
+5. 当前已经取得本轮单次真实 POST、原详情 GET 挂起、三按钮真实禁用与 busy 缺失。无论 footer 是否存在、图片是否增加过相册关系，当前安装的属性过滤器都会剔除直接传入的 aria-busy。这是具体的独立原因，不是仅凭文件未改推断无关。
+
+影响与范围
+这是既有 #171 确认组件的辅助技术状态标记缺口，也是旧恢复检查假定该属性会进入 DOM 所暴露的问题。缺失 busy 状态可能影响辅助技术对提交中内容的解释；当前证据没有显示按钮禁用失效。需要保留所有既有行为断言，不能只删除 busy 断言以获得通过。本轮存储与空页脚修复已执行的真实通过结果分别保留。完整浏览器流程仍为失败，后续步骤未执行。原 #148 的普通/无痕独立授权检查仍未执行，不由本诊断替代。
+
+只读最小修正研究（未实施，等待新增范围决定）
+1. 当前 HeroUI Dialog 的运行时代码会将 ref 放在 ...props 中交给 RAC，但其公开类型 AlertDialogDialogProps 未包括 RAC 组件额外的 RefAttributes。不能将顶层回调 ref 称为当前 HeroUI 的受支持类型接口，也不应为它增加类型强制转换或依赖补丁。
+2. RAC Dialog.mjs:122–126 的默认根是 section，RefAttributes 类型为 HTMLElement。把它描述为 HTMLDivElement 与实际元素不符。虽然运行时 callback ref 可到达根节点，声明式属性映射更直接，不需要依赖 ref 回调重触发来同步 pending。
+3. 已有受支持 API 是 render。DialogProps 明确继承 DOMRenderProps<'section',undefined>。其类型和文档在 /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria-components@1.21.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria-components/dist/types/src/utils.d.ts:193–208，要求只渲染同一种根元素，并透传 props/ref。
+4. 实现依据是 /Users/dnslin/.codex/worktrees/issue-148-sharing-experiment/ariso/node_modules/.pnpm/react-aria-components@1.21.1_react-dom@19.3.0_react@19.3.0__react@19.3.0/node_modules/react-aria-components/dist/private/utils.mjs:156–177：dom.section 将全部已计算 DOM props、children 与合并后的内部 ref 交给 render 回调。
+5. 推荐最小表达为 render={(domProps) => <section {...domProps} aria-busy={controls.pending} />}，替换当前无效的顶层 aria-busy。此方案保留原 section、role、aria 标签、样式、事件、子树及内部 ref；没有额外 wrapper、effect、fallback 或新依赖。它会随当前 pending 的正常渲染声明式更新属性。
+6. 上述为基于已安装实现与公开类型的方案审查，未实施、未编译、未做新浏览器验证。是否纳入新增修复范围由用户决定。

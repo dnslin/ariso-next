@@ -50,7 +50,7 @@ export function DetailReprocess({
       !document.activeElement?.closest('[data-testid="reprocess-confirmation"]')
     )
       heading.current?.focus({ preventScroll: true });
-  }, [state.receipt?.jobId, job?.status]);
+  }, [detail?.id, state.receipt?.jobId, job?.status]);
   if (!detail) return null;
   const failed = detail.processingStatus === 'failed';
   const commonReason = scopes.every(

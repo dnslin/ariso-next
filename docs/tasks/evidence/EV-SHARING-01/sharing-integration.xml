@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="0" errors="0" time="12.862128499">
+    <testsuite name="tests/integration/sharing/delivery.test.ts" timestamp="2026-10-04T16:37:05.638Z" hostname="dnslins-Mac-mini.local" tests="2" failures="0" errors="0" skipped="0" time="1.772477208">
+        <testcase classname="tests/integration/sharing/delivery.test.ts" name="a genuine share grant reads public bytes but never authorizes private GET or HEAD; the genuine owner session does" time="0.073404667">
+        </testcase>
+        <testcase classname="tests/integration/sharing/delivery.test.ts" name="the production storage management route rejects a genuine share grant and accepts a genuine owner session" time="0.007819625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/sharing/http.test.ts" timestamp="2026-10-04T16:37:05.641Z" hostname="dnslins-Mac-mini.local" tests="15" failures="0" errors="0" skipped="0" time="11.089651291">
+        <testcase classname="tests/integration/sharing/http.test.ts" name="real password validation preserves spaces and case, accepts NFKC equivalents, and issues a scoped opaque Cookie" time="0.245937167">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="the HTTP password schema counts Unicode code points and rejects empty or overlong values without grants" time="0.099737916">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="the persisted grant expires at exactly 24 hours and browsing or refresh never slides its deadline" time="0.115982667">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="future deadline edits retain a live grant while the latest share deadline always wins" time="0.106067958">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="editing an already expired share revokes its grant even without a request at expiration" time="0.303106959">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="layout and name settings preserve authorization and return only the current public projection" time="0.098907583">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="setting, replacing and clearing a password keep the address and revoke every earlier grant" time="0.324085875">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="closing and reopening preserves the Token and requires a new password grant" time="0.143907917">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="rotating permanently rejects the old address and deleting cascades the share and its grants" time="0.150663333">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="a real process restart preserves owner sessions and the share grant without renewing either Cookie" time="0.405639959">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="all four anonymous entries share the same authorization boundary and never expand for an owner" time="0.166706125">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="share grants stay independent across albums and simultaneous verification in one album" time="0.163136375">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="anonymous writes reject foreign or absent origins and HTTPS configuration adds Secure to the share Cookie" time="0.10659075">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="refresh accepts at most 80 explicit IDs and never reveals private, trashed or unknown members" time="0.096726958">
+        </testcase>
+        <testcase classname="tests/integration/sharing/http.test.ts" name="password verification races with password changes, close, expiry, Token rotation and deletion without issuing any stale grant" time="0.599509">
+        </testcase>
+    </testsuite>
+</testsuites>
