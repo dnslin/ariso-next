@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>#165 账号反馈原型</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fffffe;
+      --fg: #272343;
+      --muted: #505369;
+      --border: #bae8e8;
+      --soft: #e3f6f5;
+      --yellow: #ffd807;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font:
+        14px/1.5 Inter,
+        'Noto Sans SC',
+        system-ui,
+        sans-serif;
+    }
+    body.dark {
+      color-scheme: dark;
+      --bg: #181a22;
+      --fg: #f4f1f8;
+      --muted: #b8b9c9;
+      --border: #607d85;
+      --soft: #253d40;
+    }
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+    button {
+      color: inherit;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-height: 48px;
+      padding: 0 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .icon {
+      width: 20px;
+      height: 20px;
+      flex: none;
+    }
+    button > .icon {
+      width: 16px;
+      height: 16px;
+    }
+    .heading,
+    .account-address {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .heading > .icon {
+      width: 24px;
+      height: 24px;
+    }
+    .account-address {
+      gap: 8px;
+    }
+    .account-address > .icon {
+      width: 16px;
+      height: 16px;
+      color: var(--muted);
+    }
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid #607d85;
+      outline-offset: 3px;
+    }
+    button.primary {
+      color: #272343;
+      background: var(--yellow);
+      border-color: var(--yellow);
+    }
+    aside {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 232px;
+      padding: 28px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .brand {
+      font: 48px/1.5 cursive;
+      margin-bottom: 16px;
+    }
+    nav {
+      display: grid;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    nav div {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 12px;
+      gap: 12px;
+    }
+    nav .current {
+      background: #fff7c2;
+      color: #272343;
+    }
+    .owner {
+      position: absolute;
+      bottom: 28px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--soft);
+      border-radius: 50%;
+    }
+    main {
+      margin-left: 232px;
+      padding: 28px 32px;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 500;
+      margin: 0 0 6px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0;
+    }
+    p {
+      margin: 0;
+    }
+    .subtitle {
+      margin-bottom: 24px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--soft);
+      border-radius: 14px;
+      padding: 4px;
+      width: max-content;
+      margin-bottom: 24px;
+    }
+    .tabs div {
+      padding: 10px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tabs .icon {
+      width: 16px;
+      height: 16px;
+    }
+    .tabs .selected {
+      background: var(--yellow);
+      color: #272343;
+    }
+    .card {
+      border: 1px solid var(--border);
+      padding: 24px;
+      border-radius: 20px;
+      display: grid;
+      gap: 24px;
+    }
+    .section {
+      display: grid;
+      gap: 12px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+    .actions button {
+      width: 192px;
+    }
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+    }
+    .demo button {
+      min-height: 44px;
+      font-size: 13px;
+    }
+    .demo-label {
+      margin-top: 24px;
+      color: var(--muted);
+    }
+    .mobile-head,
+    .mobile-category {
+      display: none;
+    }
+    dialog {
+      color: var(--fg);
+      background: var(--bg);
+      width: 520px;
+      max-width: calc(100vw - 32px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 0;
+      max-height: calc(100dvh - 32px);
+    }
+    dialog::backdrop {
+      background: rgb(24 26 34 / 0.4);
+    }
+    .modal {
+      padding: 24px 28px;
+      display: grid;
+      gap: 18px;
+      position: relative;
+    }
+    .close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      min-height: 44px;
+      padding: 0;
+      border: 0;
+      font-size: 22px;
+      background: transparent;
+    }
+    .modal h2 {
+      font-size: 22px;
+      padding-right: 32px;
+    }
+    .intro {
+      display: grid;
+      gap: 8px;
+    }
+    .modal-heading {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .modal-emblem {
+      width: 40px;
+      height: 40px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--soft);
+    }
+    .modal-emblem .icon {
+      width: 22px;
+      height: 22px;
+    }
+    .modal-heading .intro {
+      min-width: 0;
+      flex: 1;
+    }
+    .fields {
+      display: grid;
+      gap: 14px;
+    }
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+    .input-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding-left: 12px;
+    }
+    .input-control > .icon {
+      width: 16px;
+      height: 16px;
+    }
+    .input-control:has(input:focus-visible) {
+      outline: 2px solid #607d85;
+      outline-offset: 3px;
+    }
+    input {
+      min-width: 0;
+      width: 100%;
+      height: 46px;
+      flex: 1;
+      border: 0;
+      padding: 0 12px 0 0;
+      background: transparent;
+      color: var(--fg);
+    }
+    input:focus-visible {
+      outline: 0;
+    }
+    .reveal {
+      width: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0;
+      margin-right: 1px;
+      border: 0;
+      background: transparent;
+    }
+    .reveal > .icon,
+    .close > .icon,
+    .toast button > .icon,
+    .mobile-head button > .icon {
+      width: 20px;
+      height: 20px;
+    }
+    .modal-actions {
+      display: grid;
+      gap: 10px;
+    }
+    .error {
+      color: #c94649;
+      font-size: 13px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      max-width: 420px;
+      width: calc(100vw - 32px);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px #0002;
+      border-radius: 12px;
+      padding: 16px 60px 16px 16px;
+      display: none;
+    }
+    .toast strong {
+      font-weight: 500;
+    }
+    .toast-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .toast-content > .icon {
+      margin-top: 1px;
+    }
+    .toast button {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      min-height: 44px;
+      width: 44px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+    @media (max-width: 1199px) {
+      aside {
+        display: none;
+      }
+      main {
+        margin: 0;
+        padding: 88px 16px 40px;
+      }
+      .mobile-head {
+        display: flex;
+        position: fixed;
+        inset: 0 0 auto;
+        height: 64px;
+        padding: 0 16px;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg);
+        z-index: 1;
+      }
+      .mobile-head .brand {
+        font-size: 36px;
+        margin: 0;
+      }
+      .mobile-head button {
+        border: 0;
+        font-size: 22px;
+      }
+    }
+    @media (max-width: 767px) {
+      .tabs {
+        display: none;
+      }
+      .mobile-category {
+        display: block;
+        width: 100%;
+        height: 48px;
+        padding: 0 14px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      .card {
+        padding: 20px 16px;
+      }
+      .actions button {
+        width: calc((100% - 12px) / 2);
+        padding: 0 8px;
+      }
+      .modal {
+        padding: 24px 20px;
+      }
+      .toast {
+        right: 16px;
+        bottom: 24px;
+      }
+    }
+  </style>
+  <body>
+    <aside>
+      <div class="brand">Ariso</div>
+      <p>图片，自在收纳。</p>
+      <nav>
+        <div><span data-icon="LayoutDashboard"></span>总览</div>
+        <div><span data-icon="CloudUpload"></span>上传</div>
+        <div><span data-icon="Images"></span>图库</div>
+        <div><span data-icon="Folder"></span>相册</div>
+        <div><span data-icon="Tags"></span>标签</div>
+        <div><span data-icon="Link"></span>分享管理</div>
+        <div><span data-icon="Trash2"></span>回收站</div>
+        <div><span data-icon="ChartNoAxesCombined"></span>访问统计</div>
+        <div><span data-icon="HardDrive"></span>存储管理</div>
+        <div class="current">
+          <span data-icon="SlidersHorizontal"></span>站点设置
+        </div>
+      </nav>
+      <div class="owner">
+        <span class="avatar" data-icon="UserRound"></span
+        ><span>Owner<br />站点所有者</span>
+      </div>
+    </aside>
+    <header class="mobile-head">
+      <span class="brand">Ariso</span
+      ><button aria-label="菜单" data-icon="Menu"></button>
+    </header>
+    <main>
+      <h1 class="heading"><span data-icon="Settings"></span>站点设置</h1>
+      <p class="subtitle">管理站点、图片处理与账号偏好。</p>
+      <div class="tabs">
+        <div><span data-icon="SlidersHorizontal"></span>图片处理</div>
+        <div class="selected">
+          <span data-icon="ShieldCheck"></span>账号与安全
+        </div>
+      </div>
+      <select class="mobile-category" aria-label="设置分类">
+        <option>账号与安全</option>
+        <option>图片处理</option>
+      </select>
+      <div class="card">
+        <section class="section">
+          <h2 class="heading"><span data-icon="UserRound"></span>所有者账号</h2>
+          <p class="account-address">
+            <span data-icon="Mail"></span
+            ><span id="accountEmail">owner@example.com</span>
+          </p>
+          <div class="actions">
+            <button onclick="openForm('email')">
+              <span data-icon="Mail"></span>修改邮箱</button
+            ><button onclick="openForm('password')">
+              <span data-icon="KeyRound"></span>修改密码
+            </button>
+          </div>
+          <p class="muted">仅一个所有者账号，不开放注册。</p>
+        </section>
+        <section class="section">
+          <h2 class="heading"><span data-icon="LogIn"></span>GitHub 登录</h2>
+          <p class="muted">尚未开放</p>
+        </section>
+      </div>
+      <p class="demo-label">
+        原型演示：以下按钮只展示状态，不请求服务器、不修改真实账号。
+      </p>
+      <div class="demo">
+        <button onclick="success('email')">邮箱成功反馈</button
+        ><button onclick="success('password')">密码成功反馈</button
+        ><button onclick="unknown('email')">邮箱结果未知</button
+        ><button onclick="unknown('password')">密码结果未知</button
+        ><button onclick="conflict()">并发改密重试</button
+        ><button onclick="document.body.classList.toggle('dark')">
+          切换主题
+        </button>
+      </div>
+    </main>
+    <dialog id="modal"><div class="modal" id="content"></div></dialog>
+    <div class="toast" role="status" id="toast"></div>
+    <script src="icons.js"></script>
+    <script>
+      const modal = document.getElementById('modal');
+      let mode = 'email';
+      let opener;
+      function icon(name) {
+        return window.accountPrototypeIcons[name];
+      }
+      for (const placeholder of document.querySelectorAll('[data-icon]')) {
+        placeholder.outerHTML = placeholder.classList.contains('avatar')
+          ? '<span class="avatar">' + icon(placeholder.dataset.icon) + '</span>'
+          : placeholder.tagName === 'BUTTON'
+            ? '<button aria-label="菜单">' + icon('Menu') + '</button>'
+            : icon(placeholder.dataset.icon);
+      }
+      function show(html) {
+        opener = document.activeElement;
+        document.getElementById('content').innerHTML =
+          '<button class="close" aria-label="关闭" onclick="closeModal()">' +
+          icon('X') +
+          '</button>' +
+          html;
+        if (!modal.open) modal.showModal();
+      }
+      function closeModal() {
+        modal.close();
+        opener?.focus({ preventScroll: true });
+      }
+      function openForm(kind) {
+        mode = kind;
+        const email = kind === 'email';
+        show(
+          '<div class="modal-heading"><span class="modal-emblem">' +
+            icon(email ? 'Mail' : 'KeyRound') +
+            '</span><div class="intro"><h2>' +
+            (email ? '修改登录邮箱' : '修改密码') +
+            '</h2><p class="muted">' +
+            (email
+              ? '输入新邮箱，并用当前密码确认。'
+              : '设置新的本地登录密码。') +
+            '</p></div></div><div class="fields">' +
+            (email
+              ? field('新邮箱', 'email', 'new-owner@example.com', false)
+              : '') +
+            field('当前密码', 'currentPassword', 'demo-password', true) +
+            (!email
+              ? field('新密码', 'newPassword', 'new-password', true) +
+                field('确认新密码', 'confirmPassword', 'new-password', true)
+              : '') +
+            '</div><p class="muted">' +
+            (email
+              ? '无需验证邮件。当前设备保持登录，下次登录请使用新邮箱。'
+              : '新密码为 8–128 个字符。保存后本设备保持登录，其他设备退出。') +
+            '</p><div class="modal-actions"><button class="primary" onclick="success(mode)">' +
+            icon('Check') +
+            (email ? '保存邮箱' : '保存密码') +
+            '</button><button onclick="closeModal()">取消</button></div>',
+        );
+      }
+      function field(label, name, value, secret) {
+        return (
+          '<div class="field"><label for="' +
+          name +
+          '">' +
+          label +
+          '</label><div class="input-control">' +
+          icon(secret ? 'LockKeyhole' : 'Mail') +
+          '<input id="' +
+          name +
+          '" type="' +
+          (secret ? 'password' : 'email') +
+          '" value="' +
+          value +
+          '" />' +
+          (secret
+            ? '<button class="reveal" type="button" aria-label="显示' +
+              label +
+              '" aria-pressed="false" onclick="togglePassword(this,\'' +
+              name +
+              "','" +
+              label +
+              '\')">' +
+              icon('Eye') +
+              '</button>'
+            : '') +
+          '</div></div>'
+        );
+      }
+      function togglePassword(button, name, label) {
+        const input = document.getElementById(name);
+        const visible = input.type === 'password';
+        input.type = visible ? 'text' : 'password';
+        button.setAttribute('aria-label', (visible ? '隐藏' : '显示') + label);
+        button.setAttribute('aria-pressed', String(visible));
+        button.innerHTML = icon(visible ? 'EyeOff' : 'Eye');
+      }
+      function success(kind) {
+        if (modal.open) closeModal();
+        if (kind === 'email')
+          document.getElementById('accountEmail').textContent =
+            'new-owner@example.com';
+        const toast = document.getElementById('toast');
+        toast.innerHTML =
+          '<div class="toast-content">' +
+          icon('Check') +
+          '<div><strong>' +
+          (kind === 'email' ? '登录邮箱已更新' : '密码已更新') +
+          '</strong><p class="muted">' +
+          (kind === 'email'
+            ? '下次登录请使用新邮箱，未使用的重置链接已撤销。'
+            : '当前设备保持登录，其他设备已退出。') +
+          '</p></div></div><button aria-label="关闭通知" onclick="this.parentElement.style.display=\'none\'">' +
+          icon('X') +
+          '</button>';
+        toast.style.display = 'block';
+      }
+      function unknown(kind) {
+        mode = kind;
+        const email = kind === 'email';
+        show(
+          '<div class="modal-heading"><span class="modal-emblem">' +
+            icon('CircleAlert') +
+            '</span><div class="intro"><h2>暂时无法确认修改结果</h2><p class="muted">连接中断不代表修改未发生。' +
+            (email
+              ? '正在读取当前账号邮箱，核对本次修改。'
+              : '请使用新密码登录核对；若失败，再尝试原密码。') +
+            '</p></div></div><p class="muted" id="checkMessage">' +
+            (email
+              ? '核对失败时保留此弹窗，提供重新核对。'
+              : '前往登录将退出当前设备。不会自动再次提交修改。') +
+            '</p><div class="modal-actions"><button class="primary" onclick="' +
+            (email ? 'checkEmail()' : 'closeModal()') +
+            '">' +
+            icon(email ? 'RefreshCw' : 'LogIn') +
+            (email ? '重新核对邮箱' : '前往登录核对') +
+            '</button><button onclick="closeModal()">返回账号与安全</button></div>',
+        );
+      }
+      function checkEmail() {
+        document.getElementById('checkMessage').textContent =
+          '正在核对当前邮箱…';
+        setTimeout(() => {
+          document.getElementById('checkMessage').textContent =
+            '当前邮箱：new-owner@example.com，本次修改已确认。';
+        }, 500);
+      }
+      function conflict() {
+        openForm('email');
+        const field = document.querySelector('.fields');
+        field.insertAdjacentHTML(
+          'beforeend',
+          '<p class="error" role="alert">核对期间密码已变更，请重新输入当前密码后重试。</p>',
+        );
+      }
+      modal.addEventListener('close', () =>
+        opener?.focus({ preventScroll: true }),
+      );
+    </script>
+  </body>
+</html>

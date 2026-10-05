@@ -63,3 +63,13 @@ it('returns to the implemented tags query after login', () => {
   expect(loginDestination('/tags/unknown')).toBe('/admin');
   expect(loginDestination('https://evil.test/tags')).toBe('/admin');
 });
+
+it('returns to account management after session expiry or explicit login verification', () => {
+  expect(loginDestination('/settings/account')).toBe('/settings/account');
+  expect(loginDestination('/settings/account#main-content')).toBe(
+    '/settings/account#main-content',
+  );
+  expect(loginDestination('/settings/account/unimplemented')).toBe('/admin');
+  expect(loginDestination('/settings/github')).toBe('/admin');
+  expect(loginDestination('https://evil.test/settings/account')).toBe('/admin');
+});

@@ -1,0 +1,65 @@
+Already up to date
+Done in 43ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-165-account/ariso
+
+ ❯ |unit| tests/unit/identity/account-request.test.ts (7 tests | 2 failed) 16ms
+   × keeps HTTP context when the failed JSON response has an unexpected shape: null 3ms
+   × keeps HTTP context when the failed JSON response has an unexpected shape: {"message":42,"fields":"not a field list"} 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/account-request.test.ts > keeps HTTP context when the failed JSON response has an unexpected shape: null
+AssertionError: expected TypeError: Cannot read properties of null… to match object { status: 502, …(2) }
+
+- Expected
++ Received
+
+- {
+-   "fields": [],
+-   "message": "账号请求失败（HTTP 502）",
+-   "status": 502,
++ TypeError {
++   "message": "Cannot read properties of null (reading 'message')",
+  }
+
+ ❯ tests/unit/identity/account-request.test.ts:54:55
+     52|   async (body) => {
+     53|     vi.stubGlobal('fetch', async () => Response.json(body, { status: 5…
+     54|     await expect(accountRequest('/api/account/email')).rejects.toMatch…
+       |                                                       ^
+     55|       status: 502,
+     56|       message: '账号请求失败（HTTP 502）',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/identity/account-request.test.ts > keeps HTTP context when the failed JSON response has an unexpected shape: {"message":42,"fields":"not a field list"}
+AssertionError: expected Error: 42（HTTP 502） { …(3) } to match object { status: 502, …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "fields": [],
+-   "message": "账号请求失败（HTTP 502）",
++ AccountRequestError {
++   "fields": "not a field list",
+    "status": 502,
+  }
+
+ ❯ tests/unit/identity/account-request.test.ts:54:55
+     52|   async (body) => {
+     53|     vi.stubGlobal('fetch', async () => Response.json(body, { status: 5…
+     54|     await expect(accountRequest('/api/account/email')).rejects.toMatch…
+       |                                                       ^
+     55|       status: 502,
+     56|       message: '账号请求失败（HTTP 502）',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  17:00:49
+   Duration  94ms (tests 48%, transform 33%, import 14%, worker 5%)

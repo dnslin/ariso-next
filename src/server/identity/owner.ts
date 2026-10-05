@@ -14,7 +14,7 @@ export async function readOptionalOwner(request: Request) {
 }
 
 /** 每次读取真实 Cookie 会话；管理写入还必须来自当前保存的站点 origin。 */
-export async function requireOwner(request: Request) {
+export async function requireOwnerSession(request: Request) {
   const auth = getAuth();
   const session =
     auth &&
@@ -38,5 +38,9 @@ export async function requireOwner(request: Request) {
       code: 'INVALID_ORIGIN',
     });
   }
-  return session.user;
+  return session;
+}
+
+export async function requireOwner(request: Request) {
+  return (await requireOwnerSession(request)).user;
 }

@@ -111,13 +111,15 @@ site 公开地址更新后，新的认证请求使用新 baseURL，可信来源�
 
 ### 6.1 修改邮箱
 
-拟要求所有者会话与当前本地密码。使用库 `verifyPassword` 核对；成功后短事务更新 user.email、将 emailVerified 置 false，并删除该账号未使用的重置凭据。提交后新的本地登录使用新邮箱，GitHub 绑定按 provider account ID 保留；当前会话可继续，后续读取获得新邮箱。
+要求所有者会话与当前本地密码。使用库 `verifyPassword` 核对；成功后短事务更新 user.email、将 emailVerified 置 false，并删除该账号未使用的重置凭据。提交后新的本地登录使用新邮箱，GitHub 绑定按 provider account ID 保留；当前会话可继续，后续读取获得新邮箱。
 
 此路径不要求 SMTP。采用专门邮箱更新函数的原因是库标准 `changeEmail` 无验证邮件路径不能覆盖“邮箱已验证但 SMTP 不可用”。不开放任意用户字段更新，不借修改邮箱改变所有者身份。校验期间并发发生密码变更时，提交前复核 credential 哈希未改变；否则要求重试。
 
 ### 6.2 修改密码
 
-通过库 `changePassword` 核对旧密码并写新密码，服务端固定 `revokeOtherSessions: true`，保留当前会话、撤销其他会话。不允许请求体关闭该行为。错误旧密码不改变 credential；失败保留库错误上下文，页面不显示成功。
+使用库 `verifyPassword` 核对旧密码，再用 `hashPassword` 生成新哈希。两项异步计算在事务外完成；提交前在短事务内复核 credential 未变且当前会话仍有效，随后写入新密码并撤销其他会话。保留当前会话 ID 与 Cookie，不允许请求体关闭撤销行为。错误旧密码不改变 credential；失败保留错误上下文，页面不显示成功。
+
+已核对 Better Auth 1.7.5 的 `changePassword` 实现：更新密码、删除所有会话、创建替代会话是分开执行的，不能原子保留当前会话。受控入口因此复用库的密码计算能力与项目数据库事务，不调用该端点；产品的会话保留与撤销语义不变。实施及源码审计记录见 [Issue #165](../verification/account-165/README.md)。
 
 ### 6.3 CLI 重置
 
@@ -222,8 +224,9 @@ apiKey({
 | `/settings/email`                                                    | 所有者 SMTP 配置与测试                                                                     |
 | `/settings/api`                                                      | 所有者 Token 管理；上传用法由 upload 提供                                                  |
 | `/api/auth/*`                                                        | 仅开放本地登录/退出/会话、GitHub 登录与回调、邮件申请/重置所需库路径；按方法与路径明确放行 |
+| `GET /api/account`                                                   | Cookie 所有者；只读当前邮箱，不返回密码、credential 或完整用户对象                         |
 | `PATCH /api/account/email`                                           | Cookie 所有者 + 当前密码；只更新本地邮箱                                                   |
-| `POST /api/account/password`                                         | Cookie 所有者；库 changePassword，固定撤销其他会话                                         |
+| `POST /api/account/password`                                         | Cookie 所有者；库密码核验与哈希、短事务写入，保留当前会话并固定撤销其他会话                |
 | `POST /api/account/github/link`、`DELETE /api/account/github`        | Cookie 所有者；主动绑定/仅解绑 GitHub                                                      |
 | `GET/PATCH /api/settings/github`                                     | Cookie 所有者；已保存配置、非秘密的生效配置差异与待重启提示                                |
 | `GET/PATCH /api/settings/smtp`、`POST /api/settings/smtp/test`       | Cookie 所有者；SMTP 配置和发送到所有者的测试邮件                                           |

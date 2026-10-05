@@ -1,0 +1,14 @@
+2026-10-05，图标原型修改。
+工作区：/Users/dnslin/.codex/worktrees/issue-165-account/ariso。
+图标：现有 lucide-react 1.47.0，由 React 实际渲染为原型资源；没有下载或新增依赖。
+
+命令：ego-browser nodejs，恢复既有 TaskSpace 31 / p1。
+结果：两轮均退出0；没有新建TaskSpace。
+视口：1440×1080、390×844、360×500。
+实际断言：密码type password → text → password，aria-pressed同步；手机关闭与显示按钮均44×44；Esc关闭后焦点返回“修改密码”；页面无横向溢出。
+短视口：dialog.clientWidth326、scrollWidth326、clientHeight466、scrollHeight561；浏览器可滚至取消按钮，关闭后焦点返回“修改密码”。
+截图已实际查看：icons-desktop.png、icons-password-desktop.png、icons-password-mobile.png、icons-email-mobile-dark.png。
+结论：图标原型的代表布局与上述交互检查通过。不是账号产品页面浏览器验收，也不是用户批准。
+
+命令：PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check design-plans/issue165-review/icons.js
+结果：退出0。

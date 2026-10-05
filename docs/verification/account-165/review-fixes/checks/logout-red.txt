@@ -1,0 +1,7 @@
+Error: ENOENT: no such file or directory, lstat '/Users/dnslin/.codex/worktrees/issue-165-account/ariso/.next/standalone'
+    at async lstat (node:internal/fs/promises:1029:18)
+    at async Promise.all (index 0)
+    at async checkPaths (node:internal/fs/cp/cp:77:39)
+    at async cpFn (node:internal/fs/cp/cp:66:17)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/.verify-account-race-red.mjs:384:3
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/review-248/logout-red

@@ -22,6 +22,7 @@ export function IdentityField({
   icon,
   placeholder,
   layout = 'setup',
+  isDisabled = false,
 }: {
   name: string;
   label: string;
@@ -34,6 +35,7 @@ export function IdentityField({
   icon?: 'email' | 'password';
   placeholder?: string;
   layout?: 'login' | 'setup';
+  isDisabled?: boolean;
 }) {
   const [visible, setVisible] = useState(false);
   return (
@@ -43,6 +45,7 @@ export function IdentityField({
       value={value}
       onChange={onChange}
       isInvalid={!!error}
+      isDisabled={isDisabled}
       validationBehavior="aria"
       isRequired
     >
@@ -84,6 +87,7 @@ export function IdentityField({
                 type="button"
                 variant="ghost"
                 isIconOnly
+                isDisabled={isDisabled}
                 className={`size-11 min-w-11 rounded-lg text-muted ${layout === 'login' ? 'min-[1200px]:size-8 min-[1200px]:min-w-8' : ''}`}
                 aria-label={`${visible ? '隐藏' : '显示'}${label}`}
                 aria-pressed={visible}

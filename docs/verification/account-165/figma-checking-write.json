@@ -1,0 +1,1505 @@
+{
+  "date": "2026-10-05",
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "source": {
+    "product": "src/components/identity/account-editor.tsx",
+    "phase": "src/components/identity/use-account-editor.ts",
+    "library": "@heroui/react@3.2.6",
+    "spinnerSvg": "figma/heroui-spinner-sm.svg",
+    "spinnerProps": {
+      "size": "sm",
+      "color": "current"
+    },
+    "headerDescription": "连接中断不代表修改未发生。正在核对当前邮箱…",
+    "body": "checking 开始清空 feedback；邮箱核对没有额外正文",
+    "disabledOpacity": 0.5
+  },
+  "nativeBefore": [
+    [
+      {
+        "id": "697:14612",
+        "name": "D / 账号安全 / 邮箱结果未知 · 正在自动核对",
+        "width": 520,
+        "height": 295,
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 18,
+        "paddingTop": 24,
+        "paddingBottom": 24,
+        "paddingLeft": 28,
+        "paddingRight": 28,
+        "children": [
+          {
+            "id": "697:14613",
+            "name": "标题与说明",
+            "type": "FRAME",
+            "width": 462,
+            "height": 83,
+            "opacity": 1,
+            "x": 29,
+            "y": 25
+          },
+          {
+            "id": "697:14622",
+            "name": "辅助说明",
+            "type": "TEXT",
+            "width": 462,
+            "height": 20,
+            "opacity": 1,
+            "x": 29,
+            "y": 126
+          },
+          {
+            "id": "697:14623",
+            "name": "操作",
+            "type": "FRAME",
+            "width": 462,
+            "height": 106,
+            "opacity": 1,
+            "x": 29,
+            "y": 164
+          },
+          {
+            "id": "697:14631",
+            "name": "关闭对话框 / 44px",
+            "type": "FRAME",
+            "width": 44,
+            "height": 44,
+            "opacity": 1,
+            "x": 464,
+            "y": 12
+          }
+        ],
+        "text": [
+          {
+            "id": "697:14620",
+            "name": "标题",
+            "text": "暂时无法确认修改结果",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Medium",
+              "variationSettings": {
+                "wght": 500
+              }
+            },
+            "size": 22,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 410,
+            "height": 33
+          },
+          {
+            "id": "697:14621",
+            "name": "说明",
+            "text": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 410,
+            "height": 42
+          },
+          {
+            "id": "697:14622",
+            "name": "辅助说明",
+            "text": "正在核对当前邮箱…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 13,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 462,
+            "height": 20
+          },
+          {
+            "id": "I697:14624;3:22",
+            "name": "按钮",
+            "text": "正在核对…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 70,
+            "height": 21
+          },
+          {
+            "id": "I697:14625;3:24",
+            "name": "按钮",
+            "text": "返回账号与安全",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 98,
+            "height": 21
+          }
+        ],
+        "controls": [
+          {
+            "id": "697:14624",
+            "name": "主要操作",
+            "type": "INSTANCE",
+            "width": 462,
+            "height": 48,
+            "opacity": 0.550000011920929,
+            "x": 0,
+            "y": 0,
+            "properties": {
+              "Label#3:0": {
+                "type": "TEXT",
+                "value": "正在核对…"
+              }
+            },
+            "source": "3:21"
+          },
+          {
+            "id": "697:14625",
+            "name": "返回账号与安全",
+            "type": "INSTANCE",
+            "width": 462,
+            "height": 48,
+            "opacity": 1,
+            "x": 0,
+            "y": 58,
+            "properties": {
+              "Label#3:1": {
+                "type": "TEXT",
+                "value": "返回账号与安全"
+              }
+            },
+            "source": "3:23"
+          },
+          {
+            "id": "697:14626",
+            "name": "Lucide / RefreshCw",
+            "type": "FRAME",
+            "width": 16,
+            "height": 16,
+            "opacity": 1,
+            "x": 177,
+            "y": 16
+          }
+        ]
+      },
+      {
+        "id": "702:16145",
+        "name": "D / 账号安全 / 邮箱结果未知 · 正在自动核对 · 深色",
+        "width": 520,
+        "height": 295,
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 18,
+        "paddingTop": 24,
+        "paddingBottom": 24,
+        "paddingLeft": 28,
+        "paddingRight": 28,
+        "children": [
+          {
+            "id": "702:16146",
+            "name": "标题与说明",
+            "type": "FRAME",
+            "width": 462,
+            "height": 83,
+            "opacity": 1,
+            "x": 29,
+            "y": 25
+          },
+          {
+            "id": "702:16155",
+            "name": "辅助说明",
+            "type": "TEXT",
+            "width": 462,
+            "height": 20,
+            "opacity": 1,
+            "x": 29,
+            "y": 126
+          },
+          {
+            "id": "702:16156",
+            "name": "操作",
+            "type": "FRAME",
+            "width": 462,
+            "height": 106,
+            "opacity": 1,
+            "x": 29,
+            "y": 164
+          },
+          {
+            "id": "702:16164",
+            "name": "关闭对话框 / 44px",
+            "type": "FRAME",
+            "width": 44,
+            "height": 44,
+            "opacity": 1,
+            "x": 464,
+            "y": 12
+          }
+        ],
+        "text": [
+          {
+            "id": "702:16153",
+            "name": "标题",
+            "text": "暂时无法确认修改结果",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Medium",
+              "variationSettings": {
+                "wght": 500
+              }
+            },
+            "size": 22,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 410,
+            "height": 33
+          },
+          {
+            "id": "702:16154",
+            "name": "说明",
+            "text": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 410,
+            "height": 42
+          },
+          {
+            "id": "702:16155",
+            "name": "辅助说明",
+            "text": "正在核对当前邮箱…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 13,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 462,
+            "height": 20
+          },
+          {
+            "id": "I702:16157;3:22",
+            "name": "按钮",
+            "text": "正在核对…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 70,
+            "height": 21
+          },
+          {
+            "id": "I702:16158;3:24",
+            "name": "按钮",
+            "text": "返回账号与安全",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 98,
+            "height": 21
+          }
+        ],
+        "controls": [
+          {
+            "id": "702:16157",
+            "name": "主要操作",
+            "type": "INSTANCE",
+            "width": 462,
+            "height": 48,
+            "opacity": 0.550000011920929,
+            "x": 0,
+            "y": 0,
+            "properties": {
+              "Label#3:0": {
+                "type": "TEXT",
+                "value": "正在核对…"
+              }
+            },
+            "source": "3:21"
+          },
+          {
+            "id": "702:16158",
+            "name": "返回账号与安全",
+            "type": "INSTANCE",
+            "width": 462,
+            "height": 48,
+            "opacity": 1,
+            "x": 0,
+            "y": 58,
+            "properties": {
+              "Label#3:1": {
+                "type": "TEXT",
+                "value": "返回账号与安全"
+              }
+            },
+            "source": "3:23"
+          },
+          {
+            "id": "702:16159",
+            "name": "Lucide / RefreshCw",
+            "type": "FRAME",
+            "width": 16,
+            "height": 16,
+            "opacity": 1,
+            "x": 177,
+            "y": 16
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "id": "697:14587",
+        "name": "M / 账号安全 / 邮箱结果未知 · 正在自动核对",
+        "width": 358,
+        "height": 295,
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 18,
+        "paddingTop": 24,
+        "paddingBottom": 24,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "children": [
+          {
+            "id": "697:14588",
+            "name": "标题与说明",
+            "type": "FRAME",
+            "width": 316,
+            "height": 83,
+            "opacity": 1,
+            "x": 21,
+            "y": 25
+          },
+          {
+            "id": "697:14597",
+            "name": "辅助说明",
+            "type": "TEXT",
+            "width": 316,
+            "height": 20,
+            "opacity": 1,
+            "x": 21,
+            "y": 126
+          },
+          {
+            "id": "697:14598",
+            "name": "操作",
+            "type": "FRAME",
+            "width": 316,
+            "height": 106,
+            "opacity": 1,
+            "x": 21,
+            "y": 164
+          },
+          {
+            "id": "697:14606",
+            "name": "关闭对话框 / 44px",
+            "type": "FRAME",
+            "width": 44,
+            "height": 44,
+            "opacity": 1,
+            "x": 302,
+            "y": 12
+          }
+        ],
+        "text": [
+          {
+            "id": "697:14595",
+            "name": "标题",
+            "text": "暂时无法确认修改结果",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Medium",
+              "variationSettings": {
+                "wght": 500
+              }
+            },
+            "size": 22,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 264,
+            "height": 33
+          },
+          {
+            "id": "697:14596",
+            "name": "说明",
+            "text": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 264,
+            "height": 42
+          },
+          {
+            "id": "697:14597",
+            "name": "辅助说明",
+            "text": "正在核对当前邮箱…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 13,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 316,
+            "height": 20
+          },
+          {
+            "id": "I697:14599;3:22",
+            "name": "按钮",
+            "text": "正在核对…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 70,
+            "height": 21
+          },
+          {
+            "id": "I697:14600;3:24",
+            "name": "按钮",
+            "text": "返回账号与安全",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 98,
+            "height": 21
+          }
+        ],
+        "controls": [
+          {
+            "id": "697:14599",
+            "name": "主要操作",
+            "type": "INSTANCE",
+            "width": 316,
+            "height": 48,
+            "opacity": 0.550000011920929,
+            "x": 0,
+            "y": 0,
+            "properties": {
+              "Label#3:0": {
+                "type": "TEXT",
+                "value": "正在核对…"
+              }
+            },
+            "source": "3:21"
+          },
+          {
+            "id": "697:14600",
+            "name": "返回账号与安全",
+            "type": "INSTANCE",
+            "width": 316,
+            "height": 48,
+            "opacity": 1,
+            "x": 0,
+            "y": 58,
+            "properties": {
+              "Label#3:1": {
+                "type": "TEXT",
+                "value": "返回账号与安全"
+              }
+            },
+            "source": "3:23"
+          },
+          {
+            "id": "697:14601",
+            "name": "Lucide / RefreshCw",
+            "type": "FRAME",
+            "width": 16,
+            "height": 16,
+            "opacity": 1,
+            "x": 104,
+            "y": 16
+          }
+        ]
+      },
+      {
+        "id": "702:15157",
+        "name": "M / 账号安全 / 邮箱结果未知 · 正在自动核对 · 深色",
+        "width": 358,
+        "height": 295,
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 18,
+        "paddingTop": 24,
+        "paddingBottom": 24,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "children": [
+          {
+            "id": "702:15158",
+            "name": "标题与说明",
+            "type": "FRAME",
+            "width": 316,
+            "height": 83,
+            "opacity": 1,
+            "x": 21,
+            "y": 25
+          },
+          {
+            "id": "702:15167",
+            "name": "辅助说明",
+            "type": "TEXT",
+            "width": 316,
+            "height": 20,
+            "opacity": 1,
+            "x": 21,
+            "y": 126
+          },
+          {
+            "id": "702:15168",
+            "name": "操作",
+            "type": "FRAME",
+            "width": 316,
+            "height": 106,
+            "opacity": 1,
+            "x": 21,
+            "y": 164
+          },
+          {
+            "id": "702:15176",
+            "name": "关闭对话框 / 44px",
+            "type": "FRAME",
+            "width": 44,
+            "height": 44,
+            "opacity": 1,
+            "x": 302,
+            "y": 12
+          }
+        ],
+        "text": [
+          {
+            "id": "702:15165",
+            "name": "标题",
+            "text": "暂时无法确认修改结果",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Medium",
+              "variationSettings": {
+                "wght": 500
+              }
+            },
+            "size": 22,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 264,
+            "height": 33
+          },
+          {
+            "id": "702:15166",
+            "name": "说明",
+            "text": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 264,
+            "height": 42
+          },
+          {
+            "id": "702:15167",
+            "name": "辅助说明",
+            "text": "正在核对当前邮箱…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 13,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 316,
+            "height": 20
+          },
+          {
+            "id": "I702:15169;3:22",
+            "name": "按钮",
+            "text": "正在核对…",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 70,
+            "height": 21
+          },
+          {
+            "id": "I702:15170;3:24",
+            "name": "按钮",
+            "text": "返回账号与安全",
+            "font": {
+              "family": "Noto Sans SC",
+              "style": "Regular",
+              "variationSettings": {
+                "wght": 400
+              }
+            },
+            "size": 14,
+            "lineHeight": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "width": 98,
+            "height": 21
+          }
+        ],
+        "controls": [
+          {
+            "id": "702:15169",
+            "name": "主要操作",
+            "type": "INSTANCE",
+            "width": 316,
+            "height": 48,
+            "opacity": 0.550000011920929,
+            "x": 0,
+            "y": 0,
+            "properties": {
+              "Label#3:0": {
+                "type": "TEXT",
+                "value": "正在核对…"
+              }
+            },
+            "source": "3:21"
+          },
+          {
+            "id": "702:15170",
+            "name": "返回账号与安全",
+            "type": "INSTANCE",
+            "width": 316,
+            "height": 48,
+            "opacity": 1,
+            "x": 0,
+            "y": 58,
+            "properties": {
+              "Label#3:1": {
+                "type": "TEXT",
+                "value": "返回账号与安全"
+              }
+            },
+            "source": "3:23"
+          },
+          {
+            "id": "702:15171",
+            "name": "Lucide / RefreshCw",
+            "type": "FRAME",
+            "width": 16,
+            "height": 16,
+            "opacity": 1,
+            "x": 104,
+            "y": 16
+          }
+        ]
+      }
+    ]
+  ],
+  "nativeWrites": [
+    {
+      "createdNodeIds": [
+        "714:14708",
+        "714:14709",
+        "714:14710",
+        "714:14711",
+        "714:14712",
+        "714:14713",
+        "714:14714",
+        "714:14715",
+        "714:14716",
+        "714:14717"
+      ],
+      "removedNodeIds": [
+        "697:14622",
+        "697:14626",
+        "697:14627",
+        "697:14628",
+        "697:14629",
+        "697:14630",
+        "702:16155",
+        "702:16159",
+        "702:16160",
+        "702:16161",
+        "702:16162",
+        "702:16163"
+      ],
+      "mutatedNodeIds": [
+        "697:14621",
+        "697:14612",
+        "697:14624",
+        "697:14625",
+        "697:14631",
+        "697:14623",
+        "702:16154",
+        "702:16145",
+        "702:16157",
+        "702:16158",
+        "702:16164",
+        "702:16156"
+      ],
+      "writes": [
+        {
+          "rootId": "697:14612",
+          "before": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "descriptionFontSize": 14,
+            "extra": {
+              "id": "697:14622",
+              "text": "正在核对当前邮箱…"
+            },
+            "primary": {
+              "id": "697:14624",
+              "source": "3:21",
+              "opacity": 0.550000011920929
+            },
+            "back": {
+              "id": "697:14625",
+              "opacity": 1
+            },
+            "close": {
+              "id": "697:14631",
+              "opacity": 1
+            },
+            "icon": {
+              "id": "697:14626",
+              "name": "Lucide / RefreshCw"
+            },
+            "width": 520,
+            "height": 295,
+            "itemSpacing": 18
+          },
+          "after": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在核对当前邮箱…",
+            "descriptionFontSize": 13,
+            "body": "无额外正文，checking 开始清空 feedback",
+            "primary": {
+              "id": "697:14624",
+              "source": "3:21",
+              "label": "正在核对…",
+              "opacity": 0.5
+            },
+            "back": {
+              "id": "697:14625",
+              "label": "返回账号与安全",
+              "opacity": 0.5
+            },
+            "close": {
+              "id": "697:14631",
+              "opacity": 0.5
+            },
+            "spinner": {
+              "id": "714:14708",
+              "name": "HeroUI / Spinner / sm / current / 核对中禁用",
+              "x": 184,
+              "y": 16,
+              "width": 16,
+              "height": 16,
+              "opacity": 0.5,
+              "gradients": [
+                {
+                  "id": "714:14711",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 1
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.1557754278182983, -0.060920920222997665],
+                        [-1.1557754278182983, 0, 1.0778876543045044]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "714:14712",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.390627145767212, -0.21193158626556396],
+                        [-1.390627145767212, 0, 1.195313572883606]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "width": 520,
+            "height": 253,
+            "itemSpacing": 36
+          }
+        },
+        {
+          "rootId": "702:16145",
+          "before": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "descriptionFontSize": 14,
+            "extra": {
+              "id": "702:16155",
+              "text": "正在核对当前邮箱…"
+            },
+            "primary": {
+              "id": "702:16157",
+              "source": "3:21",
+              "opacity": 0.550000011920929
+            },
+            "back": {
+              "id": "702:16158",
+              "opacity": 1
+            },
+            "close": {
+              "id": "702:16164",
+              "opacity": 1
+            },
+            "icon": {
+              "id": "702:16159",
+              "name": "Lucide / RefreshCw"
+            },
+            "width": 520,
+            "height": 295,
+            "itemSpacing": 18
+          },
+          "after": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在核对当前邮箱…",
+            "descriptionFontSize": 13,
+            "body": "无额外正文，checking 开始清空 feedback",
+            "primary": {
+              "id": "702:16157",
+              "source": "3:21",
+              "label": "正在核对…",
+              "opacity": 0.5
+            },
+            "back": {
+              "id": "702:16158",
+              "label": "返回账号与安全",
+              "opacity": 0.5
+            },
+            "close": {
+              "id": "702:16164",
+              "opacity": 0.5
+            },
+            "spinner": {
+              "id": "714:14713",
+              "name": "HeroUI / Spinner / sm / current / 核对中禁用",
+              "x": 184,
+              "y": 16,
+              "width": 16,
+              "height": 16,
+              "opacity": 0.5,
+              "gradients": [
+                {
+                  "id": "714:14716",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 1
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.1557754278182983, -0.060920920222997665],
+                        [-1.1557754278182983, 0, 1.0778876543045044]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "714:14717",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.390627145767212, -0.21193158626556396],
+                        [-1.390627145767212, 0, 1.195313572883606]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "width": 520,
+            "height": 253,
+            "itemSpacing": 36
+          }
+        }
+      ]
+    },
+    {
+      "createdNodeIds": [
+        "714:14698",
+        "714:14699",
+        "714:14700",
+        "714:14701",
+        "714:14702",
+        "714:14703",
+        "714:14704",
+        "714:14705",
+        "714:14706",
+        "714:14707"
+      ],
+      "removedNodeIds": [
+        "697:14597",
+        "697:14601",
+        "697:14602",
+        "697:14603",
+        "697:14604",
+        "697:14605",
+        "702:15167",
+        "702:15171",
+        "702:15172",
+        "702:15173",
+        "702:15174",
+        "702:15175"
+      ],
+      "mutatedNodeIds": [
+        "697:14596",
+        "697:14587",
+        "697:14599",
+        "697:14600",
+        "697:14606",
+        "697:14598",
+        "702:15166",
+        "702:15157",
+        "702:15169",
+        "702:15170",
+        "702:15176",
+        "702:15168"
+      ],
+      "writes": [
+        {
+          "rootId": "697:14587",
+          "before": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "descriptionFontSize": 14,
+            "extra": {
+              "id": "697:14597",
+              "text": "正在核对当前邮箱…"
+            },
+            "primary": {
+              "id": "697:14599",
+              "source": "3:21",
+              "opacity": 0.550000011920929
+            },
+            "back": {
+              "id": "697:14600",
+              "opacity": 1
+            },
+            "close": {
+              "id": "697:14606",
+              "opacity": 1
+            },
+            "icon": {
+              "id": "697:14601",
+              "name": "Lucide / RefreshCw"
+            },
+            "width": 358,
+            "height": 295,
+            "itemSpacing": 18
+          },
+          "after": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在核对当前邮箱…",
+            "descriptionFontSize": 13,
+            "body": "无额外正文，checking 开始清空 feedback",
+            "primary": {
+              "id": "697:14599",
+              "source": "3:21",
+              "label": "正在核对…",
+              "opacity": 0.5
+            },
+            "back": {
+              "id": "697:14600",
+              "label": "返回账号与安全",
+              "opacity": 0.5
+            },
+            "close": {
+              "id": "697:14606",
+              "opacity": 0.5
+            },
+            "spinner": {
+              "id": "714:14698",
+              "name": "HeroUI / Spinner / sm / current / 核对中禁用",
+              "x": 111,
+              "y": 16,
+              "width": 16,
+              "height": 16,
+              "opacity": 0.5,
+              "gradients": [
+                {
+                  "id": "714:14701",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 1
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.1557754278182983, -0.060920920222997665],
+                        [-1.1557754278182983, 0, 1.0778876543045044]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "714:14702",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.390627145767212, -0.21193158626556396],
+                        [-1.390627145767212, 0, 1.195313572883606]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "width": 358,
+            "height": 273,
+            "itemSpacing": 36
+          }
+        },
+        {
+          "rootId": "702:15157",
+          "before": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在读取当前账号邮箱，核对本次修改。",
+            "descriptionFontSize": 14,
+            "extra": {
+              "id": "702:15167",
+              "text": "正在核对当前邮箱…"
+            },
+            "primary": {
+              "id": "702:15169",
+              "source": "3:21",
+              "opacity": 0.550000011920929
+            },
+            "back": {
+              "id": "702:15170",
+              "opacity": 1
+            },
+            "close": {
+              "id": "702:15176",
+              "opacity": 1
+            },
+            "icon": {
+              "id": "702:15171",
+              "name": "Lucide / RefreshCw"
+            },
+            "width": 358,
+            "height": 295,
+            "itemSpacing": 18
+          },
+          "after": {
+            "title": "暂时无法确认修改结果",
+            "description": "连接中断不代表修改未发生。正在核对当前邮箱…",
+            "descriptionFontSize": 13,
+            "body": "无额外正文，checking 开始清空 feedback",
+            "primary": {
+              "id": "702:15169",
+              "source": "3:21",
+              "label": "正在核对…",
+              "opacity": 0.5
+            },
+            "back": {
+              "id": "702:15170",
+              "label": "返回账号与安全",
+              "opacity": 0.5
+            },
+            "close": {
+              "id": "702:15176",
+              "opacity": 0.5
+            },
+            "spinner": {
+              "id": "714:14703",
+              "name": "HeroUI / Spinner / sm / current / 核对中禁用",
+              "x": 111,
+              "y": 16,
+              "width": 16,
+              "height": 16,
+              "opacity": 0.5,
+              "gradients": [
+                {
+                  "id": "714:14706",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 1
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.1557754278182983, -0.060920920222997665],
+                        [-1.1557754278182983, 0, 1.0778876543045044]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "714:14707",
+                  "fills": [
+                    {
+                      "type": "GRADIENT_LINEAR",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "gradientStops": [
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0
+                          },
+                          "position": 0,
+                          "boundVariables": {}
+                        },
+                        {
+                          "color": {
+                            "r": 0.15294118225574493,
+                            "g": 0.13725490868091583,
+                            "b": 0.26274511218070984,
+                            "a": 0.550000011920929
+                          },
+                          "position": 1,
+                          "boundVariables": {}
+                        }
+                      ],
+                      "gradientTransform": [
+                        [0, 1.390627145767212, -0.21193158626556396],
+                        [-1.390627145767212, 0, 1.195313572883606]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "width": 358,
+            "height": 273,
+            "itemSpacing": 36
+          }
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "nodeId": "697:14612",
+      "status": "exported-and-viewed",
+      "path": "figma/after-697-14612.png",
+      "width": 520,
+      "height": 253,
+      "observation": "CircleAlert标题、真实13px说明，无重复正文；黄底禁用正在核对…与16px渐变Spinner；返回/关闭禁用，图文8px间距"
+    },
+    {
+      "nodeId": "697:14587",
+      "status": "exported-and-viewed",
+      "path": "figma/after-697-14587.png",
+      "width": 358,
+      "height": 273,
+      "observation": "CircleAlert标题、真实13px说明，无重复正文；黄底禁用正在核对…与16px渐变Spinner；返回/关闭禁用，图文8px间距"
+    },
+    {
+      "nodeId": "702:16145",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-16145.png",
+      "width": 520,
+      "height": 253,
+      "observation": "CircleAlert标题、真实13px说明，无重复正文；黄底禁用正在核对…与16px渐变Spinner；返回/关闭禁用，图文8px间距"
+    },
+    {
+      "nodeId": "702:15157",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-15157.png",
+      "width": 358,
+      "height": 273,
+      "observation": "CircleAlert标题、真实13px说明，无重复正文；黄底禁用正在核对…与16px渐变Spinner；返回/关闭禁用，图文8px间距"
+    }
+  ],
+  "result": {
+    "updatedNodes": 4,
+    "exportedAndViewed": 4,
+    "totalTaskScreenshots": 56,
+    "unrefreshed": []
+  }
+}

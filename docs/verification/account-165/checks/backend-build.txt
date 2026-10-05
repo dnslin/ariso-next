@@ -1,0 +1,19 @@
+Already up to date
+Done in 108ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 1227ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.5s
+  Running TypeScript ...
+src/server/identity/account.ts(38,33): error TS2339: Property '$client' does not exist on type 'BetterSQLite3Database<Record<string, never>>'.
+tests/integration/identity/account.test.ts(174,54): error TS2322: Type '{ authorization?: undefined; cookie?: undefined; 'x-user-id'?: undefined; } | { authorization: string; cookie: string; 'x-user-id'?: undefined; } | { cookie: string; 'x-user-id': string; authorization?: undefined; }' is not assignable to type 'HeadersInit | undefined'.
+  Type '{ authorization?: undefined; cookie?: undefined; 'x-user-id'?: undefined; }' is not assignable to type 'HeadersInit | undefined'.
+    Type '{ authorization?: undefined; cookie?: undefined; 'x-user-id'?: undefined; }' is not assignable to type 'Record<string, string>'.
+      Property 'authorization' is incompatible with index signature.
+        Type 'undefined' is not assignable to type 'string'.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

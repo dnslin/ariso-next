@@ -1,0 +1,17 @@
+Error: AssertionError [ERR_ASSERTION]: password-concurrent-ui-winner-1-light: 关闭通知 has a usable target (41.79998779296875×41.79998779296875)
+    at assertGeometry (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/e2e/browser-geometry.mjs:94:12)
+    at geometry (file:////[eval2]:445:3)
+    at async stateGeometry (file:////[eval2]:450:3)
+    at async passwordConflict (file:////[eval2]:909:7)
+    at async file:////[eval2]:1084:5
+    at file:////[eval2]:1122:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:272:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/browser-account-complete

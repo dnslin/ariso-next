@@ -1,0 +1,17 @@
+Error: AssertionError [ERR_ASSERTION]: Background null cannot unmount the recovery modal during explicit logout
++ actual - expected
+
++ null
+- 'signing-out'
+
+    at file:////[eval2]:95:12
+    at file:////[eval2]:138:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/.verify-account-race-red.mjs:272:12)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/.verify-account-race-red.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/review-248/logout-race-red
