@@ -59,6 +59,14 @@ describe('focused browser execution plans', () => {
   it.each([
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     [
+      'sharing-public',
+      'representative',
+      { sharingPublicPhase: 'representative' },
+    ],
+    ['sharing-public', 'behavior', { sharingPublicPhase: 'behavior' }],
+    ['sharing-public', 'race', { sharingPublicPhase: 'race' }],
+    ['sharing-public', 'recovery', { sharingPublicPhase: 'recovery' }],
+    [
       'viewer',
       'recovery',
       { viewerRepresentativeOnly: false, viewerCheck: 'recovery' },

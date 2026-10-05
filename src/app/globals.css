@@ -88,7 +88,7 @@ input {
   pointer-events: none;
   background-image:
     url('/shell/glow-desktop.svg'),
-    radial-gradient(var(--border) 0.6px, transparent 0.6px);
+    radial-gradient(var(--border) 0.6px, transparent 0.75px);
   background-size:
     100% 100%,
     20px 20px;
@@ -177,7 +177,7 @@ input {
   .public-decoration {
     background-image:
       url('/shell/glow-mobile.svg'),
-      radial-gradient(var(--border) 0.6px, transparent 0.6px);
+      radial-gradient(var(--border) 0.6px, transparent 0.75px);
   }
   .public-content--login {
     padding-top: max(150px, env(safe-area-inset-top));

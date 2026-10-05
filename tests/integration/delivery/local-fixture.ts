@@ -84,33 +84,38 @@ export async function launchLocalDelivery() {
         Readable.from(bytes),
       );
       const imageId = randomUUID();
-      db.transaction((tx) => {
-        const accepted = acceptOriginal(tx, {
-          imageId,
-          storageId: storage.id,
-          key: plan.key,
-          originalName: svg ? 'original.svg' : 'original.png',
-          visibility: 'public',
-          format: svg ? 'SVG' : 'PNG',
-          mime: svg ? 'image/svg+xml' : 'image/png',
-          byteSize: bytes.length,
-          snapshot: createProcessingSnapshot(tx),
-          expectedVersions: [],
-        });
-        // Published original fixture; no derived processing is claimed or queued.
-        tx.update(mediaJobs)
-          .set({ status: 'succeeded' })
-          .where(eq(mediaJobs.id, accepted.jobId))
-          .run();
-        tx.update(mediaImages)
-          .set({
-            processingStatus: 'ready',
-            classification: svg ? 'preview_only' : 'static',
-            displayName: svg ? '旅行.svg' : '旅行.final',
-          })
-          .where(eq(mediaImages.id, imageId))
-          .run();
-      });
+      // The running media queue also writes this WAL database. Acquire the
+      // writer before reading settings rather than upgrading a read snapshot.
+      db.transaction(
+        (tx) => {
+          const accepted = acceptOriginal(tx, {
+            imageId,
+            storageId: storage.id,
+            key: plan.key,
+            originalName: svg ? 'original.svg' : 'original.png',
+            visibility: 'public',
+            format: svg ? 'SVG' : 'PNG',
+            mime: svg ? 'image/svg+xml' : 'image/png',
+            byteSize: bytes.length,
+            snapshot: createProcessingSnapshot(tx),
+            expectedVersions: [],
+          });
+          // Published original fixture; no derived processing is claimed or queued.
+          tx.update(mediaJobs)
+            .set({ status: 'succeeded' })
+            .where(eq(mediaJobs.id, accepted.jobId))
+            .run();
+          tx.update(mediaImages)
+            .set({
+              processingStatus: 'ready',
+              classification: svg ? 'preview_only' : 'static',
+              displayName: svg ? '旅行.svg' : '旅行.final',
+            })
+            .where(eq(mediaImages.id, imageId))
+            .run();
+        },
+        { behavior: 'immediate' },
+      );
       return {
         imageId,
         bytes,

@@ -2,11 +2,11 @@
 
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { LibraryItem } from '../../server/library/types';
+import { layoutGallery } from './gallery-layout';
 import {
-  layoutGallery,
   visibleGalleryIndexes,
   type GalleryLayout,
-} from './gallery-layout';
+} from '../../components/gallery/layout';
 import { LibraryCard } from './library-card';
 import { GalleryDragSelection } from './gallery-drag-selection';
 import type { LibrarySelection } from './use-library-selection';

@@ -5,6 +5,7 @@ import { requireSiteSettings } from '../site/settings.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { shareGrantCookie } from './authorization.ts';
 import { SharingError } from './errors.ts';
+import { readPublicSharePage, refreshPublicShare } from './public-query.ts';
 import { unlockInputSchema } from './validation.ts';
 
 export const shareResponseHeaders = {
@@ -105,6 +106,51 @@ export async function unlockShareResponse(request: NextRequest, token: string) {
         expires: result.expiresAt,
       });
     return response;
+  } catch (err) {
+    return shareErrorResponse(err, request);
+  }
+}
+
+/** Deliberately ignores owner sessions; only this share's path-scoped grant is read. */
+export function publicShareItemsResponse(request: NextRequest, token: string) {
+  try {
+    const runtime = getServerRuntime();
+    return NextResponse.json(
+      readPublicSharePage(
+        runtime.connection.db,
+        { token, grantSecret: request.cookies.get(shareGrantCookie)?.value },
+        request.nextUrl.searchParams,
+      ),
+      { headers: shareResponseHeaders },
+    );
+  } catch (err) {
+    return shareErrorResponse(err, request);
+  }
+}
+
+export async function publicShareRefreshResponse(
+  request: NextRequest,
+  token: string,
+) {
+  try {
+    const runtime = getServerRuntime();
+    if (
+      request.headers.get('origin') !==
+      requireSiteSettings(runtime.connection.db).publicUrl
+    )
+      throw new SharingError(
+        'INVALID_ORIGIN',
+        '请求来源与当前站点地址不符',
+        403,
+      );
+    return NextResponse.json(
+      refreshPublicShare(
+        runtime.connection.db,
+        { token, grantSecret: request.cookies.get(shareGrantCookie)?.value },
+        await shareBody(request),
+      ),
+      { headers: shareResponseHeaders },
+    );
   } catch (err) {
     return shareErrorResponse(err, request);
   }

@@ -5,6 +5,10 @@ const suites = {
   full: { primaryPage: true },
   'sharing-experiment': {},
   'sharing-protocol': {},
+  'sharing-public': {
+    only: ['representative', 'behavior', 'race', 'recovery'],
+    config: (only) => ({ sharingPublicPhase: only }),
+  },
   account: { stages: [['account', 'account']] },
   library: {
     only: ['recovery'],

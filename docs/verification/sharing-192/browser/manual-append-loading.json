@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "layouts": [
+    {
+      "state": "append-loading-footer",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "manual-loading-more-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "正在加载…",
+            "width": 126,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "feedback": {
+        "text": "正在加载…",
+        "disabled": true,
+        "height": 48,
+        "top": 764,
+        "bottom": 812,
+        "loaded": 40
+      }
+    },
+    {
+      "state": "append-loading-footer",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "manual-loading-more-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "正在加载…",
+            "width": 126,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "feedback": {
+        "text": "正在加载…",
+        "disabled": true,
+        "height": 48,
+        "top": 764,
+        "bottom": 812,
+        "loaded": 40
+      }
+    }
+  ],
+  "checks": [
+    "Actual append request response held; disabled 48px loading button visible in both mobile themes; released response appends to 80"
+  ],
+  "limitations": ["A controlled response hold, not an external slow service"]
+}

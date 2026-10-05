@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "checks": [
+    "Updated preview preserves original address, owner credentials, album membership and share password"
+  ],
+  "http": {
+    "public": 200,
+    "ownerLogin": 200,
+    "locked": 401,
+    "unlock": 200
+  },
+  "members": {
+    "loaded": 40,
+    "total": 124
+  },
+  "credentialsCommitted": false
+}

@@ -95,6 +95,8 @@ for (const name of [
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
+  'sharing-public.json',
+  'sharing-public-failure.png',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -265,6 +267,53 @@ async function runSharingProtocol(spaceId) {
     }
   }
 }
+async function runSharingPublic(spaceId) {
+  const { launchSharingPublic } =
+    await import('../e2e/sharing-public-fixture.mjs');
+  const fixture = await launchSharingPublic(controller.signal);
+  sharingFixtures.add(fixture);
+  try {
+    secrets.push(
+      fixture.browserInput.password,
+      fixture.browserInput.credentials.password,
+      ...Object.values(fixture.browserInput.albums).map((album) => album.token),
+      ...setupCodes(fixture.logs()),
+    );
+    await runBrowser(
+      '../e2e/sharing-public.mjs',
+      {
+        ...fixture.browserInput,
+        ...plan.config,
+        spaceId,
+        pageLabel,
+        output,
+        nodeExecutable: process.execPath,
+        projectDirectory: resolve('.'),
+        identitySessionScript: pathToFileURL(
+          resolve('e2e/identity-session.mjs'),
+        ).href,
+        geometryScript: pathToFileURL(resolve('e2e/browser-geometry.mjs')).href,
+        errorsScript: pathToFileURL(resolve('e2e/browser-errors.mjs')).href,
+        sharingErrorsScript: pathToFileURL(
+          resolve('e2e/sharing-public-errors.mjs'),
+        ).href,
+      },
+      'sharing-public.log',
+    );
+    await fixture.verify();
+    report.sharingPublic = 'passed';
+  } finally {
+    try {
+      await writeFile(
+        join(output, 'sharing-public-server.log'),
+        redact(fixture.logs()),
+      );
+    } finally {
+      await fixture.stop();
+      sharingFixtures.delete(fixture);
+    }
+  }
+}
 if (suite === 'full') {
   report.stages = {};
   report.taskSpaceId = process.env.EGO_TASK_SPACE
@@ -301,7 +350,9 @@ const check = (name, operation, dependencies = []) => {
   );
 };
 
-if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
+if (
+  ['sharing-experiment', 'sharing-protocol', 'sharing-public'].includes(suite)
+) {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -309,7 +360,8 @@ if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    if (suite === 'sharing-protocol') await runSharingProtocol(spaceId);
+    if (suite === 'sharing-public') await runSharingPublic(spaceId);
+    else if (suite === 'sharing-protocol') await runSharingProtocol(spaceId);
     else await runSharingExperiment(spaceId);
     report.status = 'passed';
   } catch (error) {
@@ -901,6 +953,7 @@ try {
     await check('sharing-protocol', () =>
       runSharingProtocol(report.taskSpaceId),
     );
+    await check('sharing-public', () => runSharingPublic(report.taskSpaceId));
     await check('sharing-experiment', () =>
       runSharingExperiment(report.taskSpaceId),
     );

@@ -12,6 +12,18 @@ export const unlockInputSchema = z.strictObject({
   password: passwordInputSchema,
 });
 
+const publicImageIdSchema = z
+  .string()
+  .min(1)
+  .regex(/^[^/\\\p{Cc}]+$/u);
+export const publicShareCursorSchema = publicImageIdSchema.nullable();
+export const publicRefreshInputSchema = z.strictObject({
+  ids: z
+    .array(publicImageIdSchema)
+    .max(80)
+    .transform((ids) => [...new Set(ids)]),
+});
+
 const passwordOperationSchema = z.discriminatedUnion('action', [
   z.strictObject({ action: z.literal('keep') }),
   z.strictObject({ action: z.literal('set'), value: passwordInputSchema }),

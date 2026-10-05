@@ -9,7 +9,7 @@ export function PublicShell({
 }: {
   children: ReactNode;
   home?: boolean;
-  layout?: 'login' | 'setup';
+  layout?: 'login' | 'setup' | 'share';
 }) {
   return (
     <div className="public-shell">
@@ -24,7 +24,7 @@ export function PublicShell({
       ) : null}
       <main
         id="main-content"
-        className={`public-content${layout ? ` public-content--${layout}` : ''}`}
+        className={`public-content${layout ? ` public-content--${layout}` : ''}${layout === 'share' ? ' block! p-0! place-items-stretch!' : ''}`}
       >
         {children}
       </main>
