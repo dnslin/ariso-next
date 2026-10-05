@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="4.993367667">
+  <testsuite name="tests/integration/analytics/count.test.ts" timestamp="2026-10-04T16:43:57.196Z" hostname="dnslins-Mac-mini.local" tests="13" failures="0" errors="0" skipped="11" time="4.993367667">
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each original GET and download once without database writes" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each compressed GET and download once without database writes" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts each watermark GET and download once without database writes" time="1.999542125">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="counts the actual original when the default version is inapplicable" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="excludes owner/private/thumbnail/HEAD/304 and rejected or missing content" time="2.993057291">
+        </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="reads committed timezone after response preparation and keeps already archived dates unchanged" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="does not retry or duplicate a repeated delivery callback within one request" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="handles first-block real file failure over HTTP" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="handles later-block real file failure over HTTP" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="keeps one count after client cancellation following the first network block" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="logs aggregation failure with event context and still returns complete legal content" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="logs capacity loss without truncating content" time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="tests/integration/analytics/count.test.ts" name="does not count a client cancelled before its first body block" time="0">
+      <skipped />
+    </testcase>
+  </testsuite>
+</testsuites>

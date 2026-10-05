@@ -33,6 +33,8 @@
 
 ### EV-IDENTITY-02 上传专用 API Key 插件验证
 
+实验结果与后续接入边界见[验证记录](./evidence/EV-IDENTITY-02/README.md)；本工程前置不代替 Token 界面或真实上传 API 验收。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[identity §9/13](../specs/SPEC-identity.md)

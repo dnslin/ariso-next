@@ -1,0 +1,35 @@
+Already up to date
+Done in 184ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-144-api-key/ariso
+
+ ❯ |integration| tests/integration/identity/api-key-http.test.ts (30 tests | 1 failed | 29 skipped) 143ms
+   × management rejects invalid or privileged input {"name":"bad","expiresIn":100000000000000000000} without inserting keys 142ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/api-key-http.test.ts > management rejects invalid or privileged input {"name":"bad","expiresIn":100000000000000000000} without inserting keys
+AssertionError: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ tests/integration/identity/api-key-http.test.ts:351:72
+    349|   'management rejects invalid or privileged input %j without inserting…
+    350|   async (body) => {
+    351|     expect((await request('/api/upload-tokens', 'POST', body)).status)…
+       |                                                                        ^
+    352|       400,
+    353|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 skipped (30)
+   Start at  00:32:13
+   Duration  616ms (import 63%, tests 26%, transform 10%)
+

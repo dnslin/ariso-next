@@ -1,0 +1,77 @@
+{
+  "command": "pnpm audit --json",
+  "exitCode": 1,
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 5,
+    "critical": 1
+  },
+  "advisories": [
+    {
+      "module": "esbuild",
+      "severity": "moderate",
+      "id": "GHSA-67mh-4wv8-2f99",
+      "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+      "versions": ["0.18.20"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "moderate",
+      "id": "GHSA-q2hr-2g5m-vwhr",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "versions": ["1.1.18"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "moderate",
+      "id": "GHSA-q2hr-2g5m-vwhr",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "versions": ["5.0.9"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "high",
+      "id": "GHSA-qhr7-859c-m2p7",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "versions": ["1.1.18"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "high",
+      "id": "GHSA-qhr7-859c-m2p7",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "versions": ["5.0.9"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "high",
+      "id": "GHSA-6j4f-fj2g-mc7p",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "versions": ["1.1.18"]
+    },
+    {
+      "module": "brace-expansion",
+      "severity": "high",
+      "id": "GHSA-6j4f-fj2g-mc7p",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "versions": ["5.0.9"]
+    },
+    {
+      "module": "next",
+      "severity": "critical",
+      "id": "GHSA-vcvr-r3jv-pc5j",
+      "url": "https://github.com/advisories/GHSA-vcvr-r3jv-pc5j",
+      "versions": ["16.3.5"]
+    },
+    {
+      "module": "braces",
+      "severity": "high",
+      "id": "GHSA-vfj7-8cjw-p6xm",
+      "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+      "versions": ["3.0.3"]
+    }
+  ],
+  "scope": "Existing dependency versions unchanged; no standalone API key advisory; not remediated in Issue #144"
+}
