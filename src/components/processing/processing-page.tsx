@@ -8,7 +8,11 @@ import { Card } from '@heroui/react/card';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { toast } from '@heroui/react/toast';
 import { OwnerShell } from '../shell/owner-shell';
-import { SettingsCategories } from '../shell/settings-categories';
+import {
+  SettingsCategories,
+  SettingsHeading,
+  settingsCategories,
+} from '../shell/settings-categories';
 import {
   processingRequest,
   processingSettingsUrl,
@@ -25,7 +29,6 @@ type ShellProps = Omit<
   ComponentProps<typeof OwnerShell>,
   'children' | 'footer'
 >;
-const categories = [{ href: '/settings/processing', label: '图片处理' }];
 
 export function ProcessingPage(shell: ShellProps) {
   const [initial, setInitial] = useState<SavedProcessingSettings | null>(null);
@@ -54,7 +57,7 @@ export function ProcessingPage(shell: ShellProps) {
         className="pb-10"
       >
         <SettingsHeading />
-        <SettingsCategories items={categories}>
+        <SettingsCategories items={settingsCategories}>
           {loading ? (
             <Card
               role="status"
@@ -94,14 +97,6 @@ export function ProcessingPage(shell: ShellProps) {
   );
 }
 
-function SettingsHeading() {
-  return (
-    <div className="grid gap-1.5">
-      <h1 className="text-[30px] font-medium leading-normal">站点设置</h1>
-      <p className="text-sm leading-normal">管理站点、图片处理与账号偏好。</p>
-    </div>
-  );
-}
 function SessionLink() {
   return (
     <Link
@@ -269,7 +264,7 @@ function ProcessingEditor({
         className="pb-10"
       >
         <SettingsHeading />
-        <SettingsCategories items={categories}>
+        <SettingsCategories items={settingsCategories}>
           {settings.message ? (
             <div className="mb-5 grid gap-3 rounded-xl border border-border p-4 text-sm">
               <p role="alert">{settings.message}</p>

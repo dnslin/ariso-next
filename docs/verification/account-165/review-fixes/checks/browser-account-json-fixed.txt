@@ -1,0 +1,15 @@
+Error: Error: page.waitForFunction timed out after 10000ms on page p1; last URL was "http://ariso-50940.localhost:50940/login?returnTo=%2Fsettings%2Faccount"; last title was "Ariso".
+    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)
+    at file:////[eval1]:18564:19
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:135:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:272:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/review-248/browser-account-json-fixed

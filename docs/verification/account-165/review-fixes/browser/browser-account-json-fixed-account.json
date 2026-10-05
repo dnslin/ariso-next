@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "taskSpaceId": 33,
+  "origin": "http://ariso-51403.localhost:51403",
+  "checks": [],
+  "layouts": [],
+  "screenshots": ["account-all-failure.png"],
+  "requests": [],
+  "business": [],
+  "secondBrowserContext": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "Held/lost responses come from real writes. Transport injection does not invent successful server results.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification.",
+    "Separate HTTP Cookie sessions verify revocation; they do not constitute two browser contexts.",
+    "The current Ego capability probe can create an empty BrowserContext but rejects Target.createTarget; two navigable browser contexts remain unverified."
+  ],
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-50940.localhost:50940/login?returnTo=%2Fsettings%2Faccount\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-05T14:14:39.103Z"
+}

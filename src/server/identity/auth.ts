@@ -1,12 +1,20 @@
 import { betterAuth } from 'better-auth';
-import { createAuthMiddleware } from 'better-auth/api';
+import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
+import { and, eq } from 'drizzle-orm';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import * as schema from './schema.ts';
 import { readSetupOwner } from './setup.ts';
 
-type Runtime = ReturnType<typeof getServerRuntime>;
+type Runtime = Pick<
+  ReturnType<typeof getServerRuntime>,
+  'connection' | 'config'
+>;
+type LoginCredential = Pick<
+  typeof schema.account.$inferSelect,
+  'id' | 'userId' | 'password'
+>;
 
 function createAuth(runtime: Runtime, origin: string) {
   const logger = createRuntimeLogger('identity.auth', runtime.config.logLevel);
@@ -58,6 +66,77 @@ function createAuth(runtime: Runtime, origin: string) {
           }
           // 本产品没有短会话选项；客户端不能改变已确认的 7 天策略。
           ctx.body.rememberMe = true;
+          const loginCredential =
+            typeof ctx.body.email === 'string'
+              ? runtime.connection.db
+                  .select({
+                    id: schema.account.id,
+                    userId: schema.account.userId,
+                    password: schema.account.password,
+                  })
+                  .from(schema.account)
+                  .innerJoin(
+                    schema.user,
+                    eq(schema.account.userId, schema.user.id),
+                  )
+                  .where(
+                    and(
+                      eq(schema.user.email, ctx.body.email),
+                      eq(schema.account.providerId, 'credential'),
+                    ),
+                  )
+                  .get()
+              : undefined;
+          return { context: { context: { loginCredential } } };
+        }
+      }),
+      after: createAuthMiddleware(async (ctx) => {
+        if (ctx.path !== '/sign-in/email' || !ctx.context.newSession) return;
+        const created = ctx.context.newSession.session;
+        const original = (
+          ctx.context as typeof ctx.context & {
+            loginCredential?: LoginCredential;
+          }
+        ).loginCredential;
+        // 已创建 session 后同步复核：改密在此前提交则拒绝；此后提交会撤销已有 session。
+        const unchanged = runtime.connection.db.transaction(
+          (tx) => {
+            const current = tx
+              .select({
+                id: schema.account.id,
+                password: schema.account.password,
+              })
+              .from(schema.account)
+              .where(
+                and(
+                  eq(schema.account.userId, created.userId),
+                  eq(schema.account.providerId, 'credential'),
+                ),
+              )
+              .get();
+            if (
+              original?.userId === created.userId &&
+              current?.id === original.id &&
+              current.password === original.password
+            )
+              return true;
+            // 库已生成成功 Cookie 与回跳头，拒绝时不能把它们交付给客户端。
+            ctx.context.responseHeaders?.delete('set-cookie');
+            ctx.context.responseHeaders?.delete('location');
+            tx.delete(schema.session)
+              .where(eq(schema.session.id, created.id))
+              .run();
+            return false;
+          },
+          { behavior: 'immediate' },
+        );
+        if (!unchanged) {
+          ctx.context.setNewSession(null);
+          // 在删除事务提交后抛错，避免回滚刚撤销的 session。
+          throw new APIError('UNAUTHORIZED', {
+            code: 'INVALID_EMAIL_OR_PASSWORD',
+            message: '邮箱或密码已变化，请重新登录',
+          });
         }
       }),
     },
@@ -77,7 +156,7 @@ const processState = globalThis as typeof globalThis & {
 };
 
 /** 导入不查库。无所有者是正常 setup 状态；已有所有者缺少必需记录是数据错误。 */
-export function getAuth(runtime = getServerRuntime()) {
+export function getAuth(runtime: Runtime = getServerRuntime()) {
   const db = runtime.connection.db;
   const identity = readSetupOwner(db, runtime.connection.db.$client.name);
   if (!identity) return null;

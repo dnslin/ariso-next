@@ -13,7 +13,7 @@
 
 ## 缺陷关闭与行为保持
 
-**页面归属：关闭。** [browser-plan.mjs:14](https://github.com/dnslin/ariso-next/blob/codex/issue-190-sharing/scripts/browser-plan.mjs#L14) 至四个固定页定义将 albums、album-cover、tags、upload-input 标为 primaryPage；最终校验在 [browser-plan.mjs:171](https://github.com/dnslin/ariso-next/blob/codex/issue-190-sharing/scripts/browser-plan.mjs#L171)。verify-browser 在 mkdir、临时目录或 fixture 启动之前调用选择函数。保留 full/m2-mobile 的同一约束，其余支持指定页面的入口未被收窄。真实入口测试新增四个非 p1 拒绝用例，使用已有普通文件作为输出目录父路径，避免回归时意外启动资源。
+**页面归属：关闭。** [browser-plan.mjs:14](https://github.com/dnslin/ariso-next/blob/1f66e3efd662913dc79997965cf50df58d21241f/scripts/browser-plan.mjs#L14) 至四个固定页定义将 albums、album-cover、tags、upload-input 标为 primaryPage；最终校验在 [browser-plan.mjs:171](https://github.com/dnslin/ariso-next/blob/1f66e3efd662913dc79997965cf50df58d21241f/scripts/browser-plan.mjs#L171)。verify-browser 在 mkdir、临时目录或 fixture 启动之前调用选择函数。保留 full/m2-mobile 的同一约束，其余支持指定页面的入口未被收窄。真实入口测试新增四个非 p1 拒绝用例，使用已有普通文件作为输出目录父路径，避免回归时意外启动资源。
 
 **参数与执行计划：保留。** 逐项对照 HEAD 的所有 suite/only 分支：library recovery；viewer 七阶段；upload relations/submissions；upload-regression main；upload-s3 cleanup；library-batch 七阶段；library-copy 三阶段；storage-admin 四阶段；processing 五阶段；trash 九阶段，以及无 only 的所有默认入口。允许值、脚本顺序与结果字段别名相同。upload main 直接选择 upload；trash cleanup 只选 cleanup；processing consumers 保留 processing 后的 shell-navigation。未知 suite、only、跨模块 storage/preview 参数仍拒绝。
 
@@ -21,9 +21,9 @@
 
 **特殊入口与默认 full：保留。** sharing-experiment / sharing-protocol 仍从原有独立分支执行；storage-admin feedback 仍由原预览分支执行，plan 的反馈脚本项不会导致重复运行。full 的两视口、所有者准备、业务脚本顺序、六个图库查询阶段、delivery/share/UI 后段和最终失败汇总不变；只有 M2 调用位置改为共用函数，没有借空 plan 跳过 full。
 
-**M2 真实依赖与重启：保留。** [browser-m2.mjs:22](https://github.com/dnslin/ariso-next/blob/codex/issue-190-sharing/scripts/browser-m2.mjs#L22) 的 before 消费 full 传入的 owner 依赖，after 仅依赖同宽度 before。mobile 在完成真实初始化后调用，不额外添加不存在的 owner stage。restartProduction 明确先 stop 当前进程，再调用 startProduction(config.dataDirectory)；全量配置的 dataDirectory 与 databasePath 同属 identity-{width}，mobile 同属 temporary/data。日志仍为 m2-{width}-before/after.log。after 读同输出目录的 m2-{width}.json，重启不得产生 setup code。before 失败/阻塞时 after 不重启，后续独立阶段仍可继续。最后补充的 JSDoc 仅明确 callbacks、config 和 dependencies 的现有契约，没有改变运行路径。
+**M2 真实依赖与重启：保留。** [browser-m2.mjs:22](https://github.com/dnslin/ariso-next/blob/1f66e3efd662913dc79997965cf50df58d21241f/scripts/browser-m2.mjs#L22) 的 before 消费 full 传入的 owner 依赖，after 仅依赖同宽度 before。mobile 在完成真实初始化后调用，不额外添加不存在的 owner stage。restartProduction 明确先 stop 当前进程，再调用 startProduction(config.dataDirectory)；全量配置的 dataDirectory 与 databasePath 同属 identity-{width}，mobile 同属 temporary/data。日志仍为 m2-{width}-before/after.log。after 读同输出目录的 m2-{width}.json，重启不得产生 setup code。before 失败/阻塞时 after 不重启，后续独立阶段仍可继续。最后补充的 JSDoc 仅明确 callbacks、config 和 dependencies 的现有契约，没有改变运行路径。
 
-**上传布局抽出：行为保持。** [upload.mjs:7](https://github.com/dnslin/ariso-next/blob/codex/issue-190-sharing/e2e/upload.mjs#L7) 以 libraryDetailScript 的 e2e 文件 URL 为基准，正确解析相邻 upload-layouts.mjs；函数明确接收 page/config/report，assert 和 join 已在模块内导入。业务代码仍使用返回的 resize/layouts。五宽×两主题、减少动态效果、summary、队列预览/按钮几何、点击目标、无溢出、截图文件名和 report.layouts 更新全部保留；没有移动共享业务作业状态或改变原调用顺序。
+**上传布局抽出：行为保持。** [upload.mjs:7](https://github.com/dnslin/ariso-next/blob/1f66e3efd662913dc79997965cf50df58d21241f/e2e/upload.mjs#L7) 以 libraryDetailScript 的 e2e 文件 URL 为基准，正确解析相邻 upload-layouts.mjs；函数明确接收 page/config/report，assert 和 join 已在模块内导入。业务代码仍使用返回的 resize/layouts。五宽×两主题、减少动态效果、summary、队列预览/按钮几何、点击目标、无溢出、截图文件名和 report.layouts 更新全部保留；没有移动共享业务作业状态或改变原调用顺序。
 
 ## 五轴简要结论
 

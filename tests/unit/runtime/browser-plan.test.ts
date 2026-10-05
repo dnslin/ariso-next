@@ -8,6 +8,7 @@ function select(suite: string, only?: string) {
 describe('focused browser execution plans', () => {
   it.each([
     ['library', ['library']],
+    ['account', ['account']],
     ['shell-navigation', ['shell-navigation']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
@@ -94,5 +95,6 @@ describe('focused browser execution plans', () => {
       viewerCheck: 'representative',
     });
     expect(select('upload-regression', 'main').config).toEqual({});
+    expect(select('account').config).toEqual({});
   });
 });

@@ -14,9 +14,15 @@ export function loginDestination(value: string | string[] | undefined) {
     return '/admin';
   }
   return url.origin === 'https://ariso.invalid' &&
-    (['/admin', '/upload', '/library', '/trash', '/albums', '/tags'].includes(
-      url.pathname,
-    ) ||
+    ([
+      '/admin',
+      '/upload',
+      '/library',
+      '/trash',
+      '/albums',
+      '/tags',
+      '/settings/account',
+    ].includes(url.pathname) ||
       /^\/albums\/[^/]+$/.test(url.pathname))
     ? `${url.pathname}${url.search}${url.hash}`
     : '/admin';

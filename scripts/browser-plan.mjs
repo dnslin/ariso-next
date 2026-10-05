@@ -5,6 +5,7 @@ const suites = {
   full: { primaryPage: true },
   'sharing-experiment': {},
   'sharing-protocol': {},
+  account: { stages: [['account', 'account']] },
   library: {
     only: ['recovery'],
     stages: [['library', 'library']],

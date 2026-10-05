@@ -288,3 +288,37 @@ pnpm exec eslint scripts/browser-m2.mjs tests/unit/runtime/browser-m2.test.ts --
 | 独立复审         | 功能/测试有效性复审通过，四入口 P2 关闭，布局提取与所有原 suite/only/default/M2 契约保持。[功能报告](./p2-correctness-review.md)。运行器独立结构复审通过，分散规则 P2 关闭。[结构报告](./p2-structure-review.md)。两位评审者均未机械重跑已通过检查。                                                                                            |
 
 本轮三个 P2 已关闭。最终受影响格式检查另见 [格式结果](./p2-format-check.txt)。本轮没有新浏览器运行证据：历史默认 full 仍为 40 通过 / 7 失败 / 1 阻塞，后续定向恢复和人工 UI 验收分别保持原状态。PR 继续草稿，通知遮挡、人工验收未完成及 main 冲突仍是既有交付限制。人工预览保持可用；凭证不写入代码、PR 或公开证据。
+
+## 同步 main、冲突处理与获授权合并（2026-10-06）
+
+用户明确要求合并 PR #247、清理本任务并更新本地 main，先确认不会覆盖并发能力。实际 fetch 后 main 为 `d3cf7456`，包含账号 #165/PR #248、DG-SHARING/PR #246 和 DG-API/PR #245。本分支此前 head 为 `1f66e3e`。使用 git-workflow-and-versioning，先 merge-tree，再在本 worktree 执行 `git merge --no-commit --no-ff origin/main`；唯一文本冲突为 scripts/verify-browser.mjs 的三段。
+
+| 重叠位置            | 保留双方能力的处理                                                                                                                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 顶部 suite 校验     | main 新增 account；本分支已提取 selectBrowserPlan。将 account 加入同一计划定义，保留所有既有 suite/only 和六个固定页限制，没有恢复重复校验链。                                        |
+| 定向 stages 分发    | main 的 account 特例移到 plan，真实选择 account.mjs；不恢复旧长 ternary/循环过滤。新增实际计划断言和账号无跨模块 config 断言。                                                        |
+| full 的每个视口末尾 | main 账号场景必须在旧流程用完凭证后执行。保留 M2/interaction/workspace 后的 account-1440/account-390，真实 owner 前置、日志与顶层成功字段保持，并使用本分支的失败观察/独立继续机制。  |
+| 自动合并的文件      | shell-navigation 保留账号设置消费者和本分支三处真实 href；browser-runner 参数测试保留 account 接受/专属参数拒绝和本分支回归；任务卡同时保留 DG-SHARING 文档核对与 T-SHR-01 实施证据。 |
+
+独立复审机械确认：main 改动的 **19 个 src 文件**与合入结果逐字一致；本分支的 **17 个 src 文件**与合入前 HEAD 逐字一致，两组路径无交集。全部 account*.mjs 与 main 逐字一致；分享 routes、服务和迁移等原实现保持。requireOwner 仍返回 session.user，主分支新增 requireOwnerSession/getAuth 登录竞态校验不破坏分享管理调用契约。不是对冲突文件整份选择 ours/theirs。
+
+只重跑受影响检查；账号产品、UI 设计和分享直接服务测试输入未被修改，不机械重跑其旧矩阵。合并 main 改变真实登录和应用构建输入，因此实际重建合并应用，并在新构建上验证分享 HTTP 所有者权限。
+
+```sh
+pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-plan.test.ts
+pnpm exec eslint scripts/verify-browser.mjs scripts/browser-plan.mjs tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts e2e/shell-navigation.mjs --max-warnings=0
+pnpm run build
+pnpm exec vitest run --project integration tests/integration/sharing/production-http.test.ts --maxWorkers=1
+pnpm exec tsc --noEmit --project tsconfig.json
+```
+
+- 两文件 **160 项单元通过**，保留账号接受及三个专属参数拒绝检查。[单元](./merge-unit.txt)。
+- 五个受影响文件 eslint 退出 0；类型检查退出 0。[静态](./merge-lint.txt)、[类型](./merge-typecheck.txt)。
+- 构建退出 0，19/19 静态页面生成；账号和分享生产 routes 同时存在。既有可选平台包与 OpenTelemetry 追踪诊断保持，没有隐藏它们或记作零警告。[构建摘录](./merge-build.txt)。
+- 合并后生产 HTTP **7 项通过**，真实所有者登录、管理 origin/输入、分享授权和私有权限边界仍正常。[HTTP](./merge-sharing-http.txt)。
+- 冲突整合独立复审没有新增 Critical/Required。[复审](./merge-review.md)。最终受影响格式检查见[格式](./merge-format.txt)。
+- 自动合并后的任务文档检查退出 0，120 个任务、298 项需求通过。[文档检查](./merge-docs-check.txt)。
+
+本次没有重新接管浏览器；原 TaskSpace 已交还用户。完整浏览器历史状态、通知遮挡、设计对照和人工验收未完成仍如实保留，用户明确合并指令不等于这些项目被验证。PR 无远端检查，不计作 CI 通过；无 Release、镜像发布或部署。本轮修复/证据提交并推送后核对最新远端 head/base，再执行获授权合并。
+
+清理仅针对 issue-190-sharing：本任务人工预览 53521 的进程按明确清理指令停止；需要保留的忽略数据和本地原始记录移入主工作区 test-results/task-archives/issue-190-sharing-2026-10-06，再使用管理型 worktree 归档。其余 worktree、账号预览与已交还用户的浏览器保持。最终实际合并、分支删除、worktree 归档和本地 main 快进结果由本次交付答复报告。

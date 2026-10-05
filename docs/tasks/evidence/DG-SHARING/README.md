@@ -1,0 +1,83 @@
+# DG-SHARING 解锁前隐私设计适用核对
+
+日期：2026-10-05（Asia/Shanghai）；关联 [Issue #134](https://github.com/dnslin/ariso-next/issues/134)。本次交付仅为设计适用文档、消费任务结论和证据，不包含业务代码、新产品界面或Figma写入。状态映射、真实行为验收与具体缺口只维护在消费卡：[T-SHR-02](../../m3-m4-experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](../../m3-m4-experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](../../m3-m4-experience.md#dg-sharing-对-t-shr-04-的核对结论)。
+
+## 范围、前置与现状
+
+实际使用 `gh issue view` 读取正文、评论，以及 `gh api repos/dnslin/ariso-next/issues/{number}/dependencies/{blocked_by|blocking}` 读取原生依赖。#134为OPEN、无评论、无直接前置；直接blocking仅#191/#192/#193，三者均OPEN、无评论。双向关系、前置状态和实际正文见[github.json](./github.json)。
+
+| 消费任务      | 本轮原生前置状态                         | 仍阻塞的能力                                                                                 |
+| ------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------- |
+| T-SHR-02/#191 | #190、#134 OPEN；#175、#57 CLOSED        | 生产分享配置、独立管理写入及设置页面等待T-SHR-01；本DG可独立核对设计，不代替该生产契约。     |
+| T-SHR-03/#192 | #190、#134 OPEN；#180、#69、#173 CLOSED  | 生产授权与公开匿名页面等待T-SHR-01；已交付collections/delivery/library不能单独组成可用分享。 |
+| T-SHR-04/#193 | #191、#192、#134 OPEN；#185、#161 CLOSED | 匿名大图与删除相册后的分享失效等待两项分享页面/接口；管理大图及现有删除能力不代替联验。      |
+
+从 `docs/README.md` 开始阅读PRD §17/26.6/26.10、能力地图、计划/M3–M4执行顺序、SPEC-sharing及消费卡、设计交接/验收和分享/R4/R6历史节点。冻结PRD、需求编号和模块边界未改；没有新建重复规则或因历史“下一批”重画已补设计。
+
+从最新 `origin/main` 的 `d337f6f1`（PR #243）创建管理型worktree `/Users/dnslin/.codex/worktrees/issue-134-sharing-design/ariso`，分支 `codex/issue-134-sharing-design`。原目录 `/Volumes/data/project/ariso` 初始无未提交改动，已有其他任务worktree；本任务使用独立目录，原目录、其他任务、数据及预览进程未修改。
+
+## 实际实现与复用边界
+
+本轮只读实现、类型和调用路径，核对结果：
+
+- `src/server` 没有生产sharing模块，`src/app` 没有 `/shares`、`/s/{token}` 或管理分享/unlock/items/refresh路由。`OwnerShell` 中分享管理仍 `unavailable:true`，不因本DG完成而开放。SPEC中的早期“未安装”按当前package.json修正理解，不能误报生产能力。
+- EV-SHARING-01/#148已CLOSED，其实现全在 `tests/experiments/sharing/`。实验有SQLite/真实哈希/Cookie/24小时/撤销竞争及客户端迟到响应验证，也调用生产delivery/管理边界。历史证据见[授权实验](../EV-SHARING-01/README.md)，不重复运行，不改其历史失败或用户取消记录；实验数据库不代表生产相册分享数据已接入。
+- `collections/queries.ts` 的 `readAlbumMembers` 在 `scope:'public'` 时已在计数/分页前过滤公开正常成员，按加入时间降序/图片ID升序，但目前是页码分页，返回完整内部图片记录。`cover.ts` 提供封面身份，处理/存储状态不改变候选身份。公开ID游标/公开邻居、匿名裁剪和封面呈现仍待消费任务实现，不能直接把内部返回发给匿名组件。
+- `collections/records.ts` 的 `deleteAlbum` 通过当前外键删除组织关系，图片保留。没有生产分享表可级联；已有删除说明不能当作分享授权已撤销的证据。
+- `ImageViewer`/`useImageViewer` 当前消费完整 `LibraryDetail` 及管理详情、邻居、状态接口。只共享YARL/Zoom的适用展示能力；匿名数据和查询仍归sharing，实际可读内容归delivery。管理大图2026-10-02获批极简视觉不覆盖匿名DES-03。
+- 已有HeroUI3.2.6、YARL3.32.2、React19.3.0、Next16.3.5、`@internationalized/date`3.12.4。实际读取DatePicker的安装类型，继承React Aria DatePicker；日期、密码和展示控件沿现有组件组合，未增加依赖或自行实现替代控件。site的 `formatSiteInstant` 支持真实IANA时区显示，日期输入转换仍须T-SHR-01/02验证。
+
+只读盘点React/Next调用路径时应用 `vercel-react-best-practices` 的服务端入口授权与最小客户端序列化原则：后台响应不能传入匿名组件，门禁前不查询/序列化相册字段。不修改现有React代码，也不引入额外缓存/防御层。
+
+核对默认验证调用链：`package.json` 的unit/integration → `vitest.config.ts` include → 分享实验测试；`test:browser` → 外壳/UI构建 → `scripts/verify-browser.mjs` 默认full → delivery实验后 `runSharingExperiment` → UI收尾。定向 `sharing-experiment` 只验证实验；当前没有生产分享浏览器suite。后续消费任务的新场景须接入默认完整入口，不用旧实验或定向模式冒称生产匿名UI通过。本次未修改运行器、suite/only参数或业务测试。
+
+## 实时Figma与逐项适用对照
+
+使用 `figma-use` 只读文件 `74sT9Hrf8G4czcWeTkET5b`。桌面page `0:1` / 分区 `209:2271`，手机page `97:748` / 分区 `209:2279`。实时索引为桌面79、手机80根节点，含主页面、50个业务状态、阅读入口、RG-02返回、R4连续设置和R6主题代表，见[inventory.json](./figma/inventory.json)；全部159根节点的实际文案/尺寸见[nodes.json](./figma/nodes.json)。首次合并读取超过工具20KB输出限制，未将截断内容当完整证据；后按已知ID分批读取，最终JSON完整。
+
+以下均为本轮从Figma直接取得并实际查看的**设计截图，不是产品网页截图**。主agent查看23张；独立设计agent另查看两张R4失败补图。完整图片尺寸清单见[screenshots.json](./figma/screenshots.json)，桌面整页1440×1080、手机390×844，主题手机360×844；480/358宽错误框按自然尺寸导出，不能冒充完整视口。没有运行Figma播放器或改写主题/节点。
+
+| 核对对象与实际截图                                                                                                            | 整页、公共区域与业务适用结论                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 列表 [30:849](./figma/30-849.png) / [101:1463](./figma/101-1463.png)                                                          | 桌面232px侧栏、业务32px内距、固定分页，手机16px内距/单列管理行。旧面包屑/文字菜单来源是旧Figma，按现行公共外壳及获批图标规则处理，不归咎公共规范。 |
+| 设置 [431:3753](./figma/431-3753.png) / [431:8415](./figma/431-8415.png)                                                      | 地址→密码→期限→展示→启停→rotate的独立操作层级可复用，手机正文需滚动、底栏独立。当前只有地址字段，日常复制入口与静态水绿说明差异交T-SHR-02。        |
+| 未知 [431:4183](./figma/431-4183.png) / [431:8687](./figma/431-8687.png)                                                      | 已有“核对当前设置”，不会自动再次rotate。核对中/失败、密码未知不能只凭hasPassword推断成功，具体缺口已交消费卡。                                     |
+| 手动复制 [431:4205](./figma/431-4205.png) / [431:8709](./figma/431-8709.png)                                                  | 保留可再次读取地址的语义；固定短地址不证明任意长地址换行/选择可用，真实Clipboard拒绝由消费卡验收。成功留来源、中性反馈按用户本次明确指令。         |
+| 密码 [432:3573](./figma/432-3573.png) / [432:7913](./figma/432-7913.png)                                                      | 返回首页、品牌和双柔光一致，外标签、24小时说明及验证操作清楚；没有相册身份。静态节点检查不代替HTML/RSC/元信息/接口隐私验收。                       |
+| 公开列表 [433:3610](./figma/433-3610.png) / [433:8265](./figma/433-8265.png)                                                  | 品牌→封面→名称/描述/计数→图片网格；桌面四列、手机双列保持层级，隐藏名称代表无图片名称文案。真实过滤/计数和辅助文本由T-SHR-03验证。                 |
+| 异常占位 [433:4042](./figma/433-4042.png) / [433:8715](./figma/433-8715.png)                                                  | 封面占位及处理中/暂不可用/停用/加载失败有不同文字、位置保留；私有/回收/移出不属于保位集合。不能把示例6张当实际成员数。                             |
+| 大图 [434:4003](./figma/434-4003.png) / [434:8782](./figma/434-8782.png)                                                      | 公共区域→序号/全屏→比例图片→固定关闭/下一张/放大，首张不提供上一张。匿名仍按此既定结构，不能套管理“仅关闭”新方案。                                 |
+| 大图失败 [432:3744](./figma/432-3744.png) / [432:8084](./figma/432-8084.png)                                                  | 通用错误及返回相册/重试容器可复用，真实失败不自动换版；撤权/成员移除与旧响应清理没有由此证明完成。                                                 |
+| 名称/瀑布流返回 [495:4516](./figma/495-4516.png) / [495:9971](./figma/495-9971.png)                                           | 已有48张名称和比例瀑布流代表，关闭大图返回真实来源。预设1/2/3/47/48连通不代替任意相邻查询、跨批次、滚动与焦点。                                    |
+| R4保存失败 [529:12262](./figma/529-12262.png) / [529:12444](./figma/529-12444.png)                                            | 独立设计agent获取/目视：草稿仍瀑布流/显示名称，访客仍旧网格/隐藏名称；只适用于已确认失败，断连未知不能用该结论。                                   |
+| 主题 [530:15758](./figma/530-15758.png)、360浅色 [530:16068](./figma/530-16068.png) / 深色 [530:16187](./figma/530-16187.png) | 深色语义颜色、照片不反色、360双列代表可复用；仅静态样例，管理错误态、430/768/短视口/系统变化仍由消费者真实验证。                                   |
+
+代表设计足够作为实施起点，具体缺口已分配到各消费卡的状态和负责人，不整体阻塞无关提供方。没有在本DG批准或实施新视觉。复制/静态说明等按用户本次偏好识别差异；改变既定交互或结构的范围由消费任务先给可查看原型、获批后实施。DES-03、DES-06-SHARING、RG-02/08及跨模块DES-05/07、RG-07保持开放。
+
+## 环境、实际检查与独立审计
+
+环境：Darwin arm64；项目命令使用PATH前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`，Node24与pnpm11.19.0。本轮使用using-agent-skills、figma-use，React/Next只读盘点补用vercel-react-best-practices；独立契约/文档审计采用code-review-and-quality，独立设计适用审计实际读取Figma并查看设计原图。
+
+| 实际命令                                                                                           | 结果                                                                                                                         |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `git fetch origin`、管理型worktree创建、`git switch -c codex/issue-134-sharing-design origin/main` | 从最新main隔离，原目录保留。                                                                                                 |
+| `pnpm install --frozen-lockfile`                                                                   | 通过，616包复用缓存，锁文件无修改。                                                                                          |
+| `pnpm run format:check`                                                                            | 通过，仓库全部匹配文件格式正确。                                                                                             |
+| `node docs/tasks/check.mjs`                                                                        | 通过，120任务、298需求，无缺失ID或循环，生成报告未过期。                                                                     |
+| `node docs/tasks/check.mjs --self-test`                                                            | 通过，5个拒绝夹具。                                                                                                          |
+| `python3 /tmp/ariso-issue-134-doc-check.py`                                                        | 通过，7份改动Markdown的329个本地链接/锚点、159根节点一致性、25张PNG实际尺寸、三张完整消费卡的111个节点及门禁样例无相册身份。 |
+| `git diff --check`                                                                                 | 通过，无空白错误。                                                                                                           |
+
+检查范围统一按[适用检查](../../execution.md#适用检查)：仅文档与设计资料变更，没有业务/构建输入变化，lint/typecheck/unit/integration/build/browser、db:generate及Release镜像/容器不适用，未执行。没有添加空测试、跳过失败或削弱断言。文档检查只证明文档结构，不能代替生产分享验收。
+
+独立[契约/文档评审](./review.md)及[设计适用评审](./design-review.md)最终均通过，无剩余本DG必改项。首轮发现证据误挂DG-SHELL、手机Clipboard截图尺寸不一致，已修复并复审；完整消费卡节点统计由旧局部107修正为111。一次性证据校验脚本初稿限制了节点前缀，导致错误计数104；改为逐卡完整区间、所有节点逐项校验后通过，没有缩小检查范围或弱化断言。两评审不重复运行实施者已通过检查，不把后续功能完成写成本DG完成。
+
+## 完成与远端状态
+
+设计适用核对已写入三消费卡；适用本地检查通过，独立契约与设计适用评审完成。生产分享代码、浏览器行为、实际页面设计对照及用户人工验收均由后续T-SHR-02/03/04完成，本DG不提供不存在的产品预览或测试凭证，不启停既有用户预览。
+
+分支 `codex/issue-134-sharing-design` 已提交并推送，主交付提交为 `bf82498`，关联 [PR #246](https://github.com/dnslin/ariso-next/pull/246)，目标 `main`。本DG全部适用检查与独立审计完成，PR为正式待评审（OPEN、isDraft=false）；下游UI验收不属于本次纯文档交付。实际执行 `gh pr view 246 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,mergeable,statusCheckRollup`，返回MERGEABLE及空检查数组；`gh pr checks 246 --repo dnslin/ariso-next` 返回“no checks reported”及退出码1，这是没有远端检查，不记作CI通过，也不等待不存在的工作流。
+
+实际执行 `git commit`、`git push -u origin codex/issue-134-sharing-design` 及 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-134-sharing-design --title ... --body-file /tmp/ariso-issue-134-pr.md`。首轮推送被GitHub服务端以 `remote unpack failed: index-pack failed` 拒绝；只在该命令环境设置用户指定的7897代理重试后成功，没有修改全局代理。此段远端结果补录后仅重跑修改文档的格式、链接/证据及差异检查，不重复已通过且输入未变的任务检查。
+
+本轮未合并、未关闭Issue、未发布/部署，分支、管理型worktree和既有预览均保留。

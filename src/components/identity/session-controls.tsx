@@ -1,6 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
@@ -10,11 +17,14 @@ import { useResetUpload, useUploadSessionExpiry } from '../upload/provider';
 /** 服务端已鉴权；浏览器会话请求负责接收续期 Cookie，并观察失效。 */
 export function useOwnerSession(returnTo: string, onExpire?: () => void) {
   const resetUpload = useResetUpload();
-  useUploadSessionExpiry(onExpire);
   const [sessionError, setSessionError] = useState('');
   const [signOutError, setSignOutError] = useState('');
   const [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
+  const onUploadExpire = useCallback(() => {
+    if (!inFlight.current) onExpire?.();
+  }, [onExpire]);
+  useUploadSessionExpiry(onExpire ? onUploadExpire : undefined);
   useEffect(() => {
     let disposed = false;
     let checking = false;
@@ -60,8 +70,8 @@ export function useOwnerSession(returnTo: string, onExpire?: () => void) {
     };
   }, [returnTo, resetUpload, onExpire]);
 
-  async function signOut() {
-    if (inFlight.current) return;
+  async function signOut(destination = '/login?reason=signed-out') {
+    if (inFlight.current) return '正在退出，请稍候。';
     inFlight.current = true;
     setBusy(true);
     setSignOutError('');
@@ -78,16 +88,26 @@ export function useOwnerSession(returnTo: string, onExpire?: () => void) {
       if (!session.ok || (await session.json()) !== null)
         throw new Error('尚未确认会话已退出');
       resetUpload();
-      window.location.replace('/login?reason=signed-out');
+      window.location.replace(destination);
     } catch (error) {
-      setSignOutError(
-        `${error instanceof Error ? error.message : '退出失败'}，请重试。`,
-      );
+      const message = `${error instanceof Error ? error.message : '退出失败'}，请重试。`;
+      setSignOutError(message);
       inFlight.current = false;
       setBusy(false);
+      return message;
     }
   }
   return { message: signOutError || sessionError, busy, signOut };
+}
+
+export const OwnerSessionContext = createContext<ReturnType<
+  typeof useOwnerSession
+> | null>(null);
+
+export function useOwnerSessionControls() {
+  const session = useContext(OwnerSessionContext);
+  if (!session) throw new Error('OwnerShell is missing');
+  return session;
 }
 
 export function SessionControls({

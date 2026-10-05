@@ -1,0 +1,12 @@
+{
+  "status": "failed",
+  "origin": "http://ariso-60408.localhost:60408",
+  "error": "AssertionError [ERR_ASSERTION]: Background null cannot unmount the recovery modal during explicit logout\n+ actual - expected\n\n+ null\n- 'signing-out'\n\n    at file:////[eval2]:95:12",
+  "page": "http://ariso-60408.localhost:60408/settings/account",
+  "state": {
+    "modal": null,
+    "account": "session",
+    "background": null,
+    "signOutStatus": 200
+  }
+}

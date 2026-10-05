@@ -1,0 +1,15 @@
+Already up to date
+Done in 41ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 90ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.3s
+  Running TypeScript ...
+tests/integration/identity/login-race.test.ts(57,18): error TS2345: Argument of type '{ connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; close: () => BetterSqlite3.Database; }; config: RuntimeConfig; }' is not assignable to parameter of type '{ config: RuntimeConfig; connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; close: () => BetterSqlite3.Database; }; ... 9 more ...; stop(): Promise<...>; }'.
+  Type '{ connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database; }; close: () => Database; }; config: RuntimeConfig; }' is missing the following properties from type '{ config: RuntimeConfig; connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database; }; close: () => Database; }; ... 9 more ...; stop(): Promise<...>; }': setup, mediaQueue, uploads, storageProbes, and 6 more.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

@@ -86,6 +86,12 @@ for (const name of [
   'storage-admin-regressions-failure.png',
   'processing.json',
   'processing-failure.png',
+  'account.json',
+  'account-all-failure.png',
+  'account-1440-failure.png',
+  'account-390-failure.png',
+  'account-1440.json',
+  'account-390.json',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
@@ -869,6 +875,9 @@ try {
       });
       await business(`interaction-polish-${width}`, 'interaction-polish');
       await business(`workspace-continuity-${width}`, 'workspace-continuity');
+      // Account changes consume these credentials, so keep this last for the data directory.
+      if (await business(`account-${width}`, 'account'))
+        report[`account-${width}`] = 'passed';
       await stop(server);
     }
     await check('delivery-s3', async () => {

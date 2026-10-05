@@ -1,0 +1,64 @@
+pnpm run test:integration --maxWorkers=4 — exit 1
+Actual failure/stack/summary excerpts. Successful progress, setup secrets and unrelated full ps process output omitted. Full local output: test-results/review-248/fix-integration.txt
+
+ ❯ |media-tools| tests/integration/media/reprocess.test.ts (28 tests | 1 failed) 68753ms
+ ❯ |media-tools| tests/integration/media/preview.test.ts (27 tests | 2 failed) 36997ms
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 49552ms
+ ❯ |media-tools| tests/integration/delivery/reprocess.test.ts (5 tests | 1 failed) 13206ms
+ FAIL  |media-tools| tests/integration/delivery/reprocess.test.ts > T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (success)
+Error: Test timed out in 5000ms.
+ ❯ tests/integration/delivery/reprocess.test.ts:48:68
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+Error: Test timed out in 5000ms.
+ ❯ tests/integration/media/preview.test.ts:292:5
+ FAIL  |media-tools| tests/integration/media/reprocess.test.ts > retains all old references when compressed stored-result registration fails
+Error: Cannot inspect media tool processes
+ ❯ shutdownError src/server/media/tools.ts:7:24
+ ❯ src/server/media/tools.ts:20:11
+ ❯ processes src/server/media/tools.ts:13:22
+ ❯ groupIsRunning src/server/media/tools.ts:53:11
+ ❯ waitForGroup src/server/media/tools.ts:61:11
+ ❯ terminateGroup src/server/media/tools.ts:69:7
+ ❯ inspectImage src/server/media/formats.ts:53:17
+ ❯ processMediaJob src/server/media/process.ts:322:22
+ ❯ processNext tests/integration/media/reprocess.test.ts:89:3
+ ❯ accept tests/integration/media/reprocess.test.ts:131:14
+Caused by: ExecaError: Command timed out after 1000 milliseconds: ps -axww -o 'pid=,pgid=,stat=,command='
+ ❯ getFinalError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/final-error.js:6:9
+ ❯ makeError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/result.js:108:16
+ ❯ getAsyncResult node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:209:4
+ ❯ handlePromise node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:192:17
+ ❯ processes src/server/media/tools.ts:13:22
+ ❯ groupIsRunning src/server/media/tools.ts:53:11
+ ❯ waitForGroup src/server/media/tools.ts:61:11
+ ❯ terminateGroup src/server/media/tools.ts:69:7
+ ❯ inspectImage src/server/media/formats.ts:53:17
+ ❯ processMediaJob src/server/media/process.ts:322:22
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > T-MED-08 real watermark pipeline > creates exactly the selected versions (compression=true, watermark=text)
+Error: Cannot inspect media tool processes
+ ❯ shutdownError src/server/media/tools.ts:7:24
+ ❯ src/server/media/tools.ts:20:11
+ ❯ processes src/server/media/tools.ts:13:22
+ ❯ groupIsRunning src/server/media/tools.ts:53:11
+ ❯ waitForGroup src/server/media/tools.ts:61:11
+ ❯ terminateGroup src/server/media/tools.ts:69:7
+ ❯ processMediaJob src/server/media/process.ts:309:25
+ ❯ processNext tests/integration/media/watermark.test.ts:112:3
+ ❯ tests/integration/media/watermark.test.ts:148:7
+Caused by: ExecaError: Command timed out after 1000 milliseconds: ps -axww -o 'pid=,pgid=,stat=,command='
+ ❯ getFinalError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/final-error.js:6:9
+ ❯ makeError node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/return/result.js:108:16
+ ❯ getAsyncResult node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:209:4
+ ❯ handlePromise node_modules/.pnpm/execa@10.0.1/node_modules/execa/lib/methods/main-async.js:192:17
+ ❯ processes src/server/media/tools.ts:13:22
+ ❯ groupIsRunning src/server/media/tools.ts:53:11
+ ❯ waitForGroup src/server/media/tools.ts:61:11
+ ❯ terminateGroup src/server/media/tools.ts:69:7
+ ❯ processMediaJob src/server/media/process.ts:309:25
+ ❯ processNext tests/integration/media/watermark.test.ts:112:3
+ Test Files  4 failed | 143 passed (147)
+      Tests  5 failed | 1424 passed (1429)
+   Start at  22:02:35
+   Duration  362.84s (tests 94%, import 5%)
+[ELIFECYCLE] Command failed with exit code 1.

@@ -1,0 +1,21 @@
+Error: TypeError: page.evaluate argument must be JSON-serializable
+    at serializeJsonValue (file:////[eval1]:19363:15)
+    at serializeEvaluateArgument (file:////[eval1]:19204:12)
+    at validateEvaluateInput (file:////[eval1]:19201:26)
+    at #evaluate (file:////[eval1]:18803:36)
+    at Page.evaluate (file:////[eval1]:18488:30)
+    at install (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/e2e/account-transport.mjs:9:21)
+    at observeAccountLogin (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/e2e/account-transport.mjs:40:23)
+    at accountSignIn (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/e2e/account-auth.mjs:165:28)
+    at async file:////[eval2]:64:3
+    at file:////[eval2]:135:20
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (account.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:272:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-165-account/ariso/scripts/verify-browser.mjs:761:7
+Browser report: /Users/dnslin/.codex/worktrees/issue-165-account/ariso/test-results/review-248/browser-account

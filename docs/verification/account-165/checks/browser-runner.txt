@@ -1,0 +1,84 @@
+环境：macOS，Node v24.18.1，pnpm v11.19.0。
+工作区：/Users/dnslin/.codex/worktrees/issue-165-account/ariso。
+
+2026-10-05：浏览器验证入口参数回归。
+
+命令：PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts
+RED：新增 account 参数边界用例后、尚未接入运行器时，61 项中 4 项失败、57 项通过。
+失败为 account suite 未识别；已有 suite/only 组合仍通过。
+GREEN：接入 account suite 后，61 项全部通过，耗时 21.45 秒。
+覆盖：已有 suite/only 组合、新 account suite，以及 account 拒绝 --only、--storage-config 和 --preview-config 等其他场景参数。
+
+命令：PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs
+结果：退出码 0。
+
+命令：PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs e2e/shell-navigation.mjs scripts/verify-browser.mjs tests/unit/runtime/browser-runner.test.ts --max-warnings=0
+结果：退出码 0。
+
+命令：PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs scripts/verify-browser.mjs --check
+结果：退出码 0；All matched files use Prettier code style!
+
+实际调用链：package.json 的 test:browser 构建外壳和 UI 夹具，然后执行 scripts/verify-browser.mjs；默认 full 流程对 1440 和 390 的独立数据目录，在 workspace-continuity 完成后执行 e2e/account.mjs。账号修改位于既有凭证消费场景之后。
+定向 --suite account 创建独立生产运行时、初始化所有者，然后只执行 e2e/account.mjs；不接受 --only 或其他模块专有配置。
+公共消费路由：e2e/shell-navigation.mjs 新增 /settings/account，站点设置的当前项仍指向 /settings/processing；桌面、手机和两主题检查沿用现有入口。
+
+上述命令仅证明参数回归、语法和静态检查。账号浏览器场景未由本 agent 运行；真实 Ego Lite 执行由主 agent 在同一既有 TaskSpace 中统一完成。
+账号表单与未知结果恢复仍等待 UI 实施及真实浏览器核对；当前草案不得计为浏览器验证通过。
+
+后续范围对齐：依主 agent 回读 T-ID-04，移除关闭后重开密码表单必须继续锁定的草案断言。未知结果界面不提供再次提交，明确发起的新操作不额外锁定。
+调整后执行 pnpm exec prettier e2e/account.mjs --check，首次发现新增断言排版差异；执行 --write 修正后再次 --check 通过（退出码 0）。node --check e2e/account.mjs 再次通过（退出码 0）。
+
+获批原型与实际 UI 落地后，读取 account-page.tsx、account-editor.tsx、use-account-editor.ts 和 IdentityField，对齐真实 DOM 与交互：
+- 邮箱未知结果的 checking/unknown/verified 均不提供再次保存；verified 在同 Modal 展示实际当前邮箱并返回，不等待成功 Toast。
+- 读取场景保留真实 GET 200 响应展示 loading，丢失真实读取响应展示 error，再执行“重新读取”；测试数据库会话过期后，显式账号重试取得真实 401 并核对 session 提示、登录 returnTo。
+- 密码未知结果执行真正 sign-out；SQLite 触发器造成退出持久化失败时，要求保留 Modal 与当前会话，再撤销故障并执行登录核对。
+- 提交中断言实际表单、密码切换和关闭业务控件禁用，不将 React Aria 隐藏的辅助 dismiss 控件当作业务按钮。
+
+对齐后执行 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs，退出码 0。
+对齐后执行 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs --max-warnings=0，退出码 0。
+对齐后执行 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --check，退出码 0。
+运行器参数没有变化，未机械重复 61 项回归。真实浏览器仍由主 agent 统一运行，本 agent 未操作 Ego。
+
+首轮真实浏览器失败后的脚本审查（主 agent 提供实际失败）：取消按钮原语义定位同时匹配 React Aria 隐藏取消控件与表单取消按钮；主 agent 将其限定为 account-dialog 内的实际 form button。焦点与取消行为断言保留。
+按 code-review-and-quality 审查新增 passwordConflict 后修正真实竞态的胜者假设：先发请求不保证先完成密码运算。最多三轮独立随机输入，每轮记录双方真实 HTTP 状态和 code，清空旧探测值；UI 真实成功时确认成功界面、当前会话及实际 SQLite credential 与新密码匹配，然后发起独立新一轮。必须取得真实 UI 409 并验证清当前密码、保留两个新密码字段、关联错误与焦点、显式重试后真实成功。三轮均未取得 UI 409 时明确失败，不跳过此分支。
+SQLite credential 核对复用项目安装的 Better Auth 1.7.5 verifyPassword，实际读取其声明文件与导出；哈希和密码不写入报告。
+pending、409、字段错误、unknown、checking、verified 和成功代表在同一真实状态分别保存浅深截图，切换主题后恢复 light，不额外提交写入。
+
+本轮实际命令：
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs --max-warnings=0：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --check：退出码 0。
+Node 24 createRequire.resolve + 动态 import 核对项目安装的 better-auth/crypto.verifyPassword：退出码 0。
+上述脚本修正与并发恢复场景尚待主 agent 实际运行；本 agent 未操作浏览器或修改产品代码。
+
+主 agent 最终定向运行的失败证据：test-results/browser-account-final/account.json 在正常改密后的旧密码登录断言取得真实 HTTP 429，而该断言必须最终取得 401。此前真实 UI 409、独立 Cookie 会话撤销与新 Toast ID 断言已到达通过状态。不能把限流响应当成旧凭证失效的证明。
+本轮仅调整 e2e/account.mjs：HTTP 及独立 Cookie 的真实 sign-in 遇 429 后，读取实际 x-retry-after，要求大于 0 且不超过 60 秒，并最多三次尝试；报告记录来源、每次状态及实际等待窗口，最终凭证 401/200 断言保持。UI 登录保留现有 account returnTo 和 reason，记录实际 sign-in/get-session 429，等待实际窗口及按钮禁用解除，保留已填凭证后明确重试。
+定向 account 先运行一次 allwidth 响应式与账号读取场景，再按 1440、390 两个业务视口依次执行真实邮箱修改、密码竞态和密码恢复，沿用上一端已实际生效的凭证。full 每份独立配置只运行自身业务宽度。报告增加各宽度业务完成状态及请求宽度，业务截图文件使用实际宽度避免覆盖；第二轮旧邮箱断言使用该轮刚失效的邮箱及当前真实密码。
+新增键盘焦点恢复回归：关闭表单后，设置分类 Tabs 根节点 outlineStyle 必须为 none；恢复焦点的实际账号操作按钮必须保留 outline 或 box-shadow。未改产品代码或公共 CSS。
+
+本轮实际命令（Node v24.18.1 / pnpm v11.19.0）：
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --write：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs --max-warnings=0：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --check：退出码 0。
+运行器参数及公共入口未变，未重复已有 61 项参数回归。真实限流恢复、双端业务及焦点样式断言仍待主 agent 统一实际运行，本 agent 未操作浏览器。
+
+后续双端真实运行失败证据：test-results/browser-account-complete/account.json 已记录 1440 业务完整通过、390 邮箱场景完成；390 密码竞态第一轮是合法 UI 200 / 另一请求 409，已核对真实持久密码。其成功截图的几何检查误计上一轮后层通知被缩放后的关闭按钮（41.7999 px），故整体仍失败。
+实际读取 HeroUI toast.css：collapsed non-front 的通知缩放且后层关闭按钮 pointer-events-none / opacity-0，当前共用几何工具按 DOM 与矩形判断可见，未识别该遮挡状态。本轮保持产品、公共 ToastProvider、共用 geometry 和 44 px 断言不变，仅在每次 open(kind) 前，经真实 frontmost toast-close 按钮的键盘 Enter 关闭上一操作已验证的通知，等待其标题 ID 与通知节点实际移除，再捕获操作基线、原页滚动与打开焦点。成功后仍先保留并验证本轮新通知，直至下一独立操作开始时才关闭；新 Toast ID、合法竞态赢家持久核对及必须实际 UI 409 的断言均保留。
+
+本轮实际命令（Node v24.18.1 / pnpm v11.19.0）：
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --write：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs --max-warnings=0：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --check：退出码 0。
+本轮仅修测试准备，真实双端复验由主 agent 在同一既有 TaskSpace 统一执行；本 agent 未操作浏览器。
+
+设计源核对的实际缺陷：account-165/design-review.md 已记录默认 accent Spinner 与 primary 按钮背景同色，真实提交/核对代表图中忙碌图标不可辨识。主 agent 在 AccountEditor 两处使用既有 Spinner color="current" 修正可见性。
+本轮只更新 e2e/account.mjs 的现有 stateGeometry()：email-pending、password-pending、email-reconciling 同一真实状态的 light/dark 检查必须找到一个忙碌按钮 Spinner，并要求按钮 disabled；记录 Spinner 实际 computed color、按钮 foreground/background、主题及业务视口，严格要求 Spinner color 等于按钮 foreground 且不同于 background。未新增写入或伪造响应，未改产品或其他测试行为。
+
+本轮实际命令（Node v24.18.1 / pnpm v11.19.0）：
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --write：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --check e2e/account.mjs：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec eslint e2e/account.mjs --max-warnings=0：退出码 0。
+PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec prettier e2e/account.mjs --check：退出码 0。
+新增可见性断言及产品局部修正仍待主 agent 统一实际重跑；未重复其他已通过且输入未变的检查，本 agent 未操作浏览器。

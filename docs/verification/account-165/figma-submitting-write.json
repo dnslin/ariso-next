@@ -1,0 +1,2585 @@
+{
+  "date": "2026-10-05",
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "source": {
+    "product": "src/components/identity/account-editor.tsx",
+    "fields": "src/components/identity/identity-field.tsx",
+    "library": "@heroui/react@3.2.6",
+    "styles": "@heroui/styles@3.2.6",
+    "renderedSpinner": "figma/heroui-spinner-sm.svg",
+    "renderedProps": {
+      "size": "sm",
+      "color": "current"
+    },
+    "disabledOpacity": 0.5,
+    "gradientColor": "#272343",
+    "gradientAlpha": [
+      [1, 0.55],
+      [0, 0.55]
+    ]
+  },
+  "nativeWrites": [
+    {
+      "createdNodeIds": [
+        "711:14723",
+        "711:14724",
+        "711:14725",
+        "711:14726",
+        "711:14727",
+        "711:14729",
+        "711:14730",
+        "711:14731",
+        "711:14732",
+        "711:14733",
+        "711:14735",
+        "711:14736",
+        "711:14737",
+        "711:14738",
+        "711:14739",
+        "711:14741",
+        "711:14742",
+        "711:14743",
+        "711:14744",
+        "711:14745"
+      ],
+      "removedNodeIds": [
+        "694:7488",
+        "694:7489",
+        "694:7490",
+        "694:7491",
+        "694:7492",
+        "694:7526",
+        "694:7527",
+        "694:7528",
+        "694:7529",
+        "694:7530",
+        "702:15714",
+        "702:15715",
+        "702:15716",
+        "702:15717",
+        "702:15718",
+        "702:15774",
+        "702:15775",
+        "702:15776",
+        "702:15777",
+        "702:15778"
+      ],
+      "mutatedNodeIds": [
+        "202:2307",
+        "202:2318",
+        "202:2319",
+        "202:2317",
+        "202:2311",
+        "202:2312",
+        "694:7477",
+        "202:2314",
+        "202:2315",
+        "694:7480",
+        "694:7484",
+        "694:7473",
+        "202:2330",
+        "202:2344",
+        "202:2345",
+        "202:2343",
+        "202:2334",
+        "202:2335",
+        "694:7502",
+        "694:7506",
+        "202:2337",
+        "202:2338",
+        "694:7510",
+        "694:7514",
+        "202:2340",
+        "202:2341",
+        "694:7518",
+        "694:7522",
+        "694:7498",
+        "702:15690",
+        "702:15712",
+        "702:15713",
+        "702:15711",
+        "702:15694",
+        "702:15695",
+        "702:15696",
+        "702:15700",
+        "702:15701",
+        "702:15702",
+        "702:15706",
+        "702:15719",
+        "702:15734",
+        "702:15772",
+        "702:15773",
+        "702:15771",
+        "702:15738",
+        "702:15739",
+        "702:15740",
+        "702:15744",
+        "702:15749",
+        "702:15750",
+        "702:15751",
+        "702:15755",
+        "702:15760",
+        "702:15761",
+        "702:15762",
+        "702:15766",
+        "702:15779"
+      ],
+      "writes": [
+        {
+          "rootId": "202:2305",
+          "before": {
+            "title": "正在修改邮箱",
+            "buttonId": "202:2318",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "694:7488",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改登录邮箱",
+            "buttonId": "202:2318",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14723",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14726",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14727",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "202:2311",
+              "name": "新邮箱标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2312",
+              "name": "新邮箱输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7477",
+              "name": "Lucide / Mail",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2314",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2315",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7480",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7484",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "694:7473",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2319",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 520,
+          "height": 456
+        },
+        {
+          "rootId": "202:2328",
+          "before": {
+            "title": "正在修改密码",
+            "buttonId": "202:2344",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "694:7526",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改密码",
+            "buttonId": "202:2344",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14729",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14732",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14733",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "202:2334",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2335",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7502",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7506",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "202:2337",
+              "name": "新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2338",
+              "name": "新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7510",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7514",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "202:2340",
+              "name": "确认新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2341",
+              "name": "确认新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7518",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:7522",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "694:7498",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2345",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 520,
+          "height": 545
+        },
+        {
+          "rootId": "702:15683",
+          "before": {
+            "title": "正在修改邮箱",
+            "buttonId": "702:15712",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "702:15714",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改登录邮箱",
+            "buttonId": "702:15712",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14735",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14738",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14739",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "702:15694",
+              "name": "新邮箱标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15695",
+              "name": "新邮箱输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15696",
+              "name": "Lucide / Mail",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15700",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15701",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15702",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15706",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:15719",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15713",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 520,
+          "height": 456
+        },
+        {
+          "rootId": "702:15727",
+          "before": {
+            "title": "正在修改密码",
+            "buttonId": "702:15772",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "702:15774",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改密码",
+            "buttonId": "702:15772",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14741",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14744",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14745",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "702:15738",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15739",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15740",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15744",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:15749",
+              "name": "新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15750",
+              "name": "新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15751",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15755",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:15760",
+              "name": "确认新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15761",
+              "name": "确认新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15762",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15766",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:15779",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:15773",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 520,
+          "height": 545
+        }
+      ]
+    },
+    {
+      "createdNodeIds": [
+        "711:14699",
+        "711:14700",
+        "711:14701",
+        "711:14702",
+        "711:14703",
+        "711:14705",
+        "711:14706",
+        "711:14707",
+        "711:14708",
+        "711:14709",
+        "711:14711",
+        "711:14712",
+        "711:14713",
+        "711:14714",
+        "711:14715",
+        "711:14717",
+        "711:14718",
+        "711:14719",
+        "711:14720",
+        "711:14721"
+      ],
+      "removedNodeIds": [
+        "694:15289",
+        "694:15290",
+        "694:15291",
+        "694:15292",
+        "694:15293",
+        "694:15327",
+        "694:15328",
+        "694:15329",
+        "694:15330",
+        "694:15331",
+        "702:14912",
+        "702:14913",
+        "702:14914",
+        "702:14915",
+        "702:14916",
+        "702:14972",
+        "702:14973",
+        "702:14974",
+        "702:14975",
+        "702:14976"
+      ],
+      "mutatedNodeIds": [
+        "202:2217",
+        "202:2228",
+        "202:2229",
+        "202:2227",
+        "202:2221",
+        "202:2222",
+        "694:15278",
+        "202:2224",
+        "202:2225",
+        "694:15281",
+        "694:15285",
+        "694:15274",
+        "202:2240",
+        "202:2254",
+        "202:2255",
+        "202:2253",
+        "202:2244",
+        "202:2245",
+        "694:15303",
+        "694:15307",
+        "202:2247",
+        "202:2248",
+        "694:15311",
+        "694:15315",
+        "202:2250",
+        "202:2251",
+        "694:15319",
+        "694:15323",
+        "694:15299",
+        "702:14888",
+        "702:14910",
+        "702:14911",
+        "702:14909",
+        "702:14892",
+        "702:14893",
+        "702:14894",
+        "702:14898",
+        "702:14899",
+        "702:14900",
+        "702:14904",
+        "702:14917",
+        "702:14932",
+        "702:14970",
+        "702:14971",
+        "702:14969",
+        "702:14936",
+        "702:14937",
+        "702:14938",
+        "702:14942",
+        "702:14947",
+        "702:14948",
+        "702:14949",
+        "702:14953",
+        "702:14958",
+        "702:14959",
+        "702:14960",
+        "702:14964",
+        "702:14977"
+      ],
+      "writes": [
+        {
+          "rootId": "202:2215",
+          "before": {
+            "title": "正在修改邮箱",
+            "buttonId": "202:2228",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "694:15289",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改登录邮箱",
+            "buttonId": "202:2228",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14699",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14702",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14703",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "202:2221",
+              "name": "新邮箱标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2222",
+              "name": "新邮箱输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15278",
+              "name": "Lucide / Mail",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2224",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2225",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15281",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15285",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "694:15274",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2229",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 358,
+          "height": 476
+        },
+        {
+          "rootId": "202:2238",
+          "before": {
+            "title": "正在修改密码",
+            "buttonId": "202:2254",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "694:15327",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改密码",
+            "buttonId": "202:2254",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14705",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14708",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14709",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15335790812969208,
+                          "g": 0.13767622411251068,
+                          "b": 0.26326560974121094,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "202:2244",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2245",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15303",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15307",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "202:2247",
+              "name": "新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2248",
+              "name": "新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15311",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15315",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "202:2250",
+              "name": "确认新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2251",
+              "name": "确认新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15319",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "694:15323",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "694:15299",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "202:2255",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 358,
+          "height": 565
+        },
+        {
+          "rootId": "702:14881",
+          "before": {
+            "title": "正在修改邮箱",
+            "buttonId": "702:14910",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "702:14912",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改登录邮箱",
+            "buttonId": "702:14910",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14711",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14714",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14715",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "702:14892",
+              "name": "新邮箱标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14893",
+              "name": "新邮箱输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14894",
+              "name": "Lucide / Mail",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14898",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14899",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14900",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14904",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:14917",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14911",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 358,
+          "height": 476
+        },
+        {
+          "rootId": "702:14925",
+          "before": {
+            "title": "正在修改密码",
+            "buttonId": "702:14970",
+            "componentId": "3:25",
+            "opacity": 0.550000011920929,
+            "spinnerId": "702:14972",
+            "spinnerName": "Lucide / RefreshCw"
+          },
+          "after": {
+            "title": "修改密码",
+            "buttonId": "702:14970",
+            "componentId": "3:21",
+            "buttonLabel": "正在保存…",
+            "buttonOpacity": 0.5,
+            "buttonFills": [
+              {
+                "type": "SOLID",
+                "visible": true,
+                "opacity": 1,
+                "blendMode": "NORMAL",
+                "color": {
+                  "r": 0.9999533891677856,
+                  "g": 0.8474100828170776,
+                  "b": 0.027540821582078934
+                },
+                "boundVariables": {
+                  "color": {
+                    "type": "VARIABLE_ALIAS",
+                    "id": "VariableID:2:6"
+                  }
+                }
+              }
+            ],
+            "spinnerId": "711:14717",
+            "spinnerName": "HeroUI / Spinner / sm / current / 禁用",
+            "width": 16,
+            "height": 16,
+            "opacity": 0.5,
+            "gradientVectors": [
+              {
+                "id": "711:14720",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.1557754278182983, -0.060920920222997665],
+                      [-1.1557754278182983, 0, 1.0778876543045044]
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "711:14721",
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 0,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      },
+                      {
+                        "color": {
+                          "r": 0.15294118225574493,
+                          "g": 0.13725490868091583,
+                          "b": 0.26274511218070984,
+                          "a": 1
+                        },
+                        "position": 1,
+                        "boundVariables": {
+                          "color": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:264:1392"
+                          }
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [0, 1.390627145767212, -0.21193158626556396],
+                      [-1.390627145767212, 0, 1.195313572883606]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "disabled": [
+            {
+              "id": "702:14936",
+              "name": "当前密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14937",
+              "name": "当前密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14938",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14942",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:14947",
+              "name": "新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14948",
+              "name": "新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14949",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14953",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:14958",
+              "name": "确认新密码标签",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14959",
+              "name": "确认新密码输入",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14960",
+              "name": "Lucide / LockKeyhole",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14964",
+              "name": "显示密码 / 44px",
+              "opacity": 0.25
+            },
+            {
+              "id": "702:14977",
+              "name": "关闭对话框 / 44px",
+              "opacity": 0.5
+            },
+            {
+              "id": "702:14971",
+              "name": "取消",
+              "opacity": 0.5
+            }
+          ],
+          "width": 358,
+          "height": 565
+        }
+      ]
+    }
+  ],
+  "gradientTransparencyRepair": [
+    {
+      "mutatedNodeIds": [
+        "711:14726",
+        "711:14727",
+        "711:14732",
+        "711:14733",
+        "711:14738",
+        "711:14739",
+        "711:14744",
+        "711:14745"
+      ],
+      "checks": [
+        {
+          "rootId": "202:2305",
+          "spinnerId": "711:14723",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14726",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14727",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "202:2328",
+          "spinnerId": "711:14729",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14732",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14733",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "702:15683",
+          "spinnerId": "711:14735",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14738",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14739",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "702:15727",
+          "spinnerId": "711:14741",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14744",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14745",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mutatedNodeIds": [
+        "711:14702",
+        "711:14703",
+        "711:14708",
+        "711:14709",
+        "711:14714",
+        "711:14715",
+        "711:14720",
+        "711:14721"
+      ],
+      "checks": [
+        {
+          "rootId": "202:2215",
+          "spinnerId": "711:14699",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14702",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14703",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "202:2238",
+          "spinnerId": "711:14705",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14708",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14709",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "702:14881",
+          "spinnerId": "711:14711",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14714",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14715",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rootId": "702:14925",
+          "spinnerId": "711:14717",
+          "opacity": 0.5,
+          "gradients": [
+            {
+              "id": "711:14720",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 1
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.1557754278182983, -0.060920920222997665],
+                    [-1.1557754278182983, 0, 1.0778876543045044]
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "711:14721",
+              "fills": [
+                {
+                  "type": "GRADIENT_LINEAR",
+                  "visible": true,
+                  "opacity": 1,
+                  "blendMode": "NORMAL",
+                  "gradientStops": [
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0
+                      },
+                      "position": 0,
+                      "boundVariables": {}
+                    },
+                    {
+                      "color": {
+                        "r": 0.15294118225574493,
+                        "g": 0.13725490868091583,
+                        "b": 0.26274511218070984,
+                        "a": 0.550000011920929
+                      },
+                      "position": 1,
+                      "boundVariables": {}
+                    }
+                  ],
+                  "gradientTransform": [
+                    [0, 1.390627145767212, -0.21193158626556396],
+                    [-1.390627145767212, 0, 1.195313572883606]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "nodeId": "202:2305",
+      "status": "exported-and-viewed",
+      "path": "figma/after-202-2305.png",
+      "width": 520,
+      "height": 456,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "202:2328",
+      "status": "exported-and-viewed",
+      "path": "figma/after-202-2328.png",
+      "width": 520,
+      "height": 545,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "202:2215",
+      "status": "exported-and-viewed",
+      "path": "figma/after-202-2215.png",
+      "width": 358,
+      "height": 476,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "202:2238",
+      "status": "exported-and-viewed",
+      "path": "figma/after-202-2238.png",
+      "width": 358,
+      "height": 565,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "702:15683",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-15683.png",
+      "width": 520,
+      "height": 456,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "702:15727",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-15727.png",
+      "width": 520,
+      "height": 545,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "702:14881",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-14881.png",
+      "width": 358,
+      "height": 476,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    },
+    {
+      "nodeId": "702:14925",
+      "status": "exported-and-viewed",
+      "path": "figma/after-702-14925.png",
+      "width": 358,
+      "height": 565,
+      "observation": "正常表单标题、黄底禁用主按钮、正在保存…、真实渐变 Spinner、禁用字段/取消/关闭/eye；布局保留"
+    }
+  ],
+  "result": {
+    "updatedRoots": 8,
+    "currentScreenshots": 8,
+    "totalTaskScreenshots": 56,
+    "unrefreshed": []
+  }
+}

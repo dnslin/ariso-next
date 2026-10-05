@@ -1,0 +1,73 @@
+{
+  "status": "failed",
+  "width": 1440,
+  "height": 1080,
+  "theme": "light",
+  "checks": [
+    "M2 login honors the real preceding identity rate-limit countdown before retrying.",
+    "1440px jpg/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px jpg/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/public: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "1440px png/private: native File upload, real clipboard URL and downloaded bytes, independent anonymous access, all-version trash rejection and same-ID/same-URL restoration passed.",
+    "A real worker finalization failure preserves original and generated versions for the owner, rejects every saved version to the independent anonymous page and contributes no statistics.",
+    "Persisted image totals, image daily and site daily aggregates agree exactly: public original anonymous GETs only; owner reads/downloads, private/failed/trashed denials, thumbnail and HEAD accesses excluded.",
+    "Real File upload is accepted before restart; controlled scheduling hold leaves its actual job running and original bytes intact.",
+    "After actual stop/start, all three persisted analytics tables still exactly match anonymous public accesses; owner/private/failed requests remain excluded."
+  ],
+  "core": {
+    "analyticsBefore": [],
+    "images": [
+      {
+        "id": "4bfb430b-999e-4bb4-9ccc-b14052f71c46",
+        "format": "jpg",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-49231.localhost:49231/i/4bfb430b-999e-4bb4-9ccc-b14052f71c46?type=original"
+      },
+      {
+        "id": "065194df-a2f8-4d64-8672-ca8a995f6a89",
+        "format": "jpg",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-49231.localhost:49231/i/065194df-a2f8-4d64-8672-ca8a995f6a89?type=original"
+      },
+      {
+        "id": "0a5df4ec-f1fa-4382-a4c2-2916637dc8fc",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 2,
+        "url": "http://ariso-49231.localhost:49231/i/0a5df4ec-f1fa-4382-a4c2-2916637dc8fc?type=original"
+      },
+      {
+        "id": "f1677576-988a-4d0a-aef9-f220eeabee1d",
+        "format": "png",
+        "visibility": "private",
+        "expectedOriginalCount": 0,
+        "url": "http://ariso-49231.localhost:49231/i/f1677576-988a-4d0a-aef9-f220eeabee1d?type=original"
+      },
+      {
+        "id": "2a09ac3d-23dc-4fce-abaa-2b360abf9b27",
+        "format": "png",
+        "visibility": "public",
+        "expectedOriginalCount": 0
+      }
+    ]
+  },
+  "recovery": {
+    "imageId": "693dd1e0-f165-4077-8da4-6ce6e5b8178c",
+    "job": {
+      "id": "6e7e650f-a400-4131-8380-219492dcb1c7",
+      "status": "running",
+      "snapshot": "{\"compressionEnabled\":true,\"outputFormat\":\"webp\",\"quality\":82,\"maxEdge\":null,\"jpegBackground\":\"#FFFFFF\",\"watermarkMode\":\"off\",\"watermarkText\":\"\",\"watermarkFont\":\"chinese\",\"watermarkFontSize\":3,\"watermarkColor\":\"#FFFFFF\",\"watermarkStrokeColor\":\"#000000\",\"watermarkStrokeWidth\":0,\"watermarkOpacity\":50,\"watermarkPosition\":\"bottom-right\",\"watermarkMargin\":2,\"watermarkWidth\":20,\"watermarkAsset\":null,\"defaultVisibility\":\"public\"}",
+      "expected_versions": "[\"compressed\",\"thumbnail\"]"
+    },
+    "original": {
+      "id": "8b047965-8c9d-417f-b6f1-d89b2932b391",
+      "key": "original/693dd1e0-f165-4077-8da4-6ce6e5b8178c.png",
+      "storage_id": "5789a917-44de-4022-a721-6c3b268e6a8e",
+      "local_path": "default"
+    }
+  },
+  "error": "Error: page.waitForFunction timed out after 30000ms on page p1; last URL was \"http://ariso-49231.localhost:49231/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "page": "[p1 \"Ariso\" | space \"PR248 account review fixes\"(33): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=99, url=http://ariso-49231.localhost:49231/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=100, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        group \"总览，尚未开放\" [ref=101, loc=role:group[name=\"总览，尚未开放\"]]\n          link \"总览，尚未开放\"\n            svg_root\n            text \"总览\"\n            text \"尚未开放\"\n        anchor \"上传\" [ref=102, loc=css:a[aria-label=\"上传\"], url=http://ariso-49231.localhost:49231/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=103, loc=css:a[aria-label=\"图库\"], url=http://ariso-49231.localhost:49231/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=104, loc=css:a[aria-label=\"相册\"], url=http://ariso-49231.localhost:49231/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=105, loc=css:a[aria-label=\"标签\"], url=http://ariso-49231.localhost:49231/tags]\n          svg_root\n          text \"标签\"\n        group \"分享管理，尚未开放\" [ref=106, loc=role:group[name=\"分享管理，尚未开放\"]]\n          link \"分享管理，尚未开放\"\n            svg_root\n            text \"分享管理\"\n            text \"尚未开放\"\n        anchor \"回收站\" [ref=107, loc=css:a[aria-label=\"回收站\"], url=http://ariso-49231.localhost:49231/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        group \"访问统计，尚未开放\" [ref=108, loc=role:group[name=\"访问统计，尚未开放\"]]\n          link \"访问统计，尚未开放\"\n            svg_root\n            text \"访问统计\"\n            text \"尚未开放\"\n        anchor \"存储管理\" [ref=109, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-49231.localhost:49231/settings/storage]\n          svg_root\n          text \"存储管理\"\n        anchor \"站点设置\" [ref=110, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-49231.localhost:49231/settings/processing]\n          svg_root\n          text \"站点设置\"\n      button \"账号菜单\" [ref=111, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=112]\n        container \"上传图片\"\n          container\n            heading [ref=113]\n              text \"上传图片\"\n            paragraph\n              text \"选择图片，确认本次设置后开始上传。\"\n          container\n            container\n              svg_root\n              heading\n                text \"把图片放在这里\"\n              paragraph\n                text \"拖入图片或文件夹，也可粘贴截图\"\n              container\n                button [ref=114]\n                  text \"选择图片\"\n                button [ref=115]\n                  text \"选择文件夹\"\n              paragraph\n                text \"支持多选 · 单文件最大\"\n                text \"50.0 MiB\"\n            container\n              heading\n                text \"本次上传设置\"\n              container\n                text \"存储位置\"\n                button \"默认本地存储 存储位置\" [ref=116]\n                  text \"默认本地存储\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=117]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=118, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=119, loc=css:button[aria-label=\"选择标签\"]]\n                  text \"选择标签（可多选）\"\n                  svg_root\n              paragraph\n                text \"开始上传时固定本次设置。自动拆出的各批共用这些设置。\"\n      button [ref=120]\n        text \"开始上传\"\n"
+}
