@@ -354,3 +354,5 @@ macOS ARM64、Node 24.19.0、pnpm 11.19.0，未新增依赖或迁移。证据汇
 Ego TaskSpace 30 先前已 handOff 给用户，本轮未操作浏览器。[ego-browser 技能](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)明确要求：“Claim a user-owned or inactive space only when the user explicitly asks.” 已一次询问恢复浏览器验证；收到明确恢复指令后，在同一空间用独立测试数据继续，不另建空间或绕过停止边界。
 
 当前分别为：代码已实施；上列本地检查通过；真实浏览器复测未完成；新实际页面设计对照未完成；本次新页脚修复人工验收未完成。普通窗口/无痕窗口分享授权测试已按用户指令取消本次必需要求，保持未执行且不再阻塞。PR #243 继续草稿，未合并、关闭Issue、发布、部署或清理分支/worktree。
+
+两项修复的实施与证据提交 `4462bbc` 已推送到 `codex/issue-148-sharing-experiment`。[PR #243](https://github.com/dnslin/ariso-next/pull/243) 标题及正文已按最终范围更新。实际 `gh pr view` 回读 OPEN / Draft、实施head `4462bbc34c483f9f84053a0867858ffb50ee9bc3`、MERGEABLE、`statusCheckRollup=[]`；`gh pr checks` 退出1并明确 no checks reported，没有远端PR检查，不记CI通过或等待不存在的工作流。工作区无未提交改动，原私人预览端口仍实际监听。本段后续文档提交只补远端回读，不重复应用检查。
