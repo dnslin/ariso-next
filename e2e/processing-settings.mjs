@@ -4,8 +4,10 @@ import { join } from 'node:path';
 import { testId, field, quote } from './processing-helpers.mjs';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
 import { verifyProcessingAssetClear } from './processing-asset-clear.mjs';
+import { verifyProcessingSettingsEntry } from './processing-settings-entry.mjs';
 
 export async function verifyProcessingSettings(page, config, tools, report) {
+  await verifyProcessingSettingsEntry(page, config, tools, report);
   const {
     request,
     settings,

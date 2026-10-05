@@ -58,11 +58,16 @@ export function useProcessingSettings(initial: SavedProcessingSettings) {
   async function savedResult(value: SavedProcessingSettings) {
     setSaved(value);
     client.setQueryData(['processing-settings'], value);
-    await upload.client.invalidateQueries({ queryKey: ['upload-settings'] });
+    const refreshes = [
+      upload.client.invalidateQueries({ queryKey: ['upload-settings'] }),
+    ];
     if (value.watermarkAssetId)
-      await client.invalidateQueries({
-        queryKey: ['watermark-asset', value.watermarkAssetId],
-      });
+      refreshes.push(
+        client.invalidateQueries({
+          queryKey: ['watermark-asset', value.watermarkAssetId],
+        }),
+      );
+    await Promise.all(refreshes);
   }
   async function save() {
     if (inFlight.current || unknown || expired || !validate('save')) return;

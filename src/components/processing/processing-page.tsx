@@ -28,6 +28,7 @@ type ShellProps = Omit<
 const categories = [{ href: '/settings/processing', label: '图片处理' }];
 
 export function ProcessingPage(shell: ShellProps) {
+  const [initial, setInitial] = useState<SavedProcessingSettings | null>(null);
   const query = useQuery({
     queryKey: ['processing-settings'],
     queryFn: ({ signal }) =>
@@ -35,24 +36,26 @@ export function ProcessingPage(shell: ShellProps) {
         signal,
       }),
     retry: false,
+    enabled: initial === null,
     networkMode: 'always',
     refetchOnWindowFocus: false,
   });
-  if (query.data) return <ProcessingEditor {...shell} initial={query.data} />;
+  if (!initial && query.isFetchedAfterMount && query.isSuccess)
+    setInitial(query.data);
+  if (initial) return <ProcessingEditor {...shell} initial={initial} />;
+  const loading = !query.isFetchedAfterMount || query.isFetching;
   const sessionLost =
     query.error instanceof ProcessingRequestError && query.error.status === 401;
   return (
     <OwnerShell {...shell}>
       <section
         data-testid="processing-editor"
-        data-state={
-          sessionLost ? 'session' : query.isPending ? 'loading' : 'error'
-        }
+        data-state={sessionLost ? 'session' : loading ? 'loading' : 'error'}
         className="pb-10"
       >
         <SettingsHeading />
         <SettingsCategories items={categories}>
-          {query.isPending ? (
+          {loading ? (
             <Card
               role="status"
               aria-label="正在读取处理设置"
@@ -385,7 +388,11 @@ function ProcessingEditor({
               toast('选择已清空，保存后生效', { variant: 'default' });
               requestAnimationFrame(() =>
                 document
-                  .querySelector<HTMLElement>('[data-testid="processing-save"]')
+                  .querySelector<HTMLElement>(
+                    settings.unknown
+                      ? '[data-testid="processing-settings-reconcile"]'
+                      : '[data-testid="processing-save"]',
+                  )
                   ?.focus({ preventScroll: true }),
               );
             }}

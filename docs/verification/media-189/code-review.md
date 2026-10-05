@@ -218,3 +218,22 @@ R9 的 hook 输入再次改变后，已独立实读 [最终 preview 报告](./br
 本轮只评审并维护证据，未改产品／业务测试／人工预览进程或数据。未操作浏览器、恢复／新建空间、发布 GitHub 评审评论、合并或关闭 Issue；没有重跑构建、全量单元／集成或默认浏览器。R10–R12尚未修复，R1新行为仍未完成真实浏览器、生产设计对照和人工验收；旧默认全量失败和后续未执行项保留。两个评审结论不能替代这些完成条件，PR继续草稿。
 
 证据维护检查：新增探针副本第一次 scoped ESLint 发现一处未用绑定，以及隔离 hook 在模块顶层调用被 React 规则拒绝。副本改为从转译模块的导出对象调用并删除未用绑定，未修改 fixture、保存路径或断言；没有禁用 lint 规则。随后两个副本的 scoped ESLint 退出0，语法检查退出0。`node docs/verification/media-189/review-probes/cached-settings-probe.mjs` 再次确认相同失败（退出1、GET=68、完整PATCH=82），其实际输出已覆盖保存；原始忽略目录探针及回执保留。证据格式检查通过，`node docs/tasks/check.mjs` 通过120任务／298需求；产品／业务测试／运行器 diff 为空。
+
+## 双 agent 修复复审（2026-10-05）
+
+用户要求规划并修复上述问题，避免无用和重复验证。本轮产品只改 `processing-page.tsx` 与 `use-processing-settings.ts`；浏览器测试沿默认 settings/recovery 入口接入，没有改共享运行器参数、后端、schema、冻结PRD或获批视觉布局。
+
+| 项目 | 实际修复与复审结论                                                                                                                                                                                                                                                                                          | 仍未完成的边界                                           |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| R10  | `ProcessingPage` 在本次挂载的读取成功前不显示缓存编辑器，保存首次成功快照后只初始化一次。读取失败显示既有错误／重试入口，后续缓存变化保留正在编辑的草稿。真实安装版 QueryObserver 与生产组件转译诊断各成功／失败重试场景通过；默认新增两条暖缓存站内导航用例。正确性评审认为源码和离线执行闭合。            | 新用例尚未在实际 React DOM、真实客户端导航与HTTP中运行。 |
+| R11  | unknown 清空选择现有可用核对入口，普通清空仍选择保存并 `preventScroll`，pending 提交保留。复用原探针的原断言执行新生产回调，退出0；既有清空浏览器严格焦点断言保留。                                                                                                                                         | 真实 activeElement、滚动及未知提交核对尚未实测。         |
+| R12  | recovery 变为9行顺序编排，设置读取130行、预览702行、会话251行。源代码迁移对照保留94个原断言、11个 finally、51项报告写入；初次离线快照在会话前置最终补齐前形成，不用其旧244行统计冒充最终输入。各组建立自己的设置与页面前置。会话补齐压缩开启／off／asset null，消除前组素材GET抢先401的依赖；结构复审通过。 | 拆分后的实际 recovery 尚未重新执行。                     |
+| P3   | 两个独立缓存刷新同时开始，`Promise.all` 保留等待语义；没有引入额外状态或框架。结构复审通过。                                                                                                                                                                                                                | 不单独新增与业务无关的计时测试。                         |
+
+正确性评审者 `pr244_correctness_review` 使用 code-review-and-quality，实际核对安装依赖实现、生产调用路径和冻结后的新增E2E；结论 **Approve（源码与离线执行范围）**：[完整报告](./review-fixes/independent-product-review.md)。结构评审者 `pr244_structural_review` 使用 thermo-nuclear-code-quality-review，复核职责拆分、原断言与资源清理、最终会话前置及暖缓存用例；结论 **Approve**，当前没有必修复杂度问题，不要求继续抽象或拆细工具。两者均未机械重复实现者的检查，冻结后的E2E复审只读源码。
+
+必要离线诊断各执行一次：[暖缓存实际输出](./review-fixes/warm-entry-green.txt)、[未知清空实际输出](./review-fixes/clear-focus-green.txt)。暖缓存诊断直接转译当前生产页面／hook，使用已安装的真实 QueryObserver；只隔离持久hook槽、JSX和延迟请求。缓存82期间无编辑器，新GET68后实际save68／20字段；首次读取失败后显式重试通过；本地草稿63之后缓存71保持初始对象／编辑器身份及草稿63。它不是ReactDOM或HTTP实测。[诊断原始源码文本](./review-fixes/warm-entry-green.mjs.txt)为审计证据，不作为重复的默认业务测试。R11沿用原失败探针，未改原断言。旧RED文件保持不变；旧缓存探针针对已经挂载的hook，不为展示Green而重新运行或改变其预期。
+
+恢复迁移只执行一次AST对照：[输出](./review-fixes/r12-offline-check.json)、[诊断原始文本](./review-fixes/r12-offline-check.mjs.txt)。两个新增暖缓存源码语法与定向静态各一次通过：[回执](./review-fixes/r10-e2e-static.json)。后续补齐会话前置后的最终全仓lint通过，未删断言、加空测试、跳过失败或改变超时。默认 `test:browser → full → processing settings → settings-entry` 无条件执行；`only=settings` 使用同一入口。恢复的默认与 `only=recovery` 都顺序执行三个模块，共享runner没有变化。
+
+本次真实浏览器、生产设计复审和新增操作人工验收继续未完成。Ego空间29已交还用户，此前恢复问题尚无答复，未认领用户空间或换空间／浏览器绕过。适用的停止条目仍为 [ego-browser/SKILL.md](/Users/dnslin/.agents/skills/ego-browser/SKILL.md) 的“Claim a user-owned or inactive space only when the user explicitly asks”。修复的源码结论不替代这些交付条件，PR继续草稿；旧默认全量图库失败及其后未执行项保持原记录。
