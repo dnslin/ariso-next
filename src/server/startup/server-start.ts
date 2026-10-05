@@ -12,6 +12,7 @@ import { requireInitialSettings } from './initial-settings.ts';
 import { startUploadRuntime } from '../upload/runtime.ts';
 import { startMediaQueue } from '../media/queue.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
+import { startSharingRuntime } from '../sharing/runtime.ts';
 import { startAnalyticsRuntime } from '../analytics/runtime.ts';
 import { startStorageMaintenance } from '../storage/maintenance.ts';
 import { readStorageReferences } from './storage-references.ts';
@@ -94,6 +95,10 @@ function initializeServerRuntime() {
       clearReleasedReferences: releaseStorageHistory,
       logger: createRuntimeLogger('storage.maintenance', config.logLevel),
     });
+    const sharing = startSharingRuntime({
+      db: connection.db,
+      logger: createRuntimeLogger('sharing', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -106,12 +111,14 @@ function initializeServerRuntime() {
       storageMaintenance,
       watermarks,
       analytics,
+      sharing,
       get stopping() {
         return stopping !== undefined;
       },
       stop() {
         return (stopping ??= storageMaintenance
           .stop()
+          .finally(() => sharing.stop())
           .finally(() => uploads.stop())
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())

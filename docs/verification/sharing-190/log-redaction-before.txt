@@ -1,0 +1,31 @@
+Already up to date
+Done in 164ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |unit| tests/unit/runtime/log-redaction.test.ts (17 tests | 1 failed) 5ms
+   × redacts percent-encoded share paths while retaining the endpoint and ordinary query 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/log-redaction.test.ts > redacts percent-encoded share paths while retaining the endpoint and ordinary query
+AssertionError: expected 'POST https://example.test/s/%61bc_123…' to be 'POST https://example.test/s/[Redacted…' // Object.is equality
+
+Expected: "POST https://example.test/s/[Redacted]/unlock?page=2"
+Received: "POST https://example.test/s/%61bc_123-Token/unlock?page=2"
+
+ ❯ tests/unit/runtime/log-redaction.test.ts:53:93
+     51|
+     52| it('redacts percent-encoded share paths while retaining the endpoint a…
+     53|   expect(redactUrlCredentials('POST https://example.test/s/%61bc_123-T…
+       |                                                                                             ^
+     54| });
+     55|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  17:01:36
+   Duration  83ms (transform 51%, import 22%, tests 20%, worker 7%)

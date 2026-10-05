@@ -1,0 +1,18 @@
+Already up to date
+Done in 171ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 75ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1924ms
+  Running TypeScript ...
+tests/integration/sharing/authorization.test.ts(67,5): error TS2322: Type '{ info: Mock<Procedure | Constructable>; error: Mock<Procedure | Constructable>; debug: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "error" | "info" | "debug">'.
+  Types of property 'error' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

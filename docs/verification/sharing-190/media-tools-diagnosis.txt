@@ -1,0 +1,27 @@
+Command: pnpm exec vitest run --project integration tests/integration/media/tools.test.ts -t "preserves process-inspection failures"
+Environment: Node 24 runtime PATH; current sharing worktree; media tools source/test identical to origin/main.
+Exit code: 0
+Filtered diagnostic output (no machine process listing):
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+ Test Files  1 passed (1)
+      Tests  1 passed | 10 skipped (11)
+   Start at  17:15:28
+   Duration  321ms (tests 67%, import 23%, transform 10%, worker 1%)
+
+Read-only baseline comparison:
+Command: git diff origin/main -- src/server/media/tools.ts tests/integration/media/tools.test.ts
+Result: no diff.
+Command: git rev-parse origin/main
+Result: d337f6f1dc70b0b0fcfc9ba8586df5674c16faf3
+
+Observed behavior:
+- The target test puts a real temporary `ps` executable that exits 3 first in PATH.
+- Production processes() calls execa('ps', ['-axww', '-o', 'pid=,pgid=,stat=,command='], {timeout: 1000}).
+- shutdownError preserves the original execa error as cause; the focused test proves cause.exitCode=3 is retained.
+- The first full integration report had the same target fail after 1129ms with cause.exitCode absent; it did not include the timedOut field.
+- A timeout under concurrent workload is consistent with that failure and with the separately confirmed browser ps timeout, but the precise original integration cause is not proven by its output.
+
+Limits:
+- No product/test changes or timeout/assertion changes.
+- No original-main test rerun was necessary after the same source/test passed in isolation; root requested no further tools baseline run.
+- No machine-wide process details were printed or retained in this report.

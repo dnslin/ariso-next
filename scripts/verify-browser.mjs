@@ -40,6 +40,7 @@ assert.ok(
     'processing',
     'trash',
     'sharing-experiment',
+    'sharing-protocol',
   ].includes(suite),
   'Unknown browser suite',
 );
@@ -160,6 +161,7 @@ for (const name of [
   'processing-failure.png',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
+  'sharing-protocol.json',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -290,7 +292,30 @@ async function runSharingExperiment(spaceId) {
   await sharingFixture.stop();
   sharingFixture = undefined;
 }
-if (suite === 'sharing-experiment') {
+async function runSharingProtocol(spaceId) {
+  const { launchSharingProtocol } =
+    await import('../e2e/sharing-protocol-fixture.ts');
+  sharingFixture = await launchSharingProtocol(controller.signal);
+  secrets.push(
+    'sharing-protocol-password',
+    ...sharingFixture.browserInput.tokens,
+    ...setupCodes(sharingFixture.logs()),
+  );
+  await runBrowser(
+    '../e2e/sharing-protocol.mjs',
+    { ...sharingFixture.browserInput, spaceId, pageLabel, output },
+    'sharing-protocol.log',
+  );
+  await sharingFixture.verify();
+  report.sharingProtocol = 'passed';
+  await writeFile(
+    join(output, 'sharing-protocol-server.log'),
+    redact(sharingFixture.logs()),
+  );
+  await sharingFixture.stop();
+  sharingFixture = undefined;
+}
+if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -298,7 +323,8 @@ if (suite === 'sharing-experiment') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    await runSharingExperiment(spaceId);
+    if (suite === 'sharing-protocol') await runSharingProtocol(spaceId);
+    else await runSharingExperiment(spaceId);
     report.status = 'passed';
   } catch (error) {
     report.error = redact(error.stack ?? String(error));
@@ -967,6 +993,7 @@ try {
     report.deliveryS3 = 'passed';
     await deliveryFixture.close();
     deliveryFixture = undefined;
+    await runSharingProtocol(report.taskSpaceId);
     await runSharingExperiment(report.taskSpaceId);
     // Reuse the same Ego space for isolated UI/library checks and let its runner
     // close it after the final successful suite (unless the caller keeps it).

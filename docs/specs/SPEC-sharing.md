@@ -1,7 +1,7 @@
 # Spec: sharing — 相册分享、密码授权与匿名展示
 
 - 模块 ID：`sharing`。
-- 状态：产品行为已于 2026-09-17 确认；2026-09-18 已补关键原型，待查看与交互验收；工程未实现，未安装依赖。
+- 状态：产品行为已于 2026-09-17 确认；T-SHR-01 已接入生产模型、管理接口、密码授权与清理。管理及匿名界面、公开成员查询由 T-SHR-02/03 继续实施；原型仍待对应界面验收。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)的已确认契约。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.5、14、16、17、26.6/26.10；[覆盖表](../tasks/coverage.md)。
@@ -19,10 +19,10 @@ sharing 拥有分享记录、链接 Token、浏览器密码授权和匿名页面
 
 ## 2. 工程与成熟能力依据
 
-沿用现有单进程 Node、Next、SQLite/Drizzle、Zod 和 Pino。业务代码尚未实现；数据库复用 runtime 连接及迁移入口，不创建分享专用连接或服务。
+沿用现有单进程 Node、Next、SQLite/Drizzle、Zod 和 Pino。T-SHR-01 复用 runtime 连接、迁移及现有 Better Auth 哈希能力，没有新增依赖或分享专用连接；实际证据见 [Issue #190](../verification/sharing-190/README.md)。
 
 - 随机链接沿用成熟产品的不可预测地址模式；[Google Photos 的链接分享说明](https://support.google.com/photos/answer/9789702?hl=en-GB)可作交互参考，但 Ariso 的启停和重生成语义以 PRD 为准。使用 [Node crypto.randomBytes](https://nodejs.org/docs/latest-v24.x/api/crypto.html#cryptorandombytessize-callback)生成 32 字节随机值，再编码为 base64url；不把相册 ID 或时间戳当秘密。
-- identity 以 Better Auth 1.7.5 为调研基线，实施时固定并验证实际依赖组合。本轮核对该版本发布包的 `better-auth/crypto` 导出和类型，提供异步 `hashPassword(password)` 与 `verifyPassword({ hash, password })`，复用其 scrypt 能力；[官方密码说明](https://better-auth.com/docs/authentication/email-password)解释默认存储方式。该库尚未安装，本轮未执行真实哈希测试。
+- identity 与本次分享协议使用已安装的 Better Auth 1.7.5。实际核对 `better-auth/crypto` 导出和类型，复用异步 `hashPassword(password)` 与 `verifyPassword({ hash, password })` 的 scrypt 能力，并已执行真实哈希测试；[官方密码说明](https://better-auth.com/docs/authentication/email-password)解释默认存储方式。
 - 分享授权使用独立随机 Cookie 和 SQLite 记录；[Next cookies 文档](https://nextjs.org/docs/app/api-reference/functions/cookies)提供 Route Handler 设置 HttpOnly、SameSite、Secure 和 Path 的能力。分享授权不是 Better Auth 所有者会话，不创建伪所有者或复用上传 Token。
 - 按第 12 节已确认的大图行为，复用 library 已选的 Lightbox 展示能力和预览规则；只共享展示组件，不调用管理查询、详情或元数据接口。
 
@@ -131,9 +131,17 @@ Cookie 提议名 `ariso_share_grant`，每次成功验证生成随机 32 字节�
 
 授权检查与本次相册/成员读取在同一短 SQLite 读事务中取得一致视图。事务内不等待哈希、网络或文件传输。事务之后状态可能变化，内容请求仍由 delivery 再检查，不能把读取列表时的判断当永久文件许可。Next 异步请求上下文与事务读取分开，不把异步函数传给同步 Drizzle transaction。
 
+### T-SHR-01 当前协议
+
+生产管理入口为上表 `/api/shares`、`/api/albums/{id}/share`（GET/POST/PATCH）、`/api/albums/{id}/share/rotate`，匿名解锁为 `POST /s/{token}/unlock`。管理返回 `{share}`，相册存在但尚未创建时 GET 返回 `{share:null}`；创建及重复创建均返回 200。列表参数 `q/page/pageSize` 沿用 20/40/80，默认 40，按创建时间降序和分享 ID 升序分页。
+
+密码输入为 `password:{action:'keep'}`、`{action:'set',value:'原样密码'}`、`{action:'clear'}`。期限输入 `expiresAt` 仅接受带 Z 的 UTC ISO 字符串或 null；省略保留原值。`parseShareExpiry(localDateTime, site.timeZone, disambiguation)` 供后续表单转换本地输入，默认拒绝夏令时缺失／重复小时，重复小时可明确选择 earlier/later。输出期限为 UTC ISO；管理状态每次按当前时间计算，不存状态字符串。
+
+`readShareAccess(tx,{token,grantSecret,now})` 是服务端同步契约：拒绝仅返回 allowed=false 与 404/410/401，成功返回当前分享记录供同一读事务内查询成员。记录含服务端字段，不能直接发送给匿名客户端。本任务不新增 `/s/{token}` HTML、items/refresh/邻居入口；它们在 T-SHR-03 中组合本校验与裁剪查询。实际检查与剩余限制只在 [T-SHR-01 证据](../verification/sharing-190/README.md)维护。
+
 ## 9. 模块组织、依赖与统计
 
-拟放 `src/server/sharing/`：schema、输入定义、配置命令、授权、匿名查询及响应裁剪，按职责拆文件，不构建通用权限框架。Route Handler 只做输入/身份/调用/响应。迁移由现有 `src/server/**/schema.ts` 入口收集；页面及组件沿项目实际 app 目录布局，匿名组件不能导入 server 管理 DTO。
+`src/server/sharing/` 已提供 schema、输入定义、配置命令、授权与清理。匿名查询及响应裁剪由 T-SHR-03 接入，按职责拆文件，不构建通用权限框架。Route Handler 只做输入/身份/调用/响应。迁移由现有 `src/server/**/schema.ts` 入口收集；页面及组件沿项目实际 app 目录布局，匿名组件不能导入 server 管理 DTO。
 
 collections 提供相册成员、固定展示规则和封面身份的只读查询契约，sharing 组合筛选并裁剪，不直接写 collections/media 表。生成页面内容候选时按匿名规则判断 ready/公开/可读，只使用 delivery 已有版本与 URL 能力，不用所有者权限补入异常图片。独立 `/i/` 请求仍遵循 delivery 的真实会话规则：所有者的独立读权限不因浏览分享页消失，分享页列表也不能因此扩大。若共用组件需要新增提供方接口，先在提供方规格定义，不反向依赖 library 服务端或新增依赖环。
 
@@ -182,7 +190,7 @@ DES-06-SHARING 两端各补 25 个管理状态，覆盖创建、独立改密／�
 
 对应 R-17.1-01/02、R-17.2-01/02、R-17.3-01、R-17.4-01/02 及 A-26.10-01–06；联合 R-14.2-01、R-14.9-01、R-16.3-01、A-26.6-03。具体证据仍在覆盖表待补。
 
-单元测试拟放 `tests/unit/sharing/`，验证时间边界、撤销和匿名字段；集成测试放 `tests/integration/sharing/`，用真实 SQLite/哈希库验证唯一键、级联、异步竞争、权限与重启。浏览器覆盖同浏览器多相册并发/同相册多标签页、按路径隔离 Cookie、桌面/手机、无缓存泄露及密码表单焦点；真实本地/S3 结合 delivery 验证。上述业务测试目前不存在。
+单元测试拟放 `tests/unit/sharing/`，验证时间边界、撤销和匿名字段；集成测试放 `tests/integration/sharing/`，用真实 SQLite/哈希库验证唯一键、级联、异步竞争、权限与重启。浏览器覆盖同浏览器多相册并发/同相册多标签页、按路径隔离 Cookie、桌面/手机、无缓存泄露及密码表单焦点；真实本地/S3 结合 delivery 验证。T-SHR-01 已新增配置、授权、生产 HTTP 与真实浏览器 Cookie 测试，进入默认单元、集成和浏览器入口；其余匿名查询和产品界面场景仍由 T-SHR-03/04 验证。
 
 实施时运行并记录实际结果，不把本轮文档校验替代业务验收：
 

@@ -1,0 +1,94 @@
+Already up to date
+Done in 185ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |integration| tests/integration/sharing/production-http.test.ts (6 tests | 4 failed) 2335ms
+   × returns actual configuration and pagination without credentials; duplicate create and rotate preserve settings 81ms
+   × issues path-scoped fixed cookies after real Unicode password checks and rejects origins/input/expired shares 92ms
+   × two albums and two tabs produce independent successful grants; global load and twenty guesses get 429 237ms
+   × a production grant never authorizes management or private bytes; deletion cascades without deleting images 110ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/sharing/production-http.test.ts > returns actual configuration and pagination without credentials; duplicate create and rotate preserve settings
+AssertionError: expected 500 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 500
+
+ ❯ tests/integration/sharing/production-http.test.ts:157:46
+    155|   });
+    156|   expect(rotated.token).not.toBe(share.token);
+    157|   expect((await unlock(share.token)).status).toBe(404);
+       |                                              ^
+    158|   expect((await request(path, 'PATCH', {})).status).toBe(400);
+    159| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |integration| tests/integration/sharing/production-http.test.ts > issues path-scoped fixed cookies after real Unicode password checks and rejects origins/input/expired shares
+AssertionError: expected 500 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 500
+
+ ❯ tests/integration/sharing/production-http.test.ts:165:55
+    163|   for (const origin of ['', 'https://other.test'])
+    164|     expect((await unlock(share.token, ' 密码A ', { origin })).status).to…
+    165|   expect((await unlock(share.token, 'wrong')).status).toBe(401);
+       |                                                       ^
+    166|   for (const password of ['', '🙂'.repeat(129)])
+    167|     expect((await unlock(share.token, password)).status).toBe(400);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |integration| tests/integration/sharing/production-http.test.ts > two albums and two tabs produce independent successful grants; global load and twenty guesses get 429
+AssertionError: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ tests/integration/sharing/production-http.test.ts:233:49
+    231|     Array.from({ length: 8 }, () => unlock(second.share.token, 'wrong'…
+    232|   );
+    233|   expect(burst.filter((r) => r.status === 401)).toHaveLength(2);
+       |                                                 ^
+    234|   expect(burst.filter((r) => r.status === 429)).toHaveLength(6);
+    235|   for (const response of burst.filter((r) => r.status === 429))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |integration| tests/integration/sharing/production-http.test.ts > a production grant never authorizes management or private bytes; deletion cascades without deleting images
+AssertionError: expected 500 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 500
+
+ ❯ tests/integration/sharing/production-http.test.ts:283:57
+    281|       .get(),
+    282|   ).toBeDefined();
+    283|   expect((await unlock(share.token, 'correct')).status).toBe(404);
+       |                                                         ^
+    284| });
+    285|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed (6)
+   Start at  16:55:43
+   Duration  2.71s (tests 88%, import 9%, transform 3%)

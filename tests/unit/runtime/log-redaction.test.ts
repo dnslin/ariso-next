@@ -38,3 +38,21 @@ describe('known URL credentials', () => {
     expect(redactUrlCredentials(text)).toBe(text);
   });
 });
+
+it('redacts share capability paths in URLs and error text while preserving route context', () => {
+  expect(
+    redactUrlCredentials(
+      'GET https://example.test/s/abc_123-Token/unlock?q=visible; path=/s/second/items',
+    ),
+  ).toBe(
+    'GET https://example.test/s/[Redacted]/unlock?q=visible; path=/s/[Redacted]/items',
+  );
+});
+
+it('redacts percent-encoded share paths while retaining the endpoint and ordinary query', () => {
+  expect(
+    redactUrlCredentials(
+      'POST https://example.test/s/%61bc_123-Token/unlock?page=2',
+    ),
+  ).toBe('POST https://example.test/s/[Redacted]/unlock?page=2');
+});

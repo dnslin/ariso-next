@@ -1,0 +1,50 @@
+Already up to date
+Done in 288ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |integration| tests/integration/sharing/configuration.test.ts (16 tests | 1 failed) 1086ms
+   ❯ 分享配置真实 SQLite 与密码哈希 (16)
+     × 重复创建返回当前记录，不覆盖密码、期限、关闭状态或地址 70ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/sharing/configuration.test.ts > 分享配置真实 SQLite 与密码哈希 > 重复创建返回当前记录，不覆盖密码、期限、关闭状态或地址
+AssertionError: promise resolved "{ …(13) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "albumId": "200a0e40-966f-40c0-b555-6af55dd96f6b",
++   "albumName": "旅行",
++   "createdAt": "2026-10-05T10:00:00.000Z",
++   "enabled": false,
++   "expiresAt": "2026-10-06T10:00:00.000Z",
++   "hasPassword": true,
++   "id": "00bed09a-b70d-483a-afae-2ef80afedbd1",
++   "layout": "masonry",
++   "showName": true,
++   "state": "disabled",
++   "token": "[redacted]",
++   "updatedAt": "2026-10-05T10:00:00.000Z",
++   "url": "https://images.example.test/s/[redacted]",
+  }
+
+ ❯ tests/integration/sharing/configuration.test.ts:134:6
+    132|         token: 'override',
+    133|       }),
+    134|     ).rejects.toMatchObject({ code: 'SHARING_INVALID_INPUT', status: 4…
+       |      ^
+    135|     expect(readOwnerShare(connection.db, ownerAlbum.id)).toEqual(curre…
+    136|     expect(record(first.id).passwordHash).toBe(hash);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  17:11:46
+   Duration  1.66s (tests 69%, import 22%, transform 8%)

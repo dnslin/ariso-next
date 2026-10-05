@@ -1,0 +1,13 @@
+{
+  "source": "test-results/sharing-browser-full/server.log",
+  "time": "2026-10-05T09:08:05.992Z",
+  "module": "media.queue",
+  "error": "Cannot inspect media tool processes",
+  "code": "MEDIA_TOOL_SHUTDOWN_FAILED",
+  "cause": {
+    "command": "ps -axww -o pid=,pgid=,stat=,command=",
+    "timedOut": true,
+    "timeoutMs": 1000
+  },
+  "scope": "Existing media job restart recovery; machine process output omitted because it contains unrelated task data."
+}

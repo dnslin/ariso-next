@@ -68,6 +68,7 @@ describe('browser runner argument boundaries', () => {
     ['library-batch', 'cache'],
     ['library-batch', 'review-fixes'],
     ['sharing-experiment'],
+    ['sharing-protocol'],
   ];
   it.each(combinations)('accepts suite %s and its only %s', (suite, only) => {
     const result = parse(['--suite', suite, ...(only ? ['--only', only] : [])]);

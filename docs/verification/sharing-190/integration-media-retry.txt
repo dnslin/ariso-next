@@ -1,0 +1,38 @@
+Already up to date
+Done in 824ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=1 tests/integration/media/preview-http.test.ts tests/integration/media/preview.test.ts tests/integration/media/reprocess-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts tests/integration/upload/local.test.ts
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-190-sharing/ariso
+
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 40596ms
+   × keeps old HTTP links readable throughout ready processing and publishes all selected references together 4004ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > keeps old HTTP links readable throughout ready processing and publishes all selected references together
+SqliteError: database is locked
+ ❯ PreparedQuery.get node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:159:26
+ ❯ QueryPromise.get node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/update.ts:451:26
+ ❯ updateMediaSettings src/server/media/settings.ts:56:6
+     54|     .where(eq(mediaSettings.id, 1))
+     55|     .returning()
+     56|     .get();
+       |      ^
+     57|   if (!saved) {
+     58|     throw Object.assign(new Error('媒体设置尚未初始化'), {
+ ❯ sqliteTransaction.<anonymous> src/server/media/settings.ts:74:12
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ patchMediaSettings src/server/media/settings.ts:68:13
+ ❯ tests/integration/media/reprocess-http.test.ts:269:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 92 passed (93)
+   Start at  17:12:23
+   Duration  105.09s (tests 96%, import 3%, transform 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.
