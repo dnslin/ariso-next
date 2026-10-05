@@ -1,0 +1,28 @@
+{
+  "observedAtUTC": "2026-10-05T21:19:17.052Z",
+  "implementationCommit": "971e2641ac70912652ea932b2f525211bdbc17a6",
+  "commands": [
+    {
+      "command": "gh pr view 250 --repo dnslin/ariso-next --json number,url,state,isDraft,baseRefName,headRefName,headRefOid,mergeable,statusCheckRollup",
+      "exitCode": 0
+    },
+    {
+      "command": "gh pr checks 250 --repo dnslin/ariso-next",
+      "exitCode": 1,
+      "output": "no checks reported on the 'codex/issue-166-upload-tokens' branch"
+    }
+  ],
+  "pullRequest": {
+    "number": 250,
+    "url": "https://github.com/dnslin/ariso-next/pull/250",
+    "state": "OPEN",
+    "isDraft": true,
+    "baseRefName": "main",
+    "headRefName": "codex/issue-166-upload-tokens",
+    "headRefOid": "971e2641ac70912652ea932b2f525211bdbc17a6",
+    "mergeable": "MERGEABLE",
+    "statusCheckRollup": []
+  },
+  "remoteChecks": "none reported; not CI passed",
+  "snapshotBoundary": "Observed after the implementation push; a later documentation-only commit adds this record."
+}
