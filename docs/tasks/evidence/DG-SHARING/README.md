@@ -76,4 +76,8 @@
 
 设计适用核对已写入三消费卡；适用本地检查通过，独立契约与设计适用评审完成。生产分享代码、浏览器行为、实际页面设计对照及用户人工验收均由后续T-SHR-02/03/04完成，本DG不提供不存在的产品预览或测试凭证，不启停既有用户预览。
 
-提交/推送/PR状态待实际执行后填写。本轮授权不包含合并、关闭Issue、发布/部署或删除分支/worktree，不执行这些操作。
+分支 `codex/issue-134-sharing-design` 已提交并推送，主交付提交为 `bf82498`，关联 [PR #246](https://github.com/dnslin/ariso-next/pull/246)，目标 `main`。本DG全部适用检查与独立审计完成，PR为正式待评审（OPEN、isDraft=false）；下游UI验收不属于本次纯文档交付。实际执行 `gh pr view 246 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,headRefOid,mergeable,statusCheckRollup`，返回MERGEABLE及空检查数组；`gh pr checks 246 --repo dnslin/ariso-next` 返回“no checks reported”及退出码1，这是没有远端检查，不记作CI通过，也不等待不存在的工作流。
+
+实际执行 `git commit`、`git push -u origin codex/issue-134-sharing-design` 及 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-134-sharing-design --title ... --body-file /tmp/ariso-issue-134-pr.md`。首轮推送被GitHub服务端以 `remote unpack failed: index-pack failed` 拒绝；只在该命令环境设置用户指定的7897代理重试后成功，没有修改全局代理。此段远端结果补录后仅重跑修改文档的格式、链接/证据及差异检查，不重复已通过且输入未变的任务检查。
+
+本轮未合并、未关闭Issue、未发布/部署，分支、管理型worktree和既有预览均保留。
