@@ -43,6 +43,12 @@ describe('browser runner argument boundaries', () => {
     ['storage-admin', 'dialogs'],
     ['storage-admin', 'feedback'],
     ['storage-admin', 'regressions'],
+    ['processing'],
+    ['processing', 'representative'],
+    ['processing', 'settings'],
+    ['processing', 'preview'],
+    ['processing', 'recovery'],
+    ['processing', 'consumers'],
     ['trash', 'representative'],
     ['trash'],
     ['trash', 'cleanup'],
@@ -87,6 +93,18 @@ describe('browser runner argument boundaries', () => {
     ],
   ])('rejects unrelated sharing parameter %s', (option, value, error) => {
     const result = parse(['--suite', 'sharing-experiment', option, value]);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(error);
+  });
+
+  it.each([
+    ['--storage-config', '--storage-config applies only to storage-admin live'],
+    [
+      '--preview-config',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])('rejects storage-only processing parameter %s', (option, error) => {
+    const result = parse(['--suite', 'processing', option, 'unused.json']);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(error);
   });

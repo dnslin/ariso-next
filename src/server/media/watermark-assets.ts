@@ -29,6 +29,27 @@ export type WatermarkContext = {
 export function getWatermarkAsset(db: BetterSQLite3Database, id: string) {
   return db.select().from(assets).where(eq(assets.id, id)).get() ?? null;
 }
+
+/** Attribute reads preserve lifecycle facts and do not adopt or retain an asset. */
+export function readWatermarkAsset(
+  db: BetterSQLite3Database,
+  id: string,
+  now = new Date(),
+) {
+  const asset = getWatermarkAsset(db, id);
+  if (!asset)
+    throw Object.assign(
+      mediaError('MEDIA_WATERMARK_NOT_FOUND', `水印素材不存在: ${id}`),
+      { status: 404 },
+    );
+  return {
+    ...asset,
+    available:
+      asset.status === 'ready' &&
+      (asset.expiresAt === null || asset.expiresAt > now),
+  };
+}
+
 function selectableAsset(db: BetterSQLite3Database, id: string, now: Date) {
   const asset = getWatermarkAsset(db, id);
   if (

@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: A new focus GET issued after pre-DELETE cancelQueries cannot overwrite canonical cancellation
++ actual - expected
+
++ 'succeeded'
+- 'cancelled'
+
+    at verifyProcessingRecovery (file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/e2e/processing-recovery.mjs:735:12)
+    at async file:////[eval2]:59:5
+
+ego's nodejs process exited with code 1.

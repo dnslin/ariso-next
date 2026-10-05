@@ -1,0 +1,25 @@
+{
+  "probe": "real TanStack QueryObserver and production useProcessingSettings with isolated persistent hook slots; no browser or network",
+  "fetchedQuality": 68,
+  "formQualityAfterFreshGET": 82,
+  "submittedQuality": 82,
+  "fieldsSubmitted": 20
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Re-entry form must use the completed fresh settings GET before an unchanged save
+
+82 !== 68
+
+    at file:///Users/dnslin/.codex/worktrees/issue-189-processing/ariso/docs/verification/media-189/review-probes/cached-settings-probe.mjs:126:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 82,
+  expected: 68,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.18.1

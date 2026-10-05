@@ -24,12 +24,12 @@ export function SettingsCategories({
       keyboardActivation="manual"
     >
       <div className="settings-desktop">
-        <Tabs.ListContainer>
-          <Tabs.List aria-label="设置分类">
+        <Tabs.ListContainer className="w-fit max-w-full rounded-2xl">
+          <Tabs.List aria-label="设置分类" className="rounded-2xl p-1">
             {items.map(({ href, label }) => (
-              <Tabs.Tab key={href} id={href}>
+              <Tabs.Tab key={href} id={href} className="h-11 rounded-xl">
                 {label}
-                <Tabs.Indicator />
+                <Tabs.Indicator className="rounded-xl shadow-none" />
               </Tabs.Tab>
             ))}
           </Tabs.List>
@@ -43,14 +43,19 @@ export function SettingsCategories({
           }}
         >
           <Label>设置分类</Label>
-          <Select.Trigger>
+          <Select.Trigger className="min-h-11 rounded-xl border border-border bg-background px-3 shadow-none">
             <Select.Value />
             <Select.Indicator />
           </Select.Trigger>
           <Select.Popover>
             <ListBox>
               {items.map(({ href, label }) => (
-                <ListBox.Item key={href} id={href} textValue={label}>
+                <ListBox.Item
+                  key={href}
+                  id={href}
+                  textValue={label}
+                  className="min-h-11"
+                >
                   {label}
                   <ListBox.ItemIndicator />
                 </ListBox.Item>
@@ -59,7 +64,9 @@ export function SettingsCategories({
           </Select.Popover>
         </Select>
       </div>
-      <Tabs.Panel id={pathname}>{children}</Tabs.Panel>
+      <Tabs.Panel id={pathname} className="p-0">
+        {children}
+      </Tabs.Panel>
     </Tabs>
   );
 }

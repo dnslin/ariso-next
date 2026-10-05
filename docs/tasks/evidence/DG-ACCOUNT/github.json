@@ -1,0 +1,95 @@
+{
+  "readDate": "2026-10-05",
+  "issues": [
+    {
+      "body": "任务 ID：`DG-ACCOUNT`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-AUTH；核对账号字段、OAuth待重启/绑定与解绑异常。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 127,
+      "state": "OPEN",
+      "title": "[DG-ACCOUNT] 账号字段设计适用核对",
+      "url": "https://github.com/dnslin/ariso-next/issues/127",
+      "blocked_by": [],
+      "blocking": [
+        {
+          "number": 165,
+          "state": "open",
+          "title": "[T-ID-04] 邮箱与密码管理"
+        },
+        {
+          "number": 181,
+          "state": "open",
+          "title": "[T-ID-05] GitHub 配置、主动绑定与登录"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-ID-04`\n\n- 任务组：`IDENTITY-ACCOUNT`\n- 里程碑：M4\n- 范围：所有者账号表单与受控修改入口；邮箱核当前密码并撤销未用重置凭据，改密码撤销其他会话。\n- 规格与预计文件：SPEC-identity §6.1/6.2、ID-06/07；`src/server/identity/account.ts`、account/email/password路由、账号组件和测试。\n- 直接前置：`T-ID-03`、`T-UI-01`、`DG-ACCOUNT`\n- 验收条件：无SMTP且emailVerified不同值均能改邮箱，新邮箱登录、旧邮箱失效，GitHub关系不改；核密码期间发生并发密码修改时要求重试。改密码旧密码失败无写入，成功保留当前会话撤销其他会话。字段错误与结果不确定不假报成功或旧值未变；不开放任意用户更新/本地credential解绑。\n- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/account.test.ts` 使用真实库/SQLite和两浏览器上下文验证改邮箱/密码后登录与会话，不只mock认证。\n- 界面：`/settings/account`，仅所有者Cookie；identity account/API真实数据。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:872](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-872)、手机 [196:1988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1988)；邮箱成功 桌面 [197:2126](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2126)、手机 [197:2059](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2059)。HeroUI：TextField/Input、Button、Modal、Alert、FieldError；密码显示切换复用InputGroup；手机弹窗在短视口下可滚动，错误关联字段、关闭回焦点。无自定义基础控件。\n- 需求：`R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`\n- 实施步骤：\n  - [ ] 1. 邮箱更新：真实会话、校验及失败保留输入。\n  - [ ] 2. 密码更新与会话处理：原密码验证、重新登录及两端页面。\n\n## 执行与依赖\n\n直接前置：#60、#57、#127。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 165,
+      "state": "OPEN",
+      "title": "[T-ID-04] 邮箱与密码管理",
+      "url": "https://github.com/dnslin/ariso-next/issues/165",
+      "blocked_by": [
+        {
+          "number": 60,
+          "state": "closed",
+          "title": "[T-ID-03] 两端初始化与登录闭环"
+        },
+        {
+          "number": 57,
+          "state": "closed",
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳"
+        },
+        {
+          "number": 127,
+          "state": "open",
+          "title": "[DG-ACCOUNT] 账号字段设计适用核对"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 166,
+          "state": "open",
+          "title": "[T-ID-08] 上传 Token 生命周期与一次明文界面"
+        },
+        {
+          "number": 181,
+          "state": "open",
+          "title": "[T-ID-05] GitHub 配置、主动绑定与登录"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-ID-05`\n\n- 任务组：`IDENTITY-OAUTH`\n- 里程碑：M4\n- 范围：GitHub配置保存/实际生效快照、秘密预检、主动绑定/解绑/登录及站点地址改变后的回调消费。\n- 规格与预计文件：SPEC-identity §7、ID-08/09/14/15；`src/server/identity/auth.ts`、GitHub配置/绑定路由、账号与登录组件、OAuth集成测试。\n- 直接前置：`T-ID-04`、`EV-IDENTITY-03`、`DG-ACCOUNT`\n- 验收条件：未绑定/同邮箱账号不能登录或注册，只有现有所有者主动绑定，最多一个且允许不同邮箱；不留provider访问token，不影响credential。配置保存后明确待重启，生效状态决定登录入口；关闭保留关系、重新启用可用。publicUrl新请求立即更新回调，密钥省略/替换/清除正确；不自动重启、不取Docker权限。\n- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/oauth.test.ts` 与真实GitHub测试App验证state、同/不同邮箱、恶意requestSignUp、启停重启、换origin和秘密轮换；日志不含凭据。\n- 界面：`/settings/account`与`/login`；仅所有者配置/绑定，登录按真实生效配置显示。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:2001](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2001)、手机 [196:2011](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2011)；已绑定 桌面 [197:2245](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2245)、手机 [197:2092](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2092)；失败 桌面 [196:880](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-880)、手机 [196:1996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1996)；登录 桌面 [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)、手机 [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。HeroUI：TextField、Switch、Button、Alert、AlertDialog；长回调完整换行和独立复制，手机失败可手动选择；仅业务绑定组合，无自制通用控件。\n- 需求：`R-6.1-02`、`R-6.2-02`、`R-6.4-01`、`R-6.4-02`、`R-5.4-04`、`R-24.2-02`、`R-24.2-03`、`A-26.1-06`、`A-26.1-07`、`A-26.1-08`\n- 实施步骤：\n  - [ ] 1. 配置保存与主动绑定：回调状态、所有者身份和冲突验证。\n  - [ ] 2. GitHub 登录/解绑：真实账户完整流程及失败恢复。\n\n## 执行与依赖\n\n直接前置：#165、#145、#127。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 181,
+      "state": "OPEN",
+      "title": "[T-ID-05] GitHub 配置、主动绑定与登录",
+      "url": "https://github.com/dnslin/ariso-next/issues/181",
+      "blocked_by": [
+        {
+          "number": 165,
+          "state": "open",
+          "title": "[T-ID-04] 邮箱与密码管理"
+        },
+        {
+          "number": 145,
+          "state": "open",
+          "title": "[EV-IDENTITY-03] GitHub 主动绑定验证"
+        },
+        {
+          "number": 127,
+          "state": "open",
+          "title": "[DG-ACCOUNT] 账号字段设计适用核对"
+        }
+      ],
+      "blocking": [
+        {
+          "number": 194,
+          "state": "open",
+          "title": "[T-SITE-02] 站点地址时区与基础设置组合"
+        }
+      ]
+    }
+  ]
+}

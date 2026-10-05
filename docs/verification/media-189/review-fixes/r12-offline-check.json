@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "baseline": "104e504",
+  "files": [
+    {
+      "file": "e2e/processing-recovery.mjs",
+      "lines": 9
+    },
+    {
+      "file": "e2e/processing-settings-recovery.mjs",
+      "lines": 130
+    },
+    {
+      "file": "e2e/processing-preview-recovery.mjs",
+      "lines": 702
+    },
+    {
+      "file": "e2e/processing-session-recovery.mjs",
+      "lines": 244
+    }
+  ],
+  "counts": [
+    {
+      "group": "settings",
+      "originalScenarioStatements": 14,
+      "originalAssertions": 10,
+      "originalFinallyBlocks": 3,
+      "originalReportWrites": 7
+    },
+    {
+      "group": "preview",
+      "originalScenarioStatements": 78,
+      "originalAssertions": 69,
+      "originalFinallyBlocks": 6,
+      "originalReportWrites": 33
+    },
+    {
+      "group": "session",
+      "originalScenarioStatements": 17,
+      "originalAssertions": 15,
+      "originalFinallyBlocks": 2,
+      "originalReportWrites": 11
+    }
+  ],
+  "defaultEntryUnchanged": true,
+  "sequentialSettingsPreviewSession": true,
+  "previewOwnSavedSettingsAndRoute": true,
+  "sessionOwnQualityRouteAndNetworkEvents": true,
+  "browserExecuted": false,
+  "limitation": "This checks source equivalence, retained assertions, report mutations, nested finalizers, and the existing default call path. It does not execute browser interactions, real CDP, or HTTP requests."
+}

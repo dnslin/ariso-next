@@ -1,0 +1,61 @@
+{
+  "environment": {
+    "node": "24.19.0",
+    "pnpm": "11.19.0",
+    "os": "macOS arm64"
+  },
+  "previousHead": "4af832698fce2616dd267d322c35a39011fad2c4",
+  "main": "5234763b66d3ec75374a307d6181fe0caa58ecce",
+  "integration": "git merge --no-ff --no-commit origin/main 自动合并，无冲突；共享运行器保留processing与sharing，gate保留双方证据。",
+  "changes": "新增6种processing suite/only组合与2种storage-only参数拒绝回归。锁文件新增的是main已验证的@better-auth/api-key，不新增本任务依赖。",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-runner.test.ts",
+      "exitCode": 0,
+      "tests": 57,
+      "evidence": "merge-runner-unit.txt"
+    },
+    {
+      "command": "node --check scripts/verify-browser.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec eslint scripts/verify-browser.mjs tests/unit/runtime/browser-runner.test.ts --max-warnings=0",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec prettier scripts/verify-browser.mjs tests/unit/runtime/browser-runner.test.ts docs/tasks/gates.md --check",
+      "initialExitCode": 1,
+      "exitCode": 0,
+      "note": "首次只发现新增测试格式；定向Prettier修正后通过，不改行为或重复单元。"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    }
+  ],
+  "reviews": {
+    "quality": "merge-quality.md",
+    "structure": "merge-structure.md",
+    "verdict": "Approve; no Critical/Required"
+  },
+  "notRepeated": "不重跑应用构建、全量单元/集成或真实浏览器；当前合入只在共享运行器/gate重叠，保留main与PR已执行验证，最终浏览器未重测事实不改变。",
+  "authorization": "用户明确要求合并当前PR、清理本任务、更新本地分支并关闭Issue148。",
+  "whitespace": {
+    "initialCommand": "git diff --cached --check",
+    "initialExitCode": 2,
+    "note": "自动合入main的EV-IDENTITY-02两份既有日志末尾空行；不修改其他任务已提交证据。",
+    "prCommand": "git diff --cached origin/main --check",
+    "prExitCode": 0
+  }
+}
