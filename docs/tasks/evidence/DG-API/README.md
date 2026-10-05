@@ -68,4 +68,8 @@
 
 本次设计适用文档核对、适用本地检查、独立质量与设计适用审计均已完成。DES-06-API、相关DES-05/07与真实交互继续开放；代码完成、浏览器验证、产品设计还原与人工验收属于 #166 / #199 的交付，不能由本 DG 代替。当前没有真实Token/用法产品页面，因此本轮没有预览地址或测试凭证；消费者完成UI后须按共用要求提供独立数据预览并保持可用。
 
-本 DG 是纯文档交付，消费任务未来的真实UI与人工验收不属于本次完成条件，检查与独立审计收齐后可创建正式待评审PR。提交、推送、PR及远端检查状态在实际交付后补入。不合并、不关闭Issue、不发布/部署、不删除分支或worktree。
+本 DG 是纯文档交付，消费任务未来的真实UI与人工验收不属于本次完成条件。检查与独立审计收齐后已提交 `4e380d1`（`docs(api): 完成一次明文设计适用核对 (#130)`），执行 `git push -u origin codex/issue-130-api-design` 推送成功，并使用 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-130-api-design --body-file /tmp/issue130-pr-body.md`（含标题参数）创建[PR #245](https://github.com/dnslin/ariso-next/pull/245)。PR 已附加到当前任务，为正式待评审，正文使用 `Refs #130`。
+
+实际 `gh pr view 245 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,mergeable,mergeStateStatus,statusCheckRollup,headRefOid` 回读为 `OPEN / isDraft=false / main / MERGEABLE / CLEAN`，检查列表为空。`gh pr checks 245 --repo dnslin/ariso-next` 退出1并报告没有检查，`gh run list --repo dnslin/ariso-next --branch codex/issue-130-api-design --json databaseId,name,status,conclusion,event,headSha` 返回空数组。当前工作流只由发布的 Release 触发，不记作 CI 通过，也不等待不存在的检查。本次没有创建 Release、发布镜像或部署。
+
+最终补录的证据文本只重跑定向格式、链接/节点/尺寸及空白检查，未重复其他输入不变的检查。`gh issue view 130 --repo dnslin/ariso-next --json number,state,url` 确认 Issue 仍开放。原工作区仍为干净 main；本分支与管理型 worktree 保留。不合并、不关闭Issue、不删除分支或worktree。
