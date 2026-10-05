@@ -1,0 +1,207 @@
+{
+  "startedAt": "2026-10-05T18:44:09.001Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "full",
+  "pageLabel": "p1",
+  "stages": {
+    "runtime-start": {
+      "status": "passed"
+    },
+    "shell-start": {
+      "status": "passed"
+    },
+    "runtime": {
+      "status": "passed"
+    },
+    "identity-1440-start": {
+      "status": "passed"
+    },
+    "identity-1440-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-1440": {
+      "status": "passed"
+    },
+    "identity-1440-restart": {
+      "status": "passed"
+    },
+    "m2-1440-before": {
+      "status": "passed"
+    },
+    "m2-1440-after": {
+      "status": "passed"
+    },
+    "interaction-polish-1440": {
+      "status": "passed"
+    },
+    "workspace-continuity-1440": {
+      "status": "passed"
+    },
+    "tokens-1440": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:884:11"
+    },
+    "account-1440": {
+      "status": "passed"
+    },
+    "identity-390-start": {
+      "status": "passed"
+    },
+    "identity-390-setup": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (identity-390-setup.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)\n    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:767:9\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:766:7"
+    },
+    "owner-runtime-390": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Initialized restart must not issue another code\n+ actual - expected\n\n+ [\n+   '[redacted]'\n+ ]\n- []\n\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:775:16\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:773:7"
+    },
+    "identity-390-restart": {
+      "status": "blocked",
+      "blockedBy": ["identity-390-setup", "owner-runtime-390"]
+    },
+    "processing": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "storage-admin": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "storage-cors": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-feedback": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-selection": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-selection-reconciliation": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-query": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-filters": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-scale": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-batch": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-reprocess": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "library-copy": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "trash-query-batch": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "trash-cleanup": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "shell-navigation": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "albums": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "album-cover": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "tags": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "upload": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "upload-polling": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "upload-input": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "upload-submissions": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "upload-relations": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "m2-390-before": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "m2-390-after": {
+      "status": "blocked",
+      "blockedBy": ["m2-390-before"]
+    },
+    "interaction-polish-390": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "workspace-continuity-390": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "tokens-390": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "account-390": {
+      "status": "blocked",
+      "blockedBy": ["owner-runtime-390"]
+    },
+    "delivery-s3": {
+      "status": "passed"
+    },
+    "sharing-protocol": {
+      "status": "passed"
+    },
+    "sharing-experiment": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-experiment.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runSharingExperiment (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:225:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:912:5"
+    },
+    "isolated-ui": {
+      "status": "passed"
+    }
+  },
+  "taskSpaceId": 36,
+  "origin": "http://ariso-54067.localhost:54067",
+  "account-1440": "passed",
+  "sharingProtocol": "passed",
+  "sharingOrigin": "http://127.0.0.1:59717",
+  "error": "AssertionError [ERR_ASSERTION]: Browser stages failed or blocked: tokens-1440, identity-390-setup, owner-runtime-390, identity-390-restart, processing, storage-admin, storage-cors, library, library-feedback, library-selection, library-selection-reconciliation, library-query, library-filters, library-scale, library-batch, library-reprocess, library-copy, trash-query-batch, trash-cleanup, shell-navigation, albums, album-cover, tags, upload, upload-polling, upload-input, upload-submissions, upload-relations, m2-390-before, m2-390-after, interaction-polish-390, workspace-continuity-390, tokens-390, account-390, sharing-experiment\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:940:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+  "finishedAt": "2026-10-05T18:52:28.188Z",
+  "temporaryDirectoryRemoved": true
+}

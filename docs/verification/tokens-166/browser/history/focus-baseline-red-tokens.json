@@ -1,0 +1,1475 @@
+{
+  "status": "failed",
+  "taskSpaceId": 36,
+  "origin": "http://ariso-53561.localhost:53561",
+  "phase": "behavior",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "creating-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copied-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    },
+    {
+      "name": "secret-copied-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    },
+    {
+      "name": "secret-copy-error-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "再次复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copy-error-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "再次复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "close-warning-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "仍然关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "close-warning-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "仍然关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "populated-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 100,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看上传用法",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "populated-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 100,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看上传用法",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-expiring-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-expiring-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-expiring-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-expiring-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "close-warning-expiring-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "仍然关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "close-warning-expiring-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "返回复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "仍然关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回复制",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-expiring-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-expiring-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-expiring-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-expiring-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 430,
+          "height": 95,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "我已保存，关闭",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "expired-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 100,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已过期",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看上传用法",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "expired-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 100,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "停用",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "已过期",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "撤销",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看上传用法",
+          "width": 180,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "expired-revoke-confirm-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "expired-revoke-confirm-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "tokens-1440-creating-light.png",
+    "tokens-1440-creating-dark.png",
+    "tokens-1440-secret-light.png",
+    "tokens-1440-secret-dark.png",
+    "tokens-1440-secret-copied-light.png",
+    "tokens-1440-secret-copied-dark.png",
+    "tokens-1440-secret-copy-error-light.png",
+    "tokens-1440-secret-copy-error-dark.png",
+    "tokens-1440-close-warning-light.png",
+    "tokens-1440-close-warning-dark.png",
+    "tokens-1440-populated-light.png",
+    "tokens-1440-populated-dark.png",
+    "tokens-1440-creating-expiring-light.png",
+    "tokens-1440-creating-expiring-dark.png",
+    "tokens-1440-secret-expiring-light.png",
+    "tokens-1440-secret-expiring-dark.png",
+    "tokens-1440-close-warning-expiring-light.png",
+    "tokens-1440-close-warning-expiring-dark.png",
+    "tokens-1440-creating-expiring-light.png",
+    "tokens-1440-creating-expiring-dark.png",
+    "tokens-1440-secret-expiring-light.png",
+    "tokens-1440-secret-expiring-dark.png",
+    "tokens-1440-creating-light.png",
+    "tokens-1440-creating-dark.png",
+    "tokens-1440-secret-light.png",
+    "tokens-1440-secret-dark.png",
+    "tokens-1440-expired-light.png",
+    "tokens-1440-expired-dark.png",
+    "tokens-1440-expired-revoke-confirm-light.png",
+    "tokens-1440-expired-revoke-confirm-dark.png",
+    "tokens-all-failure.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "POST",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "business": [
+    {
+      "scenario": "expiry-entry",
+      "width": 1440,
+      "id": "gyO7XfjXK7mKc4lfo2SAxw40p4583QFk",
+      "timeZone": "Asia/Shanghai",
+      "segments": {
+        "year": "2026",
+        "literal": "⁩",
+        "month": "10",
+        "day": "6",
+        "hour": "4",
+        "minute": "38",
+        "second": "26"
+      },
+      "requestedExpiresAt": "2026-10-05T20:38:26.000Z",
+      "persistedExpiresAt": "2026-10-05T20:38:26.114Z"
+    },
+    {
+      "scenario": "short-expiry",
+      "width": 1440,
+      "id": "gyO7XfjXK7mKc4lfo2SAxw40p4583QFk",
+      "expiresAt": "2026-10-05T20:38:26.114Z"
+    },
+    {
+      "scenario": "expiry-entry",
+      "width": 1440,
+      "id": "3F9wTgS4vVQiWRb7qqKQnOlz0nrAI0mE",
+      "timeZone": "Asia/Shanghai",
+      "segments": {
+        "year": "2028",
+        "literal": "⁩",
+        "month": "10",
+        "day": "5",
+        "hour": "4",
+        "minute": "28",
+        "second": "32"
+      },
+      "requestedExpiresAt": "2028-10-04T20:28:32.000Z",
+      "persistedExpiresAt": "2028-10-04T20:28:32.898Z"
+    },
+    {
+      "scenario": "long-expiry",
+      "width": 1440,
+      "id": "3F9wTgS4vVQiWRb7qqKQnOlz0nrAI0mE",
+      "expiresAt": "2028-10-04T20:28:32.898Z"
+    },
+    {
+      "scenario": "once-only-key",
+      "width": 1440,
+      "id": "ykUqUWrlpgRBG9UfGIVVLQzH9RNHHp7a",
+      "status": "passed"
+    }
+  ],
+  "clipboard": [
+    {
+      "width": 1440,
+      "nativeSuccess": true,
+      "nativeDenied": true,
+      "manualExact": true,
+      "valueRetained": true,
+      "partialSelection": {
+        "start": 5,
+        "end": 12,
+        "direction": "backward",
+        "scrollTop": 0
+      },
+      "selectionPreserved": true,
+      "successfulCopies": 2,
+      "successThemes": ["light", "dark"]
+    }
+  ],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots replace key characters with bullets; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "once-only-key",
+  "error": "AssertionError [ERR_ASSERTION]: The source page and scroll remain unchanged\n+ actual - expected\n\n  {\n+   content: 551.5,\n-   content: 0,\n    url: 'http://ariso-53561.localhost:53561/settings/api',\n    window: 0\n  }\n\n    at Object.returnFocus (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-page.mjs:310:12)\n    at async verifyTokensCreates (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-behavior.mjs:635:5)\n    at async file:////[eval2]:76:5",
+  "finishedAt": "2026-10-05T20:28:51.114Z"
+}

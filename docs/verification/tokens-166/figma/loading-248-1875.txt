@@ -1,0 +1,224 @@
+const imgFrame = "https://www.figma.com/api/mcp/asset/46d17369-e158-4bc8-91ad-9f86d36c952d.svg";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/801f3c21-baaa-4db8-8ab8-fcaaea4a16b5.svg";
+const imgFrame2 = "https://www.figma.com/api/mcp/asset/3bf5eede-710e-4a82-9f69-50d09feaba86.svg";
+const imgFrame3 = "https://www.figma.com/api/mcp/asset/a9ed6966-1d56-4a21-8bbb-46f87eb4b22b.svg";
+const imgFrame4 = "https://www.figma.com/api/mcp/asset/e32c6f72-1b28-491d-93a1-7a2e0cab1972.svg";
+const imgFrame5 = "https://www.figma.com/api/mcp/asset/0f33c4ba-bf17-4f1a-bb8f-d5178361f0a9.svg";
+const imgFrame6 = "https://www.figma.com/api/mcp/asset/64b2e8d2-7ce0-4b5c-a8c8-3f86af80a03d.svg";
+const imgFrame7 = "https://www.figma.com/api/mcp/asset/f8541162-96e4-471a-b3de-47ee78da1e09.svg";
+const imgFrame8 = "https://www.figma.com/api/mcp/asset/d277bd60-777a-406e-9cce-b9a90c96390f.svg";
+const imgFrame9 = "https://www.figma.com/api/mcp/asset/9e8f6865-89b6-431e-a668-779905f95103.svg";
+const imgFrame10 = "https://www.figma.com/api/mcp/asset/a8f9b2fd-cc84-43c9-bb64-9115a48bc502.svg";
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonDisabledProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonDisabled({ className, label = "按钮" }: ButtonDisabledProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center opacity-42 relative rounded-[8px] w-[398px]"} data-node-id="3:25" data-name="Button/Disabled">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:26">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type LinkProps = {
+  className?: string;
+  label?: string;
+};
+
+function Link({ className, label = "链接" }: LinkProps) {
+  return (
+    <div className={className || "content-stretch flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] w-[398px]"} data-node-id="3:29" data-name="Link">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:30">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function DApiToken() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="248:1875" data-name="D / API Token / 加载列表">
+      <div className="absolute bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[24px] h-[1080px] items-start left-0 overflow-clip pt-[28px] px-[20px] top-0 w-[232px]" data-node-id="248:1876" data-name="Sidebar">
+        <div className="content-stretch flex gap-[44px] items-center relative shrink-0" data-node-id="248:1877" data-name="品牌">
+          <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[48px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1878">
+            Ariso
+          </p>
+          <div className="relative shrink-0 size-[18px]" data-node-id="248:1879" data-name="Frame">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame} />
+          </div>
+        </div>
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1882">
+          图片，自在收纳。
+        </p>
+        <div className="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-[192px]" data-node-id="248:1883" data-name="内容导航">
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1884" data-name="总览">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1885" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame1} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1890">
+              总览
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1891" data-name="上传图片">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1892" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame2} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1896">
+              上传
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1897" data-name="图库">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1898" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame3} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1903">
+              图库
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1904" data-name="相册">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1905" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame4} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1907">
+              相册
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1908" data-name="标签">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1909" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame5} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1913">
+              标签
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1914" data-name="分享管理">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1915" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame6} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1918">
+              分享管理
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1919" data-name="回收站">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1920" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame7} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1926">
+              回收站
+            </p>
+          </a>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[11px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1927">
+            管理
+          </p>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1928" data-name="访问统计">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1929" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame8} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1936">
+              访问统计
+            </p>
+          </a>
+          <a className="content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1937" data-name="存储管理">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1938" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame9} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1943">
+              存储管理
+            </p>
+          </a>
+          <a className="bg-[#fff7c2] content-stretch cursor-pointer flex gap-[12px] h-[40px] items-center overflow-clip pl-[12px] relative rounded-[12px] shrink-0 w-[192px]" data-node-id="248:1944" data-name="站点设置">
+            <div className="relative shrink-0 size-[18px]" data-node-id="248:1945" data-name="Frame">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFrame10} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="248:1950">
+              站点设置
+            </p>
+          </a>
+        </div>
+        <div className="absolute content-stretch flex gap-[12px] h-[56px] items-center left-[23px] overflow-clip top-[995px] w-[184px]" data-node-id="248:1951" data-name="侧栏用户信息">
+          <div className="bg-[var(--secondary,#e3f6f5)] content-stretch flex items-center justify-center overflow-clip relative rounded-[999px] shrink-0 size-[36px]" data-node-id="248:1952" data-name="Avatar">
+            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.5] not-italic relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1953">
+              D
+            </p>
+          </div>
+          <div className="[word-break:break-word] content-stretch flex flex-col font-normal gap-[2px] items-start leading-[1.5] overflow-clip relative shrink-0 text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1954" data-name="用户信息">
+            <p className="font-['Inter:Regular'] not-italic relative shrink-0 text-[14px]" data-node-id="248:1955">
+              dnslin
+            </p>
+            <p className="font-['Noto_Sans_SC:Regular'] relative shrink-0 text-[12px]" data-node-id="248:1956">
+              站点所有者
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="absolute content-stretch flex flex-col gap-[24px] items-start left-[264px] overflow-clip top-[28px] w-[1144px]" data-node-id="248:1957" data-name="Main">
+        <div className="content-stretch flex h-[44px] items-center justify-between overflow-clip relative shrink-0 w-[1144px]" data-node-id="248:1958" data-name="页眉">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-pre" data-node-id="248:1959">{`工作空间  /  站点设置`}</p>
+        </div>
+        <div className="content-stretch flex h-[76px] items-start justify-between overflow-clip relative shrink-0 w-[1144px]" data-node-id="248:1960" data-name="页面标题">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[6px] items-start leading-[1.5] overflow-clip relative shrink-0 text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="248:1961" data-name="欢迎">
+            <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[30px]" data-node-id="248:1962">
+              站点设置
+            </p>
+            <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px]" data-node-id="248:1963">
+              管理站点、图片处理与账号偏好。
+            </p>
+          </div>
+        </div>
+        <div className="bg-[var(--secondary,#e3f6f5)] content-stretch flex gap-[4px] items-start overflow-clip p-[4px] relative rounded-[14px] shrink-0" data-node-id="248:1964" data-name="设置分组">
+          <a className="content-stretch cursor-pointer flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] shrink-0 w-[136px]" data-node-id="248:1965" data-name="Link">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I248:1965;3:30">
+              基本设置
+            </p>
+          </a>
+          <Link className="content-stretch cursor-pointer flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] shrink-0 w-[136px]" label="图片处理" />
+          <Link className="content-stretch cursor-pointer flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] shrink-0 w-[136px]" label="账号与安全" />
+          <div className="bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] shrink-0 w-[136px]" data-node-id="248:1968" data-name="Button/Primary">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="I248:1968;3:22">
+              上传 API
+            </p>
+          </div>
+          <Link className="content-stretch cursor-pointer flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] shrink-0 w-[136px]" label="邮件服务" />
+        </div>
+        <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[20px] items-start overflow-clip p-[24px] relative rounded-[20px] shrink-0 w-[1144px]" data-node-id="248:1970" data-name="设置内容">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] min-w-full relative shrink-0 text-[20px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="248:1971">
+            上传 Token
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-[min-content]" data-node-id="248:1972">
+            让脚本上传图片。Token 不能登录后台、浏览或管理图库。
+          </p>
+          <ButtonDisabled className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center opacity-42 relative rounded-[8px] shrink-0 w-[160px]" label="创建 Token" />
+          <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-node-id="248:1974" data-name="Token / 列表">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-full" data-node-id="248:2131">
+              正在读取 Token…
+            </p>
+          </div>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-[min-content]" data-node-id="248:1977">
+            时间按站点时区显示（Asia/Shanghai）。过期记录可能被自动清理。
+          </p>
+          <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-[180px]" label="查看上传用法" />
+        </div>
+      </div>
+    </div>
+  );
+}

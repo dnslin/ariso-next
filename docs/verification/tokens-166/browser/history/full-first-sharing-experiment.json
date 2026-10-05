@@ -1,0 +1,47 @@
+{
+  "startedAt": "2026-10-05T18:51:38.871Z",
+  "scope": "protocol experiment",
+  "status": "failed",
+  "taskSpaceId": 36,
+  "pageLabel": "p1",
+  "origin": "http://127.0.0.1:59717",
+  "checks": [
+    "Real HttpOnly/Lax/host-only/path-scoped 24-hour Cookies; concurrent albums retain grants and private/trashed entries stay absent.",
+    "Two same-origin tabs unlock one album concurrently; each real issued grant remains valid.",
+    "A different host remains anonymous in the same profile; this is host isolation, not a second browser context.",
+    "Browser Cookie paths keep the owner route anonymous; a real owner Cookie still needs the sharing password. Explicitly forwarding grant Cookies and real private delivery are covered by separate HTTP tests."
+  ],
+  "lateResponses": [],
+  "visibilityEvents": [],
+  "twoBrowserContexts": "unverified",
+  "limitations": [
+    "Different hosts isolate cookies in one Ego profile; they are not two browser contexts.",
+    "Ego Target.createTarget is unavailable; no separate browser context is claimed.",
+    "The page is a protocol probe, not a delivered sharing UI or Figma acceptance.",
+    "Control gates and the client batch switch are explicit experiment operations."
+  ],
+  "cookies": [
+    {
+      "share": "a",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    },
+    {
+      "share": "b",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: An actual automatic refresh reaches its response gate\n    at waitControl (file:////[eval2]:62:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:////[eval2]:399:3",
+  "finishedAt": "2026-10-05T18:51:55.436Z"
+}

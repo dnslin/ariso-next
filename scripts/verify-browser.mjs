@@ -92,6 +92,12 @@ for (const name of [
   'account-390-failure.png',
   'account-1440.json',
   'account-390.json',
+  'tokens.json',
+  'tokens-1440.json',
+  'tokens-390.json',
+  'tokens-all-failure.png',
+  'tokens-1440-failure.png',
+  'tokens-390-failure.png',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
@@ -875,8 +881,26 @@ try {
       });
       await business(`interaction-polish-${width}`, 'interaction-polish');
       await business(`workspace-continuity-${width}`, 'workspace-continuity');
+      if (await business(`tokens-${width}`, 'tokens'))
+        report[`tokens-${width}`] = 'passed';
+      // 保留数据库/会话，隔离新增 Token 场景累计的进程内 HTTP 限流桶。
+      const accountRuntimeName = `account-runtime-${width}`;
+      await check(accountRuntimeName, () => restartProduction(dataDirectory), [
+        ownerName,
+      ]);
       // Account changes consume these credentials, so keep this last for the data directory.
-      if (await business(`account-${width}`, 'account'))
+      if (
+        await check(
+          `account-${width}`,
+          () =>
+            runBrowser(
+              '../e2e/account.mjs',
+              identityConfig,
+              `account-${width}.log`,
+            ),
+          [ownerName, accountRuntimeName],
+        )
+      )
         report[`account-${width}`] = 'passed';
       await stop(server);
     }

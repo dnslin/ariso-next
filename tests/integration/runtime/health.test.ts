@@ -57,6 +57,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'analytics_daily' },
         { name: 'analytics_image_daily' },
         { name: 'analytics_image_totals' },
+        { name: 'apikey' },
         { name: 'image_tags' },
         { name: 'media_cleanup_jobs' },
         { name: 'media_images' },
@@ -100,6 +101,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
       for (const table of [
         'account',
+        'apikey',
         'analytics_daily',
         'analytics_image_daily',
         'analytics_image_totals',

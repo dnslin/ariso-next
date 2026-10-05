@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="UTF-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Token 核对状态原型</title>
+  <style>
+    @font-face {
+      font-family: ArisoChinese;
+      src: url(/fonts/noto-sans-sc.woff2);
+    }
+    @font-face {
+      font-family: ArisoBrand;
+      src: url(/fonts/caveat.woff2);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      color: #272343;
+      background: #fffffe;
+      font:
+        14px/1.5 Inter,
+        ArisoChinese,
+        sans-serif;
+    }
+    button,
+    select {
+      font: inherit;
+      color: inherit;
+    }
+    button {
+      cursor: pointer;
+      min-height: 48px;
+      border: 1px solid #bae8e8;
+      border-radius: 8px;
+      background: #fffffe;
+      padding: 10px 20px;
+    }
+    button:focus-visible,
+    select:focus-visible {
+      outline: 2px solid #607d85;
+      outline-offset: 3px;
+    }
+    aside {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 232px;
+      border-right: 1px solid #bae8e8;
+      padding: 28px 20px;
+    }
+    .brand {
+      font: 48px/1.5 ArisoBrand;
+      margin: 0 0 12px;
+    }
+    nav {
+      display: grid;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    nav span {
+      padding: 10px 12px;
+    }
+    nav span:last-child {
+      background: #fff7c2;
+      border-radius: 12px;
+    }
+    .owner {
+      position: absolute;
+      bottom: 28px;
+    }
+    main {
+      margin-left: 232px;
+      padding: 28px 32px;
+    }
+    h1 {
+      font-size: 30px;
+      margin: 0 0 6px;
+    }
+    h2 {
+      font-size: 20px;
+      margin: 0;
+    }
+    p {
+      margin: 0;
+    }
+    header {
+      margin-bottom: 24px;
+    }
+    .tabs {
+      background: #e3f6f5;
+      padding: 4px;
+      display: flex;
+      gap: 4px;
+      border-radius: 14px;
+      width: max-content;
+      margin-bottom: 24px;
+    }
+    .tabs span {
+      padding: 8px 20px;
+    }
+    .tabs span:last-child {
+      background: #ffd807;
+      border-radius: 8px;
+    }
+    .content {
+      border: 1px solid #bae8e8;
+      border-radius: 20px;
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+    }
+    .primary {
+      background: #ffd807;
+      border-color: #ffd807;
+    }
+    .create {
+      width: 100px;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    h1,
+    h2,
+    .icon-label,
+    button,
+    .tabs span,
+    nav span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    h1 svg,
+    h2 svg {
+      width: 24px;
+      height: 24px;
+    }
+    button {
+      justify-content: center;
+    }
+    .row {
+      border: 1px solid #bae8e8;
+      border-radius: 12px;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+    .muted {
+      color: #2d334a;
+      font-size: 12px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+      padding: 12px;
+      border: 1px dashed #607d85;
+      border-radius: 12px;
+    }
+    select {
+      min-height: 44px;
+      padding: 8px;
+      background: #fffffe;
+      border: 1px solid #bae8e8;
+      border-radius: 8px;
+    }
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #27234333;
+      padding: 16px;
+    }
+    .dialog {
+      max-height: calc(100dvh - 32px);
+      overflow: auto;
+      background: #fffffe;
+      border: 1px solid #bae8e8;
+      border-radius: 16px;
+      padding: 24px;
+      width: 480px;
+      display: grid;
+      gap: 16px;
+      position: relative;
+    }
+    .dialog h2 {
+      font-size: 24px;
+      padding-right: 32px;
+    }
+    .close {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      border: 0;
+      min-height: 44px;
+      width: 44px;
+      padding: 0;
+      background: transparent;
+    }
+    .candidate {
+      border: 1px solid #bae8e8;
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .candidate code {
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .hidden {
+      display: none;
+    }
+    .tip {
+      font-size: 13px;
+    }
+    .mobile-header {
+      display: none;
+    }
+    .mobile-category {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      .tabs {
+        display: none;
+      }
+      .mobile-category {
+        display: grid;
+        margin-bottom: 20px;
+        gap: 8px;
+      }
+      .mobile-category select {
+        width: 100%;
+        height: 48px;
+      }
+    }
+    @media (max-width: 1199px) {
+      aside {
+        display: none;
+      }
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 16px;
+        height: 64px;
+      }
+      .mobile-header b {
+        font: 36px/1 ArisoBrand;
+      }
+      main {
+        margin: 0;
+        padding: 24px 16px;
+      }
+      .tabs {
+        max-width: 100%;
+        overflow: auto;
+      }
+      .tabs span {
+        white-space: nowrap;
+        padding: 8px 12px;
+      }
+      .content {
+        padding: 24px 16px;
+      }
+      .create {
+        width: 100px;
+      }
+      .dialog {
+        width: 100%;
+        max-width: 480px;
+        padding: 20px;
+      }
+      .dialog h2 {
+        font-size: 20px;
+      }
+      .toolbar {
+        margin: 20px 0;
+      }
+      .actions {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+  <aside>
+    <p class="brand">Ariso</p>
+    <p class="muted">图片，自在收纳。</p>
+    <nav>
+      <span><i data-icon="LayoutDashboard"></i>总览</span
+      ><span><i data-icon="CloudUpload"></i>上传</span
+      ><span><i data-icon="Images"></i>图库</span><span>相册</span
+      ><span><i data-icon="Tags"></i>标签</span
+      ><span><i data-icon="Link"></i>分享管理</span><span>回收站</span
+      ><span><i data-icon="ChartNoAxesCombined"></i>访问统计</span
+      ><span><i data-icon="HardDrive"></i>存储管理</span
+      ><span><i data-icon="SlidersHorizontal"></i>站点设置</span>
+    </nav>
+    <p class="owner">测试所有者<br /><small>站点所有者</small></p>
+  </aside>
+  <div class="mobile-header">
+    <b>Ariso</b><button aria-label="打开菜单"><i data-icon="Menu"></i></button>
+  </div>
+  <main>
+    <header>
+      <h1><i data-icon="Settings"></i>站点设置</h1>
+      <p>管理站点、图片处理与账号偏好。</p>
+    </header>
+    <div class="tabs">
+      <span><i data-icon="SlidersHorizontal"></i>图片处理</span
+      ><span><i data-icon="ShieldCheck"></i>账号与安全</span
+      ><span><i data-icon="KeyRound"></i>上传 API</span>
+    </div>
+    <div class="mobile-category">
+      <label for="category">设置分类</label
+      ><select id="category">
+        <option>图片处理</option>
+        <option>账号与安全</option>
+        <option selected>上传 API</option>
+      </select>
+    </div>
+    <div class="content">
+      <div class="section-heading">
+        <h2><i data-icon="KeyRound"></i>上传 Token</h2>
+        <button class="primary create" onclick="show('unknown')">
+          <i data-icon="Plus"></i>创建
+        </button>
+      </div>
+      <p>让脚本上传图片。Token 不能登录后台、浏览或管理图库。</p>
+      <div class="row">
+        <b class="icon-label"><i data-icon="Terminal"></i>部署脚本</b>
+        <p class="icon-label"><i data-icon="Clock"></i>已启用 · 永不过期</p>
+        <p class="muted icon-label">
+          <i data-icon="CalendarDays"></i>创建于 2026/10/06 10:00
+        </p>
+        <div class="actions">
+          <button onclick="show('operation')">
+            <i data-icon="Power"></i>停用</button
+          ><button onclick="show('operation')">
+            <i data-icon="Trash2"></i>撤销
+          </button>
+        </div>
+      </div>
+      <p class="muted">
+        时间按站点时区显示（Asia/Shanghai）。过期记录可能被自动清理。
+      </p>
+    </div>
+    <div class="toolbar">
+      <label for="state">仅用于审阅原型：</label
+      ><select id="state" onchange="show(this.value)">
+        <option value="unknown">创建结果未知</option>
+        <option value="checking">正在核对</option>
+        <option value="failed">核对失败</option>
+        <option value="none">未发现新记录</option>
+        <option value="one">发现一个新候选</option>
+        <option value="many">发现多个新候选</option>
+        <option value="operation">启停 / 撤销结果未知</option>
+        <option value="confirmed">核对目标仍在列表</option>
+        <option value="removed">核对目标不在列表</option>
+      </select>
+      <p class="tip">模拟数据与状态，用于批准交互；不代表接口已实现。</p>
+    </div>
+  </main>
+  <div id="backdrop" class="backdrop hidden">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="title">
+      <button class="close" aria-label="关闭" onclick="closeDialog()">×</button>
+      <h2 id="title"></h2>
+      <div id="body"></div>
+      <button id="action" class="primary"></button
+      ><button id="back" onclick="closeDialog()">返回 Token 列表</button>
+    </div>
+  </div>
+  <script>
+    const icons = {
+      Settings:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>',
+      KeyRound:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>',
+      Plus: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>',
+      Clock:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>',
+      CalendarDays:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days" aria-hidden="true"><path d="M8 2v3"></path><path d="M16 2v3"></path><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path><path d="M8 13h.01"></path><path d="M12 13h.01"></path><path d="M16 13h.01"></path><path d="M8 17h.01"></path><path d="M12 17h.01"></path><path d="M16 17h.01"></path></svg>',
+      Power:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-power" aria-hidden="true"><path d="M12 2v10"></path><path d="M18.4 6.6a9 9 0 1 1-12.77.04"></path></svg>',
+      Trash2:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash lucide-trash-2" aria-hidden="true"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
+      Terminal:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-terminal" aria-hidden="true"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg>',
+      ShieldCheck:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>',
+      SlidersHorizontal:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal" aria-hidden="true"><path d="M10 5H3"></path><path d="M12 19H3"></path><path d="M14 3v4"></path><path d="M16 17v4"></path><path d="M21 12h-9"></path><path d="M21 19h-5"></path><path d="M21 5h-7"></path><path d="M8 10v4"></path><path d="M8 12H3"></path></svg>',
+      Menu: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>',
+      RefreshCw:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>',
+      LayoutDashboard:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>',
+      CloudUpload:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-upload lucide-upload-cloud" aria-hidden="true"><path d="M12 13v8"></path><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="m8 17 4-4 4 4"></path></svg>',
+      Images:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-images" aria-hidden="true"><path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16"></path><path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"></path><circle cx="13" cy="7" r="1" fill="currentColor"></circle><rect x="8" y="2" width="14" height="14" rx="2"></rect></svg>',
+      Folder:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>',
+      Tags: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tags" aria-hidden="true"><path d="M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z"></path><path d="M2 7v6.172a2 2 0 0 0 .586 1.414l6.71 6.71a2.4 2.4 0 0 0 3.191.193"></path><circle cx="10.5" cy="6.5" r=".5" fill="currentColor"></circle></svg>',
+      Link: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>',
+      ChartNoAxesCombined:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-combined" aria-hidden="true"><path d="M12 16v5"></path><path d="M16 14.639V21"></path><path d="M20 10.656V21"></path><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"></path><path d="M4 18.463V21"></path><path d="M8 14.656V21"></path></svg>',
+      HardDrive:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hard-drive" aria-hidden="true"><path d="M10 16h.01"></path><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><path d="M21.946 12.013H2.054"></path><path d="M6 16h.01"></path></svg>',
+    };
+    document
+      .querySelectorAll('[data-icon]')
+      .forEach((node) => (node.outerHTML = icons[node.dataset.icon]));
+    const states = {
+      unknown: [
+        '暂时无法确认创建结果',
+        '连接中断，Token 可能已经创建。先核对列表，避免重复创建。完整值如果没有收到，无法再次取回。',
+        '核对列表',
+        'checking',
+      ],
+      checking: [
+        '正在核对 Token 列表',
+        '正在读取真实记录。不会再次提交创建请求。',
+        '正在核对…',
+        'one',
+      ],
+      failed: [
+        '暂时无法核对列表',
+        '列表读取失败，创建结果仍未确认。保留待核对状态，请重新读取。',
+        '重新核对',
+        'checking',
+      ],
+      none: [
+        '未发现新的 Token 记录',
+        '本次核对没有发现新增 ID。记录可能已过期或被撤销，不能据此确认创建未发生。你可以返回列表，再决定是否创建。',
+        '返回 Token 列表',
+        null,
+      ],
+      one: [
+        '发现新的 Token 记录',
+        '完整值无法找回。请按记录 ID 核对候选；需要使用新 Token 时，先撤销该记录，再重新创建。',
+        '返回列表处理',
+        null,
+      ],
+      many: [
+        '发现多个新的 Token 记录',
+        '这些记录都不在提交前的列表中。名称不能区分同名 Token，无法确定本次创建对应哪条。请按 ID 与时间分别核对，再决定撤销或重建。',
+        '返回列表处理',
+        null,
+      ],
+      operation: [
+        '暂时无法确认操作结果',
+        '连接中断，操作结果尚未确认。请重新读取列表核对当前目标状态，再决定下一步。',
+        '核对列表',
+        'confirmed',
+      ],
+      confirmed: [
+        '已核对当前 Token 状态',
+        '目标仍在列表中。当前状态为已停用。核对只展示现在的数据，不推断是哪次请求造成的；返回列表可继续启用或撤销。',
+        '返回列表处理',
+        null,
+      ],
+      removed: [
+        '目标已不在当前列表',
+        '目标可能已撤销或被自动清理。它已无法在当前列表继续操作；不会重复发送撤销请求。',
+        '返回 Token 列表',
+        null,
+      ],
+    };
+    function closeDialog() {
+      document.querySelector('#backdrop').classList.add('hidden');
+    }
+    function show(name) {
+      const s = states[name];
+      document.querySelector('#state').value = name;
+      document.querySelector('#title').textContent = s[0];
+      document.querySelector('#body').innerHTML =
+        '<p>' +
+        s[1] +
+        '</p>' +
+        (['one', 'many'].includes(name)
+          ? [0, ...(name === 'many' ? [1] : [])]
+              .map(
+                (i) =>
+                  '<div class="candidate" style="margin-top:16px"><b>部署脚本</b><p>已启用 · 永不过期</p><code>ID：token-new-' +
+                  (i + 1) +
+                  '</code><small>创建于 2026/10/06 10:0' +
+                  (i + 1) +
+                  '</small></div>',
+              )
+              .join('')
+          : '');
+      const a = document.querySelector('#action');
+      a.textContent = s[2];
+      a.disabled = name === 'checking';
+      a.onclick = () => (s[3] ? show(s[3]) : closeDialog());
+      document.querySelector('#back').hidden = name === 'checking';
+      document.querySelector('.close').disabled = name === 'checking';
+      document.querySelector('#backdrop').classList.remove('hidden');
+      a.focus();
+      if (name === 'checking') setTimeout(() => show('one'), 900);
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDialog();
+    });
+  </script>
+</html>
