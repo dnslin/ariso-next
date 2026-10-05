@@ -249,3 +249,9 @@ node scripts/verify-browser.mjs --suite library --only recovery
 代码完成、本地检查、浏览器结果、独立设计复审与人工验收分别记录。PR 保留草稿；没有发布、部署或合并，未关闭 Issue、删除分支/worktree；发布镜像和容器仍遵守既有 Release 流程。
 
 最终[文档检查](./followup-docs-check.txt)通过，120任务/298需求无缺失或环；[其它受影响静态命令](./followup-extra-lint.txt)均退出0。完整`pnpm run format:check`实际发现仅新复制的原始运行器JSON未按格式化规则排版，[失败原记录](./followup-format-check-before.txt)保留；格式化该JSON后仅检查它与补充证据链接的本README，[受影响格式检查](./followup-format-check.txt)通过，其他已通过文件没有重复全仓检查。没有修改报告值或隐藏浏览器失败。
+
+### 远端交付状态
+
+本轮实现与证据提交`e62bbb4`已推送至`codex/issue-190-sharing`，[PR #247](https://github.com/dnslin/ariso-next/pull/247)继续OPEN/draft。推送后[实际核对](./github-after-followup.json)未列出任何远端检查，不能记作CI通过，也没有等待不存在的工作流。
+
+远端main并发合入账号任务#165，到达`d3cf7456`；运行器及其参数测试与本分支重叠，PR显示CONFLICTING。当前交付与人工预览保持实际已验证版本，没有混入未验证的账号/public-shell改动。按用户指定边界，收到明确合并指令后再读重叠调用链、保留双方能力并处理冲突，只重验受影响部分及必要复审；本轮没有合并PR、关闭Issue或清理预览/分支/worktree。
