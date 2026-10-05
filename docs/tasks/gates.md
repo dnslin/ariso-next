@@ -444,6 +444,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
+- 核对证据：[Issue #134 实际节点、截图、契约走查与独立评审](./evidence/DG-SHARING/README.md)。消费结论分别见 [T-SHR-02](./m3-m4-experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](./m3-m4-experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](./m3-m4-experience.md#dg-sharing-对-t-shr-04-的核对结论)。只交付设计适用核对，具体表达缺口交所属消费任务；不关闭 DES-03、DES-06-SHARING、RG-02/08 或真实界面验收。
 
 ### DG-ANALYTICS 单图/排行导航设计适用核对
 
