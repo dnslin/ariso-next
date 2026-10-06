@@ -122,11 +122,11 @@ export function createTokensPage(page, config, report) {
         start: node.selectionStart,
         end: node.selectionEnd,
         direction: node.selectionDirection,
-        scrollTop: node.scrollTop,
+        scrollLeft: node.scrollLeft,
       };
       node.value = state.value.replace(/./g, '•');
       node.setSelectionRange(state.start, state.end, state.direction);
-      node.scrollTop = state.scrollTop;
+      node.scrollLeft = state.scrollLeft;
       return state;
     });
     try {
@@ -134,7 +134,7 @@ export function createTokensPage(page, config, report) {
         assert.deepEqual(
           secret,
           expectedSecret,
-          'Real copy preserves the key, exact selected range and textarea scroll before evidence masking',
+          'Real copy preserves the key, exact selected range and input horizontal scroll before evidence masking',
         );
       const toast = copyToast ? await copyToastReady() : undefined;
       await page.screenshot({ path: join(config.output, filename) });
@@ -147,7 +147,7 @@ export function createTokensPage(page, config, report) {
           if (node) {
             node.value = state.value;
             node.setSelectionRange(state.start, state.end, state.direction);
-            node.scrollTop = state.scrollTop;
+            node.scrollLeft = state.scrollLeft;
           }
         }, secret);
     }
@@ -230,7 +230,7 @@ export function createTokensPage(page, config, report) {
         start: node.selectionStart,
         end: node.selectionEnd,
         direction: node.selectionDirection,
-        scrollTop: node.scrollTop,
+        scrollLeft: node.scrollLeft,
       };
     });
     await copy();
@@ -384,7 +384,10 @@ export function createTokensPage(page, config, report) {
     return key;
   }
   async function closeSecret(snapshot) {
-    await page.focus(tokenControl('saved-close'));
+    await page.focus(tokenControl('secret-close'));
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-testid="api-close-confirm"]');
+    await page.focus(tokenControl('confirm-close'));
     await page.keyboard.press('Enter');
     await returnFocus(tokenControl('create-open'), snapshot);
     assert.equal(
@@ -436,9 +439,57 @@ export async function captureTokensLayouts(page, config, report) {
     for (const width of widths) {
       await resizeViewport(page, width);
       await ui.geometry(`page-${theme}-${width}`, width);
+      const pageState = await ui.sourceState();
+      await page.focus('loc=role:button[name="时间与记录说明"]');
+      if (width < 640) await page.keyboard.press('Enter');
+      await page.waitForFunction(
+        (timeZone) =>
+          document.body.textContent.includes(
+            `时间按站点时区 ${timeZone} 显示。`,
+          ),
+        config.tokensTimeZone,
+      );
+      await ui.geometry(`time-info-${theme}-${width}`, width);
+      await page.keyboard.press('Escape');
+      await page.focus('loc=role:button[name="上传用法（尚未开放）"]');
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(() =>
+        document.body.textContent.includes('上传用法尚未开放'),
+      );
+      await ui.geometry(`usage-info-${theme}-${width}`, width);
+      await page.keyboard.press('Escape');
+      assert.equal(
+        await page.evaluate(() =>
+          document.activeElement?.getAttribute('aria-label'),
+        ),
+        '上传用法（尚未开放）',
+        'Closing usage help returns focus to its visible icon',
+      );
+      assert.deepEqual(
+        await ui.sourceState(),
+        pageState,
+        'Help retains the source page and scroll',
+      );
       const snapshot = await ui.openCreate();
       await ui.geometry(`create-${theme}-${width}`, width);
-      await page.focus(tokenControl('create-cancel'));
+      await page.focus(`${tokenControl('no-expiry')} input[type="radio"]`);
+      await page.keyboard.press('ArrowRight');
+      await page.waitForSelector(tokenControl('expiry-input'));
+      await page.keyboard.press('ArrowLeft');
+      await page.waitForSelector(tokenControl('expiry-input'), {
+        state: 'hidden',
+      });
+      assert.equal(
+        await page.evaluate(
+          () =>
+            document.querySelector(
+              '[data-testid="api-no-expiry"] input[type="radio"]',
+            ).checked,
+        ),
+        true,
+        'Mutually exclusive expiry options support keyboard switching back to never',
+      );
+      await page.focus(tokenControl('create-submit'));
       await page.keyboard.press('Tab');
       assert.equal(
         await page.evaluate(

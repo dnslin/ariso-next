@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Button } from '@heroui/react/button';
+import { Input } from '@heroui/react/input';
 import { Modal } from '@heroui/react/modal';
-import { TextArea } from '@heroui/react/textarea';
+import { Tooltip } from '@heroui/react/tooltip';
 import { ClipboardCopy, Check } from 'lucide-react';
 import { formatTokenTime } from './token-time';
 import type { TokenCreator } from './token-use-create';
@@ -15,12 +16,14 @@ export function TokenSecret({
   creator: TokenCreator;
   timeZone: string;
 }) {
-  const secretField = useRef<HTMLTextAreaElement>(null);
+  const secretField = useRef<HTMLInputElement>(null);
+  const copying = useRef(false);
+  const [copied, setCopied] = useState(false);
   const pendingSelection = useRef<{
-    selectionStart: number;
-    selectionEnd: number;
-    selectionDirection: 'forward' | 'backward' | 'none';
-    scrollTop: number;
+    selectionStart: number | null;
+    selectionEnd: number | null;
+    selectionDirection: 'forward' | 'backward' | 'none' | null;
+    scrollLeft: number;
   } | null>(null);
   const restoreSelection = useCallback(() => {
     const saved = pendingSelection.current;
@@ -29,75 +32,91 @@ export function TokenSecret({
       current.setSelectionRange(
         saved.selectionStart,
         saved.selectionEnd,
-        saved.selectionDirection,
+        saved.selectionDirection ?? undefined,
       );
-      current.scrollTop = saved.scrollTop;
+      current.scrollLeft = saved.scrollLeft;
     }
     pendingSelection.current = null;
   }, []);
-  useLayoutEffect(restoreSelection, [creator.copyFailed, restoreSelection]);
-  async function copy() {
-    if (!secretField.current || pendingSelection.current) return;
-    const { selectionStart, selectionEnd, selectionDirection, scrollTop } =
+  useLayoutEffect(restoreSelection, [
+    creator.copyFailed,
+    copied,
+    restoreSelection,
+  ]);
+  function captureSelection() {
+    if (!secretField.current || copying.current) return;
+    const { selectionStart, selectionEnd, selectionDirection, scrollLeft } =
       secretField.current;
     pendingSelection.current = {
       selectionStart,
       selectionEnd,
       selectionDirection,
-      scrollTop,
+      scrollLeft,
     };
-    const failed = !(await creator.copy());
-    if (!secretField.current) return;
-    if (failed === creator.copyFailed) restoreSelection();
   }
+  async function copy() {
+    if (!secretField.current || copying.current) return;
+    if (!pendingSelection.current) captureSelection();
+    copying.current = true;
+    const success = await creator.copy();
+    copying.current = false;
+    if (!secretField.current) return;
+    setCopied(success);
+    if (success === copied && !success === creator.copyFailed)
+      restoreSelection();
+  }
+  const copyLabel = creator.copyFailed
+    ? '再次复制 Token'
+    : copied
+      ? 'Token 已复制'
+      : '复制 Token';
   return (
-    <>
-      <Modal.Body className="m-0 grid flex-none gap-3.5 overflow-visible p-0 text-sm leading-normal text-foreground">
-        <p className="wrap-anywhere">
-          {creator.record?.name ?? creator.record?.id} ·{' '}
-          {creator.record?.expiresAt
-            ? `到期于 ${formatTokenTime(creator.record.expiresAt, timeZone)}`
-            : '永不过期'}
-        </p>
-        <TextArea
+    <Modal.Body className="m-0 grid flex-none gap-3.5 overflow-visible p-0 text-sm leading-normal text-foreground">
+      <p className="wrap-anywhere">
+        {creator.record?.name ?? creator.record?.id} ·{' '}
+        {creator.record?.expiresAt
+          ? `到期于 ${formatTokenTime(creator.record.expiresAt, timeZone)}`
+          : '永不过期'}
+      </p>
+      <div className="flex min-w-0 items-center gap-2 rounded-xl bg-default p-2">
+        <Input
           ref={secretField}
           data-testid="api-secret"
           aria-label="完整 Token"
           defaultValue={creator.secret}
           readOnly
-          rows={3}
-          className="w-full resize-none rounded-xl border-0 bg-default p-4 text-sm leading-normal text-foreground shadow-none wrap-anywhere"
+          className="h-11 min-w-0 flex-1 rounded-lg border-0 bg-transparent px-2 font-mono text-sm text-foreground shadow-none"
         />
-        <p>关闭后无法再次查看。请将完整 Token 保存在你信任的位置。</p>
-        {creator.copyFailed ? (
-          <p
-            data-testid="api-copy-error"
-            role="alert"
-            className="text-[13px] text-danger"
+        <Tooltip delay={150}>
+          <Button
+            data-testid="api-copy"
+            aria-label={copyLabel}
+            isIconOnly
+            variant="ghost"
+            className="size-11 min-w-11 shrink-0 rounded-lg p-0"
+            onPressStart={captureSelection}
+            preventFocusOnPress
+            onPress={() => void copy()}
           >
-            复制失败：无法写入剪贴板。请选中上方完整 Token 手动复制。
-          </p>
-        ) : null}
-      </Modal.Body>
-      <Modal.Footer className="m-0 grid w-full grid-cols-1 gap-3 p-0">
-        <Button
-          data-testid="api-copy"
-          className="h-12 min-h-12 w-full rounded-lg text-sm font-normal"
-          onPress={() => void copy()}
+            {copied ? (
+              <Check className="size-[18px]" aria-hidden />
+            ) : (
+              <ClipboardCopy className="size-[18px]" aria-hidden />
+            )}
+          </Button>
+          <Tooltip.Content className="text-xs">{copyLabel}</Tooltip.Content>
+        </Tooltip>
+      </div>
+      <p>关闭后无法再次查看。请将完整 Token 保存在你信任的位置。</p>
+      {creator.copyFailed ? (
+        <p
+          data-testid="api-copy-error"
+          role="alert"
+          className="text-[13px] text-danger"
         >
-          <ClipboardCopy className="size-4" aria-hidden />
-          {creator.copyFailed ? '再次复制' : '复制 Token'}
-        </Button>
-        <Button
-          data-testid="api-saved-close"
-          variant="outline"
-          className="h-12 min-h-12 w-full rounded-lg bg-background text-sm font-normal"
-          onPress={creator.savedClose}
-        >
-          <Check className="size-4" aria-hidden />
-          我已保存，关闭
-        </Button>
-      </Modal.Footer>
-    </>
+          复制失败：无法写入剪贴板。请选中上方完整 Token 手动复制。
+        </p>
+      ) : null}
+    </Modal.Body>
   );
 }

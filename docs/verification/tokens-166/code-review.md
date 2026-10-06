@@ -81,3 +81,13 @@
 账号场景的实际 `get-session` 429 保留为失败。原 HTTP 限流配置未改，API Key 插件不为 Cookie 会话增加限流或匹配会话 hook。旧全量同进程的连续请求累计可能影响其结果；随后同数据库 Token→重启→Account 链式验证的重启阶段通过，账号仍在密码流程得到429，见 [链式运行记录](checks/browser-chain.txt) 及其 [运行器最小差异](checks/token-account-chain.patch)。这说明跨 Token 进程桶已隔离后仍有失败，不证明原 main 也失败，未修改产品限流或降低200断言。
 
 本轮只做文件、差异与已有证据阅读，`git diff --check` 未发现空白错误；没有执行新的单元、集成、构建或浏览器检查。正式behavior整轮、recovery全部五组及公共消费者两端功能已完成实际验证；默认全量旧失败、账号429与其归因限制仍保留。真实页面设计复核及用户人工验收由各自记录确认，不能由源码状态映射或本审查代替。物理手机触控、软键盘和安全区未由桌面浏览器视口模拟证明。
+
+## PR #250 双角度评审（2026-10-06）
+
+用户明确要求两位独立 agent，分别读取并应用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`。初轮共同固定范围为 `ffecff2ea55d65ad4af8cc2877f20f06b54e62c1 → 4ef55b1bcccce2768c048f24c4b1969408a032e4`。两位只读审查实际实现、测试、插件类型及验证证据，未操作预览或浏览器，未机械重复正式检查。
+
+正确性评审发现一项 Required/P2：服务端接受 `expiresIn=1e12`，其实际 JSON 日期为六位年份，前端 `z.iso.datetime()` 拒绝整份列表。评审者用 Node24 内存替代 fetch 复现；实现者增加普通记录与极长记录同列、创建响应和非法日期回归，先实际执行 `pnpm exec vitest run --project unit tests/unit/identity/token-request.test.ts` 得到1失败/15通过（`tokens[1].expiresAt: Invalid ISO datetime`）。随后将响应日期按服务端原生 `Date.toISOString()` 的合法规范格式校验，不新增上限、不忽略记录；同轮全量单元1469项通过。
+
+结构评审发现一项 Required：共用浏览器运行器从985增至1009行，Token→重启→Account 编排把业务依赖和调用拼装放进共有入口。已沿既有 `browser-m2.mjs` 的边界抽出 `browser-identity-management.mjs`，入口降为998行；原数据库、会话、端口、阶段名和重启依赖保留。4项回归覆盖顺序、重启失败阻塞Account、Token失败仍检查独立Account、Owner未就绪时全部阻塞。原190项分发测试仍在默认单元入口，未改suite/only参数规则。
+
+Optional 的客户端/服务器名称规则合并未采纳：当前只有简单的trim和1–32字符规则，抽取不显著减少复杂度，不为此建立通用表单契约层。两个 Required 源码项及获批 UI 落地增量待固定最终提交复审。默认全量浏览器的历史失败/中断、账号429和新UI复验缺口仍保留，源码审查与单元测试不替代浏览器或人工验收。

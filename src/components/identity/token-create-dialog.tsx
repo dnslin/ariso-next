@@ -26,11 +26,6 @@ export function TokenCreateDialog(props: {
   const editing = creator.phase === 'editing';
   const creating = creator.phase === 'creating';
   const failed = creator.phase === 'failed';
-  const editingTitle = Object.values(creator.errors).some(Boolean)
-    ? '请检查填写内容'
-    : creator.finite
-      ? '设置到期时间'
-      : '创建 Token';
   return (
     <>
       <Modal
@@ -74,13 +69,9 @@ export function TokenCreateDialog(props: {
                     : failed
                       ? '创建失败'
                       : editing
-                        ? editingTitle
+                        ? '创建 Token'
                         : creator.secret
-                          ? creator.copyFailed
-                            ? '未能自动复制'
-                            : creator.record?.expiresAt
-                              ? '保存你的限时 Token'
-                              : '保存你的 Token'
+                          ? '保存你的 Token'
                           : tokenCreateCheckTitle(creator)}
                 </Modal.Heading>
                 {!creating ? (
@@ -177,21 +168,21 @@ export function TokenCreateDialog(props: {
               <AlertDialog.Body className="m-0 flex-none p-0 text-sm leading-normal text-foreground">
                 关闭后无法再次查看完整 Token。如果还没有保存，请先返回复制。
               </AlertDialog.Body>
-              <AlertDialog.Footer className="m-0 grid grid-cols-1 gap-3 p-0">
-                <Button
-                  data-testid="api-confirm-close"
-                  className={actionClass}
-                  onPress={creator.savedClose}
-                >
-                  仍然关闭
-                </Button>
+              <AlertDialog.Footer className="m-0 flex flex-wrap justify-end gap-3 p-0">
                 <Button
                   data-testid="api-keep-secret"
                   variant="outline"
-                  className={`${actionClass} bg-background`}
+                  className="h-12 min-h-12 rounded-lg bg-background text-sm font-normal"
                   onPress={creator.keepSecret}
                 >
                   返回复制
+                </Button>
+                <Button
+                  data-testid="api-confirm-close"
+                  className="h-12 min-h-12 rounded-lg text-sm font-normal"
+                  onPress={creator.savedClose}
+                >
+                  仍然关闭
                 </Button>
               </AlertDialog.Footer>
             </AlertDialog.Dialog>

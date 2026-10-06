@@ -180,7 +180,7 @@ async function verifyCreateFailures(page, ui, report, width, registerSecret) {
           'Local expiry rejection creates no new ID while allowing normal cleanup of older expired records',
         );
         await ui.stateGeometry('create-failed-expired-retry', width);
-        await page.focus(tokenControl('create-cancel'));
+        await page.focus(tokenControl('secret-close'));
         await page.keyboard.press('Enter');
         await ui.returnFocus(tokenControl('create-open'), snapshot);
       } else {

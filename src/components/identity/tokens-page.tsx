@@ -21,6 +21,7 @@ import {
 import { TokenCreateDialog } from './token-create-dialog';
 import { TokenActionDialog } from './token-action-dialog';
 import { TokenList } from './token-list';
+import { TokenTimeInfo, TokenUsageInfo } from './token-help';
 import {
   readTokens,
   TokenRequestError,
@@ -121,27 +122,40 @@ export function TokensPage({ timeZone, ...shell }: Props) {
         <SettingsHeading />
         <SettingsCategories items={settingsCategories}>
           <Card className="grid min-w-0 gap-5 rounded-[20px] border border-border bg-surface px-4 py-6 shadow-none min-[1200px]:p-6">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="flex items-center gap-2 text-xl font-medium">
-                <KeyRound className="size-6 shrink-0" aria-hidden />
-                上传 Token
-              </h2>
-              <Button
-                ref={createButton}
-                data-testid="api-create-open"
-                className="h-12 min-h-12 w-25 shrink-0 rounded-lg text-sm font-normal"
-                isDisabled={
-                  loading || sessionLost || query.isError || !!actions.action
-                }
-                onPress={() => setCreating(true)}
-              >
-                <Plus className="size-4" aria-hidden />
-                创建
-              </Button>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-1">
+                <h2 className="flex items-center gap-2 whitespace-nowrap text-xl font-medium">
+                  <KeyRound className="size-6 shrink-0" aria-hidden />
+                  上传 Token
+                </h2>
+                <TokenTimeInfo timeZone={timeZone} />
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <span className="hidden sm:block">
+                  <TokenUsageInfo />
+                </span>
+                <Button
+                  ref={createButton}
+                  data-testid="api-create-open"
+                  className="h-12 min-h-12 w-25 shrink-0 rounded-lg text-sm font-normal"
+                  isDisabled={
+                    loading || sessionLost || query.isError || !!actions.action
+                  }
+                  onPress={() => setCreating(true)}
+                >
+                  <Plus className="size-4" aria-hidden />
+                  创建
+                </Button>
+              </div>
             </div>
-            <p className="text-sm leading-normal text-muted">
-              让脚本上传图片。Token 不能登录后台、浏览或管理图库。
-            </p>
+            <div className="flex items-start gap-2">
+              <p className="text-sm leading-normal text-muted">
+                让脚本上传图片。Token 不能登录后台、浏览或管理图库。
+              </p>
+              <span className="shrink-0 sm:hidden">
+                <TokenUsageInfo />
+              </span>
+            </div>
             {sessionLost ? (
               <div className="grid gap-3">
                 <p role="alert" className="text-sm text-danger">
@@ -198,20 +212,6 @@ export function TokensPage({ timeZone, ...shell }: Props) {
                 <p className="text-sm text-muted">创建用于脚本上传的 Token。</p>
               </div>
             )}
-            <p className="text-xs leading-normal text-muted">
-              时间按站点时区显示（{timeZone}）。过期记录可能被自动清理。
-            </p>
-            <div className="grid gap-2">
-              <Button
-                data-testid="api-usage"
-                variant="outline"
-                className="h-12 min-h-12 w-full rounded-lg bg-background text-sm font-normal sm:w-45"
-                isDisabled
-              >
-                查看上传用法
-              </Button>
-              <p className="text-xs text-muted">尚未开放</p>
-            </div>
           </Card>
         </SettingsCategories>
       </section>

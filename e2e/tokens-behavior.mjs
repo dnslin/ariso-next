@@ -104,7 +104,7 @@ async function clipboardRound(page, ui, report, width, key) {
         start: node.selectionStart,
         end: node.selectionEnd,
         direction: node.selectionDirection,
-        scrollTop: node.scrollTop,
+        scrollLeft: node.scrollLeft,
       };
     });
   const initialPermission = await page.evaluate(
@@ -141,11 +141,12 @@ async function clipboardRound(page, ui, report, width, key) {
     assert.equal(
       await page.evaluate(() => {
         const node = document.querySelector('[data-testid="api-secret"]');
-        node.setSelectionRange(5, 12, 'backward');
+        node.setSelectionRange(40, 50, 'backward');
+        node.scrollLeft = 100;
         return document.activeElement === node;
       }),
       true,
-      'The secret textarea owns focus when preparing its partial selection',
+      'The secret input owns focus when preparing its partial selection',
     );
     const selected = await selection();
     assert.deepEqual(
@@ -154,7 +155,7 @@ async function clipboardRound(page, ui, report, width, key) {
         end: selected.end,
         direction: selected.direction,
       },
-      { start: 5, end: 12, direction: 'backward' },
+      { start: 40, end: 50, direction: 'backward' },
       'The key has the exact native partial selection before copy',
     );
     const before = await ui.sourceState();
@@ -163,8 +164,11 @@ async function clipboardRound(page, ui, report, width, key) {
       await ui.dismissNotifications();
       await setTheme(page, theme);
       await ui.copyEvidence(`secret-copied-${theme}`, width, async () => {
-        await page.focus(tokenControl('copy'));
-        await page.keyboard.press('Enter');
+        if (theme === 'light') await page.click(tokenControl('copy'));
+        else {
+          await page.focus(tokenControl('copy'));
+          await page.keyboard.press('Enter');
+        }
       });
       successfulCopies.push({ success: true });
       assert.deepEqual(
@@ -190,7 +194,7 @@ async function clipboardRound(page, ui, report, width, key) {
       assert.deepEqual(
         await selection(),
         selected,
-        'Every copy and redacted screenshot preserves the exact selected range and textarea scroll',
+        'Every copy and redacted screenshot preserves the exact selected range and input horizontal scroll',
       );
     }
     const successfulToastIds = await page.evaluate(() =>
@@ -221,11 +225,11 @@ async function clipboardRound(page, ui, report, width, key) {
             .textContent.trim(),
           copy: document
             .querySelector('[data-testid="api-copy"]')
-            .textContent.trim(),
+            .getAttribute('aria-label'),
         }),
         createDialog,
       ),
-      { title: '未能自动复制', copy: '再次复制' },
+      { title: '保存你的 Token', copy: '再次复制 Token' },
       'Clipboard denial retains the secret in the approved retry-copy state',
     );
     assert.equal(
@@ -331,7 +335,7 @@ async function createdToken(
             .textContent.trim(),
         createDialog,
       ),
-      '设置到期时间',
+      '创建 Token',
       'A valid finite expiry retains its approved editing heading',
     );
     await ui.stateGeometry('expiry-form', width);
@@ -453,8 +457,8 @@ async function createdToken(
           .textContent.trim(),
       createDialog,
     ),
-    expiry ? '保存你的限时 Token' : '保存你的 Token',
-    'The once-only modal identifies finite credentials in its heading',
+    '保存你的 Token',
+    'The once-only modal retains a stable heading while expiry appears in its metadata',
   );
   await ui.stateGeometry(expiry ? 'secret-expiring' : 'secret', width);
   if (expiry) {

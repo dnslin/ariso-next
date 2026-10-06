@@ -18,6 +18,40 @@ const token: TokenRecord = {
 };
 afterEach(() => vi.unstubAllGlobals());
 
+it('reads and creates finite expiry dates beyond four-digit years', async () => {
+  const longExpiry = {
+    ...token,
+    id: 'long-expiry',
+    expiresAt: new Date(
+      Date.parse(token.createdAt) + 1e12 * 1000,
+    ).toISOString(),
+  };
+  vi.stubGlobal('fetch', async () =>
+    Response.json({ tokens: [token, longExpiry] }),
+  );
+  await expect(readTokens()).resolves.toEqual([token, longExpiry]);
+  vi.stubGlobal('fetch', async () =>
+    Response.json({ token: longExpiry, key: 'new-secret' }),
+  );
+  await expect(
+    createToken({ name: 'long-expiry', expiresIn: 1e12 }),
+  ).resolves.toEqual({
+    token: longExpiry,
+    key: 'new-secret',
+  });
+});
+
+it.each([
+  '+033715-99-03T00:00:00.000Z',
+  'not-a-date',
+  '2026-02-30T00:00:00.000Z',
+])('rejects malformed response dates: %s', async (expiresAt) => {
+  vi.stubGlobal('fetch', async () =>
+    Response.json({ tokens: [{ ...token, expiresAt }] }),
+  );
+  await expect(readTokens()).rejects.toThrow();
+});
+
 it('reads only the record DTO and does not retain raw keys in the list', async () => {
   vi.stubGlobal('fetch', async () =>
     Response.json({

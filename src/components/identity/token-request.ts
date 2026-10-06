@@ -1,11 +1,18 @@
 import { z } from 'zod';
 
+const tokenDateSchema = z.string().refine((value) => {
+  const timestamp = Date.parse(value);
+  return (
+    Number.isFinite(timestamp) && new Date(timestamp).toISOString() === value
+  );
+}, 'Token 日期格式无效');
+
 const tokenSchema = z.object({
   id: z.string().min(1),
   name: z.string().nullable(),
   enabled: z.boolean(),
-  createdAt: z.iso.datetime(),
-  expiresAt: z.iso.datetime().nullable(),
+  createdAt: tokenDateSchema,
+  expiresAt: tokenDateSchema.nullable(),
 });
 
 export type TokenRecord = z.infer<typeof tokenSchema>;

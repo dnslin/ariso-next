@@ -15,6 +15,7 @@ import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture
 import { runBrowserStage } from './browser-stages.mjs';
 import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
+import { runIdentityManagement } from './browser-identity-management.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -881,27 +882,15 @@ try {
       });
       await business(`interaction-polish-${width}`, 'interaction-polish');
       await business(`workspace-continuity-${width}`, 'workspace-continuity');
-      if (await business(`tokens-${width}`, 'tokens'))
-        report[`tokens-${width}`] = 'passed';
-      // 保留数据库/会话，隔离新增 Token 场景累计的进程内 HTTP 限流桶。
-      const accountRuntimeName = `account-runtime-${width}`;
-      await check(accountRuntimeName, () => restartProduction(dataDirectory), [
-        ownerName,
-      ]);
-      // Account changes consume these credentials, so keep this last for the data directory.
-      if (
-        await check(
-          `account-${width}`,
-          () =>
-            runBrowser(
-              '../e2e/account.mjs',
-              identityConfig,
-              `account-${width}.log`,
-            ),
-          [ownerName, accountRuntimeName],
-        )
-      )
-        report[`account-${width}`] = 'passed';
+      const management = await runIdentityManagement({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: identityConfig,
+        dependencies: [ownerName],
+      });
+      if (management.tokensPassed) report[`tokens-${width}`] = 'passed';
+      if (management.accountPassed) report[`account-${width}`] = 'passed';
       await stop(server);
     }
     await check('delivery-s3', async () => {

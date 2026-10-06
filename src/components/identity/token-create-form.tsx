@@ -6,7 +6,10 @@ import { Form } from '@heroui/react/form';
 import { Input } from '@heroui/react/input';
 import { Label } from '@heroui/react/label';
 import { Modal } from '@heroui/react/modal';
+import { Radio } from '@heroui/react/radio';
+import { RadioGroup } from '@heroui/react/radio-group';
 import { TextField } from '@heroui/react/textfield';
+import { Plus } from 'lucide-react';
 import { TokenExpiryField } from './token-expiry-field';
 import type { TokenCreator } from './token-use-create';
 
@@ -49,27 +52,51 @@ export function TokenCreateForm({
           />
           <FieldError>{errors.name}</FieldError>
         </TextField>
+        <RadioGroup
+          aria-label="有效期"
+          value={creator.finite ? 'finite' : 'never'}
+          onChange={(value) =>
+            value === 'finite' ? creator.enableExpiry() : creator.removeExpiry()
+          }
+          orientation="horizontal"
+          className="gap-1.5"
+        >
+          <Label className="text-sm font-normal">有效期</Label>
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            <Radio
+              value="never"
+              data-testid="api-no-expiry"
+              className="min-h-11"
+            >
+              <Radio.Content>
+                <Radio.Control className="border border-border">
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Label className="text-sm font-normal">永不过期</Label>
+              </Radio.Content>
+            </Radio>
+            <Radio
+              value="finite"
+              data-testid="api-set-expiry"
+              className="min-h-11"
+            >
+              <Radio.Content>
+                <Radio.Control className="border border-border">
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Label className="text-sm font-normal">指定时间</Label>
+              </Radio.Content>
+            </Radio>
+          </div>
+        </RadioGroup>
         {creator.finite ? (
           <TokenExpiryField
             value={creator.expiry}
             onChange={creator.changeExpiry}
             timeZone={timeZone}
             error={errors.expiresIn}
-            onRemove={creator.removeExpiry}
           />
-        ) : (
-          <>
-            <p>有效期：永不过期</p>
-            <Button
-              data-testid="api-set-expiry"
-              variant="outline"
-              className="h-12 w-full rounded-lg bg-background text-sm font-normal"
-              onPress={creator.enableExpiry}
-            >
-              设置到期时间
-            </Button>
-          </>
-        )}
+        ) : null}
         <p className="text-[13px] text-muted">
           完整 Token 只显示一次，创建后请立即保存。
         </p>
@@ -79,21 +106,14 @@ export function TokenCreateForm({
           </p>
         ) : null}
       </Modal.Body>
-      <Modal.Footer className="m-0 grid w-full grid-cols-1 gap-3 p-0">
+      <Modal.Footer className="m-0 flex w-full justify-end p-0">
         <Button
           data-testid="api-create-submit"
           type="submit"
-          className="h-12 min-h-12 w-full rounded-lg text-sm font-normal"
+          className="h-12 min-h-12 min-w-25 rounded-lg text-sm font-normal"
         >
-          创建 Token
-        </Button>
-        <Button
-          data-testid="api-create-cancel"
-          variant="outline"
-          className="h-12 min-h-12 w-full rounded-lg bg-background text-sm font-normal"
-          onPress={creator.close}
-        >
-          取消
+          <Plus className="size-4" aria-hidden />
+          创建
         </Button>
       </Modal.Footer>
     </Form>

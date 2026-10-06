@@ -50,9 +50,11 @@ export function TokenList({
             data-state={
               expired ? 'expired' : token.enabled ? 'enabled' : 'disabled'
             }
-            className="grid min-w-0 gap-2.5 rounded-xl border border-border bg-surface p-4 shadow-none"
+            className="grid min-w-0 gap-3 rounded-xl border border-border bg-surface p-4 shadow-none md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
           >
-            <TokenSummary token={token} timeZone={timeZone} />
+            <div className="grid min-w-0 gap-2.5">
+              <TokenSummary token={token} timeZone={timeZone} />
+            </div>
             <div className="flex gap-3">
               <Button
                 data-testid="api-toggle"

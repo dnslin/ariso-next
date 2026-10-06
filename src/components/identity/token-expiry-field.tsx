@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@heroui/react/button';
 import { Calendar } from '@heroui/react/calendar';
 import { DateField } from '@heroui/react/date-field';
 import { DatePicker } from '@heroui/react/date-picker';
@@ -19,13 +18,11 @@ export function TokenExpiryField({
   onChange,
   timeZone,
   error,
-  onRemove,
 }: {
   value: CalendarDateTime | null;
   onChange: (value: CalendarDateTime | null) => void;
   timeZone: string;
   error?: string;
-  onRemove: () => void;
 }) {
   return (
     <div className="grid gap-3">
@@ -91,14 +88,6 @@ export function TokenExpiryField({
           </Calendar>
         </DatePicker.Popover>
       </DatePicker>
-      <Button
-        data-testid="api-no-expiry"
-        variant="outline"
-        className="h-12 w-full rounded-lg bg-background text-sm font-normal"
-        onPress={onRemove}
-      >
-        改为永不过期
-      </Button>
     </div>
   );
 }

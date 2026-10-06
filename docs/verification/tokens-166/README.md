@@ -2,6 +2,8 @@
 
 日期：2026-10-06（Asia/Shanghai）。任务 `T-ID-08 / IDENTITY-TOKEN`，需求 `R-6.5-01/02/03`、`A-26.3-01`、`R-22.1-01`、`R-22.4-01`。产品边界沿用[任务卡](../../tasks/m3-m4-platform.md#t-id-08-上传-token-生命周期与一次明文界面)、[identity §9](../../specs/SPEC-identity.md#9-上传-token)、[设计交接](../../design/handoff.md)与[执行约定](../../tasks/execution.md)。本记录不新增规则，不改冻结 PRD。
 
+最新返修与双角度评审见[本轮增量](#人工反馈后的获批返修与双角度评审2026-10-06)；下面已完成记录对应上一轮产品输入，不能替代本轮新 UI 的复验。
+
 ## 范围与前置
 
 实际使用 gh 读取 [Issue 正文与评论](issue.json)、[blocked by](blocked-by.json) 和 [blocking](blocking.json)。评论为空；#165、#57、#144、#130 均 CLOSED。它们交付的是账号、公共外壳、API Key 插件实验和设计适用核对，不等于生产 Token 能力已经存在。最新 `origin/main@ffecff2e` 为起点，独立 managed worktree `/Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso`，分支 `codex/issue-166-upload-tokens`；原目录与其他任务保持。
@@ -98,3 +100,27 @@ macOS 26.6.2 arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-32，ExifTo
 实现提交 `971e2641ac70912652ea932b2f525211bdbc17a6` 已推送到 `codex/issue-166-upload-tokens`；PR base 为 main。已使用 gh 回读实际 OPEN、DRAFT 与可合并状态，[首次远端核对](checks/pr-status.json)的 `statusCheckRollup` 为空；`gh pr checks` 明确返回 no checks reported（退出1）。没有远端检查，不记作CI通过，也不等待不存在的工作流。PR保持草稿，人工验收与视觉证据缺口未完成。补充PR链接后仅复验变化的文档格式和依赖，不机械重复应用检查。
 
 本次未合并、关闭 Issue、发布、部署或清理工作区。发布双架构容器检查未执行，沿现有 Release 流程取得证据。
+
+## 人工反馈后的获批返修与双角度评审（2026-10-06）
+
+用户查看[交互原型](../../../design-plans/issue166/refinement/plan.md)，反馈后明确“UI这边我审查通过了”。批准范围为原型的图标与布局；产品代码现已落地时区tips、尚未开放用法的图标说明、HeroUI RadioGroup有效期、短创建按钮、单行等宽只读Input与复制图标，移除编辑取消及已保存关闭。复制仍保留页面、选区与水平位置；X/Escape/遮罩仍先提醒完整值不可再次查看。768px起记录左资料右操作垂直居中，窄屏上下；按钮沿用96×48px、8px圆角、12px间隔。未知结果核对、权限、UTC/站点时区及启停撤销契约保持。
+
+HeroUI3.2.6没有Code/Snippet导出，实际检查组件与React Aria类型后组合现有Input/Button/Tooltip/Popover，未新增依赖。复制沿原型真实失败修复，按下开始保存起止、方向、水平位置四个标量，DOM反馈提交后恢复；`preventFocusOnPress` 是已安装库公开属性，键盘仍用原生Enter。所有公共shell与设置分类复用现有组件，未复制原型局部标签指示器处理。公共上传与用法页仍归#167/#199，原型未来页不进入产品。
+
+两位独立审查在旧固定HEAD各发现一项必改，极长日期列表契约与共用场景编排已修复，[完整评审](code-review.md#pr-250-双角度评审2026-10-06)记录失败证据、修复及复审状态。
+
+| 当前检查                               | 实际结果                                                                                                    |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `pnpm run typecheck`                   | 退出0，[日志](checks/refinement/typecheck.txt)；最新两项UI微调随后由生产构建的TypeScript覆盖                |
+| `pnpm run lint` / 末次受影响文件ESLint | 退出0，[全量](checks/refinement/lint.txt) / [增量](checks/refinement/lint-final.txt)                        |
+| `pnpm run test:unit`                   | 107文件/1469项通过，[日志](checks/refinement/unit.txt)，包括新日期/编排回归及完整分发                       |
+| `pnpm run build`                       | 最终退出0，[日志](checks/refinement/build.txt)；保留追踪可选跨平台resvg与OpenTelemetry的既有warning，未掩盖 |
+| 新UI浏览器/运行器实际链                | 未执行；原型轮TaskSpace40已被用户接管，授权恢复尚未收到                                                     |
+
+新单行输入的复制成功/拒绝、指针与键盘、完整值关闭确认、单选键盘切换、tips和用法说明回焦已加入原有 `captureTokensLayouts` / Token behavior。默认 `pnpm run test:browser → verify-browser → e2e/tokens.mjs` 继续包含这些场景；定向模式只缩短重跑，不删默认能力。这些新断言还未实际运行，不写成通过。服务端/集成输入未变，沿用原证据，不重复旧检查。
+
+本轮代码已落实且本地适用检查通过；原型 UI 人工审查已通过。本轮产品浏览器复验、最新产品设计对照与产品人工验收尚未完成，之前的独立设计结论不覆盖新输入。Figma同步与最终代码复审结果将追加。PR继续草稿，无远端检查时不记为CI通过。
+
+按 `ego-browser` 技能（本机 `/Users/dnslin/.agents/skills/ego-browser/SKILL.md`） 的原文“Stop when the user takes control or the space is inactive or unassigned. Do not retry or route around the stop.”，未重新claim、另建空间或切换浏览器。恢复需要用户明确授权“继续浏览器验证”，此前同一个请求保持待答，不重复询问。
+
+[产品预览](http://tokens-166.localhost:3169/settings/api)与[已审原型](http://127.0.0.1:3168/settings/api)均保持，产品预览复用原独立账号和数据库，不用它作为自动测试数据。私有凭证不写入文档或PR。用户再次查看产品时，重点核对tips、有效期切换、单行全文/复制拒绝、关闭提醒和两端记录操作排列。
